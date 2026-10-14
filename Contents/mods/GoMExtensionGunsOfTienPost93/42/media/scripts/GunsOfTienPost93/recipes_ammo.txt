@@ -1,0 +1,129 @@
+module Base {
+
+    craftRecipe GunsOfTienPost93_OpenBoxOf50Bullets {
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftienpost93:ammobox50] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 50 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Bullet          = GunsOfTienPost93.46x30_Box,
+            GunsOfTienPost93.46x30_Bullet_Subsonic = GunsOfTienPost93.46x30_Box_Subsonic,
+            GunsOfTienPost93.57x28_Bullet          = GunsOfTienPost93.57x28_Box,
+            GunsOfTienPost93.57x28_Bullet_SB193    = GunsOfTienPost93.57x28_Box_SB193,
+            GunsOfTienPost93.57x28_Bullet_SS197SR  = GunsOfTienPost93.57x28_Box_SS197SR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_Place50BulletsInBox {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 50 [GunsOfTienPost93.46x30_Bullet;GunsOfTienPost93.46x30_Bullet_Subsonic;GunsOfTienPost93.57x28_Bullet;GunsOfTienPost93.57x28_Bullet_SB193;GunsOfTienPost93.57x28_Bullet_SS197SR] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Box          = GunsOfTienPost93.46x30_Bullet,
+            GunsOfTienPost93.46x30_Box_Subsonic = GunsOfTienPost93.46x30_Bullet_Subsonic,
+            GunsOfTienPost93.57x28_Box          = GunsOfTienPost93.57x28_Bullet,
+            GunsOfTienPost93.57x28_Box_SB193    = GunsOfTienPost93.57x28_Bullet_SB193,
+            GunsOfTienPost93.57x28_Box_SS197SR  = GunsOfTienPost93.57x28_Bullet_SS197SR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_OpenCartonOfBoxesOfAmmo {
+        timedAction = UnPackBox,
+        time        = 50,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftienpost93:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 12 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Box          = GunsOfTienPost93.46x30_Carton,
+            GunsOfTienPost93.46x30_Box_Subsonic = GunsOfTienPost93.46x30_Carton_Subsonic,
+            GunsOfTienPost93.57x28_Box          = GunsOfTienPost93.57x28_Carton,
+            GunsOfTienPost93.57x28_Box_SB193    = GunsOfTienPost93.57x28_Carton_SB193,
+            GunsOfTienPost93.57x28_Box_SS197SR  = GunsOfTienPost93.57x28_Carton_SS197SR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_PlaceBoxesOfAmmoInCarton {
+        timedAction = PackingBox,
+        time        = 50,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 12 tags[gunsoftienpost93:ammobox] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Carton          = GunsOfTienPost93.46x30_Box,
+            GunsOfTienPost93.46x30_Carton_Subsonic = GunsOfTienPost93.46x30_Box_Subsonic,
+            GunsOfTienPost93.57x28_Carton          = GunsOfTienPost93.57x28_Box,
+            GunsOfTienPost93.57x28_Carton_SB193    = GunsOfTienPost93.57x28_Box_SB193,
+            GunsOfTienPost93.57x28_Carton_SS197SR  = GunsOfTienPost93.57x28_Box_SS197SR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_OpenCrateOfBoxesOfAmmo {
+        timedAction = UnPackBox,
+        time        = 100,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftienpost93:ammocrate] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 4 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Carton          = GunsOfTienPost93.46x30_Crate,
+            GunsOfTienPost93.46x30_Carton_Subsonic = GunsOfTienPost93.46x30_Crate_Subsonic,
+            GunsOfTienPost93.57x28_Carton          = GunsOfTienPost93.57x28_Crate,
+            GunsOfTienPost93.57x28_Carton_SB193    = GunsOfTienPost93.57x28_Crate_SB193,
+            GunsOfTienPost93.57x28_Carton_SS197SR  = GunsOfTienPost93.57x28_Crate_SS197SR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_PlaceBoxesOfAmmoInCrates {
+        timedAction = PackingBox,
+        time        = 100,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 4 tags[gunsoftienpost93:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTienPost93.46x30_Crate          = GunsOfTienPost93.46x30_Carton,
+            GunsOfTienPost93.46x30_Crate_Subsonic = GunsOfTienPost93.46x30_Carton_Subsonic,
+            GunsOfTienPost93.57x28_Crate          = GunsOfTienPost93.57x28_Carton,
+            GunsOfTienPost93.57x28_Crate_SB193    = GunsOfTienPost93.57x28_Carton_SB193,
+            GunsOfTienPost93.57x28_Crate_SS197SR  = GunsOfTienPost93.57x28_Carton_SS197SR,
+        }
+    }
+}

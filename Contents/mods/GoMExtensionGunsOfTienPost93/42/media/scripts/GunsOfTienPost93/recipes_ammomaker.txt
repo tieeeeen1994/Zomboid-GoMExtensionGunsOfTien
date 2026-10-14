@@ -1,0 +1,82 @@
+/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load). */
+
+module Base {
+
+	craftRecipe Make46x30SS
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make46x30SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce46x30SS
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce46x30SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make57x28SS
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make57x28SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce57x28SS
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce57x28SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make57x28SR
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make57x28SR,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce57x28SR
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce57x28SR,
+		inputs {}
+		outputs {}
+	}
+}

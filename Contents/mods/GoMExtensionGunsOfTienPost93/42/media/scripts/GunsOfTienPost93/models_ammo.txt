@@ -1,0 +1,62 @@
+module GunsOfTienPost93 {
+
+    model GunsOfTienPost93_46x30_Round_DM11 {
+        mesh    = Worlditems/Ammunition/Rounds|46x30_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_46x30_Round_DM11,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_46x30_Box_DM11 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_46x30_Box_DM11,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_46x30_Round_SS {
+        mesh    = Worlditems/Ammunition/Rounds|46x30_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_46x30_Round_SS,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_46x30_Box_SS {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_46x30_Box_SS,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_57x28_Round_SS190 {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_57x28_Round_SS190,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_57x28_Box_SS190 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_57x28_Box_SS190,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_57x28_Round_SB193 {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_57x28_Round_SB193,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_57x28_Box_SB193 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_57x28_Box_SB193,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_57x28_Round_SS197SR {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_57x28_Round_SS197SR,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_57x28_Box_SS197SR {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_57x28_Box_SS197SR,
+        scale   = 0.4,
+    }
+}

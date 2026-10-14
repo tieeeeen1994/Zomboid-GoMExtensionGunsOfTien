@@ -1,0 +1,289 @@
+"""Writes the ammunition scripts and their translations of GoM Extension: Guns of Tien - Post-93.
+
+Run: python3 scripts/post93/gen_post93_ammo.py. The table below is the one source of truth; registries.lua and the Lua
+profiles use the same full types. Gun items and their names are written elsewhere (gen_post93_guns.py).
+"""
+import json
+import os
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'Contents', 'mods',
+                    'GoMExtensionGunsOfTienPost93', '42', 'media')
+MODULE = 'GunsOfTienPost93'
+ART = 'GunsOfTienPost93_'
+
+# Real cartridge weights: 4.6x30 about 6.6 g, 5.7x28 about 6.0 g. 50-round boxes, as both are sold.
+CALIBRES = {
+    '46x30': dict(name='4.6x30mm', weight='0.0066', mesh='46x30_Round', box_w='0.36', carton_w='4.6',
+                  crate_w='19.0'),
+    '57x28': dict(name='5.7x28mm', weight='0.006', mesh='57x28_Round', box_w='0.33', carton_w='4.2',
+                  crate_w='17.4'),
+}
+
+# (calibre, item suffix ('' = the standard round), art suffix, ammo type id, English variant name)
+ROUNDS = [
+    ('46x30', '', 'DM11', 'bullet_46x30', 'DM11'),
+    ('46x30', '_Subsonic', 'SS', 'bullet_46x30_subsonic', 'Subsonic'),
+    ('57x28', '', 'SS190', 'bullet_57x28', 'SS190'),
+    ('57x28', '_SB193', 'SB193', 'bullet_57x28_sb193', 'SB193 Subsonic'),
+    ('57x28', '_SS197SR', 'SS197SR', 'bullet_57x28_ss197sr', 'SS197SR'),
+]
+
+
+def write(path, text):
+    full = os.path.join(ROOT, path)
+    os.makedirs(os.path.dirname(full), exist_ok=True)
+    with open(full, 'w') as f:
+        f.write(text)
+
+
+def names(cal, suffix, art):
+    tail = suffix if suffix else ''
+    return dict(round=f"{cal}_Bullet{tail}", box=f"{cal}_Box{tail}", carton=f"{cal}_Carton{tail}",
+                crate=f"{cal}_Crate{tail}", round_art=f"{ART}{cal}_Round_{art}", box_art=f"{ART}{cal}_Box_{art}")
+
+
+def items():
+    out = [f"module {MODULE} {{\n    imports {{ Base }}\n"]
+    for cal, suffix, art, ammo_id, _ in ROUNDS:
+        c, n = CALIBRES[cal], names(cal, suffix, art)
+        out.append(f"""
+    item {n['round']} {{
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = {c['weight']},
+        Icon             = {n['round_art']},
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = {MODULE}.{n['round_art']},
+        Tags             = base:ammo,
+        AmmoType         = gunsoftienpost93:{ammo_id},
+    }}
+
+    item {n['box']} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {c['box_w']},
+        Icon               = {n['box_art']},
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = {MODULE}.{n['box_art']},
+        WorldStaticModel   = {MODULE}.{n['box_art']},
+        DoubleClickRecipe  = GunsOfTienPost93_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftienpost93:ammobox50;gunsoftienpost93:ammobox,
+    }}
+
+    item {n['carton']} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {c['carton_w']},
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftienpost93:ammocarton,
+        DoubleClickRecipe  = GunsOfTienPost93_OpenCartonOfBoxesOfAmmo,
+    }}
+
+    item {n['crate']} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {c['crate_w']},
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftienpost93:ammocrate,
+        DoubleClickRecipe  = GunsOfTienPost93_OpenCrateOfBoxesOfAmmo,
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTienPost93/items_ammo.txt', ''.join(out))
+
+
+def models():
+    out = [f"module {MODULE} {{\n"]
+    for cal, suffix, art, _, _ in ROUNDS:
+        c, n = CALIBRES[cal], names(cal, suffix, art)
+        out.append(f"""
+    model {n['round_art']} {{
+        mesh    = Worlditems/Ammunition/Rounds|{c['mesh']},
+        texture = worlditems/GunsOfTienPost93/Rounds/{n['round_art']},
+        scale   = 0.015,
+    }}
+
+    model {n['box_art']} {{
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/{n['box_art']},
+        scale   = 0.4,
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTienPost93/models_ammo.txt', ''.join(out))
+
+
+def recipes():
+    def mapper(pairs):
+        width = max(len(a) for a, _ in pairs)
+        return ''.join(f"            {a.ljust(width)} = {b},\n" for a, b in pairs)
+
+    rows = [names(cal, suffix, art) for cal, suffix, art, _, _ in ROUNDS]
+    q = lambda name: f"{MODULE}.{name}"
+    out = ["module Base {\n"]
+    out.append(f"""
+    craftRecipe GunsOfTienPost93_OpenBoxOf50Bullets {{
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {{
+            item 1 tags[gunsoftienpost93:ammobox50] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
+        }}
+        outputs {{
+            item 50 mapper:ammoType,
+        }}
+        itemMapper ammoType {{
+{mapper([(q(n['round']), q(n['box'])) for n in rows])}        }}
+    }}
+
+    craftRecipe GunsOfTienPost93_Place50BulletsInBox {{
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {{
+            item 50 [{';'.join(q(n['round']) for n in rows)}] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }}
+        outputs {{
+            item 1 mapper:ammoType,
+        }}
+        itemMapper ammoType {{
+{mapper([(q(n['box']), q(n['round'])) for n in rows])}        }}
+    }}
+""")
+    for name, action, time, tags, tag, count, pairs, opening in (
+            ('GunsOfTienPost93_OpenCartonOfBoxesOfAmmo', 'UnPackBox', 50, 'InHandCraft;CanBeDoneInDark',
+             'gunsoftienpost93:ammocarton', 12, [(q(n['box']), q(n['carton'])) for n in rows], True),
+            ('GunsOfTienPost93_PlaceBoxesOfAmmoInCarton', 'PackingBox', 50, 'InHandCraft', 'gunsoftienpost93:ammobox',
+             12, [(q(n['carton']), q(n['box'])) for n in rows], False),
+            ('GunsOfTienPost93_OpenCrateOfBoxesOfAmmo', 'UnPackBox', 100, 'InHandCraft;CanBeDoneInDark',
+             'gunsoftienpost93:ammocrate', 4, [(q(n['carton']), q(n['crate'])) for n in rows], True),
+            ('GunsOfTienPost93_PlaceBoxesOfAmmoInCrates', 'PackingBox', 100, 'InHandCraft',
+             'gunsoftienpost93:ammocarton', 4, [(q(n['crate']), q(n['carton'])) for n in rows], False)):
+        in_count, out_count = (1, count) if opening else (count, 1)
+        flags = 'AllowFavorite;InheritFavorite' if opening else 'AllowFavorite;InheritFavorite;IsExclusive'
+        out.append(f"""
+    craftRecipe {name} {{
+        timedAction = {action},
+        time        = {time},
+        category    = Packing,
+        canWalk     = true,
+        Tags        = {tags},
+        inputs {{
+            item {in_count} tags[{tag}] mappers[ammoType] flags[{flags}],
+        }}
+        outputs {{
+            item {out_count} mapper:ammoType,
+        }}
+        itemMapper ammoType {{
+{mapper(pairs)}        }}
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTienPost93/recipes_ammo.txt', ''.join(out))
+
+
+def translations():
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    item_names = json.load(open(path)) if os.path.exists(path) else {}
+    for cal, suffix, art, _, label in ROUNDS:
+        c, n = CALIBRES[cal], names(cal, suffix, art)
+        item_names[q_full(n['round'])] = f"{c['name']} {label} Round"
+        item_names[q_full(n['box'])] = f"{c['name']} {label} Box"
+        item_names[q_full(n['carton'])] = f"Carton of {c['name']} {label} Boxes"
+        item_names[q_full(n['crate'])] = f"Crate of {c['name']} {label} Boxes"
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(item_names, indent=2, ensure_ascii=False) + '\n')
+
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    recipe_names = json.load(open(path)) if os.path.exists(path) else {}
+    recipe_names.update({
+        'GunsOfTienPost93_OpenBoxOf50Bullets': 'Open Box (50 Bullets)',
+        'GunsOfTienPost93_Place50BulletsInBox': 'Pack Ammo in Box (50 Bullets)',
+        'GunsOfTienPost93_OpenCartonOfBoxesOfAmmo': 'Open Carton of Ammo Boxes',
+        'GunsOfTienPost93_PlaceBoxesOfAmmoInCarton': 'Place Ammo Boxes in Carton',
+        'GunsOfTienPost93_OpenCrateOfBoxesOfAmmo': 'Open Crate of Ammo Boxes',
+        'GunsOfTienPost93_PlaceBoxesOfAmmoInCrates': 'Place Ammo Boxes in Crate',
+    })
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipe_names, indent=2) + '\n')
+
+
+AMMOMAKER_TYPES = [
+    ('46x30SS', '4.6x30mm SS', '4.6x30mm SS sub sonic round - 2001'),
+    ('57x28SS', '5.7x28mm SB193', '5.7x28mm SB193 sub sonic round - 1990s'),
+    ('57x28SR', '5.7x28mm SS197SR', '5.7x28mm SS197SR polymer tip round - 2000s'),
+]
+
+
+def ammomaker():
+    out = ["/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load). */\n\nmodule Base {\n"]
+    for name, _, _ in AMMOMAKER_TYPES:
+        out.append(f"""
+\tcraftRecipe Make{name}
+\t{{
+\t\ttimedAction = MakeAmmo,
+\t\tTime = 30,
+\t\tTags = InHandCraft,
+\t\tNeedToBeLearn = False,
+\t\tcategory = AmmoMakerAmmo,
+\t\txpAward = Reloading:3,
+\t\tToolTip = Tooltip_Recipe_Make{name},
+\t\tinputs {{}}
+\t\toutputs {{}}
+\t}}
+
+\tcraftRecipe Produce{name}
+\t{{
+\t\ttimedAction = ProduceAmmo,
+\t\tTime = 100,
+\t\tTags = AnySurfaceCraft;CanBeDoneFromFloor,
+\t\tNeedToBeLearn = False,
+\t\tcategory = AmmoMakerAmmo,
+\t\txpAward = Reloading:10,
+\t\tToolTip = Tooltip_Recipe_Produce{name},
+\t\tinputs {{}}
+\t\toutputs {{}}
+\t}}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTienPost93/recipes_ammomaker.txt', ''.join(out))
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    recipe_names = json.load(open(path))
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tooltips = json.load(open(tip_path)) if os.path.exists(tip_path) else {}
+    for name, label, desc in AMMOMAKER_TYPES:
+        recipe_names[f"Make{name}"] = f"Make {label}"
+        recipe_names[f"Produce{name}"] = f"Produce {label}"
+        tooltips[f"Tooltip_Recipe_Make{name}"] = f"Assemble {desc}"
+        tooltips[f"Tooltip_Recipe_Produce{name}"] = f"Assemble {label} rounds with reloading press"
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipe_names, indent=2) + '\n')
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')
+
+
+def q_full(name):
+    return f"{MODULE}.{name}"
+
+
+if __name__ == '__main__':
+    items()
+    models()
+    recipes()
+    translations()
+    ammomaker()
+    print('written under', os.path.normpath(ROOT))
