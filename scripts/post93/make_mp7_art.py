@@ -411,16 +411,62 @@ def check():
 
 
 def font(size):
-    for f in ("/System/Library/Fonts/Supplemental/Arial.ttf", "/System/Library/Fonts/Helvetica.ttc"):
+    for f in ("/System/Library/Fonts/Supplemental/Arial.ttf", "/System/Library/Fonts/Helvetica.ttc",
+              "C:/Windows/Fonts/arial.ttf"):
         if os.path.exists(f):
             return ImageFont.truetype(f, size)
     return ImageFont.load_default()
 
 
+def outline_panel(renders):
+    """The model's left side at the reference photo's scale with the photo's traced outline (mp7_reference_outline.json)
+    over it, and how much of the two silhouettes overlap (IoU)."""
+    ref_json = json.load(open(os.path.join(HERE, "mp7_reference_outline.json")))
+    cam = json.load(open(os.path.join(renders, "cameras.json")))["left_photo"]
+    ren = Image.open(os.path.join(renders, "left_photo.png")).convert("RGBA")
+    w, h = cam["size"]
+    ppm = cam["px_per_mm"]
+    cL, cH = cam["centre_mm"]
+
+    def px(L, H):                                   # left side: muzzle on the right, L grows to the left
+        return w / 2 - (L - cL) * ppm, h / 2 - (H - cH) * ppm
+
+    ref = Image.new("L", (w, h), 0)
+    rd = ImageDraw.Draw(ref)
+    rd.polygon([px(*q) for q in ref_json["outline"]], fill=255)
+    for hole in ref_json["holes"]:
+        rd.polygon([px(*q) for q in hole], fill=0)
+    model = ren.getchannel("A").point(lambda v: 255 if v > 127 else 0)
+    a, b = ref.load(), model.load()
+    both = either = 0
+    for y in range(h):
+        for x in range(w):
+            r, m = a[x, y] > 0, b[x, y] > 0
+            both += r and m
+            either += r or m
+    page = Image.new("RGBA", (w, h), (250, 250, 248, 255))
+    page.alpha_composite(ren)
+    d = ImageDraw.Draw(page)
+    for loop in [ref_json["outline"]] + ref_json["holes"]:
+        pts = [px(*q) for q in loop]
+        d.line(pts + [pts[0]], fill=(230, 30, 30, 255), width=3)
+    L0, H0 = POINTS["_extras"]["photo_origin_mm"]
+    ox, oy = px(L0, H0)
+    d.line([(ox - 30, oy), (ox + 30, oy)], fill=(0, 120, 255, 255), width=2)
+    d.line([(ox, oy - 30), (ox, oy + 30)], fill=(0, 120, 255, 255), width=2)
+    for name, c in (("muzzle", (255, 160, 0)), ("canon", (255, 160, 0)), ("magazine", (0, 170, 80)),
+                    ("scope", (170, 0, 200)), ("rail_left", (0, 120, 255))):
+        o = POINTS[name]["offset"]
+        x, y = px(L0 - o[1] / 0.00072, H0 + o[2] / 0.00072)
+        d.ellipse([x - 6, y - 6, x + 6, y + 6], outline=c + (255,), width=3)
+        d.text((x + 8, y - 22), name, fill=c + (255,), font=font(18))
+    return page, both / max(1, either)
+
+
 def sheet(renders, icons):
     W = 2480
     F, FS = font(26), font(18)
-    page = Image.new("RGB", (W, 3330), (236, 236, 232))
+    page = Image.new("RGB", (W, 4000), (236, 236, 232))
     d = ImageDraw.Draw(page)
 
     def put(name, x, y, w=None, label=None, bg=(250, 250, 248)):
@@ -478,6 +524,15 @@ def sheet(renders, icons):
     d.text((1270, y + 8), "left side over GoM's MP5 (red), same scale; blue = model origin (rear-top of grip)",
            fill=(40, 40, 40), font=FS)
     y += 620
+    ov, iou = outline_panel(renders)
+    ov = ov.resize((1700, round(ov.height * 1700 / ov.width)), Image.LANCZOS)
+    page.paste(ov.convert("RGB"), (20, y + 60))
+    d.text((30, y), "left side at the photo's scale (docs/mp7_2.png); red = its traced outline "
+           "(mp7_reference_outline.json); silhouette overlap (IoU) %.1f%%" % (iou * 100), fill=(20, 20, 20), font=F)
+    d.text((30, y + 32), "blue cross = model origin (rear-top of the grip); circles = attachment points",
+           fill=(40, 40, 40), font=FS)
+    print("silhouette IoU %.3f" % iou)
+    y += 60 + ov.height + 20
     # icons: ours and GoM's references, native and x6
     d.text((30, y), "Icons (32x32, shown x6 and 1:1), next to the GoM icons whose camera and light they reuse",
            fill=(20, 20, 20), font=F)

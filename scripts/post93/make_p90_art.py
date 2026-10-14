@@ -40,6 +40,13 @@ FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_par
 NAMES = {FBX_GUN: ("P90TR_BODY", "P90TR_BOLT"), FBX_MAGS: ("57x28Magazine50_P90",),
          FBX_PARTS: ("P90_Suppressor", "P90_Muzzle_Mount_Device")}
 STAND_UP = {"offset": [0.0, 0.0, 0.0], "rotate": [90.0, 0.0, 0.0]}     # magazine length from -Y to -Z
+# The P90 is held like a pistol and so modelled upside down; icons and sheets show it upright.
+HANDGUN = POINTS["_extras"].get("handgun_hold", False)
+UPRIGHT = {"offset": [0.0, 0.0, 0.0], "rotate": [0.0, 180.0 if HANDGUN else 0.0, 0.0]}
+
+
+def upright_offset(o):
+    return [-o[0], o[1], -o[2]] if HANDGUN else list(o)
 
 
 def our_scenes():
@@ -47,8 +54,9 @@ def our_scenes():
     gun_tex = A.img(os.path.join(TEX, "P90TR.png"))
     mag_tex = A.img(os.path.join(TEX, "57x28Magazine50_P90.png"))
     mag = A.load_game(FBX_MAGS, "57x28Magazine50_P90")
-    out = {"P90TR": ("gun", [(A.load_game(FBX_GUN, "P90TR_BODY"), 0), (A.load_game(FBX_GUN, "P90TR_BOLT"), 0),
-                             (A.attach(mag, POINTS["magazine"]), 1)], [gun_tex, mag_tex]),
+    gun = [(A.load_game(FBX_GUN, "P90TR_BODY"), 0), (A.load_game(FBX_GUN, "P90TR_BOLT"), 0),
+           (A.attach(mag, POINTS["magazine"]), 1)]
+    out = {"P90TR": ("gun", [(A.attach(t, UPRIGHT), i) for t, i in gun], [gun_tex, mag_tex]),
            "57x28Magazine50_P90": ("magazine", [(A.attach(mag, STAND_UP), 0)], [mag_tex])}
     for n, kind in (("P90_Suppressor", "suppressor"), ("P90_Muzzle_Mount_Device", "mount")):
         out[n] = (kind, [(A.load_game(FBX_PARTS, n), 0)], [A.img(os.path.join(TEX, n + ".png"))])
@@ -121,7 +129,7 @@ def outline_panel(renders):
     d.line([(ox, oy - 30), (ox, oy + 30)], fill=(0, 120, 255, 255), width=2)
     for name, col in (("muzzle", (255, 160, 0)), ("canon", (255, 160, 0)), ("magazine", (0, 170, 80)),
                       ("scope", (170, 0, 200)), ("rail_left", (0, 120, 255))):
-        o = POINTS[name]["offset"]
+        o = upright_offset(POINTS[name]["offset"])
         L = POINTS["_extras"]["photo_origin_mm"][0] - o[1] / 0.00072
         H = POINTS["_extras"]["photo_origin_mm"][1] + o[2] / 0.00072
         x, y = px(L, H)

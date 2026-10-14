@@ -69,7 +69,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 - **Guns**: H&K **MP7A1** (two-handed, Rifle hold, back slot, collapsible stock, integral top / left / right rails,
   20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = GoM's "MP5" clips) and FN
-  **P90 TR only** (1999, bullpup like the FAMAS, 50-round top magazine, integral top / side rails, 900 rpm, damage
+  **P90 TR only** (1999, bullpup like the FAMAS, **held like a pistol** (user, 2026-10-14: SwingAnim Handgun, handgun
+  reload mechanics, one hand, as GoM's MP5K / TEC9 / MAC10) but **never fits a holster** (AttachmentType Rifle: back slot), 50-round top magazine, integral top / side rails, 900 rpm, damage
   1.0-1.5, sound 118 / 34, downward ejection, **its own top-loading reload clips**). Standard rounds pierce 2 (in the
   gun scripts). **One suppressor each** with its own muzzle mount device (GoM's suppressor stats). Integrated rails
   are hidden required parts registered as parents of GoM's optics / lights / lasers. Spawns: GoM's
@@ -105,7 +106,7 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 ## Status and how to continue
 
 See `TODO.md`. In short: both mods' code is written and syntax-checked; nothing has been loaded in game. The Post-93
-**MP7A1 and P90 TR assets are done** (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
+**MP7A1 and P90 TR assets are done**, both rebuilt from the user's photos (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
 P90's `post93_p90_magazine.png`, `post93_p90_attachments.png`, `post93_p90_ammo.png`; the P90
 was rebuilt from the user's photos and approved 2026-10-14). Each gun has: FBX `models_X/weapons/firearms/
 GunsOfTienPost93_<GUN>.fbx` (nodes `<GUN>_BODY`, `<GUN>_BOLT`, MP7 also `MP7A1_STOCK` modelled deployed),
@@ -118,6 +119,33 @@ mm long, 181 mm tall with the TR rail; model = 0.72 × real. Rebuild order (Wind
 `blender -b --factory-startup -P scripts/post93/build_p90.py` (~1 min), `blender -b --factory-startup -P
 scripts/post93/render_p90.py -- DIR`, `py scripts/post93/make_p90_art.py --renders DIR`. Next: run `gen_post93_guns.py`,
 check every reference resolves, make the P90 clips with TienInspectWeapon's pipeline, test.
+
+## MP7A1 reference and model (from the user's photos, 2026-10-14)
+
+The first MP7A1 was built from published dimensions only and was off (user: "the handle seems off, the mags seem off
+too, the mags of MP7 aren't really straight"); laid over a photo it overlapped 73%. Rebuilt from the user's photos
+in `docs/`: `mp7_2.png` (H&K's product photo, left side, muzzle right, stock collapsed, front grip folded, 20-round
+magazine; traced into `scripts/post93/mp7_reference_outline.json`, 415 mm = 888 px), `mp7_1.png` (left side, stock
+extended, ghosted 40-round magazine), `mp7_3/4.png` (renders of an MP7A1 model, right side). A fifth photo was a Kel-Tec in an
+MP7-style chassis, not an MP7, and was deleted. Photo coordinates as for the P90 (L back from the
+muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
+- Grip almost upright: front edge L 227-234, back L 284-290 with a palm swell, bottom H 3, into the receiver at H 91.6;
+  vertical-rib panel L 238-283, H 12-80. Origin = its rear-top, L 289 / H 91.5 (game y = (289 - L) × 0.00072,
+  z = (H - 91.5) × 0.00072).
+- Trigger guard: a shallow loop L 176-234, bar at H 71-74; trigger blade L 203-228, H 78-101.
+- Folded front grip L 74-180, H 71.5-104.5, round nose, three grooves, release button at L 101.5 / H 89.5.
+- Lower receiver H 103.5-135 (front) / 91.6-135 (behind the grip), half width 19; upper H 135-166.5, half 15.5;
+  slanted metal nose plate from L 58 / H 160 down to a small hand stop at L 41 / H 92; bore H 120; barrel collar and
+  flash hider L 0-52 (hider L 0-36.5, r 7). `canon` = L 47.7.
+- Picatinny rail L 85-375, crossbars to H 169.6 every 10 mm; flip-up front sight L 89-136, rear drum L 320-370, both
+  to H 186; short side rails L 78-140 at H 120 (both sides); T charging handle L 376-394, H 148-165.
+- Stock collapsed: butt plate L 385-414, H 36-148 (front face slanting back toward the bottom, two holes at L 397,
+  H 46.5 / 55.5), rods at H 140 x ±10; travel 223 mm.
+- Magazines (`build_mp7.build_magazine`): swept along an axis straight inside the grip (feed lips L 257 / H 104), the
+  20-round one ends at its base plate under the grip (H 0.5-5.5); the 30 / 40-round ones go on 48 / 96 mm curving
+  toward the muzzle (radius 400 mm, ~7 / ~14 degrees), as in `mp7_1.png` / `mp7_4.png`. The `magazine` point has no
+  rotation.
+- `slab()` (the filled-curve profile extrusion) now lives in build_mp7.py and build_p90.py calls it.
 
 ## P90 TR reference and model (from the user's photos, 2026-10-14)
 
@@ -146,6 +174,17 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   in two rows (H 124.5 / 135.5, pitch 9.6), tips seen on the right, case heads on the left.
 - Origin = rear-top of the grip column, L 237 / H 80: game y = (237 - L) × 0.00072, z = (H - 80) × 0.00072 (bore z
   0.0143, muzzle y 0.1706, butt y -0.1894). The firing hand holds the column, thumb through the thumbhole.
+- **Held like a pistol, so exported upside down.** Every GoM gun with `SwingAnim = Handgun` (pistols, MP5K, TEC9,
+  MAC10; all `AttachmentType = Holster`, `WeaponReloadType = handgun`, `RunAnim = Run_Weapon2`, no TwoHandWeapon) is
+  modelled turned 180° about the bore axis (game x → -x, z → -z: grip up, +X = the gun's right) around the same
+  rear-top-of-grip origin; parts modelled upright sit at points with `rotate = -180 0 -180` (MP5K rail_up / scope),
+  the muzzle keeps `-90 0 -180`, canon `0 0 0`, `world` = `-0.025 0 0` / `0 0 0` (MP5K, TEC9, MAC10). `build_p90.py`
+  models and bakes upright and turns body + bolt at export (`turned()` for the points); the magazine and part meshes
+  stay upright. `render_p90.py` / `make_p90_art.py` turn everything back for display (`handgun_hold` in
+  `p90_points.json` `_extras`). The P90's own reload clips must be made for the pistol stance. It stays
+  `AttachmentType = Rifle` (vanilla's Back slot: locations "Rifle On Back" / "Rifle On Back with Bag", body points
+  `rifle_back` / `rifle_back_bag`, shared/NPCs/AttachedLocations.lua); an attached item's own model attachment of the
+  same name is applied too, so the P90's `rifle_back` / `rifle_back_bag` = `rotate -180 0 -180` hang it upright.
 - Ejection port underneath L 262-296. Rails are cosmetic: optics / lights / lasers mount through the hidden
   `P90TR_Integrated_Rail_*` parts (Guns.lua), placed by `scope` / `rail_up` / `rail_*` / `light_left` / `laser_right`.
 - GoM look: flat chamfered hard-surface parts (body 2,784 tris; GoM MP5 4,045, FAMAS 3,682), texture with flat

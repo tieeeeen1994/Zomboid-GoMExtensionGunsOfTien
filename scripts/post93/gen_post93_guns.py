@@ -75,7 +75,7 @@ def gun_model(model, file, node_body, points, extra_points):
 def models(mp7, p90):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7, ['stock_folded']))
-    out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, []))
+    out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     for model, file, node, tex in [
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
@@ -175,6 +175,20 @@ GUN_COMMON = """        DisplayCategory              = Weapon,
         MaxHitcount                  = 2,
 """
 
+# The P90 is held like a pistol, as GoM holds its MP5K, TEC9 and MAC10: Handgun swing animation, handgun reload
+# mechanics, one hand when not aiming (its model is built upside down to match). Unlike those it never fits a
+# holster: AttachmentType stays Rifle (the back slot), and its model's rifle_back / rifle_back_bag attachments turn
+# it upright there.
+GUN_HANDGUN = (GUN_COMMON
+               .replace("WeaponReloadType             = boltaction,", "WeaponReloadType             = handgun,")
+               .replace("        TwoHandWeapon                = true,\n", "")
+               .replace("        RequiresEquippedBothHands    = true,\n", "")
+               .replace("        IdleAnim                     = Idle_Weapon2,\n", "")
+               .replace("SwingAnim                    = Rifle,", "SwingAnim                    = Handgun,")
+               .replace("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
+                        "MuzzleFlashModelKey          = muzzle_flash_handgun,"))
+assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
+
 
 def items(mp7, p90):
     mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40)]
@@ -236,7 +250,7 @@ def items(mp7, p90):
         StopPower                    = 2.0,
         Weight                       = 2.6,
         MetalValue                   = 25.0,
-{GUN_COMMON}        AmmoType                     = gunsoftienpost93:bullet_57x28,
+{GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_57x28,
         AmmoBox                      = {M}.57x28_Box,
         MagazineType                 = {M}.57x28Magazine50_P90,
         MaxAmmo                      = 50,

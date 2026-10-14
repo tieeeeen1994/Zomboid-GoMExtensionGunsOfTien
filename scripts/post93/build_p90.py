@@ -10,6 +10,10 @@ Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
                                                                      magazine / part
     scripts/post93/p90_points.json                                  attachment points (game space)
 
+The P90 is held like a pistol (SwingAnim = Handgun), so its body and bolt are exported upside down, the way GoM
+builds its pistols, MP5K, TEC9 and MAC10: everything below is modelled and baked upright and turned 180 degrees
+about the bore axis at export, with the attachment points (see points()).
+
 The shape is measured from a side photo of a P90 TR (CLAUDE.md, "P90 TR reference"; its traced outline is
 p90_reference_outline.json, which render_p90.py / make_p90_art.py lay over the model to check it). Every side
 profile below is written in that photo's coordinates, real millimetres: L back from the muzzle tip, H up from the
@@ -74,41 +78,9 @@ def P(L, H):
 # ==================================================================================================
 
 def slab(b, outline, holes=(), half=10.0, bevel=1.0, res=0, mat="polymer", x0=0.0):
-    """Side profile [(L, H)] with optional holes, extruded across x0 - half .. x0 + half, every edge chamfered
-    (res 0) or rounded in res + 1 steps by `bevel` mm. Built as a filled 2D curve (offset -bevel keeps the outline
-    where it is drawn), converted to a mesh and appended to the builder's bmesh."""
-    cu = bpy.data.curves.new("slab", 'CURVE')
-    cu.dimensions = '2D'
-    cu.fill_mode = 'BOTH'
-    for loop in [outline] + list(holes):
-        sp = cu.splines.new('POLY')
-        sp.points.add(len(loop) - 1)
-        for pt, (L, H) in zip(sp.points, loop):
-            y, z = P(L, H)
-            pt.co = (y, z, 0.0, 1.0)
-        sp.use_cyclic_u = True
-    cu.extrude = half - bevel
-    cu.bevel_depth = bevel
-    cu.bevel_resolution = res
-    cu.offset = -bevel
-    ob = bpy.data.objects.new("slab", cu)
-    bpy.context.scene.collection.objects.link(ob)
-    me = bpy.data.meshes.new_from_object(ob.evaluated_get(bpy.context.evaluated_depsgraph_get()))
-    bpy.data.objects.remove(ob)
-    bpy.data.curves.remove(cu)
-    # curve (u, v, w) -> game (x0 + w, u, v): a rotation, applied before the mesh joins the builder's bmesh
-    me.transform(Matrix(((0, 0, 1, x0), (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 0, 1))))
-    bm = b.bm
-    old_v, old_f = set(bm.verts), set(bm.faces)        # from_mesh appends, but not at the end of the index order
-    bm.from_mesh(me)
-    bpy.data.meshes.remove(me)
-    verts = [v for v in bm.verts if v not in old_v]
-    faces = [f for f in bm.faces if f not in old_f]
-    assert verts and faces, "bmesh.from_mesh did not append"
-    for f in faces:
-        f.material_index = MATS.index(mat)
-    kit.orient_outward(bm, faces)
-    return verts
+    """Side profile [(L, H)] with optional holes, extruded across x0 - half .. x0 + half (build_mp7.slab)."""
+    return kit.slab(b, [P(L, H) for L, H in outline], [[P(L, H) for L, H in h] for h in holes], half, bevel, res,
+                    mat, x0)
 
 
 def box(b, La, Lb, Ha, Hb, xa, xb, mat="polymer", bevel=0.0):
@@ -448,15 +420,32 @@ def g(L, H, x=0.0):
     return [round(x * K, 4), round(y * K, 4), round(z * K, 4)]
 
 
+# Held like a pistol: GoM's handgun-held guns (pistols, MP5K, TEC9, MAC10; SwingAnim = Handgun) are modelled upside
+# down, turned 180 degrees about the barrel axis (game x -> -x, z -> -z) around the same rear-top-of-grip origin, and
+# their attachment points with them; a part modelled upright gets rotate (-180, 0, -180) (= that turn), as on the
+# MP5K's rail_up / scope. The P90 is built and baked upright and turned only at export (points() and main()).
+TURN = [-180.0, 0.0, -180.0]
+
+
+def turned(point, part=True):
+    """An upright point in the handgun-held model: offset x, z negated, an upright part turned with the gun."""
+    x, y, z = point["offset"]
+    out = {"offset": [round(-x, 4) + 0.0, y, round(-z, 4) + 0.0]}
+    if "rotate" in point:
+        out["rotate"] = point["rotate"]
+    elif part:
+        out["rotate"] = list(TURN)
+    return out
+
+
 def points(bounds):
     rail_top = (RAIL_TOP_H - H0) * K
     optic_y = round((L0 - 140.0) * K, 4)              # optics over the grip, toward the rear of the rail
     side = BOSS_X * K
     by, bz = P(BOSS_L, BOSS_H)
     pts = {
-        "muzzle": {"offset": g(0.0, BORE_H), "rotate": [-90.0, 0.0, -180.0]},
-        "world": {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]},
-        "magazine": {"offset": g(MAG_L, MAG_H), "rotate": [0.0, 0.0, 0.0]},
+        "muzzle": {"offset": g(0.0, BORE_H), "rotate": [-90.0, 0.0, -180.0]},     # as on the MP5K: unchanged
+        "magazine": {"offset": g(MAG_L, MAG_H)},
         # same relations to the rail's top as on the MP7 (GoM's Picatinny_Rail_Up and the MP5's scope)
         "rail_up": {"offset": [0.0, optic_y, round(rail_top - 0.0055, 4)]},
         "scope": {"offset": [0.0, optic_y, round(rail_top - 0.0032, 4)]},
@@ -464,12 +453,25 @@ def points(bounds):
         "rail_right": {"offset": [round(-(side - 0.0055), 4), round(by * K, 4), round(bz * K, 4)]},
         "light_left": {"offset": [round(side - 0.0055 + 0.0062, 4), round(by * K, 4), round(bz * K, 4)]},
         "laser_right": {"offset": [round(-(side - 0.0055 + 0.0073), 4), round(by * K, 4), round(bz * K - 0.0008, 4)]},
-        "canon": {"offset": g(CANON_L, BORE_H)},
-        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0]},
+        "canon": {"offset": g(CANON_L, BORE_H), "rotate": [0.0, 0.0, 0.0]},          # round parts: GoM leaves 0
+        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
+    pts = {k: turned(v) for k, v in pts.items()}
+    # floor pose of GoM's handgun-held SMGs (MP5K, TEC9, MAC10)
+    pts["world"] = {"offset": [-0.025, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]}
+    # Carried on the back like a rifle (never in a holster): the body's rifle points expect an upright rifle model,
+    # and an attached item's own attachment of the same name is applied on top, so these turn the P90 back upright
+    # (a half turn is its own inverse, so it does not matter whether the engine inverts it).
+    for name in ("rifle_back", "rifle_back_bag"):
+        pts[name] = {"offset": [0.0, 0.0, 0.0], "rotate": list(TURN)}
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle, +Z top, +X the gun's left; origin = rear-top of the "
-                 "grip column (photo L %.0f, H %.0f)" % (L0, H0),
+        "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
+                 "handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column "
+                 "(photo L %.0f, H %.0f)" % (L0, H0),
+        "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model "
+                      "upright when it hangs in the back slot",
+        "turned": "parts modelled upright (magazine, GoM optics / lights / lasers) get rotate -180 0 -180, as on "
+                  "GoM's MP5K; render_p90.py / make_p90_art.py turn everything back for display",
         "magazine": "57x28Magazine50_P90's origin is its front end, centred, on its bottom face; the node lies along "
                     "-Y from there on top of the receiver",
         "canon": "receiver front face where the barrel collar starts; P90_Muzzle_Mount_Device and P90_Suppressor "
@@ -479,7 +481,8 @@ def points(bounds):
                       "reciprocate when firing",
     }
     pts["_extras"] = {
-        "ejection_port": g(279.0, 1.0),
+        "ejection_port_upright": g(279.0, 1.0),
+        "handgun_hold": True,
         "photo_origin_mm": [L0, H0],
         "real_mm_per_game_unit": round(1.0 / K, 2),
     }
@@ -512,6 +515,8 @@ def main():
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "P90_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "P90_Muzzle_Mount_Device.png"))
 
+    for o in (body, bolt):                              # held like a pistol: turned 180 degrees about the bore axis
+        o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
     bounds = {o.name: kit.bounds_of(o) for o in (body, bolt, mag, supp, mount)}
     with open(POINTS_JSON, "w") as fh:
         json.dump(points(bounds), fh, indent=2)

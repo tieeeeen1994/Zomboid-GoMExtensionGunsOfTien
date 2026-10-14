@@ -55,14 +55,19 @@ def load(path, texture, keep=None):
     return objs
 
 
-def place(o, point=None):
+# The P90 is held like a pistol and so modelled upside down (p90_points.json "_notes"): everything placed on it is
+# turned back upright for display. GoM's own guns are shown as they are.
+UPRIGHT = Matrix.Rotation(math.pi, 4, 'Y') if POINTS["_extras"].get("handgun_hold") else Matrix.Identity(4)
+
+
+def place(o, point=None, p90=True):
     """Engine attachment transform: translate(offset) . rotateXYZ(rotate); mesh data z is game -z."""
     mat = Matrix.Identity(4)
     if point:
         rx, ry, rz = [math.radians(a) for a in point.get("rotate", [0, 0, 0])]
         mat = (Matrix.Translation(Vector(point["offset"])) @ Matrix.Rotation(rx, 4, 'X')
                @ Matrix.Rotation(ry, 4, 'Y') @ Matrix.Rotation(rz, 4, 'Z'))
-    o.matrix_world = mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
+    o.matrix_world = (UPRIGHT if p90 else Matrix.Identity(4)) @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
 
 
 def show_only(objs):
@@ -151,11 +156,11 @@ def main():
     show_only([body, bolt, mount])
     render("mount_q34", like2, (0, 0.15, POINTS["canon"]["offset"][2]), 0.12, 500, 400)
 
-    place(mag)
+    place(mag, p90=False)
     show_only([mag])
     render("mag_q34", like2, (0, -0.097, 0.008), 0.22, 600, 300)
-    place(supp)
-    place(mount)
+    place(supp, p90=False)
+    place(mount, p90=False)
     show_only([supp, mount])
     render("parts_q34", like2, (0, 0.062, 0), 0.15, 600, 300)
 
@@ -169,8 +174,8 @@ def main():
                       os.path.join(GOM, "textures/weapons/magazines/smgs/9x19Magazine30_MP5.png"),
                       keep="9x19Magazine30_MP5")["9x19Magazine30_MP5"]
         for o in list(famas.values()) + list(mp5.values()):
-            place(o)
-        place(mp5mag, MP5_MAG)
+            place(o, p90=False)
+        place(mp5mag, MP5_MAG, p90=False)
         show_only(list(famas.values()))
         render("gom_famas", left, (0, 0.03, 0.0), 0.62, 1200, 420)
         show_only(list(mp5.values()) + [mp5mag])
@@ -186,7 +191,7 @@ def main():
 
 def magazine_views(gun_state, body, bolt, mag, right, left, like2, like3):
     """The magazine alone from each side, and seated on the gun seen from above."""
-    place(mag)
+    place(mag, p90=False)
     show_only([mag])
     mc = (0.0, -0.0976, 0.0087)
     render("mag_right", right, mc, 0.21, 1200, 200)
@@ -238,8 +243,8 @@ def attachment_views(gun_state, right, left, like2, like3, c):
     render("full_like2", like2, (0, c[1] + 0.05, c[2]), 0.52, 1400, 820)
     render("full_like3", like3, (0, c[1] + 0.05, c[2]), 0.52, 1400, 820)
     # suppressor and mount alone and fitted, side by side
-    place(supp)
-    place(mount)
+    place(supp, p90=False)
+    place(mount, p90=False)
     show_only([mount])
     render("mount_alone", like2, (0, 0.017, 0), 0.06, 500, 320)
     show_only([supp])

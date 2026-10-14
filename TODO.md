@@ -30,15 +30,21 @@ P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, cli
 / Rack / AimRack`), gun generator `scripts/post93/gen_post93_guns.py` (items, models, parts, fixing, names; reads
 `mp7_points.json` / `p90_points.json`).
 
-- [x] MP7A1 assets done 2026-10-14 (FBX, textures, icons, `mp7_points.json`, `docs/post93_mp7_preview.png`;
-      rebuild: `build_mp7.py` (Blender, ~4.5 min) → `render_mp7.py` → `make_mp7_art.py`). To check in game: magazine
-      tilt (rotate −14), the `world` floor pose (GoM default kept), the 20-round magazine 5 mm below the grip.
+- [x] MP7A1 rebuilt from the user's photos 2026-10-14 (the first, dimensions-only model had a raked block grip, a
+      deep trigger guard and straight magazines; 73% silhouette overlap, now 96.1%): FBX, textures, icons,
+      `mp7_points.json`, `docs/post93_mp7_preview.png`; rebuild: `build_mp7.py` (~1 min) → `render_mp7.py` →
+      `make_mp7_art.py`. To check in game: the hand on the upright grip, magazines (no attachment rotation now, the
+      30 / 40 curve forward by themselves), the `world` floor pose (GoM default kept). Not yet shown to the user.
 - [x] P90 TR assets rebuilt from the user's photos and approved 2026-10-14 (FBX, textures, icons, `p90_points.json`,
       `docs/post93_p90_preview.png` with the photo outline overlay, 98.7% overlap; rebuild: `build_p90.py` (~1 min) →
       `render_p90.py` → `make_p90_art.py`). To check in game: the grip in the hand (origin = rear-top of the grip
       column), the `world` floor pose (GoM default kept), optic height on the top rail.
-- [ ] Run `gen_post93_guns.py`; check every icon / model / texture name resolves.
-- [ ] P90 reload clips (top magazine): TienInspectWeapon's Blender pipeline (`scripts/anim/`), `.x` into
+- [x] P90 held like a pistol (user, 2026-10-14): item as GoM's MP5K (Handgun, handgun reload, one hand) but never in a
+      holster (Rifle: back slot, turned upright there by its rifle_back attachments), model exported upside down like
+      GoM's handgun-held guns. `gen_post93_guns.py` run (items_guns / models_guns / fixing_guns,
+      names). To check in game: the hold, the gun upright on the back (with and without a bag), the `world` floor pose.
+- [ ] Check every icon / model / texture name in the generated scripts resolves.
+- [ ] P90 reload clips (top magazine, pistol stance): TienInspectWeapon's Blender pipeline (`scripts/anim/`), `.x` into
       `media/anims_X/Bob/`; tune the AnimSet event times.
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
 

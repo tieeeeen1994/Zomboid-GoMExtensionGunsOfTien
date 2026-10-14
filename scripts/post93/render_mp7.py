@@ -20,8 +20,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
-GOM = os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/3722134990/"
-                         "mods/GunsOfMarz/42.16/media")
+GOM = next(p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
+                                           "3722134990/mods/GunsOfMarz/42.16/media"),
+                        "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
+                        "42.16/media") if os.path.isdir(p))
 OUT = sys.argv[sys.argv.index("--") + 1]
 POINTS = json.load(open(os.path.join(HERE, "mp7_points.json")))
 
@@ -180,7 +182,13 @@ def main():
     render("overlay_mp7", side, (0, 0.02, -0.01), 0.62, 1240, 620)
     show_only(list(mp5.values()) + [mp5mag])
     render("overlay_mp5", side, (0, 0.02, -0.01), 0.62, 1240, 620)
-    json.dump({"overlay": {"centre": [0.02, -0.01], "scale": 0.62, "size": [1240, 620]}},
+    # left side at the reference photo's scale (docs/mp7_2.png: 888 px for 415 mm), stock in, 20 rounds
+    L0, H0 = POINTS["_extras"]["photo_origin_mm"]
+    ppm, cL, cH = 888 / 415.0, 200.0, 95.0
+    gun_state(True, 20, False)
+    render("left_photo", side, (0, (L0 - cL) * 0.00072, (cH - H0) * 0.00072), 1400 / ppm * 0.00072, 1400, 600)
+    json.dump({"overlay": {"centre": [0.02, -0.01], "scale": 0.62, "size": [1240, 620]},
+               "left_photo": {"centre_mm": [cL, cH], "px_per_mm": ppm, "size": [1400, 600]}},
               open(os.path.join(OUT, "cameras.json"), "w"))
 
 
