@@ -1,0 +1,237 @@
+module Base {
+
+    craftRecipe GunsOfTien_OpenBoxOf20Bullets {
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftien:ammobox20] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 20 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Bullet_US        = GunsOfTien.762x39_Box_US,
+            GunsOfTien.762x39_Bullet_SP        = GunsOfTien.762x39_Box_SP,
+            GunsOfTien.762x39_Bullet_SteelCore = GunsOfTien.762x39_Box_SteelCore,
+            GunsOfTien.9x39_Bullet_SP6         = GunsOfTien.9x39_Box_SP6,
+            GunsOfTien.3006_Bullet_SP          = GunsOfTien.3006_Box_SP,
+            GunsOfTien.308_Bullet_SP           = GunsOfTien.308_Box_SP,
+        }
+    }
+
+    craftRecipe GunsOfTien_Place20BulletsInBox {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 20 [GunsOfTien.762x39_Bullet_US;GunsOfTien.762x39_Bullet_SP;GunsOfTien.762x39_Bullet_SteelCore;GunsOfTien.9x39_Bullet_SP6;GunsOfTien.3006_Bullet_SP;GunsOfTien.308_Bullet_SP] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Box_US        = GunsOfTien.762x39_Bullet_US,
+            GunsOfTien.762x39_Box_SP        = GunsOfTien.762x39_Bullet_SP,
+            GunsOfTien.762x39_Box_SteelCore = GunsOfTien.762x39_Bullet_SteelCore,
+            GunsOfTien.9x39_Box_SP6         = GunsOfTien.9x39_Bullet_SP6,
+            GunsOfTien.3006_Box_SP          = GunsOfTien.3006_Bullet_SP,
+            GunsOfTien.308_Box_SP           = GunsOfTien.308_Bullet_SP,
+        }
+    }
+
+    craftRecipe GunsOfTien_OpenBoxOf25Bullets {
+        timedAction = OpenShellsBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftien:ammobox25] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 25 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.12Gauge_Shell_Birdshot = GunsOfTien.12Gauge_Box_Birdshot,
+        }
+    }
+
+    craftRecipe GunsOfTien_Place25BulletsInBox {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 25 [GunsOfTien.12Gauge_Shell_Birdshot] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.12Gauge_Box_Birdshot = GunsOfTien.12Gauge_Shell_Birdshot,
+        }
+    }
+
+    craftRecipe GunsOfTien_OpenBoxOf50Bullets {
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftien:ammobox50] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 50 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.9x19_Bullet_Subsonic    = GunsOfTien.9x19_Box_Subsonic,
+            GunsOfTien.9x19_Bullet_HollowPoint = GunsOfTien.9x19_Box_HollowPoint,
+            GunsOfTien.9x19_Bullet_PPP         = GunsOfTien.9x19_Box_PPP,
+            GunsOfTien.45_Bullet_HollowPoint   = GunsOfTien.45_Box_HollowPoint,
+            GunsOfTien.45_Bullet_P             = GunsOfTien.45_Box_P,
+        }
+    }
+
+    craftRecipe GunsOfTien_Place50BulletsInBox {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.9x19_Box_Subsonic    = GunsOfTien.9x19_Bullet_Subsonic,
+            GunsOfTien.9x19_Box_HollowPoint = GunsOfTien.9x19_Bullet_HollowPoint,
+            GunsOfTien.9x19_Box_PPP         = GunsOfTien.9x19_Bullet_PPP,
+            GunsOfTien.45_Box_HollowPoint   = GunsOfTien.45_Bullet_HollowPoint,
+            GunsOfTien.45_Box_P             = GunsOfTien.45_Bullet_P,
+        }
+    }
+
+    craftRecipe GunsOfTien_OpenCartonOfBoxesOfAmmo {
+        timedAction = UnPackBox,
+        time        = 50,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftien:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 12 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Box_US        = GunsOfTien.762x39_Carton_US,
+            GunsOfTien.762x39_Box_SP        = GunsOfTien.762x39_Carton_SP,
+            GunsOfTien.762x39_Box_SteelCore = GunsOfTien.762x39_Carton_SteelCore,
+            GunsOfTien.9x19_Box_Subsonic    = GunsOfTien.9x19_Carton_Subsonic,
+            GunsOfTien.9x19_Box_HollowPoint = GunsOfTien.9x19_Carton_HollowPoint,
+            GunsOfTien.9x19_Box_PPP         = GunsOfTien.9x19_Carton_PPP,
+            GunsOfTien.45_Box_HollowPoint   = GunsOfTien.45_Carton_HollowPoint,
+            GunsOfTien.45_Box_P             = GunsOfTien.45_Carton_P,
+            GunsOfTien.9x39_Box_SP6         = GunsOfTien.9x39_Carton_SP6,
+            GunsOfTien.3006_Box_SP          = GunsOfTien.3006_Carton_SP,
+            GunsOfTien.308_Box_SP           = GunsOfTien.308_Carton_SP,
+            GunsOfTien.12Gauge_Box_Birdshot = GunsOfTien.12Gauge_Carton_Birdshot,
+        }
+    }
+
+    craftRecipe GunsOfTien_PlaceBoxesOfAmmoInCarton {
+        timedAction = PackingBox,
+        time        = 50,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 12 tags[gunsoftien:ammobox] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Carton_US        = GunsOfTien.762x39_Box_US,
+            GunsOfTien.762x39_Carton_SP        = GunsOfTien.762x39_Box_SP,
+            GunsOfTien.762x39_Carton_SteelCore = GunsOfTien.762x39_Box_SteelCore,
+            GunsOfTien.9x19_Carton_Subsonic    = GunsOfTien.9x19_Box_Subsonic,
+            GunsOfTien.9x19_Carton_HollowPoint = GunsOfTien.9x19_Box_HollowPoint,
+            GunsOfTien.9x19_Carton_PPP         = GunsOfTien.9x19_Box_PPP,
+            GunsOfTien.45_Carton_HollowPoint   = GunsOfTien.45_Box_HollowPoint,
+            GunsOfTien.45_Carton_P             = GunsOfTien.45_Box_P,
+            GunsOfTien.9x39_Carton_SP6         = GunsOfTien.9x39_Box_SP6,
+            GunsOfTien.3006_Carton_SP          = GunsOfTien.3006_Box_SP,
+            GunsOfTien.308_Carton_SP           = GunsOfTien.308_Box_SP,
+            GunsOfTien.12Gauge_Carton_Birdshot = GunsOfTien.12Gauge_Box_Birdshot,
+        }
+    }
+
+    craftRecipe GunsOfTien_OpenCrateOfBoxesOfAmmo {
+        timedAction = UnPackBox,
+        time        = 100,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 tags[gunsoftien:ammocrate] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 4 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Carton_US        = GunsOfTien.762x39_Crate_US,
+            GunsOfTien.762x39_Carton_SP        = GunsOfTien.762x39_Crate_SP,
+            GunsOfTien.762x39_Carton_SteelCore = GunsOfTien.762x39_Crate_SteelCore,
+            GunsOfTien.9x19_Carton_Subsonic    = GunsOfTien.9x19_Crate_Subsonic,
+            GunsOfTien.9x19_Carton_HollowPoint = GunsOfTien.9x19_Crate_HollowPoint,
+            GunsOfTien.9x19_Carton_PPP         = GunsOfTien.9x19_Crate_PPP,
+            GunsOfTien.45_Carton_HollowPoint   = GunsOfTien.45_Crate_HollowPoint,
+            GunsOfTien.45_Carton_P             = GunsOfTien.45_Crate_P,
+            GunsOfTien.9x39_Carton_SP6         = GunsOfTien.9x39_Crate_SP6,
+            GunsOfTien.3006_Carton_SP          = GunsOfTien.3006_Crate_SP,
+            GunsOfTien.308_Carton_SP           = GunsOfTien.308_Crate_SP,
+            GunsOfTien.12Gauge_Carton_Birdshot = GunsOfTien.12Gauge_Crate_Birdshot,
+        }
+    }
+
+    craftRecipe GunsOfTien_PlaceBoxesOfAmmoInCrates {
+        timedAction = PackingBox,
+        time        = 100,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 4 tags[gunsoftien:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+        }
+        outputs {
+            item 1 mapper:ammoType,
+        }
+        itemMapper ammoType {
+            GunsOfTien.762x39_Crate_US        = GunsOfTien.762x39_Carton_US,
+            GunsOfTien.762x39_Crate_SP        = GunsOfTien.762x39_Carton_SP,
+            GunsOfTien.762x39_Crate_SteelCore = GunsOfTien.762x39_Carton_SteelCore,
+            GunsOfTien.9x19_Crate_Subsonic    = GunsOfTien.9x19_Carton_Subsonic,
+            GunsOfTien.9x19_Crate_HollowPoint = GunsOfTien.9x19_Carton_HollowPoint,
+            GunsOfTien.9x19_Crate_PPP         = GunsOfTien.9x19_Carton_PPP,
+            GunsOfTien.45_Crate_HollowPoint   = GunsOfTien.45_Carton_HollowPoint,
+            GunsOfTien.45_Crate_P             = GunsOfTien.45_Carton_P,
+            GunsOfTien.9x39_Crate_SP6         = GunsOfTien.9x39_Carton_SP6,
+            GunsOfTien.3006_Crate_SP          = GunsOfTien.3006_Carton_SP,
+            GunsOfTien.308_Crate_SP           = GunsOfTien.308_Carton_SP,
+            GunsOfTien.12Gauge_Crate_Birdshot = GunsOfTien.12Gauge_Carton_Birdshot,
+        }
+    }
+}

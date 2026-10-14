@@ -1,0 +1,264 @@
+/* Placeholders Ammo Maker fills from shared/GunsOfTien/AmmoMaker.lua (recipe:Load at OnInitGlobalModData). */
+
+module Base {
+
+	craftRecipe Make762x39SS
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x39SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x39SS
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x39SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x39SP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x39SP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x39SP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x39SP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x19ParaSS
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x19ParaSS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x19ParaSS
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x19ParaSS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x19ParaHP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x19ParaHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x19ParaHP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x19ParaHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x19ParaPPP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x19ParaPPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x19ParaPPP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x19ParaPPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make45ACPHP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make45ACPHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce45ACPHP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce45ACPHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make45ACPP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make45ACPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce45ACPP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce45ACPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make3006SpringSP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make3006SpringSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce3006SpringSP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce3006SpringSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make308WinSP
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make308WinSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce308WinSP
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce308WinSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make12Bird
+	{
+		timedAction = MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make12Bird,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce12Bird
+	{
+		timedAction = ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce12Bird,
+		inputs {}
+		outputs {}
+	}
+}

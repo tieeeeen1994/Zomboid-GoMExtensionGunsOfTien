@@ -1,0 +1,9 @@
+name=GoM Extension: Guns of Tien - Post-93
+id=GoMExtensionGunsOfTienPost93
+description=Add-on for GoM Extension: Guns of Tien with ammunition that did not exist yet in July 1993. Enable it together with GoM Extension: Guns of Tien.
+author=Tien
+modversion=0.1.0
+versionMin=42.16
+require=SWMG,GunsOfMarz,ammomaker,GoMExtensionGunsOfTien
+loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker,GoMExtensionGunsOfTien
+category=Weapons

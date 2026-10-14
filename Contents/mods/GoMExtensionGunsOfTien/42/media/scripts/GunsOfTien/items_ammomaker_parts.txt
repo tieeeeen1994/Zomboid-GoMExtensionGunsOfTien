@@ -1,0 +1,99 @@
+/* Ammo Maker parts of Guns of Tien: soft point rifle bullets (filed from Ammo Maker's standard bullets) and birdshot
+   (poured through a strainer into water). Registered in Ammo Maker's parts table by shared/GunsOfTien/AmmoMaker.lua. */
+
+module GunsOfTien {
+    imports { Base }
+
+    item BulletRifleSSP
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BulletRifleSSP,
+        WorldStaticModel    =   ammomaker.ammomaker_BulletRifleS,
+        Weight              =   0.005,
+        Tags                =   base:hasmetal,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BulletRifleSSP,
+    }
+
+    item BulletRifleMSP
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BulletRifleMSP,
+        WorldStaticModel    =   ammomaker.ammomaker_BulletRifleM,
+        Weight              =   0.01,
+        Tags                =   base:hasmetal,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BulletRifleMSP,
+    }
+
+    /* A pouch like Ammo Maker's Balls 00 (100 uses); a shell takes 10, the same metal as a 00 buckshot shell. */
+    item Birdshot
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:drainable,
+        UseDelta            =   0.01,
+        Icon                =   GunsOfTien_Birdshot,
+        WorldStaticModel    =   GunsOfTien.Birdshot,
+        Weight              =   0.35,
+        Tags                =   base:hasmetal,
+        ToolTip             =   Tooltip_Item_GunsOfTien_Birdshot,
+    }
+
+    item BoxBulletsRifleSSP
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BoxBulletsRifleSSP,
+        WorldStaticModel    =   GunsOfTien.BoxBulletsRifleSSP,
+        Weight              =   0.075,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BoxBulletsRifleSSP,
+    }
+
+    item BoxBulletsRifleMSP
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BoxBulletsRifleMSP,
+        WorldStaticModel    =   GunsOfTien.BoxBulletsRifleMSP,
+        Weight              =   0.15,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP,
+    }
+
+    item BoxBirdshot
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BoxBirdshot,
+        WorldStaticModel    =   GunsOfTien.BoxBirdshot,
+        Weight              =   1,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BoxBirdshot,
+    }
+
+    model Birdshot
+    {
+        mesh = WorldItems/ammomaker_Balls00,
+        texture = worlditems/GunsOfTien_Birdshot,
+        scale = 0.012,
+    }
+
+    model BoxBulletsRifleSSP
+    {
+        mesh = WorldItems/ammomaker_BoxBulletsRifleS,
+        texture = worlditems/GunsOfTien_BoxBulletsRifleSSP,
+        scale = 0.01,
+    }
+
+    model BoxBulletsRifleMSP
+    {
+        mesh = WorldItems/ammomaker_BoxBulletsRifleM,
+        texture = worlditems/GunsOfTien_BoxBulletsRifleMSP,
+        scale = 0.01,
+    }
+
+    model BoxBirdshot
+    {
+        mesh = WorldItems/ammomaker_BoxBalls00,
+        texture = worlditems/GunsOfTien_BoxBirdshot,
+        scale = 0.01,
+    }
+}
