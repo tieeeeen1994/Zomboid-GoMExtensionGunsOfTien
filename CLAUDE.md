@@ -99,7 +99,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
-  `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json`), and the model
+  `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json`),
+  `scripts/check_refs.py` (every item / model / icon / mesh / texture / AnimSet clip name in both mods resolves
+  against them, GoM, Gunworks, Ammo Maker, Hot Brass and vanilla, version and common folders), and the model
   builders `scripts/post93/build_mp7.py`, `build_p90.py` (imports build_mp7 as its library), their review renders
   `render_mp7.py` / `render_p90.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` (Pillow).
 

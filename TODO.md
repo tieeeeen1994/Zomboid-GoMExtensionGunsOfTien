@@ -43,7 +43,8 @@ P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, cli
       holster (Rifle: back slot, turned upright there by its rifle_back attachments), model exported upside down like
       GoM's handgun-held guns. `gen_post93_guns.py` run (items_guns / models_guns / fixing_guns,
       names). To check in game: the hold, the gun upright on the back (with and without a bag), the `world` floor pose.
-- [ ] Check every icon / model / texture name in the generated scripts resolves.
+- [x] Every name in both mods' scripts resolves (`python3 scripts/check_refs.py`, 642 references, 2026-10-15); the
+      only misses are the four P90 reload clips below. Re-run it after any generator.
 - [ ] P90 reload clips (top magazine, pistol stance): TienInspectWeapon's Blender pipeline (`scripts/anim/`), `.x` into
       `media/anims_X/Bob/`; tune the AnimSet event times.
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
