@@ -3,8 +3,10 @@
 Everything needed to continue this project on another machine (written 2026-10-14). Engine notes for B42 in general
 live in `~/Zomboid/Workshop/ZomboidFixesB42/CLAUDE.md` (read it too: load order, Kahlua pitfalls, networking, tooling);
 GoM conversion research in `~/Zomboid/Workshop/VWP2GoM/docs/`. Open work: `TODO.md`. Designs: `docs/design.md` (main
-mod), `docs/post93_design.md` (Post-93). Nothing in this repo has been run in game yet. The folder is not a git repo
-yet (`git init` was offered, not answered). It is listed in `~/Zomboid/Workshop/TienMods.code-workspace`.
+mod), `docs/post93_design.md` (Post-93). Nothing in this repo has been run in game yet. It is a git repo (branch
+master) and is listed in `~/Zomboid/Workshop/TienMods.code-workspace`. Work happens on the Mac and on a Windows PC
+(Blender 5.2 at `C:/Program Files/Blender Foundation/Blender 5.2/blender.exe`, Python `py`, GoM under
+`C:/Program Files (x86)/Steam/steamapps/workshop/content/108600`); `make_art.py` finds either install.
 
 ## What this is
 
@@ -97,50 +99,62 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
   `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json`), and the model
-  builders `scripts/post93/build_mp7.py`, `build_p90.py` (+ `p90_geometry.py`, `p90_meshio.py`, `p90_decals.py`).
+  builders `scripts/post93/build_mp7.py`, `build_p90.py` (imports build_mp7 as its library), their review renders
+  `render_mp7.py` / `render_p90.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` (Pillow).
 
 ## Status and how to continue
 
 See `TODO.md`. In short: both mods' code is written and syntax-checked; nothing has been loaded in game. The Post-93
-**MP7A1 assets are done** (preview `docs/post93_mp7_preview.png`); the **P90 TR model was rejected** by the user and
-must be rebuilt to "P90 TR reference" below (the files on disk are the rejected version). Each gun needs: FBX `models_X/weapons/firearms/
+**MP7A1 and P90 TR assets are done** (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
+P90's `post93_p90_magazine.png`, `post93_p90_attachments.png`, `post93_p90_ammo.png`; the P90
+was rebuilt from the user's photos and approved 2026-10-14). Each gun has: FBX `models_X/weapons/firearms/
 GunsOfTienPost93_<GUN>.fbx` (nodes `<GUN>_BODY`, `<GUN>_BOLT`, MP7 also `MP7A1_STOCK` modelled deployed),
 magazines FBX `models_X/weapons/magazines/GunsOfTienPost93_<MP7|P90>_magazines.fbx` (nodes `46x30Magazine20/30/40_MP7`,
 `57x28Magazine50_P90`), parts FBX `models_X/weapons/parts/GunsOfTienPost93_<MP7|P90>_parts.fbx` (`<MP7|P90>_Suppressor`,
 `<MP7|P90>_Muzzle_Mount_Device`), textures `textures/weapons/GunsOfTienPost93/<node>.png` (gun 256 px atlas, others
-128 px, RGB), icons `textures/item_GunsOfTienPost93_<name>.png` (32 px, framed like GoM's via make_art.py), points
-JSON (muzzle, world, magazine, scope, rail_up / left / right, laser_right, light_left, canon, bolt_fired, MP7
-stock_folded, P90 ejection port), preview `docs/post93_<mp7|p90>_preview.png` (with an overlay on GoM's MP5 / FAMAS).
-Real sizes: MP7A1 415 / 638 mm, barrel 180 mm; P90 500 mm, barrel 263 mm; model = 0.72 × real. Then run
-`gen_post93_guns.py`, check every reference resolves, make the P90 clips with TienInspectWeapon's pipeline, test.
+128 px, RGB), icons `textures/item_GunsOfTienPost93_<name>.png` (32 px, GoM's icon cameras from
+`mp7_icon_cameras.json`), points JSON (`<mp7|p90>_points.json`). Real sizes: MP7A1 415 / 638 mm, barrel 180 mm; P90 500
+mm long, 181 mm tall with the TR rail; model = 0.72 × real. Rebuild order (Windows: `blender` = the path above):
+`blender -b --factory-startup -P scripts/post93/build_p90.py` (~1 min), `blender -b --factory-startup -P
+scripts/post93/render_p90.py -- DIR`, `py scripts/post93/make_p90_art.py --renders DIR`. Next: run `gen_post93_guns.py`,
+check every reference resolves, make the P90 clips with TienInspectWeapon's pipeline, test.
 
-## P90 TR reference (from the user's photo, 2026-10-14)
+## P90 TR reference and model (from the user's photos, 2026-10-14)
 
-The first P90 model was rejected. The user supplied a photo of a P90 TR (right side, muzzle left); measured from it,
-in real mm, L = back from the muzzle tip, H = above the gun's lowest point (500 mm long, 214 mm tall with the rail):
-- Muzzle device (flash hider with two side ports, knurled ring at its base): L 0-42 at bore height H ≈ 122, ~22 mm wide.
-- Front face vertical at L ≈ 42 from the rail block top down to H ≈ 70; below it the **front hand-stop hook**, a
-  rounded hook reaching the bottom (H ≈ 2) at L 90-135, with a small step on its front edge at H 60-80.
-- **Front opening** (rounded oval): L 141-175, H 41-87; the **trigger** a short blade at its rear-lower edge, L 169-183,
-  H 45-52.
-- **Grip column** between the openings: L 175-246, flowing into the belly.
-- **Rear opening / thumbhole** (larger rounded rectangle): L 246-306, H 48-92.
-- **Belly**: one smooth U under both openings: up to H ≈ 25-30 under the front opening (L ~150), down to H ≈ 0 at
-  L 215-275, back up to the butt's flat bottom (H ≈ 32) near L ~345. Thick rounded polymer, the lower frame one smooth
-  closed shape with the two openings through it.
-- **Butt**: tall slab L 316-500, top H ≈ 159, flat bottom H ≈ 32, vertical rear face with soft corners, small slot at
-  the bottom rear; large flat sides with the FN logo panel near its front.
-- **Receiver band** H ≈ 92-133 from the front face to the butt: "FN HERSTAL BELGIUM" engraving around L 260-325, a
-  side track L 70-215 at H 105-118, the **charging handle** levers on both sides at L 100-120, H 105-118.
-- **Magazine** (translucent smoky brown, red-tinted rounds visible) flat on top from L ≈ 103 to 366, H 133-165
-  (~32 mm tall, 50-55 mm wide), release tab at its rear L 366-390, H 145-160, just in front of the butt top.
-- **TR rail block**: tall block on top at the front, L 42-225, H 133-207, Picatinny rail on top (H 207-214,
-  L 65-215), side cut-outs, short side rails at its front; the magazine passes under it. A curved **hoop** arching over
-  the magazine at L 205-225 from the block down to the receiver band.
-- Ejection port underneath at the rear (L ~300-340). Width ~55 mm; black matte polymer, metal muzzle, rails, handles.
-- Origin = rear-top of the pistol grip = top-rear of the grip column, L 246 / H 92: game y = (246 - L) × 0.00072,
-  z = (H - 92) × 0.00072 (bore z ≈ 0.0216, muzzle y ≈ 0.177, butt y ≈ -0.183). The firing hand holds the column,
-  thumb through the thumbhole; the support hand on the front hook.
+The first P90 model (smooth, generic, one boxy opening) was rejected: "does not look like a P90 TR". The rebuild is
+measured from the user's photos of a P90 TR (right side muzzle left, right side from ahead, left side from behind; a
+licensed replica, serial 2509A0126 not reproduced). The right-side outline was traced on its white background (OpenCV,
+Douglas-Peucker 1.5 px) into `scripts/post93/p90_reference_outline.json`, real mm with L = back from the muzzle tip and
+H = up from the lowest point (500 mm = 1709 px). The gun is **181 mm tall** with the TR rail (an earlier eyeball
+estimate said 214). Every profile in `build_p90.py` is written in those (L, H) coordinates:
+- Muzzle: flash hider L 0-28.5 (r 10.4), knurled ring L 28.5-38.5 (r 11.7), collar to the receiver face at L 43; bore
+  H 99.8. `canon` = L 43.
+- Lower frame (polymer, one profile with two holes, half width 23.5, rounded edges): front hand stop L 43-63 down to H
+  37, trigger loop to the bottom (H 0) with a finger tab at L 165-171, notch under the grip column at H 37 (L 173-188),
+  belly flat at H 1 from L 255 to 300, slanting up to the butt. Trigger opening L 121-162, H 41-80 (trigger bar L
+  148-169, H 46.5-53); thumbhole L 230-298, H 37-82. Seam under the receiver at H 93.
+- Butt (half 27.5): L 352/369-500, H 22-140, butt plate seam L 489, mid seam H 93; FN monogram panel L 320-359, H 36-74
+  on both sides; receiver band (polymer, half 25) L 205-356, H 84-118 with the raised "FN HERSTAL BELGIUM" panel L
+  227-303, H 99-108 (right side only); magazine catch housing L 314-342, H 104-118; release tab L 344-360, H 119-134.
+- TR metal upper (half 25.5, chamfered): receiver band L 42.5-205 from H 93, front column to L 78.5, rail block to H 176
+  (front face slanting from L 42 at H 142 to L 60 at H 176), hoop arching down behind the magazine L 175-215; magazine
+  window L 78.5-176 (H 118.5 up to the block's slanted underside H 142-155); slot L 164-197, H 163-171. Picatinny rail
+  on top L 57-198, 14 crossbars from L 60.3 every 9.92 mm (photo; the standard is 10.0), top H 181. Side accessory
+  bosses (T-shaped, hex screw) at L 71-95, H 150-172. Charging handles (bolt node, both sides) L 69-86.5, H 94.5-112,
+  side tracks L 88-205, H 105.5-110.5.
+- Magazine L 79.5-350.5, H 118.5-141.8, half 23: smoky brown body L 88-322 between grey end caps; rounds lie across it
+  in two rows (H 124.5 / 135.5, pitch 9.6), tips seen on the right, case heads on the left.
+- Origin = rear-top of the grip column, L 237 / H 80: game y = (237 - L) × 0.00072, z = (H - 80) × 0.00072 (bore z
+  0.0143, muzzle y 0.1706, butt y -0.1894). The firing hand holds the column, thumb through the thumbhole.
+- Ejection port underneath L 262-296. Rails are cosmetic: optics / lights / lasers mount through the hidden
+  `P90TR_Integrated_Rail_*` parts (Guns.lua), placed by `scope` / `rail_up` / `rail_*` / `light_left` / `laser_right`.
+- GoM look: flat chamfered hard-surface parts (body 2,784 tris; GoM MP5 4,045, FAMAS 3,682), texture with flat
+  panels, light AO and bright edges (GoM's black guns: texture median ~40 sRGB); the silhouette overlaps the traced
+  outline by 98.7% (the preview's outline panel).
+- Blender: a filled 2D curve with `extrude = half - bevel`, `bevel_depth = bevel`, `offset = -bevel` keeps the
+  silhouette exactly on the drawn outline and cuts holes cleanly (how every profile with holes is built).
+  `bmesh.from_mesh` appends to a non-empty bmesh but **not at the end of the index order**: find the new elements by
+  set difference, never by index (doing it by index rotated earlier boxes into the wrong axes).
 
 ## Research reference
 

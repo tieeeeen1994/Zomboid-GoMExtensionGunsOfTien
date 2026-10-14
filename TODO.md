@@ -17,7 +17,6 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
 - [ ] Ammo Maker: Make / Produce recipes of every new type fill in; Make Soft Point Bullet; Pour Birdshot Pellets
       (the water input at a furnace is copied from the pottery wheel, unverified at a furnace).
 - [ ] Workshop: workshop.txt, poster / preview / icon, README.
-- [ ] `git init` (asked, no answer yet).
 
 ## Post-93 sub-mod `GoMExtensionGunsOfTienPost93` — in progress
 
@@ -34,13 +33,10 @@ P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, cli
 - [x] MP7A1 assets done 2026-10-14 (FBX, textures, icons, `mp7_points.json`, `docs/post93_mp7_preview.png`;
       rebuild: `build_mp7.py` (Blender, ~4.5 min) → `render_mp7.py` → `make_mp7_art.py`). To check in game: magazine
       tilt (rotate −14), the `world` floor pose (GoM default kept), the 20-round magazine 5 mm below the grip.
-- [ ] **P90 TR model: REJECTED by the user ("does not look like a P90 TR") and must be rebuilt.** The files on disk
-      (FBX, textures, icons, `p90_points.json`, `docs/post93_p90_preview.png`, scripts `build_p90.py`, `p90_*.py`,
-      `make_p90.py`) are the rejected version: one boxy opening, a separate box grip, the magazine running the whole
-      length, no belly, no front hook, no rail block. A rebuild was started and stopped before it wrote anything.
-      Rebuild to the reference in CLAUDE.md "P90 TR reference (from the user's photo)", same deliverables and pipeline
-      quality as the MP7A1 (`build_mp7.py` / `render_mp7.py` / `make_mp7_art.py`), with the outline overlay in the
-      preview to prove the silhouette matches. Show the user the preview before going on.
+- [x] P90 TR assets rebuilt from the user's photos and approved 2026-10-14 (FBX, textures, icons, `p90_points.json`,
+      `docs/post93_p90_preview.png` with the photo outline overlay, 98.7% overlap; rebuild: `build_p90.py` (~1 min) →
+      `render_p90.py` → `make_p90_art.py`). To check in game: the grip in the hand (origin = rear-top of the grip
+      column), the `world` floor pose (GoM default kept), optic height on the top rail.
 - [ ] Run `gen_post93_guns.py`; check every icon / model / texture name resolves.
 - [ ] P90 reload clips (top magazine): TienInspectWeapon's Blender pipeline (`scripts/anim/`), `.x` into
       `media/anims_X/Bob/`; tune the AnimSet event times.

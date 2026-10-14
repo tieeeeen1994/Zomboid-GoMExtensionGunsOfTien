@@ -1,257 +1,180 @@
 {
- "muzzle": {
-  "offset": [
-   0.0,
-   0.1908,
-   0.0144
-  ],
-  "rotate": [
-   -90.0,
-   0.0,
-   -180.0
-  ]
- },
- "canon": {
-  "offset": [
-   0.0,
-   0.1678,
-   0.0144
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "world": {
-  "offset": [
-   0.02,
-   0.13,
-   0.0
-  ],
-  "rotate": [
-   180.0,
-   0.0,
-   180.0
-  ]
- },
- "magazine": {
-  "offset": [
-   0.0,
-   0.1008,
-   0.0302
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "rail_up": {
-  "offset": [
-   0.0,
-   0.0194,
-   0.0641
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "scope": {
-  "offset": [
-   0.0,
-   0.0238,
-   0.0641
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "rail_left": {
-  "offset": [
-   0.0233,
-   0.1282,
-   0.0425
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "rail_right": {
-  "offset": [
-   -0.0233,
-   0.1282,
-   0.0425
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "light_left": {
-  "offset": [
-   0.0295,
-   0.1282,
-   0.0425
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "laser_right": {
-  "offset": [
-   -0.0295,
-   0.1282,
-   0.0425
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "bolt_fired": {
-  "offset": [
-   0.0,
-   -0.0432,
-   0.0
-  ],
-  "rotate": [
-   0.0,
-   0.0,
-   0.0
-  ]
- },
- "_notes": {
-  "space": "game space: +Y muzzle, +Z top, +X the gun's left; origin = rear-top of the pistol grip",
-  "magazine": "57x28Magazine50_P90's origin is its front end, centred, on its bottom face; the node lies along -Y from there on the receiver top, so `magazine` is that front-centre mounting point",
-  "canon": "front face of the receiver nose where the flash hider starts (GoM puts canon behind the muzzle tip, FAMAS 0.034); P90_Muzzle_Mount_Device and P90_Suppressor have their origin at their rear face and extend along +Y over the flash hider",
-  "bolt_fired": "charging handle travel (P90TR_BOLT is modelled forward); the real P90's handles do not reciprocate when firing",
-  "ejection_port": "centre of the downward ejection port under the stock, behind the grip (Hot Brass)",
-  "rail_up/scope": "top of the Picatinny teeth, above the grip; the rail's underside clears the magazine"
- },
- "_extras": {
-  "ejection_port": [
-   0.0,
-   -0.0259,
-   -0.0576
-  ],
-  "ejection_port_u_range_game_y": [
-   -0.0367,
-   -0.0151
-  ],
-  "charging_handles_forward": [
-   [
-    0.0252,
-    0.0842,
-    0.0194
-   ],
-   [
-    -0.0252,
-    0.0842,
-    0.0194
-   ]
-  ],
-  "real_mm_per_game_unit": 1388.89
- },
- "_bounds": {
-  "P90TR_BODY": {
-   "tris": 3062,
-   "x": [
-    -0.0233,
-    0.0233
-   ],
-   "y": [
-    -0.169,
-    0.1908
-   ],
-   "z": [
-    -0.0594,
-    0.0641
-   ]
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1706,
+      0.0143
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
   },
-  "P90TR_BOLT": {
-   "tris": 176,
-   "x": [
-    -0.0252,
-    0.0252
-   ],
-   "y": [
-    0.0805,
-    0.088
-   ],
-   "z": [
-    0.0155,
-    0.0234
-   ]
+  "world": {
+    "offset": [
+      0.02,
+      0.13,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
   },
-  "57x28Magazine50_P90": {
-   "tris": 224,
-   "x": [
-    -0.0185,
-    0.0185
-   ],
-   "y": [
-    -0.1811,
-    0.0
-   ],
-   "z": [
-    0.0,
-    0.0189
-   ]
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1134,
+      0.0277
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
   },
-  "P90_Suppressor": {
-   "tris": 440,
-   "x": [
-    -0.0135,
-    0.0135
-   ],
-   "y": [
-    0.0,
-    0.1188
-   ],
-   "z": [
-    -0.0135,
-    0.0135
-   ]
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0698,
+      0.0672
+    ]
   },
-  "P90_Muzzle_Mount_Device": {
-   "tris": 320,
-   "x": [
-    -0.0085,
-    0.0085
-   ],
-   "y": [
-    0.0,
-    0.0259
-   ],
-   "z": [
-    -0.0085,
-    0.0085
-   ]
+  "scope": {
+    "offset": [
+      0.0,
+      0.0698,
+      0.0695
+    ]
   },
-  "gun_with_magazine": [
-   [
-    -0.0233,
-    0.0233
-   ],
-   [
-    -0.169,
-    0.1908
-   ],
-   [
-    -0.0594,
-    0.0641
-   ]
-  ]
- }
+  "rail_left": {
+    "offset": [
+      0.0147,
+      0.1109,
+      0.059
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0147,
+      0.1109,
+      0.059
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0209,
+      0.1109,
+      0.059
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.022,
+      0.1109,
+      0.0582
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1397,
+      0.0143
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0432,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.72 of real size); +Y muzzle, +Z top, +X the gun's left; origin = rear-top of the grip column (photo L 237, H 80)",
+    "magazine": "57x28Magazine50_P90's origin is its front end, centred, on its bottom face; the node lies along -Y from there on top of the receiver",
+    "canon": "receiver front face where the barrel collar starts; P90_Muzzle_Mount_Device and P90_Suppressor have their origin there and extend along +Y over the flash hider",
+    "rail_left/right": "the accessory bosses on the sides of the rail block",
+    "bolt_fired": "charging handles pulled back 60 mm real (P90TR_BOLT is modelled forward); they do not reciprocate when firing"
+  },
+  "_extras": {
+    "ejection_port": [
+      0.0,
+      -0.0302,
+      -0.0569
+    ],
+    "photo_origin_mm": [
+      237.0,
+      80.0
+    ],
+    "real_mm_per_game_unit": 1388.89
+  },
+  "_bounds": {
+    "P90TR_BODY": {
+      "min": [
+        -0.0202,
+        -0.1894,
+        -0.0574
+      ],
+      "max": [
+        0.0202,
+        0.1706,
+        0.0727
+      ],
+      "tris": 2784
+    },
+    "P90TR_BOLT": {
+      "min": [
+        -0.0216,
+        0.1084,
+        0.0104
+      ],
+      "max": [
+        0.0216,
+        0.121,
+        0.023
+      ],
+      "tris": 312
+    },
+    "57x28Magazine50_P90": {
+      "min": [
+        -0.0166,
+        -0.1951,
+        0.0
+      ],
+      "max": [
+        0.0166,
+        0.0,
+        0.0174
+      ],
+      "tris": 176
+    },
+    "P90_Suppressor": {
+      "min": [
+        -0.0137,
+        0.0029,
+        -0.0137
+      ],
+      "max": [
+        0.0137,
+        0.1238,
+        0.0137
+      ],
+      "tris": 360
+    },
+    "P90_Muzzle_Mount_Device": {
+      "min": [
+        -0.0089,
+        0.0004,
+        -0.0089
+      ],
+      "max": [
+        0.0089,
+        0.0328,
+        0.0089
+      ],
+      "tris": 320
+    }
+  }
 }

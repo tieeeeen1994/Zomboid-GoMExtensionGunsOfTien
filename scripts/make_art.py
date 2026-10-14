@@ -34,10 +34,17 @@ import zlib
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-WORKSHOP = os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600")
+def _first(*paths):
+    """The first path that exists (Mac first, then the Windows Steam install), else the first."""
+    return next((p for p in paths if os.path.exists(p)), paths[0])
+
+
+WORKSHOP = _first(os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600"),
+                  "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600")
 GOM = os.path.join(WORKSHOP, "3722134990/mods/GunsOfMarz/42.16/media")
-GAME = os.path.expanduser("~/Library/Application Support/Steam/steamapps/common/ProjectZomboid/"
-                          "Project Zomboid.app/Contents/Java/media")
+GAME = _first(os.path.expanduser("~/Library/Application Support/Steam/steamapps/common/ProjectZomboid/"
+                                 "Project Zomboid.app/Contents/Java/media"),
+              "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media")
 OUT = os.path.join(HERE, "..", "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
 
 GOM_TEX = os.path.join(GOM, "textures")
@@ -46,7 +53,8 @@ GOM_BOXES = os.path.join(GOM_TEX, "worlditems/Ammunition/Boxes")
 ROUNDS_FBX = os.path.join(GOM, "models_X/worlditems/Ammunition/Rounds.fbx")
 BOX_FBX = os.path.join(GAME, "models_X/WorldItems/%s.fbx")
 
-FONT = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
+# The box labels were drawn with Arial Narrow Bold (Mac); Windows has no Narrow, so its text there is wider.
+FONT = _first("/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf", "C:/Windows/Fonts/arialbd.ttf")
 
 
 # ==================================================================================================
