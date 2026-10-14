@@ -101,6 +101,44 @@ def inset(poly, d):
     return out
 
 
+def ear_clip(poly):
+    """Triangles (index triples, CCW) of a simple CCW polygon; deterministic ear clipping. Blender's ngon fill
+    bridged the P90's concave frame outline across its openings, so caps are triangulated here."""
+    idx = list(range(len(poly)))
+    tris = []
+
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    def inside(p, a, b, c):
+        return cross(a, b, p) >= -1e-9 and cross(b, c, p) >= -1e-9 and cross(c, a, p) >= -1e-9
+
+    guard = 0
+    while len(idx) > 3 and guard < 10000:
+        guard += 1
+        best = None
+        for k in range(len(idx)):
+            i0, i1, i2 = idx[k - 1], idx[k], idx[(k + 1) % len(idx)]
+            a, b, c = poly[i0], poly[i1], poly[i2]
+            if cross(a, b, c) <= 1e-9:
+                continue
+            if any(inside(poly[j], a, b, c) for j in idx if j not in (i0, i1, i2)):
+                continue
+            # Prefer the fattest ear (smallest max angle) for well-shaped triangles.
+            la, lb, lc = math.dist(b, c), math.dist(a, c), math.dist(a, b)
+            q = cross(a, b, c) / max(la * la + lb * lb + lc * lc, 1e-12)
+            if best is None or q > best[0] + 1e-12:
+                best = (q, k)
+        if best is None:
+            break
+        k = best[1]
+        tris.append((idx[k - 1], idx[k], idx[(k + 1) % len(idx)]))
+        idx.pop(k)
+    if len(idx) == 3:
+        tris.append(tuple(idx))
+    return tris
+
+
 # --------------------------------------------------------------------------------------------------
 # Solids
 # --------------------------------------------------------------------------------------------------
@@ -141,8 +179,10 @@ def slab(outline, width, radius, steps=2, x0=0.0, mat="polymer"):
             j = (i + 1) % n
             p["faces"].append((a + i, a + j, b + j, b + i))
     last = (len(rings) - 1) * n
-    p["faces"].append(tuple(reversed(range(n))))
-    p["faces"].append(tuple(range(last, last + n)))
+    for t in ear_clip(rings[0][1]):
+        p["faces"].append((t[2], t[1], t[0]))
+    for t in ear_clip(rings[-1][1]):
+        p["faces"].append((last + t[0], last + t[1], last + t[2]))
     return p
 
 
@@ -155,8 +195,9 @@ def section(sec, u0, u1, mat="polymer"):
     for i in range(n):
         j = (i + 1) % n
         p["faces"].append((i, j, n + j, n + i))
-    p["faces"].append(tuple(reversed(range(n))))
-    p["faces"].append(tuple(range(n, 2 * n)))
+    for t in ear_clip(sec):
+        p["faces"].append((t[2], t[1], t[0]))
+        p["faces"].append((n + t[0], n + t[1], n + t[2]))
     return p
 
 
@@ -213,26 +254,26 @@ def body_parts():
 
     # Upper receiver: the wide shell between the holes' tops and the magazine bed, with the rounded nose.
     upper = rounded([
-        (60, 79, 0), (430, 79, 0), (452, 83, 8), (467, 94, 8), (468, 110, 6), (458, 121, 8), (440, 123, 0),
-        (60, 123, 0)], seg=2)
-    parts.append(slab(upper, 54, 9, 2))
+        (60, 79, 0), (436, 79, 0), (456, 85, 8), (467, 97, 8), (468, 110, 6), (458, 121, 8), (440, 123, 0),
+        (60, 123, 0)], seg=3)
+    parts.append(slab(upper, 54, 10, 3))
 
     # Butt: wide rounded block, its front edge the back wall of the thumbhole.
     butt = rounded([
-        (10, 0, 10), (92, 0, 6), (104, 14, 8), (96, 38, 10), (98, 66, 12), (116, 80, 0), (116, 123, 0),
-        (16, 123, 16), (2, 104, 10), (0, 40, 14)], seg=2)
-    parts.append(slab(butt, 52, 11, 2))
+        (14, 0, 14), (92, 0, 6), (106, 14, 10), (96, 40, 12), (100, 68, 12), (118, 82, 0), (118, 123, 0),
+        (20, 123, 22), (1, 100, 12), (0, 36, 16)], seg=3)
+    parts.append(slab(butt, 52, 12, 3))
 
     # Lower frame: bottom bar, pistol grip, trigger guard and the forward hand stop, in one narrower piece.
     lower = rounded([
-        (70, 0, 0), (398, 0, 10), (418, 9, 10), (436, 30, 12), (450, 58, 10), (458, 84, 0), (404, 84, 0),
-        (412, 58, 10), (404, 34, 10), (390, 16, 8), (268, 16, 7), (276, 50, 0), (282, 84, 0),
-        (234, 84, 0), (227, 50, 0), (212, 16, 9), (104, 16, 0), (70, 16, 0)], seg=2)
+        (70, 0, 0), (338, 0, 22), (404, 12, 18), (440, 42, 16), (456, 72, 10), (462, 92, 0), (398, 92, 0),
+        (399, 62, 10), (386, 34, 12), (360, 17, 10), (300, 16, 0), (272, 17, 8), (280, 50, 0), (287, 92, 0),
+        (232, 92, 0), (226, 50, 0), (212, 16, 10), (104, 16, 0), (70, 16, 0)], seg=3)
     parts.append(slab(lower, 36, 7, 2))
 
     # Grip swell: the grip is fuller in the middle than the bar it grows from.
-    grip = rounded([(214, 20, 4), (264, 20, 4), (280, 76, 4), (230, 76, 4)], seg=1)
-    parts.append(slab(grip, 40, 9, 2, mat="grip"))
+    grip = rounded([(216, 20, 4), (268, 20, 4), (281, 76, 4), (231, 76, 4)], seg=1)
+    parts.append(slab(grip, 40, 10, 3, mat="grip"))
 
     # TR front housing: holds the magazine's front end, carries the side rails and the front of the top rail.
     housing = rounded([
@@ -355,6 +396,15 @@ def _pt(x, u, v):
 
 
 def points():
+    """Model-script attachment points; "rotate" only where it is not 0 0 0."""
+    pts = _points()
+    for v in pts.values():
+        if v.get("rotate") == [0.0, 0.0, 0.0]:
+            del v["rotate"]
+    return pts
+
+
+def _points():
     return {
         "muzzle": {"offset": _pt(0, MUZZLE_U, BORE_V), "rotate": [-90.0, 0.0, -180.0]},
         "canon": {"offset": _pt(0, NOSE_U, BORE_V), "rotate": [0.0, 0.0, 0.0]},

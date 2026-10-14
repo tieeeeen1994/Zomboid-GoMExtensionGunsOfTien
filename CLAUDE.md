@@ -1,9 +1,148 @@
 # GoM Extension: Guns of Tien — working notes
 
-A Guns of Marz (GoM, workshop 3722134990, mod id `GunsOfMarz`) extension built on the Gunworks gang framework
-(workshop 3722064198, mod id `SWMG`): more ammunition (real 1993 loads) and gun sounds corrected with the M16 as the
-reference. Design and the numbers awaiting approval: `docs/design.md`. Engine notes for B42 in general live in
-`~/Zomboid/Workshop/ZomboidFixesB42/CLAUDE.md`; GoM conversion research in `~/Zomboid/Workshop/VWP2GoM/docs/`.
+Everything needed to continue this project on another machine (written 2026-10-14). Engine notes for B42 in general
+live in `~/Zomboid/Workshop/ZomboidFixesB42/CLAUDE.md` (read it too: load order, Kahlua pitfalls, networking, tooling);
+GoM conversion research in `~/Zomboid/Workshop/VWP2GoM/docs/`. Open work: `TODO.md`. Designs: `docs/design.md` (main
+mod), `docs/post93_design.md` (Post-93). Nothing in this repo has been run in game yet. The folder is not a git repo
+yet (`git init` was offered, not answered). It is listed in `~/Zomboid/Workshop/TienMods.code-workspace`.
+
+## What this is
+
+One Workshop item, two mods in `Contents/mods/`:
+- **`GoMExtensionGunsOfTien`** (folder `42/`, empty `common/`): an extension of Guns of Marz (GoM, workshop 3722134990,
+  id `GunsOfMarz`) on the Gunworks gang framework (workshop 3722064198, id `SWMG`). `mod.info`:
+  `require=SWMG,GunsOfMarz,ammomaker`, `loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker`. Item module `GunsOfTien`,
+  ammo type namespace `gunsoftien:`, sandbox page `GunsOfTien`.
+- **`GoMExtensionGunsOfTienPost93`**: add-on for things that did not exist in July 1993 (the MP7A1, the P90 TR, their
+  4.6x30 / 5.7x28 ammo). Requires the main mod too. Module `GunsOfTienPost93`, namespace `gunsoftienpost93:`.
+  (The user typed "GoMExtensionGunsOfTIenPost93"; the id was written with a lowercase i, flagged to the user.)
+
+The user (Tien, author of the other `~/Zomboid/Workshop/Tien*` mods) wants **realism, set in Kentucky, July 1993**,
+and rich, consistent designs; decisions are taken with them, step by step. Hard dependencies are fine: "our mod
+fully depends on GoM and Ammo Maker and will not load without them". Before building a feature, check
+`~/Zomboid/Workshop/*` for one of the user's own mods that already does it (e.g. `RakeFeathersToo` already rakes
+feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and removed).
+
+## Decisions taken with the user (main mod)
+
+- **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):
+  7.62x39 **US Subsonic** (×0.5 dmg, sound ×0.5; must rack after every shot **unless a PBS-1 is fitted**: low powder
+  short-strokes the AK's gas system, the PBS-1's back pressure pushes enough gas into the port — the user wanted this
+  behaviour), 7.62x39 **Soft Point**, 7.62x39 **Steel Core** (Norinco, pierces 3), 9mm **147gr Subsonic**, 9mm
+  **Hollow Point**, 9mm **+P+**, .45 **Hollow Point**, .45 **+P**, 9x39 **SP-6** (pierces 3), .30-06 and .308 **Soft
+  Point** (×1.2 dmg, never pierce), 12 ga **Birdshot** (9 pellets = the engine's cap, ×0.3 dmg per pellet, spread ×2,
+  range ×0.5, crits cut). Dropped by the user: PBS-1 wipe wear, extra wear when suppressed, an MP5SD subsonic rule,
+  hollow points jamming M1911s, a separate .30-30 soft point. Left alone: GoM's .223 as a weaker "civilian" 5.56.
+- **GoM's plain rounds renamed** (translation override only): `SWMG.9x39_Bullet` → 9x39mm SP-5, `SWMG.545x39_Bullet`
+  → 5.45x39mm 7N6 (and its boxes). 7N6 also pierces 3 and tumbles (crit chance ×1.1).
+- **Realistic piercing** (sandbox `RealisticPiercing`, default on): plain .30-06 / 7.62x51 / .308 pierce 2; plain
+  .30-30 is what real .30-30 almost always is, a flat-nosed soft point (keeps the name ".30-30 Round", never pierces).
+  Done as a StatsFactory layer keyed by the gun's current round (Gunworks never profiles a gun's own script round).
+- **Realistic gun sounds, always on** (the user removed the sandbox option): every GoM gun except the M79 / M203 gets
+  SoundRadius / SoundVolume = M16 (175 / 50) × f, f = 2^(ΔdB/10), ΔdB from powder burnt (10·log10(grains/25)),
+  barrel (+3 dB per halving vs the calibre's usual barrel), no supersonic crack −5 dB, integral suppressor −17 dB
+  (= GoM's ×0.3). AS VAL and MP5SD → 33 / 9; .45 guns quiet; short carbines louder; bolt / lever / shotgun volume
+  180-250 → ~50-60. `scripts/sound_model.py` writes `shared/GunsOfTien/SoundTable.lua`; `Sounds.lua` applies it with
+  the script setters at every `OnInitGlobalModData`. **Changed from Lua, not by redefining items**: a mod's `item X`
+  block replaces GoM's whole item (user's correction), and Lua stays flexible with GoM updates. Call them "realistic",
+  not "corrected". SoundGain (what players hear) is untouched.
+- **Ammo Maker** (required): every round craftable. Steel Core → Ammo Maker's `762x39AP`, SP-6 → `9x39AP`; the others
+  get new types (copies of the calibre's base type) with Make / Produce placeholder recipes. New parts in Ammo Maker
+  style: **soft point bullets** `GunsOfTien.BulletRifleSSP` / `BulletRifleMSP` ("Make Soft Point Bullet": standard
+  Ammo Maker rifle bullet + Small File Set kept — the dum-dum method of filing the jacket off the nose) and
+  **Birdshot Pellets** `GunsOfTien.Birdshot` (a 100-use pouch like Balls 00, 10 per shell; "Pour Birdshot Pellets" /
+  "(Furnace)": same metal / crucible / tongs / charcoal as Ammo Maker's buckshot plus the unused vanilla
+  `Base.Strainer` (kept) and 0.5 water — the shot-pan method; the user chose this over a mold). Each part has a box.
+  Item display names follow Ammo Maker ("Bullet Rifle S SP", "Box Birdshot Pellets").
+- **Loot**: boxes next to vanilla boxes of the same calibre (no army / police / SWAT for hunting loads and Chinese
+  steel core), plus bonus groups in GoM's spawners; sandbox `AmmoLootMultiplier`. **Sandbox options left**:
+  `AmmoLootMultiplier`, `RealisticPiercing`, `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never).
+- **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
+  (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
+  HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
+  (`scripts/make_ammomaker_art.py`; SP silver "SP" code, birdshot heap of small pellets, shot size "8").
+  Contact sheets in `docs/`.
+
+## Decisions taken with the user (Post-93)
+
+- **Guns**: H&K **MP7A1** (two-handed, Rifle hold, back slot, collapsible stock, integral top / left / right rails,
+  20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = GoM's "MP5" clips) and FN
+  **P90 TR only** (1999, bullpup like the FAMAS, 50-round top magazine, integral top / side rails, 900 rpm, damage
+  1.0-1.5, sound 118 / 34, downward ejection, **its own top-loading reload clips**). Standard rounds pierce 2 (in the
+  gun scripts). **One suppressor each** with its own muzzle mount device (GoM's suppressor stats). Integrated rails
+  are hidden required parts registered as parents of GoM's optics / lights / lasers. Spawns: GoM's
+  `World_Anachronistic_Spawner` and `Zombie_Police_SMG_Spawner`. "You build everything": models in Blender by script.
+- **Ammo**: 4.6x30 **DM11** (standard) and **Subsonic**; 5.7x28 **SS190** (standard), **SB193** subsonic, **SS197SR**
+  (polymer tip, ×1.15, no pierce). Subsonic ×0.6 dmg, sound ×0.5, no pierce. Ammo Maker types `46x30` / `57x28`
+  (existing) + `46x30SS`, `57x28SS`, `57x28SR`. 50-round boxes. Art: copper DM11 bullet (GoM's own is khaki; the user
+  can switch it in `make_ammo_art.py`), real tip colours (SS190 black, SB193 violet, SS197SR blue).
+- Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
+  9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
+
+## File map
+
+- Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
+  `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
+  `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
+  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`), `lua/server/GunsOfTien/` (`Loot.lua`,
+  `HotBrass.lua`), `lua/client/GunsOfTien/Tooltips.lua`, `lua/shared/Translate/EN/` (ItemName, Recipes, Tooltip,
+  Sandbox), `textures/`.
+- Post-93 `Contents/mods/GoMExtensionGunsOfTienPost93/42/media/`: `registries.lua`, `scripts/GunsOfTienPost93/`
+  (ammo items / models / recipes / Ammo Maker placeholders; guns to come from `gen_post93_guns.py`),
+  `lua/shared/GunsOfTienPost93/` (`Ammunition.lua`, `AmmoMaker.lua`, `Guns.lua`), `lua/server/GunsOfTienPost93/`
+  (`Loot.lua`, `HotBrass.lua`), `lua/client/GunsOfTienPost93/Tooltips.lua`, `AnimSets/player(-vehicle)/actions/`
+  (`Load/Unload/Rack/RackAim P90TR_GoT.xml`, `WeaponReloadType = P90TR`, clips `Bob_GunsOfTien_P90_Load / _Unload /
+  _Rack / _AimRack` still to make), translations, textures.
+- Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
+  items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
+  `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
+  `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json`), and the model
+  builders `scripts/post93/build_mp7.py`, `build_p90.py` (+ `p90_geometry.py`, `p90_meshio.py`, `p90_decals.py`).
+
+## Status and how to continue
+
+See `TODO.md`. In short: both mods' code is written and syntax-checked; nothing has been loaded in game. The Post-93
+**MP7A1 assets are done** (preview `docs/post93_mp7_preview.png`); the **P90 TR model was rejected** by the user and
+must be rebuilt to "P90 TR reference" below (the files on disk are the rejected version). Each gun needs: FBX `models_X/weapons/firearms/
+GunsOfTienPost93_<GUN>.fbx` (nodes `<GUN>_BODY`, `<GUN>_BOLT`, MP7 also `MP7A1_STOCK` modelled deployed),
+magazines FBX `models_X/weapons/magazines/GunsOfTienPost93_<MP7|P90>_magazines.fbx` (nodes `46x30Magazine20/30/40_MP7`,
+`57x28Magazine50_P90`), parts FBX `models_X/weapons/parts/GunsOfTienPost93_<MP7|P90>_parts.fbx` (`<MP7|P90>_Suppressor`,
+`<MP7|P90>_Muzzle_Mount_Device`), textures `textures/weapons/GunsOfTienPost93/<node>.png` (gun 256 px atlas, others
+128 px, RGB), icons `textures/item_GunsOfTienPost93_<name>.png` (32 px, framed like GoM's via make_art.py), points
+JSON (muzzle, world, magazine, scope, rail_up / left / right, laser_right, light_left, canon, bolt_fired, MP7
+stock_folded, P90 ejection port), preview `docs/post93_<mp7|p90>_preview.png` (with an overlay on GoM's MP5 / FAMAS).
+Real sizes: MP7A1 415 / 638 mm, barrel 180 mm; P90 500 mm, barrel 263 mm; model = 0.72 × real. Then run
+`gen_post93_guns.py`, check every reference resolves, make the P90 clips with TienInspectWeapon's pipeline, test.
+
+## P90 TR reference (from the user's photo, 2026-10-14)
+
+The first P90 model was rejected. The user supplied a photo of a P90 TR (right side, muzzle left); measured from it,
+in real mm, L = back from the muzzle tip, H = above the gun's lowest point (500 mm long, 214 mm tall with the rail):
+- Muzzle device (flash hider with two side ports, knurled ring at its base): L 0-42 at bore height H ≈ 122, ~22 mm wide.
+- Front face vertical at L ≈ 42 from the rail block top down to H ≈ 70; below it the **front hand-stop hook**, a
+  rounded hook reaching the bottom (H ≈ 2) at L 90-135, with a small step on its front edge at H 60-80.
+- **Front opening** (rounded oval): L 141-175, H 41-87; the **trigger** a short blade at its rear-lower edge, L 169-183,
+  H 45-52.
+- **Grip column** between the openings: L 175-246, flowing into the belly.
+- **Rear opening / thumbhole** (larger rounded rectangle): L 246-306, H 48-92.
+- **Belly**: one smooth U under both openings: up to H ≈ 25-30 under the front opening (L ~150), down to H ≈ 0 at
+  L 215-275, back up to the butt's flat bottom (H ≈ 32) near L ~345. Thick rounded polymer, the lower frame one smooth
+  closed shape with the two openings through it.
+- **Butt**: tall slab L 316-500, top H ≈ 159, flat bottom H ≈ 32, vertical rear face with soft corners, small slot at
+  the bottom rear; large flat sides with the FN logo panel near its front.
+- **Receiver band** H ≈ 92-133 from the front face to the butt: "FN HERSTAL BELGIUM" engraving around L 260-325, a
+  side track L 70-215 at H 105-118, the **charging handle** levers on both sides at L 100-120, H 105-118.
+- **Magazine** (translucent smoky brown, red-tinted rounds visible) flat on top from L ≈ 103 to 366, H 133-165
+  (~32 mm tall, 50-55 mm wide), release tab at its rear L 366-390, H 145-160, just in front of the butt top.
+- **TR rail block**: tall block on top at the front, L 42-225, H 133-207, Picatinny rail on top (H 207-214,
+  L 65-215), side cut-outs, short side rails at its front; the magazine passes under it. A curved **hoop** arching over
+  the magazine at L 205-225 from the block down to the receiver band.
+- Ejection port underneath at the rear (L ~300-340). Width ~55 mm; black matte polymer, metal muzzle, rails, handles.
+- Origin = rear-top of the pistol grip = top-rear of the grip column, L 246 / H 92: game y = (246 - L) × 0.00072,
+  z = (H - 92) × 0.00072 (bore z ≈ 0.0216, muzzle y ≈ 0.177, butt y ≈ -0.183). The firing hand holds the column,
+  thumb through the thumbhole; the support hand on the front hook.
+
+## Research reference
 
 Paths below: W = `~/Library/Application Support/Steam/steamapps/workshop/content/108600`,
 F = `W/3722064198/mods/Gunworks_gang_framework/42.13/media`, G = `W/3722134990/mods/GunsOfMarz/42.16/media`,

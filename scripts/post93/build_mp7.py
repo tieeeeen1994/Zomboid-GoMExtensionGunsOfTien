@@ -24,6 +24,7 @@ Fixed seeds and sample counts: the same Blender build gives the same files.
 import json
 import math
 import os
+import struct
 import sys
 
 import bmesh
@@ -68,6 +69,7 @@ def arg(name, default):
 
 BAKE = arg("--size", 1024)
 SAMPLES = arg("--samples", 48)
+DEBUG = arg("--debug", "")
 
 
 # ==================================================================================================
@@ -77,6 +79,44 @@ SAMPLES = arg("--samples", 48)
 FRAMES = {"x": (Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))),   # axis, profile u, profile v
           "y": (Vector((0, 1, 0)), Vector((1, 0, 0)), Vector((0, 0, 1))),
           "z": (Vector((0, 0, 1)), Vector((1, 0, 0)), Vector((0, 1, 0)))}
+
+
+def orient_outward(bm, faces):
+    """Every primitive is built with one consistent winding; flip the whole shell if it points inward (signed
+    volume). bmesh.ops.recalc_face_normals gave different results from run to run inside a large bmesh."""
+    vol = 0.0
+    for f in faces:
+        vs = [v.co for v in f.verts]
+        for i in range(1, len(vs) - 1):
+            vol += vs[0].dot(vs[i].cross(vs[i + 1]))
+    if vol < 0:
+        bmesh.ops.reverse_faces(bm, faces=faces)
+
+
+def canonical(bm):
+    """The same polygons in a fixed order: vertices sorted by position, each face starting at its smallest vertex,
+    faces sorted. bmesh's element order after bevels was not the same from run to run, and triangulation and UV
+    unwrapping follow element order."""
+    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-4)
+    key = lambda co: (round(co.x, 4), round(co.y, 4), round(co.z, 4))
+    polys = []
+    for f in bm.faces:
+        ks = [key(v.co) for v in f.verts]
+        i = ks.index(min(ks))
+        polys.append((f.material_index, tuple(ks[i:] + ks[:i])))
+    bm.free()
+    polys.sort()
+    out = bmesh.new()
+    verts = {}
+    for k in sorted({k for _, ks in polys for k in ks}):
+        verts[k] = out.verts.new(k)
+    for mat, ks in polys:
+        try:
+            f = out.faces.new([verts[k] for k in ks])
+        except ValueError:                              # a duplicate face left by overlapping parts
+            continue
+        f.material_index = mat
+    return out
 
 
 class Builder:
@@ -89,9 +129,10 @@ class Builder:
                 v.co = xf @ v.co
         for f in faces:
             f.material_index = MATS.index(mat)
-        bmesh.ops.recalc_face_normals(self.bm, faces=faces)
+        orient_outward(self.bm, faces)
         if bevel > 0:
-            edges = list({e for f in faces for e in f.edges})
+            self.bm.edges.index_update()
+            edges = sorted({e for f in faces for e in f.edges}, key=lambda e: e.index)   # stable order
             res = bmesh.ops.bevel(self.bm, geom=list(verts) + edges, offset=bevel, offset_type='OFFSET',
                                   segments=1, profile=0.5, affect='EDGES', clamp_overlap=True)
             for f in res["faces"]:
@@ -156,18 +197,18 @@ class Builder:
             faces.append(bm.faces.new((o1[k], i1[k], i1[k + 1], o1[k + 1])))
             faces.append(bm.faces.new((o0[k], o1[k], o1[k + 1], o0[k + 1])))
             faces.append(bm.faces.new((i0[k], i0[k + 1], i1[k + 1], i1[k])))
-        for e in (0, len(outer) - 1):
-            faces.append(bm.faces.new((o0[e], i0[e], i1[e], o1[e])))
+        e = len(outer) - 1
+        faces.append(bm.faces.new((o0[0], i0[0], i1[0], o1[0])))
+        faces.append(bm.faces.new((o1[e], i1[e], i0[e], o0[e])))
         return self._finish(o0 + o1 + i0 + i1, faces, mat, bevel, None)
 
     def to_object(self, name, scale_mm=True):
-        bm = self.bm
-        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-4)
+        bm = canonical(self.bm)
         bmesh.ops.triangulate(bm, faces=bm.faces, quad_method='BEAUTY', ngon_method='BEAUTY')
         s = K if scale_mm else 1.0
         for v in bm.verts:                              # game (x, y, z) mm -> FBX data (x, y, -z) game units
             v.co = Vector((v.co.x * s, v.co.y * s, -v.co.z * s))
-        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        bmesh.ops.reverse_faces(bm, faces=bm.faces)     # the z mirror turned every shell inside out
         me = bpy.data.meshes.new(name)
         bm.to_mesh(me)
         bm.free()
@@ -225,10 +266,10 @@ def picatinny(b, y0, y1, frame, base_w=15.6, base_h=4.0, tooth_w=21.2, tooth_h=6
 def build_body():
     b = Builder()
     # Upper receiver (narrow, carries the top rail) and lower receiver (wider, stock rod channels).
-    b.prism("x", [(REAR_Y, 30), (245, 30), (245, 58), (241, 62), (REAR_Y + 3, 62), (REAR_Y, 58)],
+    b.prism("x", [(REAR_Y, 30), (245, 30), (245, 52), (238, 62), (REAR_Y + 3, 62), (REAR_Y, 58)],
             -15.5, 15.5, bevel=1.6)
-    b.prism("x", [(REAR_Y, 0), (6, 0), (52, 0), (218, 0), (230, 5), (238, 16), (241, 30), (241, 36), (REAR_Y, 36)],
-            -19.0, 19.0, bevel=1.6)
+    b.prism("x", [(REAR_Y + 7, 0), (6, 0), (52, 0), (218, 0), (230, 5), (238, 16), (241, 30), (241, 36),
+                  (REAR_Y, 36), (REAR_Y, 8)], -19.0, 19.0, bevel=1.6)
     # Rear shoulder under the charging handle and the barrel collar at the front.
     b.box(-12, 12, REAR_Y - 2.0, REAR_Y + 6, 34, 48, bevel=1.0)
     b.lathe("y", (0, 0, BORE_Z), [(238, 0), (238, 12.5), (250, 12.5), (252, 11.0), (252, 0)], seg=16,
@@ -267,19 +308,20 @@ def build_body():
     xf = Matrix.Translation(well_c) @ Matrix.Rotation(-RAKE, 4, 'X')
     b.box(-11.5, 11.5, -22.5, 22.5, -0.6, 18, mat="dark", xf=xf)
     # Trigger guard (open band from the grip front to the receiver) and trigger.
-    outer = [(grip_lines(-44)[1] - 4, -44), (54, -50), (66, -53), (100, -53), (112, -49), (118, -39), (120, -20),
-             (120, 1.5)]
-    inner = [(grip_lines(-37)[1] - 1, -37), (56, -43), (67, -46), (99, -46), (108, -42.5), (112.5, -34),
-             (113.5, -20), (113.5, 1.5)]
-    b.strip(outer, inner, -7.5, 7.5, bevel=0.0)
+    outer = [(grip_lines(-48)[1] - 5, -48), (54, -54), (66, -57), (102, -57), (115, -52), (122, -40), (124, -20),
+             (124, 1.5)]
+    inner = [(grip_lines(-36)[1] - 1, -36), (57, -43.5), (68, -46.5), (99, -46.5), (108, -43), (113, -34),
+             (114.5, -20), (114.5, 1.5)]
+    b.strip(outer, inner, -8.5, 8.5, bevel=0.0)
     b.prism("x", [(73, 2), (79, 2), (77, -12), (73, -24), (68.5, -29), (66.5, -27.5), (70.5, -14)], -3, 3,
             mat="metal", bevel=0.5)
     # Magazine release paddle at the back of the guard.
     b.box(-6, 6, grip_lines(-30)[1] - 1.5, grip_lines(-30)[1] + 3.5, -34, -22, mat="metal", bevel=0.6)
-    # Folded front grip under the receiver, its hinge at the front.
-    b.prism("x", [(124, 0.5), (226, 0.5), (226, -15), (214, -17), (204, -15), (194, -17), (184, -15), (174, -17),
-                  (130, -17), (124, -12)], -13, 13, bevel=1.5)
-    b.lathe("x", (0, 228, -7), [(-15, 0), (-15, 7), (15, 7), (15, 0)], seg=12, mat="polymer")
+    # Front grip folded forward under the receiver; its hinge sits just ahead of the trigger guard.
+    b.prism("x", [(128, 0.5), (232, 0.5), (238, -3), (238, -12), (232, -17.5), (216, -17.5), (208, -15.8),
+                  (198, -17.5), (190, -15.8), (180, -17.5), (142, -17.5), (130, -15), (126, -8)], -13, 13,
+            bevel=1.5)
+    b.lathe("x", (0, 133, -8), [(-14.5, 0), (-14.5, 6.5), (14.5, 6.5), (14.5, 0)], seg=12, mat="polymer")
     # Ambidextrous selector levers and the bolt catch.
     for s in (1, -1):
         b.lathe("x", (0, 20, 27), [(s * 18.5, 0), (s * 18.5, 6), (s * 21.5, 6), (s * 22.5, 4.5), (s * 22.5, 0)],
@@ -534,9 +576,9 @@ def srgb_to_lin(c):
 
 
 BASE = {  # sRGB base colours, before AO / wear
-    "polymer": (40, 40, 42), "grip": (37, 37, 39), "metal": (46, 48, 52), "rail": (38, 38, 40),
-    "dark": (12, 12, 13), "brass": (150, 118, 62), "copper": (140, 82, 52), "magpoly": (42, 42, 45),
-    "suppressor": (40, 41, 44),
+    "polymer": (50, 50, 52), "grip": (46, 46, 48), "metal": (56, 58, 62), "rail": (48, 48, 50),
+    "dark": (12, 12, 13), "brass": (150, 118, 62), "copper": (140, 82, 52), "magpoly": (50, 50, 53),
+    "suppressor": (48, 49, 52),
 }
 
 
@@ -561,13 +603,13 @@ def paint(maps, kind):
     panel = g & side & (p[..., 2] < -14) & (p[..., 2] > -84)
     col[panel] *= (0.78 + 0.45 * (speck[panel] > 0.55))[..., None]
     # Top light, ambient occlusion.
-    col *= (0.86 + 0.18 * np.clip(n[..., 2], -1, 1) * 0.5 + 0.09)[..., None]
+    col *= (0.98 + 0.16 * np.clip(n[..., 2], -1, 1))[..., None]
     occ = (0.42 + 0.58 * np.clip(ao_b, 0, 1) ** 1.3) * (0.62 + 0.38 * np.clip(ao_s, 0, 1))
     col *= occ[..., None]
     # Edge wear on convex edges (open to the sky: short AO high), dirt in the concave ones.
     e = np.clip(edge * 9.0, 0, 1)
     convex = e * np.clip((ao_s - 0.55) / 0.4, 0, 1)
-    wear = np.where(is_metal, 62.0, 40.0) * (0.7 + 0.6 * vnoise(p, 2.5, 5))
+    wear = np.where(is_metal, 72.0, 52.0) * (0.7 + 0.6 * vnoise(p, 2.5, 5))
     col += (convex * wear)[..., None] * np.array([1.0, 1.0, 1.04])
     col *= (1.0 - 0.35 * e * (1 - np.clip((ao_s - 0.4) / 0.4, 0, 1)))[..., None]
     if kind == "gun":
@@ -615,9 +657,11 @@ def paint(maps, kind):
         rounds = kind[3:]
         side = np.abs(n[..., 0]) > 0.7
         length = 132.7 + 5.0 + {"20": 0.0, "30": 48.0, "40": 96.0}[rounds]
-        tm = text_mask(np.where(n[..., 0] > 0, y, -y), z, rounds, -5.5 if True else 0, -length + 9.0, 7.0)
-        tm = text_mask(np.where(n[..., 0] > 0, y, -y), z, rounds, -6.0, -length + 9.0, 7.0)
-        col[side & tm & (z < -length + 18)] = (196, 196, 190)
+        # capacity ticks (2 / 3 / 4 white bars) on both sides above the base plate, readable at 128 px
+        for k in range(int(rounds) // 10):
+            zc = -length + 10.0 + k * 3.6
+            tick = side & (np.abs(z - zc) < 0.9) & (np.abs(y + 4.0) < 6.0)
+            col[tick] = (190, 190, 184)
         # vertical pressing ribs on the body sides
         rib = side & (np.abs(np.abs(y) - 13.0) < 0.9) & (z < -12) & (z > -length + 10)
         col[rib] *= 0.72
@@ -675,12 +719,23 @@ def save_png(col, size, path):
     bpy.data.images.remove(img)
 
 
+def dump_maps(maps, prefix):
+    """--debug DIR: the baked maps of one object as PNGs (occ = short AO, broad AO, edge x 9)."""
+    os.makedirs(os.path.dirname(prefix), exist_ok=True)
+    occ = maps["occ"].copy()
+    occ[..., 2] = np.clip(occ[..., 2] * 9.0, 0, 1)
+    for name, arr in (("occ", occ), ("nrm", maps["nrm"] * 0.5 + 0.5), ("mat", np.repeat(maps["mat"][..., None] / 8.0, 3, 2))):
+        save_png(np.clip(arr, 0, 1) * 255.0, arr.shape[0], prefix + "_" + name + ".png")
+
+
 def texture(objects, contexts, kinds, size, path):
     bake = max(size * 4, BAKE // (256 // size) if size < 256 else BAKE)
     col = np.zeros((bake, bake, 3), np.float32)
     cover = np.zeros((bake, bake), bool)
     for ob, ctx, kind in zip(objects, contexts, kinds):
         maps = bake_maps(ob, ctx, bake)
+        if DEBUG:
+            dump_maps(maps, os.path.join(DEBUG, ob.name))
         c = paint(maps, kind)
         m = maps["cover"]
         col[m] = c[m]
@@ -705,6 +760,71 @@ def export(objects, path):
     bpy.context.view_layer.objects.active = objects[0]
     os.makedirs(os.path.dirname(path), exist_ok=True)
     bpy.ops.export_scene.fbx(filepath=path, use_selection=True)
+    normalize_fbx(path)
+
+
+def _fbx_nodes(data, off, version, out, path):
+    """Flat list of (path, name, [(type, offset, value)]) for every node of a binary FBX (7.x)."""
+    while True:
+        if version >= 7500:
+            end, nprops, _ = struct.unpack_from("<QQQ", data, off)
+            off += 24
+        else:
+            end, nprops, _ = struct.unpack_from("<III", data, off)
+            off += 12
+        nlen = data[off]
+        name = data[off + 1:off + 1 + nlen].decode("ascii", "replace")
+        off += 1 + nlen
+        if end == 0:
+            return off
+        props = []
+        for _ in range(nprops):
+            kind = chr(data[off])
+            off += 1
+            if kind in "YCIFDL":
+                size = {"Y": 2, "C": 1, "I": 4, "F": 4, "D": 8, "L": 8}[kind]
+                props.append((kind, off, struct.unpack_from("<" + {"Y": "h", "C": "b", "I": "i", "F": "f", "D": "d",
+                                                                    "L": "q"}[kind], data, off)[0]))
+                off += size
+            elif kind in "fdlbic":
+                off += 12 + struct.unpack_from("<III", data, off)[2]
+                props.append((kind, off, None))
+            else:
+                length = struct.unpack_from("<I", data, off)[0]
+                props.append((kind, off + 4, data[off + 4:off + 4 + length]))
+                off += 4 + length
+        out.append((path, name, props))
+        if off < end:
+            off = _fbx_nodes(data, off, version, out, path + (name,))
+        off = end
+        if path == () and off >= len(data) - 200:
+            return off
+
+
+def normalize_fbx(path):
+    """Blender stamps each export with the time and keys objects by memory address; rewrite both in place (same
+    lengths) so the same model gives the same bytes: time 2026-01-01 00:00:00.000, ids from a hash of class + name."""
+    import hashlib
+    data = bytearray(open(path, "rb").read())
+    version = struct.unpack_from("<I", data, 23)[0]
+    nodes = []
+    _fbx_nodes(bytes(data), 27, version, nodes, ())
+    stamp = {"Year": 2026, "Month": 1, "Day": 1, "Hour": 0, "Minute": 0, "Second": 0, "Millisecond": 0}
+    remap = {}
+    for p, name, props in nodes:
+        if p[-1:] == ("CreationTimeStamp",) and name in stamp:
+            struct.pack_into("<i", data, props[0][1], stamp[name])
+        if len(p) == 1 and p[0] in ("Objects", "Documents") and props and props[0][0] == "L":
+            label = name.encode() + b"|" + (props[1][2] if len(props) > 1 and props[1][2] else b"")
+            new = int.from_bytes(hashlib.sha1(label).digest()[:6], "little") + 1000
+            remap[props[0][2]] = new
+            struct.pack_into("<q", data, props[0][1], new)
+    for p, name, props in nodes:
+        if p == ("Connections",) and name == "C":
+            for kind, off, val in props[1:3]:
+                if kind == "L" and val in remap:
+                    struct.pack_into("<q", data, off, remap[val])
+    open(path, "wb").write(bytes(data))
 
 
 def g(v):
@@ -793,4 +913,5 @@ def main():
         print("%-28s tris %5d  min %s  max %s" % (name, b["tris"], b["min"], b["max"]))
 
 
-main()
+if __name__ == "__main__":
+    main()

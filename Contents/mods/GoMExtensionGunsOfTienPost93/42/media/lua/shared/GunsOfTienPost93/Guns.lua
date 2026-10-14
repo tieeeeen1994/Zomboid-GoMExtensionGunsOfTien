@@ -10,7 +10,6 @@
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
 local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
-local Animations = require("WeaponSystems/Utils/Animations")
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local FoldingStock = require("WeaponSystems/Utils/FoldingStock")
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
@@ -18,7 +17,7 @@ local SF = require("WeaponSystems/Utils/StatsFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 
-for _, file in ipairs({ "Magazines", "RPM", "AnimationsFiring", "ReloadAnims", "Stocks", "AttachmentCustomStats",
+for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -44,12 +43,10 @@ RateOfFire.RegisterWeapon(MP7, { rpm = 950, enableSpread = true, sustainedSpread
 RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread = 0.06, maxSpread = 1.1 })
 
 -------------------------------------------------
--- Animated charging handle (GoM's shared bolt part items, drawn with each gun's own bolt model). The form
--- Animations.lua reads is SingleAttachment, not the attachments = {} of Gunworks' API docs.
+-- No animated bolt: on both the MP7 and the P90 the charging handle does not move when firing (the bolt inside
+-- does), so neither is registered with Animations (GoM swaps Bolt_Fired / Bolt_Lock on each shot for guns whose
+-- handle reciprocates). The handle model is drawn through the Bolt_Lock part (required at spawn).
 -------------------------------------------------
-local Bolt = { SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" }, cycleTicks = 3 }
-Animations.RegisterWeaponWithAnimatedParts(MP7, Bolt)
-Animations.RegisterWeaponWithAnimatedParts(P90, Bolt)
 
 -------------------------------------------------
 -- Reload animations: the MP7 uses GoM's MP5 clips; the P90 its own top-loading clips (AnimSets P90TR_*).

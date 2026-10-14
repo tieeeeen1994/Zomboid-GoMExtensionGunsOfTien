@@ -21,6 +21,8 @@ magazine the rounds seen through the smoky plastic. Bakes are 4x the final size 
 Everything is seeded: the same inputs give the same files.
 """
 
+import sys as _sys
+_sys.dont_write_bytecode = True  # no __pycache__ next to the scripts
 import json
 import math
 import os
@@ -31,9 +33,11 @@ import zlib
 import bmesh
 import bpy
 import numpy as np
+from mathutils import Matrix
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import p90_fbxfix  # noqa: E402
 import p90_geometry as G  # noqa: E402
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
@@ -94,10 +98,7 @@ def make_object(name, parts, xform, offset=(0.0, 0.0, 0.0)):
     me = bpy.data.meshes.new(name)
     bm.to_mesh(me)
     bm.free()
-    # Face attribute -> a FACE float attribute the shader can read.
-    attr = me.attributes.get("pid")
-    if attr is None or attr.domain != "FACE":
-        pass
+    # The bmesh float layer "pid" arrives as a FACE float attribute, which the bake shader reads.
     for poly in me.polygons:
         poly.use_smooth = True
     me.set_sharp_from_angle(angle=math.radians(38))
@@ -225,9 +226,7 @@ def bake_group(objects, size, name):
             scene.cycles.samples = 32 if QUICK else 192
             bpy.ops.object.bake(type="AO")
         else:
-            scene.cycles.samples = 4 if kind != "edge" else (8 if QUICK else 32)
-            if kind in ("pid", "pos", "nrm"):
-                scene.cycles.samples = 1
+            scene.cycles.samples = (8 if QUICK else 32) if kind == "edge" else 1
             for m in mats:
                 set_emission(m, kind)
             bpy.ops.object.bake(type="EMIT")
@@ -335,10 +334,10 @@ def shade(base, ao, edge, gp, wear=1.0, seed=1):
     """Common look: AO, edge highlights broken up by noise, grime, grain (all in display sRGB space)."""
     n_lo = vnoise(gp, 60.0)
     n_hi = vnoise(gp + 3.1, 400.0)
-    col = base * (0.42 + 0.58 * ao[..., None] ** 1.3)[..., :] if base.ndim == 3 else base
-    col = col * (0.9 + 0.2 * n_lo)[..., None]
+    col = base * (0.38 + 0.68 * ao[..., None] ** 1.3)
+    col = col * (0.86 + 0.28 * n_lo)[..., None]
     scratch = smoothstep(0.35, 0.75, n_hi) * 0.6 + 0.4
-    col = col + (0.13 * wear * edge * scratch)[..., None]
+    col = col + (0.20 * wear * edge * scratch)[..., None]
     col = col + grain(ao.shape, seed, 0.03)[..., None]
     return col
 
@@ -351,7 +350,7 @@ def paint_gun(b, size):
     with open(os.path.join(WORK, "decals.json")) as handle:
         dec = json.load(handle)
     base = np.zeros(pid.shape + (3,), np.float32)
-    colours = {0: (0.168, 0.165, 0.160), 1: (0.150, 0.148, 0.145), 2: (0.155, 0.156, 0.162),
+    colours = {0: (0.178, 0.175, 0.170), 1: (0.160, 0.158, 0.155), 2: (0.165, 0.166, 0.172),
                3: (0.205, 0.205, 0.215)}
     for k, c in colours.items():
         base[pid == k] = c
@@ -361,7 +360,7 @@ def paint_gun(b, size):
     ribs = (np.sin(v / 2.2) > 0.55) & rear
     base[ribs] *= 0.72
 
-    col = shade(base, ao, edge * np.where(pid == 3, 1.4, 1.0), gp, seed=11)
+    col = shade(base, ao, edge * np.where(pid == 3, 1.4, 1.0), gp, wear=1.35, seed=11)
 
     # Decals projected by facing.
     wl = smoothstep(0.45, 0.75, gn[..., 0])
@@ -380,7 +379,6 @@ def paint_gun(b, size):
     # Grip region (pid 1) stippled everywhere.
     gst = (pid == 1)[..., None] * (st > 0.1)
     col = col * (1 - 0.22 * gst)
-    # Rail: anodised, slightly blue; deeper AO between the teeth already darkens the slots.
     return finish(col, size)
 
 
@@ -429,7 +427,7 @@ def paint_mag(b, size, offset_mm):
     end = end * (0.75 + 0.25 * (1 - (best_d / 3.95) ** 2))[..., None]
     end = end * np.where(best_row[..., None] == 0, 0.8, 1.0)
     cart += (side * disc)[..., None] * end
-    seen += side * disc * 0.62
+    seen += side * disc * 0.7
     # Top / bottom: rounds lying across, tips to +x; top shows the upper row, bottom the lower one.
     for w, row_start, dim in ((smoothstep(0.45, 0.75, gn[..., 2]), -46.0 - pitch / 2, 1.0),
                               (smoothstep(0.45, 0.75, -gn[..., 2]), -46.0, 0.7)):
@@ -447,7 +445,7 @@ def paint_mag(b, size, offset_mm):
         roundness = np.sqrt(np.clip(1 - (du / np.maximum(rad, 1e-3)) ** 2, 0, 1))
         colr = colr * (0.55 + 0.55 * roundness)[..., None] * dim
         cart += (w * body)[..., None] * colr
-        seen += w * body * 0.6
+        seen += w * body * 0.7
         # Gaps between rounds show the other row, darker.
         gap = (~body) & valid & (np.abs(xr) < 20.0)
         cart += (w * gap)[..., None] * brass_dk * 0.45 * dim
@@ -461,7 +459,7 @@ def paint_mag(b, size, offset_mm):
     base = np.where(smoke[..., None], tint, np.array((0.155, 0.152, 0.150), np.float32))
     col = shade(base, ao, edge, gp, wear=0.8, seed=31)
     through = (seen * smoke)[..., None]
-    col = col * (1 - through) + through * (cart * (0.55 + 0.45 * ao[..., None]) * 0.85 + tint * 0.25)
+    col = col * (1 - through) + through * (cart * (0.6 + 0.4 * ao[..., None]) * 1.1 + tint * 0.2)
     # Plastic sheen: soft light band along the upper side faces and the top.
     sheen = smoke * (side * smoothstep(17.0, 23.0, v) * 0.06 + smoothstep(0.6, 0.9, gn[..., 2]) * 0.025)
     col = col + sheen[..., None]
@@ -523,7 +521,7 @@ def export(objects, path, offset=(0.0, 0.0, 0.0)):
         for a in [a for a in me.attributes if a.name == "pid"]:
             me.attributes.remove(a)
         if any(offset):
-            me.transform(__import__("mathutils").Matrix.Translation((-offset[0], -offset[1], offset[2])))
+            me.transform(Matrix.Translation((-offset[0], -offset[1], offset[2])))
         name = ob.name.split("__")[0]
         me.name = name
         cp = bpy.data.objects.new(name, me)
@@ -536,6 +534,7 @@ def export(objects, path, offset=(0.0, 0.0, 0.0)):
         cp.select_set(True)
     bpy.context.view_layer.objects.active = copies[0]
     bpy.ops.export_scene.fbx(filepath=path, use_selection=True)
+    p90_fbxfix.normalize(path)            # fixed time stamp and object ids: reproducible files
     for cp in copies:
         me = cp.data
         bpy.data.objects.remove(cp)
@@ -571,6 +570,8 @@ def main():
     # bakes; the suppressor and mount bake alone (moved apart so they do not shade each other).
     supp.location.x = 1.0
     mount.location.x = 2.0
+    for ob in (supp, mount):
+        ob.hide_render = True
     gun_size = 256 * SS
     small = 128 * SS
     b = bake_group([body, bolt], gun_size, "gun")
@@ -578,6 +579,10 @@ def main():
     b = bake_group([mag], small, "mag")
     mag_mm = (G.MAG_FRONT_U - G.U0, G.MAG_BASE_V - G.V0)
     write_png(os.path.join(TEX, "57x28Magazine50_P90.png"), paint_mag(b, 128, mag_mm))
+    for ob in (body, bolt, mag):
+        ob.hide_render = True
+    supp.hide_render = False
+    mount.hide_render = False
     supp.location.x = 0.0
     b = bake_group([supp], small, "supp")
     write_png(os.path.join(TEX, "P90_Suppressor.png"), paint_lathe(b, 128, "supp"))

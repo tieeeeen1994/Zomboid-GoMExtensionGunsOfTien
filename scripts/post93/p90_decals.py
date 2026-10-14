@@ -13,6 +13,8 @@ Usage: python3 p90_decals.py OUT_DIR     writes p90_side_left.png, p90_side_righ
 and decals.json (the sheet frames, read by build_p90.py).
 """
 
+import sys as _sys
+_sys.dont_write_bytecode = True  # no __pycache__ next to the scripts
 import json
 import math
 import os
@@ -148,7 +150,6 @@ def bottom():
     s.text("G", 296, -12.5, "1", 3.2, 230)
     s.text("G", 309, 0, "A", 3.2, 230)
     s.line("R", [(105, 0), (180, 0)], 0.8, 100)
-    s.rect("B", 330, -14, 395, 14, 120, 6)
     return s
 
 

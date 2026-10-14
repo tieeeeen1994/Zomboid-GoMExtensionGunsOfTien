@@ -54,6 +54,7 @@ Guns `MP7A1`, `P90TR`; models `MP7A1` (+ `MP7A1_BOLT`, `MP7A1_STOCK`), `P90TR` (
 `MP7A1_Integrated_Stock_Folded / _Deployed`; magazines `46x30Magazine20_MP7`, `46x30Magazine30_MP7`,
 `46x30Magazine40_MP7`, `57x28Magazine50_P90`; suppressors `MP7_Suppressor`, `P90_Suppressor`; mounts
 `MP7_Muzzle_Mount_Device`, `P90_Muzzle_Mount_Device`; rounds `46x30_Bullet` (DM11), `46x30_Bullet_Subsonic`,
-`57x28_Bullet` (SS190), `57x28_Bullet_SB193`, `57x28_Bullet_SS197SR`. Files: models_X/weapons/firearms/
-GunsOfTienPost93_MP7A1.fbx and _P90TR.fbx, models_X/weapons/magazines/GunsOfTienPost93_magazines.fbx,
-models_X/weapons/parts/GunsOfTienPost93_parts.fbx; textures under textures/weapons/GunsOfTienPost93/.
+`57x28_Bullet` (SS190), `57x28_Bullet_SB193`, `57x28_Bullet_SS197SR`. Files (one set per gun): models_X/weapons/firearms/
+GunsOfTienPost93_MP7A1.fbx and _P90TR.fbx, models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx and
+_P90_magazines.fbx, models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx and _P90_parts.fbx; textures under
+textures/weapons/GunsOfTienPost93/. The charging handles do not reciprocate on either gun, so no animated bolt.

@@ -1,0 +1,226 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2016,
+      0.0274
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.02,
+      0.13,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.0263,
+      0.0216
+    ],
+    "rotate": [
+      -14.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0504,
+      0.0463
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0504,
+      0.0486
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0129,
+      0.1426,
+      0.0259
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0129,
+      0.1426,
+      0.0259
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0191,
+      0.1436,
+      0.0259
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0202,
+      0.1436,
+      0.0251
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.2016,
+      0.0274
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.036,
+      0.0
+    ]
+  },
+  "stock_folded": {
+    "offset": [
+      0.0,
+      0.1606,
+      0.0
+    ]
+  },
+  "_bounds": {
+    "MP7A1_BODY": {
+      "min": [
+        -0.0176,
+        -0.0886,
+        -0.0757
+      ],
+      "max": [
+        0.0176,
+        0.2016,
+        0.0612
+      ],
+      "tris": 2572
+    },
+    "MP7A1_BOLT": {
+      "min": [
+        -0.0158,
+        -0.0965,
+        0.036
+      ],
+      "max": [
+        0.0158,
+        -0.0504,
+        0.0443
+      ],
+      "tris": 144
+    },
+    "MP7A1_STOCK": {
+      "min": [
+        -0.0169,
+        -0.2581,
+        -0.0194
+      ],
+      "max": [
+        0.0169,
+        -0.0828,
+        0.0315
+      ],
+      "tris": 272
+    },
+    "46x30Magazine20_MP7": {
+      "min": [
+        -0.0079,
+        -0.0155,
+        -0.0991
+      ],
+      "max": [
+        0.0079,
+        0.0173,
+        0.001
+      ],
+      "tris": 294
+    },
+    "46x30Magazine30_MP7": {
+      "min": [
+        -0.0079,
+        -0.0155,
+        -0.1337
+      ],
+      "max": [
+        0.0079,
+        0.0173,
+        0.001
+      ],
+      "tris": 294
+    },
+    "46x30Magazine40_MP7": {
+      "min": [
+        -0.0079,
+        -0.0155,
+        -0.1683
+      ],
+      "max": [
+        0.0079,
+        0.0173,
+        0.001
+      ],
+      "tris": 294
+    },
+    "MP7_Suppressor": {
+      "min": [
+        -0.0124,
+        0.0,
+        -0.0124
+      ],
+      "max": [
+        0.0124,
+        0.1368,
+        0.0124
+      ],
+      "tris": 440
+    },
+    "MP7_Muzzle_Mount_Device": {
+      "min": [
+        -0.0071,
+        -0.0101,
+        -0.0071
+      ],
+      "max": [
+        0.0071,
+        0.0166,
+        0.0071
+      ],
+      "tris": 352
+    },
+    "MP7A1_STOCK_folded": {
+      "min": [
+        -0.0169,
+        -0.0976,
+        -0.0194
+      ],
+      "max": [
+        0.0169,
+        0.0778,
+        0.0315
+      ],
+      "tris": 272
+    }
+  },
+  "_notes": {
+    "units": "game units (0.72 of real size); +Y muzzle, +Z top, +X the gun's left; origin = rear-top of grip",
+    "magazine": "magazine meshes are straight along -Z; the attachment rotate rakes them back 14 degrees (GoM's MP5 uses +10.29 to tilt its magazine bottom forward)",
+    "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
+    "stock_folded": "MP7A1_STOCK is modelled deployed at the origin; this offset slides it in (223 mm real)"
+  }
+}
