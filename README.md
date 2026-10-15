@@ -1,4 +1,4 @@
-# GoM Extension: Guns of Tien
+# Guns of Marz Extension: Guns of Tien
 
 Project Zomboid Build 42 mod.
 
@@ -19,7 +19,7 @@ Each in boxes, cartons and crates, with Ammo Maker recipes.
 
 ## Changes to Guns of Marz
 
-- Adjusted sound radius and volume for the guns (not the grenade launchers)
+- Realistic sound radius and volume for the guns (not the grenade launchers)
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US Subsonic must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
