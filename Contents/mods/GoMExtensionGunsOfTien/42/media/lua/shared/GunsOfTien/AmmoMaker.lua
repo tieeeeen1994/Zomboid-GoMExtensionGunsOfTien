@@ -57,13 +57,15 @@ ammoMakerAmmoParts["GunsOfTien.Birdshot"] = {
     boxType = "GunsOfTien.BoxBirdshot",
 }
 
+-- Powder follows Ammo Maker's own 5.56 variants: subsonic x0.7 (556x45SS 35 / 50), overpressured x1.4 (556x45OP
+-- 70 / 50) for +P+, and +P a milder x1.2; hollow / soft points, steel core and birdshot keep the standard charge.
 -- New type -> { copied from, changes }
 local NEW_TYPES = {
     ["762x39SS"] = { "762x39", { grainsAmount = 35 } },
     ["762x39SP"] = { "762x39", { bulletType = "GunsOfTien.BulletRifleSSP" } },
-    ["9x19ParaSS"] = { "9x19Para", { grainsAmount = 8 } },
+    ["9x19ParaSS"] = { "9x19Para", { grainsAmount = 7 } },
     ["9x19ParaHP"] = { "9x19Para", { bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
-    ["9x19ParaPPP"] = { "9x19Para", { grainsAmount = 13, bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
+    ["9x19ParaPPP"] = { "9x19Para", { grainsAmount = 14, bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
     ["45ACPHP"] = { "45ACP", { bulletType = "ammomaker.ammomaker_BulletHandgunMHP" } },
     ["45ACPP"] = { "45ACP", { grainsAmount = 19, bulletType = "ammomaker.ammomaker_BulletHandgunMHP" } },
     ["3006SpringSP"] = { "3006Spring", { bulletType = "GunsOfTien.BulletRifleMSP" } },

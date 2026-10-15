@@ -1,8 +1,10 @@
 name=GoM Extension: Guns of Tien - Post-93
 id=GoMExtensionGunsOfTienPost93
-description=Add-on for GoM Extension: Guns of Tien with ammunition that did not exist yet in July 1993. Enable it together with GoM Extension: Guns of Tien.
+description=Optional add-on for GoM Extension: Guns of Tien with two guns from after July 1993: the H&K MP7 and the FN P90 TR, held like pistols, with their magazines (MP7 20, 30, 40 and a 60-round drum; P90 50), suppressors, and 4.6x30mm and 5.7x28mm ammunition you can also make with Ammo Maker. Enable it together with GoM Extension: Guns of Tien.
 author=Tien
 modversion=0.1.0
+poster=poster.png
+icon=icon.png
 versionMin=42.16
 require=SWMG,GunsOfMarz,ammomaker,GoMExtensionGunsOfTien
 loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker,GoMExtensionGunsOfTien

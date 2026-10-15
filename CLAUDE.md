@@ -188,7 +188,8 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
 - Picatinny rail L 85-375, crossbars to H 169.6 every 10 mm; flip-up front sight L 89-136, rear drum L 320-370, both
   to H 186; short side rails L 78-140 at H 120 (both sides); T charging handle L 376-394, H 148-165.
 - Stock collapsed: butt plate L 385-414, H 36-148 (front face slanting back toward the bottom, two holes at L 397,
-  H 46.5 / 55.5), rods at H 140 x ±10; travel 223 mm.
+  H 46.5 / 55.5), rods at H 140 x ±10; travel 223 mm. The rods run forward to L 360, 25 mm into the receiver
+  (its back face is L 385): ending at L 395 left a visible gap with the stock extended (user, 2026-10-15).
 - Magazines (`build_mp7.build_magazine`): swept along an axis straight inside the grip (feed lips L 257 / H 104), the
   20-round one ends at its base plate under the grip (H 0.5-5.5); the 30 / 40-round ones go on 48 / 96 mm curving
   toward the muzzle (radius 400 mm, ~7 / ~14 degrees), as in `mp7_1.png` / `mp7_4.png`. The `magazine` point has no
@@ -200,6 +201,9 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
   Weight 0.30 (GoM's MP5 100-round drum 0.33), "MP7 60Rds Drum 4.6x30mm Magazine", 2% on found MP7s and not in the
   spawner's magazine list. Its icon uses a camera fitted on GoM's `item_9x19Magazine100_MP5` (`make_mp7_art.py
   --fit-drum`, kind "drum"; the other kinds keep their stored cameras).
+- **No GoM muzzle devices** (user, 2026-10-15): GoM's `LR2_Compensator`, `LX_Flashhider` and `Trix42_Muzzlebreak`
+  are AR rifle parts that neither real gun can take, so they are not allowed on the MP7 or P90 ("if they don't fit
+  it, then we shouldn't add them"). Only our own suppressors go on the guns' mount devices.
 - `slab()` (the filled-curve profile extrusion) now lives in build_mp7.py and build_p90.py calls it.
 - **Held like a pistol since 2026-10-15 (user: "MP7 also needs to be pistol wielded like P90")**: the item block is
   `GUN_HANDGUN` (SwingAnim Handgun, WeaponReloadType handgun, one hand, handgun muzzle flash), AttachmentType stays
@@ -408,6 +412,11 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   (its loot code inserts every "Shotgun" part's `boxType` unchecked). Fluid input at a furnace (entity) recipe is
   written like vanilla's pottery wheel: `item 1 [*] mode:keep flags[ItemIsFluid;HandcraftOnly]` +
   `-fluid 0.5 categories[Water] mode:mixture`.
+- **Powder follows Ammo Maker's own pattern, for balance (user, 2026-10-15)**, not real charges (its "grains" are
+  not real: 7.62x39 is 50): its 5.56 variants have subsonic `556x45SS` 35 (x0.7 of 50), overpressured `556x45OP` 70
+  (x1.4), and HP / AP / TR the standard charge. Ours: subsonic x0.7 (7.62x39 US 35, 9x19 147gr 7, 4.6x30 10, 5.7
+  SB193 8), +P+ x1.4 (9x19 14), .45 +P a milder x1.2 (19); hollow / soft points, steel core, SP-6, birdshot, SS197SR
+  keep the standard charge.
 
 ## Combat mechanics that matter here (42.21 Java, traced 2026-10-14; decompiles in the session scratchpad)
 

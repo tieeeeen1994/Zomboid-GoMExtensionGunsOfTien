@@ -9,8 +9,9 @@
 
 if type(ammoMakerAmmoData) ~= "table" then return end
 
+-- Subsonic powder x0.7 of the standard charge, as Ammo Maker's own 556x45SS (35 / 50).
 local NEW_TYPES = {
-    ["46x30SS"] = { "46x30", { grainsAmount = 9 } },
+    ["46x30SS"] = { "46x30", { grainsAmount = 10 } },
     ["57x28SS"] = { "57x28", { grainsAmount = 8 } },
     ["57x28SR"] = { "57x28", { bulletType = "ammomaker.ammomaker_BulletRifleSHP" } },
 }

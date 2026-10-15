@@ -389,10 +389,12 @@ def build_stock():
     """Butt plate and its two rods, modelled extended (STOCK_TRAVEL behind the collapsed position)."""
     b = Builder()
     slab(b, [P(L + STOCK_TRAVEL, H) for L, H in BUTT], half=W_BUTT, bevel=3.0, res=1)
+    # The rods run 25 mm into the receiver (its back face is at L 385), so the extended stock has no gap; collapsed,
+    # they reach L 137, still inside the upper receiver.
     for s in (1, -1):
         b.lathe("y", (s * 10.0, 0, 140.0 - H0), [(P(386.0 + STOCK_TRAVEL, 0)[0], 0),
                                                   (P(386.0 + STOCK_TRAVEL, 0)[0], 4.2),
-                                                  (P(395.0, 0)[0], 4.2), (P(395.0, 0)[0], 0)], seg=10, mat="metal")
+                                                  (P(360.0, 0)[0], 4.2), (P(360.0, 0)[0], 0)], seg=10, mat="metal")
     return b.to_object("MP7A1_STOCK")
 
 
