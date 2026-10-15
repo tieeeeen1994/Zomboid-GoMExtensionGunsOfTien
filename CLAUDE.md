@@ -122,6 +122,50 @@ mm long, 181 mm tall with the TR rail; model = 0.72 × real. Rebuild order (Wind
 scripts/post93/render_p90.py -- DIR`, `py scripts/post93/make_p90_art.py --renders DIR`. Next: run `gen_post93_guns.py`,
 check every reference resolves, make the P90 clips with TienInspectWeapon's pipeline, test.
 
+## P90 reload animations (2026-10-15, approved from GIFs)
+
+`scripts/post93/anim/p90_reload.py` (Blender; imports `~/Zomboid/Workshop/TienInspectWeapon/scripts/anim`, or
+`$TIEN_ANIM`) builds `Bob_GunsOfTien_P90_{Unload,Load,Rack,AimRack}.x` (42 / 54 / 36 / 36 frames at 30 fps = the
+Guns.lua durations 1.4 / 1.8 / 1.2 s), shipped in `42/media/anims_X/Bob/` and played by the `*P90TR_GoT.xml` AnimSets
+(animId "P90TR"). Rebuild: `blender -b --factory-startup -P scripts/post93/anim/p90_reload.py -- "<game media>/anims_X/Bob"
+"$(pwd -W)/tmp/anim/p90" [clips] --preview`, then TienInspectWeapon's `gif.py` / `sheet.py` on `tmp/anim/p90/prev_<clip>`
+and its `xanim.py` on the `.x` before copying them in. Base pose vanilla `Bob_IdleHandgun`, second pose
+`Bob_IdleAimHandgun`; the left hand's grips are vanilla's (`Bob_Reload_Handgun` frame 48 over the slide, frame 16's hand
+orientation at the belt), anchored on contact points (`grip_on`: a template places the **wrist**, ~5 cm from the palm).
+Staging: the gun across the chest, muzzle forward-left, top to the eyes, for the magazine (`MAG`); turned further left
+so the charging handle faces the body, 5 cm closer, for the rack (`RACK`); hand reach 0.274 from the shoulder.
+- Found on the way: a reload with an animId whose clips are missing never ends (the insert waits for `loadFinished`).
+  Our unload AnimSet `x_extends` the load one, so its events override in order: `unloadFinished` (Gunworks takes the
+  magazine off and the unload ends) inherits `End`. Tried at 0.74, as the hand starts away (`<m_Time>Percentage</m_Time>`
+  + `<m_TimePc>` overrides an inherited time); the user preferred `End` (2026-10-15). With `m_EarlyTransitionOut`
+  (ours, GoM's and vanilla's reload nodes) `End` events fire when the clip **starts fading out**, the node's blend-out
+  time (0.2 s here, x the speed) before its last frame (42.21 `LiveAnimNode.addMainTrack` / `AnimationTrack`: debug
+  option `AllowEarlyTransitionOut`, default on without `-debug`), so the magazine leaves ~frame 36 of 42 while the
+  hand still moves: what the user saw on GoM's M16 (its unload is vanilla's rifle load clip reversed, `End` with a
+  0.2 s blend). A longer blend-out on the unload node alone would take it off earlier and fade longer. The
+  load click (`playReloadSound` "load") is at 0.66, the press. AimRack transitions to `IdleHandgun` via
+  `Bob_AimToIdle_Handgun`.
+- **The magazine leaves the gun with the hand (user, 2026-10-15).** The gun's model only changes when the unload
+  action ends (`unloadFinished`, End), so with Gunworks' `style = "none"` the magazine stayed on the gun while the hand
+  carried it away. The P90 now uses Gunworks' `"attachments"` style (Guns.lua: `magItem` + `attachments.magPart` =
+  the magazine, partType Clip): an AnimSet event `changeWeaponPart` "mag" detaches the magazine **part** for looks only
+  and attaches a magazine to the character's reload location (`Bip01_Prop2`, the left hand's prop bone) without ending
+  anything (`Visuals.handleWeaponPartAnimEvent`); in the insert the same event puts the part back and removes the prop,
+  and the insert's start shows the prop. Ours fire at 0.38 of the unload (frame 16, the hand has the magazine) and 0.66
+  of the load (frame 36, pressed home, with the click). `p90_reload.py` keys `Bip01_Prop2` (`key_prop2`): at the swap
+  frame exactly where the magazine sits on the gun (the `magazine` point), rigidly in the left hand on the hand's side
+  of the swap. The hand-held magazine itself is turned off (user, 2026-10-15: the magazine only leaves the gun and
+  comes back): Guns.lua wraps `ReloadAnim.attachReloadMagazine` (shared table, looked up at call time by the handler
+  and by `handleWeaponPartAnimEvent`) to skip the P90's handler; the Prop2 keys stay, so dropping the wrapper brings
+  it back. Rejected on the way: recutting the clips so the unload ends as the magazine comes off (the action ends
+  there and the character snapped out of the reload between the two clips), a mid-clip `unloadFinished`, and held or
+  near-still beats in the motion (they read as pauses).
+- Preview meshes: an FBX's raw Z is negated from game space (the `.x` weapons and GoM's FBX models agree in game
+  space: pistols' top -Z, rifles' +Z), so the gun is drawn with Z flipped back. `pose.from_clip(xa, tick)` takes
+  ticks (160 a frame).
+- Known and accepted: the left hand stops ~3 cm short of the magazine's rear end, the right wrist is past its natural
+  range in some frames, the butt grazes the right hip while the gun is at the chest.
+
 ## MP7A1 reference and model (from the user's photos, 2026-10-14)
 
 The first MP7A1 was built from published dimensions only and was off (user: "the handle seems off, the mags seem off
@@ -183,7 +227,7 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   the muzzle keeps `-90 0 -180`, canon `0 0 0`, `world` = `-0.025 0 0` / `0 0 0` (MP5K, TEC9, MAC10). `build_p90.py`
   models and bakes upright and turns body + bolt at export (`turned()` for the points); the magazine and part meshes
   stay upright. `render_p90.py` / `make_p90_art.py` turn everything back for display (`handgun_hold` in
-  `p90_points.json` `_extras`). The P90's own reload clips must be made for the pistol stance. It stays
+  `p90_points.json` `_extras`). Its reload clips are made for the pistol stance (below). It stays
   `AttachmentType = Rifle` (vanilla's Back slot: locations "Rifle On Back" / "Rifle On Back with Bag", body points
   `rifle_back` / `rifle_back_bag`, shared/NPCs/AttachedLocations.lua); an attached item's own model attachment of the
   same name is applied too, so the P90's `rifle_back` / `rifle_back_bag` = `rotate -180 0 -180` hang it upright.

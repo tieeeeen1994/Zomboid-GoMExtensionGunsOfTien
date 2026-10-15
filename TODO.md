@@ -45,7 +45,9 @@ P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, cli
       names). To check in game: the hold, the gun upright on the back (with and without a bag), the `world` floor pose.
 - [x] Every name in both mods' scripts resolves (`python3 scripts/check_refs.py`, 642 references, 2026-10-15); the
       only misses are the four P90 reload clips below. Re-run it after any generator.
-- [ ] P90 reload clips (top magazine, pistol stance): TienInspectWeapon's Blender pipeline (`scripts/anim/`), `.x` into
-      `media/anims_X/Bob/`; tune the AnimSet event times.
+- [x] P90 reload clips (pistol stance, top magazine) built and approved 2026-10-15:
+      `anims_X/Bob/Bob_GunsOfTien_P90_{Unload,Load,Rack,AimRack}.x` from `scripts/post93/anim/p90_reload.py`
+      (TienInspectWeapon's pipeline). Without them the magazine insert hung (a reload ends on its clip's events). To
+      check in game: the whole reload, the load click on the press, the rack's events, aiming racks.
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
 

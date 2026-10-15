@@ -31,12 +31,18 @@
 	</m_Events>
 	<m_Events>
 		<m_EventName>playReloadSound</m_EventName>
-		<m_TimePc>0.55</m_TimePc>
+		<m_TimePc>0.66</m_TimePc>
 		<m_ParameterValue>load</m_ParameterValue>
 	</m_Events>
 	<m_Events>
 		<m_EventName>playReloadSound</m_EventName>
 		<m_Time>Start</m_Time>
 		<m_ParameterValue>insertAmmoStart</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>changeWeaponPart</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.66</m_TimePc>
+		<m_ParameterValue>mag</m_ParameterValue>
 	</m_Events>
 </animNode>

@@ -49,11 +49,36 @@ RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread
 -------------------------------------------------
 
 -------------------------------------------------
--- Reload animations: the MP7 uses GoM's MP5 clips; the P90 its own top-loading clips (AnimSets P90TR_*).
+-- Reload animations: the MP7 uses GoM's MP5 clips; the P90 its own top-loading clips (AnimSets P90TR_*, clips
+-- anims_X/Bob/Bob_GunsOfTien_P90_*). A reload ends on its clip's events (loadFinished...): without the clips the
+-- magazine insert waits forever (seen in game, 2026-10-15). The P90 uses Gunworks' "attachments" style so the
+-- magazine leaves the gun with the hand: the AnimSets' changeWeaponPart "mag" events detach the magazine part (looks
+-- only) and show a magazine in the left hand (Bip01_Prop2, keyed in the clips) mid-unload, and put it back on the gun
+-- as the new one is pressed home; the real unload / insert still happen at the clips' ends.
 -------------------------------------------------
 local DURATIONS = { unload = 1.2, load = 1.5, rack = 1.2 }
 ReloadAnim.RegisterWeapon(MP7, { animId = "MP5", style = "none", durations = DURATIONS })
-ReloadAnim.RegisterWeapon(P90, { animId = "P90TR", style = "none", durations = { unload = 1.4, load = 1.8, rack = 1.0 } })
+ReloadAnim.RegisterWeapon(P90, {
+    animId = "P90TR",
+    style = "attachments",
+    magItem = M .. "57x28Magazine50_P90",
+    attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
+    durations = { unload = 1.4, load = 1.8, rack = 1.2 },
+})
+-- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
+-- 2026-10-15). The attachments style shows Gunworks' reload magazine there (the eject's changeWeaponPart and the
+-- insert's start, both through ReloadAnim.attachReloadMagazine, looked up on the shared table at call time), so that
+-- one call is skipped for the P90; detachReloadMagazine then has nothing to remove.
+pcall(require, "WeaponSystems/ReloadAnim/Visuals")
+local attachReloadMagazine = ReloadAnim.attachReloadMagazine
+if attachReloadMagazine then
+    ReloadAnim.attachReloadMagazine = function(action, handler)
+        if handler and handler.animId == "P90TR" then
+            return
+        end
+        return attachReloadMagazine(action, handler)
+    end
+end
 
 -------------------------------------------------
 -- MP7A1 collapsible stock (as GoM's MP5)
