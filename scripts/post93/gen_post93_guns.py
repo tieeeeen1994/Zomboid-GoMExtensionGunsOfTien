@@ -74,7 +74,8 @@ def gun_model(model, file, node_body, points, extra_points):
 
 def models(mp7, p90):
     out = [f"module {M} {{\n"]
-    out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7, ['stock_folded']))
+    out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
+                         ['stock_folded', 'rifle_back', 'rifle_back_bag']))
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     for model, file, node, tex in [
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
@@ -175,10 +176,10 @@ GUN_COMMON = """        DisplayCategory              = Weapon,
         MaxHitcount                  = 2,
 """
 
-# The P90 is held like a pistol, as GoM holds its MP5K, TEC9 and MAC10: Handgun swing animation, handgun reload
-# mechanics, one hand when not aiming (its model is built upside down to match). Unlike those it never fits a
-# holster: AttachmentType stays Rifle (the back slot), and its model's rifle_back / rifle_back_bag attachments turn
-# it upright there.
+# The MP7 and the P90 are held like a pistol, as GoM holds its MP5K, TEC9 and MAC10: Handgun swing animation,
+# handgun reload mechanics, one hand when not aiming (their models are built upside down to match). Unlike those they
+# never fit a holster: AttachmentType stays Rifle (the back slot), and their models' rifle_back / rifle_back_bag
+# attachments turn them upright there.
 GUN_HANDGUN = (GUN_COMMON
                .replace("WeaponReloadType             = boltaction,", "WeaponReloadType             = handgun,")
                .replace("        TwoHandWeapon                = true,\n", "")
@@ -217,7 +218,7 @@ def items(mp7, p90):
         StopPower                    = 2.0,
         Weight                       = 1.9,
         MetalValue                   = 25.0,
-{GUN_COMMON}        AmmoType                     = gunsoftienpost93:bullet_46x30,
+{GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_46x30,
         AmmoBox                      = {M}.46x30_Box,
         MagazineType                 = {M}.46x30Magazine20_MP7,
         MaxAmmo                      = 20,
@@ -342,21 +343,22 @@ def items(mp7, p90):
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
+    # GoM's naming: model and class, no maker ("MP5 Submachine Gun", "MP5 Integrated Stock (Folded)").
     names.update({
-        f'{M}.MP7A1': 'H&K MP7A1 Personal Defense Weapon',
-        f'{M}.P90TR': 'FN P90 TR Personal Defense Weapon',
+        f'{M}.MP7A1': 'MP7 Submachine Gun',
+        f'{M}.P90TR': 'P90 Submachine Gun',
         f'{M}.46x30Magazine20_MP7': 'MP7 20Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine30_MP7': 'MP7 30Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine40_MP7': 'MP7 40Rds 4.6x30mm Magazine',
         f'{M}.57x28Magazine50_P90': 'P90 50Rds 5.7x28mm Magazine',
-        f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7A1 Integrated Stock (Collapsed)',
-        f'{M}.MP7A1_Integrated_Stock_Deployed': 'MP7A1 Integrated Stock (Extended)',
-        f'{M}.MP7A1_Integrated_Rail_Up': 'MP7A1 Integrated Rail (Up)',
-        f'{M}.MP7A1_Integrated_Rail_Left': 'MP7A1 Integrated Rail (Left)',
-        f'{M}.MP7A1_Integrated_Rail_Right': 'MP7A1 Integrated Rail (Right)',
-        f'{M}.P90TR_Integrated_Rail_Up': 'P90 TR Integrated Rail (Up)',
-        f'{M}.P90TR_Integrated_Rail_Left': 'P90 TR Integrated Rail (Left)',
-        f'{M}.P90TR_Integrated_Rail_Right': 'P90 TR Integrated Rail (Right)',
+        f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7 Integrated Stock (Collapsed)',
+        f'{M}.MP7A1_Integrated_Stock_Deployed': 'MP7 Integrated Stock (Extended)',
+        f'{M}.MP7A1_Integrated_Rail_Up': 'MP7 Integrated Rail (Up)',
+        f'{M}.MP7A1_Integrated_Rail_Left': 'MP7 Integrated Rail (Left)',
+        f'{M}.MP7A1_Integrated_Rail_Right': 'MP7 Integrated Rail (Right)',
+        f'{M}.P90TR_Integrated_Rail_Up': 'P90 Integrated Rail (Up)',
+        f'{M}.P90TR_Integrated_Rail_Left': 'P90 Integrated Rail (Left)',
+        f'{M}.P90TR_Integrated_Rail_Right': 'P90 Integrated Rail (Right)',
         f'{M}.MP7_Suppressor': 'MP7 Suppressor (4.6x30mm)',
         f'{M}.MP7_Muzzle_Mount_Device': 'MP7 Muzzle Mount Device',
         f'{M}.P90_Suppressor': 'P90 Suppressor (5.7x28mm)',

@@ -19,7 +19,9 @@ rounded edges (slab(), a filled 2D curve), GoM's flat faceted hard-surface style
 axis that runs straight inside the grip and curves toward the muzzle below it (docs/mp7_1.png, mp7_4.png).
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): game space +Y muzzle, +Z top, +X the gun's LEFT, origin at
-the rear-top of the pistol grip, drawn at 0.72 of real size. FBX object name = node name, mesh data =
+the rear-top of the pistol grip, drawn at 0.72 of real size. The MP7 is held like a pistol, as GoM holds its MP5K,
+TEC9 and MAC10: everything is modelled and baked upright and the gun nodes are turned 180 degrees about the bore axis
+at export, with the attachment points (TURN, turned(); build_p90.py does the same). FBX object name = node name, mesh data =
 (game x, game y, -game z), rotation (90, 0, 0), scale 0.01, export_scene.fbx with its defaults.
 
 Textures are baked in Cycles (object position, normal, material, two ambient occlusion distances and an edge mask
@@ -924,6 +926,37 @@ def g(v):
     return [round(float(c) * K, 4) for c in v]
 
 
+# Held like a pistol: GoM's handgun-held guns (pistols, MP5K, TEC9, MAC10; SwingAnim = Handgun) are modelled upside
+# down, turned 180 degrees about the barrel axis (game x -> -x, z -> -z) around the same rear-top-of-grip origin, and
+# their attachment points with them; a part modelled upright gets rotate (-180, 0, -180) (= that turn), as on the
+# MP5K's rail_up / scope. The MP7 and the P90 are built and baked upright and turned only at export (points(), main()).
+TURN = [-180.0, 0.0, -180.0]
+
+
+def turned(point, part=True):
+    """An upright point in the handgun-held model: offset x, z negated, an upright part turned with the gun."""
+    x, y, z = point["offset"]
+    out = {"offset": [round(-x, 4) + 0.0, y, round(-z, 4) + 0.0]}
+    if "rotate" in point:
+        out["rotate"] = point["rotate"]
+    elif part:
+        out["rotate"] = list(TURN)
+    return out
+
+
+def handgun_points(pts):
+    """Turn upright points for the handgun-held model, add the floor pose and the back-slot points."""
+    pts = {k: turned(v) for k, v in pts.items()}
+    # floor pose of GoM's handgun-held SMGs (MP5K, TEC9, MAC10)
+    pts["world"] = {"offset": [-0.025, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]}
+    # Carried on the back like a rifle (never in a holster): the body's rifle points expect an upright rifle model,
+    # and an attached item's own attachment of the same name is applied on top, so these turn the gun back upright
+    # (a half turn is its own inverse, so it does not matter whether the engine inverts it).
+    for name in ("rifle_back", "rifle_back_bag"):
+        pts[name] = {"offset": [0.0, 0.0, 0.0], "rotate": list(TURN)}
+    return pts
+
+
 def points(bounds):
     rail_top = (RAIL_TOP_H - H0) * K
     side = SIDE_RAIL_X * K
@@ -933,9 +966,8 @@ def points(bounds):
     my, mz = P(MAG_L, MAG_H)
     cy, cz = P(CANON_L, BORE_H)
     pts = {
-        "muzzle": {"offset": [0.0, round(L0 * K, 4), round(BORE_Z * K, 4)], "rotate": [-90.0, 0.0, -180.0]},
-        "world": {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]},
-        "magazine": {"offset": [0.0, round(my * K, 4), round(mz * K, 4)], "rotate": [0.0, 0.0, 0.0]},
+        "muzzle": {"offset": [0.0, round(L0 * K, 4), round(BORE_Z * K, 4)], "rotate": [-90.0, 0.0, -180.0]},  # as MP5K
+        "magazine": {"offset": [0.0, round(my * K, 4), round(mz * K, 4)]},
         # GoM's Picatinny_Rail_Up spans z -0.0011..0.0055 from rail_up and MP5's scope sits 0.0032 under that
         # rail's top: the same relations on the integral rail.
         "rail_up": {"offset": [0.0, oy, round(rail_top - 0.0055, 4)]},
@@ -945,22 +977,29 @@ def points(bounds):
         # MP5: light_left = rail_left + 0.0062 x, laser_right = rail_right - 0.0073 x, 0.0008 lower
         "light_left": {"offset": [round(side - 0.0055 + 0.0062, 4), ry, rz]},
         "laser_right": {"offset": [round(-(side - 0.0055 + 0.0073), 4), ry, round(rz - 0.0008, 4)]},
-        "canon": {"offset": [0.0, round(cy * K, 4), round(cz * K, 4)]},
-        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0]},
-        "stock_folded": {"offset": [0.0, round(STOCK_TRAVEL * K, 4), 0.0]},
+        "canon": {"offset": [0.0, round(cy * K, 4), round(cz * K, 4)], "rotate": [0.0, 0.0, 0.0]},  # round: GoM 0
+        # the bolt and the stock are nodes of the gun's own file, turned with it
+        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
+        "stock_folded": {"offset": [0.0, round(STOCK_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
+    pts = handgun_points(pts)
     pts["_bounds"] = bounds
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle, +Z top, +X the gun's left; origin = rear-top of grip "
+        "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
+                 "handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of grip "
                  "(photo L %.0f, H %.1f)" % (L0, H0),
+        "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model "
+                      "upright when it hangs in the back slot",
+        "turned": "parts modelled upright (magazines, GoM optics / lights / lasers) get rotate -180 0 -180, as on "
+                  "GoM's MP5K; render_mp7.py / make_mp7_art.py turn everything back for display",
         "magazine": "magazine meshes hang straight down from the feed lips inside the grip and curve toward the "
-                    "muzzle below it (30 / 40 rounds); the attachment adds no rotation",
+                    "muzzle below it (30 / 40 rounds), modelled upright",
         "canon": "the nose plate's face where the barrel leaves it; MP7_Muzzle_Mount_Device and MP7_Suppressor have "
                  "their origin there and extend along +Y over the flash hider",
         "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
         "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)",
     }
-    pts["_extras"] = {"photo_origin_mm": [L0, H0], "real_mm_per_game_unit": round(1.0 / K, 2)}
+    pts["_extras"] = {"handgun_hold": True, "photo_origin_mm": [L0, H0], "real_mm_per_game_unit": round(1.0 / K, 2)}
     return pts
 
 
@@ -998,6 +1037,8 @@ def main():
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "MP7_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "MP7_Muzzle_Mount_Device.png"))
 
+    for o in (body, bolt, stock):                       # held like a pistol: turned 180 degrees about the bore axis
+        o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
     bounds = {o.name: bounds_of(o) for o in [body, bolt, stock] + mags + [supp, mount]}
     bounds["MP7A1_STOCK_folded"] = bounds_of(stock, (0, STOCK_TRAVEL * K, 0))
     with open(POINTS_JSON, "w") as fh:

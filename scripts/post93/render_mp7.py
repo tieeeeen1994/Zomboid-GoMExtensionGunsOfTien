@@ -49,14 +49,19 @@ def load(path, texture):
     return objs
 
 
-def place(o, point=None):
+# The MP7 is held like a pistol and so modelled upside down (mp7_points.json "_notes"): the gun and everything placed
+# on it are turned back upright for display; loose magazines, parts and GoM's MP5 are shown as they are.
+UPRIGHT = Matrix.Rotation(math.pi, 4, 'Y') if POINTS["_extras"].get("handgun_hold") else Matrix.Identity(4)
+
+
+def place(o, point=None, gun=True):
     """Engine attachment transform: translate(offset) . rotateXYZ(rotate); mesh data z is game -z."""
     mat = Matrix.Identity(4)
     if point:
         rx, ry, rz = [math.radians(a) for a in point.get("rotate", [0, 0, 0])]
         mat = (Matrix.Translation(Vector(point["offset"])) @ Matrix.Rotation(rx, 4, 'X')
                @ Matrix.Rotation(ry, 4, 'Y') @ Matrix.Rotation(rz, 4, 'Z'))
-    o.matrix_world = mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
+    o.matrix_world = (UPRIGHT if gun else Matrix.Identity(4)) @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
     o.hide_render = False
 
 
@@ -127,7 +132,7 @@ def main():
             bpy.data.objects.remove(ob)
     mp5mag = bpy.data.objects["9x19Magazine30_MP5"]
     for o in list(mp5.values()) + [mp5mag]:
-        place(o, MP5_MAG if o is mp5mag else None)
+        place(o, MP5_MAG if o is mp5mag else None, gun=False)
 
     side = (-1, 0, 0)                     # looking along -X: the gun's left side, muzzle to the right
     right = (1, 0, 0)
@@ -167,12 +172,12 @@ def main():
 
     # magazines and parts on their own
     for r in (20, 30, 40):
-        place(mags[r])
+        place(mags[r], gun=False)
         show_only([mags[r]])
         render("mag%d" % r, side, (0, 0, -0.085), 0.2, 400, 400)
         render("mag%d_q34" % r, q34, (0, 0, -0.085), 0.2, 400, 400)
-    place(supp)
-    place(mount)
+    place(supp, gun=False)
+    place(mount, gun=False)
     show_only([supp, mount])
     render("parts_side", side, (0, 0.06, 0), 0.18, 600, 200)
     render("parts_q34", q34, (0, 0.06, 0), 0.18, 600, 300)

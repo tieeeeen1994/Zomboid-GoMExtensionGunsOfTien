@@ -49,15 +49,22 @@ RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread
 -------------------------------------------------
 
 -------------------------------------------------
--- Reload animations: the MP7 uses GoM's MP5 clips; the P90 its own top-loading clips (AnimSets P90TR_*, clips
--- anims_X/Bob/Bob_GunsOfTien_P90_*). A reload ends on its clip's events (loadFinished...): without the clips the
--- magazine insert waits forever (seen in game, 2026-10-15). The P90 uses Gunworks' "attachments" style so the
--- magazine leaves the gun with the hand: the AnimSets' changeWeaponPart "mag" events detach the magazine part (looks
--- only) and show a magazine in the left hand (Bip01_Prop2, keyed in the clips) mid-unload, and put it back on the gun
--- as the new one is pressed home; the real unload / insert still happen at the clips' ends.
+-- Reload animations. Both guns are held like a pistol. The MP7's magazine goes up into the pistol grip, so it uses
+-- vanilla's pistol clips (AnimSets MP7A1_*: Bob_Reload_Handgun_Load, its reverse baked into
+-- anims_X/Bob/Bob_GunsOfTien_MP7_Unload, Bob_Reload_Handgun_Rack with GoM's rack events); the P90 its own
+-- top-loading clips (AnimSets P90TR_*, clips anims_X/Bob/Bob_GunsOfTien_P90_*). A reload ends on its clip's events
+-- (loadFinished...): without the clips the magazine insert waits forever (seen in game, 2026-10-15). Both use
+-- Gunworks' "attachments" style so the magazine leaves the gun with the hand: the AnimSets' changeWeaponPart "mag"
+-- events detach the magazine part (looks only) as the left hand leaves the gun in the unload, and put it back as the
+-- new one is pressed home; the real unload / insert still happen at the clips' ends. Durations = the clips' lengths.
 -------------------------------------------------
-local DURATIONS = { unload = 1.2, load = 1.5, rack = 1.2 }
-ReloadAnim.RegisterWeapon(MP7, { animId = "MP5", style = "none", durations = DURATIONS })
+ReloadAnim.RegisterWeapon(MP7, {
+    animId = "MP7A1",
+    style = "attachments",
+    magItem = MP7_MAGS[1],
+    attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
+    durations = { unload = 1.5, load = 1.5, rack = 1.33 },
+})
 ReloadAnim.RegisterWeapon(P90, {
     animId = "P90TR",
     style = "attachments",
@@ -65,18 +72,43 @@ ReloadAnim.RegisterWeapon(P90, {
     attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
     durations = { unload = 1.4, load = 1.8, rack = 1.2 },
 })
+local NO_HAND_MAGAZINE = { MP7A1 = true, P90TR = true }
 -- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
 -- 2026-10-15). The attachments style shows Gunworks' reload magazine there (the eject's changeWeaponPart and the
 -- insert's start, both through ReloadAnim.attachReloadMagazine, looked up on the shared table at call time), so that
--- one call is skipped for the P90; detachReloadMagazine then has nothing to remove.
+-- one call is skipped for our guns; detachReloadMagazine then has nothing to remove.
 pcall(require, "WeaponSystems/ReloadAnim/Visuals")
 local attachReloadMagazine = ReloadAnim.attachReloadMagazine
 if attachReloadMagazine then
     ReloadAnim.attachReloadMagazine = function(action, handler)
-        if handler and handler.animId == "P90TR" then
+        if handler and NO_HAND_MAGAZINE[handler.animId] then
             return
         end
         return attachReloadMagazine(action, handler)
+    end
+end
+-- The magazine part spec names one item type, and Gunworks only detaches a part of that type and attaches that type
+-- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The MP7 takes three, so before each swap the spec is pointed
+-- at the magazine involved: ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the
+-- eject started (_actualMagType), or the gun's saved MagazineType.
+local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
+local function pointMagPart(action, handler)
+    if not (resolveReloadMagItem and action and handler and handler.animId == "MP7A1" and handler.parts) then
+        return
+    end
+    local spec = handler.parts.mag
+    local magType = resolveReloadMagItem(action, handler)
+    if spec and magType and magType ~= "" then
+        spec.itemType = magType
+    end
+end
+for _, name in ipairs({ "handleWeaponPartAnimEvent", "setWeaponAttachmentState" }) do
+    local original = ReloadAnim[name]
+    if original then
+        ReloadAnim[name] = function(action, handler, ...)
+            pointMagPart(action, handler)
+            return original(action, handler, ...)
+        end
     end
 end
 

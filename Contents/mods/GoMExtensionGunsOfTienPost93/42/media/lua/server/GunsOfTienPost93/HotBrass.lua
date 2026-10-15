@@ -2,8 +2,7 @@
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 and P90 TR
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
-    Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing, and its own
-    parameters for another mod's P90 (downward ejection) and MP7, which these follow. Only with Hot Brass (HBVCEFb42).
+    Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
 --]]
 
 if not getActivatedMods():contains("HBVCEFb42") then return end
@@ -19,26 +18,32 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTienPost93.57x28_Bullet_SS197SR"] = "HBVCEF.57x28_Casing",
 })
 
+-- Hot Brass launches a casing from a point in front of the shooter (forward / side / height, tiles and levels from
+-- the feet), not from the gun model. Both guns are held like a pistol, out at arm's length, so they start where GoM
+-- starts its handgun-held SMGs (MP5K / TEC9 / MAC10: forward 0.55, side 0.06, height 0.53).
 SpentCasingPhysics.RegisterWeaponParams({
+    -- Thrown out to the right like GoM's MP5K (about 1 s in the air, 1.7 tiles out).
     ["GunsOfTienPost93.MP7A1"] = {
-        forwardOffset = 0.40,
-        sideOffset    = 0.0,
-        heightOffset  = 0.45,
+        forwardOffset = 0.55,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
         shellForce    = 0.60,
-        sideSpread    = 30,
+        sideSpread    = 50,
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
-    -- The P90 throws its cases straight down through the port behind the grip.
+    -- The P90 throws its cases straight down through the port under the grip: a short fall from under the gun with a
+    -- slight forward drift (about 0.5 s). Hot Brass's own P90 entry (verticalForce -0.6) lands them almost at once.
     ["GunsOfTienPost93.P90TR"] = {
-        forwardOffset = 0.35,
-        sideOffset    = 0.10,
-        heightOffset  = 0.50,
-        shellForce    = 0.10,
+        forwardOffset = 0.50,
+        sideOffset    = 0.0,
+        heightOffset  = 0.45,
+        shellForce    = 0.15,
         sideSpread    = 10,
+        heightSpread  = { 0, 10 },
         ejectAngle    = 0,
-        verticalForce = -0.6,
+        verticalForce = -0.05,
         spinForce     = { 24, 34 },
     },
 })

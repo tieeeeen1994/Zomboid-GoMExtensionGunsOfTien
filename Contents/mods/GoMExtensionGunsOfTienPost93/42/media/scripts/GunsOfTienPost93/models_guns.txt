@@ -4,18 +4,20 @@ module GunsOfTienPost93 {
         mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_BODY,
         texture  = weapons/GunsOfTienPost93/MP7A1,
         cullFace = None,
-        attachment muzzle { offset = 0.0000 0.2081 0.0205, rotate = -90.0000 0.0000 -180.0000, }
-        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
-        attachment magazine { offset = 0.0000 0.0230 0.0090, rotate = 0.0000 0.0000 0.0000, }
-        attachment scope { offset = 0.0000 0.0504 0.0530, }
-        attachment rail_up { offset = 0.0000 0.0504 0.0507, }
-        attachment rail_left { offset = 0.0121 0.1296 0.0205, }
-        attachment rail_right { offset = -0.0121 0.1296 0.0205, }
-        attachment laser_right { offset = -0.0194 0.1296 0.0197, }
-        attachment light_left { offset = 0.0183 0.1296 0.0205, }
-        attachment canon { offset = 0.0000 0.1737 0.0205, }
-        attachment bolt_fired { offset = 0.0000 -0.0360 0.0000, }
-        attachment stock_folded { offset = 0.0000 0.1606 0.0000, }
+        attachment muzzle { offset = 0.0000 0.2081 -0.0205, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0250 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0230 -0.0090, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0504 -0.0530, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_up { offset = 0.0000 0.0504 -0.0507, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0121 0.1296 -0.0205, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_right { offset = 0.0121 0.1296 -0.0205, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0194 0.1296 -0.0197, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0183 0.1296 -0.0205, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1737 -0.0205, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0360 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0000 0.1606 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
     }
 
     model P90TR {

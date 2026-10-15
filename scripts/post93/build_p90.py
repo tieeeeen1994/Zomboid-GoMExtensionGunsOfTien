@@ -420,22 +420,9 @@ def g(L, H, x=0.0):
     return [round(x * K, 4), round(y * K, 4), round(z * K, 4)]
 
 
-# Held like a pistol: GoM's handgun-held guns (pistols, MP5K, TEC9, MAC10; SwingAnim = Handgun) are modelled upside
-# down, turned 180 degrees about the barrel axis (game x -> -x, z -> -z) around the same rear-top-of-grip origin, and
-# their attachment points with them; a part modelled upright gets rotate (-180, 0, -180) (= that turn), as on the
-# MP5K's rail_up / scope. The P90 is built and baked upright and turned only at export (points() and main()).
-TURN = [-180.0, 0.0, -180.0]
-
-
-def turned(point, part=True):
-    """An upright point in the handgun-held model: offset x, z negated, an upright part turned with the gun."""
-    x, y, z = point["offset"]
-    out = {"offset": [round(-x, 4) + 0.0, y, round(-z, 4) + 0.0]}
-    if "rotate" in point:
-        out["rotate"] = point["rotate"]
-    elif part:
-        out["rotate"] = list(TURN)
-    return out
+# Held like a pistol, modelled upside down: build_mp7.py's TURN / turned() / handgun_points().
+TURN = kit.TURN
+turned = kit.turned
 
 
 def points(bounds):
@@ -456,14 +443,7 @@ def points(bounds):
         "canon": {"offset": g(CANON_L, BORE_H), "rotate": [0.0, 0.0, 0.0]},          # round parts: GoM leaves 0
         "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
-    pts = {k: turned(v) for k, v in pts.items()}
-    # floor pose of GoM's handgun-held SMGs (MP5K, TEC9, MAC10)
-    pts["world"] = {"offset": [-0.025, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]}
-    # Carried on the back like a rifle (never in a holster): the body's rifle points expect an upright rifle model,
-    # and an attached item's own attachment of the same name is applied on top, so these turn the P90 back upright
-    # (a half turn is its own inverse, so it does not matter whether the engine inverts it).
-    for name in ("rifle_back", "rifle_back_bag"):
-        pts[name] = {"offset": [0.0, 0.0, 0.0], "rotate": list(TURN)}
+    pts = kit.handgun_points(pts)
     pts["_notes"] = {
         "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
                  "handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column "

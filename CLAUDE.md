@@ -67,10 +67,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## Decisions taken with the user (Post-93)
 
-- **Guns**: H&K **MP7A1** (two-handed, Rifle hold, back slot, collapsible stock, integral top / left / right rails,
-  20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = GoM's "MP5" clips) and FN
+- **Guns**: H&K **MP7A1** (**held like a pistol** too (user, 2026-10-15), back slot, collapsible stock, integral top
+  / left / right rails, 20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = vanilla's
+  pistol clips with the P90's magazine behaviour; shown as **"MP7 Submachine Gun"**, parts "MP7 ...", GoM's naming
+  (user, 2026-10-15; item IDs keep `MP7A1`; the P90 likewise "P90 Submachine Gun", parts "P90 ...", ID `P90TR`)) and FN
   **P90 TR only** (1999, bullpup like the FAMAS, **held like a pistol** (user, 2026-10-14: SwingAnim Handgun, handgun
-  reload mechanics, one hand, as GoM's MP5K / TEC9 / MAC10) but **never fits a holster** (AttachmentType Rifle: back slot), 50-round top magazine, integral top / side rails, 900 rpm, damage
+  reload mechanics, one hand, as GoM's MP5K / TEC9 / MAC10) but **never fits a holster** (AttachmentType Rifle: back slot; the MP7 the same), 50-round top magazine, integral top / side rails, 900 rpm, damage
   1.0-1.5, sound 118 / 34, downward ejection, **its own top-loading reload clips**). Standard rounds pierce 2 (in the
   gun scripts). **One suppressor each** with its own muzzle mount device (GoM's suppressor stats). Integrated rails
   are hidden required parts registered as parents of GoM's optics / lights / lasers. Spawns: GoM's
@@ -192,6 +194,37 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
   toward the muzzle (radius 400 mm, ~7 / ~14 degrees), as in `mp7_1.png` / `mp7_4.png`. The `magazine` point has no
   rotation.
 - `slab()` (the filled-curve profile extrusion) now lives in build_mp7.py and build_p90.py calls it.
+- **Held like a pistol since 2026-10-15 (user: "MP7 also needs to be pistol wielded like P90")**: the item block is
+  `GUN_HANDGUN` (SwingAnim Handgun, WeaponReloadType handgun, one hand, handgun muzzle flash), AttachmentType stays
+  Rifle (back slot, never a holster), and the model is exported upside down exactly as the P90's (body, bolt and stock
+  nodes turned; points through `handgun_points()`: upright parts and magazines `rotate -180 0 -180`, canon /
+  bolt_fired / stock_folded `0 0 0` because those meshes are turned with the gun, `world` `-0.025 0 0`, `rifle_back` /
+  `rifle_back_bag` turning it upright on the back). Textures, magazines, parts and icons came out byte-identical
+  (render_mp7.py / make_mp7_art.py turn it back for display, `handgun_hold` in `mp7_points.json`); in vanilla's pistol
+  reload the gun sits in the hand muzzle up with the magazine out of the grip's bottom, as it should.
+
+## MP7A1 reload (2026-10-15)
+
+The MP7's magazine goes up into the pistol grip, so it reloads like vanilla's pistols: AnimSets `*MP7A1_GoT.xml`
+(animId "MP7A1", player and player-vehicle) play vanilla `Bob_Reload_Handgun_Load` (46 frames, 1.5 s), for the unload
+the same reversed but baked into a forward clip `anims_X/Bob/Bob_GunsOfTien_MP7_Unload.x`
+(`scripts/post93/anim/mp7_reload.py`, plain Python: key times mirrored, everything else vanilla's), and vanilla
+`Bob_Reload_Handgun_Rack` (40 frames) with GoM's / Hot Brass's rack events (`RackHandgun_HB.xml`: rack sound 0.18,
+rackStart 0.37, ejectCasing 0.50, rackEnd 0.57; rackBullet made explicit at 0.50). Durations in Guns.lua = the clip
+lengths (1.5 / 1.5 / 1.33).
+- Chosen over GoM's `handgun2` clips (its MP5K / TEC9 reload, made for a magazine ahead of the grip): measured with the
+  MP7 on Bip01_Prop1, vanilla's left palm gets to 0.047 from the magazine base, GoM's to 0.074. GoM's
+  `Bob_Reload_Handgun2*.X` store **matrix keys** (AnimationKey type 4, 16 floats, row-major like FrameTransformMatrix)
+  at 5555 ticks/s, which TienInspectWeapon's `xanim.read` skips (the clip reads as one frame); converting them is
+  `mat4_to_srt(to_colmajor(m16))` per key, times x 4800 / 5555.
+- Magazine behaviour as the P90's (attachments style, no magazine in the hand): `changeWeaponPart` "mag" at 0.15 of
+  the unload (the left hand leaves the grip at frame ~7) and 0.85 of the load (it reaches the grip at frame ~38, with
+  the load click). Baked forward rather than `m_AnimReverse` so those percentages count along the motion seen.
+- Gunworks' magazine part spec has one item type, and `detachWeaponPartSpec` / `attachWeaponPartSpec` only take off
+  / put on that type. The MP7 has three magazines, so Guns.lua wraps `ReloadAnim.handleWeaponPartAnimEvent` and
+  `setWeaponAttachmentState` (looked up on the shared table at call time) to set the MP7 spec's `itemType` to
+  `ReloadAnim.resolveReloadMagItem(action, handler)` first: the magazine being inserted (`action.magazine`), the one
+  on the gun when the eject started (`_actualMagType`, Gunworks' AnimationsHooks), or the gun's saved MagazineType.
 
 ## P90 TR reference and model (from the user's photos, 2026-10-14)
 
@@ -225,12 +258,20 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   modelled turned 180° about the bore axis (game x → -x, z → -z: grip up, +X = the gun's right) around the same
   rear-top-of-grip origin; parts modelled upright sit at points with `rotate = -180 0 -180` (MP5K rail_up / scope),
   the muzzle keeps `-90 0 -180`, canon `0 0 0`, `world` = `-0.025 0 0` / `0 0 0` (MP5K, TEC9, MAC10). `build_p90.py`
-  models and bakes upright and turns body + bolt at export (`turned()` for the points); the magazine and part meshes
+  models and bakes upright and turns body + bolt at export (`turned()` for the points; `TURN`, `turned()` and
+  `handgun_points()` live in build_mp7.py, which does the same for the MP7 since 2026-10-15); the magazine and part meshes
   stay upright. `render_p90.py` / `make_p90_art.py` turn everything back for display (`handgun_hold` in
   `p90_points.json` `_extras`). Its reload clips are made for the pistol stance (below). It stays
   `AttachmentType = Rifle` (vanilla's Back slot: locations "Rifle On Back" / "Rifle On Back with Bag", body points
   `rifle_back` / `rifle_back_bag`, shared/NPCs/AttachedLocations.lua); an attached item's own model attachment of the
   same name is applied too, so the P90's `rifle_back` / `rifle_back_bag` = `rotate -180 0 -180` hang it upright.
+  Checked in game 2026-10-15 (MP7 and P90 hang upright and muzzle-down like a rifle). Engine (42.21
+  `AnimatedModel$AnimatedModelInstanceRenderData.transformToParent`): parent bone · the body's attachment named by the
+  location · the item model's attachment of that **same name** · mesh node transform; the item model is the weapon's
+  `StaticModel`, else its `WeaponSprite` (`HandWeapon.getStaticModel`). So modded slots with their own location names
+  (Plysken Attachments Reborn's per-bag `<Bag>_rifle` points) get no turn and show the upside-down model; left to
+  Tien's Attachment Slots (user, 2026-10-15). An upright `StaticModel` would fix every slot but also changes the floor
+  model (`WorldItemAtlas` uses it for weapons).
 - Ejection port underneath L 262-296. Rails are cosmetic: optics / lights / lasers mount through the hidden
   `P90TR_Integrated_Rail_*` parts (Guns.lua), placed by `scope` / `rail_up` / `rail_*` / `light_left` / `laser_right`.
 - GoM look: flat chamfered hard-surface parts (body 2,784 tris; GoM MP5 4,045, FAMAS 3,682), texture with flat
@@ -482,6 +523,14 @@ Full report kept in the session; the essentials, all `require`-able public Gunwo
   and `57x28_Casing` and P90 (downward: forward 0.35, side 0.10, height 0.50, shellForce 0.10, sideSpread 10,
   ejectAngle 0, verticalForce -0.6) / MP7 (forward 0.40, side 0, height 0.45, shellForce 0.60, sideSpread 30)
   values for another mod's guns. Ammo Maker already has types `46x30` and `57x28`.
+  **Ours since 2026-10-15** (user: "MP7 and P90 just drop casings on the ground"): Hot Brass launches a casing from
+  a point in front of the shooter (`doSpawnCasing`: forward / side in the facing, height above the feet; velocity
+  from shellForce at `ejectAngle` off the facing, `heightSpread` / 200 up, plus `verticalForce`), never from the gun
+  model. Pistol-held guns start where GoM's MP5K / TEC9 / MAC10 do (forward 0.55, side 0.06, height 0.53): the MP7
+  uses those with shellForce 0.60 / sideSpread 50 / heightSpread {80, 100} / ejectAngle 80; the P90 falls from
+  under the gun (forward 0.50, height 0.45, shellForce 0.15 forward, heightSpread {0, 10}, verticalForce -0.05,
+  ~0.5 s) because -0.6 landed it almost at once. Flight at 60 fps (`stepCasing`: velZ -= 0.02, z += velZ x 0.05,
+  xy += v x 0.1, drag 0.97 / 0.995): MP5K ~1.0 s and 1.8 tiles out.
 - **GoM seems to plan 5.7 content** (ItemName keys `MarzGuns.57x28_Bullet/Box/Carton/Crate`, `MarzGuns.FIVESEVEN`;
   round, casing models and items for 4.6x30 and 5.7x28). Gunworks registers `swmg:bullet_57x28` with no item. Use our
   own module and ids, never `MarzGuns.` / `SWMG.` names.

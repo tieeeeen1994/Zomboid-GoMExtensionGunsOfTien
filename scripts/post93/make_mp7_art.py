@@ -341,13 +341,23 @@ def gom_scene(kind):
     return Image.open(os.path.join(G, "textures", icon)).convert("RGBA"), objs, texes
 
 
+# The MP7 is held like a pistol and so modelled upside down; icons and sheets show it upright.
+HANDGUN = POINTS["_extras"].get("handgun_hold", False)
+UPRIGHT = {"offset": [0.0, 0.0, 0.0], "rotate": [0.0, 180.0 if HANDGUN else 0.0, 0.0]}
+
+
+def upright_offset(o):
+    return [-o[0], o[1], -o[2]] if HANDGUN else list(o)
+
+
 def our_scenes():
     """{icon name: (kind, objs, textures)}"""
     gun_tex = img(os.path.join(TEX, "MP7A1.png"))
     out = {}
     mag30 = attach(load_game(FBX_MAGS, "46x30Magazine30_MP7"), POINTS["magazine"])
-    out["MP7A1"] = ("gun", [(load_game(FBX_GUN, "MP7A1_BODY"), 0), (load_game(FBX_GUN, "MP7A1_BOLT"), 0),
-                            (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0), (mag30, 1)],
+    gun = [(load_game(FBX_GUN, "MP7A1_BODY"), 0), (load_game(FBX_GUN, "MP7A1_BOLT"), 0),
+           (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0), (mag30, 1)]
+    out["MP7A1"] = ("gun", [(attach(t, UPRIGHT), i) for t, i in gun],
                     [gun_tex, img(os.path.join(TEX, "46x30Magazine30_MP7.png"))])
     for r in (20, 30, 40):
         n = "46x30Magazine%d_MP7" % r
@@ -456,7 +466,7 @@ def outline_panel(renders):
     d.line([(ox, oy - 30), (ox, oy + 30)], fill=(0, 120, 255, 255), width=2)
     for name, c in (("muzzle", (255, 160, 0)), ("canon", (255, 160, 0)), ("magazine", (0, 170, 80)),
                     ("scope", (170, 0, 200)), ("rail_left", (0, 120, 255))):
-        o = POINTS[name]["offset"]
+        o = upright_offset(POINTS[name]["offset"])
         x, y = px(L0 - o[1] / 0.00072, H0 + o[2] / 0.00072)
         d.ellipse([x - 6, y - 6, x + 6, y + 6], outline=c + (255,), width=3)
         d.text((x + 8, y - 22), name, fill=c + (255,), font=font(18))

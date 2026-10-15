@@ -71,7 +71,7 @@ local function addSpawners()
     local ok, spawnerTable = pcall(require, "MarzWeapons/OnCreate/ItemSpawnerTable")
     local map = ok and type(spawnerTable) == "table" and spawnerTable.ItemSpawnerMap
     if not map then
-        print("[GunsOfTienPost93] Guns of Marz spawner table not found, the MP7A1 and P90 TR will not spawn")
+        print("[GunsOfTienPost93] Guns of Marz spawner table not found, the MP7 and P90 will not spawn")
         return
     end
     for _, entry in ipairs(SPAWNERS) do

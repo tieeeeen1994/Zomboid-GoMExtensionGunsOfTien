@@ -23,11 +23,11 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
 Done (Lua syntax-checked): `registries.lua` (5 ammo types), ammo items / models / recipes / Ammo Maker placeholders +
 names (`scripts/post93/gen_post93_ammo.py`), ammo art (`scripts/post93/make_ammo_art.py`, sheet
 `docs/post93_ammo_art_sheet.png`), `Ammunition.lua` (families 4.6x30mm / 5.7x28mm, profiles), `AmmoMaker.lua`,
-`Guns.lua` (magazine profiles, RPM 950 / 900, animated bolt, reload anims MP7 = "MP5" / P90 = "P90TR", MP7 folding
+`Guns.lua` (magazine profiles, RPM 950 / 900, animated bolt, reload anims MP7 = "MP7A1" / P90 = "P90TR", magazine shown leaving the gun with the hand, MP7 folding
 stock, suppressor stats, integrated rails as parents of GoM optics / lights / lasers, permanent parts, spawn parts,
 MountOn appends), `HotBrass.lua`, `Loot.lua` (GoM Anachronistic + Police SMG spawners, rare boxes), `Tooltips.lua`,
-P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `Bob_GunsOfTien_P90_Load / Unload
-/ Rack / AimRack`), gun generator `scripts/post93/gen_post93_guns.py` (items, models, parts, fixing, names; reads
+reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `Bob_GunsOfTien_P90_Load / Unload
+/ Rack / AimRack`; `*MP7A1_GoT.xml`, vanilla's pistol clips + `Bob_GunsOfTien_MP7_Unload`), gun generator `scripts/post93/gen_post93_guns.py` (items, models, parts, fixing, names; reads
 `mp7_points.json` / `p90_points.json`).
 
 - [x] MP7A1 rebuilt from the user's photos 2026-10-14 (the first, dimensions-only model had a raked block grip, a
@@ -49,5 +49,11 @@ P90 reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, cli
       `anims_X/Bob/Bob_GunsOfTien_P90_{Unload,Load,Rack,AimRack}.x` from `scripts/post93/anim/p90_reload.py`
       (TienInspectWeapon's pipeline). Without them the magazine insert hung (a reload ends on its clip's events). To
       check in game: the whole reload, the load click on the press, the rack's events, aiming racks.
+- [x] MP7A1 held like a pistol (user, 2026-10-15), exactly as the P90: Handgun item block, back slot (never a
+      holster), model exported upside down (`handgun_points()` in build_mp7.py, shared with build_p90.py, whose files
+      came out byte-identical). Reload = vanilla's pistol clips with its own AnimSets and the P90's magazine
+      behaviour, the right magazine of the three swapped (CLAUDE.md "MP7A1 reload"). To check in game: the hold, the
+      gun upright on the back, the `world` floor pose, the reload with each magazine size (the right one leaves and
+      comes back), the rack's casing.
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
 
