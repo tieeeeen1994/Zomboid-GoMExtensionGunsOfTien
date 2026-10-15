@@ -424,6 +424,11 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   (x1.4), and HP / AP / TR the standard charge. Ours: subsonic x0.7 (7.62x39 US 35, 9x19 147gr 7, 4.6x30 10, 5.7
   SB193 8), +P+ x1.4 (9x19 14), .45 +P a milder x1.2 (19); hollow / soft points, steel core, SP-6, birdshot, SS197SR
   keep the standard charge.
+- **Recipe books (checked 2026-10-15):** Ammo Maker gates only casings (`MakeCasings*` / `MakeHullsShotgun*`,
+  `NeedToBeLearn = True`, taught by the "Ammo World" magazines May / April / March / February / January 93, one per
+  casing shape, `magazineLearnedRecipes` in its recipeManager) and the reloading press parts (one manual). Round
+  assembly (`Make<type>` / `Produce<type>`) and bullets / shot (`MakeBalls00`...) need no book; ours match
+  (`NeedToBeLearn = False` everywhere), and each new type keeps its calibre's casing, so the casing gate applies.
 
 ## Combat mechanics that matter here (42.21 Java, traced 2026-10-14; decompiles in the session scratchpad)
 
