@@ -55,5 +55,7 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       behaviour, the right magazine of the three swapped (CLAUDE.md "MP7A1 reload"). To check in game: the hold, the
       gun upright on the back, the `world` floor pose, the reload with each magazine size (the right one leaves and
       comes back), the rack's casing.
+- [x] MP7 60-round drum (user, 2026-10-15): model, texture, icon, item, name, tooltip, profile, 2% spawn on found
+      MP7s. To check in game: the drum under the grip, the reload with it (the drum leaves and comes back).
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
 

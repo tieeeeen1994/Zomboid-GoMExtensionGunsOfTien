@@ -104,7 +104,7 @@ def main():
 
     gun = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx"), os.path.join(TEX, "MP7A1.png"))
     mags = {}
-    for r in (20, 30, 40):
+    for r in (20, 30, 40, 60):
         o = load(os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx"),
                  os.path.join(TEX, "46x30Magazine%d_MP7.png" % r))
         for name, ob in o.items():
@@ -166,12 +166,15 @@ def main():
     gun_state(False, 20, True)
     render("side_supp", side, (0, 0.03, -0.02), 0.62, 1200, 600)
     render("q34_supp", q34, (0, 0.03, -0.02), 0.62, 1200, 600)
+    gun_state(True, 60, False)
+    render("side_drum", side, (0, 0.05, -0.05), 0.45, 900, 600)
+    render("q34_drum", q34, (0, 0.05, -0.05), 0.45, 900, 600)
     gun_state(True, 30, False)
     show_only([body])
     render("body_only_in", side, c_in, 0.42, 900, 600)
 
     # magazines and parts on their own
-    for r in (20, 30, 40):
+    for r in (20, 30, 40, 60):
         place(mags[r], gun=False)
         show_only([mags[r]])
         render("mag%d" % r, side, (0, 0, -0.085), 0.2, 400, 400)

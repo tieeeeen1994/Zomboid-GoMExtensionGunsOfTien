@@ -22,7 +22,7 @@ lines[M .. "P90TR"] = {
     "50-round magazine on top; ejects spent cases downward.",
     "Standard rounds pierce: able to hit up to 2 targets.",
 }
-for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7" }) do
+for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7", "46x30Magazine60_MP7" }) do
     lines[M .. mag] = { "Uses 4.6x30mm rounds." }
 end
 lines[M .. "57x28Magazine50_P90"] = { "Uses 5.7x28mm rounds." }

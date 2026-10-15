@@ -5,7 +5,7 @@ shared geometry, bake, paint-helper and FBX code build_p90.py imports.
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
     P/models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx        MP7A1_BODY, MP7A1_BOLT, MP7A1_STOCK
-    P/models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx  46x30Magazine20/30/40_MP7
+    P/models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx  46x30Magazine20/30/40/60_MP7
     P/models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx       MP7_Suppressor, MP7_Muzzle_Mount_Device
     P/textures/weapons/GunsOfTienPost93/<name>.png                MP7A1 (256, shared by the three gun nodes),
                                                                   one 128 texture per magazine / part
@@ -442,6 +442,34 @@ def build_magazine(rounds):
     return b.to_object("46x30Magazine%d_MP7" % rounds)
 
 
+# 60-round drum (user, 2026-10-15; not an H&K part): a feed tower like the 20-round body up into the grip and a round
+# drum under the grip facing front and back (its axis along the barrel: one round face toward the muzzle, one toward
+# the shooter), its top just under the grip.
+DRUM_R = 46.0                                    # 92 mm across
+DRUM_HALF = 20.0                                 # 40 mm front to back (the magazine body is 36)
+DRUM_Y = 4.0                                     # centre a little forward of the magazine axis
+DRUM_Z = -(MAG_STRAIGHT + 3.0 + DRUM_R)          # top 1.5 mm under the grip's bottom
+
+
+def build_drum():
+    b = Builder()
+    sweep(b, [4.0, MAG_STRAIGHT + 10.0], 9.5, 18.0, 1.6, "magpoly")             # feed tower, its foot inside the drum
+    sweep(b, [0.0, 4.5], 7.0, 16.0, 1.5, "magpoly")                           # feed lips
+    h, r = DRUM_HALF, DRUM_R
+    c = (0, DRUM_Y, DRUM_Z)
+    b.lathe("y", c, [(-h, 0), (-h, r - 6.0), (-h + 1.0, r - 2.5), (-h + 2.5, r), (h - 2.5, r), (h - 1.0, r - 2.5),
+                     (h, r - 6.0), (h, 0)], seg=24, mat="magpoly")
+    for sgn in (-1, 1):                                                         # hub caps on both faces
+        b.lathe("y", c, [(sgn * h, 0), (sgn * h, 14.0), (sgn * (h + 1.5), 13.0), (sgn * (h + 1.5), 0)], seg=16,
+                mat="magpoly")
+    # winding key on the front face (toward the muzzle): a knob with a flat bar across it
+    b.lathe("y", c, [(h + 1.5, 0), (h + 1.5, 7.0), (h + 5.0, 7.0), (h + 5.0, 0)], seg=12, mat="metal")
+    b.box(-10.0, 10.0, DRUM_Y + h + 5.0, DRUM_Y + h + 8.0, DRUM_Z - 2.2, DRUM_Z + 2.2, mat="metal", bevel=0.6)
+    b.lathe("y", (0, 0, -2.6), [(-17.5, 0), (-17.5, 4.0), (5.0, 4.0), (6.5, 2.4), (12.5, 2.4)], seg=8, mat="brass")
+    b.lathe("y", (0, 0, -2.6), [(12.5, 2.4), (16.0, 2.0), (19.2, 0.7), (19.6, 0)], seg=8, mat="copper")
+    return b.to_object("46x30Magazine60_MP7")
+
+
 def build_suppressor():
     """Origin at `canon` (the nose plate's face); slides over the mount device on the flash hider."""
     b = Builder()
@@ -733,6 +761,17 @@ def paint(maps, kind):
             for cH in (46.5, 55.5):
                 col[side & (np.hypot(L - 397.0, H - cH) < 2.6)] = 9
             col[L > 410.5] *= 0.85
+    elif kind == "drum":
+        dx, dz = x, z - DRUM_Z
+        r = np.hypot(dx, dz)
+        front, rear = n[..., 1] > 0.7, n[..., 1] < -0.7
+        face = (front | rear) & (np.abs(y - DRUM_Y) > DRUM_HALF - 0.3) & (r < DRUM_R - 2.0)
+        col[face & (np.abs(r - 39.0) < 0.8)] *= 0.55                      # groove round the face
+        col[face & (np.abs(r - 14.5) < 0.6)] *= 0.6                       # around the hub cap
+        for f, u in ((face & rear, dx), (face & front, -dx)):              # "60", upright, under the hub
+            col[f & text_mask(u, dz, "60", -6.8, -31.0, 9.0)] = (190, 190, 184)
+        rib = side & (np.abs(np.abs(y) - 13.0) < 0.9) & (z < -12) & (z > -MAG_STRAIGHT + 8)
+        col[rib] *= 0.72
     elif kind.startswith("mag"):
         rounds = int(kind[3:])
         end = MAG_STRAIGHT + MAG_EXTRA[rounds]
@@ -1022,7 +1061,7 @@ def main():
     scene.world.color = (0, 0, 0)
 
     body, bolt, stock = build_body(), build_bolt(), build_stock()
-    mags = [build_magazine(r) for r in (20, 30, 40)]
+    mags = [build_magazine(r) for r in (20, 30, 40)] + [build_drum()]
     supp, mount = build_suppressor(), build_mount()
 
     unwrap([body, bolt, stock], 0.006)
@@ -1032,8 +1071,9 @@ def main():
     os.makedirs(TEX_DIR, exist_ok=True)
     texture([body, bolt, stock], [[body, bolt], [body, bolt], [stock]], ["gun", "gun", "stock"], 256,
             os.path.join(TEX_DIR, "MP7A1.png"))
-    for r, m in zip((20, 30, 40), mags):
-        texture([m], [[m]], ["mag%d" % r], 128, os.path.join(TEX_DIR, "46x30Magazine%d_MP7.png" % r))
+    for r, m in zip((20, 30, 40, 60), mags):
+        texture([m], [[m]], ["drum" if r == 60 else "mag%d" % r], 128,
+                os.path.join(TEX_DIR, "46x30Magazine%d_MP7.png" % r))
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "MP7_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "MP7_Muzzle_Mount_Device.png"))
 

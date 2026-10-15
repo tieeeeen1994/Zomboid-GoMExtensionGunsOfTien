@@ -75,6 +75,12 @@ module GunsOfTienPost93 {
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 
+    model 46x30Magazine60_MP7 {
+        mesh     = weapons/magazines/GunsOfTienPost93_MP7_magazines|46x30Magazine60_MP7,
+        texture  = weapons/GunsOfTienPost93/46x30Magazine60_MP7,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
     model 57x28Magazine50_P90 {
         mesh     = weapons/magazines/GunsOfTienPost93_P90_magazines|57x28Magazine50_P90,
         texture  = weapons/GunsOfTienPost93/57x28Magazine50_P90,

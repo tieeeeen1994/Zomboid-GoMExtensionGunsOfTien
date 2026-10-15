@@ -25,7 +25,8 @@ end
 local M = "GunsOfTienPost93."
 local MP7 = M .. "MP7A1"
 local P90 = M .. "P90TR"
-local MP7_MAGS = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7" }
+local MP7_MAGS = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7",
+    M .. "46x30Magazine60_MP7" }
 local P90_MAGS = { M .. "57x28Magazine50_P90" }
 
 -------------------------------------------------
@@ -88,8 +89,8 @@ if attachReloadMagazine then
     end
 end
 -- The magazine part spec names one item type, and Gunworks only detaches a part of that type and attaches that type
--- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The MP7 takes three, so before each swap the spec is pointed
--- at the magazine involved: ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the
+-- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The MP7 takes four (20 / 30 / 40, the 60 drum), so before
+-- each swap the spec is pointed at the magazine involved: ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the
 -- eject started (_actualMagType), or the gun's saved MagazineType.
 local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
 local function pointMagPart(action, handler)
@@ -198,6 +199,7 @@ if spawnTable then
             M .. "46x30Magazine20_MP7:30",
             M .. "46x30Magazine30_MP7:20",
             M .. "46x30Magazine40_MP7:5",
+            M .. "46x30Magazine60_MP7:2",
             "MarzGuns.EXPS1_Sight:5", "MarzGuns.EXPS3_Sight:5", "MarzGuns.Aimpoint_Sight:5",
             "MarzGuns.ReflexS2_Sight:5",
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",

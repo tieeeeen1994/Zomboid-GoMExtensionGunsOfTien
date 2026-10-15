@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """MP7A1 inventory icons, FBX check and the review sheet (Python 3 + Pillow).
 
-    python3 scripts/post93/make_mp7_art.py [--fit] [--renders DIR]
+    python3 scripts/post93/make_mp7_art.py [--fit | --fit-drum] [--renders DIR]
 
 Icons (32x32 RGBA, P/textures/item_GunsOfTienPost93_<name>.png) are rendered from the exported FBX files and
 textures the way GoM's own icons look: for each icon family a camera is fitted to a GoM icon with the GoM mesh it
@@ -330,6 +330,10 @@ def gom_scene(kind):
         objs = [(load_game(os.path.join(G, "models_X/weapons/magazines/smgs.fbx"), "9x19Magazine30_MP5"), 0)]
         texes = [img(os.path.join(gom_tex, "magazines/smgs/9x19Magazine30_MP5.png"))]
         icon = "item_9x19Magazine30_MP5.png"
+    elif kind == "drum":
+        objs = [(load_game(os.path.join(G, "models_X/weapons/magazines/smgs.fbx"), "9x19Magazine100_MP5"), 0)]
+        texes = [img(os.path.join(gom_tex, "magazines/smgs/9x19Magazine100_MP5.png"))]
+        icon = "item_9x19Magazine100_MP5.png"
     elif kind == "suppressor":
         objs = [(load_game(os.path.join(G, "models_X/weapons/parts/suppressors.fbx"), "MKI_Suppressor"), 0)]
         texes = [img(os.path.join(gom_tex, "parts/suppressors/MKI_Suppressor.png"))]
@@ -359,9 +363,9 @@ def our_scenes():
            (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0), (mag30, 1)]
     out["MP7A1"] = ("gun", [(attach(t, UPRIGHT), i) for t, i in gun],
                     [gun_tex, img(os.path.join(TEX, "46x30Magazine30_MP7.png"))])
-    for r in (20, 30, 40):
+    for r in (20, 30, 40, 60):
         n = "46x30Magazine%d_MP7" % r
-        out[n] = ("magazine", [(load_game(FBX_MAGS, n), 0)], [img(os.path.join(TEX, n + ".png"))])
+        out[n] = ("drum" if r == 60 else "magazine", [(load_game(FBX_MAGS, n), 0)], [img(os.path.join(TEX, n + ".png"))])
     for n, kind in (("MP7_Suppressor", "suppressor"), ("MP7_Muzzle_Mount_Device", "mount")):
         out[n] = (kind, [(load_game(FBX_PARTS, n), 0)], [img(os.path.join(TEX, n + ".png"))])
     return out
@@ -370,9 +374,10 @@ def our_scenes():
 CAMERAS_JSON = os.path.join(HERE, "mp7_icon_cameras.json")
 
 
-def fit_all():
-    result = {}
-    for kind in ("gun", "magazine", "suppressor", "mount"):
+def fit_all(kinds=("gun", "magazine", "drum", "suppressor", "mount")):
+    """Fit the camera and light of each kind on GoM's icon; kinds not fitted keep their stored values."""
+    result = json.load(open(CAMERAS_JSON)) if os.path.exists(CAMERAS_JSON) else {}
+    for kind in kinds:
         icon, objs, texes = gom_scene(kind)
         err, cam = fit_camera(icon, objs, texes)
         grid = raster(objs, cam, icon.width, 4)
@@ -476,7 +481,7 @@ def outline_panel(renders):
 def sheet(renders, icons):
     W = 2480
     F, FS = font(26), font(18)
-    page = Image.new("RGB", (W, 4000), (236, 236, 232))
+    page = Image.new("RGB", (W, 4800), (236, 236, 232))
     d = ImageDraw.Draw(page)
 
     def put(name, x, y, w=None, label=None, bg=(250, 250, 248)):
@@ -507,6 +512,10 @@ def sheet(renders, icons):
     for i, r in enumerate((20, 30, 40)):
         put("mag%d_q34" % r, 1240 + i * 410, y, 400, "%d rounds" % r)
     y += 420
+    put("side_drum", 20, y, 900, "left side, 60-round drum, stock collapsed")
+    put("q34_drum", 940, y, 900, "3/4, 60-round drum")
+    put("mag60_q34", 1860, y, 400, "60-round drum")
+    y += 620
     put("parts_side", 20, y, 600, "MP7_Suppressor + MP7_Muzzle_Mount_Device (origin = mount face)")
     put("parts_q34", 640, y, 600)
     # overlay on GoM's MP5, same camera and scale
@@ -547,10 +556,11 @@ def sheet(renders, icons):
     d.text((30, y), "Icons (32x32, shown x6 and 1:1), next to the GoM icons whose camera and light they reuse",
            fill=(20, 20, 20), font=F)
     y += 40
-    refs = ["item_MP5.png", "item_9x19Magazine30_MP5.png", "item_MKI_Suppressor.png", "item_Muzzle_Mount_Device.png"]
+    refs = ["item_MP5.png", "item_9x19Magazine30_MP5.png", "item_9x19Magazine100_MP5.png", "item_MKI_Suppressor.png",
+            "item_Muzzle_Mount_Device.png"]
     row = [(Image.open(os.path.join(G, "textures", r)).convert("RGBA"), r[5:-4]) for r in refs]
     row += [(icons[n], n) for n in ("MP7A1", "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7",
-                                     "MP7_Suppressor", "MP7_Muzzle_Mount_Device")]
+                                     "46x30Magazine60_MP7", "MP7_Suppressor", "MP7_Muzzle_Mount_Device")]
     x = 20
     for im, label in row:
         bg = Image.new("RGBA", (192, 192), (150, 150, 150, 255))
@@ -561,6 +571,9 @@ def sheet(renders, icons):
         page.paste(small.convert("RGB"), (x, y + 200))
         d.text((x + 40, y + 205), label[:24], fill=(40, 40, 40), font=FS)
         x += 244
+        if x + 192 > W:                             # wrap: the drum and its GoM reference go on a second row
+            x, y = 20, y + 240
+    page = page.crop((0, 0, W, y + 250))
     page.save(PREVIEW)
     print("wrote", PREVIEW)
 
@@ -568,6 +581,8 @@ def sheet(renders, icons):
 def main():
     if "--fit" in sys.argv:
         fit_all()
+    elif "--fit-drum" in sys.argv:
+        fit_all(("drum",))
     check()
     icons = make_icons()
     if "--renders" in sys.argv:

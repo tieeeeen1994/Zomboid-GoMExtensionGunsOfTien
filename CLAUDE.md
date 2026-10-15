@@ -193,6 +193,13 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
   20-round one ends at its base plate under the grip (H 0.5-5.5); the 30 / 40-round ones go on 48 / 96 mm curving
   toward the muzzle (radius 400 mm, ~7 / ~14 degrees), as in `mp7_1.png` / `mp7_4.png`. The `magazine` point has no
   rotation.
+- **60-round drum** `46x30Magazine60_MP7` (user, 2026-10-15; H&K made only 20 / 30 / 40): `build_drum()`, a feed
+  tower like the 20-round body up into the grip and a 92 mm drum **facing front and back** (axis along the barrel,
+  user: the side-facing Glock-style layout was wrong; 40 mm front to back, centre 4 mm forward of the magazine axis,
+  top 1.5 mm under the grip), hub caps, a winding key on the front face, "60" on both faces.
+  Weight 0.30 (GoM's MP5 100-round drum 0.33), "MP7 60Rds Drum 4.6x30mm Magazine", 2% on found MP7s and not in the
+  spawner's magazine list. Its icon uses a camera fitted on GoM's `item_9x19Magazine100_MP5` (`make_mp7_art.py
+  --fit-drum`, kind "drum"; the other kinds keep their stored cameras).
 - `slab()` (the filled-curve profile extrusion) now lives in build_mp7.py and build_p90.py calls it.
 - **Held like a pistol since 2026-10-15 (user: "MP7 also needs to be pistol wielded like P90")**: the item block is
   `GUN_HANDGUN` (SwingAnim Handgun, WeaponReloadType handgun, one hand, handgun muzzle flash), AttachmentType stays

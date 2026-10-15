@@ -88,7 +88,7 @@ def models(mp7, p90):
         cullFace = None,
     }}
 """)
-    parts = [(f'46x30Magazine{n}_MP7', 'magazines/GunsOfTienPost93_MP7_magazines') for n in (20, 30, 40)]
+    parts = [(f'46x30Magazine{n}_MP7', 'magazines/GunsOfTienPost93_MP7_magazines') for n in (20, 30, 40, 60)]
     parts += [('57x28Magazine50_P90', 'magazines/GunsOfTienPost93_P90_magazines')]
     parts += [(p, 'parts/GunsOfTienPost93_MP7_parts') for p in ('MP7_Suppressor', 'MP7_Muzzle_Mount_Device')]
     parts += [(p, 'parts/GunsOfTienPost93_P90_parts') for p in ('P90_Suppressor', 'P90_Muzzle_Mount_Device')]
@@ -192,7 +192,7 @@ assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
 
 
 def items(mp7, p90):
-    mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40)]
+    mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40, 60)]
     p90_mags = ['57x28Magazine50_P90']
     out = [f"module {M} {{\n    imports {{ Base }}\n"]
     # Realistic sound (the main mod's model, M16 = 175 / 50): 4.6x30 ~6 gr, 180 mm barrel; 5.7x28 ~6.7 gr, 263 mm.
@@ -266,6 +266,7 @@ def items(mp7, p90):
     for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.12, 'bullet_46x30', 'MP7A1'),
                                          (mp7_mags[1], 30, 0.17, 'bullet_46x30', 'MP7A1'),
                                          (mp7_mags[2], 40, 0.22, 'bullet_46x30', 'MP7A1'),
+                                         (mp7_mags[3], 60, 0.30, 'bullet_46x30', 'MP7A1'),    # drum (GoM's MP5 100: 0.33)
                                          (p90_mags[0], 50, 0.40, 'bullet_57x28', 'P90TR')]:
         out.append(f"""
     item {mag} {{
@@ -350,6 +351,7 @@ def translations():
         f'{M}.46x30Magazine20_MP7': 'MP7 20Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine30_MP7': 'MP7 30Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine40_MP7': 'MP7 40Rds 4.6x30mm Magazine',
+        f'{M}.46x30Magazine60_MP7': 'MP7 60Rds Drum 4.6x30mm Magazine',
         f'{M}.57x28Magazine50_P90': 'P90 50Rds 5.7x28mm Magazine',
         f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7 Integrated Stock (Collapsed)',
         f'{M}.MP7A1_Integrated_Stock_Deployed': 'MP7 Integrated Stock (Extended)',
