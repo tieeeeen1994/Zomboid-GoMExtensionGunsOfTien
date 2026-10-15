@@ -16,7 +16,10 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       7.62x39 US with and without a PBS-1; birdshot close / far; piercing option on / off; sounds in an existing save.
 - [ ] Ammo Maker: Make / Produce recipes of every new type fill in; Make Soft Point Bullet; Pour Birdshot Pellets
       (the water input at a furnace is copied from the pottery wheel, unverified at a furnace).
-- [ ] Workshop: workshop.txt, poster / preview / icon, README.
+- [x] Workshop: workshop.txt, preview.png (1024, ad), both posters / icons, README, mod.info texts (2026-10-15;
+      art from scripts/render_ad_guns.py + scripts/make_workshop_art.py). Upload from the game's Workshop menu.
+      The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
+      simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand.
 
 ## Post-93 sub-mod `GoMExtensionGunsOfTienPost93` — in progress
 

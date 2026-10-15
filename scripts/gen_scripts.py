@@ -36,19 +36,24 @@ CALIBRES = {
 
 # Rounds: (calibre, variant item suffix, art suffix, English variant name)
 ROUNDS = [
-    ('762x39', 'US', 'US', 'US Subsonic'),
+    ('762x39', 'US', 'US', 'US'),
     ('762x39', 'SP', 'SP', 'Soft Point'),
     ('762x39', 'SteelCore', 'SteelCore', 'Steel Core'),
-    ('9x19', 'Subsonic', 'SS', '147gr Subsonic'),
+    ('9x19', 'Subsonic', 'SS', '147gr'),
     ('9x19', 'HollowPoint', 'HP', 'Hollow Point'),
-    ('9x19', 'PPP', 'PPP', '+P+'),
+    ('9x19', 'PPP', 'PPP', '[+P+]'),
     ('45', 'HollowPoint', 'HP', 'Hollow Point'),
-    ('45', 'P', 'P', '+P'),
+    ('45', 'P', 'P', '[+P]'),
     ('9x39', 'SP6', 'SP6', 'SP-6'),
     ('3006', 'SP', 'SP', 'Soft Point'),
     ('308', 'SP', 'SP', 'Soft Point'),
     ('12Gauge', 'Birdshot', 'Birdshot', 'Birdshot'),
 ]
+
+# GoM's naming: '<calibre> <name> Round / Box', 'Carton of <calibre> <name> Boxes', +P in square brackets; a real
+# load name gets its use after it in parentheses, as GoM writes 'MKI Suppressor (5.56mm Rifles)'.
+USAGE = {('762x39', 'US'): 'Subsonic', ('762x39', 'SteelCore'): 'Armor Piercing', ('9x19', 'Subsonic'): 'Subsonic',
+         ('9x39', 'SP6'): 'Armor Piercing'}
 
 
 # The ids registered in media/registries.lua (gunsoftien:<id>).
@@ -264,10 +269,11 @@ def translations():
     for cal, var, _, label in ROUNDS:
         c = CALIBRES[cal]
         unit = 'Shell' if c.get('shell') else 'Round'
-        names[f"{MODULE}.{round_item(cal, var)}"] = f"{c['name']} {label} {unit}"
-        names[f"{MODULE}.{cal}_Box_{var}"] = f"{c['name']} {label} Box"
-        names[f"{MODULE}.{cal}_Carton_{var}"] = f"Carton of {c['name']} {label} Boxes"
-        names[f"{MODULE}.{cal}_Crate_{var}"] = f"Crate of {c['name']} {label} Boxes"
+        use = f" ({USAGE[(cal, var)]})" if (cal, var) in USAGE else ""
+        names[f"{MODULE}.{round_item(cal, var)}"] = f"{c['name']} {label} {unit}{use}"
+        names[f"{MODULE}.{cal}_Box_{var}"] = f"{c['name']} {label} Box{use}"
+        names[f"{MODULE}.{cal}_Carton_{var}"] = f"Carton of {c['name']} {label} Boxes{use}"
+        names[f"{MODULE}.{cal}_Crate_{var}"] = f"Crate of {c['name']} {label} Boxes{use}"
     # GoM's plain rounds, named for what they are (translations merge by key, the later mod wins).
     names.update({
         'SWMG.9x39_Bullet': '9x39mm SP-5 Round',

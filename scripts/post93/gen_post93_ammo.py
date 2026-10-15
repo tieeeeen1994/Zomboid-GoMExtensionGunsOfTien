@@ -24,9 +24,12 @@ ROUNDS = [
     ('46x30', '', 'DM11', 'bullet_46x30', 'DM11'),
     ('46x30', '_Subsonic', 'SS', 'bullet_46x30_subsonic', 'Subsonic'),
     ('57x28', '', 'SS190', 'bullet_57x28', 'SS190'),
-    ('57x28', '_SB193', 'SB193', 'bullet_57x28_sb193', 'SB193 Subsonic'),
+    ('57x28', '_SB193', 'SB193', 'bullet_57x28_sb193', 'SB193'),
     ('57x28', '_SS197SR', 'SS197SR', 'bullet_57x28_ss197sr', 'SS197SR'),
 ]
+
+# GoM's naming, a real load name followed by its use in parentheses (as GoM's 'MKI Suppressor (5.56mm Rifles)').
+USAGE = {'_SB193': 'Subsonic', '_SS197SR': 'Hollow Point'}
 
 
 def write(path, text):
@@ -205,10 +208,11 @@ def translations():
     item_names = json.load(open(path)) if os.path.exists(path) else {}
     for cal, suffix, art, _, label in ROUNDS:
         c, n = CALIBRES[cal], names(cal, suffix, art)
-        item_names[q_full(n['round'])] = f"{c['name']} {label} Round"
-        item_names[q_full(n['box'])] = f"{c['name']} {label} Box"
-        item_names[q_full(n['carton'])] = f"Carton of {c['name']} {label} Boxes"
-        item_names[q_full(n['crate'])] = f"Crate of {c['name']} {label} Boxes"
+        use = f" ({USAGE[suffix]})" if suffix in USAGE else ""
+        item_names[q_full(n['round'])] = f"{c['name']} {label} Round{use}"
+        item_names[q_full(n['box'])] = f"{c['name']} {label} Box{use}"
+        item_names[q_full(n['carton'])] = f"Carton of {c['name']} {label} Boxes{use}"
+        item_names[q_full(n['crate'])] = f"Crate of {c['name']} {label} Boxes{use}"
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(item_names, indent=2, ensure_ascii=False) + '\n')
 
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')

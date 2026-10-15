@@ -71,6 +71,13 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   / left / right rails, 20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = vanilla's
   pistol clips with the P90's magazine behaviour; shown as **"MP7 Submachine Gun"**, parts "MP7 ...", GoM's naming
   (user, 2026-10-15; item IDs keep `MP7A1`; the P90 likewise "P90 Submachine Gun", parts "P90 ...", ID `P90TR`)) and FN
+  **Every display name follows GoM's conventions (user, 2026-10-15)**: mount devices "4.6x30mm / 5.7x28mm Family Muzzle
+  Mounting Device" (GoM: "AR Family ..."), suppressors by their real model "Rotex-II Suppressor (4.6x30mm Weapons)"
+  (B&T, made with H&K for the MP7) and "SP90 Suppressor (5.7x28mm Weapons)" (Gemtech, for FN), stocks "(Folded)" /
+  "(Deployed)"; ammunition "<calibre> <name> Round / Box", "Carton / Crate of ... Boxes", +P in square brackets, a real
+  load name followed by its use in parentheses: "US Round (Subsonic)", "Steel Core / SP-6 Round (Armor Piercing)",
+  "147gr / SB193 Round (Subsonic)", "SS197SR Round (Hollow Point)" (USAGE tables in gen_scripts.py /
+  gen_post93_ammo.py).
   **P90 TR only** (1999, bullpup like the FAMAS, **held like a pistol** (user, 2026-10-14: SwingAnim Handgun, handgun
   reload mechanics, one hand, as GoM's MP5K / TEC9 / MAC10) but **never fits a holster** (AttachmentType Rifle: back slot; the MP7 the same), 50-round top magazine, integral top / side rails, 900 rpm, damage
   1.0-1.5, sound 118 / 34, downward ejection, **its own top-loading reload clips**). Standard rounds pierce 2 (in the

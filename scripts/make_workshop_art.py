@@ -3,7 +3,8 @@
 
     python3 scripts/make_workshop_art.py [--renders DIR]
 
-Writes preview.png (1024x1024, under Steam's 1 MB preview limit; the Workshop thumbnail, an ad for both mods) and,
+Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
+preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand) and,
 for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list. The guns come from
 scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default tmp/ad); the ammo boxes are the
 mods' own 32 px inventory icons, scaled up without smoothing.
@@ -177,6 +178,29 @@ def preview(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview_small(path, W=256):
+    """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
+    page = background((W, W)).convert("RGBA")
+    k = W / 256
+    page.alpha_composite(text_layer(page.size, (W // 2, round(26 * k)), "GUNS OF MARZ", font(BOLD, round(26 * k), b"Bold"),
+                                    (28, 30, 34, 255), anchor="mm", spacing=round(1 * k)))
+    page.alpha_composite(text_layer(page.size, (W // 2, round(52 * k)), "EXTENSION", font(BOLD, round(17 * k), b"Bold"),
+                                    (60, 64, 70, 255), anchor="mm", spacing=round(3 * k)))
+    rows = [["item_9x19_Box_HP.png", "item_45_Box_P.png", "item_9x39_Box_SP6.png"],
+            ["item_762x39_Box_SteelCore.png", "item_12Gauge_Box_Birdshot.png", "item_3006_Box_SP.png"]]
+    px = 64 * round(k)                             # 2x the 32 px icons, crisp
+    step = px + round(8 * k)
+    for r, row in enumerate(rows):
+        x0 = (W - (len(row) * step - round(8 * k))) // 2 + round((-12 if r == 0 else 12) * k)
+        for n, name in enumerate(row):
+            lift = round((0, 5, 2)[n] * k)
+            paste_with_shadow(page, placed(page.size, icon(os.path.join(MAIN, name), px),
+                                           (x0 + n * step, round((76 + r * 80) * k) + lift)),
+                              (0, round(3 * k)), round(3 * k), 200)
+    page.convert("RGB").save(path, optimize=True)
+    print("wrote %s (%d bytes)" % (path, os.path.getsize(path)))
+
+
 def band(page, lines, top):
     """The dark band along the bottom with amber-ticked lines (512-grid units, scaled to the page)."""
     W, H = page.size
@@ -260,7 +284,8 @@ def mod_icon(path, item, W=128):
 
 
 if __name__ == "__main__":
-    preview(os.path.join(ROOT, "preview.png"))
+    preview(os.path.join(ROOT, "preview2.png"))          # the full ad, added on the Steam page by hand
+    preview_small(os.path.join(ROOT, "preview.png"))
     main_dir = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42")
     post_dir = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42")
     poster_main(os.path.join(main_dir, "poster.png"))
