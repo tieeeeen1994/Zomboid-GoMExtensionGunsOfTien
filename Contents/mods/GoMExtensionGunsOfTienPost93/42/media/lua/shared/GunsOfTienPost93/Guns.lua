@@ -1,11 +1,18 @@
 --[[
-    Guns of Tien - Post-93 -- the MP7A1 and P90 TR in Gunworks' and Guns of Marz's registries.
+    Guns of Tien - Post-93 -- the MP7A1, P90 TR, Five-seveN and UCP Prototype in Gunworks' and Guns of Marz's
+    registries.
 
     Everything a GoM gun goes through, done for ours (CLAUDE.md, "Gun data and registries in GoM"): magazine
     profiles, rate of fire (required for Gunworks' real auto fire), the animated bolt, reload animations, the MP7's
     collapsible stock, integrated rails as parents of GoM's optics / lights / lasers, the suppressors and their mount
     devices, parts that cannot be removed, spawn-time parts and magazines, and GoM parts allowed on our guns
     (MountOn appended; DoParam replaces the list, so it is read and written back whole).
+
+    The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
+    and M92FS: magazine profile, the animated slide, permanent magazines, spawn parts, GoM's pistol parts allowed on
+    it. Like GoM's pistols it has no reload animation entry (Gunworks' default handgun reload) and no rate of fire
+    (semi-automatic only). The UCP Prototype (GunsOfTienPost93.UCP, H&K's 4.6x30mm pistol) is registered the same way
+    and takes the MP7's mount device and Rotex-II suppressor.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -16,6 +23,7 @@ local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
+local Animations = require("WeaponSystems/Utils/Animations")
 
 for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
@@ -28,6 +36,10 @@ local P90 = M .. "P90TR"
 local MP7_MAGS = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7",
     M .. "46x30Magazine60_MP7" }
 local P90_MAGS = { M .. "57x28Magazine50_P90" }
+local FIVESEVEN = "MarzGuns.FIVESEVEN"
+local FIVESEVEN_MAGS = { M .. "57x28Magazine20_FIVESEVEN", M .. "57x28Magazine30_FIVESEVEN" }
+local UCP = M .. "UCP"
+local UCP_MAGS = { M .. "46x30Magazine20_UCP", M .. "46x30Magazine40_UCP" }
 
 -------------------------------------------------
 -- Magazines
@@ -36,6 +48,20 @@ Magazine.RegisterMagazineProfile("4.6x30mm MP7", MP7_MAGS)
 Magazine.RegisterWeaponWithProfile("4.6x30mm MP7", MP7)
 Magazine.RegisterMagazineProfile("5.7x28mm P90", P90_MAGS)
 Magazine.RegisterWeaponWithProfile("5.7x28mm P90", P90)
+Magazine.RegisterMagazineProfile("5.7x28mm Five-seveN", FIVESEVEN_MAGS)
+Magazine.RegisterWeaponWithProfile("5.7x28mm Five-seveN", FIVESEVEN)
+Magazine.RegisterMagazineProfile("4.6x30mm UCP", UCP_MAGS)
+Magazine.RegisterWeaponWithProfile("4.6x30mm UCP", UCP)
+
+-------------------------------------------------
+-- Five-seveN and UCP slides: GoM's pistol slide swap (Slide_Fired / Slide_Lock each shot, AnimationsFiring.lua)
+-------------------------------------------------
+for _, pistol in ipairs({ FIVESEVEN, UCP }) do
+    Animations.RegisterWeaponWithAnimatedParts(pistol, {
+        SingleAttachment = { open = "MarzGuns.Slide_Fired", locked = "MarzGuns.Slide_Lock" },
+        cycleTicks = 5,
+    })
+end
 
 -------------------------------------------------
 -- Rate of fire: MP7A1 950 rpm, P90 900 rpm. Both are light-recoiling, so they spread less than the MP5.
@@ -148,6 +174,14 @@ CSA.RegisterMultipleParts({
         SF.Set("SwingSound", "CapGunRifleShoot"),
         SF.Set("MuzzleFlashModelKey", nil),
     },
+    [M .. "FIVESEVEN_Suppressor"] = {
+        SF.Multiply("SoundRadius", 0.3),
+        SF.Multiply("SoundVolume", 0.3),
+        SF.Multiply("MaxDamage", 0.9),
+        SF.Multiply("MinDamage", 0.9),
+        SF.Set("SwingSound", "CapGunRifleShoot"),
+        SF.Set("MuzzleFlashModelKey", nil),
+    },
 })
 
 -------------------------------------------------
@@ -167,12 +201,14 @@ RequiredAttachment.RegisterRequired(LIGHTS, { M .. "MP7A1_Integrated_Rail_Left",
 RequiredAttachment.RegisterRequired(LASERS, { M .. "MP7A1_Integrated_Rail_Right", M .. "P90TR_Integrated_Rail_Right" })
 RequiredAttachment.RegisterRequired({ M .. "MP7_Suppressor" }, { M .. "MP7_Muzzle_Mount_Device" })
 RequiredAttachment.RegisterRequired({ M .. "P90_Suppressor" }, { M .. "P90_Muzzle_Mount_Device" })
+-- the Five-seveN's own suppressor screws onto the same 5.7x28mm mount device (shared, as GoM's pistols share theirs)
+RequiredAttachment.RegisterRequired({ M .. "FIVESEVEN_Suppressor" }, { M .. "P90_Muzzle_Mount_Device" })
 
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu
 -------------------------------------------------
 local permanent = {}
-for _, list in ipairs({ MP7_MAGS, P90_MAGS }) do
+for _, list in ipairs({ MP7_MAGS, P90_MAGS, FIVESEVEN_MAGS, UCP_MAGS }) do
     for _, part in ipairs(list) do permanent[#permanent + 1] = part end
 end
 for _, part in ipairs({ "MP7A1_Integrated_Rail_Up", "MP7A1_Integrated_Rail_Left", "MP7A1_Integrated_Rail_Right",
@@ -223,6 +259,31 @@ if spawnTable then
             M .. "P90_Muzzle_Mount_Device:10",
         },
     }
+    -- As GoM's Glock 17 (":BM" fits the Beretta mount the sight needs), plus the extended magazine and the mount device.
+    spawnTable[FIVESEVEN] = {
+        required = {
+            "MarzGuns.Slide_Lock",
+        },
+        optionals = {
+            M .. "57x28Magazine20_FIVESEVEN:50",
+            M .. "57x28Magazine30_FIVESEVEN:5",
+            "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
+            "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
+            M .. "P90_Muzzle_Mount_Device:5",
+        },
+    }
+    spawnTable[UCP] = {
+        required = {
+            "MarzGuns.Slide_Lock",
+            M .. "46x30Magazine20_UCP",                  -- found loose (no spawner adds magazines), so always loaded
+        },
+        optionals = {
+            M .. "46x30Magazine40_UCP:2",               -- the drum, as rare as the MP7's
+            "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
+            "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
+            M .. "MP7_Muzzle_Mount_Device:5",
+        },
+    }
 end
 
 -------------------------------------------------
@@ -254,14 +315,23 @@ local function appendMountOn(partType, guns)
     if changed then script:DoParam("MountOn = " .. table.concat(list, ";")) end
 end
 
+-- GoM's pistol parts on the Five-seveN (from the Glock 17's / M92FS's ModelWeaponPart lines; the sights need the
+-- Beretta mount, GoM's own RequiredAttachment rule). Under the rail GoM's two pistol lights (LP, a compact weapon
+-- light; TL, a flashlight in a clamp, the pre-rail way), no lasers (user, 2026-10-16).
+local PISTOL_PARTS = {
+    "MarzGuns.Beretta_Mount", "MarzGuns.PL4_Sight", "MarzGuns.PM2_Sight", "MarzGuns.PS1_Sight",
+    "MarzGuns.LP_Light", "MarzGuns.TL_Light",
+}
+
 local function appendAll()
     for _, part in ipairs(OPTICS) do appendMountOn(part, { MP7, P90 }) end
     for _, part in ipairs(LIGHTS) do appendMountOn(part, { MP7, P90 }) end
     for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, P90 }) end
+    for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end
 end
 
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
 
-GunsOfTienPost93_Guns = { MP7 = MP7, P90 = P90 }
+GunsOfTienPost93_Guns = { MP7 = MP7, P90 = P90, FIVESEVEN = FIVESEVEN, UCP = UCP }

@@ -1,14 +1,5 @@
 VERSION = 1,
 
-option GunsOfTien.AmmoLootMultiplier {
-    type        = double,
-    min         = 0.0,
-    max         = 100.0,
-    default     = 1.0,
-    page        = GunsOfTien,
-    translation = GunsOfTien_AmmoLootMultiplier,
-}
-
 option GunsOfTien.RealisticPiercing {
     type        = boolean,
     default     = true,

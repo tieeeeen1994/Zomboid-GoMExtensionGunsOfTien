@@ -39,6 +39,44 @@ module GunsOfTienPost93 {
         attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
     }
 
+    model FIVESEVEN {
+        mesh     = weapons/firearms/GunsOfTienPost93_FIVESEVEN|FIVESEVEN_BODY,
+        texture  = weapons/GunsOfTienPost93/FIVESEVEN,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1418 -0.0324, rotate = -90.0000 0.0000 -180.0000, }
+        attachment slide_fired { offset = 0.0000 -0.0223 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = -0.0090 0.0620 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0979 -0.0307, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0886 -0.0480, rotate = 0.0000 0.0000 0.0000, }
+        attachment underbarrel { offset = 0.0000 0.1159 -0.0097, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1412 -0.0324, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model FIVESEVEN_SLIDE {
+        mesh     = weapons/firearms/GunsOfTienPost93_FIVESEVEN|FIVESEVEN_SLIDE,
+        texture  = weapons/GunsOfTienPost93/FIVESEVEN,
+        cullFace = None,
+    }
+
+    model UCP {
+        mesh     = weapons/firearms/GunsOfTienPost93_UCP|UCP_BODY,
+        texture  = weapons/GunsOfTienPost93/UCP,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1354 -0.0292, rotate = -90.0000 0.0000 -180.0000, }
+        attachment slide_fired { offset = 0.0000 -0.0216 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = -0.0090 0.0620 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0914 -0.0282, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0821 -0.0455, rotate = 0.0000 0.0000 0.0000, }
+        attachment underbarrel { offset = 0.0000 0.1109 -0.0124, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1349 -0.0292, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model UCP_SLIDE {
+        mesh     = weapons/firearms/GunsOfTienPost93_UCP|UCP_SLIDE,
+        texture  = weapons/GunsOfTienPost93/UCP,
+        cullFace = None,
+    }
+
     model MP7A1_BOLT {
         mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_BOLT,
         texture  = weapons/GunsOfTienPost93/MP7A1,
@@ -87,6 +125,30 @@ module GunsOfTienPost93 {
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 
+    model 57x28Magazine20_FIVESEVEN {
+        mesh     = weapons/magazines/GunsOfTienPost93_FIVESEVEN_magazines|57x28Magazine20_FIVESEVEN,
+        texture  = weapons/GunsOfTienPost93/57x28Magazine20_FIVESEVEN,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 57x28Magazine30_FIVESEVEN {
+        mesh     = weapons/magazines/GunsOfTienPost93_FIVESEVEN_magazines|57x28Magazine30_FIVESEVEN,
+        texture  = weapons/GunsOfTienPost93/57x28Magazine30_FIVESEVEN,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 46x30Magazine20_UCP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UCP_magazines|46x30Magazine20_UCP,
+        texture  = weapons/GunsOfTienPost93/46x30Magazine20_UCP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 46x30Magazine40_UCP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UCP_magazines|46x30Magazine40_UCP,
+        texture  = weapons/GunsOfTienPost93/46x30Magazine40_UCP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
     model MP7_Suppressor {
         mesh     = weapons/parts/GunsOfTienPost93_MP7_parts|MP7_Suppressor,
         texture  = weapons/GunsOfTienPost93/MP7_Suppressor,
@@ -108,6 +170,24 @@ module GunsOfTienPost93 {
     model P90_Muzzle_Mount_Device {
         mesh     = weapons/parts/GunsOfTienPost93_P90_parts|P90_Muzzle_Mount_Device,
         texture  = weapons/GunsOfTienPost93/P90_Muzzle_Mount_Device,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model FIVESEVEN_Suppressor {
+        mesh     = weapons/parts/GunsOfTienPost93_FIVESEVEN_parts|FIVESEVEN_Suppressor,
+        texture  = weapons/GunsOfTienPost93/FIVESEVEN_Suppressor,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model FIVESEVEN_Muzzle_Mount_Device {
+        mesh     = weapons/parts/GunsOfTienPost93_FIVESEVEN_parts|FIVESEVEN_Muzzle_Mount_Device,
+        texture  = weapons/GunsOfTienPost93/FIVESEVEN_Muzzle_Mount_Device,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model UCP_Muzzle_Mount_Device {
+        mesh     = weapons/parts/GunsOfTienPost93_UCP_parts|UCP_Muzzle_Mount_Device,
+        texture  = weapons/GunsOfTienPost93/UCP_Muzzle_Mount_Device,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 }

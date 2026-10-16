@@ -56,9 +56,17 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   "(Furnace)": same metal / crucible / tongs / charcoal as Ammo Maker's buckshot plus the unused vanilla
   `Base.Strainer` (kept) and 0.5 water — the shot-pan method; the user chose this over a mold). Each part has a box.
   Item display names follow Ammo Maker ("Bullet Rifle S SP", "Box Birdshot Pellets").
-- **Loot**: boxes next to vanilla boxes of the same calibre (no army / police / SWAT for hunting loads and Chinese
-  steel core), plus bonus groups in GoM's spawners; sandbox `AmmoLootMultiplier`. **Sandbox options left**:
-  `AmmoLootMultiplier`, `RealisticPiercing`, `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never).
+- **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
+  as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
+  grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
+  are such special loads, so the main mod has no loot code (its old `server/GunsOfTien/Loot.lua`, boxes beside vanilla
+  boxes plus GoM spawner bonus groups, was deleted); they come from Ammo Maker. Ammo Maker still spawns this mod's
+  bullet / pellet parts itself, as it does every active part. No loot multiplier of our own (removed 2026-10-17,
+  user: "if GoM has it, use their option"): the Post-93 loot follows GoM's `MarzGuns.LootMultiplier` ("GoM Loot
+  Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
+  `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
+  `RealisticPiercing`,
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
   (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
   HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
@@ -73,7 +81,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   (user, 2026-10-15; item IDs keep `MP7A1`; the P90 likewise "P90 Submachine Gun", parts "P90 ...", ID `P90TR`)) and FN
   **Every display name follows GoM's conventions (user, 2026-10-15)**: mount devices "4.6x30mm / 5.7x28mm Family Muzzle
   Mounting Device" (GoM: "AR Family ..."), suppressors by their real model "Rotex-II Suppressor (4.6x30mm Weapons)"
-  (B&T, made with H&K for the MP7) and "SP90 Suppressor (5.7x28mm Weapons)" (Gemtech, for FN), stocks "(Folded)" /
+  (B&T, made with H&K for the MP7) and "SP90 Suppressor (5.7x28mm Weapons)" (Gemtech, for FN; renamed "SP90
+  Suppressor" 2026-10-16 when the Five-seveN got its own "SFN-57 Suppressor": the 5.7x28mm suppressors carry the model
+  only, the MP7's keeps its bracket by the user's choice), stocks "(Folded)" /
   "(Deployed)"; ammunition "<calibre> <name> Round / Box", "Carton / Crate of ... Boxes", +P in square brackets, a real
   load name followed by its use in parentheses: "US Round (Subsonic)", "Steel Core / SP-6 Round (Armor Piercing)",
   "147gr / SB193 Round (Subsonic)", "SS197SR Round (Hollow Point)" (USAGE tables in gen_scripts.py /
@@ -88,6 +98,36 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   (polymer tip, ×1.15, no pierce). Subsonic ×0.6 dmg, sound ×0.5, no pierce. Ammo Maker types `46x30` / `57x28`
   (existing) + `46x30SS`, `57x28SS`, `57x28SR`. 50-round boxes. Art: copper DM11 bullet (GoM's own is khaki; the user
   can switch it in `make_ammo_art.py`), real tip colours (SS190 black, SB193 violet, SS197SR blue).
+- **FN Five-seveN** (user, 2026-10-16) as `MarzGuns.FIVESEVEN`, GoM's own unused name: GoM's pistol features, 20 /
+  30-round magazines, its own "SFN-57 Suppressor" on the 5.7x28mm mount device it shares with the P90 (user: one
+  suppressor per gun, the mount can be shared), under the rail GoM's two pistol lights (LP and TL; no lasers,
+  user 2026-10-16; GoM's TL Tactical Light is pistol-only in its scripts though its model is a full-size flashlight in
+  a clamp, the pre-rail way police lit pistols), spawns in
+  GoM's police and SWAT handgun spawners and survivor / bandit bags, never civilian homes. See "FN Five-seveN" below.
+- **H&K UCP Prototype** (user, 2026-10-17): `GunsOfTienPost93.UCP`, H&K's never-sold 4.6x30mm pistol (prototypes
+  about 2004, cancelled 2009), shown as "UCP Prototype"; built like the Five-seveN (build_ucp.py, from a 550 px
+  fan-wiki photo of the 2004 prototype traced with `trace_outline.py`, which now does the steps the Five-seveN's trace
+  did by hand; the photo's rights are unclear, so it is not in the repo and make_ucp_art.py takes it as `--photo`);
+  its own 20-round magazine and a small 40-round drum like the MP7's (user: realistically the UCP is only known with its
+  own magazine, nothing shows it took the MP7's, so it keeps its own; a long 40, straight and then curved, was
+  rejected); takes the
+  MP7's mount device (drawn as `UCP_Muzzle_Mount_Device`) and Rotex-II, GoM's Beretta mount + pistol sights
+  and both pistol lights, no lasers. Spawns (user, 2026-10-17): never in civilian homes, so neither pistol is in
+  GoM's `World_Anachronistic_Spawner` (GoM inserts it in vanilla's `FirearmWeapons_Late` / `SafehouseBin_Late`, the
+  `SafehouseLoot_Late` survivor-safehouse rooms in houses, and in `SurvivorBag_Late` / `BanditBag_Late`); the
+  Five-seveN in GoM's police and SWAT handgun spawners, the UCP by direct entries very rarely in police and SWAT cars
+  and police bags (spawn table makes its magazine required), both pistols (+ magazine + box) by direct entries in the
+  two late zombie bags at the 2/7 and 1/7 each Anachronistic gun gets there (Loot.lua `DIRECT`).
+- **Loot matches GoM's** (user, 2026-10-17: "everything needs to be lootable the same as GoM"; traced in GoM's
+  ItemInsertion.lua / VanillaReplacer*.lua / ItemSpawnerTable.lua): GoM spawns guns only through ~45 spawner items
+  inserted in vanilla lists (each a gun + magazines + boxes; zombies carry them through AttachedWeaponDefinitions),
+  high-capacity magazines loose through four `World_HighCap_*_Magazine_Spawner` (only with its sandbox
+  SpawnHighCapMags), attachments through attachment spawners, boxes and cartons by replacing vanilla's
+  (VanillaAmmoMap, sandbox VanillaAmmoReplacement) or `Distribution.Insert` beside them; its crates, its cartons of
+  calibres vanilla lacks (7.62x39, 9x39, 5.45) and loose rounds never spawn. Ammo Maker spawns every active part and
+  part box itself (ammomaker_itemDistribution.lua, at container fill). Ours follow the same routes; the special
+  loads (main mod's 12, Post-93's 4.6x30 Subsonic and 5.7x28 SB193 / SS197SR) never spawn, as GoM's own do not. Its icons reuse the Five-seveN's Glock-fitted
+  cameras. The Five-seveN and the UCP have no optic rail of their own: GoM's pistol sights need its Beretta mount.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -96,8 +136,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
-  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`), `lua/server/GunsOfTien/` (`Loot.lua`,
-  `HotBrass.lua`), `lua/client/GunsOfTien/Tooltips.lua`, `lua/shared/Translate/EN/` (ItemName, Recipes, Tooltip,
+  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`), `lua/server/GunsOfTien/HotBrass.lua` (no
+  loot: see "Loot: none"), `lua/client/GunsOfTien/Tooltips.lua`, `lua/shared/Translate/EN/` (ItemName, Recipes, Tooltip,
   Sandbox), `textures/`.
 - Post-93 `Contents/mods/GoMExtensionGunsOfTienPost93/42/media/`: `registries.lua`, `scripts/GunsOfTienPost93/`
   (ammo items / models / recipes / Ammo Maker placeholders; guns to come from `gen_post93_guns.py`),
@@ -108,11 +148,14 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
-  `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json`),
+  `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json` /
+  `fiveseven_points.json` / `ucp_points.json`),
   `scripts/check_refs.py` (every item / model / icon / mesh / texture / AnimSet clip name in both mods resolves
   against them, GoM, Gunworks, Ammo Maker, Hot Brass and vanilla, version and common folders), and the model
-  builders `scripts/post93/build_mp7.py`, `build_p90.py` (imports build_mp7 as its library), their review renders
-  `render_mp7.py` / `render_p90.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` (Pillow).
+  builders `scripts/post93/build_mp7.py`, `build_p90.py`, `build_fiveseven.py`, `build_ucp.py` (the others import
+  build_mp7 as their library), their review renders `render_mp7.py` / `render_p90.py` / `render_fiveseven.py` /
+  `render_ucp.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` / `make_fiveseven_art.py` /
+  `make_ucp_art.py` (Pillow); `trace_outline.py` traces a reference photo's outline.
 
 ## Status and how to continue
 
@@ -197,15 +240,22 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
 - Stock collapsed: butt plate L 385-414, H 36-148 (front face slanting back toward the bottom, two holes at L 397,
   H 46.5 / 55.5), rods at H 140 x ±10; travel 223 mm. The rods run forward to L 360, 25 mm into the receiver
   (its back face is L 385): ending at L 395 left a visible gap with the stock extended (user, 2026-10-15).
-- Magazines (`build_mp7.build_magazine`): swept along an axis straight inside the grip (feed lips L 257 / H 104), the
-  20-round one ends at its base plate under the grip (H 0.5-5.5); the 30 / 40-round ones go on 48 / 96 mm curving
-  toward the muzzle (radius 400 mm, ~7 / ~14 degrees), as in `mp7_1.png` / `mp7_4.png`. The `magazine` point has no
-  rotation.
+- Magazines (`build_mp7.build_magazine`): swept from the feed lips (L 257 / H 104); the 20-round ends at its base
+  plate under the grip (H 0.5-5.5), the 30 / 40-round go on 48 / 96 mm. Since 2026-10-17 (the user's photos of H&K's
+  30 and 40: "they still look straight on the top", "those are curved") every box magazine curves along its whole
+  length on one radius (`BOX_RADIUS` 560 mm: 20 ~10, 30 ~15, 40 ~20 degrees) and is tilted back about its top
+  (`BOX_TILT`) so the chord of its part inside the grip lies on the grip's axis (it bows ~2 mm there, the grip has ~13
+  to spare); `box_local()` maps texels back to (along, across) for painting. The 30 / 40 carry their lower part
+  (`SLEEVE` 50 / 86 mm, a third / 44 % of their length) in a wider polymer sleeve (+1.1 mm a side across, +2 mm front
+  to back, a raised rim at its top) with a witness slot, the capacity, "MADE IN GERMANY" / "4.6X30" moulded and, on
+  the 40, a round mark; the base plate under it. The drum's tower stays straight (`mag_frame`). The `magazine` point
+  has no rotation. Rebuilding on the Mac changes the bytes (not the shapes) of every MP7 asset against the
+  Windows-built ones, so after a magazine-only change restore the gun, parts and their textures and part icons from git.
 - **60-round drum** `46x30Magazine60_MP7` (user, 2026-10-15; H&K made only 20 / 30 / 40): `build_drum()`, a feed
   tower like the 20-round body up into the grip and a 92 mm drum **facing front and back** (axis along the barrel,
   user: the side-facing Glock-style layout was wrong; 40 mm front to back, centre 4 mm forward of the magazine axis,
   top 1.5 mm under the grip), hub caps, a winding key on the front face, "60" on both faces.
-  Weight 0.30 (GoM's MP5 100-round drum 0.33), "MP7 60Rds Drum 4.6x30mm Magazine", 2% on found MP7s and not in the
+  Weight 0.22 (GoM's MP5 60, since 2026-10-17; was 0.30), "MP7 60Rds Drum 4.6x30mm Magazine", 2% on found MP7s and not in the
   spawner's magazine list. Its icon uses a camera fitted on GoM's `item_9x19Magazine100_MP5` (`make_mp7_art.py
   --fit-drum`, kind "drum"; the other kinds keep their stored cameras).
 - **No GoM muzzle devices** (user, 2026-10-15): GoM's `LR2_Compensator`, `LX_Flashhider` and `Trix42_Muzzlebreak`
@@ -299,6 +349,76 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   silhouette exactly on the drawn outline and cuts holes cleanly (how every profile with holes is built).
   `bmesh.from_mesh` appends to a non-empty bmesh but **not at the end of the index order**: find the new elements by
   set difference, never by index (doing it by index rotated earlier boxes into the wrong axes).
+
+## FN Five-seveN (2026-10-16)
+
+Guns of Marz names a Five-seveN (`"MarzGuns.FIVESEVEN": "5.7x28mm Five-SeveN"` in its ItemName.json) and ships
+nothing else; the user chose to reuse that name ("let's reuse it, enable it in our mod and add missing stuff"), so the
+Post-93 mod defines `item FIVESEVEN` in GoM's module (`scripts/GunsOfTienPost93/items_fiveseven.txt`, written by
+`gen_post93_guns.py`) and GoM's translation names it; everything it uses is ours. If GoM ever ships its own
+`item FIVESEVEN`, ours (loaded after GoM) replaces it whole, but GoM's Lua registrations for it would then meet our
+parts. Features follow GoM's pistols ("match the features of what GoM has"); design table in docs/post93_design.md.
+- **Reference**: a public-domain U.S. ATF side photo of an FNH USA Five-seveN, right side, muzzle right
+  (commons.wikimedia.org/wiki/File:FN_Five_Seven.jpg, kept as docs/fiveseven_atf.jpg). Traced on its white background
+  (flood fill from the border, Moore boundary, Douglas-Peucker 1.5 px; the scratch tracer was plain Python + numpy)
+  into `scripts/post93/fiveseven_reference_outline.json`, scaled to FN's 208 mm (the photo's height then reads
+  141 mm against FN's 137: lens or how FN measures). The trigger opening is cleaned by hand there (the trace ran round
+  the trigger). Profiles in `build_fiveseven.py` are in that photo's (L, H) mm; silhouette overlap 96.0%.
+- **GoM's pistol conventions** (measured on its Glock 17 / M92FS / USP, 2026-10-16): 0.72 scale (Glock 0.145 units
+  = 202 mm), modelled upside down (+Z = bottom, +X = right), origin in the web of the grip under the beavertail
+  (Glock: 12 mm behind its frame at that height, bore 47 mm above; ours L 197 / H 87, bore 45 above). Nodes
+  `<GUN>_BODY` + `<GUN>_SLIDE`, the slide drawn through `MarzGuns.Slide_Lock` / `Slide_Fired` at points `slide_Lock`
+  (absent: origin) / `slide_fired` (offset = slide travel: Glock 32 mm, ours 31) and swapped per shot by
+  `Animations.RegisterWeaponWithAnimatedParts(gun, { SingleAttachment = { open = "MarzGuns.Slide_Fired", locked =
+  "MarzGuns.Slide_Lock" }, cycleTicks = 5 })`. Magazine meshes sit in the gun's own space (the Glock has no
+  `magazine` point, so `magazine magazine` draws them at the origin), floor pose `world` rotate 90 0 -90. Points:
+  muzzle (-90 0 -180), world (-0.009 0.062 0, every pistol), rail_up (Beretta_Mount: 61 mm behind the muzzle, 11.4
+  under the slide top), scope (pistol sights PL4 / PM2 / PS1: 13 mm behind and 24 mm above rail_up), underbarrel
+  (lights / lasers PJ-3, PX1, TR-1, LP, TL: on the rail's underside), canon (= the muzzle, bore height); all rotate
+  0 0 0, because GoM's pistol parts are modelled upside down too. Pistol sights need `Beretta_Mount` or `Colt_Mount`
+  (GoM's AttachmentsRequiredParts.lua, per part, not per gun); spawn entries "part:chance:BM" fit the mount with the
+  sight. No ReloadAnims entry (Gunworks' default handgun reload) and no RPM entry for GoM's semi-automatic pistols.
+  Police pistols: `MarzGuns.Zombie_Police_Handgun_Spawner` (M92FS, Glock: gun, 4 magazines, 4 boxes),
+  `Zombie_SWAT_Handgun_Spawner`.
+- GoM's pistol `Muzzle_Mount_Device` model is about as big as its suppressors (r 0.0136 / 0.0157 x 0.082 units) and
+  the M&P suppressor sits inside it. Ours: the P90's mount device (a 0.0089-radius sleeve, MountOn P90 + Five-seveN)
+  is drawn at the Five-seveN's `canon` too (`ModelWeaponPart` picks the model per gun), with the Five-seveN's own
+  `FIVESEVEN_Suppressor` (built by build_fiveseven.py in the gun's upside-down space, origin at `canon`; its collar,
+  r 13.8 mm, covers the mount; CustomStats, RequiredAttachment on the shared mount, tooltip and suppressor spawner as
+  the SP90's). Real world, as far as known: the SP90 fastens to the P90's own flash hider; Gemtech's can for the
+  Five-seveN was a separate model (SFN-57) on a threaded barrel. Its size here (33 x 170 mm) is approximate.
+  "Everything pistol-related" (user, 2026-10-16), matched by relation to GoM's items: on the Five-seveN the shared mount
+  device item is drawn with the model `FIVESEVEN_Muzzle_Mount_Device` (the barrel's threaded end 15 mm out of the slide
+  with a knurled adapter, inside the SFN-57's collar) instead of the P90's clamp; the SFN-57 weighs 0.8 (GoM's pistol
+  cans 0.8-1.2 regardless of size; its P45, the same size, is 0.8) and its icon uses a camera fitted on GoM's
+  M&P_Suppressor icon (`pistol_suppressor` in fiveseven_icon_cameras.json).
+- **Weights follow GoM's (user, 2026-10-17: "use the GoM standard or values with our stuff too")**: suppressors
+  0.8-1.2 whatever their size, matched by size (Rotex-II and SFN-57 0.8 as the P45, SP90 0.9 as the NDR), every mount
+  device 0.5; magazines as GoM's (MP7 20 / 30 / 40 / 60 drum = 0.08 / 0.18 / 0.2 / 0.22 after the MP5's 20 / 30 / 60,
+  P90 50 = 0.25 as GoM's 50-60 round pistol-calibre ones; pistol 20-round 0.05, the Five-seveN's extended 30 and the
+  UCP's drum 0.2 as GoM's extended / drum pistol magazines); guns by GoM's weight against real (its SMGs ~0.78 of
+  their kilograms: MP7 1.5, P90 2.0; its USP / M92FS ~1.0: Five-seveN 0.6, UCP 0.85).
+- **Icons**: make_mp7_art.py's coarse camera grid fitted GoM's Glock icon to a twisted twin (error 110);
+  `make_fiveseven_art.py` seeds the local search with side views (yaw 90 / 270, pitch 0 / 180, every 15 degrees of
+  roll): Glock error 52, Glock magazine 29 (was 65). Cameras in `fiveseven_icon_cameras.json`.
+- GoM bugs seen on the way (not ours to fix): its Glock magazine's script names icon `9x19Magazine17_GLOCK17` and
+  texture `.../9x19Magazine17_GLOCK17`, but the files are `item_9x19Magazine17_GLOCK.png` and
+  `9x19Magazine17_Glock.png`. The main mod's `sound_model.py` had no row for GoM's `GLOCK17`; added 2026-10-17 (4.49", 114 / 33).
+- **Handedness of the review renders** (found 2026-10-16): the render scripts use game space as Blender world space,
+  but game space is left-handed (+X = the gun's left with +Y forward and +Z up; Assimp MAKE_LEFT_HANDED), while
+  Blender's own FBX import (world = raw x, -raw z, raw y: a mirror of game-as-world) shows the gun as authored and as
+  the game shows it (vanilla text on world items is not mirrored in game). So every render_mp7 / render_p90 view is
+  the mirror image of the game: a "right side" render has the muzzle on the left, and text painted to read right in
+  those renders reads backwards in game. Seen directly: the P90 suppressor's "5.7X28" reads backwards in the
+  Five-seveN sheet, which flips every render to the game's view. render_fiveseven.py / make_fiveseven_art.py do that
+  flip; the Five-seveN's markings use the game's orientation (right side = -X upright, reads toward the muzzle,
+  u = -L; left side u = +L). The MP7's and P90's painted text (`text_mask` with u = -L on the MP7's left, u = +L on
+  the P90's right, the suppressors' calibre) read backwards in game: **fixed 2026-10-17** in build_mp7.py and
+  build_p90.py (left side u = +L, right side u = -L, the suppressors' text along -y so it reads from the gun's left,
+  the MP7 drum's "60" toward -X on its rear face), MP7 and P90 rebuilt. Which side each one-sided feature belongs on
+  (the P90's "FN HERSTAL BELGIUM" panel, the MP7's markings) was not re-checked: the photos they were matched to are
+  not in this repo and were labelled by the mirrored renders ("right side, muzzle left"); check in game against a
+  photo before moving any. render_mp7 / render_p90 still do not flip their views (their sheets are mirrored).
 
 ## Research reference
 

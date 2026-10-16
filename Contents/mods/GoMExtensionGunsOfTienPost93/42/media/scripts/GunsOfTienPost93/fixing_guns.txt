@@ -8,4 +8,14 @@ module Base {
         Require = GunsOfTienPost93.P90TR,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
+
+    fixing Fix FIVESEVEN {
+        Require = MarzGuns.FIVESEVEN,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix UCP {
+        Require = GunsOfTienPost93.UCP,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
 }

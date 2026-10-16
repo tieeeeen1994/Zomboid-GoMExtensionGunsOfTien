@@ -34,6 +34,7 @@ return {
     ["MarzGuns.M60"] = { 210, 60 }, -- 762x51, 22"
     ["MarzGuns.BAR"] = { 216, 62 }, -- 3006, 24"
     ["MarzGuns.M92FS"] = { 111, 32 }, -- 9mm, 4.9"
+    ["MarzGuns.GLOCK17"] = { 114, 33 }, -- 9mm, 4.49"
     ["MarzGuns.M93R"] = { 104, 30 }, -- 9mm, 6.1"
     ["MarzGuns.HIPOWER"] = { 112, 32 }, -- 9mm, 4.7"
     ["MarzGuns.P226"] = { 115, 33 }, -- 9mm, 4.4"

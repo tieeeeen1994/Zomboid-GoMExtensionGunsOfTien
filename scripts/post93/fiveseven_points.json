@@ -1,0 +1,186 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1418,
+      -0.0324
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0979,
+      -0.0307
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0886,
+      -0.048
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "underbarrel": {
+    "offset": [
+      0.0,
+      0.1159,
+      -0.0097
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1412,
+      -0.0324
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "slide_fired": {
+    "offset": [
+      0.0,
+      -0.0223,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.009,
+      0.062,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.72 of real size); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's BOTTOM, +X its RIGHT; origin = the web of the grip under the beavertail (photo L 197, H 87)",
+    "magazine": "no magazine point, as on GoM's Glock 17: 57x28Magazine20/30_FIVESEVEN are modelled in the gun's space and drawn at its origin",
+    "canon": "the barrel's crown; the item GunsOfTienPost93.P90_Muzzle_Mount_Device (shared with the P90, drawn here with the model FIVESEVEN_Muzzle_Mount_Device) and FIVESEVEN_Suppressor, extending along +Y",
+    "slide_fired": "FIVESEVEN_SLIDE (drawn through MarzGuns.Slide_Lock / Slide_Fired) back 31 mm real",
+    "rail_up/scope/underbarrel": "GoM's pistol parts (Beretta_Mount, PL4 / PM2 / PS1 sights, PJ-3 / PX1 / TR-1 lasers, LP / TL lights) at GoM's Glock 17 relations"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      197.0,
+      87.0
+    ],
+    "real_mm_per_game_unit": 1388.89,
+    "ejection_port_upright": [
+      -0.0091,
+      0.0698,
+      0.0338
+    ]
+  },
+  "_bounds": {
+    "FIVESEVEN_BODY": {
+      "min": [
+        -0.011,
+        -0.0079,
+        -0.0369
+      ],
+      "max": [
+        0.011,
+        0.1412,
+        0.0618
+      ],
+      "tris": 2260
+    },
+    "FIVESEVEN_SLIDE": {
+      "min": [
+        -0.0091,
+        -0.0058,
+        -0.045
+      ],
+      "max": [
+        0.0091,
+        0.1408,
+        -0.0242
+      ],
+      "tris": 296
+    },
+    "57x28Magazine20_FIVESEVEN": {
+      "min": [
+        -0.0086,
+        -0.0004,
+        -0.0095
+      ],
+      "max": [
+        0.0086,
+        0.0465,
+        0.0625
+      ],
+      "tris": 336
+    },
+    "57x28Magazine30_FIVESEVEN": {
+      "min": [
+        -0.0086,
+        -0.0073,
+        -0.0095
+      ],
+      "max": [
+        0.0086,
+        0.0465,
+        0.0904
+      ],
+      "tris": 336
+    },
+    "FIVESEVEN_Suppressor": {
+      "min": [
+        -0.0119,
+        0.0022,
+        -0.0119
+      ],
+      "max": [
+        0.0119,
+        0.1224,
+        0.0119
+      ],
+      "tris": 360
+    },
+    "FIVESEVEN_Muzzle_Mount_Device": {
+      "min": [
+        -0.0055,
+        -0.0004,
+        -0.0055
+      ],
+      "max": [
+        0.0055,
+        0.0108,
+        0.0055
+      ],
+      "tris": 256
+    }
+  }
+}

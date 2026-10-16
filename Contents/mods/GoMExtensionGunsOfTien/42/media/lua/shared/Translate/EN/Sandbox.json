@@ -1,7 +1,5 @@
 {
   "Sandbox_GunsOfTien": "Guns of Tien",
-  "Sandbox_GunsOfTien_AmmoLootMultiplier": "Ammo Loot Multiplier",
-  "Sandbox_GunsOfTien_AmmoLootMultiplier_tooltip": "How often this mod's rounds (subsonic, hollow point, soft point, steel core, +P, +P+, birdshot, SP-6) turn up in loot, next to the Guns of Marz ammo of the same calibre. 1.0 = default, higher = more common, 0 = none.",
   "Sandbox_GunsOfTien_RealisticPiercing": "Adjusted Piercing",
   "Sandbox_GunsOfTien_RealisticPiercing_tooltip": "Plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds can pass through a zombie and hit the one behind it in every gun that fires them, as they would in reality; Guns of Marz lets only some of those guns pierce. Soft points never pierce but hit harder, so choosing between them is always a trade-off. Plain .30-30 rounds are flat-nosed soft points in reality (pointed bullets are unsafe in a tube magazine), so they no longer pierce. Off = Guns of Marz's own piercing.",
   "Sandbox_GunsOfTien_SubsonicRackRule": "7.62x39mm US Subsonic Cycling",

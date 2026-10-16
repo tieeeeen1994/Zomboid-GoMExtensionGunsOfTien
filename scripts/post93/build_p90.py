@@ -307,7 +307,7 @@ def paint(maps, kind):
         fnp = right & (L > 226) & (L < 304) & (H > 98.5) & (H < 109) & (np.abs(x) > W_BAND - 0.6)
         fni = rounded_rect(L, H, 227.5, 302.5, 100.0, 107.5, 1.5)
         col[fnp & ~fni] += 13
-        txt = kit.text_mask(L, H, "FN HERSTAL BELGIUM", 229.0, 101.0, 5.0)   # right side: reads toward +L
+        txt = kit.text_mask(-L, H, "FN HERSTAL BELGIUM", -301.0, 101.0, 5.0)  # right side: reads toward the muzzle
         col[fnp & fni & txt] += 22
         # Metal upper: recessed window at the front, oval recess and its notch on the rail block, the side
         # tracks of the charging handles, the moulding line under the rail.
@@ -379,7 +379,7 @@ def paint(maps, kind):
                                                                          < 0.5)))[..., None]
         col[(np.abs(yy - 38.5) < 0.7) | (np.abs(yy - 162.0) < 0.6)] *= 0.5
         ang = np.arctan2(x, -z)
-        tx = kit.text_mask(yy, ang * 19.0, "5.7X28", 80.0, -3.0, 6.0)
+        tx = kit.text_mask(-yy, ang * 19.0, "5.7X28", -108.8, -3.0, 6.0)  # y 80-108.8, read the right way
         col[tx & (r > 18.5)] = col[tx & (r > 18.5)] * 0.3 + 120
         col[(r < 5.6) & (yy > 165)] = 8
     elif kind == "mount":

@@ -35,7 +35,13 @@
   "GunsOfTienPost93.P90TR_Integrated_Rail_Right": "P90 Integrated Rail (Right)",
   "GunsOfTienPost93.MP7_Suppressor": "Rotex-II Suppressor (4.6x30mm Weapons)",
   "GunsOfTienPost93.MP7_Muzzle_Mount_Device": "4.6x30mm Family Muzzle Mounting Device",
-  "GunsOfTienPost93.P90_Suppressor": "SP90 Suppressor (5.7x28mm Weapons)",
+  "GunsOfTienPost93.P90_Suppressor": "SP90 Suppressor",
   "GunsOfTienPost93.P90_Muzzle_Mount_Device": "5.7x28mm Family Muzzle Mounting Device",
-  "GunsOfTienPost93.46x30Magazine60_MP7": "MP7 60Rds Drum 4.6x30mm Magazine"
+  "GunsOfTienPost93.46x30Magazine60_MP7": "MP7 60Rds Drum 4.6x30mm Magazine",
+  "GunsOfTienPost93.57x28Magazine20_FIVESEVEN": "Five-SeveN 20Rds 5.7x28mm Magazine",
+  "GunsOfTienPost93.57x28Magazine30_FIVESEVEN": "Five-SeveN 30Rds 5.7x28mm Extended Magazine",
+  "GunsOfTienPost93.FIVESEVEN_Suppressor": "SFN-57 Suppressor",
+  "GunsOfTienPost93.UCP": "UCP Prototype",
+  "GunsOfTienPost93.46x30Magazine20_UCP": "UCP 20Rds 4.6x30mm Magazine",
+  "GunsOfTienPost93.46x30Magazine40_UCP": "UCP 40Rds Drum 4.6x30mm Magazine"
 }

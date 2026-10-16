@@ -401,26 +401,51 @@ def build_stock():
 MAG_EXTRA = {20: 0.0, 30: 48.0, 40: 96.0}       # body length past the 20-round one (mm)
 MAG_STRAIGHT = MAG_H - 4.5                       # straight inside the grip, down to the base plate of the 20-round
 MAG_RADIUS = 400.0                               # the curve forward below the grip (30: ~7 degrees, 40: ~14)
+# The 30 and 40-round magazines carry their lower part in a wider polymer sleeve, the base plate under it (H&K's own,
+# from the user's photos, 2026-10-17): about a third / 44 % of the magazine's length, ~1 mm wider and 2 mm deeper a
+# side than the metal body, a slightly raised rim at its top. The 20-round has none.
+SLEEVE = {30: 50.0, 40: 86.0}
 
 
-def mag_frame(s):
-    """Centre (y, z) mm and forward tilt (radians) of the magazine's axis at distance s from its top."""
+# The box magazines curve along their whole length, from the feed lips down (the user's photos of H&K's 30 and 40,
+# 2026-10-17: "still look straight on the top"), on one radius: 20 ~10 degrees, 30 ~15, 40 ~20 in all. Each is then
+# tilted back about its top so the part inside the grip has its chord on the grip's axis (it bows ~2 mm there; the
+# grip has ~13 mm to spare either side). The drum's feed tower stays straight (mag_frame).
+BOX_RADIUS = 560.0
+BOX_TILT = -(MAG_STRAIGHT / BOX_RADIUS) / 2.0     # radians about X: the chord from the lips to the grip's bottom vertical
+
+
+def mag_frame(s, box=False):
+    """Centre (y, z) mm and forward tilt (radians) of the magazine's axis at distance s from its top, before a box
+    magazine's tilt (box: curved from the top; otherwise straight inside the grip, MAG_RADIUS below it)."""
+    if box:
+        a = s / BOX_RADIUS
+        return (BOX_RADIUS * (1 - math.cos(a)), -BOX_RADIUS * math.sin(a)), a
     if s <= MAG_STRAIGHT:
         return (0.0, -s), 0.0
     a = (s - MAG_STRAIGHT) / MAG_RADIUS
     return (MAG_RADIUS * (1 - math.cos(a)), -MAG_STRAIGHT - MAG_RADIUS * math.sin(a)), a
 
 
-def mag_ring(bm, s, w, d, c, du=0.0):
-    (cy, cz), a = mag_frame(s)
+def box_local(y, z):
+    """A point of a box magazine as built (tilted) -> (s along the axis from the top, u across it toward the muzzle)."""
+    cb, sb = math.cos(-BOX_TILT), math.sin(-BOX_TILT)
+    yy, zz = y * cb - z * sb, y * sb + z * cb             # undo the tilt
+    s = BOX_RADIUS * np.arctan2(-zz, BOX_RADIUS - yy)     # the arc's centre of curvature is at (R, 0)
+    u = BOX_RADIUS - np.hypot(BOX_RADIUS - yy, zz)
+    return s, u
+
+
+def mag_ring(bm, s, w, d, c, du=0.0, box=False):
+    (cy, cz), a = mag_frame(s, box)
     ny, nz = math.cos(a), math.sin(a)                 # across the magazine, toward the muzzle
     sec = [(-w + c, -d), (w - c, -d), (w, -d + c), (w, d - c), (w - c, d), (-w + c, d), (-w, d - c), (-w, -d + c)]
     return [bm.verts.new((x, cy + (u + du) * ny, cz + (u + du) * nz)) for x, u in sec]
 
 
-def sweep(b, s_list, w, d, c, mat, du=0.0):
+def sweep(b, s_list, w, d, c, mat, du=0.0, box=False):
     bm = b.bm
-    rings = [mag_ring(bm, s, w, d, c, du) for s in s_list]
+    rings = [mag_ring(bm, s, w, d, c, du, box) for s in s_list]
     faces = [bm.faces.new(rings[0][::-1]), bm.faces.new(rings[-1])]
     for ra, rb in zip(rings, rings[1:]):
         for k in range(8):
@@ -430,17 +455,25 @@ def sweep(b, s_list, w, d, c, mat, du=0.0):
 
 
 def build_magazine(rounds):
-    """Double-stack magazine, origin at the feed lips (top centre), straight down inside the grip, then curving
-    gently toward the muzzle the further it reaches below it (the real MP7 magazines are not straight)."""
+    """Double-stack magazine, origin at the feed lips (top centre), curving toward the muzzle along its whole length
+    (BOX_RADIUS) and tilted back so its part inside the grip sits on the grip's axis."""
     b = Builder()
     end = MAG_STRAIGHT + MAG_EXTRA[rounds]
-    steps = [4.0, MAG_STRAIGHT] + [MAG_STRAIGHT + k * 8.0 for k in range(1, int(MAG_EXTRA[rounds] // 8.0))] + [end]
-    sweep(b, sorted(set(round(s, 3) for s in steps)), 9.5, 18.0, 1.6, "magpoly")
-    sweep(b, [0.0, 4.5], 7.0, 16.0, 1.5, "magpoly")                           # feed lips
-    sweep(b, [end - 1.0, end + 4.0], 11.0, 20.5, 2.0, "magpoly")                # base plate
+    steps = [4.0 + k * 8.0 for k in range(int((end - 4.0) // 8.0) + 1)] + [end]
+    sweep(b, sorted(set(round(s, 3) for s in steps)), 9.5, 18.0, 1.6, "magpoly", box=True)
+    sweep(b, [0.0, 4.5], 7.0, 16.0, 1.5, "magpoly", box=True)                 # feed lips
+    if rounds in SLEEVE:                                                        # lower polymer sleeve and its rim
+        start = end - SLEEVE[rounds]
+        sweep(b, sorted({round(start + k * 8.0, 3) for k in range(int(SLEEVE[rounds] // 8.0))} | {end}),
+              10.6, 20.0, 2.0, "polymer", box=True)
+        sweep(b, [start, start + 2.5], 10.9, 20.4, 2.0, "polymer", box=True)
+    sweep(b, [end - 1.0, end + 4.0], 11.0, 20.5, 2.0, "magpoly", box=True)      # base plate
     # top round: steel-cored bullet forward, brass case
     b.lathe("y", (0, 0, -2.6), [(-17.5, 0), (-17.5, 4.0), (5.0, 4.0), (6.5, 2.4), (12.5, 2.4)], seg=8, mat="brass")
     b.lathe("y", (0, 0, -2.6), [(12.5, 2.4), (16.0, 2.0), (19.2, 0.7), (19.6, 0)], seg=8, mat="copper")
+    tilt = rot_x(math.degrees(BOX_TILT))
+    for v in b.bm.verts:
+        v.co = tilt @ v.co
     return b.to_object("46x30Magazine%d_MP7" % rounds)
 
 
@@ -644,6 +677,11 @@ FONT = {  # 3x5 pixel glyphs, rows top to bottom
     "X": ["101", "101", "010", "101", "101"], ".": ["000", "000", "000", "000", "010"],
     " ": ["000", "000", "000", "000", "000"], "S": ["111", "100", "111", "001", "111"],
     "F": ["111", "100", "110", "100", "100"],
+    # also used by build_p90.py / build_fiveseven.py (same glyphs as theirs)
+    "N": ["101", "111", "111", "111", "101"], "E": ["111", "100", "110", "100", "111"],
+    "R": ["110", "101", "110", "101", "101"], "G": ["111", "100", "101", "101", "111"],
+    "I": ["111", "010", "010", "010", "111"], "D": ["110", "101", "101", "101", "110"],
+    "Y": ["101", "101", "010", "010", "010"],
 }
 
 
@@ -715,8 +753,11 @@ def paint(maps, kind):
         stag = np.mod(np.floor((L - 238.0) / 4.6), 2) * 4.5
         rib = panel & inner & (np.mod(L - 238.0, 4.6) < 1.7) & (np.mod(H - 12.0 + stag, 9.0) < 6.2) & (H > 28)
         col[rib] *= 0.6
-        col[grip & left & text_mask(-L, H, "MP7", -272.0, 18.5, 5.0)] += 26     # reads toward the muzzle side
-        col[grip & right & text_mask(L, H, "MP7", 252.0, 18.5, 5.0)] += 26
+        # Text reads the right way in game (game space is left-handed; CLAUDE.md "Handedness of the review renders"):
+        # on the left side (+X) toward the rear (+L), on the right side toward the muzzle (-L). Fixed 2026-10-17: it
+        # was written to read right in the mirrored review renders, so it read backwards in game.
+        col[grip & left & text_mask(L, H, "MP7", 260.0, 18.5, 5.0)] += 26
+        col[grip & right & text_mask(-L, H, "MP7", -264.0, 18.5, 5.0)] += 26
         # Receiver: seam, front vent slots, rear slots, the bolt-carrier recess, pins.
         col[side & (np.abs(H - 135.0) < 0.5) & (L > 56) & (L < 385)] *= 0.55
         for La, Lb in ((96.0, 108.0), (121.0, 140.0)):
@@ -734,8 +775,8 @@ def paint(maps, kind):
                       & (np.mod(L - 264.5, 5.5) < 4.6), (190, 40, 36))):
             col[lower & m] = c
         # Calibre on the left front, designation on the right upper.
-        col[lower & left & text_mask(-L, H, "4.6X30", -186.0, 120.5, 4.0)] += 30
-        col[upper & right & text_mask(L, H, "MP7A1", 150.0, 141.5, 5.0)] += 26
+        col[lower & left & text_mask(L, H, "4.6X30", 166.8, 120.5, 4.0)] += 30
+        col[upper & right & text_mask(-L, H, "MP7A1", -170.0, 141.5, 5.0)] += 26
         # Ejection port on the right of the upper receiver.
         port = upper & right & (L > 196) & (L < 246) & (H > 139) & (H < 152)
         rim = upper & right & (L > 194.5) & (L < 247.5) & (H > 137.5) & (H < 153.5) & ~port
@@ -770,26 +811,39 @@ def paint(maps, kind):
         face = (front | rear) & (np.abs(y - DRUM_Y) > DRUM_HALF - 0.3) & (r < DRUM_R - 2.0)
         col[face & (np.abs(r - 39.0) < 0.8)] *= 0.55                      # groove round the face
         col[face & (np.abs(r - 14.5) < 0.6)] *= 0.6                       # around the hub cap
-        for f, u in ((face & rear, dx), (face & front, -dx)):              # "60", upright, under the hub
+        # "60", upright, under the hub: from behind the gun's right (-X) is on the viewer's right, so it reads toward -X
+        for f, u in ((face & rear, -dx), (face & front, dx)):
             col[f & text_mask(u, dz, "60", -6.8, -31.0, 9.0)] = (190, 190, 184)
         rib = side & (np.abs(np.abs(y) - 13.0) < 0.9) & (z < -12) & (z > -MAG_STRAIGHT + 8)
         col[rib] *= 0.72
     elif kind.startswith("mag"):
         rounds = int(kind[3:])
         end = MAG_STRAIGHT + MAG_EXTRA[rounds]
-        (cy, cz), a = mag_frame(end)
-        ty, tz = math.sin(a), -math.cos(a)                 # down the magazine at its end
-        ny, nz = math.cos(a), math.sin(a)                  # toward the muzzle
-        back = -((y - cy) * ty + (z - cz) * tz)            # distance up from the end, along the end's axis
-        u = (y - cy) * ny + (z - cz) * nz
-        # capacity ticks (2 / 3 / 4 white bars) on both sides above the base plate, readable at 128 px
-        for k in range(rounds // 10):
-            tick = side & (np.abs(back - (9.0 + k * 3.6)) < 0.9) & (np.abs(u + 4.0) < 6.0)
-            col[tick] = (190, 190, 184)
-        # pressing ribs along the straight part, the witness slot near the top
-        rib = side & (np.abs(np.abs(y) - 13.0) < 0.9) & (z < -12) & (z > -MAG_STRAIGHT + 8)
+        s_ax, u = box_local(y, z)                          # along the curved axis from the top / across, toward the muzzle
+        back = end - s_ax                                  # distance up from the end
+        if rounds in SLEEVE:
+            # the polymer sleeve (user's photos): witness slot near its top, the capacity moulded beside it, "MADE IN
+            # GERMANY" and the calibre near the bottom, a round mark on the 40's; a faint grey-green tint. Text reads
+            # the right way in game: on the left side (+X) toward the rear (-u), on the right side toward the muzzle.
+            sl = (mat == MATS.index("polymer")) & side
+            top = SLEEVE[rounds]
+            col[sl] *= np.array([0.95, 1.0, 0.96])
+            col[sl & rounded_rect(u, back, 0.4, 3.8, top - 18.0, top - 7.0, 1.7)] = 10
+            for face, uu in ((sl & left, -u), (sl & right, u)):
+                col[face & text_mask(uu, back, str(rounds), -15.0, top - 11.0, 4.0)] += 34
+                col[face & text_mask(uu, back, "MADE IN GERMANY", -15.0, 11.5, 2.2)] += 24
+                col[face & text_mask(uu, back, "4.6X30", -8.0, 7.0, 2.2)] += 24
+            if rounds == 40:
+                col[sl & (np.abs(np.hypot(u - 2.0, back - top * 0.42) - 2.6) < 0.5)] *= 0.5
+        else:
+            # capacity ticks (2 white bars) on both sides above the base plate, readable at 128 px
+            for k in range(rounds // 10):
+                tick = side & (np.abs(back - (9.0 + k * 3.6)) < 0.9) & (np.abs(u + 4.0) < 6.0)
+                col[tick] = (190, 190, 184)
+        # pressing ribs along the part inside the grip, the witness slot near the top
+        rib = side & (np.abs(np.abs(u) - 13.0) < 0.9) & (s_ax > 12) & (s_ax < MAG_STRAIGHT - 8)
         col[rib] *= 0.72
-        col[side & (np.abs(y + 2.0) < 1.2) & (z < -18) & (z > -34)] *= 0.4
+        col[side & (np.abs(u + 2.0) < 1.2) & (s_ax > 18) & (s_ax < 34)] *= 0.4
     elif kind == "suppressor":
         r = np.hypot(x, z)
         knurl = (y > 2) & (y < 23) & (r > 14)
@@ -798,7 +852,7 @@ def paint(maps, kind):
         band = (np.abs(y - 26.8) < 0.7) | (np.abs(y - 182.0) < 0.6)
         col[band & (r > 15)] *= 0.5
         ang = np.arctan2(x, -z)
-        tx = text_mask(y, ang * 17.2, "4.6X30", 70.0, -3.0, 6.0)
+        tx = text_mask(-y, ang * 17.2, "4.6X30", -98.8, -3.0, 6.0)       # same span, y 70-98.8, read the right way
         col[tx & (r > 16.5)] = col[tx & (r > 16.5)] * 0.3 + 120
         col[(r < 3.5) & (y > 185)] = 8
     elif kind == "mount":

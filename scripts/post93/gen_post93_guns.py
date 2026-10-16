@@ -1,7 +1,11 @@
-"""Writes the MP7A1 / P90 TR item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93.
+"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype item and model scripts, their parts, repair recipes and names for Guns of
+Tien - Post-93.
 
-Run after the model builders (build_mp7.py / build_p90.py), which write the attachment points to mp7_points.json and
-p90_points.json next to this script: python3 scripts/post93/gen_post93_guns.py
+Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py), which write the
+attachment points to mp7_points.json, p90_points.json, fiveseven_points.json and ucp_points.json next to this script:
+python3 scripts/post93/gen_post93_guns.py
+The Five-seveN is the item MarzGuns.FIVESEVEN: Guns of Marz names it ("5.7x28mm Five-SeveN" in its ItemName.json) but
+ships nothing else, so its item block (items_fiveseven.txt) is in GoM's module and everything it uses is ours.
 Icons are item_GunsOfTienPost93_<name>.png (prefixed, so another mod's MP7 or P90 icon cannot replace them).
 """
 import json
@@ -72,11 +76,33 @@ def gun_model(model, file, node_body, points, extra_points):
     return out + "    }\n"
 
 
-def models(mp7, p90):
+def pistol_model(name, points):
+    """GoM's pistol model scripts (its Glock 17): the points it uses, each with GoM's rotate; body + slide."""
+    out = f"""
+    model {name} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_{name}|{name}_BODY,
+        texture  = {TEX}/{name},
+        cullFace = None,
+"""
+    for point in ('muzzle', 'slide_fired', 'world', 'rail_up', 'scope', 'underbarrel', 'canon'):
+        out += attachment(point, points[point])
+    return out + f"""    }}
+
+    model {name}_SLIDE {{
+        mesh     = weapons/firearms/GunsOfTienPost93_{name}|{name}_SLIDE,
+        texture  = {TEX}/{name},
+        cullFace = None,
+    }}
+"""
+
+
+def models(mp7, p90, fiveseven, ucp):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'rifle_back', 'rifle_back_bag']))
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
+    out.append(pistol_model('FIVESEVEN', fiveseven))
+    out.append(pistol_model('UCP', ucp))
     for model, file, node, tex in [
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
@@ -90,8 +116,14 @@ def models(mp7, p90):
 """)
     parts = [(f'46x30Magazine{n}_MP7', 'magazines/GunsOfTienPost93_MP7_magazines') for n in (20, 30, 40, 60)]
     parts += [('57x28Magazine50_P90', 'magazines/GunsOfTienPost93_P90_magazines')]
+    # GoM's pistol magazines are modelled where they sit in the gun (no `magazine` point) with this floor pose
+    parts += [(f'57x28Magazine{n}_FIVESEVEN', 'magazines/GunsOfTienPost93_FIVESEVEN_magazines') for n in (20, 30)]
+    parts += [(f'46x30Magazine{n}_UCP', 'magazines/GunsOfTienPost93_UCP_magazines') for n in (20, 40)]
     parts += [(p, 'parts/GunsOfTienPost93_MP7_parts') for p in ('MP7_Suppressor', 'MP7_Muzzle_Mount_Device')]
     parts += [(p, 'parts/GunsOfTienPost93_P90_parts') for p in ('P90_Suppressor', 'P90_Muzzle_Mount_Device')]
+    parts += [(p, 'parts/GunsOfTienPost93_FIVESEVEN_parts') for p in ('FIVESEVEN_Suppressor',
+                                                                       'FIVESEVEN_Muzzle_Mount_Device')]
+    parts += [('UCP_Muzzle_Mount_Device', 'parts/GunsOfTienPost93_UCP_parts')]
     for node, file in parts:
         out.append(f"""
     model {node} {{
@@ -191,6 +223,168 @@ GUN_HANDGUN = (GUN_COMMON
 assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
 
 
+# GoM's pistol parts the Five-seveN takes (the ModelWeaponPart lines of GoM's Glock 17 / M92FS)
+PISTOL_SIGHTS = ['PL4_Sight', 'PM2_Sight', 'PS1_Sight']
+# GoM's two pistol lights (LP: compact weapon light; TL: a flashlight in a clamp, the pre-rail way), no lasers
+# (user, 2026-10-16)
+PISTOL_POINTERS = ['LP_Light', 'TL_Light']
+
+
+def fiveseven_item():
+    """MarzGuns.FIVESEVEN, as GoM's pistols (GLOCK17 is the template) on our 5.7x28mm. Light recoil (HitChance 57,
+    RecoilDelay 9), M92FS-class damage, pierces 2 with the standard SS190 round like the P90 (its script round, which
+    Gunworks never profiles), realistic sound (the main mod's model: 5.7x28mm ~6.7 gr from a 122 mm barrel = 148 / 42;
+    the M16 is 175 / 50). Takes GoM's Beretta mount and pistol sights, its two pistol lights on the rail, the
+    5.7x28mm family's mount device (shared with the P90, as GoM's pistols share theirs) and its own SFN-57 suppressor
+    (user, 2026-10-16: one suppressor per gun)."""
+    parts = [f"        ModelWeaponPart             = MarzGuns.Slide_Lock {M}.FIVESEVEN_SLIDE slide_Lock slide_Lock,",
+             f"        ModelWeaponPart             = MarzGuns.Slide_Fired {M}.FIVESEVEN_SLIDE slide_fired slide_fired,"]
+    parts += [f"        ModelWeaponPart             = {M}.57x28Magazine{n}_FIVESEVEN {M}.57x28Magazine{n}_FIVESEVEN "
+              f"magazine magazine," for n in (20, 30)]
+    parts += ["        ModelWeaponPart             = MarzGuns.Beretta_Mount MarzGuns.Beretta_Mount rail_up rail_up,"]
+    parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} scope scope," for s in PISTOL_SIGHTS]
+    parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} underbarrel underbarrel,"
+              for s in PISTOL_POINTERS]
+    # the shared mount device item, drawn on the pistol as its own threaded-barrel adapter
+    parts += [f"        ModelWeaponPart             = {M}.P90_Muzzle_Mount_Device {M}.FIVESEVEN_Muzzle_Mount_Device canon canon,",
+              f"        ModelWeaponPart             = {M}.FIVESEVEN_Suppressor {M}.FIVESEVEN_Suppressor canon canon,"]
+    write(f'scripts/{M}/items_fiveseven.txt', f"""module MarzGuns {{
+    imports {{ Base }}
+
+    item FIVESEVEN {{
+        MinDamage                   = 0.6,
+        MaxDamage                   = 1.0,
+        CriticalChance              = 25.0,
+        AimingPerkCritModifier      = 6,
+        CritDmgMultiplier           = 4.0,
+        HitChance                   = 57,
+        AimingPerkHitChanceModifier = 4,
+        Aimingtime                  = 18,
+        RecoilDelay                 = 9,
+        MaxRange                    = 22.0,
+        AimingPerkRangeModifier     = 0,
+        MinSightRange               = 1,
+        MaxSightRange               = 10.0,
+        MinRange                    = 0.61,
+        MinAngle                    = 0.95,
+        AimingPerkMinAngleModifier  = 0.05,
+        JamGunChance                = 1.0,
+        ConditionLowerChanceOneIn   = 230,
+        ConditionMax                = 10,
+        PushBackMod                 = 0.3,
+        StopPower                   = 4.0,
+        DoorDamage                  = 5,
+
+        Projectilecount             = 1,
+        MaxHitcount                 = 2,
+        PiercingBullets             = true,
+
+        DisplayCategory             = Weapon,
+        ItemType                    = base:weapon,
+        SubCategory                 = Firearm,
+        AttachmentType              = Holster,
+        Tags                        = base:hasmetal;base:firearm,
+        Weight                      = 0.6,
+        MetalValue                  = 25.0,
+        IsAimedFirearm              = true,
+        Ranged                      = true,
+        AmmoType                    = gunsoftienpost93:bullet_57x28,
+        AmmoBox                     = {M}.57x28_Box,
+        ClipSize                    = 20,
+        MagazineType                = {M}.57x28Magazine20_FIVESEVEN,
+        MaxAmmo                     = 20,
+        Reloadtime                  = 30,
+        WeaponReloadType            = handgun,
+        UseEndurance                = false,
+        MinimumSwingtime            = 0.5,
+        Swingtime                   = 0.5,
+        SwingAmountBeforeImpact     = 0.0,
+
+        Icon                        = GunsOfTienPost93_FIVESEVEN,
+        RunAnim                     = Run_Weapon2,
+        SwingAnim                   = Handgun,
+        WeaponSprite                = {M}.FIVESEVEN,
+        AimReleaseSound             = M9AimRelease,
+        BreakSound                  = M9Break,
+        BringToBearSound            = M9BringToBear,
+        ClickSound                  = M9Jam,
+        DropSound                   = M9Drop,
+        EjectAmmoStartSound         = M9EjectAmmoStart,
+        EjectAmmoSound              = M9EjectAmmo,
+        EjectAmmoStopSound          = M9EjectAmmoStop,
+        EquipSound                  = M9Equip,
+        HitSound                    = BulletImpact,
+        ImpactSound                 = null,
+        InsertAmmoStartSound        = M9InsertAmmoStart,
+        InsertAmmoSound             = M9InsertAmmo,
+        InsertAmmoStopSound         = M9InsertAmmoStop,
+        RackSound                   = M9Rack,
+        ShellFallSound              = M9CartridgeFall,
+        SwingSound                  = M9Shoot,
+        UnequipSound                = M9UnEquip,
+        SoundGain                   = 1.5,
+        SoundRadius                 = 148,
+        SoundVolume                 = 42,
+        NPCSoundBoost               = 1.5,
+        MuzzleFlashModelKey         = muzzle_flash_handgun,
+        SplatBloodOnNoDeath         = true,
+        SplatNumber                 = 3,
+        SplatSize                   = 3,
+
+        OnCreate                    = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+
+        KnockBackOnNoDeath          = true,
+        ToHitModifier               = 1.5,
+    }}
+}}
+""")
+
+
+def ucp_item():
+    """GunsOfTienPost93.UCP, "UCP Prototype" (user, 2026-10-17): H&K's 4.6x30mm companion pistol to the MP7, prototypes
+    from about 2004, cancelled 2009. Built and registered like the Five-seveN (GoM's pistol pattern). Published: 200 mm,
+    130 mm barrel, 850 g, 20 rounds, 695 m/s. DM11 from it carries a little less energy than SS190 from the Five-seveN
+    (1.6 g at 695 m/s against 2.0 g at about 650), so damage 0.55-0.95 (Five-seveN 0.6-1.0); weight 0.85 for 850 g (GoM's
+    USP and M92FS weigh about their real kilograms); pierces 2 with DM11 like
+    the MP7; light recoil. Realistic sound (the main mod's model: 4.6x30mm ~6 gr from 130 mm against the MP7's 180 mm =
+    125 / 36). Takes GoM's Beretta mount and pistol sights, its two pistol lights (no lasers, as the Five-seveN), and the
+    MP7's mount device (drawn as UCP_Muzzle_Mount_Device) and Rotex-II suppressor (user: "use the MP7 suppressor")."""
+    parts = [f"        ModelWeaponPart             = MarzGuns.Slide_Lock {M}.UCP_SLIDE slide_Lock slide_Lock,",
+             f"        ModelWeaponPart             = MarzGuns.Slide_Fired {M}.UCP_SLIDE slide_fired slide_fired,",
+             f"        ModelWeaponPart             = {M}.46x30Magazine20_UCP {M}.46x30Magazine20_UCP magazine magazine,",
+             f"        ModelWeaponPart             = {M}.46x30Magazine40_UCP {M}.46x30Magazine40_UCP magazine magazine,",
+             "        ModelWeaponPart             = MarzGuns.Beretta_Mount MarzGuns.Beretta_Mount rail_up rail_up,"]
+    parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} scope scope," for s in PISTOL_SIGHTS]
+    parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} underbarrel underbarrel,"
+              for s in PISTOL_POINTERS]
+    parts += [f"        ModelWeaponPart             = {M}.MP7_Muzzle_Mount_Device {M}.UCP_Muzzle_Mount_Device canon canon,",
+              f"        ModelWeaponPart             = {M}.MP7_Suppressor {M}.MP7_Suppressor canon canon,"]
+    block = open(os.path.join(ROOT, f'scripts/{M}/items_fiveseven.txt')).read()
+    body = block[block.index('    item FIVESEVEN {'):block.rindex('}')]
+    for a, b in [('item FIVESEVEN {', 'item UCP {'),
+                 ('MinDamage                   = 0.6,', 'MinDamage                   = 0.55,'),
+                 ('MaxDamage                   = 1.0,', 'MaxDamage                   = 0.95,'),
+                 ('HitChance                   = 57,', 'HitChance                   = 56,'),
+                 ('StopPower                   = 4.0,', 'StopPower                   = 3.5,'),
+                 ('Weight                      = 0.6,', 'Weight                      = 0.85,'),
+                 ('AmmoType                    = gunsoftienpost93:bullet_57x28,',
+                  'AmmoType                    = gunsoftienpost93:bullet_46x30,'),
+                 (f'AmmoBox                     = {M}.57x28_Box,', f'AmmoBox                     = {M}.46x30_Box,'),
+                 (f'MagazineType                = {M}.57x28Magazine20_FIVESEVEN,',
+                  f'MagazineType                = {M}.46x30Magazine20_UCP,'),
+                 ('Icon                        = GunsOfTienPost93_FIVESEVEN,', 'Icon                        = GunsOfTienPost93_UCP,'),
+                 (f'WeaponSprite                = {M}.FIVESEVEN,', f'WeaponSprite                = {M}.UCP,'),
+                 ('SoundRadius                 = 148,', 'SoundRadius                 = 125,'),
+                 ('SoundVolume                 = 42,', 'SoundVolume                 = 36,')]:
+        assert body.count(a) == 1, a
+        body = body.replace(a, b)
+    start = body.index('        ModelWeaponPart')
+    end = body.index('\n\n        KnockBackOnNoDeath')
+    body = body[:start] + '\n'.join(parts) + body[end:]
+    return body
+
+
 def items(mp7, p90):
     mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40, 60)]
     p90_mags = ['57x28Magazine50_P90']
@@ -216,7 +410,7 @@ def items(mp7, p90):
         AimingPerkMinAngleModifier   = 0.01,
         ConditionLowerChanceOneIn    = 220,
         StopPower                    = 2.0,
-        Weight                       = 1.9,
+        Weight                       = 1.5,
         MetalValue                   = 25.0,
 {GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_46x30,
         AmmoBox                      = {M}.46x30_Box,
@@ -249,7 +443,7 @@ def items(mp7, p90):
         AimingPerkMinAngleModifier   = 0.01,
         ConditionLowerChanceOneIn    = 220,
         StopPower                    = 2.0,
-        Weight                       = 2.6,
+        Weight                       = 2.0,
         MetalValue                   = 25.0,
 {GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_57x28,
         AmmoBox                      = {M}.57x28_Box,
@@ -263,11 +457,13 @@ def items(mp7, p90):
         SoundVolume                  = 34,
 {model_parts('P90TR', p90_mags, None, 'P90_Suppressor', 'P90_Muzzle_Mount_Device', False)}    }}
 """)
-    for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.12, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[1], 30, 0.17, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[2], 40, 0.22, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[3], 60, 0.30, 'bullet_46x30', 'MP7A1'),    # drum (GoM's MP5 100: 0.33)
-                                         (p90_mags[0], 50, 0.40, 'bullet_57x28', 'P90TR')]:
+    # Weights by GoM's own (user, 2026-10-17: "use the GoM standard"): its MP5 20 / 30 / 60 = 0.08 / 0.18 / 0.22, the
+    # 50-60 round pistol-calibre magazines 0.2-0.25 (M92FS 50, M93R 60, AK 60).
+    for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.08, 'bullet_46x30', 'MP7A1'),
+                                         (mp7_mags[1], 30, 0.18, 'bullet_46x30', 'MP7A1'),
+                                         (mp7_mags[2], 40, 0.2, 'bullet_46x30', 'MP7A1'),
+                                         (mp7_mags[3], 60, 0.22, 'bullet_46x30', 'MP7A1'),    # drum, as the MP5's 60
+                                         (p90_mags[0], 50, 0.25, 'bullet_57x28', 'P90TR')]:
         out.append(f"""
     item {mag} {{
         AmmoType         = gunsoftienpost93:{ammo},
@@ -279,6 +475,32 @@ def items(mp7, p90):
         MountOn          = {M}.{guns},
         PartType         = Clip,
         Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    # GoM's pistol magazines: standard 0.05 (Glock 17, M92FS 15, P226, USP 12), extended 0.2 (M92FS 30, USP 20), drums
+    # 0.2-0.25 (M93R 60, M92FS 50)
+    for mag, cap, weight, gun, ammo in [('57x28Magazine20_FIVESEVEN', 20, 0.05, 'MarzGuns.FIVESEVEN', 'bullet_57x28'),
+                                        ('57x28Magazine30_FIVESEVEN', 30, 0.2, 'MarzGuns.FIVESEVEN', 'bullet_57x28'),
+                                        ('46x30Magazine20_UCP', 20, 0.05, f'{M}.UCP', 'bullet_46x30'),
+                                        ('46x30Magazine40_UCP', 40, 0.2, f'{M}.UCP', 'bullet_46x30')]:
+        out.append(f"""
+    item {mag} {{
+        AmmoType         = gunsoftienpost93:{ammo},
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {gun},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:pistolmagazine,
         Weight           = {weight},
         WeightModifier   = {weight},
         StaticModel      = {M}.{mag},
@@ -307,10 +529,14 @@ def items(mp7, p90):
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }}
 """)
-    for part, ptype, weight, gun in [('MP7_Suppressor', 'Canon', 0.35, 'MP7A1'),
-                                     ('MP7_Muzzle_Mount_Device', 'CanonMount', 0.1, 'MP7A1'),
-                                     ('P90_Suppressor', 'Canon', 0.4, 'P90TR'),
-                                     ('P90_Muzzle_Mount_Device', 'CanonMount', 0.1, 'P90TR')]:
+    # the 5.7x28mm family's mount device fits the P90 and the Five-seveN; each has its own suppressor
+    # GoM's weights (user, 2026-10-17): suppressors 0.8-1.2 whatever their size, matched by size: the Rotex-II (34 x 190
+    # mm) and the SFN-57 (33 x 170) as its P45 (33 x 181) 0.8, the SP90 (38 x 172) as its NDR 0.9; every mount device 0.5
+    for part, ptype, weight, gun in [('MP7_Suppressor', 'Canon', 0.8, f'{M}.MP7A1;{M}.UCP'),
+                                     ('MP7_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.MP7A1;{M}.UCP'),
+                                     ('P90_Suppressor', 'Canon', 0.9, f'{M}.P90TR'),
+                                     ('FIVESEVEN_Suppressor', 'Canon', 0.8, 'MarzGuns.FIVESEVEN'),
+                                     ('P90_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.P90TR;MarzGuns.FIVESEVEN')]:
         out.append(f"""
     item {part} {{
         DisplayCategory  = WeaponPart,
@@ -318,13 +544,14 @@ def items(mp7, p90):
         Icon             = GunsOfTienPost93_{part},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {M}.{gun},
+        MountOn          = {gun},
         PartType         = {ptype},
         WorldStaticModel = {M}.{part},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
         CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
     }}
 """)
+    out.append(ucp_item())
     out.append("}\n")
     write(f'scripts/{M}/items_guns.txt', ''.join(out))
     write(f'scripts/{M}/fixing_guns.txt', f"""module Base {{
@@ -335,6 +562,16 @@ def items(mp7, p90):
 
     fixing Fix P90TR {{
         Require = {M}.P90TR,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
+    fixing Fix FIVESEVEN {{
+        Require = MarzGuns.FIVESEVEN,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
+    fixing Fix UCP {{
+        Require = {M}.UCP,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
 }}
@@ -353,6 +590,12 @@ def translations():
         f'{M}.46x30Magazine40_MP7': 'MP7 40Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine60_MP7': 'MP7 60Rds Drum 4.6x30mm Magazine',
         f'{M}.57x28Magazine50_P90': 'P90 50Rds 5.7x28mm Magazine',
+        # MarzGuns.FIVESEVEN itself is named by GoM ("5.7x28mm Five-SeveN"); its magazines in GoM's style
+        f'{M}.57x28Magazine20_FIVESEVEN': 'Five-SeveN 20Rds 5.7x28mm Magazine',
+        f'{M}.57x28Magazine30_FIVESEVEN': 'Five-SeveN 30Rds 5.7x28mm Extended Magazine',
+        f'{M}.UCP': 'UCP Prototype',                                  # user, 2026-10-17
+        f'{M}.46x30Magazine20_UCP': 'UCP 20Rds 4.6x30mm Magazine',
+        f'{M}.46x30Magazine40_UCP': 'UCP 40Rds Drum 4.6x30mm Magazine',
         f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7 Integrated Stock (Folded)',
         f'{M}.MP7A1_Integrated_Stock_Deployed': 'MP7 Integrated Stock (Deployed)',
         f'{M}.MP7A1_Integrated_Rail_Up': 'MP7 Integrated Rail (Up)',
@@ -363,7 +606,8 @@ def translations():
         f'{M}.P90TR_Integrated_Rail_Right': 'P90 Integrated Rail (Right)',
         f'{M}.MP7_Suppressor': 'Rotex-II Suppressor (4.6x30mm Weapons)',
         f'{M}.MP7_Muzzle_Mount_Device': '4.6x30mm Family Muzzle Mounting Device',
-        f'{M}.P90_Suppressor': 'SP90 Suppressor (5.7x28mm Weapons)',
+        f'{M}.P90_Suppressor': 'SP90 Suppressor',          # model only, no calibre (user, 2026-10-16)
+        f'{M}.FIVESEVEN_Suppressor': 'SFN-57 Suppressor',
         f'{M}.P90_Muzzle_Mount_Device': '5.7x28mm Family Muzzle Mounting Device',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
@@ -372,7 +616,10 @@ def translations():
 if __name__ == '__main__':
     mp7 = load_points('mp7_points.json')
     p90 = load_points('p90_points.json')
-    models(mp7, p90)
+    fiveseven = load_points('fiveseven_points.json')
+    ucp = load_points('ucp_points.json')
+    models(mp7, p90, fiveseven, ucp)
+    fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
     translations()
     print('written under', os.path.normpath(ROOT))

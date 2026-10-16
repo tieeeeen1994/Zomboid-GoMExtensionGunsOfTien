@@ -42,11 +42,15 @@ M1911s. Left as GoM has it: .223 as a weaker "civilian" 5.56.
 
 ## 2. Loot (realistic rarity, sandbox multiplier)
 
+**Superseded 2026-10-17: no loot.** Guns of Marz never spawns its own special loads (its 5.56 Hollow Point / Armor
+Piercing / Subsonic / Overpressured), only each calibre's standard box, so these rounds are not loot either (user):
+they come from Ammo Maker. The plan below was built and then removed.
+
 - Police stations and police zombies: 9mm and .45 hollow points, 9mm subsonic (common), .45 +P (uncommon).
 - Gun stores / hunting: 7.62x39 soft point and steel core (common, like GoM's 7.62x39 box), 9mm / .45 hollow point.
 - Military / Russian spawners: 7.62x39 US subsonic (rare), 9x39 SP-6 (very rare, alongside the AS VAL's boxes).
 - Added next to vanilla and GoM boxes (`Distribution.Insert`, GoM spawner bonus groups), never replacing them.
-- Sandbox `GunsOfTien.AmmoLootMultiplier` (0-100, default 1).
+- Sandbox `GunsOfTien.AmmoLootMultiplier` (0-100, default 1). (Removed 2026-10-17: GoM's `MarzGuns.LootMultiplier` is used.)
 
 ## 3. Realistic gun sounds, M16 = reference (always on, no sandbox option)
 
@@ -98,7 +102,7 @@ carbines become louder than the M16; .45 guns become quiet (subsonic); the AS VA
 
 ## 4. Sandbox options (page GunsOfTien)
 
-- `AmmoLootMultiplier` (double, 1).
+- `AmmoLootMultiplier` (double, 1). (Removed 2026-10-17.)
 - `RealisticPiercing` (bool, true): FMJ rifle rounds pierce, .30-30 does not (section 1).
 - `SubsonicRackRule` (enum: 1 always rack / 2 rack unless a PBS-1 is fitted (default) / 3 never): 7.62x39 US.
   A gas-operated AK short-strokes on the low-powder US round; the PBS-1's back pressure pushes enough gas into the

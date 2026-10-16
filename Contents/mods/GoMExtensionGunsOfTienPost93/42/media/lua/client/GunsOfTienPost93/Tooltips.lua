@@ -1,6 +1,6 @@
 --[[
-    Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, their
-    magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time; hard-coded English like
+    Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
+    Five-seveN, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time; hard-coded English like
     GoM's own entries).
 --]]
 
@@ -22,12 +22,29 @@ lines[M .. "P90TR"] = {
     "50-round magazine on top; ejects spent cases downward.",
     "Standard rounds pierce: able to hit up to 2 targets.",
 }
+lines["MarzGuns.FIVESEVEN"] = {
+    "Uses 5.7x28mm rounds.",
+    "Compatible Mounting Device: Beretta Mount.",
+    "Compatible Muzzle Device: 5.7x28mm Muzzle Mount.",
+    "Standard rounds pierce: able to hit up to 2 targets.",
+}
+lines[M .. "57x28Magazine20_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
+lines[M .. "57x28Magazine30_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
+lines[M .. "UCP"] = {
+    "Uses 4.6x30mm rounds.",
+    "H&K prototype, never sold (cancelled 2009).",
+    "Compatible Mounting Device: Beretta Mount.",
+    "Compatible Muzzle Device: 4.6x30mm Muzzle Mount.",
+    "Standard rounds pierce: able to hit up to 2 targets.",
+}
+lines[M .. "46x30Magazine20_UCP"] = { "Uses 4.6x30mm rounds." }
+lines[M .. "46x30Magazine40_UCP"] = { "Uses 4.6x30mm rounds." }
 for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7", "46x30Magazine60_MP7" }) do
     lines[M .. mag] = { "Uses 4.6x30mm rounds." }
 end
 lines[M .. "57x28Magazine50_P90"] = { "Uses 5.7x28mm rounds." }
 
-for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor" }) do
+for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppressor" }) do
     lines[M .. part] = {
         "Sound Radius and Volume reduced by 70%",
         "Damage to targets decreased by 10%",

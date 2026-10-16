@@ -7,7 +7,7 @@ Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings
 
 Done: 12 rounds (box / carton / crate, own open / pack recipes) with profiles, realistic gun sounds (always on,
 `SoundTable.lua` from `scripts/sound_model.py`), realistic piercing (option), 7.62x39 US + PBS-1 cycling (option), GoM
-plain rounds renamed (9x39 SP-5, 5.45 7N6), loot (option multiplier), Hot Brass, tooltips, Ammo Maker for all 12
+plain rounds renamed (9x39 SP-5, 5.45 7N6), no loot (special loads, as GoM's: Ammo Maker only), Hot Brass, tooltips, Ammo Maker for all 12
 rounds incl. this mod's parts (soft point bullets S / M filed from standard bullets; birdshot pellets poured through
 `Base.Strainer` + water), all art (`scripts/make_art.py`, `scripts/make_ammomaker_art.py`), generator
 `scripts/gen_scripts.py`.
@@ -60,5 +60,38 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       comes back), the rack's casing.
 - [x] MP7 60-round drum (user, 2026-10-15): model, texture, icon, item, name, tooltip, profile, 2% spawn on found
       MP7s. To check in game: the drum under the grip, the reload with it (the drum leaves and comes back).
+- [x] FN Five-seveN (user, 2026-10-16) as `MarzGuns.FIVESEVEN`, GoM's own unused name: model from an ATF side photo
+      (96.0% silhouette overlap), slide, 20 / 30-round magazines, textures, icons (cameras fitted on GoM's Glock 17
+      icons), item / model / repair scripts, magazine profile, animated slide, ammo family, GoM pistol parts, its own
+      SFN-57 suppressor on the 5.7x28mm mount device it shares with the P90, spawn parts, loot, Hot Brass, tooltips; sheet
+      `docs/post93_fiveseven_preview.png`. Rebuild: `build_fiveseven.py` → `render_fiveseven.py` →
+      `make_fiveseven_art.py --renders DIR` → `gen_post93_guns.py`. To check in game: the hold in the hand (origin
+      placed like the Glock's), the slide moving back on each shot, the default pistol reload with each magazine,
+      the 30-round magazine under the grip, the Beretta mount with a sight, the LP and TL lights under the rail (lasers must
+      not fit), the
+      mount device on the Five-seveN (shown as a threaded-barrel adapter) and the SFN-57 over it (and that the SP90
+      no longer fits it), in the holster and on the floor (GoM's pistol `world` pose), the casing
+      thrown right, the name shown is GoM's "5.7x28mm Five-SeveN".
+- [x] H&K UCP Prototype (user, 2026-10-17): `GunsOfTienPost93.UCP`, built and registered like the Five-seveN from a
+      photo of the about-2004 prototype (97.3% silhouette overlap), a 20-round magazine and a small 40-round drum, the MP7's mount device (drawn
+      as a threaded-barrel adapter) and Rotex-II, GoM's Beretta mount + pistol sights and pistol lights, Anachronistic
+      spawner only; sheet `docs/post93_ucp_preview.png`. To check in game: the hold, the slide, the default pistol
+      reload with both magazines (the drum under the grip leaves and comes back), holster and floor pose, the Beretta mount with a sight, both lights, the mount device and Rotex-II at the
+      muzzle (and that the MP7 still takes them), the name "UCP Prototype", casings thrown right.
+- [x] MP7 30 / 40-round magazines matched to the user's photos of H&K's (2026-10-17): every box magazine (20, 30, 40)
+      curves from its feed lips down on one radius and is tilted back so its part inside the grip stays centred; the
+      30 and 40 carry their lower part in a wider polymer sleeve. To check in game: the magazines in the grip (nothing
+      showing through), the reload with each.
+- [x] 2026-10-17: MP7 / P90 markings read the right way in game (they were mirrored); our weights set to GoM's
+      standard (suppressors, mount devices, magazines, guns); GoM's Glock 17 added to the main mod's sound table. To
+      check in game: the markings read correctly (and which side the P90's FN panel is on, against a photo).
+- [x] 2026-10-17: the Five-seveN and UCP never spawn in civilian homes (out of GoM's Anachronistic spawner, which sits
+      in vanilla's late survivor safehouses): Five-seveN in police / SWAT spawners, UCP very rarely in police and SWAT
+      cars and police bags; both (with a magazine and a box) in survivor and bandit zombies' late bags. To check in
+      game: none in houses, both in police cars now and then, the UCP always loaded.
+- [x] 2026-10-17: loot matched to GoM: special loads never spawn (the main mod's loot removed; Post-93 keeps only
+      DM11 / SS190 boxes and cartons, now also cartons beside vanilla 9mm cartons in police / SWAT / gun stores), the
+      high-capacity magazines in GoM's tactical high-cap spawner. To check in game: no special loads in loot, DM11 /
+      SS190 cartons and loose drums turn up; nothing of the Five-seveN / UCP in houses.
 - [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
 

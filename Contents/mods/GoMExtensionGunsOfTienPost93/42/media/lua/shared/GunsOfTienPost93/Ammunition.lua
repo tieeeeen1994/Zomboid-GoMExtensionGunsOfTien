@@ -20,9 +20,13 @@ Ammo.RegisterMultipleItemsWithFamilies({
         M .. "46x30Magazine20_MP7",
         M .. "46x30Magazine30_MP7",
         M .. "46x30Magazine40_MP7",
+        M .. "46x30Magazine20_UCP",
+        M .. "46x30Magazine40_UCP",
     },
     ["5.7x28mm"] = {
         M .. "57x28Magazine50_P90",
+        M .. "57x28Magazine20_FIVESEVEN",
+        M .. "57x28Magazine30_FIVESEVEN",
     },
 })
 
