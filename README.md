@@ -24,6 +24,10 @@ found as loot: make them with Ammo Maker.
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
+- Lasers work: switch them on from the gun's menu or the firearm radial; a red dot and faint beam show where the gun
+  points while aiming, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
+  light's) and give their aiming bonus only while on
+- Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named
 
 ## Ammo Maker
 

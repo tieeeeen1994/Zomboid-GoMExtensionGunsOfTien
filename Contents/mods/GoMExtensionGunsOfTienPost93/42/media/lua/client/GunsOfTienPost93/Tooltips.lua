@@ -13,14 +13,15 @@ local M = "GunsOfTienPost93."
 lines[M .. "MP7A1"] = {
     "Uses 4.6x30mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right.",
-    "Collapsible stock.",
-    "Folding front grip: unfolded, Aiming Time reduced by 20%, Critical and Hit Chance increased by 15%.",
+    -- stock and grip in the wording of the main mod's HandlingTooltips.lua (GoM's guns) and GoM's part tooltips
+    "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.",
+    "Folding front grip: unfolded, Aiming Time reduced by 20%, Critical and Hit Chance increased by 15%, automatic fire spread reduced by 15%.",
     "Standard rounds pierce: able to hit up to 2 targets.",
 }
 lines[M .. "MP7A2"] = {
     "Uses 4.6x30mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right, Down.",
-    "Collapsible stock.",
+    "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.",
     "Standard rounds pierce: able to hit up to 2 targets.",
 }
 lines[M .. "P90TR"] = {

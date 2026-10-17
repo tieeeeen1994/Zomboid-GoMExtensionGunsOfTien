@@ -371,6 +371,46 @@ def ammomaker():
         'Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP': 'Box of 25 Bullets Rifle M SP',
         'Tooltip_Item_GunsOfTien_BoxBirdshot': 'Box of 25 Birdshot Pellets',
     })
+    # The gun tooltip names each fitted part's row "Tooltip_weapon_<PartType>" (HandWeapon.DoTooltip); GoM and
+    # Gunworks translate most part types but not these, which showed as raw keys (user, 2026-10-18). Animated1-9 are
+    # the M60's visible belt rounds.
+    tooltips.update({
+        'Tooltip_weapon_LaserRifle': 'Laser',
+        'Tooltip_weapon_LightRifle': 'Weapon Light',
+        'Tooltip_weapon_BayonetIntegrated': 'Bayonet (Integrated)',
+        'Tooltip_weapon_BayonetKnife': 'Bayonet',
+        'Tooltip_weapon_BoosterScope': 'Magnifier',
+        'Tooltip_weapon_Shellholder': 'Shell Holder',
+        'Tooltip_weapon_UnderbarrelChamber': 'Underbarrel Chamber',
+    })
+    tooltips.update({'Tooltip_weapon_Animated%d' % n: 'Belt Round %d' % n for n in range(1, 10)})
+    # Item tooltips GoM's scripts name but never translated (scripts/check_gom_translations.py lists them). Its break
+    # action barrels are real, detachable parts (the _Open item is the same barrel with the action broken open, swapped
+    # in by GoM's animations); only the double-barrel's sawn-off ones carry stats (AttachmentCustomStats.lua sets
+    # Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the gun's 40 / 65 / 0.6 / 20). The Masterkey's key is
+    # a leftover name.
+    full = 'Full-length barrels for the %s.'
+    sawn = 'Sawn-off barrels for the %s: shorter and lighter.'
+    tooltips.update({
+        'Tooltip_DOUBLEBARREL_Barrel_Close': full % 'double-barrel shotgun',
+        'Tooltip_DOUBLEBARREL_Barrel_Open': full % 'double-barrel shotgun',
+        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Close': 'Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced '
+                                                     'by 25%, Hit Chance increased by 8%, pellet spread over three '
+                                                     'times wider, range reduced by 25%.',
+        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open': 'Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced '
+                                                    'by 25%, Hit Chance increased by 8%, pellet spread over three '
+                                                    'times wider, range reduced by 25%.',
+        'Tooltip_DOUBLE_DEUCE_Barrel_Close': full % 'Double Deuce',
+        'Tooltip_DOUBLE_DEUCE_Barrel_Open': full % 'Double Deuce',
+        'Tooltip_STEVENS_555_Barrel_Close': full % 'Stevens 555',
+        'Tooltip_STEVENS_555_Barrel_Open': full % 'Stevens 555',
+        'Tooltip_STEVENS_555_Barrel_Sawnoff_Close': sawn % 'Stevens 555',
+        'Tooltip_TOZ34_Barrel_Close': full % 'TOZ-34',
+        'Tooltip_TOZ34_Barrel_Open': full % 'TOZ-34',
+        'Tooltip_TOZ34_Barrel_Sawnoff_Close': sawn % 'TOZ-34',
+        'Tooltip_Rail': 'Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and '
+                        'shotgun from the firearm radial menu.',
+    })
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
     names.update({
@@ -381,6 +421,9 @@ def ammomaker():
         'GunsOfTien.BoxBulletsRifleMSP': 'Box Bullets Rifle M SP',
         'GunsOfTien.BoxBirdshot': 'Box Birdshot Pellets',
     })
+    # GoM items without a name: the hidden weapon a fitted bayonet stabs with, and explosion fragments (debris models)
+    names['MarzGuns.Attack_Bayonet'] = 'Bayonet'
+    names.update({'MarzGuns.frag_%d' % n: 'Fragment' for n in range(16)})
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipes_tr, indent=2) + '\n')
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')

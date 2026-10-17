@@ -483,6 +483,67 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   not in this repo and were labelled by the mirrored renders ("right side, muzzle left"); check in game against a
   photo before moving any. render_mp7 / render_p90 still do not flip their views (their sheets are mirrored).
 
+## Gun tooltips (2026-10-18)
+
+The user's screenshot showed raw keys in a gun's tooltip. 42.21 `HandWeapon.DoTooltip` adds one row per fitted part,
+labelled `Tooltip_weapon_<PartType>`, then `WeaponPart.DoBatteryTooltip`: for a part tagged `base:usesbattery` (GoM's
+weapon lights) a "Remaining:" row with a charge bar (`IGUI_invpanel_Remaining`, vanilla's): that row is the light's
+battery, not a bug. GoM translates most part types; nobody translated `LaserRifle`, `LightRifle`,
+`BayonetIntegrated`, `BayonetKnife`, `BoosterScope`, `Shellholder`, `UnderbarrelChamber`, `Animated1-9` (the M60's
+visible belt rounds), so `gen_scripts.py` writes them into the main mod's Tooltip.json, and `gen_post93_guns.py`
+writes `ForegripIntegrated` into Post-93's. GoM's own gun lines said only "Has Integrated Stock" / "Has Integrated
+Bipod" (eight guns) and nothing for other guns with one; `scripts/gen_handling_tooltips.py` reads GoM's Stocks.lua,
+Bipods.lua and AttachmentCustomStats.lua and writes `client/GunsOfTien/HandlingTooltips.lua`, one line per gun in the
+wording of GoM's part tooltips ("Folding stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.";
+folding vs collapsible by the real gun), replacing the vague line or added after the others; the MP7s' lines in
+Post-93's Tooltips.lua use the same wording. GoM registers no stats for the M4A1 and XM177 stocks or the M24 bipod, so
+their lines say "no effect on handling".
+Audit of every part with stats (user: "did we update tooltips that offer stats bonuses... but say nothing about
+them?", 2026-10-18): sights, scopes, lasers, suppressors and muzzle devices matched their stats; missing were
+Gunworks' spread modifiers (RPM.lua `RegisterSpreadPartModifier`: the AKS-74U / AS VAL / G36C stocks, GoM's three
+foregrips, its bipod; our MP7A1 grip), the lights' script `AimingTimeModifier = 5` (vanilla adds a part's value to
+the gun's), the foregrips' tool line, and the SPAS-12's pump / semi selector (a DA.RegisterPair of hidden Selector
+parts: pump racks after every shot; semi Recoil Delay 15 from 30, Jam Chance 1.6 from 1). gen_handling_tooltips.py
+now also writes those: spread in the stock / bipod lines, a "Mode selector" gun line, and PART_LINES added to a part's
+own tooltip before its "Needs ..." line (stat lines without a full stop, as GoM's).
+`scripts/check_gom_translations.py` (user: "scan all the tooltips GoM uses and add translation keys for EN") lists
+every key GoM and Gunworks make the game look up (Lua getText literals, item names, item / recipe ToolTips,
+IGUI_ItemCat_<DisplayCategory>, Tooltip_weapon_<PartType>, sandbox options) with no English anywhere (vanilla, GoM,
+Gunworks, Ammo Maker, this repo) and exits 1 while any is missing; run it after a GoM / Gunworks update. Filled on
+2026-10-18 (gen_scripts.py, main mod IG_UI.json): the break-action shotguns' barrel tooltips (only the
+double-barrel's sawn-off barrels have stats), the Masterkey's (`Tooltip_Rail`), names for `Attack_Bayonet` (the
+hidden weapon a fitted bayonet stabs with) and `frag_0-15` (explosion debris), `IGUI_ItemCat_Casings`, Gunworks'
+`IGUI_ClickToRemove` and `IGUI_SelectAmmunition`. Deliberately left: GoM's ReloadAllMagazines_Compac.lua looks up
+`ContextMenu_ReloadAllMagazines_*` only to remove another mod's options by their text. Fire mode labels are built
+(`ContextMenu_FireMode_` .. mode) and all covered by vanilla (Auto / Burst / Single) and Gunworks (Real*).
+
+## Lasers on a battery (2026-10-18)
+
+User: "the laser attachments don't really emit lasers... put a battery in there to turn it on". Choices (user): red dot
+and a faint beam; the bonus only while on; 3x a weapon light's battery life; batteries changed the same way as GoM's
+lights. Engine facts (42.21): GoM's lights are vanilla weapon lights (`ActivatedItem`, `TorchCone`, `UseDelta 0.001`,
+tags `base:flashlight;base:usesbattery`); `HandWeapon.update` calls `update()` on every fitted part, and
+`WeaponPart.update` spends one charge per 10 game minutes while the part is activated and switches it off at 0;
+batteries go in and out only through vanilla's InsertBattery / RemoveBattery craft recipes on a loose part
+(`RecipeCodeOnCreate.torchBatteryInsert` handles a WeaponPart), so a mounted light's battery cannot be changed and
+neither can a laser's. `InventoryItem.save` writes the charge and the activated flag; `SyncHandWeaponFieldsPacket`
+(server -> owner) replaces the client's fitted parts with the server's (full bytes) and its modData and sets aiming
+time / hit chance / damage / range but **not** critical chance; client -> server it only carries ammo fields.
+Design: `shared/GunsOfTien/Lasers.lua` (laser list, `DoParam` UseDelta 0.00033 + the lights' tags at
+OnGameBoot / OnInitGlobalModData, GoM's laser modifiers in Gunworks' CustomStatsAttachments wrapped to apply only
+while lit, `ISToggleLaserGoT` with the switch in the gun's modData `GunsOfTien_LaserOn`, set in `complete` and sent
+with `CallSyncHandWeaponFields`; a laser still at the default single charge gets a full battery once, marked in its
+modData); `server/GunsOfTien/Lasers.lua` drains the gun in each player's hand EveryTenMinutes (the part is never
+activated, so the engine does not drain it too), switches it off at 0, syncs and broadcasts `GunsOfTien.laser {id,
+on}`; `client/GunsOfTien/LaserMenu.lua` (Turn Laser On / Off in the gun's context menu and the firearm radial,
+greyed with how to change the battery when empty; remote lit states; re-applies stats on the client when the lit
+state changes, for the critical chance; a tooltip line on each laser part); `client/GunsOfTien/LaserDraw.lua`
+(OnPreUIDraw, as TienLastSeenWhere's arrow: from GUN_FORWARD tiles ahead at GUN_HEIGHT levels along the facing,
+stepped until `isBlockedTo`, the range, or a zombie / player within 0.3 tiles of the line, whose chest takes the dot;
+Lua cannot read the muzzle position). Logic checked in Lua 5.5 (lupa) against mocks: no bonus while off, full charge
+on first switch-on, bonus while lit, drain, switch-off and broadcast at 0, an inserted battery kept, a removed laser
+clears the switch. Not run in game yet; the dot's height constants need tuning there.
+
 ## Research reference
 
 Paths below: W = `~/Library/Application Support/Steam/steamapps/workshop/content/108600`,

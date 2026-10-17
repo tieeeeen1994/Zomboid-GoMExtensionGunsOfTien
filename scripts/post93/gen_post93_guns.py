@@ -650,6 +650,11 @@ def translations():
         f'{M}.P90_Muzzle_Mount_Device': '5.7x28mm Family Muzzle Mounting Device',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path)) if os.path.exists(tip_path) else {}
+    tips['Tooltip_weapon_ForegripIntegrated'] = 'Foregrip (Integrated)'
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
 if __name__ == '__main__':
