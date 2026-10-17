@@ -33,7 +33,7 @@ MEDIA = os.path.normpath(os.path.join(HERE, "..", "Contents/mods/GoMExtensionGun
 FBX = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTien_LaserBeam.fbx")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTien/LaserBeam.png")
 
-LENGTH = 0.065          # game units (GoM's lasers are 0.055-0.069 long)
+LENGTH = 0.26           # game units (~0.4 tiles): about a compact SMG's length (user, 2026-10-18: "make the laser longer"; first 0.065, a laser unit's length)
 HALF_WIDTH = 0.002      # game units each side of the axis
 TEX_W, TEX_H = 32, 8
 COLOUR = (1.0, 0.16, 0.12)

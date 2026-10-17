@@ -552,7 +552,8 @@ beam's offset from the gun projected back with 1 level = 3 tile half-widths and 
 Handgun 0.58 / 0.05 / 0.5 is an estimate until a screenshot of a pistol-held gun. Then 0.3 tiles ("really short").
 Third version (user: "how do you detect where the laser is?... so it can't be exact?"): no screen overlay can be
 exact, so the beam became part of the gun. `scripts/make_laser_beam.py` (Blender) builds `GunsOfTien_LaserBeam.fbx`
-(two crossed quads, 0.065 game units, about a laser unit's length; GoM's are 0.055-0.069) and `LaserBeam.png` (red,
+(two crossed quads, 0.26 game units (~0.4 tiles) since the user saw it unlit and asked for it longer; first
+0.065, a laser unit's length; GoM's are 0.055-0.069) and `LaserBeam.png` (red,
 premultiplied, alpha 1 to 0 along it: basicEffect.frag writes `Alpha * texture alpha`; no model shader is unlit, so it
 is lit like the gun). `gen_scripts.py` `lasers()` writes one model per laser (`LaserBeam_<laser>`, its attachment named
 like the gun's mount point, offset to the laser's lens: `LASER_LENS`, measured on front renders of GoM's
