@@ -56,5 +56,6 @@
   "Tooltip_TOZ34_Barrel_Close": "Full-length barrels for the TOZ-34.",
   "Tooltip_TOZ34_Barrel_Open": "Full-length barrels for the TOZ-34.",
   "Tooltip_TOZ34_Barrel_Sawnoff_Close": "Sawn-off barrels for the TOZ-34: shorter and lighter.",
-  "Tooltip_Rail": "Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and shotgun from the firearm radial menu."
+  "Tooltip_Rail": "Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and shotgun from the firearm radial menu.",
+  "Tooltip_weapon_LaserBeam": "Laser Beam"
 }

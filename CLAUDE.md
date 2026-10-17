@@ -519,7 +519,7 @@ hidden weapon a fitted bayonet stabs with) and `frag_0-15` (explosion debris), `
 
 ## Lasers on a battery (2026-10-18)
 
-User: "the laser attachments don't really emit lasers... put a battery in there to turn it on". Choices (user): red dot
+User: "the laser attachments don't really emit lasers... put a battery in there to turn it on". Choices (user): dot
 and a faint beam; the bonus only while on; 3x a weapon light's battery life; batteries changed the same way as GoM's
 lights. Engine facts (42.21): GoM's lights are vanilla weapon lights (`ActivatedItem`, `TorchCone`, `UseDelta 0.001`,
 tags `base:flashlight;base:usesbattery`); `HandWeapon.update` calls `update()` on every fitted part, and
@@ -533,16 +533,49 @@ Design: `shared/GunsOfTien/Lasers.lua` (laser list, `DoParam` UseDelta 0.00033 +
 OnGameBoot / OnInitGlobalModData, GoM's laser modifiers in Gunworks' CustomStatsAttachments wrapped to apply only
 while lit, `ISToggleLaserGoT` with the switch in the gun's modData `GunsOfTien_LaserOn`, set in `complete` and sent
 with `CallSyncHandWeaponFields`; a laser still at the default single charge gets a full battery once, marked in its
-modData); `server/GunsOfTien/Lasers.lua` drains the gun in each player's hand EveryTenMinutes (the part is never
-activated, so the engine does not drain it too), switches it off at 0, syncs and broadcasts `GunsOfTien.laser {id,
-on}`; `client/GunsOfTien/LaserMenu.lua` (Turn Laser On / Off in the gun's context menu and the firearm radial,
-greyed with how to change the battery when empty; remote lit states; re-applies stats on the client when the lit
-state changes, for the critical chance; a tooltip line on each laser part); `client/GunsOfTien/LaserDraw.lua`
-(OnPreUIDraw, as TienLastSeenWhere's arrow: from GUN_FORWARD tiles ahead at GUN_HEIGHT levels along the facing,
-stepped until `isBlockedTo`, the range, or a zombie / player within 0.3 tiles of the line, whose chest takes the dot;
-Lua cannot read the muzzle position). Logic checked in Lua 5.5 (lupa) against mocks: no bonus while off, full charge
-on first switch-on, bonus while lit, drain, switch-off and broadcast at 0, an inserted battery kept, a removed laser
-clears the switch. Not run in game yet; the dot's height constants need tuning there.
+modData); `server/GunsOfTien/Lasers.lua` drains every lit laser gun a player carries EveryTenMinutes (the part is
+never activated, so the engine does not drain it too), switches it off at 0 and syncs it (re-equips a gun in hand
+whose beam changed); `client/GunsOfTien/LaserMenu.lua` (Turn Laser On / Off in the gun's context menu and the firearm
+radial, greyed with how to change the battery when empty; re-applies stats on the client when the lit state changes,
+for the critical chance; a tooltip line on each laser part).
+Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
+itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
+starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows
+the muzzle (`IsoGameCharacter.getBallisticsController()`, public, returns a `BallisticsController` with public
+`getMuzzlePosition()` / `getMuzzleDirection()` / `calculateMuzzlePosition`), but BallisticsController is not in
+`LuaManager.Exposer`'s `setExposed` list (`@UsedFromLua` on its members is only a marker), so Lua cannot call it.
+Now: a 0.3-tile glint, about the laser unit's own length (user: "really short"; 3 tiles first), in 4 segments
+fading from alpha 0.8 to 0, no dot, stopped early by `isBlockedTo` or a character
+within 0.3 tiles of the line, starting from `HOLDS[weapon:getSwingAnim()]` (tiles forward, tiles to the character's
+right = (-dy, dx) of the facing, floor levels up). Rifle 0.49 / 0.12 / 0.47 was measured on that screenshot (the
+beam's offset from the gun projected back with 1 level = 3 tile half-widths and the character ~0.75 level tall);
+Handgun 0.58 / 0.05 / 0.5 is an estimate until a screenshot of a pistol-held gun. Then 0.3 tiles ("really short").
+Third version (user: "how do you detect where the laser is?... so it can't be exact?"): no screen overlay can be
+exact, so the beam became part of the gun. `scripts/make_laser_beam.py` (Blender) builds `GunsOfTien_LaserBeam.fbx`
+(two crossed quads, 0.065 game units, about a laser unit's length; GoM's are 0.055-0.069) and `LaserBeam.png` (red,
+premultiplied, alpha 1 to 0 along it: basicEffect.frag writes `Alpha * texture alpha`; no model shader is unlit, so it
+is lit like the gun). `gen_scripts.py` `lasers()` writes one model per laser (`LaserBeam_<laser>`, its attachment named
+like the gun's mount point, offset to the laser's lens: `LASER_LENS`, measured on front renders of GoM's
+pointers.fbx with its textures) and one hidden part each (part type `LaserBeam`, FakeItem mount, CannotBeRemoved,
+named "On": the gun tooltip shows "Laser Beam: On"). A part model's own attachment of the parent's name is applied
+directly (`ModelInstanceRenderData.invertAttachmentSelfTransform` is a static flag, off). Lasers.lua fits / removes
+the beam with the lit state (`UpdateBeam`), registers the beams with PreventRemovals, and adds each GoM gun in a
+laser's MountOn a `ModelWeaponPart` line for its beam at load (`Item.DoParam("ModelWeaponPart = ...")` appends, even
+for a part type already listed, so each script object is patched once); Post-93's guns list theirs in
+items_guns.txt. GoM mounts its rifle lasers on `laser_right` (15 lines) and pistol lasers on `underbarrel` (7).
+Checked: Blender renders of the M4A1 + AimRight, M92FS + PJ-3, MP7A1 + LRX-7 place the beam at the lens; Lua (lupa)
+mocks: one line per GoM gun across two patch passes, beam on when lit, off when off / empty / the laser removed, a
+slung gun drains and loses its beam without a re-equip. The overlay (`client/GunsOfTien/LaserDraw.lua`) and the lit
+broadcast are gone.
+Unlit (user: "our own light to the laser so that it's always [bright] without being affected by the lighting"): every
+42.21 model shader is lit (`basicEffect.frag` multiplies by the lights + ambient; the vertex shaders do no lighting).
+A model script's `shader = name` is any name (`ShaderManager.getOrCreateShader` creates it; file names are
+case-sensitive), and `ShaderProgram` reads `media/shaders/<name>[_static][_instanced].vert` / `<name>[_instanced].frag`
+through `ZomboidFileSystem.getString`, which finds mod files. `scripts/make_laser_shader.py` copies vanilla's
+basicEffect shaders into the main mod as `gunsoftien_laser*` with the one lighting multiply removed from each
+fragment shader (tint and alpha kept), and the beam models name it. Whether the engine finds it in the mod folder is
+the first thing to check in game (a missing shader would leave the beam undrawn or logging errors; dropping the
+`shader` line in gen_scripts.py goes back to the lit default).
 
 ## Research reference
 

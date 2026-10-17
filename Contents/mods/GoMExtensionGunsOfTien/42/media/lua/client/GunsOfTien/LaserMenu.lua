@@ -5,8 +5,6 @@
     - "Turn Laser On / Off" in the gun's inventory context menu and in the firearm radial menu (Gunworks wraps
       ISFirearmRadialMenu.fillMenu; this mod loads after it). An empty battery greys the option out and says how to
       change it: take the laser off the gun and use vanilla's Insert Battery, as with GoM's weapon lights.
-    - Other players' lasers: the server broadcasts { id = onlineID, on } when one switches and every 10 game minutes
-      while lit; LaserDraw.lua reads Lasers.Remote.
     - Stats: SyncHandWeaponFieldsPacket sets the client's aiming time and hit chance from the server but not the
       critical chance, so the client re-applies Gunworks' stats itself whenever its gun's lit state changes.
     - The laser parts' tooltips say how they work now (GoM's tooltipsPergun lines, after its own).
@@ -17,8 +15,6 @@ require("ISUI/ISFirearmRadialMenu")
 
 local Lasers = require("GunsOfTien/Lasers")
 local StatsFactory = require("WeaponSystems/Utils/StatsFactory")
-
-Lasers.Remote = Lasers.Remote or {}
 
 local ICON_ON = "media/ui/vehicles/vehicle_lightsON.png"
 local ICON_OFF = "media/ui/vehicles/vehicle_lightsOFF.png"
@@ -81,16 +77,6 @@ function ISFirearmRadialMenu:fillMenu()
         ISTimedActionQueue.add(ISToggleLaserGoT:new(character, weapon, CharacterActionAnims.Craft))
     end)
 end
-
--------------------------------------------------
--- Other players' lasers
--------------------------------------------------
-Events.OnServerCommand.Add(function(module, command, args)
-    if module ~= Lasers.MODULE or command ~= Lasers.CMD or type(args) ~= "table" then return end
-    if args.id then
-        Lasers.Remote[args.id] = args.on == true or nil
-    end
-end)
 
 -------------------------------------------------
 -- Re-apply stats when the local gun's lit state changes (the sync does not carry critical chance)

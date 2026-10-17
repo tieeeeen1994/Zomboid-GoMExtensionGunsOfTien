@@ -77,5 +77,10 @@
   "MarzGuns.frag_12": "Fragment",
   "MarzGuns.frag_13": "Fragment",
   "MarzGuns.frag_14": "Fragment",
-  "MarzGuns.frag_15": "Fragment"
+  "MarzGuns.frag_15": "Fragment",
+  "GunsOfTien.LaserBeam_AimRight_Laser": "On",
+  "GunsOfTien.LaserBeam_LRX7_Laser": "On",
+  "GunsOfTien.LaserBeam_PJ3_Laser": "On",
+  "GunsOfTien.LaserBeam_PX1_Laser": "On",
+  "GunsOfTien.LaserBeam_TR1_Laser": "On"
 }

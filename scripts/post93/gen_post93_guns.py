@@ -155,6 +155,9 @@ def model_parts(gun, mags, rails, suppressor, mount, stock, foregrip=False):
               f"        ModelWeaponPart              = {M}.{suppressor} {M}.{suppressor} canon canon,"]
     lines += [f"        ModelWeaponPart              = MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"        ModelWeaponPart              = MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    # the lit laser's beam (main mod: shared/GunsOfTien/Lasers.lua adds these lines to GoM's own guns at load)
+    lines += [f"        ModelWeaponPart              = GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"GunsOfTien.LaserBeam_{o.replace('-', '')} laser_right laser_right," for o in LASERS]
     lines += [f"        ModelWeaponPart              = MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
     return '\n'.join(lines) + '\n'
 

@@ -429,10 +429,70 @@ def ammomaker():
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')
 
 
+# The lit laser's beam (shared/GunsOfTien/Lasers.lua, scripts/make_laser_beam.py): one hidden weapon part per GoM
+# laser, fitted while it is lit and drawn by the engine at the gun's mount point for that laser (GoM's
+# ModelWeaponPart lines: its rifle lasers on laser_right, its pistol lasers on underbarrel), then moved by the beam
+# model's own attachment of the same name to the laser's lens. Lens = centre of the laser's lens in its own model
+# space (game units, +Y forward, +Z up), measured on 2026-10-18 from front renders of GoM's pointers.fbx with its
+# textures (the coloured aperture; AimRight's upper of its two, LRX-7's red one) and the mesh's front face.
+# The beam models use shader gunsoftien_laser: vanilla's basicEffect without the lighting multiply, so the beam is
+# always bright (scripts/make_laser_shader.py writes it into media/shaders).
+LASER_LENS = {
+    'AimRight_Laser': ('laser_right', (-0.0075, 0.0357, 0.0125)),
+    'LRX-7_Laser': ('laser_right', (-0.0049, 0.0375, 0.0077)),
+    'PJ-3_Laser': ('underbarrel', (0.0002, 0.0357, 0.0139)),
+    'PX1_Laser': ('underbarrel', (0.0001, 0.0325, 0.0075)),
+    'TR-1_Laser': ('underbarrel', (0.0002, 0.0260, 0.0080)),
+}
+
+
+def lasers():
+    models = [f"module {MODULE} {{\n"]
+    items = [f"module {MODULE} {{\n"]
+    for laser, (point, (x, y, z)) in LASER_LENS.items():
+        beam = 'LaserBeam_' + laser.replace('-', '')
+        models.append(f"""
+    model {beam} {{
+        mesh     = weapons/parts/GunsOfTien_LaserBeam|GunsOfTien_LaserBeam,
+        texture  = weapons/GunsOfTien/LaserBeam,
+        shader   = gunsoftien_laser,
+        cullFace = None,
+        attachment {point} {{ offset = {x:.4f} {y:.4f} {z:.4f}, rotate = 0.0000 0.0000 0.0000, }}
+    }}
+""")
+        items.append(f"""
+    item {beam} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = LaserBeam,
+        Weight          = 0.0,
+        WeightModifier  = 0.0,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    models.append("}\n")
+    items.append("}\n")
+    write('scripts/GunsOfTien/models_lasers.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_lasers.txt', ''.join(items))
+    # the gun tooltip's row while it is lit ("Laser Beam: On")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for laser in LASER_LENS:
+        names[f'{MODULE}.LaserBeam_' + laser.replace('-', '')] = 'On'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path))
+    tips['Tooltip_weapon_LaserBeam'] = 'Laser Beam'
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
+
+
 if __name__ == '__main__':
     items()
     models()
     recipes()
     translations()
     ammomaker()
+    lasers()
     print('written under', os.path.normpath(ROOT))

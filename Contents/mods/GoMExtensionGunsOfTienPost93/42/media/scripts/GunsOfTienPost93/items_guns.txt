@@ -112,6 +112,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_LRX7_Laser GunsOfTien.LaserBeam_LRX7_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.BrightPoint-5_Light MarzGuns.BrightPoint-5_Light light_left light_left,
         ModelWeaponPart              = MarzGuns.SR7_Light MarzGuns.SR7_Light light_left light_left,
     }
@@ -225,6 +227,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_LRX7_Laser GunsOfTien.LaserBeam_LRX7_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.BrightPoint-5_Light MarzGuns.BrightPoint-5_Light light_left light_left,
         ModelWeaponPart              = MarzGuns.SR7_Light MarzGuns.SR7_Light light_left light_left,
         ModelWeaponPart              = MarzGuns.Stub_Foregrip MarzGuns.Stub_Foregrip foregrip foregrip,
@@ -336,6 +340,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_LRX7_Laser GunsOfTien.LaserBeam_LRX7_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.BrightPoint-5_Light MarzGuns.BrightPoint-5_Light light_left light_left,
         ModelWeaponPart              = MarzGuns.SR7_Light MarzGuns.SR7_Light light_left light_left,
     }

@@ -1,7 +1,7 @@
 {
   "IGUI_GunsOfTien_LaserOn": "Turn Laser On",
   "IGUI_GunsOfTien_LaserOff": "Turn Laser Off",
-  "IGUI_GunsOfTien_LaserOnDesc": "Switch the laser on: a red dot shows where the gun points while aiming, and its aiming bonus applies. Uses its battery while on.",
+  "IGUI_GunsOfTien_LaserOnDesc": "Switch the laser on: it shows a short red beam and its aiming bonus applies. Uses its battery while on.",
   "IGUI_GunsOfTien_LaserOffDesc": "Switch the laser off to save its battery. No aiming bonus while off.",
   "IGUI_GunsOfTien_LaserEmpty": "The laser's battery is empty. Take the laser off the gun and insert a new battery, as with a weapon light.",
   "IGUI_ItemCat_Casings": "Casings",
