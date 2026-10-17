@@ -19,7 +19,7 @@
   "GunsOfTienPost93.57x28_Box_SS197SR": "5.7x28mm SS197SR Box (Hollow Point)",
   "GunsOfTienPost93.57x28_Carton_SS197SR": "Carton of 5.7x28mm SS197SR Boxes (Hollow Point)",
   "GunsOfTienPost93.57x28_Crate_SS197SR": "Crate of 5.7x28mm SS197SR Boxes (Hollow Point)",
-  "GunsOfTienPost93.MP7A1": "MP7 Submachine Gun",
+  "GunsOfTienPost93.MP7A1": "MP7A1 Submachine Gun",
   "GunsOfTienPost93.P90TR": "P90 Submachine Gun",
   "GunsOfTienPost93.46x30Magazine20_MP7": "MP7 20Rds 4.6x30mm Magazine",
   "GunsOfTienPost93.46x30Magazine30_MP7": "MP7 30Rds 4.6x30mm Magazine",
@@ -43,5 +43,9 @@
   "GunsOfTienPost93.FIVESEVEN_Suppressor": "SFN-57 Suppressor",
   "GunsOfTienPost93.UCP": "UCP Prototype",
   "GunsOfTienPost93.46x30Magazine20_UCP": "UCP 20Rds 4.6x30mm Magazine",
-  "GunsOfTienPost93.46x30Magazine40_UCP": "UCP 40Rds Drum 4.6x30mm Magazine"
+  "GunsOfTienPost93.46x30Magazine40_UCP": "UCP 40Rds Drum 4.6x30mm Magazine",
+  "GunsOfTienPost93.MP7A1_Integrated_Foregrip_Folded": "MP7 Integrated Foregrip (Folded)",
+  "GunsOfTienPost93.MP7A1_Integrated_Foregrip_Deployed": "MP7 Integrated Foregrip (Deployed)",
+  "GunsOfTienPost93.MP7A2": "MP7A2 Submachine Gun",
+  "GunsOfTienPost93.MP7A2_Integrated_Rail_Down": "MP7 Integrated Rail (Down)"
 }

@@ -14,6 +14,13 @@ lines[M .. "MP7A1"] = {
     "Uses 4.6x30mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right.",
     "Collapsible stock.",
+    "Folding front grip: unfolded, Aiming Time reduced by 20%, Critical and Hit Chance increased by 15%.",
+    "Standard rounds pierce: able to hit up to 2 targets.",
+}
+lines[M .. "MP7A2"] = {
+    "Uses 4.6x30mm rounds.",
+    "Integrated Picatinny rails: Up, Left, Right, Down.",
+    "Collapsible stock.",
     "Standard rounds pierce: able to hit up to 2 targets.",
 }
 lines[M .. "P90TR"] = {

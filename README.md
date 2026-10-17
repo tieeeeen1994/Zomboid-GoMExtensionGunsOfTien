@@ -36,7 +36,7 @@ found as loot: make them with Ammo Maker.
 Enable *GoM Extension: Guns of Tien - Post-93* as well. Its guns, magazines, parts and standard ammunition are found
 as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier); its special loads only from Ammo Maker.
 
-- H&K MP7: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor
+- H&K MP7A1 and MP7A2: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor; the A1 with its folding front grip, the A2 with a rail handguard that takes Guns of Marz's foregrips
 - FN P90: 50-round magazine, suppressor
 - Both held like pistols, carried on the back, take Guns of Marz optics, lights and lasers
 - FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor,

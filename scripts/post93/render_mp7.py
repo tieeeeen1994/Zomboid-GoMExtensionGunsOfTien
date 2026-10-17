@@ -26,6 +26,7 @@ GOM = next(p for p in (os.path.expanduser("~/Library/Application Support/Steam/s
                         "42.16/media") if os.path.isdir(p))
 OUT = sys.argv[sys.argv.index("--") + 1]
 POINTS = json.load(open(os.path.join(HERE, "mp7_points.json")))
+POINTS_A2 = json.load(open(os.path.join(HERE, "mp7a2_points.json")))
 
 # GoM's MP5 points (scripts/MarzWeapons/models/weapons/smgs.txt)
 MP5_MAG = {"offset": [0.0, 0.1191, 0.0377], "rotate": [10.2946, 0.0, 0.0]}
@@ -120,7 +121,15 @@ def main():
                 parts[n] = ob
             else:
                 bpy.data.objects.remove(ob)
-    body, bolt, stock = gun["MP7A1_BODY"], gun["MP7A1_BOLT"], gun["MP7A1_STOCK"]
+    body, bolt, stock, fgrip = gun["MP7A1_BODY"], gun["MP7A1_BOLT"], gun["MP7A1_STOCK"], gun["MP7A1_FOREGRIP"]
+    body2 = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx"),
+                 os.path.join(TEX, "MP7A2.png"))["MP7A2_BODY"]
+    stub = load(os.path.join(GOM, "models_X/weapons/parts/foregrips.fbx"),
+                os.path.join(GOM, "textures/weapons/parts/foregrips/Stub_Foregrip.png"))
+    for name, ob in list(stub.items()):
+        if name != "Stub_Foregrip":
+            bpy.data.objects.remove(ob)
+    stub = bpy.data.objects["Stub_Foregrip"]
     supp, mount = parts["MP7_Suppressor"], parts["MP7_Muzzle_Mount_Device"]
 
     mp5 = load(os.path.join(GOM, "models_X/weapons/firearms/MP5.fbx"),
@@ -139,11 +148,18 @@ def main():
     q34 = (-0.75, -0.55, -0.42)           # 3/4 front left, from above
     top = (0, 0, -1)
 
-    def gun_state(stock_in, mag, supp_on):
-        place(body)
+    def gun_state(stock_in, mag, supp_on, grip_down=False, a2=False, vgrip=False):
+        place(body2 if a2 else body)
         place(bolt)
         place(stock, POINTS["stock_folded"] if stock_in else None)
-        objs = [body, bolt, stock]
+        objs = [body2 if a2 else body, bolt, stock]
+        if a2:
+            if vgrip:                                     # GoM's Stub Foregrip on the A2's bottom rail
+                place(stub, POINTS_A2["foregrip"])
+                objs.append(stub)
+        else:
+            place(fgrip, POINTS["foregrip_deployed"] if grip_down else None)
+            objs.append(fgrip)
         if mag:
             place(mags[mag], POINTS["magazine"])
             objs.append(mags[mag])
@@ -160,7 +176,7 @@ def main():
     render("side_in", side, c_in, 0.42, 900, 600)
     render("right_in", right, c_in, 0.42, 900, 600)
     render("top_in", top, (0, 0.06, 0), 0.42, 900, 300)
-    gun_state(False, 40, False)
+    gun_state(False, 40, False, grip_down=True)
     render("side_out", side, c_out, 0.62, 1200, 600)
     render("q34_out", q34, c_out, 0.62, 1200, 600)
     gun_state(False, 20, True)
@@ -172,6 +188,14 @@ def main():
     gun_state(True, 30, False)
     show_only([body])
     render("body_only_in", side, c_in, 0.42, 900, 600)
+    # MP7A2
+    gun_state(True, 30, False, a2=True)
+    render("a2_side_in", side, c_in, 0.42, 900, 600)
+    render("a2_q34_in", q34, c_in, 0.42, 900, 600)
+    render("a2_right_in", right, c_in, 0.42, 900, 600)
+    gun_state(False, 40, False, a2=True, vgrip=True)
+    render("a2_side_grip", side, c_out, 0.62, 1200, 600)
+    render("a2_q34_grip", q34, c_out, 0.62, 1200, 600)
 
     # magazines and parts on their own
     for r in (20, 30, 40, 60):

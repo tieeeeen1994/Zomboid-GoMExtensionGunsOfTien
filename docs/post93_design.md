@@ -16,6 +16,7 @@ headless Python), textures, icons, scripts, registries. How GoM builds a gun: CL
 | Fire modes | Auto / Single | Auto / Single |
 | Magazines | 20, 30, 40 (in the pistol grip) | 50 (on top, along the receiver) |
 | Stock | collapsible (folded / deployed parts, as the MP5) | fixed |
+| Front grip | integral, folds under the receiver (folded / deployed parts, own toggle); the MP7A2 has a rail handguard instead (3 / 6 / 9 o'clock) that takes GoM's foregrips | none |
 | Rails | top (integral on the real gun), left, right: GoM optics, lights, lasers | see question 1 |
 | Damage (GoM MP5 1.0-1.6) | 0.9-1.4, pierces 2 | 1.0-1.5, pierces 2 |
 | Sound (realistic model) | about 114 / 33 | about 118 / 34 |
@@ -50,8 +51,8 @@ for GoM's optics / lights / lasers (as GoM does for the G36C), so no separate ra
 
 ## Names (module GunsOfTienPost93)
 
-Guns `MP7A1`, `P90TR`; models `MP7A1` (+ `MP7A1_BOLT`, `MP7A1_STOCK`), `P90TR` (+ `P90TR_BOLT`); stock parts
-`MP7A1_Integrated_Stock_Folded / _Deployed`; magazines `46x30Magazine20_MP7`, `46x30Magazine30_MP7`,
+Guns `MP7A1`, `MP7A2` (user, 2026-10-18: its own body `MP7A2_BODY` and texture, the A1's bolt, stock, magazines and parts, bottom-rail part `MP7A2_Integrated_Rail_Down`), `P90TR`; models `MP7A1` (+ `MP7A1_BOLT`, `MP7A1_STOCK`, `MP7A1_FOREGRIP`), `P90TR` (+ `P90TR_BOLT`); stock parts
+`MP7A1_Integrated_Stock_Folded / _Deployed`, front grip parts `MP7A1_Integrated_Foregrip_Folded / _Deployed`; magazines `46x30Magazine20_MP7`, `46x30Magazine30_MP7`,
 `46x30Magazine40_MP7`, `57x28Magazine50_P90`; suppressors `MP7_Suppressor`, `P90_Suppressor`; mounts
 `MP7_Muzzle_Mount_Device`, `P90_Muzzle_Mount_Device`; rounds `46x30_Bullet` (DM11), `46x30_Bullet_Subsonic`,
 `57x28_Bullet` (SS190), `57x28_Bullet_SB193`, `57x28_Bullet_SS197SR`. Files (one set per gun): models_X/weapons/firearms/

@@ -131,6 +131,18 @@
       0.0
     ]
   },
+  "foregrip_deployed": {
+    "offset": [
+      0.0,
+      0.1402,
+      0.1452
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      0.0
+    ]
+  },
   "world": {
     "offset": [
       -0.025,
@@ -179,7 +191,7 @@
         0.2081,
         0.0637
       ],
-      "tris": 2180
+      "tris": 2068
     },
     "MP7A1_BOLT": {
       "min": [
@@ -206,6 +218,19 @@
         0.04
       ],
       "tris": 268
+    },
+    "MP7A1_FOREGRIP": {
+      "min": [
+        -0.0094,
+        0.0782,
+        -0.0094
+      ],
+      "max": [
+        0.0094,
+        0.1546,
+        0.0144
+      ],
+      "tris": 128
     },
     "46x30Magazine20_MP7": {
       "min": [
@@ -297,6 +322,19 @@
         0.04
       ],
       "tris": 268
+    },
+    "MP7A1_FOREGRIP_deployed": {
+      "min": [
+        -0.0094,
+        0.1308,
+        -0.0094
+      ],
+      "max": [
+        0.0094,
+        0.1546,
+        0.067
+      ],
+      "tris": 128
     }
   },
   "_notes": {
@@ -306,7 +344,8 @@
     "magazine": "magazine meshes hang straight down from the feed lips inside the grip and curve toward the muzzle below it (30 / 40 rounds), modelled upright",
     "canon": "the nose plate's face where the barrel leaves it; MP7_Muzzle_Mount_Device and MP7_Suppressor have their origin there and extend along +Y over the flash hider",
     "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
-    "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)"
+    "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)",
+    "foregrip_deployed": "MP7A1_FOREGRIP is modelled folded (drawn folded at the gun's origin); this turns it 90 degrees down about its hinge pin (photo L 90.8, H 88.0)"
   },
   "_extras": {
     "handgun_hold": true,

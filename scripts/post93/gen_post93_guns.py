@@ -96,16 +96,20 @@ def pistol_model(name, points):
 """
 
 
-def models(mp7, p90, fiveseven, ucp):
+def models(mp7, mp7a2, p90, fiveseven, ucp):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
-                         ['stock_folded', 'rifle_back', 'rifle_back_bag']))
+                         ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
+    # the MP7A2's body and texture are its own; bolt and stock are the A1's models (MP7A1_BOLT / MP7A1_STOCK)
+    out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
+                         ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     out.append(pistol_model('FIVESEVEN', fiveseven))
     out.append(pistol_model('UCP', ucp))
     for model, file, node, tex in [
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
+            ('MP7A1_FOREGRIP', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_FOREGRIP', 'MP7A1'),
             ('P90TR_BOLT', 'firearms/GunsOfTienPost93_P90TR', 'P90TR_BOLT', 'P90TR')]:
         out.append(f"""
     model {model} {{
@@ -136,12 +140,16 @@ def models(mp7, p90, fiveseven, ucp):
     write(f'scripts/{M}/models_guns.txt', ''.join(out))
 
 
-def model_parts(gun, mags, rails, suppressor, mount, stock):
+def model_parts(gun, mags, rails, suppressor, mount, stock, foregrip=False):
     lines = [f"        ModelWeaponPart              = MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
              f"        ModelWeaponPart              = MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
     if stock:
         lines += [f"        ModelWeaponPart              = {M}.{gun}_Integrated_Stock_Folded {M}.{gun}_STOCK stock_folded stock_folded,",
                   f"        ModelWeaponPart              = {M}.{gun}_Integrated_Stock_Deployed {M}.{gun}_STOCK stock stock,"]
+    if foregrip:
+        # the front grip is modelled folded: no foregrip_folded point, so the folded part is drawn at the origin
+        lines += [f"        ModelWeaponPart              = {M}.{gun}_Integrated_Foregrip_Folded {M}.{gun}_FOREGRIP foregrip_folded foregrip_folded,",
+                  f"        ModelWeaponPart              = {M}.{gun}_Integrated_Foregrip_Deployed {M}.{gun}_FOREGRIP foregrip_deployed foregrip_deployed,"]
     lines += [f"        ModelWeaponPart              = {M}.{m} {M}.{m} magazine magazine," for m in mags]
     lines += [f"        ModelWeaponPart              = {M}.{mount} {M}.{mount} canon canon,",
               f"        ModelWeaponPart              = {M}.{suppressor} {M}.{suppressor} canon canon,"]
@@ -385,13 +393,21 @@ def ucp_item():
     return body
 
 
-def items(mp7, p90):
+# GoM's foregrips, on the MP7A2's bottom rail (GoM draws them at the gun's `foregrip` point)
+FOREGRIPS = ['Stub_Foregrip', 'MKC_Foregrip', 'MK2_Foregrip']
+
+
+def mp7_item(name):
+    """The MP7A1, or the MP7A2 (user, 2026-10-18): the same gun with a rail handguard for the A1's folding grip. Both use
+    the A1's bolt, stock, magazines and muzzle parts; the A2 takes GoM's foregrips on its bottom rail instead."""
+    a2 = name == 'MP7A2'
     mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40, 60)]
-    p90_mags = ['57x28Magazine50_P90']
-    out = [f"module {M} {{\n    imports {{ Base }}\n"]
-    # Realistic sound (the main mod's model, M16 = 175 / 50): 4.6x30 ~6 gr, 180 mm barrel; 5.7x28 ~6.7 gr, 263 mm.
-    out.append(f"""
-    item MP7A1 {{
+    parts = model_parts('MP7A1', mp7_mags, None, 'MP7_Suppressor', 'MP7_Muzzle_Mount_Device', True, not a2)
+    if a2:
+        parts += ''.join(f"        ModelWeaponPart              = MarzGuns.{g} MarzGuns.{g} foregrip foregrip,\n"
+                         for g in FOREGRIPS)
+    return f"""
+    item {name} {{
         MinDamage                    = 0.9,
         MaxDamage                    = 1.4,
         CriticalChance               = 20.0,
@@ -417,13 +433,24 @@ def items(mp7, p90):
         MagazineType                 = {M}.46x30Magazine20_MP7,
         MaxAmmo                      = 20,
         Reloadtime                   = 22,
-        Icon                         = GunsOfTienPost93_MP7A1,
-        WeaponSprite                 = {M}.MP7A1,
+        Icon                         = GunsOfTienPost93_{name},
+        WeaponSprite                 = {M}.{name},
         SoundGain                    = 1.6,
         SoundRadius                  = 114,
         SoundVolume                  = 33,
-{model_parts('MP7A1', mp7_mags, None, 'MP7_Suppressor', 'MP7_Muzzle_Mount_Device', True)}    }}
+{parts}    }}
+"""
 
+
+def items(mp7, p90):
+    mp7_mags = [f'46x30Magazine{n}_MP7' for n in (20, 30, 40, 60)]
+    p90_mags = ['57x28Magazine50_P90']
+    mp7s = f'MP7A1;{M}.MP7A2'                          # both MP7s take every MP7 magazine
+    out = [f"module {M} {{\n    imports {{ Base }}\n"]
+    # Realistic sound (the main mod's model, M16 = 175 / 50): 4.6x30 ~6 gr, 180 mm barrel; 5.7x28 ~6.7 gr, 263 mm.
+    out.append(mp7_item('MP7A1'))
+    out.append(mp7_item('MP7A2'))
+    out.append(f"""
     item P90TR {{
         MinDamage                    = 1.0,
         MaxDamage                    = 1.5,
@@ -459,10 +486,10 @@ def items(mp7, p90):
 """)
     # Weights by GoM's own (user, 2026-10-17: "use the GoM standard"): its MP5 20 / 30 / 60 = 0.08 / 0.18 / 0.22, the
     # 50-60 round pistol-calibre magazines 0.2-0.25 (M92FS 50, M93R 60, AK 60).
-    for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.08, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[1], 30, 0.18, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[2], 40, 0.2, 'bullet_46x30', 'MP7A1'),
-                                         (mp7_mags[3], 60, 0.22, 'bullet_46x30', 'MP7A1'),    # drum, as the MP5's 60
+    for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.08, 'bullet_46x30', mp7s),
+                                         (mp7_mags[1], 30, 0.18, 'bullet_46x30', mp7s),
+                                         (mp7_mags[2], 40, 0.2, 'bullet_46x30', mp7s),
+                                         (mp7_mags[3], 60, 0.22, 'bullet_46x30', mp7s),    # drum, as the MP5's 60
                                          (p90_mags[0], 50, 0.25, 'bullet_57x28', 'P90TR')]:
         out.append(f"""
     item {mag} {{
@@ -512,9 +539,12 @@ def items(mp7, p90):
 """)
     for part, ptype, weight in [('MP7A1_Integrated_Stock_Folded', 'StockIntegrated', None),
                                 ('MP7A1_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+                                ('MP7A1_Integrated_Foregrip_Folded', 'ForegripIntegrated', None),
+                                ('MP7A1_Integrated_Foregrip_Deployed', 'ForegripIntegrated', None),
                                 ('MP7A1_Integrated_Rail_Up', 'RailUp', None),
                                 ('MP7A1_Integrated_Rail_Left', 'RailLeft', None),
                                 ('MP7A1_Integrated_Rail_Right', 'RailRight', None),
+                                ('MP7A2_Integrated_Rail_Down', 'RailDown', None),
                                 ('P90TR_Integrated_Rail_Up', 'RailUp', None),
                                 ('P90TR_Integrated_Rail_Left', 'RailLeft', None),
                                 ('P90TR_Integrated_Rail_Right', 'RailRight', None)]:
@@ -532,8 +562,8 @@ def items(mp7, p90):
     # the 5.7x28mm family's mount device fits the P90 and the Five-seveN; each has its own suppressor
     # GoM's weights (user, 2026-10-17): suppressors 0.8-1.2 whatever their size, matched by size: the Rotex-II (34 x 190
     # mm) and the SFN-57 (33 x 170) as its P45 (33 x 181) 0.8, the SP90 (38 x 172) as its NDR 0.9; every mount device 0.5
-    for part, ptype, weight, gun in [('MP7_Suppressor', 'Canon', 0.8, f'{M}.MP7A1;{M}.UCP'),
-                                     ('MP7_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.MP7A1;{M}.UCP'),
+    for part, ptype, weight, gun in [('MP7_Suppressor', 'Canon', 0.8, f'{M}.MP7A1;{M}.MP7A2;{M}.UCP'),
+                                     ('MP7_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.MP7A1;{M}.MP7A2;{M}.UCP'),
                                      ('P90_Suppressor', 'Canon', 0.9, f'{M}.P90TR'),
                                      ('FIVESEVEN_Suppressor', 'Canon', 0.8, 'MarzGuns.FIVESEVEN'),
                                      ('P90_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.P90TR;MarzGuns.FIVESEVEN')]:
@@ -560,6 +590,11 @@ def items(mp7, p90):
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
 
+    fixing Fix MP7A2 {{
+        Require = {M}.MP7A2,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
     fixing Fix P90TR {{
         Require = {M}.P90TR,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
@@ -583,7 +618,9 @@ def translations():
     names = json.load(open(path)) if os.path.exists(path) else {}
     # GoM's naming: model and class, no maker ("MP5 Submachine Gun", "MP5 Integrated Stock (Folded)").
     names.update({
-        f'{M}.MP7A1': 'MP7 Submachine Gun',
+        f'{M}.MP7A1': 'MP7A1 Submachine Gun',                 # the variant named since the A2 (user, 2026-10-18)
+        f'{M}.MP7A2': 'MP7A2 Submachine Gun',
+        f'{M}.MP7A2_Integrated_Rail_Down': 'MP7 Integrated Rail (Down)',
         f'{M}.P90TR': 'P90 Submachine Gun',
         f'{M}.46x30Magazine20_MP7': 'MP7 20Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine30_MP7': 'MP7 30Rds 4.6x30mm Magazine',
@@ -598,6 +635,8 @@ def translations():
         f'{M}.46x30Magazine40_UCP': 'UCP 40Rds Drum 4.6x30mm Magazine',
         f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7 Integrated Stock (Folded)',
         f'{M}.MP7A1_Integrated_Stock_Deployed': 'MP7 Integrated Stock (Deployed)',
+        f'{M}.MP7A1_Integrated_Foregrip_Folded': 'MP7 Integrated Foregrip (Folded)',
+        f'{M}.MP7A1_Integrated_Foregrip_Deployed': 'MP7 Integrated Foregrip (Deployed)',
         f'{M}.MP7A1_Integrated_Rail_Up': 'MP7 Integrated Rail (Up)',
         f'{M}.MP7A1_Integrated_Rail_Left': 'MP7 Integrated Rail (Left)',
         f'{M}.MP7A1_Integrated_Rail_Right': 'MP7 Integrated Rail (Right)',
@@ -615,10 +654,11 @@ def translations():
 
 if __name__ == '__main__':
     mp7 = load_points('mp7_points.json')
+    mp7a2 = load_points('mp7a2_points.json')
     p90 = load_points('p90_points.json')
     fiveseven = load_points('fiveseven_points.json')
     ucp = load_points('ucp_points.json')
-    models(mp7, p90, fiveseven, ucp)
+    models(mp7, mp7a2, p90, fiveseven, ucp)
     fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
     translations()

@@ -38,6 +38,7 @@ PREVIEW = os.path.join(ROOT, "docs/post93_mp7_preview.png")
 G = MA.GOM
 POINTS = json.load(open(os.path.join(HERE, "mp7_points.json")))
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx")
+FBX_GUN_A2 = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx")
 MP5_MAG_POINT = {"offset": [0.0, 0.1191, 0.0377], "rotate": [10.2946, 0.0, 0.0]}   # GoM smgs.txt, model MP5
@@ -360,9 +361,14 @@ def our_scenes():
     out = {}
     mag30 = attach(load_game(FBX_MAGS, "46x30Magazine30_MP7"), POINTS["magazine"])
     gun = [(load_game(FBX_GUN, "MP7A1_BODY"), 0), (load_game(FBX_GUN, "MP7A1_BOLT"), 0),
-           (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0), (mag30, 1)]
+           (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0),
+           (load_game(FBX_GUN, "MP7A1_FOREGRIP"), 0), (mag30, 1)]
     out["MP7A1"] = ("gun", [(attach(t, UPRIGHT), i) for t, i in gun],
                     [gun_tex, img(os.path.join(TEX, "46x30Magazine30_MP7.png"))])
+    # the MP7A2: its own body (and texture), the A1's bolt, stock and magazine, the same camera
+    gun2 = [(load_game(FBX_GUN_A2, "MP7A2_BODY"), 2)] + [(t, i) for t, i in gun[1:3]] + [(mag30, 1)]
+    out["MP7A2"] = ("gun", [(attach(t, UPRIGHT), i) for t, i in gun2],
+                    [gun_tex, img(os.path.join(TEX, "46x30Magazine30_MP7.png")), img(os.path.join(TEX, "MP7A2.png"))])
     for r in (20, 30, 40, 60):
         n = "46x30Magazine%d_MP7" % r
         out[n] = ("drum" if r == 60 else "magazine", [(load_game(FBX_MAGS, n), 0)], [img(os.path.join(TEX, n + ".png"))])
@@ -412,7 +418,7 @@ def bounds(tris):
 
 def check():
     lines = []
-    for path, names in ((FBX_GUN, ("MP7A1_BODY", "MP7A1_BOLT", "MP7A1_STOCK")),
+    for path, names in ((FBX_GUN, ("MP7A1_BODY", "MP7A1_BOLT", "MP7A1_STOCK", "MP7A1_FOREGRIP")),
                         (FBX_MAGS, ("46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7")),
                         (FBX_PARTS, ("MP7_Suppressor", "MP7_Muzzle_Mount_Device"))):
         objects, unit, lcl = header_check(path)
@@ -481,7 +487,7 @@ def outline_panel(renders):
 def sheet(renders, icons):
     W = 2480
     F, FS = font(26), font(18)
-    page = Image.new("RGB", (W, 4800), (236, 236, 232))
+    page = Image.new("RGB", (W, 6000), (236, 236, 232))
     d = ImageDraw.Draw(page)
 
     def put(name, x, y, w=None, label=None, bg=(250, 250, 248)):
@@ -502,8 +508,8 @@ def sheet(renders, icons):
     put("side_in", 850, y, 820, "left side, stock collapsed, 30 rounds")
     put("right_in", 1680, y, 780, "right side (ejection port)")
     y += 560
-    put("side_out", 20, y, 1200, "left side, stock deployed, 40 rounds")
-    put("q34_out", 1240, y, 1220, "3/4, stock deployed, 40 rounds")
+    put("side_out", 20, y, 1200, "left side, stock and front grip deployed, 40 rounds")
+    put("q34_out", 1240, y, 1220, "3/4, stock and front grip deployed, 40 rounds")
     y += 610
     put("side_supp", 20, y, 1200, "suppressor + muzzle mount device at 'canon', 20 rounds")
     put("q34_supp", 1240, y, 1220, "3/4 with suppressor")
@@ -512,6 +518,13 @@ def sheet(renders, icons):
     for i, r in enumerate((20, 30, 40)):
         put("mag%d_q34" % r, 1240 + i * 410, y, 400, "%d rounds" % r)
     y += 420
+    put("a2_side_in", 20, y, 820, "MP7A2: left side, stock collapsed, 30 rounds")
+    put("a2_q34_in", 850, y, 820, "MP7A2: 3/4 front")
+    put("a2_right_in", 1680, y, 780, "MP7A2: right side")
+    y += 560
+    put("a2_side_grip", 20, y, 1200, "MP7A2: GoM's Stub Foregrip at 'foregrip' (bottom rail), stock deployed")
+    put("a2_q34_grip", 1240, y, 1220, "MP7A2: 3/4 with the Stub Foregrip, 40 rounds")
+    y += 610
     put("side_drum", 20, y, 900, "left side, 60-round drum, stock collapsed")
     put("q34_drum", 940, y, 900, "3/4, 60-round drum")
     put("mag60_q34", 1860, y, 400, "60-round drum")
@@ -559,7 +572,7 @@ def sheet(renders, icons):
     refs = ["item_MP5.png", "item_9x19Magazine30_MP5.png", "item_9x19Magazine100_MP5.png", "item_MKI_Suppressor.png",
             "item_Muzzle_Mount_Device.png"]
     row = [(Image.open(os.path.join(G, "textures", r)).convert("RGBA"), r[5:-4]) for r in refs]
-    row += [(icons[n], n) for n in ("MP7A1", "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7",
+    row += [(icons[n], n) for n in ("MP7A1", "MP7A2", "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7",
                                      "46x30Magazine60_MP7", "MP7_Suppressor", "MP7_Muzzle_Mount_Device")]
     x = 20
     for im, label in row:

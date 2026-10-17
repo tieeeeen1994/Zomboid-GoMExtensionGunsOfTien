@@ -4,6 +4,11 @@ module Base {
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
 
+    fixing Fix MP7A2 {
+        Require = GunsOfTienPost93.MP7A2,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
     fixing Fix P90TR {
         Require = GunsOfTienPost93.P90TR,
         Fixer   = MarzGuns.RepairPack; Aiming=3,

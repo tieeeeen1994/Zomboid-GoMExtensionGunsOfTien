@@ -40,7 +40,8 @@ GUNS = {
     "mp7": {
         "points": "post93/mp7_points.json",
         "fbx": "GunsOfTienPost93_MP7A1", "tex": "MP7A1",
-        "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_STOCK", "stock_folded")],
+        "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_STOCK", "stock_folded"),
+                  ("MP7A1_FOREGRIP", None)],
         "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine30_MP7", "magazine"),
         "parts": [("GunsOfTienPost93_MP7_parts", "MP7_Muzzle_Mount_Device"),
                   ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor")],

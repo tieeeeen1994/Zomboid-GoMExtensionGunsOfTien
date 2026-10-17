@@ -75,9 +75,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## Decisions taken with the user (Post-93)
 
-- **Guns**: H&K **MP7A1** (**held like a pistol** too (user, 2026-10-15), back slot, collapsible stock, integral top
+- **Guns**: H&K **MP7A1** (**held like a pistol** too (user, 2026-10-15), back slot, collapsible stock, integral folding front grip (user, 2026-10-18), integral top
   / left / right rails, 20 / 30 / 40 magazines in the grip, 950 rpm, damage 0.9-1.4, sound 114 / 33, reload = vanilla's
-  pistol clips with the P90's magazine behaviour; shown as **"MP7 Submachine Gun"**, parts "MP7 ...", GoM's naming
+  pistol clips with the P90's magazine behaviour; shown as **"MP7A1 Submachine Gun"** (until the MP7A2, 2026-10-18: "MP7 Submachine Gun"), parts "MP7 ...", GoM's naming
   (user, 2026-10-15; item IDs keep `MP7A1`; the P90 likewise "P90 Submachine Gun", parts "P90 ...", ID `P90TR`)) and FN
   **Every display name follows GoM's conventions (user, 2026-10-15)**: mount devices "4.6x30mm / 5.7x28mm Family Muzzle
   Mounting Device" (GoM: "AR Family ..."), suppressors by their real model "Rotex-II Suppressor (4.6x30mm Weapons)"
@@ -167,7 +167,7 @@ See `TODO.md`. In short: both mods' code is written and syntax-checked; nothing 
 **MP7A1 and P90 TR assets are done**, both rebuilt from the user's photos (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
 P90's `post93_p90_magazine.png`, `post93_p90_attachments.png`, `post93_p90_ammo.png`; the P90
 was rebuilt from the user's photos and approved 2026-10-14). Each gun has: FBX `models_X/weapons/firearms/
-GunsOfTienPost93_<GUN>.fbx` (nodes `<GUN>_BODY`, `<GUN>_BOLT`, MP7 also `MP7A1_STOCK` modelled deployed),
+GunsOfTienPost93_<GUN>.fbx` (nodes `<GUN>_BODY`, `<GUN>_BOLT`, MP7 also `MP7A1_STOCK` modelled deployed and `MP7A1_FOREGRIP` modelled folded),
 magazines FBX `models_X/weapons/magazines/GunsOfTienPost93_<MP7|P90>_magazines.fbx` (nodes `46x30Magazine20/30/40_MP7`,
 `57x28Magazine50_P90`), parts FBX `models_X/weapons/parts/GunsOfTienPost93_<MP7|P90>_parts.fbx` (`<MP7|P90>_Suppressor`,
 `<MP7|P90>_Muzzle_Mount_Device`), textures `textures/weapons/GunsOfTienPost93/<node>.png` (gun 256 px atlas, others
@@ -274,6 +274,63 @@ muzzle tip, H up from the lowest point), 186 mm tall with the sights up:
   `rifle_back_bag` turning it upright on the back). Textures, magazines, parts and icons came out byte-identical
   (render_mp7.py / make_mp7_art.py turn it back for display, `handgun_hold` in `mp7_points.json`); in vanilla's pistol
   reload the gun sits in the hand muzzle up with the magazine out of the grip's bottom, as it should.
+
+## MP7A1 front grip (2026-10-18)
+
+User: "can't the MP7 take a foregrip? I think it should". The real MP7A1's front grip is integral and folds up
+under the receiver; GoM's three foregrips need `Picatinny_Rail_Down`, which the MP7 does not have, so they stay off
+it (the "if they don't fit it" rule). `build_mp7.py` builds the grip as its own node `MP7A1_FOREGRIP` (was part of
+the body), modelled folded and baked alone (the body is baked without it, so neither the recess nor the grip's top
+face carries the other's shadow when it is down). Unfolded = point `foregrip_deployed`: 90 degrees about X through
+the hinge (photo L 90.8 / H 88, the centre of the round nose, the release button beside it), its free end at H -1.6,
+level with the pistol grip. The engine draws a part at `offset + rotateXYZ . vertex` (42.21
+`ModelInstanceRenderData.makeAttachmentTransform`: `translation(offset).rotateXYZ(radians).scale`, JOML, game
+space), so offset = hinge - R . hinge; upright the turn is +90, and in the turned (handgun) model -90 (a half turn
+about Y flips a turn about X), written that way because `turned()` keeps a given rotate. Which end hinges is from
+memory of photos of the unfolded gun (the grip hangs just behind the nose's hand stop), not from a photo in `docs/`.
+Parts `MP7A1_Integrated_Foregrip_Folded / _Deployed` (part type `ForegripIntegrated`, `CannotBeRemoved`), folded
+required at spawn. The fitted part is the state: `shared/GunsOfTienPost93/Foregrip.lua` swaps them with Gunworks'
+`FoldingStock.SwapStockAttachment` (a plain part swap by part type) and `StatsFactory.ReapplyAllModifiers`; Gunworks'
+`FoldingStock` itself cannot serve a second fold on one gun (one entry per gun type, state in
+`modData.StockFolded`). Its timed action `ISFoldForegripGoT` copies `ISFoldStock` (swap in `complete`,
+`CallSyncHandWeaponFields`); `client/GunsOfTienPost93/ForegripMenu.lua` offers "Fold / Unfold Foregrip" in the gun's
+context menu and the firearm radial (icons `ui/GunsOfTienPost93_Radial_*Foregrip.png`,
+`scripts/post93/make_foregrip_radial.py`, Gunworks' palette). Unfolded stats = GoM's Stub Foregrip (AimingTime x0.8,
+Crit and Hit Chance x1.15 through CustomStatsAttachments, spread x0.85 through `RegisterSpreadPartModifier`). The
+MP7 is held like a pistol, so the left hand stays at the pistol grip; the grip shows and gives its stats only.
+The trigger guard was only its bottom bar, its open front end hidden by the folded grip (user: "it needs to
+close"); `GUARD_OUT / GUARD_IN` now start with a front post up into the receiver, leaning forward ~12 degrees along
+the grip's rear (user: "close with a slant and not a 90 degree angle"; measured on their muzzle-left side
+photo). The trigger blade's top was traced ending at H 101.5, 2 mm under the receiver, so it floated (user: "trigger looks
+detached"); `TRIGGER` now runs up to H 106.5, inside the receiver, on both MP7s.
+A rebuild on Windows changed only the UV packing of the unchanged magazines and muzzle parts (same shapes and
+triangle counts), so their FBX, textures and icons were restored from git, as after a magazine-only change.
+
+## MP7A2 (2026-10-18)
+
+User: "let's add MP7A2 as well". The real A2 (introduced about 2014) is the A1 with a rail handguard in place of the
+folding grip: Picatinny rails at 3, 6 and 9 o'clock, the bottom one for a vertical grip or hand stop (Wikipedia,
+Army Recognition on Lithuania's 2024 order; IMFDB refused the fetch). Choices (user): names "MP7A1 Submachine Gun" /
+"MP7A2 Submachine Gun" (item IDs unchanged, parts and magazines stay "MP7 ..."), GoM's three foregrips on the
+bottom rail, spawns as GoM does its MP5 series (one alternative whose gun slot lists `{ MP7A1, MP7A2 }`, picked at
+random; same magazines and box). Built from the user's left-side render of an MP7A2 (muzzle left, stock extended;
+not a photo, not kept in the repo), scaled 6.81 px/mm by the muzzle tip (L 0) and the receiver's rear face (L 385);
+its hand stop (L 44 / H 91), bore and grip bottom land within 2-3 mm of the A1 photo's, so everything else stays the
+A1's. `build_mp7.py` `build_body(a2=True)`: `A2_LOWER` (no grip lug), the handguard (`A2_HG_PLATE` side plates L
+66.5-173, H 101-128.5, 1.5 mm proud of the receiver; `A2_HG_BOTTOM` under it to H 91.8, sloped front L 66.5 / H 100.5
+to L 75 / H 91.8; "metal" material so it reads apart from the receiver, as on the render), side rails L 88-159 at H
+118 (seven crossbars), bottom rail L 91-168 (teeth to H 89.5), cap screws painted at L 72.5 / 166.5, H 118; the A1's
+short side rails left out; calibre marking moved behind the handguard (L 178.5), "MP7A2" on the right. Own FBX
+`GunsOfTienPost93_MP7A2.fbx` (node `MP7A2_BODY`) and texture `MP7A2.png`; bolt and stock are the A1's models
+(`MP7A1_BOLT` / `MP7A1_STOCK`, A1 atlas), so the A2 item names them in its ModelWeaponPart lines. Points
+`mp7a2_points.json` (`points(bounds, a2=True)`): the A1's, side rails moved, plus `rail_down` (GoM's
+Picatinny_Rail_Down spans z -0.0055..0.0011 from it) and `foregrip` (the MP5's sits 0.003 above its rail's bottom;
+ours at L 118, the rail's forward third). Parts: it reuses the A1's integrated top / side rail parts, so GoM's optics,
+lights and lasers need no new rule; `MP7A2_Integrated_Rail_Down` (PartType RailDown, like GoM's G36C's) is added to
+the foregrips' any-of rule (`RequiredAttachment.RegisterRequired` merges into GoM's own) and their MountOn.
+Spawn parts: the A1's minus the folding grip, plus GoM's foregrips at its MP5 chances (Stub / MKC 10, MK2 5). Reload
+handler registered once per gun (animId "MP7A1" for both: `pointMagPart` rewrites each handler's spec). The two
+icons differ only by the handguard at 32 px.
 
 ## MP7A1 reload (2026-10-15)
 

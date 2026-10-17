@@ -1,10 +1,14 @@
 --[[
-    Guns of Tien - Post-93 -- the MP7A1, P90 TR, Five-seveN and UCP Prototype in Gunworks' and Guns of Marz's
-    registries.
+    Guns of Tien - Post-93 -- the MP7A1 and MP7A2, P90 TR, Five-seveN and UCP Prototype in Gunworks' and Guns of
+    Marz's registries.
+
+    The MP7A2 (user, 2026-10-18) is the A1 with a rail handguard for the folding front grip: registered exactly like
+    the A1 (same magazines, fire rate, reload animations, stock, spawn parts; it uses the A1's integrated rail parts
+    for its top and side rails), plus an integrated bottom rail that GoM's three foregrips need.
 
     Everything a GoM gun goes through, done for ours (CLAUDE.md, "Gun data and registries in GoM"): magazine
     profiles, rate of fire (required for Gunworks' real auto fire), the animated bolt, reload animations, the MP7's
-    collapsible stock, integrated rails as parents of GoM's optics / lights / lasers, the suppressors and their mount
+    collapsible stock and the stats of its folding front grip (the fold itself is Foregrip.lua), integrated rails as parents of GoM's optics / lights / lasers, the suppressors and their mount
     devices, parts that cannot be removed, spawn-time parts and magazines, and GoM parts allowed on our guns
     (MountOn appended; DoParam replaces the list, so it is read and written back whole).
 
@@ -32,6 +36,10 @@ end
 
 local M = "GunsOfTienPost93."
 local MP7 = M .. "MP7A1"
+local MP7A2 = M .. "MP7A2"
+local MP7S = { MP7, MP7A2 }
+-- GoM's foregrips (MarzGuns' Picatinny_Rail_Down / G36C rail), on the A2's bottom rail
+local FOREGRIPS = { "MarzGuns.Stub_Foregrip", "MarzGuns.MKC_Foregrip", "MarzGuns.MK2_Foregrip" }
 local P90 = M .. "P90TR"
 local MP7_MAGS = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7",
     M .. "46x30Magazine60_MP7" }
@@ -46,6 +54,7 @@ local UCP_MAGS = { M .. "46x30Magazine20_UCP", M .. "46x30Magazine40_UCP" }
 -------------------------------------------------
 Magazine.RegisterMagazineProfile("4.6x30mm MP7", MP7_MAGS)
 Magazine.RegisterWeaponWithProfile("4.6x30mm MP7", MP7)
+Magazine.RegisterWeaponWithProfile("4.6x30mm MP7", MP7A2)
 Magazine.RegisterMagazineProfile("5.7x28mm P90", P90_MAGS)
 Magazine.RegisterWeaponWithProfile("5.7x28mm P90", P90)
 Magazine.RegisterMagazineProfile("5.7x28mm Five-seveN", FIVESEVEN_MAGS)
@@ -66,8 +75,13 @@ end
 -------------------------------------------------
 -- Rate of fire: MP7A1 950 rpm, P90 900 rpm. Both are light-recoiling, so they spread less than the MP5.
 -------------------------------------------------
-RateOfFire.RegisterWeapon(MP7, { rpm = 950, enableSpread = true, sustainedSpread = 0.08, maxSpread = 1.3 })
+for _, gun in ipairs(MP7S) do
+    RateOfFire.RegisterWeapon(gun, { rpm = 950, enableSpread = true, sustainedSpread = 0.08, maxSpread = 1.3 })
+end
 RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread = 0.06, maxSpread = 1.1 })
+-- the MP7's front grip unfolded steadies automatic fire as GoM's Stub Foregrip does
+RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
+    { sustainedSpreadMult = 0.85, maxSpreadMult = 0.85 })
 
 -------------------------------------------------
 -- No animated bolt: on both the MP7 and the P90 the charging handle does not move when firing (the bolt inside
@@ -85,13 +99,16 @@ RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread
 -- events detach the magazine part (looks only) as the left hand leaves the gun in the unload, and put it back as the
 -- new one is pressed home; the real unload / insert still happen at the clips' ends. Durations = the clips' lengths.
 -------------------------------------------------
-ReloadAnim.RegisterWeapon(MP7, {
-    animId = "MP7A1",
-    style = "attachments",
-    magItem = MP7_MAGS[1],
-    attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
-    durations = { unload = 1.5, load = 1.5, rack = 1.33 },
-})
+-- both MP7s play the same clips (animId "MP7A1"); each gets its own table, as pointMagPart below rewrites its spec
+for _, gun in ipairs(MP7S) do
+    ReloadAnim.RegisterWeapon(gun, {
+        animId = "MP7A1",
+        style = "attachments",
+        magItem = MP7_MAGS[1],
+        attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
+        durations = { unload = 1.5, load = 1.5, rack = 1.33 },
+    })
+end
 ReloadAnim.RegisterWeapon(P90, {
     animId = "P90TR",
     style = "attachments",
@@ -142,20 +159,29 @@ end
 -------------------------------------------------
 -- MP7A1 collapsible stock (as GoM's MP5)
 -------------------------------------------------
-FoldingStock.RegisterWeapon(MP7, {
-    attachments = {
-        partType = "StockIntegrated",
-        folded = M .. "MP7A1_Integrated_Stock_Folded",
-        deployed = M .. "MP7A1_Integrated_Stock_Deployed",
-    },
-    initialState = "folded",
-})
+for _, gun in ipairs(MP7S) do                       -- the A2 has the A1's stock
+    FoldingStock.RegisterWeapon(gun, {
+        attachments = {
+            partType = "StockIntegrated",
+            folded = M .. "MP7A1_Integrated_Stock_Folded",
+            deployed = M .. "MP7A1_Integrated_Stock_Deployed",
+        },
+        initialState = "folded",
+    })
+end
 
 CSA.RegisterMultipleParts({
     [M .. "MP7A1_Integrated_Stock_Folded"] = {},
     [M .. "MP7A1_Integrated_Stock_Deployed"] = {
         SF.Multiply("HitChance", 1.15),
         SF.Multiply("AimingTime", 0.75),
+    },
+    -- MP7A1 integral front grip (Foregrip.lua swaps the parts): unfolded, GoM's Stub Foregrip stats
+    [M .. "MP7A1_Integrated_Foregrip_Folded"] = {},
+    [M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
+        SF.Multiply("AimingTime", 0.8),
+        SF.Multiply("CriticalChance", 1.15),
+        SF.Multiply("HitChance", 1.15),
     },
     -- GoM's suppressor stats (its pistol suppressors' sound).
     [M .. "MP7_Suppressor"] = {
@@ -200,6 +226,8 @@ RequiredAttachment.RegisterRequired(OPTICS, { M .. "MP7A1_Integrated_Rail_Up", M
 RequiredAttachment.RegisterRequired(LIGHTS, { M .. "MP7A1_Integrated_Rail_Left", M .. "P90TR_Integrated_Rail_Left" })
 RequiredAttachment.RegisterRequired(LASERS, { M .. "MP7A1_Integrated_Rail_Right", M .. "P90TR_Integrated_Rail_Right" })
 RequiredAttachment.RegisterRequired({ M .. "MP7_Suppressor" }, { M .. "MP7_Muzzle_Mount_Device" })
+-- appended to GoM's own rule (Picatinny_Rail_Down or the G36C's rail): any one of them will do
+RequiredAttachment.RegisterRequired(FOREGRIPS, { M .. "MP7A2_Integrated_Rail_Down" })
 RequiredAttachment.RegisterRequired({ M .. "P90_Suppressor" }, { M .. "P90_Muzzle_Mount_Device" })
 -- the Five-seveN's own suppressor screws onto the same 5.7x28mm mount device (shared, as GoM's pistols share theirs)
 RequiredAttachment.RegisterRequired({ M .. "FIVESEVEN_Suppressor" }, { M .. "P90_Muzzle_Mount_Device" })
@@ -212,6 +240,7 @@ for _, list in ipairs({ MP7_MAGS, P90_MAGS, FIVESEVEN_MAGS, UCP_MAGS }) do
     for _, part in ipairs(list) do permanent[#permanent + 1] = part end
 end
 for _, part in ipairs({ "MP7A1_Integrated_Rail_Up", "MP7A1_Integrated_Rail_Left", "MP7A1_Integrated_Rail_Right",
+    "MP7A2_Integrated_Rail_Down",
     "P90TR_Integrated_Rail_Up", "P90TR_Integrated_Rail_Left", "P90TR_Integrated_Rail_Right" }) do
     permanent[#permanent + 1] = M .. part
 end
@@ -227,6 +256,7 @@ if spawnTable then
         required = {
             "MarzGuns.Bolt_Lock",
             M .. "MP7A1_Integrated_Stock_Folded",
+            M .. "MP7A1_Integrated_Foregrip_Folded",
             M .. "MP7A1_Integrated_Rail_Up",
             M .. "MP7A1_Integrated_Rail_Left",
             M .. "MP7A1_Integrated_Rail_Right",
@@ -240,6 +270,30 @@ if spawnTable then
             "MarzGuns.ReflexS2_Sight:5",
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
             "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
+            M .. "MP7_Muzzle_Mount_Device:10",
+        },
+    }
+    -- The A2: the A1's parts and magazines, no folding grip, its bottom rail, GoM's foregrips at GoM's own chances
+    -- (its MP5: Stub and MKC 10, MK2 5).
+    spawnTable[MP7A2] = {
+        required = {
+            "MarzGuns.Bolt_Lock",
+            M .. "MP7A1_Integrated_Stock_Folded",
+            M .. "MP7A1_Integrated_Rail_Up",
+            M .. "MP7A1_Integrated_Rail_Left",
+            M .. "MP7A1_Integrated_Rail_Right",
+            M .. "MP7A2_Integrated_Rail_Down",
+        },
+        optionals = {
+            M .. "46x30Magazine20_MP7:30",
+            M .. "46x30Magazine30_MP7:20",
+            M .. "46x30Magazine40_MP7:5",
+            M .. "46x30Magazine60_MP7:2",
+            "MarzGuns.EXPS1_Sight:5", "MarzGuns.EXPS3_Sight:5", "MarzGuns.Aimpoint_Sight:5",
+            "MarzGuns.ReflexS2_Sight:5",
+            "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
+            "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
+            "MarzGuns.Stub_Foregrip:10", "MarzGuns.MKC_Foregrip:10", "MarzGuns.MK2_Foregrip:5",
             M .. "MP7_Muzzle_Mount_Device:10",
         },
     }
@@ -325,9 +379,10 @@ local PISTOL_PARTS = {
 }
 
 local function appendAll()
-    for _, part in ipairs(OPTICS) do appendMountOn(part, { MP7, P90 }) end
-    for _, part in ipairs(LIGHTS) do appendMountOn(part, { MP7, P90 }) end
-    for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, P90 }) end
+    for _, part in ipairs(OPTICS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
+    for _, part in ipairs(LIGHTS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
+    for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
+    for _, part in ipairs(FOREGRIPS) do appendMountOn(part, { MP7A2 }) end
     for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end
 end
 
@@ -335,4 +390,4 @@ end
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
 
-GunsOfTienPost93_Guns = { MP7 = MP7, P90 = P90, FIVESEVEN = FIVESEVEN, UCP = UCP }
+GunsOfTienPost93_Guns = { MP7 = MP7, MP7A2 = MP7A2, P90 = P90, FIVESEVEN = FIVESEVEN, UCP = UCP }

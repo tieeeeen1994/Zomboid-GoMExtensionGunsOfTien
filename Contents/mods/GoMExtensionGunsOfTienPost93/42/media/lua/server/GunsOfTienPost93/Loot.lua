@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien - Post-93 -- loot for the MP7A1, the P90 TR, the Five-seveN, the UCP Prototype and their ammunition
+    Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR, the Five-seveN, the UCP Prototype and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -49,7 +49,7 @@ end
 -------------------------------------------------
 local function mp7Alternative(boxes)
     return {
-        { items = { M .. "MP7A1" }, amountChance = 1 },
+        { items = { M .. "MP7A1", M .. "MP7A2" }, amountChance = 1 },     -- one of the two, as GoM's MP5 / MP5A2 / MP5SD
         { items = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7" }, amountChance = 3 },
         { items = { M .. "46x30_Box" }, amountChance = boxes },
     }

@@ -4,12 +4,13 @@ shared geometry, bake, paint-helper and FBX code build_p90.py imports.
     blender -b --factory-startup -P scripts/post93/build_mp7.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx        MP7A1_BODY, MP7A1_BOLT, MP7A1_STOCK
+    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx        MP7A1_BODY, MP7A1_BOLT, MP7A1_STOCK, MP7A1_FOREGRIP
+    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx        MP7A2_BODY (bolt and stock: the A1's nodes)
     P/models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx  46x30Magazine20/30/40/60_MP7
     P/models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx       MP7_Suppressor, MP7_Muzzle_Mount_Device
-    P/textures/weapons/GunsOfTienPost93/<name>.png                MP7A1 (256, shared by the three gun nodes),
+    P/textures/weapons/GunsOfTienPost93/<name>.png                MP7A1 (256, shared by the four gun nodes), MP7A2,
                                                                   one 128 texture per magazine / part
-    scripts/post93/mp7_points.json                                attachment points (game space)
+    scripts/post93/mp7_points.json, mp7a2_points.json             attachment points (game space)
 
 The shape is measured from H&K's side photo of an MP7A1 (docs/mp7_2.png; its traced outline is
 mp7_reference_outline.json, which render_mp7.py / make_mp7_art.py lay over the model to check it). Every side profile
@@ -45,10 +46,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx")
+FBX_GUN_A2 = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx")
 TEX_DIR = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
 POINTS_JSON = os.path.join(HERE, "mp7_points.json")
+POINTS_JSON_A2 = os.path.join(HERE, "mp7a2_points.json")
 
 K = 0.00072                       # game units per real millimetre (GoM's MP5 family: 0.72 of real size)
 
@@ -59,6 +62,11 @@ BORE_H = 120.0                    # bore axis
 BORE_Z = BORE_H - H0
 CANON_L = 47.7                    # the nose plate's face where the barrel leaves it
 STOCK_TRAVEL = 223.0              # 638 - 415
+# The integral front grip folds up under the receiver about a pin through its round front end (the knuckle, centre
+# of the round nose of FRONT_GRIP, the release button beside it); unfolded it turns 90 degrees down, its free end
+# (the serrated catch) at the bottom, about as low as the pistol grip.
+FGRIP_HINGE = (90.8, 88.0)        # photo L, H
+FGRIP_ANGLE = 90.0
 RAIL_BASE_H, RAIL_TOP_H = 166.0, 169.6   # top rail mounting face, crossbar tops
 SIDE_RAIL_L, SIDE_RAIL_H = (78.0, 140.0), 120.0
 SIDE_RAIL_X = W_SIDE = 24.5       # side rail crossbar faces
@@ -325,10 +333,15 @@ GRIP = [(293.5, 91.6), (288.8, 89.3), (286.0, 86.5), (284.1, 81.8), (284.1, 75.7
         (231.0, 74.5), (228.6, 80.4), (231.0, 86.5), (231.0, 94.0), (232.0, 103.0), (293.5, 103.0)]
 FRONT_GRIP = [(78.0, 104.5), (74.3, 93.0), (74.3, 85.1), (76.6, 78.0), (79.9, 74.3), (85.1, 71.5), (177.0, 72.0),
               (180.4, 79.9), (176.2, 93.9), (176.2, 97.7), (179.0, 104.5)]
-GUARD_OUT = [(178.0, 79.0), (181.0, 73.8), (188.0, 70.8), (229.0, 71.0), (233.5, 70.0)]
-GUARD_IN = [(181.5, 81.0), (184.0, 76.2), (190.0, 73.8), (228.0, 73.9), (232.5, 73.7)]
-TRIGGER = [(228.0, 101.5), (222.0, 101.5), (219.0, 95.0), (214.0, 88.0), (208.0, 82.0), (203.5, 80.5), (203.0, 78.5),
-           (206.0, 78.5), (212.0, 81.5), (218.0, 86.5), (223.0, 92.5)]
+# The guard is a closed loop: its front post rises into the lower receiver, leaning forward about 12 degrees, along
+# the folded grip's rear (measured on the user's right-side photo, 2026-10-18: inner edge L 181 at the bar to ~176 at
+# the receiver); hidden behind the folded grip, it shows once the grip is unfolded.
+GUARD_OUT = [(172.7, 104.0), (178.0, 79.0), (181.0, 73.8), (188.0, 70.8), (229.0, 71.0), (233.5, 70.0)]
+GUARD_IN = [(176.7, 104.0), (181.5, 81.0), (184.0, 76.2), (190.0, 73.8), (228.0, 73.9), (232.5, 73.7)]
+# the blade's top runs up into the receiver (its bottom is H 103.5): ending at H 101.5, as traced, left it floating
+# (user, 2026-10-18: "trigger looks detached")
+TRIGGER = [(228.0, 106.5), (222.0, 106.5), (222.0, 101.5), (219.0, 95.0), (214.0, 88.0), (208.0, 82.0),
+           (203.5, 80.5), (203.0, 78.5), (206.0, 78.5), (212.0, 81.5), (218.0, 86.5), (223.0, 92.5)]
 SELECTOR = [(237.0, 105.0), (241.0, 103.5), (262.0, 114.0), (261.0, 118.0), (258.0, 118.5)]
 FRONT_SIGHT = [(89.3, 166.0), (89.3, 178.1), (90.2, 179.9), (111.2, 179.9), (112.2, 183.7), (117.8, 185.1),
                (120.1, 185.1), (122.0, 181.3), (127.6, 182.3), (134.6, 182.7), (135.5, 181.8), (135.5, 178.1),
@@ -342,14 +355,30 @@ BUTT = [(385.0, 148.0), (385.0, 91.6), (389.3, 57.0), (390.7, 53.7), (393.0, 41.
 HANDLE = [(375.7, 160.8), (383.7, 160.3), (384.6, 164.5), (394.0, 164.0), (394.4, 148.6), (385.1, 148.1),
           (376.0, 150.0)]
 
+# MP7A2 (user, 2026-10-18; measured on their left-side render of one, scaled 6.81 px/mm by the muzzle tip and the
+# receiver's rear face; its hand stop, bore and grip land within 2-3 mm of the A1 photo's): the folding grip and its
+# lug under the nose give way to a metal rail handguard wrapping the lower front, Picatinny rails on both sides and
+# underneath (3, 6 and 9 o'clock). The rest is the A1's: receiver, nose, grip, guard, top rail, stock, bolt, magazines.
+A2_LOWER = [(53.0, 135.0), (52.3, 103.8), (58.4, 104.7), (63.1, 103.8), (232.0, 103.5), (232.0, 91.6),
+            (384.6, 91.6), (385.0, 135.0)]
+A2_HG_PLATE = [(66.5, 101.0), (66.5, 124.0), (71.0, 128.5), (168.5, 128.5), (173.0, 124.0), (173.0, 101.0)]
+A2_HG_BOTTOM = [(66.5, 101.5), (75.0, 91.8), (168.5, 91.8), (172.5, 95.5), (173.0, 101.5)]
+A2_W_PLATE, A2_W_BOTTOM = W_LOWER + 1.5, 16.0      # half widths: the side plates stand 1.5 mm proud of the receiver
+A2_SIDE_RAIL_L, A2_SIDE_RAIL_H = (88.0, 159.0), 118.0   # seven crossbars, L 90-157, H 107-129
+A2_SIDE_RAIL_X = A2_W_PLATE + 3.5                   # crossbar faces
+A2_BOTTOM_RAIL_L, A2_BOTTOM_H = (91.0, 168.0), 91.8     # crossbars under it to H 89.5
+A2_BOTTOM_RAIL_BOTTOM = A2_BOTTOM_H - 2.3
+A2_SCREWS = ((72.5, 118.0), (166.5, 118.0))         # the handguard's two cap screws each side
+A2_FOREGRIP_L = 118.0                               # where a vertical grip sits on the bottom rail (forward third)
 
-def build_body():
+
+def build_body(a2=False):
+    """The A1's body, or with a2 the MP7A2's: no folding-grip lug, the rail handguard instead of the short side rails."""
     b = Builder()
-    slab(b, PL(LOWER), half=W_LOWER, bevel=2.5)
+    slab(b, PL(A2_LOWER if a2 else LOWER), half=W_LOWER, bevel=2.5)
     slab(b, PL(UPPER), half=W_UPPER, bevel=2.0)
     slab(b, PL(NOSE), half=W_NOSE, bevel=1.5, mat="metal")
     slab(b, PL(GRIP), half=W_GRIP, bevel=4.5, res=1, mat="grip")
-    slab(b, PL(FRONT_GRIP), half=W_FGRIP, bevel=3.0, res=1)
     b.strip(PL(GUARD_OUT), PL(GUARD_IN), -W_GUARD, W_GUARD)
     slab(b, PL(TRIGGER), half=3.0, bevel=0.6, mat="metal")
     # Picatinny rail along the top, sights on it (both flipped up), short side rails on both sides.
@@ -360,11 +389,14 @@ def build_body():
     slab(b, PL(FRONT_SIGHT), half=10.0, bevel=0.8, mat="rail")
     slab(b, PL(REAR_SIGHT), half=10.0, bevel=0.8, mat="rail")
     ya, yb = sorted((P(SIDE_RAIL_L[0], 0)[0], P(SIDE_RAIL_L[1], 0)[0]))
+    if a2:
+        handguard(b)
     for s in (1, -1):
-        box(b, SIDE_RAIL_L[0] - 2.0, SIDE_RAIL_L[1] + 2.0, SIDE_RAIL_H - 8.0, SIDE_RAIL_H + 8.0,
-            s * (W_LOWER - 1.0), s * (W_LOWER + 0.6), mat="rail", bevel=0.6)
-        picatinny(b, ya, yb, lambda u, h, y, s=s: Vector((s * (W_LOWER + 0.6 + h), y, SIDE_RAIL_H - H0 + u)),
-                  base_h=2.4, tooth_h=3.5)
+        if not a2:
+            box(b, SIDE_RAIL_L[0] - 2.0, SIDE_RAIL_L[1] + 2.0, SIDE_RAIL_H - 8.0, SIDE_RAIL_H + 8.0,
+                s * (W_LOWER - 1.0), s * (W_LOWER + 0.6), mat="rail", bevel=0.6)
+            picatinny(b, ya, yb, lambda u, h, y, s=s: Vector((s * (W_LOWER + 0.6 + h), y, SIDE_RAIL_H - H0 + u)),
+                      base_h=2.4, tooth_h=3.5)
         # ambidextrous selector: pivot and lever
         b.lathe("x", (0, *P(240.5, 107.5)), [(s * (W_LOWER - 0.5), 0), (s * (W_LOWER - 0.5), 5.5),
                                               (s * (W_LOWER + 2.2), 5.5), (s * (W_LOWER + 3.0), 4.2),
@@ -375,7 +407,20 @@ def build_body():
     b.lathe("y", (0, 0, BORE_Z), [(t(52.0), 0), (t(52.0), 7.4), (t(41.0), 7.4), (t(41.0), 5.4), (t(36.5), 5.4),
                                   (t(36.5), 7.0), (t(1.0), 7.0), (t(0.0), 6.2), (t(0.0), 3.0), (t(10.0), 3.0),
                                   (t(10.0), 0)], seg=14, mat="metal", phase=0.5)
-    return b.to_object("MP7A1_BODY")
+    return b.to_object("MP7A2_BODY" if a2 else "MP7A1_BODY")
+
+
+def handguard(b):
+    """MP7A2: the metal handguard round the lower front, its side plates and the block underneath, Picatinny rails on
+    both sides (on the plates) and under the block."""
+    slab(b, PL(A2_HG_PLATE), half=A2_W_PLATE, bevel=1.0, mat="metal")
+    slab(b, PL(A2_HG_BOTTOM), half=A2_W_BOTTOM, bevel=1.5, mat="metal")
+    ya, yb = sorted((P(A2_SIDE_RAIL_L[0], 0)[0], P(A2_SIDE_RAIL_L[1], 0)[0]))
+    for s in (1, -1):
+        picatinny(b, ya, yb, lambda u, h, y, s=s: Vector((s * (A2_W_PLATE + h), y, A2_SIDE_RAIL_H - H0 + u)),
+                  base_h=1.0, tooth_h=3.5)
+    ya, yb = sorted((P(A2_BOTTOM_RAIL_L[0], 0)[0], P(A2_BOTTOM_RAIL_L[1], 0)[0]))
+    picatinny(b, ya, yb, lambda u, h, y: Vector((u, y, A2_BOTTOM_H - H0 - h)), base_h=0.8, tooth_h=2.5)
 
 
 def build_bolt():
@@ -383,6 +428,13 @@ def build_bolt():
     b = Builder()
     slab(b, PL(HANDLE), half=20.0, bevel=1.2, res=0)
     return b.to_object("MP7A1_BOLT")
+
+
+def build_foregrip():
+    """The integral front grip, modelled folded where the photo shows it; foregrip_deployed swings it down."""
+    b = Builder()
+    slab(b, PL(FRONT_GRIP), half=W_FGRIP, bevel=3.0, res=1)
+    return b.to_object("MP7A1_FOREGRIP")
 
 
 def build_stock():
@@ -741,7 +793,8 @@ def paint(maps, kind):
         L = L - STOCK_TRAVEL
     side = np.abs(n[..., 0]) > 0.7
     left, right = n[..., 0] > 0.7, n[..., 0] < -0.7
-    if kind in ("gun", "stock"):
+    a2 = kind == "gun_a2"
+    if kind in ("gun", "stock", "gun_a2"):
         lower = side & (np.abs(x) > W_LOWER - 0.6) & (H > 91) & (H < 135.5)
         upper = side & (np.abs(x) > W_UPPER - 0.6) & (H > 134.5) & (H < 167)
         grip = (mat == MATS.index("grip")) & side & (np.abs(x) > W_GRIP - 0.6)
@@ -766,7 +819,7 @@ def paint(maps, kind):
             col[side & (np.abs(x) > W_UPPER - 0.6) & rounded_rect(L, H, La, Lb, 131.0, 136.0, 2.4)] = 9
         rec = lower & rounded_rect(L, H, 232.0, 302.0, 113.0, 128.0, 2.0)
         col[rec & ~rounded_rect(L, H, 233.2, 300.8, 114.2, 126.8, 1.4)] *= 0.5
-        for cL, cH in ((380.0, 145.0), (380.0, 103.0), (104.7, 113.3)):
+        for cL, cH in ((380.0, 145.0), (380.0, 103.0)) + (() if a2 else ((104.7, 113.3),)):
             screw(col, L, H, side & (np.abs(x) > W_UPPER - 0.6), cL, cH, 2.4)
         # Selector marks on both sides: white safe symbol, red single, red row for auto.
         for m, c in ((rounded_rect(L, H, 270.0, 279.0, 108.0, 111.0, 0.8), (205, 205, 200)),
@@ -775,8 +828,9 @@ def paint(maps, kind):
                       & (np.mod(L - 264.5, 5.5) < 4.6), (190, 40, 36))):
             col[lower & m] = c
         # Calibre on the left front, designation on the right upper.
-        col[lower & left & text_mask(L, H, "4.6X30", 166.8, 120.5, 4.0)] += 30
-        col[upper & right & text_mask(-L, H, "MP7A1", -170.0, 141.5, 5.0)] += 26
+        # (the A2's handguard covers the A1's spot: its calibre sits just behind it, as on the user's render)
+        col[lower & left & text_mask(L, H, "4.6X30", 178.5 if a2 else 166.8, 120.5, 4.0)] += 30
+        col[upper & right & text_mask(-L, H, "MP7A2" if a2 else "MP7A1", -170.0, 141.5, 5.0)] += 26
         # Ejection port on the right of the upper receiver.
         port = upper & right & (L > 196) & (L < 246) & (H > 139) & (H < 152)
         rim = upper & right & (L > 194.5) & (L < 247.5) & (H > 137.5) & (H < 153.5) & ~port
@@ -797,8 +851,13 @@ def paint(maps, kind):
         col[slot] = 9
         col[metal & (r < 3.2) & (L < 10.5)] = 8
         rail_side = (mat == MATS.index("rail")) & side & (np.abs(x) > W_LOWER + 0.4)
-        for cL in (SIDE_RAIL_L[0] + 1.5, SIDE_RAIL_L[1] - 1.5):
-            screw(col, L, H, rail_side, cL, SIDE_RAIL_H, 2.2)
+        if a2:
+            plate = (mat == MATS.index("metal")) & side & (np.abs(x) > W_LOWER + 0.4)
+            for cL, cH in A2_SCREWS:                      # the handguard's cap screws, either side
+                screw(col, L, H, plate, cL, cH, 3.0)
+        else:
+            for cL in (SIDE_RAIL_L[0] + 1.5, SIDE_RAIL_L[1] - 1.5):
+                screw(col, L, H, rail_side, cL, SIDE_RAIL_H, 2.2)
         # Stock: the two holes through the butt plate, the rubber pad at its rear.
         if kind == "stock":
             for cH in (46.5, 55.5):
@@ -1052,11 +1111,11 @@ def handgun_points(pts):
     return pts
 
 
-def points(bounds):
+def points(bounds, a2=False):
     rail_top = (RAIL_TOP_H - H0) * K
-    side = SIDE_RAIL_X * K
-    ry = round((L0 - sum(SIDE_RAIL_L) / 2) * K, 4)
-    rz = round((SIDE_RAIL_H - H0) * K, 4)
+    side = (A2_SIDE_RAIL_X if a2 else SIDE_RAIL_X) * K
+    ry = round((L0 - sum(A2_SIDE_RAIL_L if a2 else SIDE_RAIL_L) / 2) * K, 4)
+    rz = round(((A2_SIDE_RAIL_H if a2 else SIDE_RAIL_H) - H0) * K, 4)
     oy = round((L0 - 219.0) * K, 4)                 # optics over the trigger, mid-rail (as before)
     my, mz = P(MAG_L, MAG_H)
     cy, cz = P(CANON_L, BORE_H)
@@ -1077,6 +1136,20 @@ def points(bounds):
         "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
         "stock_folded": {"offset": [0.0, round(STOCK_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
+    # Front grip unfolded: a turn about X through the hinge, offset = hinge - R . hinge (the engine draws a part at
+    # offset + rotateXYZ . vertex). Upright, +90 swings the grip's rear end down; turned() keeps a given rotate as it
+    # is, so it is written already turned: the half turn about Y flips the sign of a turn about X.
+    if a2:
+        # Bottom rail, for GoM's foregrips: its Picatinny_Rail_Down spans z -0.0055..0.0011 from rail_down, and the
+        # MP5's foregrip point sits 0.003 above that rail's bottom (the clamp round the crossbars); the same relations
+        # on the integral rail, the grip in the rail's forward third.
+        bottom = (A2_BOTTOM_RAIL_BOTTOM - H0) * K
+        pts["rail_down"] = {"offset": [0.0, round((L0 - sum(A2_BOTTOM_RAIL_L) / 2) * K, 4), round(bottom + 0.0055, 4)]}
+        pts["foregrip"] = {"offset": [0.0, round((L0 - A2_FOREGRIP_L) * K, 4), round(bottom + 0.003, 4)]}
+    else:
+        hy, hz = [c * K for c in P(*FGRIP_HINGE)]
+        pts["foregrip_deployed"] = {"offset": [0.0, round(hy + hz, 4), round(hz - hy, 4)],
+                                    "rotate": [-FGRIP_ANGLE, 0.0, 0.0]}
     pts = handgun_points(pts)
     pts["_bounds"] = bounds
     pts["_notes"] = {
@@ -1094,6 +1167,14 @@ def points(bounds):
         "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
         "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)",
     }
+    if a2:
+        pts["_notes"]["a2"] = ("MP7A2: the A1's points with the side rails on the handguard; rail_down / foregrip "
+                               "under it for GoM's foregrips (upright parts, turned with the gun); bolt and stock are "
+                               "the A1's nodes (MP7A1_BOLT / MP7A1_STOCK)")
+    else:
+        pts["_notes"]["foregrip_deployed"] = ("MP7A1_FOREGRIP is modelled folded (drawn folded at the gun's origin); "
+                                              "this turns it %.0f degrees down about its hinge pin (photo L %.1f, "
+                                              "H %.1f)" % ((FGRIP_ANGLE,) + FGRIP_HINGE))
     pts["_extras"] = {"handgun_hold": True, "photo_origin_mm": [L0, H0], "real_mm_per_game_unit": round(1.0 / K, 2)}
     return pts
 
@@ -1103,6 +1184,17 @@ def bounds_of(ob, offset=(0, 0, 0)):
     mn = [round(min(v[i] for v in vs) + offset[i], 4) for i in range(3)]
     mx = [round(max(v[i] for v in vs) + offset[i], 4) for i in range(3)]
     return {"min": mn, "max": mx, "tris": sum(len(p.vertices) - 2 for p in ob.data.polygons)}
+
+
+def bounds_at(ob, point):
+    """bounds_of() for a node drawn at an attachment point (offset + rotateXYZ, game space)."""
+    rx, ry, rz = [math.radians(a) for a in point["rotate"]]
+    xf = (Matrix.Translation(Vector(point["offset"])) @ Matrix.Rotation(rx, 4, 'X') @ Matrix.Rotation(ry, 4, 'Y')
+          @ Matrix.Rotation(rz, 4, 'Z'))
+    vs = [xf @ Vector((v.co.x, v.co.y, -v.co.z)) for v in ob.data.vertices]
+    return {"min": [round(min(v[i] for v in vs), 4) for i in range(3)],
+            "max": [round(max(v[i] for v in vs), 4) for i in range(3)],
+            "tris": sum(len(p.vertices) - 2 for p in ob.data.polygons)}
 
 
 def main():
@@ -1116,35 +1208,49 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, bolt, stock = build_body(), build_bolt(), build_stock()
+    body, bolt, stock, fgrip = build_body(), build_bolt(), build_stock(), build_foregrip()
     mags = [build_magazine(r) for r in (20, 30, 40)] + [build_drum()]
     supp, mount = build_suppressor(), build_mount()
 
-    unwrap([body, bolt, stock], 0.006)
+    unwrap([body, bolt, stock, fgrip], 0.006)
     for o in mags + [supp, mount]:
         unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
-    texture([body, bolt, stock], [[body, bolt], [body, bolt], [stock]], ["gun", "gun", "stock"], 256,
-            os.path.join(TEX_DIR, "MP7A1.png"))
+    # The front grip is baked on its own and the body without it: either face of the grip and the recess it folds
+    # into are seen once it is unfolded, so neither may carry the other's shadow.
+    texture([body, bolt, stock, fgrip], [[body, bolt], [body, bolt], [stock], [fgrip]], ["gun", "gun", "stock", "gun"],
+            256, os.path.join(TEX_DIR, "MP7A1.png"))
     for r, m in zip((20, 30, 40, 60), mags):
         texture([m], [[m]], ["drum" if r == 60 else "mag%d" % r], 128,
                 os.path.join(TEX_DIR, "46x30Magazine%d_MP7.png" % r))
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "MP7_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "MP7_Muzzle_Mount_Device.png"))
 
-    for o in (body, bolt, stock):                       # held like a pistol: turned 180 degrees about the bore axis
+    # MP7A2: its own body and texture; bolt, stock, magazines and muzzle parts are the A1's.
+    body2 = build_body(a2=True)
+    unwrap([body2], 0.006)
+    texture([body2], [[body2, bolt]], ["gun_a2"], 256, os.path.join(TEX_DIR, "MP7A2.png"))
+
+    for o in (body, bolt, stock, fgrip, body2):                # held like a pistol: turned 180 degrees about the bore axis
         o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
-    bounds = {o.name: bounds_of(o) for o in [body, bolt, stock] + mags + [supp, mount]}
+    bounds = {o.name: bounds_of(o) for o in [body, bolt, stock, fgrip] + mags + [supp, mount]}
     bounds["MP7A1_STOCK_folded"] = bounds_of(stock, (0, STOCK_TRAVEL * K, 0))
+    pts = points(bounds)
+    bounds["MP7A1_FOREGRIP_deployed"] = bounds_at(fgrip, pts["foregrip_deployed"])
     with open(POINTS_JSON, "w") as fh:
-        json.dump(points(bounds), fh, indent=2)
+        json.dump(pts, fh, indent=2)
+        fh.write("\n")
+    bounds2 = {o.name: bounds_of(o) for o in [body2, bolt, stock]}
+    with open(POINTS_JSON_A2, "w") as fh:
+        json.dump(points(bounds2, a2=True), fh, indent=2)
         fh.write("\n")
 
-    export([body, bolt, stock], FBX_GUN)
+    export([body, bolt, stock, fgrip], FBX_GUN)
+    export([body2], FBX_GUN_A2)
     export(mags, FBX_MAGS)
     export([supp, mount], FBX_PARTS)
-    for name, b in bounds.items():
+    for name, b in list(bounds.items()) + [("MP7A2_BODY", bounds2["MP7A2_BODY"])]:
         print("%-28s tris %5d  min %s  max %s" % (name, b["tris"], b["min"], b["max"]))
 
 

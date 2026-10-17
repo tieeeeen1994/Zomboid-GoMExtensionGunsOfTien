@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1, P90 TR, Five-seveN and UCP
+    Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN and UCP
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -24,6 +24,17 @@ SpentCasingPhysics.RegisterCasingToAmmo({
 SpentCasingPhysics.RegisterWeaponParams({
     -- Thrown out to the right like GoM's MP5K (about 1 s in the air, 1.7 tiles out).
     ["GunsOfTienPost93.MP7A1"] = {
+        forwardOffset = 0.55,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.60,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
+    -- the MP7A2 ejects as the A1
+    ["GunsOfTienPost93.MP7A2"] = {
         forwardOffset = 0.55,
         sideOffset    = 0.06,
         heightOffset  = 0.53,

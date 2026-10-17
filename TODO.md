@@ -97,5 +97,5 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       DM11 / SS190 boxes and cartons, now also cartons beside vanilla 9mm cartons in police / SWAT / gun stores), the
       high-capacity magazines in GoM's tactical high-cap spawner. To check in game: no special loads in loot, DM11 /
       SS190 cartons and loose drums turn up; nothing of the Five-seveN / UCP in houses.
-- [ ] Test in game (as above, plus folding stock, rails, suppressors, spawns, Hot Brass downward ejection).
+- [ ] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
 

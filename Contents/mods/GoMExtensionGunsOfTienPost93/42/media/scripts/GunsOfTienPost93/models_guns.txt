@@ -16,6 +16,29 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.1737 -0.0205, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0360 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.1606 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_deployed { offset = 0.0000 0.1402 0.1452, rotate = -90.0000 0.0000 0.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model MP7A2 {
+        mesh     = weapons/firearms/GunsOfTienPost93_MP7A2|MP7A2_BODY,
+        texture  = weapons/GunsOfTienPost93/MP7A2,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2081 -0.0205, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0250 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0230 -0.0090, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0504 -0.0530, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_up { offset = 0.0000 0.0504 -0.0507, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0118 0.1192 -0.0191, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_right { offset = 0.0118 0.1192 -0.0191, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0191 0.1192 -0.0183, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0180 0.1192 -0.0191, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1737 -0.0205, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0360 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0000 0.1606 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_down { offset = 0.0000 0.1148 -0.0041, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1231 -0.0016, rotate = -180.0000 0.0000 -180.0000, }
         attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
         attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
     }
@@ -85,6 +108,12 @@ module GunsOfTienPost93 {
 
     model MP7A1_STOCK {
         mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_STOCK,
+        texture  = weapons/GunsOfTienPost93/MP7A1,
+        cullFace = None,
+    }
+
+    model MP7A1_FOREGRIP {
+        mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_FOREGRIP,
         texture  = weapons/GunsOfTienPost93/MP7A1,
         cullFace = None,
     }
