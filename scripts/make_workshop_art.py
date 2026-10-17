@@ -5,9 +5,9 @@
 
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
-preview3.png (1024x1024, the Post-93 pistols, added the same way) and, for each mod's 42/ folder, poster.png
-(512x512) and icon.png (128x128) for the in-game mod list; NAME (preview, preview2, preview3, posters, icons) writes
-only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same)
+and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
+preview2, preview3, preview4, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -20,6 +20,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
 MAIN = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
 POST = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media/textures")
+GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
+                                            "3722134990/mods/GunsOfMarz/42.16/media/textures"),
+                         "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
+                         "42.16/media/textures") if os.path.isdir(p)), None)
 RENDERS = sys.argv[sys.argv.index("--renders") + 1] if "--renders" in sys.argv else os.path.join(ROOT, "tmp/ad")
 ONLY = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith("--") and sys.argv[i - 1] != "--renders"]
 
@@ -234,6 +238,62 @@ def preview3(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def slot_row(page, icons, cx, y, label):
+    """A centred row of inventory slots (512-grid units) under a small label; icons are full paths of 32 px icons."""
+    W = page.size[0]
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    size = page.size
+    slot, gap = u(36), u(4)
+    row_w = len(icons) * slot + (len(icons) - 1) * gap
+    page.alpha_composite(text_layer(size, (u(cx), u(y)), label, font(BOLD, u(11), b"Bold"), (60, 64, 70, 255),
+                                    anchor="ma", spacing=u(1)))
+    sx, sy = u(cx) - row_w // 2, u(y + 18)
+    slots = Image.new("RGBA", size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(slots)
+    for n, path in enumerate(icons):
+        x0 = sx + n * (slot + gap)
+        sd.rounded_rectangle((x0, sy, x0 + slot, sy + slot), radius=u(3), fill=(255, 255, 255, 52),
+                             outline=(60, 64, 70, 150), width=max(1, u(1)))
+        ic = icon(path, 64 * round(k / 2))
+        slots.alpha_composite(ic, (x0 + (slot - ic.width) // 2, sy + (slot - ic.height) // 2))
+    paste_with_shadow(page, slots, (0, u(2)), u(2), 120)
+
+
+def preview4(path, W=1024):
+    """The MP7A2, laid out on a 512 grid like preview3: the gun fitted out (stock deployed, GoM's Stub Foregrip on the
+    bottom rail, EXPS3 sight, suppressor; render_ad_guns.py "mp7a2", mirrored back to the game's view), then two rows
+    of inventory slots: what it shares with the MP7A1, and what its rails take from Guns of Marz."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "H&K MP7A2", 40, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+
+    im = gun("mp7a2", 1.0, flip=True)
+    s = min(u(480) / im.width, u(250) / im.height)
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    paste_with_shadow(page, placed(size, im, ((W - im.width) // 2, u(112))), (0, u(6)), u(6), 160)
+
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("46x30Magazine20_MP7"), post("46x30Magazine30_MP7"), post("46x30Magazine40_MP7"),
+                    post("46x30Magazine60_MP7"), post("MP7_Suppressor"), post("46x30_Box_DM11")],
+             256, 358, "4.6X30MM  ·  THE MP7A1'S MAGAZINES, DRUM AND SUPPRESSOR")
+    slot_row(page, [gom("Stub_Foregrip"), gom("MKC_Foregrip"), gom("MK2_Foregrip"), gom("EXPS3_Sight"),
+                    gom("BrightPoint-5_Light"), gom("AimRight_Laser")],
+             256, 428, "RAIL HANDGUARD  ·  GUNS OF MARZ FOREGRIPS, SIGHTS, LIGHTS, LASERS")
+
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -349,6 +409,8 @@ if __name__ == "__main__":
         preview(os.path.join(ROOT, "preview2.png"))      # the full ad, added on the Steam page by hand
     if want("preview3"):
         preview3(os.path.join(ROOT, "preview3.png"))     # the pistols, added the same way
+    if want("preview4"):
+        preview4(os.path.join(ROOT, "preview4.png"))     # the MP7A2, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

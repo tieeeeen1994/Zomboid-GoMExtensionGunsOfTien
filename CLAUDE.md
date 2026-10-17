@@ -148,7 +148,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - Workshop art: `scripts/render_ad_guns.py` (Blender: `ad_<gun>.png` of the four Post-93 guns fitted out, the MP7 /
   P90 at one scale and the two pistols at another; pistol renders are game-space-as-world, i.e. mirrored, and
   `make_workshop_art.py` flips them back, so their markings read right; the MP7 / P90 ad renders are **not** flipped
-  yet) and `scripts/make_workshop_art.py [preview preview2 preview3 posters icons]`.
+  yet) and `scripts/make_workshop_art.py [preview preview2 preview3 preview4 posters icons]`. preview4 (2026-10-18) is the
+  MP7A2 alone, from render_ad_guns.py's `mp7a2` (fitted out without a light, so the handguard's side rail shows),
+  mirrored to the game's view like the pistols; added on the Steam page by hand like preview2 / preview3.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,

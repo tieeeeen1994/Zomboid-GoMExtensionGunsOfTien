@@ -47,6 +47,20 @@ GUNS = {
                   ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor")],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
     },
+    # the MP7A2 on its own (preview4): fitted out: GoM's Stub Foregrip on the bottom one, stock
+    # deployed; its bolt and stock are nodes of the A1's file (a node entry may name its own file and texture)
+    "mp7a2": {
+        "points": "post93/mp7a2_points.json",
+        "fbx": "GunsOfTienPost93_MP7A2", "tex": "MP7A2",
+        "nodes": [("MP7A2_BODY", None), ("MP7A1_BOLT", None, "GunsOfTienPost93_MP7A1", "MP7A1"),
+                  ("MP7A1_STOCK", None, "GunsOfTienPost93_MP7A1", "MP7A1")],
+        "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine40_MP7", "magazine"),
+        "parts": [("GunsOfTienPost93_MP7_parts", "MP7_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor")],
+        # no light: it would cover the side rail, the handguard being the point of the picture
+        "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "Stub_Foregrip", "foregrip")],
+        "view": (-0.85, 0.42, -0.22), "scale": 0.68, "size": (2400, 1350),
+    },
     "p90": {
         "points": "post93/p90_points.json",
         "fbx": "GunsOfTienPost93_P90TR", "tex": "P90TR",
@@ -116,9 +130,9 @@ def place(o, point=None):
 def build(spec):
     points = json.load(open(os.path.join(HERE, spec["points"])))
     objs = []
-    gun = os.path.join(MEDIA, "models_X/weapons/firearms/%s.fbx" % spec["fbx"])
-    for node, point in spec["nodes"]:
-        o = load(gun, os.path.join(TEX, spec["tex"] + ".png"), node)
+    for node, point, *src in spec["nodes"]:
+        fbx, tex = src if src else (spec["fbx"], spec["tex"])
+        o = load(os.path.join(MEDIA, "models_X/weapons/firearms/%s.fbx" % fbx), os.path.join(TEX, tex + ".png"), node)
         place(o, points[point] if point else None)
         objs.append(o)
     f, node, point = spec["mag"]
