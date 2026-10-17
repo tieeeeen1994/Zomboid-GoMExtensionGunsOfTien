@@ -115,9 +115,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   and both pistol lights, no lasers. Spawns (user, 2026-10-17): never in civilian homes, so neither pistol is in
   GoM's `World_Anachronistic_Spawner` (GoM inserts it in vanilla's `FirearmWeapons_Late` / `SafehouseBin_Late`, the
   `SafehouseLoot_Late` survivor-safehouse rooms in houses, and in `SurvivorBag_Late` / `BanditBag_Late`); the
-  Five-seveN in GoM's police and SWAT handgun spawners, the UCP by direct entries very rarely in police and SWAT cars
-  and police bags (spawn table makes its magazine required), both pistols (+ magazine + box) by direct entries in the
-  two late zombie bags at the 2/7 and 1/7 each Anachronistic gun gets there (Loot.lua `DIRECT`).
+  Five-seveN and the UCP alike in GoM's police and SWAT handgun spawners (user, 2026-10-17: the UCP is not rare,
+  "treat it like any other gun"; it had been a very rare direct police entry with a required magazine), both pistols
+  (+ magazine + box) by direct entries in the two late zombie bags at the 2/7 and 1/7 each Anachronistic gun gets there (Loot.lua `DIRECT`).
 - **Loot matches GoM's** (user, 2026-10-17: "everything needs to be lootable the same as GoM"; traced in GoM's
   ItemInsertion.lua / VanillaReplacer*.lua / ItemSpawnerTable.lua): GoM spawns guns only through ~45 spawner items
   inserted in vanilla lists (each a gun + magazines + boxes; zombies carry them through AttachedWeaponDefinitions),
@@ -145,6 +145,10 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   (`Loot.lua`, `HotBrass.lua`), `lua/client/GunsOfTienPost93/Tooltips.lua`, `AnimSets/player(-vehicle)/actions/`
   (`Load/Unload/Rack/RackAim P90TR_GoT.xml`, `WeaponReloadType = P90TR`, clips `Bob_GunsOfTien_P90_Load / _Unload /
   _Rack / _AimRack` still to make), translations, textures.
+- Workshop art: `scripts/render_ad_guns.py` (Blender: `ad_<gun>.png` of the four Post-93 guns fitted out, the MP7 /
+  P90 at one scale and the two pistols at another; pistol renders are game-space-as-world, i.e. mirrored, and
+  `make_workshop_art.py` flips them back, so their markings read right; the MP7 / P90 ad renders are **not** flipped
+  yet) and `scripts/make_workshop_art.py [preview preview2 preview3 posters icons]`.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,

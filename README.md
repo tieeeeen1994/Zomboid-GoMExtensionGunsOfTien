@@ -42,6 +42,6 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
-  suppressor and Guns of Marz's pistol sights and pistol lights; very rare (police and SWAT loot, survivors' bags)
+  suppressor and Guns of Marz's pistol sights and pistol lights
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

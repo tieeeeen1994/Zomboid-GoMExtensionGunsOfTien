@@ -4,14 +4,14 @@
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
       loot) and MarzGuns.Zombie_Police_SMG_Spawner (SWAT zombies, police bags, prison riot storage, SWAT vehicles);
-      the Five-seveN (FN sold it to police) in GoM's police and SWAT handgun spawners (MarzGuns.Zombie_Police_Handgun_
-      Spawner, Zombie_SWAT_Handgun_Spawner), next to the Glock 17 and M92FS. Not in the Anachronistic spawner: GoM
-      puts that in vanilla's late survivor safehouses, rooms in civilian homes, and neither pistol belongs in a home
-      (user, 2026-10-17).
-    - Direct loot entries (OnPostDistributionMerge): the UCP Prototype, an H&K evaluation sample, very rarely in
-      police and SWAT cars and police bags (about a twentieth of a GoM police pistol there; it always comes with a
-      magazine); the Five-seveN and the UCP, each with a magazine and a box, in survivor and bandit zombies' late bags,
-      at the share each gun of the Anachronistic spawner gets there (the user kept them in those bags).
+      the Five-seveN and the UCP Prototype in GoM's police and SWAT handgun spawners (MarzGuns.Zombie_Police_Handgun_
+      Spawner, Zombie_SWAT_Handgun_Spawner), next to the Glock 17 and M92FS, as often as either (user, 2026-10-17:
+      the UCP is not rare, "treat it like any other gun"). Not in the Anachronistic spawner: GoM puts that in
+      vanilla's late survivor safehouses, rooms in civilian homes, and neither pistol belongs in a home (user,
+      2026-10-17).
+    - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
+      survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
+      kept them in those bags).
       Each added alternative is taken out again before the next world adds it (Lua is not always reloaded).
     - Suppressors and mount devices join the item lists of GoM's MarzGuns.World_Suppressor_Spawner (SWAT gun storage,
       police evidence, drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and
@@ -27,7 +27,7 @@
 
     Scaled by Guns of Marz's own sandbox option MarzGuns.LootMultiplier ("GoM Loot Multiplier", user 2026-10-17: no
     option of our own): it already scales how often GoM places its spawners, which carry our guns, magazines and
-    parts; our own entries (boxes and cartons, the UCP's police entries, the survivor / bandit bag entries) are scaled
+    parts; our own entries (boxes and cartons, the survivor / bandit bag entries) are scaled
     by it the way GoM scales its insertions. Spawner contents keep fixed counts, as GoM's own alternatives do.
 --]]
 
@@ -72,6 +72,15 @@ local function fivesevenAlternative(boxes)
     }
 end
 
+-- The UCP the same way; its drum only on found guns (5%).
+local function ucpAlternative(boxes)
+    return {
+        { items = { M .. "UCP" }, amountChance = 1 },
+        { items = { M .. "46x30Magazine20_UCP" }, amountChance = 4 },
+        { items = { M .. "46x30_Box" }, amountChance = boxes },
+    }
+end
+
 -- High-capacity magazines on their own, as GoM's in its World_HighCap_Tactical_Magazine_Spawner (its M92FS 50, M93R
 -- 60, MP5 60 / 100 drums: the magazine and up to two boxes; SWAT / police storage and gun stores, no homes; only with
 -- GoM's sandbox SpawnHighCapMags on, which places that spawner).
@@ -91,6 +100,8 @@ local SPAWNERS = {
     { "MarzGuns.Zombie_Police_SMG_Spawner", p90Alternative, 2 },
     { "MarzGuns.Zombie_Police_Handgun_Spawner", fivesevenAlternative, 4 },
     { "MarzGuns.Zombie_SWAT_Handgun_Spawner", fivesevenAlternative, 4 },
+    { "MarzGuns.Zombie_Police_Handgun_Spawner", ucpAlternative, 4 },
+    { "MarzGuns.Zombie_SWAT_Handgun_Spawner", ucpAlternative, 4 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_MP7", M .. "46x30_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "57x28Magazine30_FIVESEVEN", M .. "57x28_Box"), 0 },
@@ -218,19 +229,12 @@ end
 Events.OnPostDistributionMerge.Add(addWorldLoot)
 
 -------------------------------------------------
--- Direct entries: the UCP in police / SWAT loot, both pistols in survivor and bandit bags
+-- Direct entries: both pistols in survivor and bandit bags
 -------------------------------------------------
 -- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its 7 guns
--- evenly, so each gets 2/7 and 1/7 there; GoM's police pistol spawner sits in police glove boxes at 12 (seats 8, bags
--- 6) for about 4 pistols, so a twentieth of one of those is ~0.15.
+-- evenly, so each gets 2/7 and 1/7 there.
 local SURVIVOR, BANDIT = 2 / 7, 1 / 7
-local DIRECT = {
-    { "vehicle", "PoliceGloveBox", M .. "UCP", 0.15 },
-    { "vehicle", "PoliceSeatFront", M .. "UCP", 0.1 },
-    { "vehicle", "PoliceSWATGloveBox", M .. "UCP", 0.15 },
-    { "vehicle", "PoliceSWATSeatFront", M .. "UCP", 0.1 },
-    { "bag", "Bag_Police", M .. "UCP", 0.08 },
-}
+local DIRECT = {}
 for _, kit in ipairs({
     { "MarzGuns.FIVESEVEN", M .. "57x28Magazine20_FIVESEVEN", M .. "57x28_Box" },
     { M .. "UCP", M .. "46x30Magazine20_UCP", M .. "46x30_Box" } }) do

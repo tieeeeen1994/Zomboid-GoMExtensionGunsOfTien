@@ -272,13 +272,14 @@ if spawnTable then
             M .. "P90_Muzzle_Mount_Device:5",
         },
     }
+    -- The same as the Five-seveN's, the drum as its extended magazine.
     spawnTable[UCP] = {
         required = {
             "MarzGuns.Slide_Lock",
-            M .. "46x30Magazine20_UCP",                  -- found loose (no spawner adds magazines), so always loaded
         },
         optionals = {
-            M .. "46x30Magazine40_UCP:2",               -- the drum, as rare as the MP7's
+            M .. "46x30Magazine20_UCP:50",
+            M .. "46x30Magazine40_UCP:5",
             "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
             "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
             M .. "MP7_Muzzle_Mount_Device:5",

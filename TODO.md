@@ -20,6 +20,10 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       art from scripts/render_ad_guns.py + scripts/make_workshop_art.py). Upload from the game's Workshop menu.
       The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
       simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand.
+- [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
+      Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
+      `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate
+      Bold, the nearest to Windows' Bahnschrift that preview2 was drawn with).
 
 ## Post-93 sub-mod `GoMExtensionGunsOfTienPost93` — in progress
 
@@ -86,9 +90,9 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       standard (suppressors, mount devices, magazines, guns); GoM's Glock 17 added to the main mod's sound table. To
       check in game: the markings read correctly (and which side the P90's FN panel is on, against a photo).
 - [x] 2026-10-17: the Five-seveN and UCP never spawn in civilian homes (out of GoM's Anachronistic spawner, which sits
-      in vanilla's late survivor safehouses): Five-seveN in police / SWAT spawners, UCP very rarely in police and SWAT
-      cars and police bags; both (with a magazine and a box) in survivor and bandit zombies' late bags. To check in
-      game: none in houses, both in police cars now and then, the UCP always loaded.
+      in vanilla's late survivor safehouses): both in GoM's police / SWAT handgun spawners (the UCP like any other
+      gun, not rare, user 2026-10-17) and (with a magazine and a box) in survivor and bandit zombies' late bags. To
+      check in game: none in houses, both on police zombies and in police cars as often as the Glock / M92FS.
 - [x] 2026-10-17: loot matched to GoM: special loads never spawn (the main mod's loot removed; Post-93 keeps only
       DM11 / SS190 boxes and cartons, now also cartons beside vanilla 9mm cartons in police / SWAT / gun stores), the
       high-capacity magazines in GoM's tactical high-cap spawner. To check in game: no special loads in loot, DM11 /

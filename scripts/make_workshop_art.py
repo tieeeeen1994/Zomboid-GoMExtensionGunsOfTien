@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Workshop art for GoM Extension: Guns of Tien (Python 3 + Pillow).
 
-    python3 scripts/make_workshop_art.py [--renders DIR]
+    python3 scripts/make_workshop_art.py [--renders DIR] [NAME ...]
 
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
-preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand) and,
-for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list. The guns come from
-scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default tmp/ad); the ammo boxes are the
-mods' own 32 px inventory icons, scaled up without smoothing.
+preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
+preview3.png (1024x1024, the Post-93 pistols, added the same way) and, for each mod's 42/ folder, poster.png
+(512x512) and icon.png (128x128) for the in-game mod list; NAME (preview, preview2, preview3, posters, icons) writes
+only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
 import os
@@ -20,6 +21,7 @@ ROOT = os.path.normpath(os.path.join(HERE, ".."))
 MAIN = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
 POST = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media/textures")
 RENDERS = sys.argv[sys.argv.index("--renders") + 1] if "--renders" in sys.argv else os.path.join(ROOT, "tmp/ad")
+ONLY = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith("--") and sys.argv[i - 1] != "--renders"]
 
 
 def _first(*paths):
@@ -27,8 +29,8 @@ def _first(*paths):
 
 
 IMPACT = _first("/System/Library/Fonts/Supplemental/Impact.ttf", "C:/Windows/Fonts/impact.ttf")
-BOLD = _first("/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf", "C:/Windows/Fonts/bahnschrift.ttf",
-              "C:/Windows/Fonts/arialbd.ttf")
+BOLD = _first("C:/Windows/Fonts/bahnschrift.ttf", "/System/Library/Fonts/Supplemental/DIN Alternate Bold.ttf",
+              "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf", "C:/Windows/Fonts/arialbd.ttf")
 
 AMBER = (255, 196, 64)
 INK = (14, 15, 18)
@@ -75,6 +77,8 @@ def text_layer(size, xy, text, f, fill, stroke=0, stroke_fill=INK, anchor="la", 
         total = sum(d.textlength(c, font=f) for c in text) + spacing * (len(text) - 1)
         if anchor[0] == "m":
             x -= total / 2
+        elif anchor[0] == "r":
+            x -= total
         for c in text:
             d.text((x, y), c, font=f, fill=fill, stroke_width=stroke, stroke_fill=stroke_fill, anchor="l" + anchor[1])
             x += d.textlength(c, font=f) + spacing
@@ -95,9 +99,12 @@ def paste_with_shadow(page, layer, offset=(0, 4), blur=4, alpha=200):
     page.alpha_composite(layer)
 
 
-def gun(name, scale):
+def gun(name, scale, flip=False):
+    """A render cropped and scaled; flip mirrors a pistol's render back to the game's view (render_ad_guns.py)."""
     im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA")
     im = im.crop(im.getchannel("A").getbbox())
+    if flip:
+        im = im.transpose(Image.FLIP_LEFT_RIGHT)
     return im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
 
 
@@ -174,6 +181,55 @@ def preview(path, W=1024):
         x, y = 22, 432 + n * 26
         d.rectangle((u(x), u(y + 4), u(x + 10), u(y + 14)), fill=AMBER)
         d.text((u(x + 18), u(y)), text, font=f, fill=(238, 238, 238))
+
+    save_under(page.convert("RGB"), path)
+
+
+def preview3(path, W=1024):
+    """The Post-93 pistols, laid out on a 512 grid: each gun fitted out at true size against the other, beside its
+    name and a row of its parts as inventory slots (the 32 px icons at 2x); no text band."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "POST-1993 PISTOLS", 40, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+
+    s = 0.19 * k
+    rows = [  # gun, its side of the page, name, calibre, parts, top
+        ("fiveseven", "right", "FN FIVE-SEVEN", "5.7X28MM", ["57x28Magazine20_FIVESEVEN", "57x28Magazine30_FIVESEVEN",
+                                                           "FIVESEVEN_Suppressor", "57x28_Box_SS190"], 112),
+        ("ucp", "left", "H&K UCP PROTOTYPE", "4.6X30MM", ["46x30Magazine20_UCP", "46x30Magazine40_UCP",
+                                                         "MP7_Suppressor", "46x30_Box_DM11"], 288),
+    ]
+    slot, gap = u(36), u(4)
+    for name, side, label, calibre, parts, top in rows:
+        im = gun(name, s, flip=True)
+        x = W - u(14) - im.width if side == "right" else u(14)
+        paste_with_shadow(page, placed(size, im, (x, u(top))), (0, u(6)), u(6), 160)
+        # the name block on the other side, level with the gun's middle (the UCP's drum hangs below it)
+        bx = u(24) if side == "right" else W - u(24)
+        anchor = "l" if side == "right" else "r"
+        by = u(top) + round(im.height * (0.5 if side == "right" else 0.38)) - u(38)
+        page.alpha_composite(text_layer(size, (bx, by), label, font(BOLD, u(17), b"Bold"), (28, 30, 34, 255),
+                                        anchor=anchor + "a"))
+        page.alpha_composite(text_layer(size, (bx, by + u(22)), calibre, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor=anchor + "a", spacing=u(1)))
+        row_w = len(parts) * slot + (len(parts) - 1) * gap
+        sx = bx if side == "right" else bx - row_w
+        sy = by + u(40)
+        slots = Image.new("RGBA", size, (0, 0, 0, 0))
+        sd = ImageDraw.Draw(slots)
+        for n, part in enumerate(parts):
+            x0 = sx + n * (slot + gap)
+            sd.rounded_rectangle((x0, sy, x0 + slot, sy + slot), radius=u(3), fill=(255, 255, 255, 52),
+                                 outline=(60, 64, 70, 150), width=max(1, u(1)))
+            ic = icon(os.path.join(POST, "item_GunsOfTienPost93_%s.png" % part), 64 * round(k / 2))
+            slots.alpha_composite(ic, (x0 + (slot - ic.width) // 2, sy + (slot - ic.height) // 2))
+        paste_with_shadow(page, slots, (0, u(2)), u(2), 120)
 
     save_under(page.convert("RGB"), path)
 
@@ -284,11 +340,20 @@ def mod_icon(path, item, W=128):
 
 
 if __name__ == "__main__":
-    preview(os.path.join(ROOT, "preview2.png"))          # the full ad, added on the Steam page by hand
-    preview_small(os.path.join(ROOT, "preview.png"))
+    def want(name):
+        return not ONLY or name in ONLY
+
     main_dir = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42")
     post_dir = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42")
-    poster_main(os.path.join(main_dir, "poster.png"))
-    poster_post93(os.path.join(post_dir, "poster.png"))
-    mod_icon(os.path.join(main_dir, "icon.png"), os.path.join(MAIN, "item_9x19_Box_HP.png"))
-    mod_icon(os.path.join(post_dir, "icon.png"), os.path.join(POST, "item_GunsOfTienPost93_P90TR.png"))
+    if want("preview2"):
+        preview(os.path.join(ROOT, "preview2.png"))      # the full ad, added on the Steam page by hand
+    if want("preview3"):
+        preview3(os.path.join(ROOT, "preview3.png"))     # the pistols, added the same way
+    if want("preview"):
+        preview_small(os.path.join(ROOT, "preview.png"))
+    if want("posters"):
+        poster_main(os.path.join(main_dir, "poster.png"))
+        poster_post93(os.path.join(post_dir, "poster.png"))
+    if want("icons"):
+        mod_icon(os.path.join(main_dir, "icon.png"), os.path.join(MAIN, "item_9x19_Box_HP.png"))
+        mod_icon(os.path.join(post_dir, "icon.png"), os.path.join(POST, "item_GunsOfTienPost93_P90TR.png"))

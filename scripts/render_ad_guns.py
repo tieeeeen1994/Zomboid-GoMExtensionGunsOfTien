@@ -1,12 +1,14 @@
-"""The MP7 and the P90, fitted out, for the Workshop art (Blender 5.2, headless).
+"""The Post-93 guns, fitted out, for the Workshop art (Blender 5.2, headless).
 
-    blender -b --factory-startup -P scripts/render_ad_guns.py -- OUT_DIR
+    blender -b --factory-startup -P scripts/render_ad_guns.py -- OUT_DIR [NAME ...]
 
-Renders OUT_DIR/ad_mp7.png and ad_p90.png: transparent orthographic Workbench renders of the exported FBX files and
-textures, from the same angle and at the same scale (so the two keep their real sizes against each other), muzzle to
-the right, seen from the left a little behind and above. Parts are placed at the guns' attachment points the way the
-engine does (scripts/post93/render_p90.py); both guns are held like pistols and so modelled upside down, so
-everything is turned back upright. make_workshop_art.py lays them out.
+Renders OUT_DIR/ad_<name>.png (all of GUNS, or the names given): transparent orthographic Workbench renders of the
+exported FBX files and textures. The MP7 and the P90 share one angle and scale (so the two keep their real sizes
+against each other), muzzle to the right, seen from the left a little behind and above; the Five-seveN and the UCP
+share another scale, each from the side its markings are on. Parts are placed at the guns' attachment points the way
+the engine does (scripts/post93/render_p90.py); all four are held like pistols and so modelled upside down, so
+everything is turned back upright. Game space is used as world space, the mirror image of the game
+(render_fiveseven.py): the pistols' renders (`flip`) are mirrored back by make_workshop_art.py, which lays them out.
 """
 
 import json
@@ -25,29 +27,57 @@ GOM = next(p for p in (os.path.expanduser("~/Library/Application Support/Steam/s
                                           "3722134990/mods/GunsOfMarz/42.16/media"),
                        "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
                        "42.16/media") if os.path.isdir(p))
-OUT = sys.argv[sys.argv.index("--") + 1]
+ARGS = sys.argv[sys.argv.index("--") + 1:]
+OUT = ARGS[0]
 UPRIGHT = Matrix.Rotation(math.pi, 4, 'Y')
 VIEW = (-0.8, 0.5, -0.3)             # looking from the gun's left, a little behind and above: muzzle to the right
-SCALE = 0.62                         # ortho width (game units) of both renders
+SCALE = 0.62                         # ortho width (game units) of the MP7 and P90 renders
 SIZE = (1600, 900)
+PISTOL_SCALE = 0.34                  # the same for the two pistols (fitted Five-seveN: 0.28 long)
+PISTOL_SIZE = (2000, 1100)
 
 GUNS = {
     "mp7": {
         "points": "post93/mp7_points.json",
         "fbx": "GunsOfTienPost93_MP7A1", "tex": "MP7A1",
         "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_STOCK", "stock_folded")],
-        "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine30_MP7"),
-        "parts": ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor", "MP7_Muzzle_Mount_Device"),
+        "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine30_MP7", "magazine"),
+        "parts": [("GunsOfTienPost93_MP7_parts", "MP7_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor")],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
     },
     "p90": {
         "points": "post93/p90_points.json",
         "fbx": "GunsOfTienPost93_P90TR", "tex": "P90TR",
         "nodes": [("P90TR_BODY", None), ("P90TR_BOLT", None)],
-        "mag": ("GunsOfTienPost93_P90_magazines", "57x28Magazine50_P90"),
-        "parts": ("GunsOfTienPost93_P90_parts", "P90_Suppressor", "P90_Muzzle_Mount_Device"),
+        "mag": ("GunsOfTienPost93_P90_magazines", "57x28Magazine50_P90", "magazine"),
+        "parts": [("GunsOfTienPost93_P90_parts", "P90_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_P90_parts", "P90_Suppressor")],
         "gom": [("scopes", "Aimpoint_Sight", "scope"), ("pointers", "BrightPoint-5_Light", "light_left"),
                 ("pointers", "AimRight_Laser", "laser_right")],
+    },
+    # the pistols: magazines have no point (drawn at the gun's origin, as GoM's Glock's), the muzzle parts at canon;
+    # views are in world space, i.e. before make_workshop_art.py mirrors them back (render_fiveseven.py's like_r /
+    # like_usg, flatter): the Five-seveN's right side, muzzle right; the UCP's left side, muzzle left
+    "fiveseven": {
+        "points": "post93/fiveseven_points.json",
+        "fbx": "GunsOfTienPost93_FIVESEVEN", "tex": "FIVESEVEN",
+        "nodes": [("FIVESEVEN_BODY", None), ("FIVESEVEN_SLIDE", None)],
+        "mag": ("GunsOfTienPost93_FIVESEVEN_magazines", "57x28Magazine20_FIVESEVEN", None),
+        "parts": [("GunsOfTienPost93_FIVESEVEN_parts", "FIVESEVEN_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_FIVESEVEN_parts", "FIVESEVEN_Suppressor")],
+        "gom": [],                   # only what the mod adds
+        "view": (0.8, -0.3, -0.35), "scale": PISTOL_SCALE, "size": PISTOL_SIZE,
+    },
+    "ucp": {
+        "points": "post93/ucp_points.json",
+        "fbx": "GunsOfTienPost93_UCP", "tex": "UCP",
+        "nodes": [("UCP_BODY", None), ("UCP_SLIDE", None)],
+        "mag": ("GunsOfTienPost93_UCP_magazines", "46x30Magazine40_UCP", None),
+        "parts": [("GunsOfTienPost93_UCP_parts", "UCP_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_MP7_parts", "MP7_Suppressor")],
+        "gom": [],
+        "view": (-0.8, -0.3, -0.35), "scale": PISTOL_SCALE, "size": PISTOL_SIZE,
     },
 }
 
@@ -90,12 +120,11 @@ def build(spec):
         o = load(gun, os.path.join(TEX, spec["tex"] + ".png"), node)
         place(o, points[point] if point else None)
         objs.append(o)
-    f, node = spec["mag"]
+    f, node, point = spec["mag"]
     o = load(os.path.join(MEDIA, "models_X/weapons/magazines/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
-    place(o, points["magazine"])
+    place(o, points[point] if point else None)
     objs.append(o)
-    f, supp, mount = spec["parts"]
-    for node in (mount, supp):
+    for f, node in spec["parts"]:
         o = load(os.path.join(MEDIA, "models_X/weapons/parts/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
         place(o, points["canon"])
         objs.append(o)
@@ -124,15 +153,17 @@ def main():
     sc.display.shading.cavity_type = 'WORLD'
     sc.render.film_transparent = True
     sc.view_settings.view_transform = 'Standard'
-    sc.render.resolution_x, sc.render.resolution_y = SIZE
     cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam"))
     cam.data.type = 'ORTHO'
     cam.data.clip_end = 10.0
-    cam.data.ortho_scale = SCALE
     sc.collection.objects.link(cam)
     sc.camera = cam
-    d = Vector(VIEW).normalized()
     for name, spec in GUNS.items():
+        if ARGS[1:] and name not in ARGS[1:]:
+            continue
+        sc.render.resolution_x, sc.render.resolution_y = spec.get("size", SIZE)
+        cam.data.ortho_scale = spec.get("scale", SCALE)
+        d = Vector(spec.get("view", VIEW)).normalized()
         objs = build(spec)
         for o in bpy.data.objects:
             if o.type == 'MESH':
