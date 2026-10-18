@@ -553,6 +553,10 @@ every game minute (`chargeNew`, `syncItemFields` for a loose one, `syncHandWeapo
 (3) Remove Battery deleted the laser: `InheritUsesAndEmpty` sets the kept input to 0 uses, and
 `ItemUser.UseItem` then removes any input at 0 uses that is not `KeepOnDeplete` (= `DisappearOnUse = false`, read
 from the script every time; default true). GoM's lights set it; patchScripts now does for the lasers.
+The inventory right-click lists a craft only when it can be done now (`CraftRecipeManager.getUniqueRecipeItems`:
+`canPerformCurrentRecipe` for the clicked item), the crafting window lists it anyway: Insert Battery shows on a
+laser only at 0 charge with a charged battery carried. `InitCharge` fills only a laser at exactly its starting 1
+charge, so one emptied before the server marked it stays empty.
 Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
 itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
 starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows

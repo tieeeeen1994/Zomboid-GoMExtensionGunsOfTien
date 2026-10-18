@@ -92,7 +92,8 @@ function Lasers.InitCharge(part)
     local md = part:getModData()
     if md.GunsOfTien_LaserCharged then return end
     md.GunsOfTien_LaserCharged = true
-    if part:getCurrentUses() <= 1 then
+    -- exactly the starting charge: one emptied by Remove Battery (0) before it was marked stays empty
+    if part:getCurrentUses() == 1 then
         part:setCurrentUsesFloat(1.0)
     end
 end
