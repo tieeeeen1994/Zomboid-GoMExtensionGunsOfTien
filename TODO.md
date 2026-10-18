@@ -28,6 +28,15 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       and a shoulder holster: hang it the right way up and not through the leg (holster points in gen_scripts.py,
       `HOLSTER_POINTS`), draw from the holster; Shell holder's Upgrade option hidden on a sawn-off stock; in MP the
       owner's copy changes model at once, another player sees it after the gun is next equipped.
+- [ ] Sawn-off stocks, choices taken without the user (2026-10-19), to confirm: stats (Hit Chance x0.87, Recoil
+      Delay x1.3, AimingTime +10, weight -0.5); holster only with sawn-off barrels too; all three holster slots (both
+      belts and the shoulder holster); Unusable Wood from the cut; any saw; no sandbox option; GoM's Stevens / TOZ-34
+      sawn-off barrels left without stats (only the Double Barrel's have any in GoM).
+- [ ] GoM's AimingTime multipliers do nothing (found 2026-10-19, CLAUDE.md "Sawn-off stocks"): AimingTime caps the
+      post-shot aiming delay and no GoM gun sets it (0), so its stocks' / bipods' / sights' / lasers'
+      `SF.Multiply("AimingTime", x)` change nothing. Our HandlingTooltips lines quote those multipliers ("Aiming Time
+      reduced by 25%") as if they worked. Decide with the user: say so in the tooltips, give GoM's guns a base
+      AimingTime so the multipliers bite, or leave it.
 - [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
       Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
       `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate
