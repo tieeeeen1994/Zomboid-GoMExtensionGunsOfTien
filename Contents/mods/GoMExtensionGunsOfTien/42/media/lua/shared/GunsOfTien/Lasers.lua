@@ -4,11 +4,13 @@
 
     GoM's five lasers (AimRight, LRX-7 for rifles; PJ-3, PX1, TR-1 for pistols) were plain parts whose aiming bonus
     always applied and that showed nothing. Now:
-    - Battery: their item scripts get GoM's lights' tags (base:flashlight;base:usesbattery) and a UseDelta, so vanilla's
-      Insert / Remove Battery recipes work on a laser taken off the gun, exactly as on GoM's weapon lights (42.21
-      RecipeCodeOnCreate.torchBatteryInsert handles a WeaponPart), and the gun tooltip shows the laser's "Remaining"
-      bar (WeaponPart.DoBatteryTooltip). UseDelta 0.00033 = 3030 charges, one per 10 game minutes switched on: about 3
-      weeks (user: 3x a weapon light; GoM's lights are 0.001, about a week).
+    - Battery: their item scripts get GoM's lights' tags (base:flashlight;base:usesbattery) and a UseDelta, and they are
+      added to vanilla's Remove / Insert Battery recipes' item lists (the tags alone come too late for those, see
+      addToBatteryRecipes), so the recipes work on a laser taken off the gun, exactly as on GoM's weapon lights (42.21
+      RecipeCodeOnCreate.torchBatteryInsert handles a WeaponPart; Insert wants a laser at 0 charge, as a flashlight),
+      and the gun tooltip shows the laser's "Remaining" bar (WeaponPart.DoBatteryTooltip). UseDelta 0.00033 = 3030
+      charges, one per 10 game minutes switched on: about 3 weeks (user: 3x a weapon light; GoM's lights are 0.001,
+      about a week). Lasers come with a full battery (InitCharge, from the server for every laser a player carries).
     - On / off: the gun's modData (KEY), switched by ISToggleLaserGoT, whose complete() runs on the server (single
       player: locally) and sends the gun back with Gunworks' CallSyncHandWeaponFields (SyncHandWeaponFieldsPacket
       carries every fitted part's bytes, charge included, and the modData, server -> owner only). The part itself is
@@ -81,8 +83,10 @@ function Lasers.IsLit(weapon)
     return part ~= nil and part:getCurrentUses() > 0
 end
 
---- A laser made before it ran on a battery holds the default single charge: give it a full battery once. One whose
---- battery was inserted or used since keeps its charge (it is no longer at 1, or carries the mark).
+--- A laser that never had a battery holds the default single charge (InventoryItem.uses starts at 1, 0.03% of this
+--- battery: an empty Remaining bar, and Insert Battery wants 0): give it a full battery once. The server does it for
+--- every laser a player carries (server/GunsOfTien/Lasers.lua), switching on does it too. One whose battery was
+--- inserted or used since keeps its charge (it is no longer at 1, or carries the mark).
 function Lasers.InitCharge(part)
     if not part then return end
     local md = part:getModData()
@@ -155,6 +159,59 @@ local function patchScripts()
 end
 Events.OnGameBoot.Add(patchScripts)
 Events.OnInitGlobalModData.Add(patchScripts)
+
+-------------------------------------------------
+-- Battery recipes: vanilla's Remove / Insert Battery (inputs tags[base:flashlight;base:usesbattery]) find their items
+-- only in lists built from the item scripts before any Lua runs (ItemTags when the scripts load, then each tagged
+-- input's own list, InputScript.itemScriptCache, at PostWorldDictionaryInit; containsItem reads that list), so the tags
+-- patchScripts gives never reached them and the recipes refused the lasers (user, 2026-10-18). The lasers are added to
+-- those two recipes' lists once they are built (OnLoadMapZones comes after PostWorldDictionaryInit, on client, server
+-- and single player; scripts are rebuilt for every world). Not to the third recipe with the flashlight tag, which
+-- dismantles electronics.
+-------------------------------------------------
+local BATTERY_RECIPES = { "Base.RemoveBattery", "Base.InsertBattery" }
+local BATTERY_TAGS = { "base:flashlight", "base:usesbattery" }
+
+local function addToBatteryRecipes()
+    local tags = {}
+    for i, name in ipairs(BATTERY_TAGS) do
+        tags[i] = ItemTag.get(ResourceLocation.of(name))
+    end
+    for _, name in ipairs(BATTERY_RECIPES) do
+        local recipe = ScriptManager.instance:getCraftRecipe(name)
+        if not recipe then
+            print("[GunsOfTien] lasers: battery recipe not found: " .. name)
+        else
+            local inputs = recipe:getInputs()
+            for i = 0, inputs:size() - 1 do
+                local input = inputs:get(i)
+                local tagged = false
+                for _, tag in ipairs(tags) do
+                    if input:getItemTags():contains(tag) then tagged = true end
+                end
+                if tagged then
+                    local list = input:getPossibleInputItems()
+                    for fullType in pairs(Lasers.TYPES) do
+                        local item = ScriptManager.instance:getItem(fullType)
+                        if item then
+                            if not list:contains(item) then list:add(item) end
+                            local used = item:getUsedInRecipes()
+                            if not used:contains(recipe:getName()) then used:add(recipe:getName()) end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    for _, tag in ipairs(tags) do
+        local byTag = ScriptManager.instance:getItemsTag(tag)
+        for fullType in pairs(Lasers.TYPES) do
+            local item = ScriptManager.instance:getItem(fullType)
+            if item and byTag and not byTag:contains(item) then byTag:add(item) end
+        end
+    end
+end
+Events.OnLoadMapZones.Add(addToBatteryRecipes)
 
 -------------------------------------------------
 -- Stats: GoM's laser modifiers apply only while lit

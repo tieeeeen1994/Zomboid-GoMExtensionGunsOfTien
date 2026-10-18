@@ -540,6 +540,16 @@ radial, greyed with how to change the battery when empty; re-applies stats on th
 for the critical chance; a tooltip line on each laser part). Radial icons `media/ui/GunsOfTien_Radial_Laser{On,Off}.png`
 (`scripts/make_laser_radial.py`, Gunworks' palette like the foregrip's; they replaced vanilla's vehicle headlight
 icons, which the user found ugly, 2026-10-18).
+Battery fixes (user, 2026-10-18: "can't be installed with batteries... the remaining bar... empty"; decompiled
+42.21): (1) a craftRecipe's `tags[...]` input matches only items in its own `itemScriptCache` (`InputScript.containsItem`),
+filled from `ItemTags` at PostWorldDictionaryInit; ItemTags is built when the scripts load, before any Lua, so a
+tag given by `DoParam("Tags")` never reaches a recipe. `addToBatteryRecipes` adds the lasers to Remove / Insert
+Battery's input lists and `getUsedInRecipes` at OnLoadMapZones (ZomboidFixesB42's `ScriptFixes.addTag` does the same
+for every recipe; not used here, the third flashlight-tag recipe dismantles electronics). (2) `InventoryItem.uses`
+starts at 1 and `Item.InstanceItem` never fills a WeaponPart's (`WeaponPart.getCurrentUsesFloat` = uses x useDelta),
+so a new laser shows 0.03% and Insert Battery (`IsEmpty`: `getCurrentUses() > 0` refuses) cannot take one; GoM's
+lights spawn at 1 / 1000 the same way. The server now gives every carried laser without the mark its full battery
+every game minute (`chargeNew`, `syncItemFields` for a loose one, `syncHandWeaponFields` on a gun).
 Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
 itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
 starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows

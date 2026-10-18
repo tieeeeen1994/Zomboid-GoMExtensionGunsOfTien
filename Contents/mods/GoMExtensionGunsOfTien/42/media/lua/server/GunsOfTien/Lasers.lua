@@ -9,6 +9,8 @@
     instead (CallSyncHandWeaponFields), which shows the change to every other player too.
     Every game minute those guns are also checked for a beam that no longer matches (a laser taken off, or switched
     off elsewhere), so a beam never stays on a gun without its lit laser.
+    Every game minute each laser a player carries that never had its battery (a part starts at one charge: an empty
+    Remaining bar) gets a full one (Lasers.InitCharge) and goes back to the owner (syncItemFields carries the uses).
 --]]
 
 if isClient() then return end
@@ -98,5 +100,34 @@ local function checkBeams()
     end
 end
 
+local function uncharged(part)
+    return part ~= nil and not (part:hasModData() and part:getModData().GunsOfTien_LaserCharged)
+end
+
+--- Lasers come with a battery: a laser part starts with one charge (an empty Remaining bar) and only switching it on
+--- used to fill it, so each laser a player carries that never had its battery (loose, in a bag or on a gun) gets it
+--- here, and goes back to the owner.
+local function chargeNew()
+    for _, player in ipairs(players()) do
+        if not player:isDead() then
+            local found = player:getInventory():getAllEvalRecurse(function(item)
+                if Lasers.TYPES[item:getFullType()] then return uncharged(item) end
+                return instanceof(item, "HandWeapon") and uncharged(Lasers.GetLaser(item))
+            end, ArrayList.new())
+            for i = 0, found:size() - 1 do
+                local item = found:get(i)
+                if instanceof(item, "HandWeapon") then
+                    Lasers.InitCharge(Lasers.GetLaser(item))
+                    send(player, item, false)
+                else
+                    Lasers.InitCharge(item)
+                    if isServer() then item:syncItemFields() end
+                end
+            end
+        end
+    end
+end
+
 Events.EveryTenMinutes.Add(drain)
 Events.EveryOneMinute.Add(checkBeams)
+Events.EveryOneMinute.Add(chargeNew)

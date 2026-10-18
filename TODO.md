@@ -100,6 +100,7 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
 - [ ] Lasers (2026-10-18): Turn Laser On / Off from the gun's menu and the radial (its own icons); the short beam part on the laser's lens (GoM rifles,
       pistols, MP7 / P90; solid red narrowing to a point, the same length on a lit floor and in the dark; does the unlit shader
       gunsoftien_laser load from the mod's media/shaders, so it stays bright at night), on a slung gun, for another player in MP; the bonus only while on (gun tooltip stats); drain and the
-      empty switch-off; Remove / Insert Battery on a detached laser; the new tooltip lines and part-row names.
+      empty switch-off; a picked-up laser shows a full Remaining bar within a game minute; Remove Battery then Insert
+      Battery on a detached laser (both offered on its menu); the new tooltip lines and part-row names.
 - [ ] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
 
