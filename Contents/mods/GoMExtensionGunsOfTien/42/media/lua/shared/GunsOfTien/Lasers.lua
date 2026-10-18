@@ -11,6 +11,7 @@
       and the gun tooltip shows the laser's "Remaining" bar (WeaponPart.DoBatteryTooltip). UseDelta 0.00033 = 3030
       charges, one per 10 game minutes switched on: about 3 weeks (user: 3x a weapon light; GoM's lights are 0.001,
       about a week). Lasers come with a full battery (InitCharge, from the server for every laser a player carries).
+      They can be dismantled for Electronics Scrap like GoM's lights (vanilla's Dismantle Simple Electronic Item).
     - On / off: the gun's modData (KEY), switched by ISToggleLaserGoT, whose complete() runs on the server (single
       player: locally) and sends the gun back with Gunworks' CallSyncHandWeaponFields (SyncHandWeaponFieldsPacket
       carries every fitted part's bytes, charge included, and the modData, server -> owner only). The part itself is
@@ -170,11 +171,13 @@ Events.OnInitGlobalModData.Add(patchScripts)
 -- only in lists built from the item scripts before any Lua runs (ItemTags when the scripts load, then each tagged
 -- input's own list, InputScript.itemScriptCache, at PostWorldDictionaryInit; containsItem reads that list), so the tags
 -- patchScripts gives never reached them and the recipes refused the lasers (user, 2026-10-18). The lasers are added to
--- those two recipes' lists once they are built (OnLoadMapZones comes after PostWorldDictionaryInit, on client, server
--- and single player; scripts are rebuilt for every world). Not to the third recipe with the flashlight tag, which
--- dismantles electronics.
+-- those recipes' lists once they are built (OnLoadMapZones comes after PostWorldDictionaryInit, on client, server
+-- and single player; scripts are rebuilt for every world). Also to Dismantle Simple Electronic Item, the third recipe
+-- with the flashlight tag, as GoM's lights (user, 2026-10-18): a screwdriver, the laser destroyed, 1 Electronics Scrap;
+-- its OnCreate (dismantleFlashlight) gives back a battery only from a DrainableComboItem, so a laser's charge is lost,
+-- as a GoM light's. Only the inputs with these tags get the lasers (not the screwdriver).
 -------------------------------------------------
-local BATTERY_RECIPES = { "Base.RemoveBattery", "Base.InsertBattery" }
+local BATTERY_RECIPES = { "Base.RemoveBattery", "Base.InsertBattery", "Base.DismantleElectronics" }
 local BATTERY_TAGS = { "base:flashlight", "base:usesbattery" }
 
 local function addToBatteryRecipes()

@@ -102,6 +102,7 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       gunsoftien_laser load from the mod's media/shaders, so it stays bright at night), on a slung gun, for another player in MP; the bonus only while on (gun tooltip stats); drain and the
       empty switch-off; a picked-up laser shows a full Remaining bar within a game minute; Remove Battery then Insert
       Battery on a detached laser (its right-click menu offers only what can be done now: Remove while charged, Insert
-      while empty with a charged battery carried; the laser stays empty after Remove); the new tooltip lines and part-row names.
+      while empty with a charged battery carried; the laser stays empty after Remove; in MP too, seen only in SP so far); Dismantle Simple Electronic Item on a laser
+      (a screwdriver, gives Electronics Scrap); the new tooltip lines and part-row names.
 - [ ] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
 

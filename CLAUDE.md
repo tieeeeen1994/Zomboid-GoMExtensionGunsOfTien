@@ -557,6 +557,11 @@ The inventory right-click lists a craft only when it can be done now (`CraftReci
 `canPerformCurrentRecipe` for the clicked item), the crafting window lists it anyway: Insert Battery shows on a
 laser only at 0 charge with a charged battery carried. `InitCharge` fills only a laser at exactly its starting 1
 charge, so one emptied before the server marked it stays empty.
+Dismantling (user, 2026-10-18): GoM's lights are in vanilla's DismantleElectronics through the static flashlight tag,
+so their right-click shows an item-name submenu (two crafts; one craft goes straight into the main menu); the lasers
+are added to it the same way (`BATTERY_RECIPES`). Its `dismantleFlashlight` returns a battery only from a
+DrainableComboItem, so a laser's (and a GoM light's) charge is lost. Seen 2026-10-18: Insert Battery showed on a
+laser's right-click in single player but not on the server (not traced; check after the Workshop copy is updated).
 Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
 itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
 starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows
