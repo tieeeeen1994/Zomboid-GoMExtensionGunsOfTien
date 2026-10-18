@@ -550,6 +550,9 @@ starts at 1 and `Item.InstanceItem` never fills a WeaponPart's (`WeaponPart.getC
 so a new laser shows 0.03% and Insert Battery (`IsEmpty`: `getCurrentUses() > 0` refuses) cannot take one; GoM's
 lights spawn at 1 / 1000 the same way. The server now gives every carried laser without the mark its full battery
 every game minute (`chargeNew`, `syncItemFields` for a loose one, `syncHandWeaponFields` on a gun).
+(3) Remove Battery deleted the laser: `InheritUsesAndEmpty` sets the kept input to 0 uses, and
+`ItemUser.UseItem` then removes any input at 0 uses that is not `KeepOnDeplete` (= `DisappearOnUse = false`, read
+from the script every time; default true). GoM's lights set it; patchScripts now does for the lasers.
 Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
 itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
 starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows

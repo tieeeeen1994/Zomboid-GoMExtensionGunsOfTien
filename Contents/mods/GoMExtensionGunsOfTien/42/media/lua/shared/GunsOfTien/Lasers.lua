@@ -137,6 +137,10 @@ local function patchScripts()
         if script then
             script:DoParam("UseDelta = " .. tostring(Lasers.USE_DELTA))
             script:DoParam("Tags = base:flashlight;base:usesbattery")
+            -- kept at 0 charge, as GoM's lights: Remove Battery empties the part and the craft then deletes any input at
+            -- 0 uses whose script does not keep it (42.21 ItemUser.UseItem: !isKeepOnDeplete -> RemoveItem; read from
+            -- the script each time). Without it the laser vanished with its battery (user, 2026-10-18).
+            script:DoParam("DisappearOnUse = false")
             -- the guns this laser mounts on; Post-93's own guns list their beams in their item scripts
             local item = instanceItem(fullType)
             local guns = item and item.getMountOn and item:getMountOn()
