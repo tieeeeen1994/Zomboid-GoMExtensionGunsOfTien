@@ -488,6 +488,115 @@ def lasers():
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
+# Sawn-off stocks (shared/GunsOfTien/SawnStock.lua, scripts/build_sawn_stocks.py): GoM's three break-action shotguns,
+# the guns whose barrels GoM lets you saw off, get a hidden integrated stock part (the wooden stock, fitted at spawn)
+# that the "Saw Off Shotgun Stock" recipe replaces with its sawn-off twin. The stockless body mesh is
+# GunsOfTien_SawnStocks.fbx; Gunworks' ConditionalModel shows it while the sawn-off part is fitted: <GUN>_SAWNSTOCK
+# with GoM's muzzle point (full barrels), <GUN>_SAWNSTOCK_SHORT with the muzzle at the end of GoM's sawn-off barrels
+# (their mesh's front, measured 2026-10-19), so the flash leaves the real muzzle. The three holster points turn the
+# upright rifle-held model the way GoM's pistols are modelled (upside down), as the P90's rifle_back does the other way.
+# gun: (English name as GoM's barrel parts, GoM's muzzle offset, front of GoM's sawn-off barrel)
+SAWN_STOCK_GUNS = {
+    'DOUBLEBARREL': ('Double Barrel', (0.0, 0.4830, 0.0217), 0.3410),
+    'STEVENS_555': ('Stevens 555', (0.0, 0.5418, 0.0250), 0.4180),
+    'TOZ34': ('TOZ-34', (0.0, 0.5213, 0.0180), 0.3820),
+}
+SAWN_STOCK_WEIGHT = -0.5      # the buttstock sawn away (GoM's barrels: 3.0 full, 1.0 sawn off)
+HOLSTER_POINTS = ('holster_right', 'holster_left', 'ShoulderHolster')
+
+
+def sawn_stocks():
+    models = [f"module {MODULE} {{\n"]
+    items = [f"module {MODULE} {{\n"]
+    for gun, (_, (mx, my, mz), short_y) in SAWN_STOCK_GUNS.items():
+        holsters = ''.join(f"""
+        attachment {p} {{
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }}
+""" for p in HOLSTER_POINTS)
+        for suffix, y in (('', my), ('_SHORT', short_y)):
+            models.append(f"""
+    model {gun}_SAWNSTOCK{suffix} {{
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|{gun}_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/{gun},
+        cullFace = None,
+
+        attachment muzzle {{
+            offset = {mx:.4f} {y:.4f} {mz:.4f},
+            rotate = -90.0000 0.0000 -180.0000,
+        }}
+
+        attachment world {{
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }}
+{holsters}    }}
+""")
+        for suffix, weight in (('', 0.0), ('_Sawnoff', SAWN_STOCK_WEIGHT)):
+            items.append(f"""
+    item {gun}_Stock{suffix} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = StockIntegrated,
+        Weight          = 0.0,
+        WeightModifier  = {weight:.1f},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    models.append("}\n")
+    items.append("}\n")
+    guns = ';'.join(f"MarzGuns.{gun}" for gun in SAWN_STOCK_GUNS)
+    recipe = f"""/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip (shared/GunsOfTien/SawnStock.lua).
+   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate. */
+
+module Base {{
+
+	craftRecipe GunsOfTien_SawOffShotgunStock
+	{{
+		timedAction = SawOffShotgun,
+		time = 150,
+		OnTest = GunsOfTien_SawnStock.OnTest,
+		OnCreate = GunsOfTien_SawnStock.OnCreate,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffShotgunStock,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{{
+			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [{guns}] mode:keep flags[Prop2],
+		}}
+		outputs
+		{{
+			item 1 Base.UnusableWood,
+		}}
+	}}
+}}
+"""
+    write('scripts/GunsOfTien/models_sawnstocks.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_sawnstocks.txt', ''.join(items))
+    write('scripts/GunsOfTien/recipes_sawnstocks.txt', recipe)
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for gun, (name, _, _) in SAWN_STOCK_GUNS.items():
+        # GoM's style: "Double Barrel" / "Double Barrel Sawnoff"; shown in the gun tooltip's "Stock (Integrated)" row
+        names[f'{MODULE}.{gun}_Stock'] = f'{name} Stock'
+        names[f'{MODULE}.{gun}_Stock_Sawnoff'] = f'{name} Stock Sawnoff'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    rec = json.load(open(rec_path))
+    rec['GunsOfTien_SawOffShotgunStock'] = 'Saw Off Shotgun Stock'
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(rec, indent=2) + '\n')
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path))
+    tips['Tooltip_Recipe_GunsOfTien_SawOffShotgunStock'] = (
+        "Saw the buttstock off a break-action shotgun behind the pistol grip. A shell holder on the stock comes off "
+        "first. With sawn-off barrels too, the gun fits a holster.")
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
+
+
 if __name__ == '__main__':
     items()
     models()
@@ -495,4 +604,5 @@ if __name__ == '__main__':
     translations()
     ammomaker()
     lasers()
+    sawn_stocks()
     print('written under', os.path.normpath(ROOT))

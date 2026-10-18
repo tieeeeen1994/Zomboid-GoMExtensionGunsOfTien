@@ -161,7 +161,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   builders `scripts/post93/build_mp7.py`, `build_p90.py`, `build_fiveseven.py`, `build_ucp.py` (the others import
   build_mp7 as their library), their review renders `render_mp7.py` / `render_p90.py` / `render_fiveseven.py` /
   `render_ucp.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` / `make_fiveseven_art.py` /
-  `make_ucp_art.py` (Pillow); `trace_outline.py` traces a reference photo's outline.
+  `make_ucp_art.py` (Pillow); `trace_outline.py` traces a reference photo's outline. Main mod meshes:
+  `scripts/build_sawn_stocks.py` (the stockless break-action bodies, from GoM's own FBX files).
 
 ## Status and how to continue
 
@@ -613,6 +614,43 @@ Failed to load asset: AssetPath{ "weapons/parts/GunsOfTien_LaserBeam|GunsOfTien_
 other error, and no beam. Its export held two zero-area triangles; the earlier full-width quads loaded. Not traced
 in Java (Assimp import with JOIN_IDENTICAL_VERTICES etc., see ZomboidFixesB42's CLAUDE.md), but the rule is: never
 export degenerate faces; the beam is now one real triangle per plane.
+
+## Sawn-off stocks (2026-10-19)
+
+User: "the barrel can be sawn off. i want it also to be able to saw off the stock so that it's more compact and can
+be fitted into a holster"; scope (user): "only the wooden stocks of the older shotguns can be sawn... or rather those
+whose barrels can be sawn off" = GoM's Double Barrel, Stevens 555, TOZ-34 (their barrels are `Barrel` parts and
+GoM's craftRecipe `SawnOffShotgunBarrels` saws a detached barrel). The pump guns' barrels and every GoM shotgun stock
+are modelled into the body mesh. Code: `shared/GunsOfTien/SawnStock.lua` (its header has the design), scripts
+from `gen_scripts.py sawn_stocks()`, mesh from `scripts/build_sawn_stocks.py`. Not run in game yet. Engine facts
+behind it (42.21):
+- `HandWeapon.weaponSprite` is per gun **and saved** (`HandWeapon.save` flag 4194304 when it differs from the
+  script), so it is in every item send too; `InventoryItem.attachmentType` is per gun but **not saved** (copied from
+  the script at `InstanceItem`), hence the `getAttachmentType` wrapper rather than `setAttachmentType`.
+- Gunworks `ConditionalModel.Register(gun, { rules = { { parts = { <partType> = type | {types}, ... }, model } },
+  default })` is a StatsFactory layer (after CustomStatsAttachments) that sets WeaponSprite from the fitted parts on
+  every ReapplyAllModifiers; a gun no rule matches gets the script's sprite back. Nothing in GoM uses it yet.
+- `Item.DoParam("ModelWeaponPart", ...)` reuses an entry of the same part type but adds it to the list again
+  (Lasers.lua patches once); `InstanceItem` hands the script's list itself to the gun, so a patch reaches guns that
+  already exist. Not needed here: the barrels are drawn at the gun's origin, which the stockless model keeps.
+- **`AimingTime` is the cap of the post-shot aiming delay** (CombatManager.setAimingDelay: delay += recoil delay ×
+  config + AimingTime × config, clamped to 0..AimingTime): higher is worse. No GoM gun script sets it (0), so every
+  GoM `SF.Multiply("AimingTime", x)` (its stocks ×0.75, bipods, sights, lasers) does nothing unless a part adds to it
+  (lights' `AimingTimeModifier = 5`, GoM's Double Barrel sawn-off barrel `SF.Set("AimingTime", 30)`); our
+  HandlingTooltips lines that quote those multipliers describe what GoM meant, not what happens. Only the Double
+  Barrel's sawn-off barrels have stats in GoM (AttachmentCustomStats); the Stevens / TOZ ones change nothing but weight.
+- `CraftRecipeData:getAllKeepInputItems()` lists the kept inputs (the gun); a recipe-wide `OnTest` is asked per
+  candidate input item (`(item, character)`), so it refuses a gun already sawn. Vanilla's `SawOffShotgun` timed
+  action / anim is reused. `HandWeapon.getActualWeight` adds every fitted part's `WeightModifier`, negatives too.
+- Vanilla holster slots (ISHotbarAttachDefinition) take `attachments.Holster`: HolsterRight / HolsterLeft (belts) and
+  HolsterShoulder; their body points are `holster_right`, `holster_left`, `ShoulderHolster` (AttachedLocations.lua),
+  and an attached item's own model attachment of the same name is applied, so the stockless models carry those three
+  with `rotate = -180 0 -180` (GoM's pistols, which those points are made for, are modelled upside down). Hang
+  position and clipping into the leg (the gun is about twice a pistol's length) are unchecked.
+- Cut planes (game y, z; `CUTS` in build_sawn_stocks.py) were read off textured side renders: Double Barrel
+  (-0.028, 0.010)-(-0.047, -0.052), Stevens (-0.022, 0.006)-(-0.045, -0.046), TOZ-34 (-0.037, 0.009)-(-0.049,
+  -0.044). The cap's UVs copy the middle of the largest walnut-coloured stock face along the cut (taking each corner's
+  UV from a neighbour face squeezed it into a strip over dark seams).
 
 ## Research reference
 

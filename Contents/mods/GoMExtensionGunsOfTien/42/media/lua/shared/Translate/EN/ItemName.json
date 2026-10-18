@@ -82,5 +82,11 @@
   "GunsOfTien.LaserBeam_LRX7_Laser": "On",
   "GunsOfTien.LaserBeam_PJ3_Laser": "On",
   "GunsOfTien.LaserBeam_PX1_Laser": "On",
-  "GunsOfTien.LaserBeam_TR1_Laser": "On"
+  "GunsOfTien.LaserBeam_TR1_Laser": "On",
+  "GunsOfTien.DOUBLEBARREL_Stock": "Double Barrel Stock",
+  "GunsOfTien.DOUBLEBARREL_Stock_Sawnoff": "Double Barrel Stock Sawnoff",
+  "GunsOfTien.STEVENS_555_Stock": "Stevens 555 Stock",
+  "GunsOfTien.STEVENS_555_Stock_Sawnoff": "Stevens 555 Stock Sawnoff",
+  "GunsOfTien.TOZ34_Stock": "TOZ-34 Stock",
+  "GunsOfTien.TOZ34_Stock_Sawnoff": "TOZ-34 Stock Sawnoff"
 }

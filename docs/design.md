@@ -108,6 +108,19 @@ carbines become louder than the M16; .45 guns become quiet (subsonic); the AS VA
   A gas-operated AK short-strokes on the low-powder US round; the PBS-1's back pressure pushes enough gas into the
   gas port to cycle it (the round and the suppressor were designed as a pair). Approved by the user.
 
+## 4b. Sawn-off stocks (2026-10-19)
+
+GoM's break-action shotguns (Double Barrel, Stevens 555, TOZ-34; the ones whose barrels GoM saws off) can also have
+their walnut buttstock sawn off behind the pistol grip: craft "Saw Off Shotgun Stock" (Weaponry, in hand, any saw,
+the gun kept, Unusable Wood out). Permanent. A shell holder (it sits on the stock) comes off into the inventory.
+- Handling, the reverse of GoM's deployed stocks: Hit Chance x0.87, Recoil Delay x1.3, AimingTime +10 (the
+  post-shot aiming delay cap); 0.5 lighter.
+- Carry: with the sawn-off barrels too (or no barrel) the gun fits vanilla's belt and shoulder holsters; a sawn-off
+  stock with full barrels stays on the back. Held two-handed as before.
+- Shown: the stockless body (GoM's mesh cut behind the grip) while the sawn-off stock is fitted; its muzzle point at
+  the sawn-off barrels' end when they are fitted.
+- No sandbox option, like the lasers.
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

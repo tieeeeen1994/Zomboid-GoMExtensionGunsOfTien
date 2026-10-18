@@ -20,6 +20,14 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       art from scripts/render_ad_guns.py + scripts/make_workshop_art.py). Upload from the game's Workshop menu.
       The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
       simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand.
+- [ ] Sawn-off stocks (2026-10-19, SawnStock.lua): Saw Off Shotgun Stock on a Double Barrel, Stevens 555 and TOZ-34
+      (any saw; listed only for a gun with its stock; a shell holder comes back; Unusable Wood out); the stockless
+      model in hand, on the back and on the floor, with full and sawn-off barrels, open and closed while reloading;
+      the muzzle flash at the sawn-off barrels' end; the "Stock (Integrated)" tooltip row and the gun line; stats
+      (Hit Chance, Recoil Delay; AimingTime is a post-shot delay cap); with sawn-off barrels too it attaches to a belt
+      and a shoulder holster: hang it the right way up and not through the leg (holster points in gen_scripts.py,
+      `HOLSTER_POINTS`), draw from the holster; Shell holder's Upgrade option hidden on a sawn-off stock; in MP the
+      owner's copy changes model at once, another player sees it after the gun is next equipped.
 - [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
       Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
       `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate

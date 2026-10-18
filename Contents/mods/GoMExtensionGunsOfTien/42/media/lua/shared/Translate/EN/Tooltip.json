@@ -57,5 +57,6 @@
   "Tooltip_TOZ34_Barrel_Open": "Full-length barrels for the TOZ-34.",
   "Tooltip_TOZ34_Barrel_Sawnoff_Close": "Sawn-off barrels for the TOZ-34: shorter and lighter.",
   "Tooltip_Rail": "Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and shotgun from the firearm radial menu.",
-  "Tooltip_weapon_LaserBeam": "Laser Beam"
+  "Tooltip_weapon_LaserBeam": "Laser Beam",
+  "Tooltip_Recipe_GunsOfTien_SawOffShotgunStock": "Saw the buttstock off a break-action shotgun behind the pistol grip. A shell holder on the stock comes off first. With sawn-off barrels too, the gun fits a holster."
 }

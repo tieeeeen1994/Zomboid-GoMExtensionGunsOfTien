@@ -1,0 +1,188 @@
+module GunsOfTien {
+
+    model DOUBLEBARREL_SAWNSTOCK {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|DOUBLEBARREL_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/DOUBLEBARREL,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.4830 0.0217,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model DOUBLEBARREL_SAWNSTOCK_SHORT {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|DOUBLEBARREL_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/DOUBLEBARREL,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.3410 0.0217,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model STEVENS_555_SAWNSTOCK {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|STEVENS_555_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/STEVENS_555,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.5418 0.0250,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model STEVENS_555_SAWNSTOCK_SHORT {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|STEVENS_555_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/STEVENS_555,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.4180 0.0250,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model TOZ34_SAWNSTOCK {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|TOZ34_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/TOZ34,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.5213 0.0180,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model TOZ34_SAWNSTOCK_SHORT {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|TOZ34_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/shotguns/TOZ34,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.3820 0.0180,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+}

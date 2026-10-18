@@ -1,9 +1,10 @@
 --[[
-    Guns of Tien -- "Information" lines in Guns of Marz's item tooltips for the new rounds
+    Guns of Tien -- "Information" lines in Guns of Marz's item tooltips for the new rounds and the sawn-off stocks
 
     GoM draws `tooltipsPergun[fullType]` under an item's tooltip (MarzWeapons/CustomItemTooltips.lua, looked up at
-    render time), hard-coded English like its own entries. The lines match the profiles in
-    shared/GunsOfTien/Ammunition.lua.
+    render time), hard-coded English like its own entries. The round lines match the profiles in
+    shared/GunsOfTien/Ammunition.lua, the stock line shared/GunsOfTien/SawnStock.lua (one line per gun type: the gun's
+    "Stock (Integrated)" row shows whether this one is sawn off).
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -75,6 +76,17 @@ lines["SWMG.3030_Bullet"] = {
     "Flat-nosed soft point, safe in tube magazines",
     "Expands: never pierces, hits one target",
 }
+for _, gun in ipairs({ "MarzGuns.DOUBLEBARREL", "MarzGuns.STEVENS_555", "MarzGuns.TOZ34" }) do
+    local list = lines[gun] or {}
+    lines[gun] = list
+    local line = "Stock can be sawn off (Saw Off Shotgun Stock): Aiming Time +10, Hit Chance reduced by 13%, "
+        .. "Recoil Delay increased by 30%; with sawn-off barrels too it fits a holster."
+    local present = false
+    for _, l in ipairs(list) do
+        if l == line then present = true end
+    end
+    if not present then list[#list + 1] = line end
+end
 lines["SWMG.545x39_Bullet"] = {
     "7N6: steel core",
     "Piercing targets",

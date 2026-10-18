@@ -28,6 +28,9 @@ found as loot: make them with Ammo Maker.
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named
+- Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
+  off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter but harder to aim; with sawn-off
+  barrels too they fit a holster
 
 ## Ammo Maker
 

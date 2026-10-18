@@ -1,0 +1,25 @@
+/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip (shared/GunsOfTien/SawnStock.lua).
+   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate. */
+
+module Base {
+
+	craftRecipe GunsOfTien_SawOffShotgunStock
+	{
+		timedAction = SawOffShotgun,
+		time = 150,
+		OnTest = GunsOfTien_SawnStock.OnTest,
+		OnCreate = GunsOfTien_SawnStock.OnCreate,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffShotgunStock,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{
+			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [MarzGuns.DOUBLEBARREL;MarzGuns.STEVENS_555;MarzGuns.TOZ34] mode:keep flags[Prop2],
+		}
+		outputs
+		{
+			item 1 Base.UnusableWood,
+		}
+	}
+}

@@ -23,6 +23,7 @@ description=[*]Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 description=[*]7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 description=[*]Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon light's) and give their aiming bonus only while on
 description=[*]Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named
+description=[*]Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter but harder to aim; with sawn-off barrels too they fit a holster
 description=[*]9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
 description=[/list]
 description=
