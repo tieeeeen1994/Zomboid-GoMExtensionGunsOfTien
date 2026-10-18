@@ -537,7 +537,9 @@ modData); `server/GunsOfTien/Lasers.lua` drains every lit laser gun a player car
 never activated, so the engine does not drain it too), switches it off at 0 and syncs it (re-equips a gun in hand
 whose beam changed); `client/GunsOfTien/LaserMenu.lua` (Turn Laser On / Off in the gun's context menu and the firearm
 radial, greyed with how to change the battery when empty; re-applies stats on the client when the lit state changes,
-for the critical chance; a tooltip line on each laser part).
+for the critical chance; a tooltip line on each laser part). Radial icons `media/ui/GunsOfTien_Radial_Laser{On,Off}.png`
+(`scripts/make_laser_radial.py`, Gunworks' palette like the foregrip's; they replaced vanilla's vehicle headlight
+icons, which the user found ugly, 2026-10-18).
 Look, second version (user's screenshot, 2026-10-18: "looks terrible. it's not even coming from the attachment
 itself... fade into a certain short length... drop the red dot"): the first drew a dot and a beam to the first wall,
 starting on the character's centre line; it ran parallel to the gun, so only the start was off. The engine knows
@@ -553,9 +555,8 @@ Handgun 0.58 / 0.05 / 0.5 is an estimate until a screenshot of a pistol-held gun
 Third version (user: "how do you detect where the laser is?... so it can't be exact?"): no screen overlay can be
 exact, so the beam became part of the gun. `scripts/make_laser_beam.py` (Blender) builds `GunsOfTien_LaserBeam.fbx`
 (two crossed quads, 0.26 game units (~0.4 tiles) since the user saw it unlit and asked for it longer; first
-0.065, a laser unit's length; GoM's are 0.055-0.069) and `LaserBeam.png` (red,
-premultiplied, alpha 1 to 0 along it: basicEffect.frag writes `Alpha * texture alpha`; no model shader is unlit, so it
-is lit like the gun). `gen_scripts.py` `lasers()` writes one model per laser (`LaserBeam_<laser>`, its attachment named
+0.065, a laser unit's length; GoM's are 0.055-0.069; narrowing to a point at the tip) and `LaserBeam.png` (solid
+red; see the fade notes below). `gen_scripts.py` `lasers()` writes one model per laser (`LaserBeam_<laser>`, its attachment named
 like the gun's mount point, offset to the laser's lens: `LASER_LENS`, measured on front renders of GoM's
 pointers.fbx with its textures) and one hidden part each (part type `LaserBeam`, FakeItem mount, CannotBeRemoved,
 named "On": the gun tooltip shows "Laser Beam: On"). A part model's own attachment of the parent's name is applied
@@ -577,6 +578,14 @@ basicEffect shaders into the main mod as `gunsoftien_laser*` with the one lighti
 fragment shader (tint and alpha kept), and the beam models name it. Whether the engine finds it in the mod folder is
 the first thing to check in game (a missing shader would leave the beam undrawn or logging errors; dropping the
 `shader` line in gen_scripts.py goes back to the lit default).
+Seen in game (user's screenshots, 2026-10-18): the unlit shader loads from the mod and the beam shows in full
+darkness, but a long soft fade ((1 - u)^1.3) read shorter in the dark (the faint tail vanishes on black, still tints a
+lit floor). Then solid for 70% and smoothstepped to 0: the tail turned black, because **the engine draws weapon parts
+opaque** (texture alpha is not blended, only cut below 0.01 in basicEffect.frag; no model-script key changes that),
+so a colour premultiplied by the fade is just a darker red, black at the end. A screen-door fade in the shader
+(discard when texture alpha < interleaved gradient noise of `gl_FragCoord`) is real see-through but looked dotted
+at game size (Blender previews, no anti-aliasing, of three endings). User's choice (option B): solid plain red,
+narrowing to a point, no alpha fade; the shader only drops the lighting.
 
 ## Research reference
 

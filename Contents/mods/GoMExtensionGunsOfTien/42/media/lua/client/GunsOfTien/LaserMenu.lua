@@ -16,8 +16,9 @@ require("ISUI/ISFirearmRadialMenu")
 local Lasers = require("GunsOfTien/Lasers")
 local StatsFactory = require("WeaponSystems/Utils/StatsFactory")
 
-local ICON_ON = "media/ui/vehicles/vehicle_lightsON.png"
-local ICON_OFF = "media/ui/vehicles/vehicle_lightsOFF.png"
+-- in Gunworks' radial icon style (scripts/make_laser_radial.py): the unit with its beam out, or dark
+local ICON_ON = "media/ui/GunsOfTien_Radial_LaserOn.png"
+local ICON_OFF = "media/ui/GunsOfTien_Radial_LaserOff.png"
 
 local function texts(weapon)
     if Lasers.IsSwitchedOn(weapon) then
