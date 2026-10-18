@@ -586,6 +586,11 @@ so a colour premultiplied by the fade is just a darker red, black at the end. A 
 (discard when texture alpha < interleaved gradient noise of `gl_FragCoord`) is real see-through but looked dotted
 at game size (Blender previews, no anti-aliasing, of three endings). User's choice (option B): solid plain red,
 narrowing to a point, no alpha fade; the shader only drops the lighting.
+The first pointed mesh (each quad's two tip corners on one spot) never loaded: `MeshAssetManager.loadCallback >
+Failed to load asset: AssetPath{ "weapons/parts/GunsOfTien_LaserBeam|GunsOfTien_LaserBeam" }` in the debug log, no
+other error, and no beam. Its export held two zero-area triangles; the earlier full-width quads loaded. Not traced
+in Java (Assimp import with JOIN_IDENTICAL_VERTICES etc., see ZomboidFixesB42's CLAUDE.md), but the rule is: never
+export degenerate faces; the beam is now one real triangle per plane.
 
 ## Research reference
 

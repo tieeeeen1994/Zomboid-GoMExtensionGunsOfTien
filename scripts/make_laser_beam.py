@@ -8,13 +8,13 @@ Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
 
 A short beam about as long as GoM's laser units (0.055-0.069 game units; user, 2026-10-18: "the same length as the
 attachment itself... really short"), drawn by the engine as a weapon part (shared/GunsOfTien/Lasers.lua fits it while
-the laser is lit), so it sits exactly on the laser on every gun and moves with every animation. Two crossed quads (one
+the laser is lit), so it sits exactly on the laser on every gun and moves with every animation. Two crossed triangles (one
 level, one upright) so it shows from the isometric camera and from the side; origin at the start, along +Y (the
 part's forward, as GoM's parts); each laser's model script moves it to that laser's lens (gen_scripts.py, LASER_LENS).
 The engine draws weapon parts opaque: texture alpha is not blended, only cut away below 0.01 (user's screenshots,
 2026-10-18: a colour darkened along the fade showed as a black tail, visible on a lit floor, gone on a dark one), and a
 screen-door fade (pixels dropped against noise) looked dotted at game size. So the beam is solid plain red and only
-narrows to a point at the tip (TIP_WIDTH), which reads as fading out and looks the same on a lit floor and in the dark
+narrows to a point at the tip, which reads as fading out and looks the same on a lit floor and in the dark
 (user chose this, option B of three previews, 2026-10-18). Its shader is unlit (scripts/make_laser_shader.py,
 gunsoftien_laser), so it stays bright at night.
 FBX conventions as build_mp7.py: data = (game x, game y, -game z), rotation (90, 0, 0), scale 0.01, its export and
@@ -38,7 +38,6 @@ TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTien/LaserBeam.png")
 
 LENGTH = 0.26           # game units (~0.4 tiles): about a compact SMG's length (user, 2026-10-18: "make the laser longer"; first 0.065, a laser unit's length)
 HALF_WIDTH = 0.002      # game units each side of the axis, at the lens
-TIP_WIDTH = 0.0         # the half width at the tip, as a fraction of HALF_WIDTH (0 = a point)
 TEX_W, TEX_H = 32, 8
 COLOUR = (1.0, 0.16, 0.12)
 
@@ -46,17 +45,18 @@ COLOUR = (1.0, 0.16, 0.12)
 def build():
     bm = bmesh.new()
     uv = bm.loops.layers.uv.new("UVMap")
-    w, t, l = HALF_WIDTH, HALF_WIDTH * TIP_WIDTH, LENGTH
-    quads = [
-        [(-w, 0, 0), (w, 0, 0), (t, l, 0), (-t, l, 0)],      # level, narrowing to the tip
-        [(0, 0, -w), (0, 0, w), (0, l, t), (0, l, -t)],      # upright
+    w, l = HALF_WIDTH, LENGTH
+    # one triangle per plane, its apex at the tip: a quad with both tip corners on one spot left a zero-area triangle
+    # (and zero normals) that the game's mesh loader refused, so no beam showed (2026-10-18, "Failed to load asset")
+    tris = [
+        [(-w, 0, 0), (w, 0, 0), (0, l, 0)],      # level
+        [(0, 0, -w), (0, 0, w), (0, l, 0)],      # upright
     ]
-    for quad in quads:
-        verts = [bm.verts.new((x, y, -z)) for x, y, z in quad]   # FBX data z = -game z
+    for tri in tris:
+        verts = [bm.verts.new((x, y, -z)) for x, y, z in tri]    # FBX data z = -game z
         face = bm.faces.new(verts)
-        for loop, (u, v) in zip(face.loops, [(0.02, 0.0), (0.02, 1.0), (0.98, 1.0), (0.98, 0.0)]):
+        for loop, (u, v) in zip(face.loops, [(0.02, 0.0), (0.02, 1.0), (0.98, 0.5)]):
             loop[uv].uv = (u, v)
-    bmesh.ops.triangulate(bm, faces=bm.faces)
     me = bpy.data.meshes.new("GunsOfTien_LaserBeam")
     bm.to_mesh(me)
     bm.free()
