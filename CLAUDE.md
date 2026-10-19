@@ -162,7 +162,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   build_mp7 as their library), their review renders `render_mp7.py` / `render_p90.py` / `render_fiveseven.py` /
   `render_ucp.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` / `make_fiveseven_art.py` /
   `make_ucp_art.py` (Pillow); `trace_outline.py` traces a reference photo's outline. Main mod meshes:
-  `scripts/build_sawn_stocks.py` (the stockless break-action bodies, from GoM's own FBX files).
+  `scripts/build_sawn_stocks.py` (Blender: the stockless break-action bodies and the stock / barrel offcuts, from
+  GoM's own FBX files; writes `scripts/sawn_offcuts.json`, read by gen_scripts.py), then `scripts/make_offcut_art.py`
+  (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`).
 
 ## Status and how to continue
 
@@ -633,12 +635,61 @@ behind it (42.21):
 - `Item.DoParam("ModelWeaponPart", ...)` reuses an entry of the same part type but adds it to the list again
   (Lasers.lua patches once); `InstanceItem` hands the script's list itself to the gun, so a patch reaches guns that
   already exist. Not needed here: the barrels are drawn at the gun's origin, which the stockless model keeps.
-- **`AimingTime` is the cap of the post-shot aiming delay** (CombatManager.setAimingDelay: delay += recoil delay ×
-  config + AimingTime × config, clamped to 0..AimingTime): higher is worse. No GoM gun script sets it (0), so every
-  GoM `SF.Multiply("AimingTime", x)` (its stocks ×0.75, bipods, sights, lasers) does nothing unless a part adds to it
-  (lights' `AimingTimeModifier = 5`, GoM's Double Barrel sawn-off barrel `SF.Set("AimingTime", 30)`); our
-  HandlingTooltips lines that quote those multipliers describe what GoM meant, not what happens. Only the Double
-  Barrel's sawn-off barrels have stats in GoM (AttachmentCustomStats); the Stevens / TOZ ones change nothing but weight.
+- **`AimingTime` is the aim-in time and the post-shot cap**, higher is worse (42.21, re-traced 2026-10-19 after a
+  wrong first reading). Raising the gun sets the character's aiming delay to AimingTime (×0.8 Dextrous, ×1.2 All
+  Thumbs, ×1.5 in a vehicle; `IsoGameCharacter.resetAimingDelay`), which drops 0.625 × `GameTime.getMultiplier()` ×
+  (1 + 0.05 × Aiming level, + 0.1 Marksman) per update while aiming with the recoil settled (`updateAimingDelay`);
+  every shot adds RecoilDelay × 0.25 + AimingTime × 0.05, clamped to 0..AimingTime (`CombatManager.setAimingDelay`
+  from `SwipeStatePlayer.doAttack`), and the hit chance loses the remaining delay, scaled by distance
+  (`CombatManager` ~2731, `getAimDelayPenalty`). In real time that is 30 delay units a second at Aiming 0 whatever
+  the frame rate (fpsMultiplier = 60 / fps, × 0.8), so AimingTime 40 takes 1.33 s to aim in (1.07 s at Aiming 5);
+  recoil delay falls at the same rate and must reach RecoilDelay × Aiming / 30 before the aiming delay starts to
+  fall. Modelled for a shotgun (sights 2-8 tiles, Aiming 0, standing, no moodles): each 10 units of remaining
+  delay cost about 8 points of hit chance at 5 tiles, 10 at 8 tiles, 12 at 10; under 3.5 tiles the point-blank
+  rules make it matter little. Gunworks adds AimingTime × (0.15 − 0.01 × Reloading) to the delay
+  during its reload (`ReloadAnim/Timing.lua`). **Every GoM gun sets it**: GoM writes `Aimingtime` and `Item.Load`
+  matches keys with `equalsIgnoreCase`, so a case-sensitive grep finds none (that was the wrong reading: it claimed
+  0 everywhere and GoM's multipliers dead). Shotguns are 40, pistols 18-40, rifles up to 70; GoM's stock, bipod,
+  sight and laser multipliers work, as our HandlingTooltips lines say.
+- **Gunworks fires through vanilla.** Its `Hook.Attack` wrapper (`CustomSystemHooks.lua` ~720, swapped for
+  `RAFattackHook` at `OnInitGlobalModData`) sets the round's ammo profile and, for guns in GoM's `RPM.lua`
+  (`RateOfFire.RegisterWeapon`), refuses a shot until 60000 / RPM ms have passed and runs bursts from OnTick; then
+  it calls vanilla's `ISReloadWeaponAction.attackHook` → `DoAttack` → SwipeStatePlayer / CombatManager, so recoil
+  delay, aiming delay and hit chance are vanilla's. Automatic fire is fast because its StatsFactory layer sets
+  RecoilDelay 1 in RealAuto / RealBurst, leaving the RPM timer as the limit (and adds spread per shot). The
+  break-action shotguns are not in `RPM.lua`: single shots limited by RecoilDelay 30 (`Shellholder` ×0.6).
+- Sawing off barrels gives nothing back, in GoM (`SawnOffShotgunBarrels`, no OnCreate, barrels 3.0 → 1.0 weight
+  for all three guns) and in vanilla (`SawOffShotgun`, 4.0 → 3.0; `RecipeCodeOnCreate.shotgunSawnoff` only moves
+  modData and weapon parts). Smelting (42.21, `recipes_blacksmith_furnaces_i.txt`) goes by item tag:
+  `base:smeltablesteel` small / medium / mediumplus / large add 1 / 2 / 3 / 4 uses to a steel crucible
+  (`smeltIronOrSteel`), and a Steel Bar casts from 4 uses (`CastSteelBar`), so vanilla keeps weight (2.0 large item
+  → 2.0 bar). Only the large recipe is tagged `Furnace`; small, medium and medium plus need `AdvancedFurnace`.
+  `Base.SteelScrap` (0.5, `base:smeltablesteelsmall`) also forges straight into a Steel Chunk or Steel Bar Quarter at
+  a primitive forge (`ForgeScrapIntoChunk` / `ForgeScrapIntoBarQuarter`).
+- **Offcuts** (user, 2026-10-19: "we should just introduce new items"): `<GUN>_StockOffcut` (0.5, Junk, `isfirefuel`
+  + `makewoodcharcoalsmall` like Unusable Wood; vanilla fire fuel burns by weight, `ISCampingMenu.getFuelDuration
+  ForItemInHours`) and `<GUN>_BarrelOffcuts` (2.0, Material, `hasmetal` + `smeltablesteellarge`). Meshes from
+  build_sawn_stocks.py (the body behind the stock cut; GoM's `<GUN>_BARREL_CLOSE` ahead of its sawn-off barrel's
+  front, capped by `bmesh.ops.triangle_fill`, whose scanfill keeps the bore loops open as holes), icons from
+  make_offcut_art.py (cameras fitted on GoM's barrel / gun icons). The stock recipe has no outputs (vanilla's gas mask
+  filter recipes have none either); `SawnStock.Saw` hands the offcut over with `Actions.addOrDropItem`. GoM's barrel
+  recipe gets `OnCreate = GunsOfTien_SawnStock.OnCreateBarrels` by `recipe:Load` at OnLoadMapZones (display name kept
+  with `overrideTranslationName`, as ZomboidFixesB42's Barricade fix does).
+- **Floor pose of a WorldStaticModel** (42.21 `ItemModelRenderer.init`, derived, not yet seen in game):
+  transform = rotationZ(90 + flip) · [HandWeapons only: rotateXYZ(0, π, π/2)] · inverse(translate(world offset) ·
+  rotateXYZ(world rotate)) · mesh transform, so a model point p lands at R⁻¹(p − offset): the offset is the model
+  point put at the item's floor spot. GoM's part pose rotate 90 0 −90 gives (−(z − oz), x − ox, −(y − oy)), and the
+  guns' pose (0.02 0.13 0 / 180 0 180, through the weapon fix) gives (y − 0.13, 0.02 − x, z): the gun lies on its
+  side 0.02 up, about its half width, so the second axis is up. On that reading GoM's barrels (offset −0.2 0 0) hang
+  0.2 above the floor and its magazines / scopes (offset 0) sink half into it. The offcuts use offset (min x, mid y,
+  mid z): on their side, resting on the floor (`floor_point` in gen_scripts.py).
+- Only the Double Barrel's sawn-off barrels have stats in GoM (AttachmentCustomStats: AimingTime set to 30 from 40,
+  HitChance 70 from 65, ProjectileSpread 2.0 from 0.6, MaxRange 15 from 20; the three guns' base stats are the same);
+  the Stevens / TOZ ones changed nothing but weight. SawnStock.lua registers GoM's own modifier list for them too
+  (`CustomStatsAttachments.RegisteredParts`, `RegisterPart`; user, 2026-10-19: "give the same stats to the sawn off
+  barrels and stocks"; the sawn-off stock's numbers were already the same on all three).
+- Decided with the user (2026-10-19): any saw cuts the stock, no sandbox option, holster only with sawn-off barrels
+  too, all three holster slots.
 - `CraftRecipeData:getAllKeepInputItems()` lists the kept inputs (the gun); a recipe-wide `OnTest` is asked per
   candidate input item (`(item, character)`), so it refuses a gun already sawn. Vanilla's `SawOffShotgun` timed
   action / anim is reused. `HandWeapon.getActualWeight` adds every fitted part's `WeightModifier`, negatives too.

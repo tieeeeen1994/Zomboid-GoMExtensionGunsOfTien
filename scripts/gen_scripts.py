@@ -386,20 +386,18 @@ def ammomaker():
     tooltips.update({'Tooltip_weapon_Animated%d' % n: 'Belt Round %d' % n for n in range(1, 10)})
     # Item tooltips GoM's scripts name but never translated (scripts/check_gom_translations.py lists them). Its break
     # action barrels are real, detachable parts (the _Open item is the same barrel with the action broken open, swapped
-    # in by GoM's animations); only the double-barrel's sawn-off ones carry stats (AttachmentCustomStats.lua sets
-    # Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the gun's 40 / 65 / 0.6 / 20). The Masterkey's key is
+    # in by GoM's animations); GoM gives stats only to the double-barrel's sawn-off ones (AttachmentCustomStats.lua sets
+    # Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the gun's 40 / 65 / 0.6 / 20, the same on all three
+    # guns), and SawnStock.lua gives the Stevens 555's and TOZ-34's the same (user, 2026-10-19). The Masterkey's key is
     # a leftover name.
     full = 'Full-length barrels for the %s.'
-    sawn = 'Sawn-off barrels for the %s: shorter and lighter.'
+    sawn = ('Sawn-off barrels for the %s: Aiming Time reduced by 25%%, Hit Chance increased by 8%%, pellet spread over '
+            'three times wider, range reduced by 25%%.')
     tooltips.update({
         'Tooltip_DOUBLEBARREL_Barrel_Close': full % 'double-barrel shotgun',
         'Tooltip_DOUBLEBARREL_Barrel_Open': full % 'double-barrel shotgun',
-        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Close': 'Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced '
-                                                     'by 25%, Hit Chance increased by 8%, pellet spread over three '
-                                                     'times wider, range reduced by 25%.',
-        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open': 'Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced '
-                                                    'by 25%, Hit Chance increased by 8%, pellet spread over three '
-                                                    'times wider, range reduced by 25%.',
+        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Close': sawn % 'double-barrel shotgun',
+        'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open': sawn % 'double-barrel shotgun',
         'Tooltip_DOUBLE_DEUCE_Barrel_Close': full % 'Double Deuce',
         'Tooltip_DOUBLE_DEUCE_Barrel_Open': full % 'Double Deuce',
         'Tooltip_STEVENS_555_Barrel_Close': full % 'Stevens 555',
@@ -503,9 +501,24 @@ SAWN_STOCK_GUNS = {
 }
 SAWN_STOCK_WEIGHT = -0.5      # the buttstock sawn away (GoM's barrels: 3.0 full, 1.0 sawn off)
 HOLSTER_POINTS = ('holster_right', 'holster_left', 'ShoulderHolster')
+# The pieces sawn away are items (user, 2026-10-19), weighing what the gun or the barrels lose, so nothing appears or
+# vanishes: the stock 0.5 (fuel and charcoal like Unusable Wood, which burns by weight), the barrel ends 2.0 (GoM's 3.0 ->
+# 1.0; steel tagged "large" for smelting, 4 crucible uses = one Steel Bar, as vanilla's 2.0 Steel Bar). Meshes:
+# build_sawn_stocks.py, bounds in sawn_offcuts.json; icons: make_offcut_art.py.
+STOCK_OFFCUT_WEIGHT = -SAWN_STOCK_WEIGHT
+BARREL_OFFCUTS_WEIGHT = 2.0
+OFFCUT_BOUNDS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sawn_offcuts.json')
+
+
+def floor_point(bounds):
+    """The `world` point of an offcut: GoM's floor rotation for parts (90 0 -90, which the engine inverts: the model
+    lies on its side, its x up), offset so that it rests on the floor (lowest x) centred along y and z."""
+    (x0, y0, z0), (x1, y1, z1) = bounds
+    return f"{x0:.4f} {(y0 + y1) / 2:.4f} {(z0 + z1) / 2:.4f}"
 
 
 def sawn_stocks():
+    offcuts = json.load(open(OFFCUT_BOUNDS))
     models = [f"module {MODULE} {{\n"]
     items = [f"module {MODULE} {{\n"]
     for gun, (_, (mx, my, mz), short_y) in SAWN_STOCK_GUNS.items():
@@ -533,6 +546,41 @@ def sawn_stocks():
         }}
 {holsters}    }}
 """)
+        for item, node, bounds in (('StockOffcut', 'STOCK_OFFCUT', offcuts[gun]['stock']),
+                                   ('BarrelOffcuts', 'BARREL_OFFCUTS', offcuts[gun]['barrels'])):
+            models.append(f"""
+    model {gun}_{item} {{
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|{gun}_{node},
+        texture  = weapons/firearms/shotguns/{gun},
+        cullFace = None,
+
+        attachment world {{
+            offset = {floor_point(bounds)},
+            rotate = 90.0000 0.0000 -90.0000,
+        }}
+    }}
+""")
+        items.append(f"""
+    item {gun}_StockOffcut {{
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = {STOCK_OFFCUT_WEIGHT:.1f},
+        Icon             = GunsOfTien_{gun}_StockOffcut,
+        WorldStaticModel = {MODULE}.{gun}_StockOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }}
+
+    item {gun}_BarrelOffcuts {{
+        DisplayCategory  = Material,
+        ItemType         = base:normal,
+        Weight           = {BARREL_OFFCUTS_WEIGHT:.1f},
+        Icon             = GunsOfTien_{gun}_BarrelOffcuts,
+        WorldStaticModel = {MODULE}.{gun}_BarrelOffcuts,
+        Tooltip          = Tooltip_GunsOfTien_BarrelOffcuts,
+        Tags             = base:hasmetal;base:smeltablesteellarge,
+    }}
+""")
         for suffix, weight in (('', 0.0), ('_Sawnoff', SAWN_STOCK_WEIGHT)):
             items.append(f"""
     item {gun}_Stock{suffix} {{
@@ -550,7 +598,8 @@ def sawn_stocks():
     items.append("}\n")
     guns = ';'.join(f"MarzGuns.{gun}" for gun in SAWN_STOCK_GUNS)
     recipe = f"""/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip (shared/GunsOfTien/SawnStock.lua).
-   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate. */
+   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate, which also hands over the gun's own
+   <GUN>_StockOffcut (one recipe for three guns, so no outputs block, as vanilla's gas mask filter recipes). */
 
 module Base {{
 
@@ -568,10 +617,6 @@ module Base {{
 			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
 			item 1 [{guns}] mode:keep flags[Prop2],
 		}}
-		outputs
-		{{
-			item 1 Base.UnusableWood,
-		}}
 	}}
 }}
 """
@@ -584,6 +629,9 @@ module Base {{
         # GoM's style: "Double Barrel" / "Double Barrel Sawnoff"; shown in the gun tooltip's "Stock (Integrated)" row
         names[f'{MODULE}.{gun}_Stock'] = f'{name} Stock'
         names[f'{MODULE}.{gun}_Stock_Sawnoff'] = f'{name} Stock Sawnoff'
+        names[f'{MODULE}.{gun}_StockOffcut'] = f'{name} Stock Offcut'
+        # GoM calls the Double Barrel's barrels "Double Barrel" and the others' "<gun> Barrel"
+        names[f'{MODULE}.{gun}_BarrelOffcuts'] = f'{name} Offcuts' if gun == 'DOUBLEBARREL' else f'{name} Barrel Offcuts'
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
     rec = json.load(open(rec_path))
@@ -592,8 +640,12 @@ module Base {{
     tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
     tips = json.load(open(tip_path))
     tips['Tooltip_Recipe_GunsOfTien_SawOffShotgunStock'] = (
-        "Saw the buttstock off a break-action shotgun behind the pistol grip. A shell holder on the stock comes off "
-        "first. With sawn-off barrels too, the gun fits a holster.")
+        "Saw the buttstock off a break-action shotgun behind the pistol grip; the stock is kept as an offcut. A shell "
+        "holder on the stock comes off first. With sawn-off barrels too, the gun fits a holster.")
+    tips['Tooltip_GunsOfTien_StockOffcut'] = (
+        "The walnut buttstock sawn off a shotgun. Scrap wood: it burns, or makes charcoal.")
+    tips['Tooltip_GunsOfTien_BarrelOffcuts'] = (
+        "The muzzle ends sawn off a shotgun's barrels. Scrap steel: smelt them down in a furnace, enough for a steel bar.")
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 

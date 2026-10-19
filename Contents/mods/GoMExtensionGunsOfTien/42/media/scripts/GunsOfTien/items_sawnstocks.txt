@@ -1,5 +1,25 @@
 module GunsOfTien {
 
+    item DOUBLEBARREL_StockOffcut {
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = 0.5,
+        Icon             = GunsOfTien_DOUBLEBARREL_StockOffcut,
+        WorldStaticModel = GunsOfTien.DOUBLEBARREL_StockOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }
+
+    item DOUBLEBARREL_BarrelOffcuts {
+        DisplayCategory  = Material,
+        ItemType         = base:normal,
+        Weight           = 2.0,
+        Icon             = GunsOfTien_DOUBLEBARREL_BarrelOffcuts,
+        WorldStaticModel = GunsOfTien.DOUBLEBARREL_BarrelOffcuts,
+        Tooltip          = Tooltip_GunsOfTien_BarrelOffcuts,
+        Tags             = base:hasmetal;base:smeltablesteellarge,
+    }
+
     item DOUBLEBARREL_Stock {
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
@@ -22,6 +42,26 @@ module GunsOfTien {
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }
 
+    item STEVENS_555_StockOffcut {
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = 0.5,
+        Icon             = GunsOfTien_STEVENS_555_StockOffcut,
+        WorldStaticModel = GunsOfTien.STEVENS_555_StockOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }
+
+    item STEVENS_555_BarrelOffcuts {
+        DisplayCategory  = Material,
+        ItemType         = base:normal,
+        Weight           = 2.0,
+        Icon             = GunsOfTien_STEVENS_555_BarrelOffcuts,
+        WorldStaticModel = GunsOfTien.STEVENS_555_BarrelOffcuts,
+        Tooltip          = Tooltip_GunsOfTien_BarrelOffcuts,
+        Tags             = base:hasmetal;base:smeltablesteellarge,
+    }
+
     item STEVENS_555_Stock {
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
@@ -42,6 +82,26 @@ module GunsOfTien {
         WeightModifier  = -0.5,
         CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item TOZ34_StockOffcut {
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = 0.5,
+        Icon             = GunsOfTien_TOZ34_StockOffcut,
+        WorldStaticModel = GunsOfTien.TOZ34_StockOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }
+
+    item TOZ34_BarrelOffcuts {
+        DisplayCategory  = Material,
+        ItemType         = base:normal,
+        Weight           = 2.0,
+        Icon             = GunsOfTien_TOZ34_BarrelOffcuts,
+        WorldStaticModel = GunsOfTien.TOZ34_BarrelOffcuts,
+        Tooltip          = Tooltip_GunsOfTien_BarrelOffcuts,
+        Tags             = base:hasmetal;base:smeltablesteellarge,
     }
 
     item TOZ34_Stock {

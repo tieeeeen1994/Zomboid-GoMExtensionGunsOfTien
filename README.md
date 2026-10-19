@@ -29,8 +29,10 @@ found as loot: make them with Ammo Maker.
   light's) and give their aiming bonus only while on
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
-  off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter but harder to aim; with sawn-off
-  barrels too they fit a holster
+  off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
+  and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept
+  as offcuts: wood to burn or make charcoal, steel to smelt. The Stevens 555's and TOZ-34's sawn-off barrels handle
+  like the Double Barrel's (GoM gave only those any stats)
 
 ## Ammo Maker
 

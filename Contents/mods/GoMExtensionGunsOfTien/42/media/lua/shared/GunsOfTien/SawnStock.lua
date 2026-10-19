@@ -7,17 +7,27 @@
     - Part: each gun has a hidden integrated stock (part type StockIntegrated, like GoM's SPAS-12 stock, so the gun
       tooltip's row reads "Stock (Integrated): Stevens 555 Stock"), fitted at spawn through GoM's required parts. A gun
       without one (spawned before this existed) has its full stock too. The recipe "Saw Off Shotgun Stock"
-      (recipes_sawnstocks.txt: any saw, gun kept, a piece of Unusable Wood out) fits the sawn-off twin instead; it is
-      never removed, the fitted part is the whole state (saved and synced with the gun's parts).
+      (recipes_sawnstocks.txt: any saw, gun kept) fits the sawn-off twin instead; it is never removed, the fitted part
+      is the whole state (saved and synced with the gun's parts).
+    - Offcuts (user, 2026-10-19: "we should just introduce new items"): what is sawn away is kept, weighing what the gun
+      loses. The stock recipe hands over <GUN>_StockOffcut (0.5, burns and makes charcoal like Unusable Wood), and
+      GoM's "Saw Off Shotgun Barrels" (craftRecipe Base.SawnOffShotgunBarrels, which had no OnCreate and gave nothing
+      back) gets an OnCreate here that hands over <GUN>_BarrelOffcuts (2.0 = GoM's 3.0 - 1.0, steel to smelt). Their
+      meshes are the pieces build_sawn_stocks.py cuts off GoM's own.
     - Model: the stockless body (scripts/build_sawn_stocks.py cuts GoM's mesh behind the pistol grip) is shown by
       Gunworks' ConditionalModel, a StatsFactory layer that sets the gun's own WeaponSprite (HandWeapon saves it per
       gun) from its parts on every ReapplyAllModifiers: <GUN>_SAWNSTOCK_SHORT with GoM's sawn-off barrels (muzzle point
       at their end), <GUN>_SAWNSTOCK with full ones. Barrels are parts drawn at the gun's origin, so both fit.
     - Handling: a layer of our own after GoM's CustomStatsAttachments (whose sawn-off barrel Sets AimingTime 30 and
-      HitChance 70 on the Double Barrel): AimingTime +10 (42.21 CombatManager.setAimingDelay caps the post-shot
-      aiming delay at the gun's AimingTime; these guns have 0, so GoM-style multipliers would do nothing), Hit Chance
-      x0.87 and Recoil Delay x1.3, the reverse of GoM's deployed stocks (Aiming Time x0.75, Hit Chance x1.15). The
+      HitChance 70 on the Double Barrel): AimingTime x0.75, quicker to aim in like GoM's sawn-off barrels (40 to 30;
+      user, 2026-10-19: "aiming in should be faster like a sawn off barrel"), so both together give 22; Hit Chance
+      x0.87 and Recoil Delay x1.3 (no shoulder to steady it or take the kick; the longer recoil also adds more aiming
+      delay per shot). The
       sawn-off part weighs -0.5 (HandWeapon.getActualWeight adds every part's WeightModifier).
+    - Sawn-off barrels: GoM gives stats only to the Double Barrel's (AttachmentCustomStats.lua: Aiming Time 30, Hit
+      Chance 70, spread 2.0, range 15, against 40 / 65 / 0.6 / 20 on all three guns); the Stevens 555's and TOZ-34's
+      only got lighter. They get the same entry (user, 2026-10-19: "give the same stats to the sawn off barrels and
+      stocks"), copied from GoM's registration so it follows GoM's numbers; one GoM registers itself is left alone.
     - Holster: AttachmentType is per gun in the engine (InventoryItem.attachmentType) but never saved, so
       HandWeapon:getAttachmentType is wrapped (through its class metatable, like ZomboidFixesB42's MedicalCheck) to
       answer "Holster" for a gun with the sawn-off stock and sawn-off barrels (or no barrel). Every Lua caller asks
@@ -33,6 +43,7 @@
 --]]
 
 local StatsFactory = require("WeaponSystems/Utils/StatsFactory")
+local CustomStatsAttachments = require("WeaponSystems/Utils/CustomStatsAttachments")
 local ConditionalModel = require("WeaponSystems/Utils/ConditionalModel")
 local FoldingStock = require("WeaponSystems/Utils/FoldingStock")
 local UpgradeExclusives = require("WeaponSystems/Utils/UpgradeExclusives")
@@ -53,7 +64,17 @@ for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
         model = M .. gun .. "_SAWNSTOCK",
         shortModel = M .. gun .. "_SAWNSTOCK_SHORT",
         shortBarrels = { "MarzGuns." .. gun .. "_Barrel_Sawnoff_Close", "MarzGuns." .. gun .. "_Barrel_Sawnoff_Open" },
+        stockOffcut = M .. gun .. "_StockOffcut",
+        barrelOffcuts = M .. gun .. "_BarrelOffcuts",
     }
+end
+
+-- GoM's full-length barrels, which its barrel recipe saws: full type -> our offcuts of them
+SawnStock.FULL_BARRELS = {}
+for _, entry in pairs(SawnStock.GUNS) do
+    local gun = entry.barrelOffcuts:sub(#M + 1, -#"_BarrelOffcuts" - 1)
+    SawnStock.FULL_BARRELS["MarzGuns." .. gun .. "_Barrel_Close"] = entry.barrelOffcuts
+    SawnStock.FULL_BARRELS["MarzGuns." .. gun .. "_Barrel_Open"] = entry.barrelOffcuts
 end
 
 function SawnStock.Entry(weapon)
@@ -91,7 +112,7 @@ for gun, entry in pairs(SawnStock.GUNS) do
 end
 
 SawnStock.HANDLING = {
-    StatsFactory.Adjust("AimingTime", 10),
+    StatsFactory.Multiply("AimingTime", 0.75),
     StatsFactory.Multiply("HitChance", 0.87),
     StatsFactory.Multiply("RecoilDelay", 1.3),
 }
@@ -109,6 +130,23 @@ if not layerRegistered then
         function(weapon)
             return SawnStock.Entry(weapon) ~= nil
         end)
+end
+
+-- The Double Barrel's sawn-off barrel stats on the Stevens 555's and TOZ-34's (GoM's lua/shared loads before ours).
+local SAWN_BARREL_STATS = {
+    StatsFactory.Set("AimingTime", 30),
+    StatsFactory.Set("HitChance", 70),
+    StatsFactory.Set("ProjectileSpread", 2.0),
+    StatsFactory.Set("MaxRange", 15.0),
+}
+local gomSawn = CustomStatsAttachments.RegisteredParts["MarzGuns.DOUBLEBARREL_Barrel_Sawnoff_Close"]
+local sawnBarrelStats = gomSawn and gomSawn.modifiers or SAWN_BARREL_STATS
+for _, entry in pairs(SawnStock.GUNS) do
+    for _, barrel in ipairs(entry.shortBarrels) do
+        if not CustomStatsAttachments.RegisteredParts[barrel] then
+            CustomStatsAttachments.RegisterPart(barrel, sawnBarrelStats)
+        end
+    end
 end
 
 local sawnParts = {}
@@ -153,7 +191,8 @@ end
 -- The recipe (recipes_sawnstocks.txt)
 -------------------------------------------------
 
---- Server / single player: saw the stock off, give back a shell holder, re-apply model and stats, send it back.
+--- Server / single player: saw the stock off, give back a shell holder and the stock offcut, re-apply model and
+--- stats, send it back.
 function SawnStock.Saw(weapon, character)
     local entry = SawnStock.Entry(weapon)
     if not entry or SawnStock.IsSawn(weapon) then return end
@@ -164,6 +203,8 @@ function SawnStock.Saw(weapon, character)
         local added = inventory:AddItem(holder)
         if added and isServer() then sendAddItemToContainer(inventory, added) end
     end
+    local offcut = instanceItem(entry.stockOffcut)
+    if offcut then Actions.addOrDropItem(character, offcut) end      -- dropped at the feet when too heavy, and sent
     FoldingStock.SwapStockAttachment(weapon, SawnStock.PART_TYPE, entry.sawn)
     StatsFactory.ReapplyAllModifiers(weapon)
     if isServer() then
@@ -199,6 +240,36 @@ function GunsOfTien_SawnStock.OnCreate(craftRecipeData, character)
         end
     end
 end
+
+--- GoM's barrel recipe (server / single player): the barrel ends sawn off its full-length barrels.
+function GunsOfTien_SawnStock.OnCreateBarrels(craftRecipeData, character)
+    local consumed = craftRecipeData:getAllConsumedItems()
+    for i = 0, consumed:size() - 1 do
+        local offcuts = SawnStock.FULL_BARRELS[consumed:get(i):getFullType()]
+        local item = offcuts and instanceItem(offcuts)
+        if item then
+            Actions.addOrDropItem(character, item)
+            return
+        end
+    end
+end
+
+-- Recipe scripts are fresh at every world load, and OnLoadMapZones follows their PostWorldDictionaryInit on client,
+-- server and single player. Load on a loaded recipe sets only the keys given (and resets its display name). GoM's
+-- recipe has no OnCreate of its own; if a GoM update adds one, this replaces it.
+local function hookBarrelRecipe()
+    local recipe = ScriptManager.instance:getCraftRecipe("Base.SawnOffShotgunBarrels")
+    if not recipe then
+        print("[GunsOfTien] SawnStock: GoM's SawnOffShotgunBarrels recipe not found, sawn-off barrels give no offcuts")
+        return
+    end
+    local displayName = recipe:getTranslationName()
+    recipe:Load(recipe:getName(), "craftRecipe " .. recipe:getName()
+        .. " { OnCreate = GunsOfTien_SawnStock.OnCreateBarrels, }")
+    recipe:overrideTranslationName(displayName)
+end
+
+Events.OnLoadMapZones.Add(hookBarrelRecipe)
 
 -------------------------------------------------
 -- The owner's copy in multiplayer

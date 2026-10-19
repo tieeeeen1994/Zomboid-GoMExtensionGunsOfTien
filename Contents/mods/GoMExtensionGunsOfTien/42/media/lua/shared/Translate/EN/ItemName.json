@@ -85,8 +85,14 @@
   "GunsOfTien.LaserBeam_TR1_Laser": "On",
   "GunsOfTien.DOUBLEBARREL_Stock": "Double Barrel Stock",
   "GunsOfTien.DOUBLEBARREL_Stock_Sawnoff": "Double Barrel Stock Sawnoff",
+  "GunsOfTien.DOUBLEBARREL_StockOffcut": "Double Barrel Stock Offcut",
+  "GunsOfTien.DOUBLEBARREL_BarrelOffcuts": "Double Barrel Offcuts",
   "GunsOfTien.STEVENS_555_Stock": "Stevens 555 Stock",
   "GunsOfTien.STEVENS_555_Stock_Sawnoff": "Stevens 555 Stock Sawnoff",
+  "GunsOfTien.STEVENS_555_StockOffcut": "Stevens 555 Stock Offcut",
+  "GunsOfTien.STEVENS_555_BarrelOffcuts": "Stevens 555 Barrel Offcuts",
   "GunsOfTien.TOZ34_Stock": "TOZ-34 Stock",
-  "GunsOfTien.TOZ34_Stock_Sawnoff": "TOZ-34 Stock Sawnoff"
+  "GunsOfTien.TOZ34_Stock_Sawnoff": "TOZ-34 Stock Sawnoff",
+  "GunsOfTien.TOZ34_StockOffcut": "TOZ-34 Stock Offcut",
+  "GunsOfTien.TOZ34_BarrelOffcuts": "TOZ-34 Barrel Offcuts"
 }

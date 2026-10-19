@@ -79,7 +79,7 @@ lines["SWMG.3030_Bullet"] = {
 for _, gun in ipairs({ "MarzGuns.DOUBLEBARREL", "MarzGuns.STEVENS_555", "MarzGuns.TOZ34" }) do
     local list = lines[gun] or {}
     lines[gun] = list
-    local line = "Stock can be sawn off (Saw Off Shotgun Stock): Aiming Time +10, Hit Chance reduced by 13%, "
+    local line = "Stock can be sawn off (Saw Off Shotgun Stock): Aiming Time reduced by 25%, Hit Chance reduced by 13%, "
         .. "Recoil Delay increased by 30%; with sawn-off barrels too it fits a holster."
     local present = false
     for _, l in ipairs(list) do

@@ -21,22 +21,27 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
       simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand.
 - [ ] Sawn-off stocks (2026-10-19, SawnStock.lua): Saw Off Shotgun Stock on a Double Barrel, Stevens 555 and TOZ-34
-      (any saw; listed only for a gun with its stock; a shell holder comes back; Unusable Wood out); the stockless
+      (any saw; listed only for a gun with its stock; a shell holder comes back); the stockless
       model in hand, on the back and on the floor, with full and sawn-off barrels, open and closed while reloading;
       the muzzle flash at the sawn-off barrels' end; the "Stock (Integrated)" tooltip row and the gun line; stats
-      (Hit Chance, Recoil Delay; AimingTime is a post-shot delay cap); with sawn-off barrels too it attaches to a belt
+      (Hit Chance, Recoil Delay; Aiming Time 30, 22 with sawn-off barrels); with
+      sawn-off barrels too it attaches to a belt
       and a shoulder holster: hang it the right way up and not through the leg (holster points in gen_scripts.py,
       `HOLSTER_POINTS`), draw from the holster; Shell holder's Upgrade option hidden on a sawn-off stock; in MP the
       owner's copy changes model at once, another player sees it after the gun is next equipped.
-- [ ] Sawn-off stocks, choices taken without the user (2026-10-19), to confirm: stats (Hit Chance x0.87, Recoil
-      Delay x1.3, AimingTime +10, weight -0.5); holster only with sawn-off barrels too; all three holster slots (both
-      belts and the shoulder holster); Unusable Wood from the cut; any saw; no sandbox option; GoM's Stevens / TOZ-34
-      sawn-off barrels left without stats (only the Double Barrel's have any in GoM).
-- [ ] GoM's AimingTime multipliers do nothing (found 2026-10-19, CLAUDE.md "Sawn-off stocks"): AimingTime caps the
-      post-shot aiming delay and no GoM gun sets it (0), so its stocks' / bipods' / sights' / lasers'
-      `SF.Multiply("AimingTime", x)` change nothing. Our HandlingTooltips lines quote those multipliers ("Aiming Time
-      reduced by 25%") as if they worked. Decide with the user: say so in the tooltips, give GoM's guns a base
-      AimingTime so the multipliers bite, or leave it.
+- [ ] Sawn-off stocks, choices (2026-10-19): stats (Hit Chance x0.87, Recoil
+      Delay x1.3, weight -0.5; Aiming Time x0.75 is the user's); holster only with sawn-off barrels too; all three holster slots (both
+      belts and the shoulder holster), any saw and no sandbox option confirmed by the user; the Stevens 555's and
+      TOZ-34's sawn-off barrels now get the Double Barrel's stats (user): check their tooltip and that Aiming Time /
+      Hit Chance / spread / range change when they are fitted (gun tooltip), as on the Double Barrel.
+- [ ] Sawn-off offcuts (2026-10-19, SawnStock.lua, build_sawn_stocks.py, make_offcut_art.py): sawing the stock gives
+      "<gun> Stock Offcut" (0.5), GoM's Saw Off Shotgun Barrels gives "<gun> Barrel Offcuts" (2.0; GoM's recipe gets
+      our OnCreate at OnLoadMapZones, check its name still reads "Saw Off Shotgun Barrels" in the crafting window).
+      Check: both arrive in the inventory (MP: the owner sees them at once), dropped at the feet when over capacity;
+      icons next to GoM's (docs/sawn_offcuts_preview.png); on the floor they lie on their side resting on the
+      ground, not sunk or floating (`world` points from sawn_offcuts.json, gen_scripts.py `floor_point`); the stock
+      offcut burns in a campfire and goes into the charcoal recipe; the barrel offcuts smelt in a furnace (Smelt Large
+      Steel Item, 4 uses into a steel crucible).
 - [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
       Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
       `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate

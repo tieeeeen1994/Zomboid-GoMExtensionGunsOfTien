@@ -112,14 +112,22 @@ carbines become louder than the M16; .45 guns become quiet (subsonic); the AS VA
 
 GoM's break-action shotguns (Double Barrel, Stevens 555, TOZ-34; the ones whose barrels GoM saws off) can also have
 their walnut buttstock sawn off behind the pistol grip: craft "Saw Off Shotgun Stock" (Weaponry, in hand, any saw,
-the gun kept, Unusable Wood out). Permanent. A shell holder (it sits on the stock) comes off into the inventory.
-- Handling, the reverse of GoM's deployed stocks: Hit Chance x0.87, Recoil Delay x1.3, AimingTime +10 (the
-  post-shot aiming delay cap); 0.5 lighter.
+the gun kept). Permanent. A shell holder (it sits on the stock) comes off into the inventory.
+- Offcuts (user, 2026-10-19): what is sawn away is kept, weighing what the gun loses. The stock gives
+  "<gun> Stock Offcut" (0.5, scrap wood: fuel and charcoal like Unusable Wood); GoM's Saw Off Shotgun Barrels gives
+  "<gun> Barrel Offcuts" ("Double Barrel Offcuts"; 2.0, GoM's barrels 3.0 -> 1.0; scrap steel tagged large for
+  smelting, 4 crucible uses = one Steel Bar). One item per gun: the models are the pieces cut off GoM's own meshes,
+  with that gun's texture.
+- Handling: Aiming Time x0.75 (quicker to bring up, like the sawn-off barrels; both: 40 to 22); Hit Chance x0.87,
+  Recoil Delay x1.3 (no shoulder to steady it or take the kick, so it also settles slower after a shot); 0.5
+  lighter.
 - Carry: with the sawn-off barrels too (or no barrel) the gun fits vanilla's belt and shoulder holsters; a sawn-off
   stock with full barrels stays on the back. Held two-handed as before.
 - Shown: the stockless body (GoM's mesh cut behind the grip) while the sawn-off stock is fitted; its muzzle point at
   the sawn-off barrels' end when they are fitted.
-- No sandbox option, like the lasers.
+- Sawn-off barrels: the Stevens 555's and TOZ-34's get the Double Barrel's (GoM gives stats only to those): Aiming
+  Time 30, Hit Chance 70, pellet spread 2.0, range 15, from 40 / 65 / 0.6 / 20 on all three guns.
+- No sandbox option, like the lasers (user).
 
 ## 5. Open checks before building
 
