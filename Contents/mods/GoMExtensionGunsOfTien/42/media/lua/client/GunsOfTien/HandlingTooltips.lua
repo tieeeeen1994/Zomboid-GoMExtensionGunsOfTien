@@ -74,8 +74,8 @@ local HANDLING = {
     { "MarzGuns.DETECTIVE_38", "Has Speedloader available.", { "Compatible with 6-round speedloader." } },
     { "MarzGuns.RHINO", "Has Speedloader available.", { "Compatible with 6-round speedloader." } },
     { "MarzGuns.MOSIN", "", { "Compatible with 5-round stripper clip." } },
-    { "MarzGuns.Model_70_Sling", "", { "Rifles weigh less." } },
-    { "MarzGuns.Rem700_Sling", "", { "Rifles weigh less." } },
+    { "MarzGuns.Model_70_Sling", "", { "Reduces encumbrance." } },
+    { "MarzGuns.Rem700_Sling", "", { "Reduces encumbrance." } },
     { "MarzGuns.VP70M_Stock", "", { "No Direct Stat Changes" } },
     { "MarzGuns.545x39Magazine60_Bakelite", "", { "Uses 5.45x39mm rounds." } },
     { "MarzGuns.9x19Magazine17_GLOCK17", "", { "Uses 9x19mm rounds." } },
@@ -84,8 +84,8 @@ local HANDLING = {
     { "MarzGuns.CAMP_CARBINE", "", { "Uses .45 rounds." } },
     { "MarzGuns.DOUBLE_DEUCE", "", { "Uses 2-bore rounds." } },
     { "MarzGuns.GLOCK17", "", { "Uses 9x19mm rounds." } },
-    { "MarzGuns.GLOCK17", "", { "Compatible Mounting Device: Beretta Mount." } },
-    { "MarzGuns.GLOCK17", "", { "Compatible Muzzle Device: Pistol Muzzle Mount." } },
+    { "MarzGuns.GLOCK17", "", { "Compatible Mounting Device: Beretta Mount" } },
+    { "MarzGuns.GLOCK17", "", { "Compatible Muzzle Device: Pistol Muzzle Mount" } },
     { "MarzGuns.VP70M", "", { "Uses 9x19mm rounds." } },
 }
 

@@ -352,8 +352,9 @@ def ammomaker():
     for name, label, desc in AMMOMAKER_TYPES:
         recipes_tr[f"Make{name}"] = f"Make {label}"
         recipes_tr[f"Produce{name}"] = f"Produce {label}"
-        tooltips[f"Tooltip_Recipe_Make{name}"] = f"Assemble {desc}"
-        tooltips[f"Tooltip_Recipe_Produce{name}"] = f"Assemble {label} rounds with reloading press"
+        # sentences end with a full stop (user, 2026-10-19), unlike Ammo Maker's own recipe tooltips
+        tooltips[f"Tooltip_Recipe_Make{name}"] = f"Assemble {desc}."
+        tooltips[f"Tooltip_Recipe_Produce{name}"] = f"Assemble {label} rounds with reloading press."
     # This mod's own Ammo Maker parts (scripts/GunsOfTien/items_ammomaker_parts.txt), named in Ammo Maker's style.
     recipes_tr.update({
         'GunsOfTien_MakeSoftPointBullet': 'Make Soft Point Bullet',
@@ -361,12 +362,12 @@ def ammomaker():
         'GunsOfTien_ProduceBirdshot': 'Pour Birdshot Pellets (Furnace)',
     })
     tooltips.update({
-        'Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet': 'File the jacket off the nose of a standard rifle bullet so the lead shows',
-        'Tooltip_Recipe_GunsOfTien_MakeBirdshot': 'Pour molten iron from small iron items through a strainer into water',
-        'Tooltip_Recipe_GunsOfTien_ProduceBirdshot': 'Pour molten iron from a crucible through a strainer into water',
-        'Tooltip_Item_GunsOfTien_BulletRifleSSP': 'Small size soft point rifle bullet. Craftable from standard bullets with a file',
-        'Tooltip_Item_GunsOfTien_BulletRifleMSP': 'Medium size soft point rifle bullet. Craftable from standard bullets with a file',
-        'Tooltip_Item_GunsOfTien_Birdshot': 'Birdshot pellets for shotgun shells. Poured through a strainer into water at any furnace',
+        'Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet': 'File the jacket off the nose of a standard rifle bullet so the lead shows.',
+        'Tooltip_Recipe_GunsOfTien_MakeBirdshot': 'Pour molten iron from small iron items through a strainer into water.',
+        'Tooltip_Recipe_GunsOfTien_ProduceBirdshot': 'Pour molten iron from a crucible through a strainer into water.',
+        'Tooltip_Item_GunsOfTien_BulletRifleSSP': 'Small size soft point rifle bullet. Craftable from standard bullets with a file.',
+        'Tooltip_Item_GunsOfTien_BulletRifleMSP': 'Medium size soft point rifle bullet. Craftable from standard bullets with a file.',
+        'Tooltip_Item_GunsOfTien_Birdshot': 'Birdshot pellets for shotgun shells. Poured through a strainer into water at any furnace.',
         'Tooltip_Item_GunsOfTien_BoxBulletsRifleSSP': 'Box of 25 Bullets Rifle S SP',
         'Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP': 'Box of 25 Bullets Rifle M SP',
         'Tooltip_Item_GunsOfTien_BoxBirdshot': 'Box of 25 Birdshot Pellets',
@@ -389,10 +390,10 @@ def ammomaker():
     # in by GoM's animations); GoM gives stats only to the double-barrel's sawn-off ones (AttachmentCustomStats.lua sets
     # Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the gun's 40 / 65 / 0.6 / 20, the same on all three
     # guns), and SawnStock.lua gives the Stevens 555's and TOZ-34's the same (user, 2026-10-19). The Masterkey's key is
-    # a leftover name.
+    # a leftover name. The sawn-off barrels' stats are Information lines in GoM's attachment style (client
+    # GunsOfTien/Tooltips.lua, user 2026-10-19), not part of this text.
     full = 'Full-length barrels for the %s.'
-    sawn = ('Sawn-off barrels for the %s: Aiming Time reduced by 25%%, Hit Chance increased by 8%%, pellet spread over '
-            'three times wider, range reduced by 25%%.')
+    sawn = 'Sawn-off barrels for the %s.'
     tooltips.update({
         'Tooltip_DOUBLEBARREL_Barrel_Close': full % 'double-barrel shotgun',
         'Tooltip_DOUBLEBARREL_Barrel_Open': full % 'double-barrel shotgun',
@@ -661,11 +662,11 @@ module Base {
     tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
     tips = json.load(open(tip_path))
     tips['Tooltip_Recipe_GunsOfTien_SawOffShotgunStock'] = (
-        "Saws the stock off behind the pistol grip. A shell holder comes off with it.")
+        "Saws the stock off behind the grip.")
     tips['Tooltip_GunsOfTien_StockOffcut'] = (
-        "Scrap wood. Burns, or makes charcoal.")
+        "As good as scrap wood.")
     tips['Tooltip_GunsOfTien_BarrelOffcuts'] = (
-        "Scrap steel. Smelts into a steel bar.")
+        "As good as a steel bar.")
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 

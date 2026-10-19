@@ -27,33 +27,33 @@ GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
 
 lines[M .. "MP7A1"] = {
     "Uses 4.6x30mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right.",
+    "Integrated Picatinny rails: Up, Left, Right",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "MP7A2"] = {
     "Uses 4.6x30mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right, Down.",
+    "Integrated Picatinny rails: Up, Left, Right, Down",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "P90TR"] = {
     "Uses 5.7x28mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right.",
+    "Integrated Picatinny rails: Up, Left, Right",
     "50-round magazine on top. Ejects spent cases downward.",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines["MarzGuns.FIVESEVEN"] = {
     "Uses 5.7x28mm rounds.",
-    "Compatible Mounting Device: Beretta Mount.",
-    "Compatible Muzzle Device: 5.7x28mm Muzzle Mount.",
+    "Compatible Mounting Device: Beretta Mount",
+    "Compatible Muzzle Device: 5.7x28mm Muzzle Mount",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "57x28Magazine20_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
 lines[M .. "57x28Magazine30_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
 lines[M .. "UCP"] = {
     "Uses 4.6x30mm rounds.",
-    "H&K prototype, never sold (cancelled 2009).",
-    "Compatible Mounting Device: Beretta Mount.",
-    "Compatible Muzzle Device: 4.6x30mm Muzzle Mount.",
+    "H&K prototype",
+    "Compatible Mounting Device: Beretta Mount",
+    "Compatible Muzzle Device: 4.6x30mm Muzzle Mount",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "46x30Magazine20_UCP"] = { "Uses 4.6x30mm rounds." }

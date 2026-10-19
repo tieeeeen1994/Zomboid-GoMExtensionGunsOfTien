@@ -12,16 +12,16 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
 `Base.Strainer` + water), all art (`scripts/make_art.py`, `scripts/make_ammomaker_art.py`), generator
 `scripts/gen_scripts.py`.
 
-- [ ] First load in single player: no Lua / script errors; spawn and fire every round (tracer = AmmoType line);
+- [x] First load in single player: no Lua / script errors; spawn and fire every round (tracer = AmmoType line);
       7.62x39 US with and without a PBS-1; birdshot close / far; piercing option on / off; sounds in an existing save.
-- [ ] Ammo Maker: Make / Produce recipes of every new type fill in; Make Soft Point Bullet; Pour Birdshot Pellets
+- [x] Ammo Maker: Make / Produce recipes of every new type fill in; Make Soft Point Bullet; Pour Birdshot Pellets
       (the water input at a furnace is copied from the pottery wheel, unverified at a furnace).
 - [x] Workshop: workshop.txt, preview.png (1024, ad), both posters / icons, README, mod.info texts (2026-10-15;
       art from scripts/render_ad_guns.py + scripts/make_workshop_art.py). Upload from the game's Workshop menu.
       The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
       simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand. Uploaded again 2026-10-19 with
       the sawn-off stocks, offcuts and sawn-off barrel stats; preview2-5 are on the Steam page.
-- [ ] Sawn-off stocks (2026-10-19, SawnStock.lua): Saw Off Shotgun Stock on a Double Barrel, Stevens 555 and TOZ-34
+- [x] Sawn-off stocks (2026-10-19, SawnStock.lua): Saw Off Shotgun Stock on a Double Barrel, Stevens 555 and TOZ-34
       (any saw; listed only for a gun with its stock; a shell holder comes back); the stockless
       model in hand, on the back and on the floor, with full and sawn-off barrels, open and closed while reloading;
       the muzzle flash at the sawn-off barrels' end; the "Stock (Integrated)" tooltip row and the gun line; stats
@@ -30,12 +30,12 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       and a shoulder holster: hang it the right way up and not through the leg (holster points in gen_scripts.py,
       `HOLSTER_POINTS`), draw from the holster; Shell holder's Upgrade option hidden on a sawn-off stock; in MP the
       owner's copy changes model at once, another player sees it after the gun is next equipped.
-- [ ] Sawn-off stocks, choices (2026-10-19): stats (Hit Chance x0.87, Recoil
+- [x] Sawn-off stocks, choices (2026-10-19): stats (Hit Chance x0.87, Recoil
       Delay x1.3, weight -0.5; Aiming Time x0.75 is the user's); holster only with sawn-off barrels too; all three holster slots (both
       belts and the shoulder holster), any saw and no sandbox option confirmed by the user; the Stevens 555's and
       TOZ-34's sawn-off barrels now get the Double Barrel's stats (user): check their tooltip and that Aiming Time /
       Hit Chance / spread / range change when they are fitted (gun tooltip), as on the Double Barrel.
-- [ ] Sawn-off offcuts (2026-10-19, SawnStock.lua, build_sawn_stocks.py, make_offcut_art.py): sawing the stock gives
+- [x] Sawn-off offcuts (2026-10-19, SawnStock.lua, build_sawn_stocks.py, make_offcut_art.py): sawing the stock gives
       "<gun> Stock Offcut" (0.5), GoM's Saw Off Shotgun Barrels gives "<gun> Barrel Offcuts" (2.0; GoM's recipe gets
       our OnCreate at OnLoadMapZones, check its name still reads "Saw Off Shotgun Barrels" in the crafting window).
       Check: both arrive in the inventory (MP: the owner sees them at once), dropped at the feet when over capacity;
@@ -43,17 +43,17 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       ground, not sunk or floating (`world` points from sawn_offcuts.json, gen_scripts.py `floor_point`); the stock
       offcut burns in a campfire and goes into the charcoal recipe; the barrel offcuts smelt in a furnace (Smelt Large
       Steel Item, 4 uses into a steel crucible).
-- [ ] Sawing sounds (2026-10-19): Saw Off Shotgun Stock plays the wood saw (vanilla `Sawing`), GoM's Saw Off Shotgun
+- [x] Sawing sounds (2026-10-19): Saw Off Shotgun Stock plays the wood saw (vanilla `Sawing`), GoM's Saw Off Shotgun
       Barrels the metal saw (`CraftMetalSawing`, our timed action handed over in `ISHandcraftAction.new`); the barrel
       cut keeps its anim and saw in hand; in MP other players hear it too.
-- [ ] Tooltips fixed 2026-10-19 (RoundTooltips.lua, HandlingTooltips.lua, GoMFixes.lua): a round of each kind (ours,
+- [x] Tooltips fixed 2026-10-19 (RoundTooltips.lua, HandlingTooltips.lua, GoMFixes.lua): a round of each kind (ours,
       GoM's 5.56 variants, .38 Special, slug) shows one line per stat and no typos; with RealisticPiercing on,
       plain .30-06 / .308 / 7.62x51 and the 7N6 add their piercing lines, off they do not (option change needs a
       rejoin); the shell holder, a bayonet, the Picatinny Rail, the speedloader, a sling, the VP70M stock, the Glock 17,
       Camp Carbine, VP70M and Double Deuce have their new lines; a Karabiner 98k bayonet now fixes on an M16 (Attach
       Bayonet in the gun's menu) and stabs; the overpressured 5.56 widens full-auto spread. The sawn-off stock's lines
       show on a sawn-off break-action shotgun only, a whole one of the same type shows none, in the inventory, the
-      hotbar and a crafting slot ("Fits a holster." with sawn-off barrels, else "...with sawn-off barrels."). The
+      hotbar and a crafting slot ("Fits a holster." with sawn-off barrels, else "Fits a holster if barrels are sawed off."). The
       same for every gun with integrated parts: an MP5 / G36C / MP7 shows its stock's lines only while deployed
       (fold it with the tooltip open: the lines go on the next frame), the M60 its deployed or folded bipod's, the
       SPAS-12 its pump or semi lines, the MP7A1 its grip's only while unfolded.
@@ -70,245 +70,281 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
 Every tooltip text both mods show, as the game will draw it: Information lines are listed only where Guns of Tien
 changes or adds them (GoM's other lines are untouched), joined here with " / " (one line each in game). Generated
 from the real files by `scripts/list_tooltips.py` (needs lupa, see its header); run it again after a tooltip change.
-Tick each one that reads right; note what to change.
+Tick each one that reads right; note what to change. Corrections: rewrite the text after the colon and leave the
+key in backticks as it is (the item type, the translation key, or `File.lua NAME` for a text in Lua code); `python3
+scripts/list_tooltips.py --diff TODO.md` lists every entry whose text differs from the code.
 
 ### Rounds: Information lines (RealisticPiercing off; on, the plain .30-06 / .308 / 7.62x51 add "Piercing targets / Able to hit up to 2 targets", the 7N6 "Critical Chance increased by 10% / Piercing targets / Able to hit up to 3 targets")
 
-- [ ] .223 Remington Round (`SWMG.223_Bullet`): Damage to targets decreased by 30% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 33%
-- [ ] .30-06 Springfield Soft Point Round (`GunsOfTien.3006_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 10% / Does not pierce
-- [ ] .30-30 Round (`SWMG.3030_Bullet`): Does not pierce
-- [ ] .30-30 Round (Vanilla) (`Base.3030Bullets`): Does not pierce
-- [ ] .308 Winchester Round (`SWMG.308_Bullet`): Damage to targets decreased by 25% / Critical Damage decreased by 15% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 33%
-- [ ] .308 Winchester Soft Point Round (`GunsOfTien.308_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 10% / Does not pierce
-- [ ] .38 Special Round (`SWMG.38_Bullet`): Damage to targets decreased by 20% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 17%
-- [ ] .38 Special Round (Vanilla) (`Base.Bullets38`): Damage to targets decreased by 20% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 17%
-- [ ] .45 ACP Hollow Point Round (`GunsOfTien.45_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11%
-- [ ] .45 ACP [+P] Round (`GunsOfTien.45_Bullet_P`): Damage to targets increased by 15% / Critical Damage increased by 10% / Sound Radius and Volume increased by 10% / Chance to degrade weapon condition increased by 43%
-- [ ] 12 Gauge Birdshot Shell (`GunsOfTien.12Gauge_Shell_Birdshot`): Damage to targets decreased by 70% / Critical Damage decreased by 50% / Critical Chance decreased by 60% / Range reduced by 50% / Pellet spread doubled
-- [ ] 12 Gauge Slug Shell (`SWMG.12Gauge_Shell_Slug`): Damage to targets increased by 100% / Piercing targets / Able to hit up to 3 targets / One slug per shell
-- [ ] 5.56x45mm Armor Piercing Round (`SWMG.556x45_Bullet_ArmorPiercing`): Damage to targets decreased by 15% / Critical Damage decreased by 5% / Critical Chance decreased by 10% / Piercing targets / Able to hit up to 5 targets
-- [ ] 5.56x45mm Hollow Point Round (`SWMG.556x45_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 18%
-- [ ] 5.56x45mm Subsonic Round (`SWMG.556x45_Bullet_Subsonic`): Damage to targets decreased by 60% / Sound Radius and Volume reduced by 50% / Chance to degrade weapon condition halved / Needs racking every shot / Stacks with suppressors for maximum effectiveness
-- [ ] 5.56x45mm [+P] Round (`SWMG.556x45_Bullet_Overpressured`): Damage to targets increased by 50% / Critical Damage increased by 50% / Critical Chance increased by 5% / Automatic fire spread doubled / Chance to degrade weapon condition doubled / Piercing targets / Able to hit up to 2 targets
-- [ ] 7.62x39mm Soft Point Round (`GunsOfTien.762x39_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11% / Does not pierce
-- [ ] 7.62x39mm Steel Core Round (Armor Piercing) (`GunsOfTien.762x39_Bullet_SteelCore`): Damage to targets decreased by 10% / Critical Damage decreased by 5% / Critical Chance decreased by 10% / Chance to degrade weapon condition increased by 18% / Piercing targets / Able to hit up to 3 targets
-- [ ] 7.62x39mm US Round (Subsonic) (`GunsOfTien.762x39_Bullet_US`): Damage to targets decreased by 50% / Critical Damage decreased by 20% / Sound Radius and Volume reduced by 50% / Chance to degrade weapon condition halved / Needs racking every shot / Cycles normally with a PBS-1 suppressor / Stacks with suppressors for maximum effectiveness
-- [ ] 9x19mm 147gr Round (Subsonic) (`GunsOfTien.9x19_Bullet_Subsonic`): Damage to targets decreased by 15% / Sound Radius and Volume reduced by 30% / Stacks with suppressors for maximum effectiveness
-- [ ] 9x19mm Hollow Point Round (`GunsOfTien.9x19_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11%
-- [ ] 9x19mm [+P+] Round (`GunsOfTien.9x19_Bullet_PPP`): Damage to targets increased by 20% / Critical Damage increased by 10% / Sound Radius and Volume increased by 10% / Chance to degrade weapon condition increased by 67%
-- [ ] 9x39mm SP-6 Round (Armor Piercing) (`GunsOfTien.9x39_Bullet_SP6`): Damage to targets decreased by 10% / Critical Damage decreased by 5% / Piercing targets / Able to hit up to 3 targets
+- [x] .223 Remington Round (`SWMG.223_Bullet`): Damage to targets decreased by 30% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 33%
+- [x] .30-06 Springfield Soft Point Round (`GunsOfTien.3006_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 10% / Does not pierce
+- [x] .30-30 Round (`SWMG.3030_Bullet`): Does not pierce
+- [x] .30-30 Round (Vanilla) (`Base.3030Bullets`): Does not pierce
+- [x] .308 Winchester Round (`SWMG.308_Bullet`): Damage to targets decreased by 25% / Critical Damage decreased by 15% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 33%
+- [x] .308 Winchester Soft Point Round (`GunsOfTien.308_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 10% / Does not pierce
+- [x] .38 Special Round (`SWMG.38_Bullet`): Damage to targets decreased by 20% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 17%
+- [x] .38 Special Round (Vanilla) (`Base.Bullets38`): Damage to targets decreased by 20% / Critical Damage decreased by 20% / Critical Chance decreased by 10% / Chance to degrade weapon condition decreased by 17%
+- [x] .45 ACP Hollow Point Round (`GunsOfTien.45_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11%
+- [x] .45 ACP [+P] Round (`GunsOfTien.45_Bullet_P`): Damage to targets increased by 15% / Critical Damage increased by 10% / Sound Radius and Volume increased by 10% / Chance to degrade weapon condition increased by 43%
+- [x] 12 Gauge Birdshot Shell (`GunsOfTien.12Gauge_Shell_Birdshot`): Damage to targets decreased by 70% / Critical Damage decreased by 50% / Critical Chance decreased by 60% / Range reduced by 50% / Pellet spread doubled
+- [x] 12 Gauge Slug Shell (`SWMG.12Gauge_Shell_Slug`): Damage to targets increased by 100% / Piercing targets / Able to hit up to 3 targets / One slug per shell
+- [x] 5.56x45mm Armor Piercing Round (`SWMG.556x45_Bullet_ArmorPiercing`): Damage to targets decreased by 15% / Critical Damage decreased by 5% / Critical Chance decreased by 10% / Piercing targets / Able to hit up to 5 targets
+- [x] 5.56x45mm Hollow Point Round (`SWMG.556x45_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 18%
+- [x] 5.56x45mm Subsonic Round (`SWMG.556x45_Bullet_Subsonic`): Damage to targets decreased by 60% / Sound Radius and Volume reduced by 50% / Chance to degrade weapon condition halved / Needs racking every shot / Stacks with suppressors for maximum effectiveness
+- [x] 5.56x45mm [+P] Round (`SWMG.556x45_Bullet_Overpressured`): Damage to targets increased by 50% / Critical Damage increased by 50% / Critical Chance increased by 5% / Automatic fire spread doubled / Chance to degrade weapon condition doubled / Piercing targets / Able to hit up to 2 targets
+- [x] 7.62x39mm Soft Point Round (`GunsOfTien.762x39_Bullet_SP`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11% / Does not pierce
+- [x] 7.62x39mm Steel Core Round (Armor Piercing) (`GunsOfTien.762x39_Bullet_SteelCore`): Damage to targets decreased by 10% / Critical Damage decreased by 5% / Critical Chance decreased by 10% / Chance to degrade weapon condition increased by 18% / Piercing targets / Able to hit up to 3 targets
+- [x] 7.62x39mm US Round (Subsonic) (`GunsOfTien.762x39_Bullet_US`): Damage to targets decreased by 50% / Critical Damage decreased by 20% / Sound Radius and Volume reduced by 50% / Chance to degrade weapon condition halved / Needs racking every shot / Cycles normally with a PBS-1 suppressor / Stacks with suppressors for maximum effectiveness
+- [x] 9x19mm 147gr Round (Subsonic) (`GunsOfTien.9x19_Bullet_Subsonic`): Damage to targets decreased by 15% / Sound Radius and Volume reduced by 30% / Stacks with suppressors for maximum effectiveness
+- [x] 9x19mm Hollow Point Round (`GunsOfTien.9x19_Bullet_HollowPoint`): Damage to targets increased by 20% / Critical Damage increased by 15% / Critical Chance increased by 5% / Chance to degrade weapon condition increased by 11%
+- [x] 9x19mm [+P+] Round (`GunsOfTien.9x19_Bullet_PPP`): Damage to targets increased by 20% / Critical Damage increased by 10% / Sound Radius and Volume increased by 10% / Chance to degrade weapon condition increased by 67%
+- [x] 9x39mm SP-6 Round (Armor Piercing) (`GunsOfTien.9x39_Bullet_SP6`): Damage to targets decreased by 10% / Critical Damage decreased by 5% / Piercing targets / Able to hit up to 3 targets
 
 ### Guns and parts: Information lines (always shown)
 
-- [ ] 5.7x28mm Five-SeveN (`MarzGuns.FIVESEVEN`): Uses 5.7x28mm rounds. / Compatible Mounting Device: Beretta Mount. / Compatible Muzzle Device: 5.7x28mm Muzzle Mount. / Standard rounds pierce and can hit up to 2 targets.
-- [ ] 6Rds .38 Special/.357 Magnum Speedloader (`MarzGuns.38357SpeedLoader6`): Uses .38Special/.357 Magnum rounds. / Reloads the revolver faster when fully loaded.
-- [ ] 9x39mm 10Rds Magazine (`MarzGuns.9x39Magazine10`): Uses 9x39mm rounds.
-- [ ] 9x39mm 20Rds Magazine (`MarzGuns.9x39Magazine20`): Uses 9x39mm rounds.
-- [ ] AKS-74U Assault Rifle (`MarzGuns.AKS74U`): Uses 5.45x39mm rounds. / Compatible Mounting Device: AK Mount. / Available Picatinny Slots: Down. / Compatible Muzzle Device: AK Muzzle Mount.
-- [ ] AR-15 Civilian Rifle (`MarzGuns.AR15`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down. / Can attach a bayonet.
-- [ ] AS VAL Assault Rifle (`MarzGuns.ASVAL`): Uses 9x39mm rounds. / Compatible Mounting Device: AK Mount. / Available Picatinny Slots: Down, Left, Right.
-- [ ] Bakelite 60Rds Extended 5.45x39mm Magazine (`MarzGuns.545x39Magazine60_Bakelite`): Uses 5.45x39mm rounds.
-- [ ] Benelli M4 Semi-Shotgun (`MarzGuns.BENELLI_M4`): Uses 12-gauge shells. / Available Picatinny Slots: Up. / Can attach a bayonet.
-- [ ] Bipod (Deployed) (`MarzGuns.Bipod_Deployed`): Aiming Time increased by 10% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 35% / Needs Screwdriver to install or remove.
-- [ ] BrightPoint-5 Light (`MarzGuns.BrightPoint-5_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
-- [ ] Browning Automatic Rifle (`MarzGuns.BAR`): Uses .30-06 Springfield rounds.
-- [ ] Colt Python Revolver (`MarzGuns.PYTHON`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
-- [ ] Detective .38 Revolver (`MarzGuns.DETECTIVE_38`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
-- [ ] FAMAS Assault Rifle (`MarzGuns.FAMAS`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down. / Compatible Muzzle Device: AR Muzzle Mount. / Can attach a bayonet.
-- [ ] G3 Battle Rifle (`MarzGuns.G3`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Can attach a bayonet.
-- [ ] G36 Assault Rifle (`MarzGuns.G36`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Down, Left, Right. / Compatible Muzzle Device: AR Muzzle Mount.
-- [ ] G36C Assault Rifle (`MarzGuns.G36C`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Compatible Muzzle Device: AR Muzzle Mount.
-- [ ] Glock-17 (`MarzGuns.GLOCK17`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount. / Compatible Muzzle Device: Pistol Muzzle Mount.
-- [ ] Glock-17 17Rds 9x19mm Magazine (`MarzGuns.9x19Magazine17_GLOCK17`): Uses 9x19mm rounds.
-- [ ] Heckler & Koch VP70M (`MarzGuns.VP70M`): Uses 9x19mm rounds.
-- [ ] Karabiner 98k Bayonet (`MarzGuns.K98_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
-- [ ] LP Tactical Light (`MarzGuns.LP_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
-- [ ] M1 Bayonet (`MarzGuns.M1_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
-- [ ] M1 Garand Battle Rifle (`MarzGuns.M1_GARAND`): Uses .30-06 Springfield rounds. / Can attach a bayonet.
-- [ ] M14 Battle Rifle (`MarzGuns.M14`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down. / Can attach a bayonet.
-- [ ] M16A1 Assault Rifle (`MarzGuns.M16A1`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down. / Compatible Muzzle Device: AR Muzzle Mount. / Can attach a bayonet.
-- [ ] M16A2 Assault Rifle (`MarzGuns.M16A2`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Compatible Muzzle Device: AR Muzzle Mount. / Can attach a bayonet.
-- [ ] M16A3 Assault Rifle (`MarzGuns.M16A3`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Compatible Muzzle Device: AR Muzzle Mount. / Can attach a bayonet.
-- [ ] M1903 Springfield Bolt Rifle (`MarzGuns.M1903`): Uses .30-06 Springfield rounds. / Compatible Mounting Device: Sniper Mount. / Can attach a bayonet.
-- [ ] M1905 Bayonet (`MarzGuns.M1905_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
-- [ ] M24 Sniper Rifle (`MarzGuns.M24`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up.
-- [ ] M4A1 Assault Rifle (`MarzGuns.M4A1`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Compatible Muzzle Device: AR Muzzle Mount. / Can attach a bayonet.
-- [ ] M5 Bayonet (`MarzGuns.M5_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
-- [ ] M60 Machine Gun (`MarzGuns.M60`): Uses .308/7.62x51mm NATO rounds.
-- [ ] M9 Bayonet (`MarzGuns.M9_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
-- [ ] MK2 Foregrip (`MarzGuns.MK2_Foregrip`): Aiming Time reduced by 25% / Critical and Hit Chance increased by 10% / Automatic fire spread reduced by 10% / Needs Screwdriver to install or remove.
-- [ ] MKC Foregrip (`MarzGuns.MKC_Foregrip`): Aiming Time reduced by 5% / Critical and Hit Chance increased by 25% / Automatic fire spread reduced by 10% / Needs Screwdriver to install or remove.
-- [ ] Marlin Camp Carbine (`MarzGuns.CAMP_CARBINE`): Uses .45 rounds.
-- [ ] Model 70 Sling (`MarzGuns.Model_70_Sling`): Rifles weigh less. / Needs Screwdriver to install or remove.
-- [ ] Mosin-Nagant Bolt Rifle (`MarzGuns.MOSIN`): Uses 7.62x54mmR rounds. / Compatible Mounting Device: Sniper Mount. / Can attach a bayonet. / Compatible with 5-round stripper clip.
-- [ ] Mossberg 590 Shotgun (`MarzGuns.MOSSBERG_590`): Uses 12-gauge shells. / Available Picatinny Slots: Up. / Can attach a bayonet.
-- [ ] Picatinny Rail (`MarzGuns.Picatinny_Rail`): Adds a rail on one of the slots of the gun. / Options will be presented in the upgrade menu / Needs Screwdriver to install or remove.
-- [ ] Remington 700 Sling (`MarzGuns.Rem700_Sling`): Rifles weigh less. / Needs Screwdriver to install or remove.
-- [ ] Remington 870 Shotgun (`MarzGuns.REMINGTON_870`): Uses 12-gauge shells. / Available Picatinny Slots: Up. / Can attach a bayonet.
-- [ ] Rhino Revolver (`MarzGuns.RHINO`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
-- [ ] SR7 Tactical Light (`MarzGuns.SR7_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
-- [ ] Shellholder (`MarzGuns.Shellholder`): Recoil Delay reduced by 40% / Attachable on stocks. / Needs Screwdriver to install or remove.
-- [ ] Stolzer & Son of Kansas 2-Bore Rifle (`MarzGuns.DOUBLE_DEUCE`): Uses 2-bore rounds.
-- [ ] Stub Foregrip (`MarzGuns.Stub_Foregrip`): Aiming Time reduced by 20% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 15% / Needs Screwdriver to install or remove.
-- [ ] TL Tactical Light (`MarzGuns.TL_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
-- [ ] Trench Shotgun (`MarzGuns.TRENCHGUN`): Uses 12-gauge shells. / Can attach a bayonet.
-- [ ] VP70M Stock (`MarzGuns.VP70M_Stock`): No Direct Stat Changes / Needs Screwdriver to install or remove.
-- [ ] XM177 Assault Rifle (`MarzGuns.XM177`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right. / Can attach a bayonet.
-- [ ] Every laser (AimRight Laser, LRX-7 Laser, PJ-3 Laser, PX1 Laser, TR-1 Laser): + Bonus only while switched on
+- [x] .50 Desert Eagle (`MarzGuns.DEAGLE`): Uses .50 rounds. / Compatible Mounting Device: Heavy Pistol Rail
+- [x] 5.7x28mm Five-SeveN (`MarzGuns.FIVESEVEN`): Uses 5.7x28mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: 5.7x28mm Muzzle Mount / Standard rounds pierce and can hit up to 2 targets.
+- [x] 6Rds .38 Special/.357 Magnum Speedloader (`MarzGuns.38357SpeedLoader6`): Uses .38Special/.357 Magnum rounds. / Reloads the revolver faster when fully loaded.
+- [x] 9x39mm 10Rds Magazine (`MarzGuns.9x39Magazine10`): Uses 9x39mm rounds.
+- [x] 9x39mm 20Rds Magazine (`MarzGuns.9x39Magazine20`): Uses 9x39mm rounds.
+- [x] AA-12 Automatic Shotgun (`MarzGuns.AA12`): Uses 12-gauge shells. / Available Picatinny Slots: Down, Left, Right
+- [x] AK-47 Assault Rifle (`MarzGuns.AK47`): Uses 7.62x39mm rounds. / Compatible Mounting Device: AK Mount / Compatible Muzzle Device: AK Muzzle Mount
+- [x] AK-74 Assault Rifle (`MarzGuns.AK74`): Uses 5.45x39mm rounds. / Compatible Mounting Device: AK Mount / Compatible Muzzle Device: AK Muzzle Mount
+- [x] AKS-74U Assault Rifle (`MarzGuns.AKS74U`): Uses 5.45x39mm rounds. / Compatible Mounting Device: AK Mount / Available Picatinny Slots: Down / Compatible Muzzle Device: AK Muzzle Mount
+- [x] AR-15 Civilian Rifle (`MarzGuns.AR15`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down / Can attach a bayonet.
+- [x] AS VAL Assault Rifle (`MarzGuns.ASVAL`): Uses 9x39mm rounds. / Compatible Mounting Device: AK Mount / Available Picatinny Slots: Down, Left, Right
+- [x] Bakelite 60Rds Extended 5.45x39mm Magazine (`MarzGuns.545x39Magazine60_Bakelite`): Uses 5.45x39mm rounds.
+- [x] Benelli M4 Semi-Shotgun (`MarzGuns.BENELLI_M4`): Uses 12-gauge shells. / Available Picatinny Slots: Up / Can attach a bayonet.
+- [x] Beretta Burst M93R (`MarzGuns.M93R`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: Pistol Muzzle Mount
+- [x] Beretta M92FS (`MarzGuns.M92FS`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: Pistol Muzzle Mount
+- [x] Bipod (Deployed) (`MarzGuns.Bipod_Deployed`): Aiming Time increased by 10% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 35% / Needs Screwdriver to install or remove.
+- [x] BrightPoint-5 Light (`MarzGuns.BrightPoint-5_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
+- [x] Browning Automatic Rifle (`MarzGuns.BAR`): Uses .30-06 Springfield rounds.
+- [x] Browning Hi-Power (`MarzGuns.HIPOWER`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: Pistol Muzzle Mount
+- [x] CAR-15 Assault Rifle (`MarzGuns.CAR15`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount
+- [x] Colt M1911 (`MarzGuns.M1911`): Uses .45 rounds. / Compatible Mounting Device: Colt Mount / Compatible Muzzle Device: .45 Muzzle Mount
+- [x] Colt Python Revolver (`MarzGuns.PYTHON`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
+- [x] Detective .38 Revolver (`MarzGuns.DETECTIVE_38`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
+- [x] Double Barrel Sawnoff (`MarzGuns.DOUBLEBARREL_Barrel_Sawnoff_Open`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] Double Barrel Sawnoff (`MarzGuns.DOUBLEBARREL_Barrel_Sawnoff_Close`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] FAMAS Assault Rifle (`MarzGuns.FAMAS`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down / Compatible Muzzle Device: AR Muzzle Mount / Can attach a bayonet.
+- [x] FN FAL Battle Rifle (`MarzGuns.FAL`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right
+- [x] FN FNC Assault Rifle (`MarzGuns.FNC`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up
+- [x] G3 Battle Rifle (`MarzGuns.G3`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Can attach a bayonet.
+- [x] G36 Assault Rifle (`MarzGuns.G36`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount
+- [x] G36C Assault Rifle (`MarzGuns.G36C`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount
+- [x] Glock-17 (`MarzGuns.GLOCK17`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: Pistol Muzzle Mount
+- [x] Glock-17 17Rds 9x19mm Magazine (`MarzGuns.9x19Magazine17_GLOCK17`): Uses 9x19mm rounds.
+- [x] Heckler & Koch USP (`MarzGuns.USP`): Uses .45 rounds. / Compatible Mounting Device: Colt Mount / Compatible Muzzle Device: .45 Muzzle Mount
+- [x] Heckler & Koch VP70M (`MarzGuns.VP70M`): Uses 9x19mm rounds.
+- [x] Ingram MAC-10 Machine Pistol (`MarzGuns.MAC10`): Uses .45 rounds. / Compatible Muzzle Device: .45 Muzzle Mount
+- [x] Karabiner 98k Bayonet (`MarzGuns.K98_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
+- [x] LP Tactical Light (`MarzGuns.LP_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
+- [x] M1 Bayonet (`MarzGuns.M1_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
+- [x] M1 Garand Battle Rifle (`MarzGuns.M1_GARAND`): Uses .30-06 Springfield rounds. / Can attach a bayonet.
+- [x] M14 Battle Rifle (`MarzGuns.M14`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down / Can attach a bayonet.
+- [x] M16A1 Assault Rifle (`MarzGuns.M16A1`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down / Compatible Muzzle Device: AR Muzzle Mount / Can attach a bayonet.
+- [x] M16A2 Assault Rifle (`MarzGuns.M16A2`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount / Can attach a bayonet.
+- [x] M16A2 Assault Rifle with M203 (`MarzGuns.M16A2_M203`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up / Compatible Muzzle Device: AR Muzzle Mount
+- [x] M16A3 Assault Rifle (`MarzGuns.M16A3`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount / Can attach a bayonet.
+- [x] M1903 Springfield Bolt Rifle (`MarzGuns.M1903`): Uses .30-06 Springfield rounds. / Compatible Mounting Device: Sniper Mount / Can attach a bayonet.
+- [x] M1905 Bayonet (`MarzGuns.M1905_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
+- [x] M24 Sniper Rifle (`MarzGuns.M24`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up
+- [x] M4A1 Assault Rifle (`MarzGuns.M4A1`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Compatible Muzzle Device: AR Muzzle Mount / Can attach a bayonet.
+- [x] M5 Bayonet (`MarzGuns.M5_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
+- [x] M60 Machine Gun (`MarzGuns.M60`): Uses .308/7.62x51mm NATO rounds.
+- [x] M9 Bayonet (`MarzGuns.M9_BAYONET`): Attachable on compatible guns. / Cannot install if a muzzle device or M203 is installed.
+- [x] MK2 Foregrip (`MarzGuns.MK2_Foregrip`): Aiming Time reduced by 25% / Critical and Hit Chance increased by 10% / Automatic fire spread reduced by 10% / Needs Screwdriver to install or remove.
+- [x] MKC Foregrip (`MarzGuns.MKC_Foregrip`): Aiming Time reduced by 5% / Critical and Hit Chance increased by 25% / Automatic fire spread reduced by 10% / Needs Screwdriver to install or remove.
+- [x] MP5 Submachine Gun (`MarzGuns.MP5`): Uses 9x19mm rounds. / Available Picatinny Slots: Up, Down, Left, Right
+- [x] MP5A2 Submachine Gun (`MarzGuns.MP5A2`): Uses 9x19mm rounds. / Available Picatinny Slots: Up, Down, Left, Right
+- [x] MP5K Submachine Gun (`MarzGuns.MP5K`): Uses 9x19mm rounds. / Available Picatinny Slots: Up
+- [x] MP5SD Submachine Gun (`MarzGuns.MP5SD`): Uses 9x19mm rounds. / Available Picatinny Slots: Up, Down, Left, Right
+- [x] Marlin 1895 Rifle (`MarzGuns.M1895`): Uses .45-70 Government rounds. / Available Picatinny Slots: Up
+- [x] Marlin Camp Carbine (`MarzGuns.CAMP_CARBINE`): Uses .45 rounds.
+- [x] Mini-14 Semi-Automatic Rifle (`MarzGuns.MINI_14`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down
+- [x] Model 70 Bolt Rifle (`MarzGuns.MODEL_70`): Uses .223/5.56x45mm NATO rounds. / Compatible Mounting Device: Sniper Mount
+- [x] Model 70 Sling (`MarzGuns.Model_70_Sling`): Reduces encumbrance. / Needs Screwdriver to install or remove.
+- [x] Mosin-Nagant Bolt Rifle (`MarzGuns.MOSIN`): Uses 7.62x54mmR rounds. / Compatible Mounting Device: Sniper Mount / Can attach a bayonet. / Compatible with 5-round stripper clip.
+- [x] Mossberg 590 Shotgun (`MarzGuns.MOSSBERG_590`): Uses 12-gauge shells. / Available Picatinny Slots: Up / Can attach a bayonet.
+- [x] PSG-1 Semi-Automatic Rifle (`MarzGuns.PSG1`): Uses .308/7.62x51mm NATO rounds. / Available Picatinny Slots: Up, Down
+- [x] Picatinny Rail (`MarzGuns.Picatinny_Rail`): Adds a rail on one of the slots of the gun. / Options will be presented in the upgrade menu / Needs Screwdriver to install or remove.
+- [x] Remington 700 Bolt Rifle (`MarzGuns.REMINGTON_700`): Uses .308/7.62x51mm NATO rounds. / Compatible Mounting Device: Sniper Mount
+- [x] Remington 700 Sling (`MarzGuns.Rem700_Sling`): Reduces encumbrance. / Needs Screwdriver to install or remove.
+- [x] Remington 870 Shotgun (`MarzGuns.REMINGTON_870`): Uses 12-gauge shells. / Available Picatinny Slots: Up / Can attach a bayonet.
+- [x] Rhino Revolver (`MarzGuns.RHINO`): Uses .38Special/.357 Magnum rounds. / Compatible with 6-round speedloader.
+- [x] SR7 Tactical Light (`MarzGuns.SR7_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
+- [x] SVD Semi-Automatic Rifle (`MarzGuns.SVD`): Uses 7.62x54mmR rounds. / Compatible Mounting Device: AK Mount / Available Picatinny Slots: Down
+- [x] Shellholder (`MarzGuns.Shellholder`): Recoil Delay reduced by 40% / Attachable on stocks. / Needs Screwdriver to install or remove.
+- [x] Sig Sauer P226 (`MarzGuns.P226`): Uses 9x19mm rounds. / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: Pistol Muzzle Mount
+- [x] Stevens 555 Barrel Sawnoff (`MarzGuns.STEVENS_555_Barrel_Sawnoff_Open`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] Stevens 555 Barrel Sawnoff (`MarzGuns.STEVENS_555_Barrel_Sawnoff_Close`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] Stolzer & Son of Kansas 2-Bore Rifle (`MarzGuns.DOUBLE_DEUCE`): Uses 2-bore rounds.
+- [x] Stub Foregrip (`MarzGuns.Stub_Foregrip`): Aiming Time reduced by 20% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 15% / Needs Screwdriver to install or remove.
+- [x] TL Tactical Light (`MarzGuns.TL_Light`): Provides Weapon Light / Aiming Time increased by 5 / Needs Screwdriver to install or remove.
+- [x] TOZ-34 Barrel Sawnoff (`MarzGuns.TOZ34_Barrel_Sawnoff_Close`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] TOZ-34 Barrel Sawnoff (`MarzGuns.TOZ34_Barrel_Sawnoff_Open`): Aiming Time reduced by 25% / Hit Chance increased by 8% / Pellet spread increased by 233% / Range reduced by 25%
+- [x] Trench Shotgun (`MarzGuns.TRENCHGUN`): Uses 12-gauge shells. / Can attach a bayonet.
+- [x] VP70M Stock (`MarzGuns.VP70M_Stock`): No Direct Stat Changes / Needs Screwdriver to install or remove.
+- [x] Winchester 1873 Rifle (`MarzGuns.W1873`): Uses .38Special/.357 Magnum rounds. / Available Picatinny Slots: Up
+- [x] Winchester 1887 Shotgun (`MarzGuns.W1887`): Uses 12-gauge shells. / Available Picatinny Slots: Up
+- [x] Winchester 1894 Rifle (`MarzGuns.W1894`): Uses .30-30 Winchester rounds. / Available Picatinny Slots: Up
+- [x] XM177 Assault Rifle (`MarzGuns.XM177`): Uses .223/5.56x45mm NATO rounds. / Available Picatinny Slots: Up, Down, Left, Right / Can attach a bayonet.
+- [x] Every laser, AimRight Laser, LRX-7 Laser, PJ-3 Laser, PX1 Laser, TR-1 Laser (`LaserMenu.lua NOTE`): Bonuses only apply when on.
 
 ### Post-93: Information lines (always shown)
 
-- [ ] 4.6x30mm DM11 Round (`GunsOfTienPost93.46x30_Bullet`): DM11 solid copper-plated steel bullet / Piercing targets / Able to hit up to 2 targets
-- [ ] 4.6x30mm Family Muzzle Mounting Device (`GunsOfTienPost93.MP7_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
-- [ ] 4.6x30mm Subsonic Round (`GunsOfTienPost93.46x30_Bullet_Subsonic`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
-- [ ] 5.7x28mm Family Muzzle Mounting Device (`GunsOfTienPost93.P90_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
-- [ ] 5.7x28mm SB193 Round (Subsonic) (`GunsOfTienPost93.57x28_Bullet_SB193`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
-- [ ] 5.7x28mm SS190 Round (`GunsOfTienPost93.57x28_Bullet`): SS190 steel and aluminium penetrator / Piercing targets / Able to hit up to 2 targets
-- [ ] 5.7x28mm SS197SR Round (Hollow Point) (`GunsOfTienPost93.57x28_Bullet_SS197SR`): Polymer tip, expands / Damage to targets increased by 15% / Critical damage increased by 10% / Does not pierce
-- [ ] Five-SeveN 20Rds 5.7x28mm Magazine (`GunsOfTienPost93.57x28Magazine20_FIVESEVEN`): Uses 5.7x28mm rounds.
-- [ ] Five-SeveN 30Rds 5.7x28mm Extended Magazine (`GunsOfTienPost93.57x28Magazine30_FIVESEVEN`): Uses 5.7x28mm rounds.
-- [ ] MP7 20Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine20_MP7`): Uses 4.6x30mm rounds.
-- [ ] MP7 30Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine30_MP7`): Uses 4.6x30mm rounds.
-- [ ] MP7 40Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine40_MP7`): Uses 4.6x30mm rounds.
-- [ ] MP7 60Rds Drum 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine60_MP7`): Uses 4.6x30mm rounds.
-- [ ] MP7A1 Submachine Gun (`GunsOfTienPost93.MP7A1`): Uses 4.6x30mm rounds. / Integrated Picatinny rails: Up, Left, Right. / Standard rounds pierce and can hit up to 2 targets.
-- [ ] MP7A2 Submachine Gun (`GunsOfTienPost93.MP7A2`): Uses 4.6x30mm rounds. / Integrated Picatinny rails: Up, Left, Right, Down. / Standard rounds pierce and can hit up to 2 targets.
-- [ ] P90 50Rds 5.7x28mm Magazine (`GunsOfTienPost93.57x28Magazine50_P90`): Uses 5.7x28mm rounds.
-- [ ] P90 Submachine Gun (`GunsOfTienPost93.P90TR`): Uses 5.7x28mm rounds. / Integrated Picatinny rails: Up, Left, Right. / 50-round magazine on top. Ejects spent cases downward. / Standard rounds pierce and can hit up to 2 targets.
-- [ ] Rotex-II Suppressor (4.6x30mm Weapons) (`GunsOfTienPost93.MP7_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
-- [ ] SFN-57 Suppressor (`GunsOfTienPost93.FIVESEVEN_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
-- [ ] SP90 Suppressor (`GunsOfTienPost93.P90_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
-- [ ] UCP 20Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine20_UCP`): Uses 4.6x30mm rounds.
-- [ ] UCP 40Rds Drum 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine40_UCP`): Uses 4.6x30mm rounds.
-- [ ] UCP Prototype (`GunsOfTienPost93.UCP`): Uses 4.6x30mm rounds. / H&K prototype, never sold (cancelled 2009). / Compatible Mounting Device: Beretta Mount. / Compatible Muzzle Device: 4.6x30mm Muzzle Mount. / Standard rounds pierce and can hit up to 2 targets.
+- [x] 4.6x30mm DM11 Round (`GunsOfTienPost93.46x30_Bullet`): DM11 solid copper-plated steel bullet / Piercing targets / Able to hit up to 2 targets
+- [x] 4.6x30mm Family Muzzle Mounting Device (`GunsOfTienPost93.MP7_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
+- [x] 4.6x30mm Subsonic Round (`GunsOfTienPost93.46x30_Bullet_Subsonic`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
+- [x] 5.7x28mm Family Muzzle Mounting Device (`GunsOfTienPost93.P90_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
+- [x] 5.7x28mm SB193 Round (Subsonic) (`GunsOfTienPost93.57x28_Bullet_SB193`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
+- [x] 5.7x28mm SS190 Round (`GunsOfTienPost93.57x28_Bullet`): SS190 steel and aluminium penetrator / Piercing targets / Able to hit up to 2 targets
+- [x] 5.7x28mm SS197SR Round (Hollow Point) (`GunsOfTienPost93.57x28_Bullet_SS197SR`): Polymer tip, expands / Damage to targets increased by 15% / Critical damage increased by 10% / Does not pierce
+- [x] Five-SeveN 20Rds 5.7x28mm Magazine (`GunsOfTienPost93.57x28Magazine20_FIVESEVEN`): Uses 5.7x28mm rounds.
+- [x] Five-SeveN 30Rds 5.7x28mm Extended Magazine (`GunsOfTienPost93.57x28Magazine30_FIVESEVEN`): Uses 5.7x28mm rounds.
+- [x] MP7 20Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine20_MP7`): Uses 4.6x30mm rounds.
+- [x] MP7 30Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine30_MP7`): Uses 4.6x30mm rounds.
+- [x] MP7 40Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine40_MP7`): Uses 4.6x30mm rounds.
+- [x] MP7 60Rds Drum 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine60_MP7`): Uses 4.6x30mm rounds.
+- [x] MP7A1 Submachine Gun (`GunsOfTienPost93.MP7A1`): Uses 4.6x30mm rounds. / Integrated Picatinny rails: Up, Left, Right / Standard rounds pierce and can hit up to 2 targets.
+- [x] MP7A2 Submachine Gun (`GunsOfTienPost93.MP7A2`): Uses 4.6x30mm rounds. / Integrated Picatinny rails: Up, Left, Right, Down / Standard rounds pierce and can hit up to 2 targets.
+- [x] P90 50Rds 5.7x28mm Magazine (`GunsOfTienPost93.57x28Magazine50_P90`): Uses 5.7x28mm rounds.
+- [x] P90 Submachine Gun (`GunsOfTienPost93.P90TR`): Uses 5.7x28mm rounds. / Integrated Picatinny rails: Up, Left, Right / 50-round magazine on top. Ejects spent cases downward. / Standard rounds pierce and can hit up to 2 targets.
+- [x] Rotex-II Suppressor (4.6x30mm Weapons) (`GunsOfTienPost93.MP7_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
+- [x] SFN-57 Suppressor (`GunsOfTienPost93.FIVESEVEN_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
+- [x] SP90 Suppressor (`GunsOfTienPost93.P90_Suppressor`): Sound Radius and Volume reduced by 70% / Damage to targets decreased by 10% / Removes Muzzle Flash / Needs its Muzzle Mount Device
+- [x] UCP 20Rds 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine20_UCP`): Uses 4.6x30mm rounds.
+- [x] UCP 40Rds Drum 4.6x30mm Magazine (`GunsOfTienPost93.46x30Magazine40_UCP`): Uses 4.6x30mm rounds.
+- [x] UCP Prototype (`GunsOfTienPost93.UCP`): Uses 4.6x30mm rounds. / H&K prototype / Compatible Mounting Device: Beretta Mount / Compatible Muzzle Device: 4.6x30mm Muzzle Mount / Standard rounds pierce and can hit up to 2 targets.
 
 ### Guns: lines shown only while that part is fitted (after the gun's own lines)
 
-- [ ] AKS-74U Integrated Stock (Deployed) (`MarzGuns.AKS74U_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 25% / Automatic fire spread reduced by 25%
-- [ ] AS VAL Integrated Stock (Deployed) (`MarzGuns.ASVAL_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 15% / Automatic fire spread reduced by 25%
-- [ ] BAR Integrated Bipod (Deployed) (`MarzGuns.BAR_Integrated_Bipod_Deployed`): Folding bipod deployed: / Aiming Time increased by 20% / Critical and Hit Chance increased by 25%
-- [ ] CAR-15 Integrated Stock (Deployed) (`MarzGuns.CAR15_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 15%
-- [ ] Double Barrel Stock Sawnoff (`GunsOfTien.DOUBLEBARREL_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
-- [ ] FN FNC Integrated Stock (Deployed) (`MarzGuns.FNC_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 5% / Hit Chance increased by 15%
-- [ ] G36 Integrated Stock (Deployed) (`MarzGuns.G36_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 15%
-- [ ] G36C Integrated Stock (Deployed) (`MarzGuns.G36C_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15% / Automatic fire spread reduced by 25%
-- [ ] M60 Integrated Bipod (Deployed) (`MarzGuns.M60_Integrated_Bipod_Deployed`): Folding bipod deployed: / Aiming Time increased by 30% / Critical and Hit Chance increased by 10% / No endurance used to fire
-- [ ] M60 Integrated Bipod (Folded) (`MarzGuns.M60_Integrated_Bipod_Folded`): Folding bipod folded: / Hit Chance reduced by 20% / Firing uses endurance
-- [ ] MAC10 Integrated Stock (Deployed) (`MarzGuns.MAC10_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 10%
-- [ ] MP5 Integrated Stock (Deployed) (`MarzGuns.MP5_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
-- [ ] MP5SD Integrated Stock (Deployed) (`MarzGuns.MP5SD_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
-- [ ] MP7 Integrated Foregrip (Deployed) (`GunsOfTienPost93.MP7A1_Integrated_Foregrip_Deployed`): Folding front grip unfolded: / Aiming Time reduced by 20% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 15%
-- [ ] MP7 Integrated Stock (Deployed) (`GunsOfTienPost93.MP7A1_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
-- [ ] SPAS-12 Integrated Stock (Deployed) (`MarzGuns.SPAS12_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 10%
-- [ ] SPAS-12 Mode Selector (Pump) (`MarzGuns.SPAS12_Selector_Pump`): Pump action: / Needs racking every shot
-- [ ] SPAS-12 Mode Selector (Semi) (`MarzGuns.SPAS12_Selector_Semi`): Semi-automatic: / Jam Chance increased by 60% / Recoil Delay reduced by 50%
-- [ ] Stevens 555 Stock Sawnoff (`GunsOfTien.STEVENS_555_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
-- [ ] TOZ-34 Stock Sawnoff (`GunsOfTien.TOZ34_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
-- [ ] Sawn-off stock, also: Fits a holster. (with sawn-off barrels) / Fits a holster with sawn-off barrels. (with full barrels)
+- [x] AKS-74U Integrated Stock (Deployed) (`MarzGuns.AKS74U_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 25% / Automatic fire spread reduced by 25%
+- [x] AS VAL Integrated Stock (Deployed) (`MarzGuns.ASVAL_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 15% / Automatic fire spread reduced by 25%
+- [x] BAR Integrated Bipod (Deployed) (`MarzGuns.BAR_Integrated_Bipod_Deployed`): Folding bipod deployed: / Aiming Time increased by 20% / Critical and Hit Chance increased by 25%
+- [x] CAR-15 Integrated Stock (Deployed) (`MarzGuns.CAR15_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 15%
+- [x] Double Barrel Stock Sawnoff (`GunsOfTien.DOUBLEBARREL_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
+- [x] FN FNC Integrated Stock (Deployed) (`MarzGuns.FNC_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 5% / Hit Chance increased by 15%
+- [x] G36 Integrated Stock (Deployed) (`MarzGuns.G36_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 15% / Hit Chance increased by 15%
+- [x] G36C Integrated Stock (Deployed) (`MarzGuns.G36C_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15% / Automatic fire spread reduced by 25%
+- [x] M60 Integrated Bipod (Deployed) (`MarzGuns.M60_Integrated_Bipod_Deployed`): Folding bipod deployed: / Aiming Time increased by 30% / Critical and Hit Chance increased by 10% / No endurance used to fire
+- [x] M60 Integrated Bipod (Folded) (`MarzGuns.M60_Integrated_Bipod_Folded`): Folding bipod folded: / Hit Chance reduced by 20% / Firing uses endurance
+- [x] MAC10 Integrated Stock (Deployed) (`MarzGuns.MAC10_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 10%
+- [x] MP5 Integrated Stock (Deployed) (`MarzGuns.MP5_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
+- [x] MP5SD Integrated Stock (Deployed) (`MarzGuns.MP5SD_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
+- [x] MP7 Integrated Foregrip (Deployed) (`GunsOfTienPost93.MP7A1_Integrated_Foregrip_Deployed`): Folding front grip unfolded: / Aiming Time reduced by 20% / Critical and Hit Chance increased by 15% / Automatic fire spread reduced by 15%
+- [x] MP7 Integrated Stock (Deployed) (`GunsOfTienPost93.MP7A1_Integrated_Stock_Deployed`): Collapsible stock deployed: / Aiming Time reduced by 25% / Hit Chance increased by 15%
+- [x] SPAS-12 Integrated Stock (Deployed) (`MarzGuns.SPAS12_Integrated_Stock_Deployed`): Folding stock deployed: / Aiming Time reduced by 10% / Hit Chance increased by 10%
+- [x] SPAS-12 Mode Selector (Pump) (`MarzGuns.SPAS12_Selector_Pump`): Pump action: / Needs racking every shot
+- [x] SPAS-12 Mode Selector (Semi) (`MarzGuns.SPAS12_Selector_Semi`): Semi-automatic: / Jam Chance increased by 60% / Recoil Delay reduced by 50%
+- [x] Stevens 555 Stock Sawnoff (`GunsOfTien.STEVENS_555_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
+- [x] TOZ-34 Stock Sawnoff (`GunsOfTien.TOZ34_Stock_Sawnoff`): Sawn-off stock: / Aiming Time reduced by 25% / Hit Chance reduced by 13% / Recoil Delay increased by 30%
+- [x] Sawn-off stock, also (`Tooltips.lua FITS_HOLSTER / NEEDS_BARRELS`): Fits a holster. (with sawn-off barrels) / Fits a holster if barrels are sawed off. (with full barrels)
 
 ### Item, recipe and part-row tooltips (main mod Tooltip.json)
 
-- [ ] `Tooltip_Recipe_Make762x39SS`: Assemble 7.62x39mm US sub sonic round - 1960s
-- [ ] `Tooltip_Recipe_Produce762x39SS`: Assemble 7.62x39mm US rounds with reloading press
-- [ ] `Tooltip_Recipe_Make762x39SP`: Assemble 7.62x39mm SP soft point round - 1980s
-- [ ] `Tooltip_Recipe_Produce762x39SP`: Assemble 7.62x39mm SP rounds with reloading press
-- [ ] `Tooltip_Recipe_Make9x19ParaSS`: Assemble 9mm Luger SS 147gr sub sonic round - 1988
-- [ ] `Tooltip_Recipe_Produce9x19ParaSS`: Assemble 9mm Luger SS rounds with reloading press
-- [ ] `Tooltip_Recipe_Make9x19ParaHP`: Assemble 9mm Luger HP hollow point round - 1970s
-- [ ] `Tooltip_Recipe_Produce9x19ParaHP`: Assemble 9mm Luger HP rounds with reloading press
-- [ ] `Tooltip_Recipe_Make9x19ParaPPP`: Assemble 9mm Luger +P+ high pressure round - 1980s
-- [ ] `Tooltip_Recipe_Produce9x19ParaPPP`: Assemble 9mm Luger +P+ rounds with reloading press
-- [ ] `Tooltip_Recipe_Make45ACPHP`: Assemble .45 ACP HP hollow point round - 1970s
-- [ ] `Tooltip_Recipe_Produce45ACPHP`: Assemble .45 ACP HP rounds with reloading press
-- [ ] `Tooltip_Recipe_Make45ACPP`: Assemble .45 ACP +P high pressure round - 1980s
-- [ ] `Tooltip_Recipe_Produce45ACPP`: Assemble .45 ACP +P rounds with reloading press
-- [ ] `Tooltip_Recipe_Make3006SpringSP`: Assemble .30-06 Springfield SP soft point round - 1910s
-- [ ] `Tooltip_Recipe_Produce3006SpringSP`: Assemble .30-06 Springfield SP rounds with reloading press
-- [ ] `Tooltip_Recipe_Make308WinSP`: Assemble .308 Winchester SP soft point round - 1952
-- [ ] `Tooltip_Recipe_Produce308WinSP`: Assemble .308 Winchester SP rounds with reloading press
-- [ ] `Tooltip_Recipe_Make12Bird`: Assemble 12 bore birdshot (aka. 12-gauge) - 18.5mm - 1860
-- [ ] `Tooltip_Recipe_Produce12Bird`: Assemble 12 bore birdshot rounds with reloading press
-- [ ] `Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet`: File the jacket off the nose of a standard rifle bullet so the lead shows
-- [ ] `Tooltip_Recipe_GunsOfTien_MakeBirdshot`: Pour molten iron from small iron items through a strainer into water
-- [ ] `Tooltip_Recipe_GunsOfTien_ProduceBirdshot`: Pour molten iron from a crucible through a strainer into water
-- [ ] `Tooltip_Item_GunsOfTien_BulletRifleSSP`: Small size soft point rifle bullet. Craftable from standard bullets with a file
-- [ ] `Tooltip_Item_GunsOfTien_BulletRifleMSP`: Medium size soft point rifle bullet. Craftable from standard bullets with a file
-- [ ] `Tooltip_Item_GunsOfTien_Birdshot`: Birdshot pellets for shotgun shells. Poured through a strainer into water at any furnace
-- [ ] `Tooltip_Item_GunsOfTien_BoxBulletsRifleSSP`: Box of 25 Bullets Rifle S SP
-- [ ] `Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP`: Box of 25 Bullets Rifle M SP
-- [ ] `Tooltip_Item_GunsOfTien_BoxBirdshot`: Box of 25 Birdshot Pellets
-- [ ] `Tooltip_weapon_LaserRifle`: Laser
-- [ ] `Tooltip_weapon_LightRifle`: Weapon Light
-- [ ] `Tooltip_weapon_BayonetIntegrated`: Bayonet (Integrated)
-- [ ] `Tooltip_weapon_BayonetKnife`: Bayonet
-- [ ] `Tooltip_weapon_BoosterScope`: Magnifier
-- [ ] `Tooltip_weapon_Shellholder`: Shell Holder
-- [ ] `Tooltip_weapon_UnderbarrelChamber`: Underbarrel Chamber
-- [ ] `Tooltip_weapon_Animated1`: Belt Round 1
-- [ ] `Tooltip_weapon_Animated2`: Belt Round 2
-- [ ] `Tooltip_weapon_Animated3`: Belt Round 3
-- [ ] `Tooltip_weapon_Animated4`: Belt Round 4
-- [ ] `Tooltip_weapon_Animated5`: Belt Round 5
-- [ ] `Tooltip_weapon_Animated6`: Belt Round 6
-- [ ] `Tooltip_weapon_Animated7`: Belt Round 7
-- [ ] `Tooltip_weapon_Animated8`: Belt Round 8
-- [ ] `Tooltip_weapon_Animated9`: Belt Round 9
-- [ ] `Tooltip_DOUBLEBARREL_Barrel_Close`: Full-length barrels for the double-barrel shotgun.
-- [ ] `Tooltip_DOUBLEBARREL_Barrel_Open`: Full-length barrels for the double-barrel shotgun.
-- [ ] `Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Close`: Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced by 25%, Hit Chance increased by 8%, pellet spread over three times wider, range reduced by 25%.
-- [ ] `Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open`: Sawn-off barrels for the double-barrel shotgun: Aiming Time reduced by 25%, Hit Chance increased by 8%, pellet spread over three times wider, range reduced by 25%.
-- [ ] `Tooltip_DOUBLE_DEUCE_Barrel_Close`: Full-length barrels for the Double Deuce.
-- [ ] `Tooltip_DOUBLE_DEUCE_Barrel_Open`: Full-length barrels for the Double Deuce.
-- [ ] `Tooltip_STEVENS_555_Barrel_Close`: Full-length barrels for the Stevens 555.
-- [ ] `Tooltip_STEVENS_555_Barrel_Open`: Full-length barrels for the Stevens 555.
-- [ ] `Tooltip_STEVENS_555_Barrel_Sawnoff_Close`: Sawn-off barrels for the Stevens 555: Aiming Time reduced by 25%, Hit Chance increased by 8%, pellet spread over three times wider, range reduced by 25%.
-- [ ] `Tooltip_TOZ34_Barrel_Close`: Full-length barrels for the TOZ-34.
-- [ ] `Tooltip_TOZ34_Barrel_Open`: Full-length barrels for the TOZ-34.
-- [ ] `Tooltip_TOZ34_Barrel_Sawnoff_Close`: Sawn-off barrels for the TOZ-34: Aiming Time reduced by 25%, Hit Chance increased by 8%, pellet spread over three times wider, range reduced by 25%.
-- [ ] `Tooltip_Rail`: Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and shotgun from the firearm radial menu.
-- [ ] `Tooltip_weapon_LaserBeam`: Laser Beam
-- [ ] `Tooltip_Recipe_GunsOfTien_SawOffShotgunStock`: Saws the stock off behind the pistol grip. A shell holder comes off with it.
-- [ ] `Tooltip_GunsOfTien_StockOffcut`: Scrap wood. Burns, or makes charcoal.
-- [ ] `Tooltip_GunsOfTien_BarrelOffcuts`: Scrap steel. Smelts into a steel bar.
+- [x] `Tooltip_Recipe_Make762x39SS`: Assemble 7.62x39mm US sub sonic round - 1960s.
+- [x] `Tooltip_Recipe_Produce762x39SS`: Assemble 7.62x39mm US rounds with reloading press.
+- [x] `Tooltip_Recipe_Make762x39SP`: Assemble 7.62x39mm SP soft point round - 1980s.
+- [x] `Tooltip_Recipe_Produce762x39SP`: Assemble 7.62x39mm SP rounds with reloading press.
+- [x] `Tooltip_Recipe_Make9x19ParaSS`: Assemble 9mm Luger SS 147gr sub sonic round - 1988.
+- [x] `Tooltip_Recipe_Produce9x19ParaSS`: Assemble 9mm Luger SS rounds with reloading press.
+- [x] `Tooltip_Recipe_Make9x19ParaHP`: Assemble 9mm Luger HP hollow point round - 1970s.
+- [x] `Tooltip_Recipe_Produce9x19ParaHP`: Assemble 9mm Luger HP rounds with reloading press.
+- [x] `Tooltip_Recipe_Make9x19ParaPPP`: Assemble 9mm Luger +P+ high pressure round - 1980s.
+- [x] `Tooltip_Recipe_Produce9x19ParaPPP`: Assemble 9mm Luger +P+ rounds with reloading press.
+- [x] `Tooltip_Recipe_Make45ACPHP`: Assemble .45 ACP HP hollow point round - 1970s.
+- [x] `Tooltip_Recipe_Produce45ACPHP`: Assemble .45 ACP HP rounds with reloading press.
+- [x] `Tooltip_Recipe_Make45ACPP`: Assemble .45 ACP +P high pressure round - 1980s.
+- [x] `Tooltip_Recipe_Produce45ACPP`: Assemble .45 ACP +P rounds with reloading press.
+- [x] `Tooltip_Recipe_Make3006SpringSP`: Assemble .30-06 Springfield SP soft point round - 1910s.
+- [x] `Tooltip_Recipe_Produce3006SpringSP`: Assemble .30-06 Springfield SP rounds with reloading press.
+- [x] `Tooltip_Recipe_Make308WinSP`: Assemble .308 Winchester SP soft point round - 1952.
+- [x] `Tooltip_Recipe_Produce308WinSP`: Assemble .308 Winchester SP rounds with reloading press.
+- [x] `Tooltip_Recipe_Make12Bird`: Assemble 12 bore birdshot (aka. 12-gauge) - 18.5mm - 1860.
+- [x] `Tooltip_Recipe_Produce12Bird`: Assemble 12 bore birdshot rounds with reloading press.
+- [x] `Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet`: File the jacket off the nose of a standard rifle bullet so the lead shows.
+- [x] `Tooltip_Recipe_GunsOfTien_MakeBirdshot`: Pour molten iron from small iron items through a strainer into water.
+- [x] `Tooltip_Recipe_GunsOfTien_ProduceBirdshot`: Pour molten iron from a crucible through a strainer into water.
+- [x] `Tooltip_Item_GunsOfTien_BulletRifleSSP`: Small size soft point rifle bullet. Craftable from standard bullets with a file.
+- [x] `Tooltip_Item_GunsOfTien_BulletRifleMSP`: Medium size soft point rifle bullet. Craftable from standard bullets with a file.
+- [x] `Tooltip_Item_GunsOfTien_Birdshot`: Birdshot pellets for shotgun shells. Poured through a strainer into water at any furnace.
+- [x] `Tooltip_Item_GunsOfTien_BoxBulletsRifleSSP`: Box of 25 Bullets Rifle S SP
+- [x] `Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP`: Box of 25 Bullets Rifle M SP
+- [x] `Tooltip_Item_GunsOfTien_BoxBirdshot`: Box of 25 Birdshot Pellets
+- [x] `Tooltip_weapon_LaserRifle`: Laser
+- [x] `Tooltip_weapon_LightRifle`: Weapon Light
+- [x] `Tooltip_weapon_BayonetIntegrated`: Bayonet (Integrated)
+- [x] `Tooltip_weapon_BayonetKnife`: Bayonet
+- [x] `Tooltip_weapon_BoosterScope`: Magnifier
+- [x] `Tooltip_weapon_Shellholder`: Shell Holder
+- [x] `Tooltip_weapon_UnderbarrelChamber`: Underbarrel Chamber
+- [x] `Tooltip_weapon_Animated1`: Belt Round 1
+- [x] `Tooltip_weapon_Animated2`: Belt Round 2
+- [x] `Tooltip_weapon_Animated3`: Belt Round 3
+- [x] `Tooltip_weapon_Animated4`: Belt Round 4
+- [x] `Tooltip_weapon_Animated5`: Belt Round 5
+- [x] `Tooltip_weapon_Animated6`: Belt Round 6
+- [x] `Tooltip_weapon_Animated7`: Belt Round 7
+- [x] `Tooltip_weapon_Animated8`: Belt Round 8
+- [x] `Tooltip_weapon_Animated9`: Belt Round 9
+- [x] `Tooltip_DOUBLEBARREL_Barrel_Close`: Full-length barrels for the double-barrel shotgun.
+- [x] `Tooltip_DOUBLEBARREL_Barrel_Open`: Full-length barrels for the double-barrel shotgun.
+- [x] `Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Close`: Sawn-off barrels for the double-barrel shotgun.
+- [x] `Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open`: Sawn-off barrels for the double-barrel shotgun.
+- [x] `Tooltip_DOUBLE_DEUCE_Barrel_Close`: Full-length barrels for the Double Deuce.
+- [x] `Tooltip_DOUBLE_DEUCE_Barrel_Open`: Full-length barrels for the Double Deuce.
+- [x] `Tooltip_STEVENS_555_Barrel_Close`: Full-length barrels for the Stevens 555.
+- [x] `Tooltip_STEVENS_555_Barrel_Open`: Full-length barrels for the Stevens 555.
+- [x] `Tooltip_STEVENS_555_Barrel_Sawnoff_Close`: Sawn-off barrels for the Stevens 555.
+- [x] `Tooltip_TOZ34_Barrel_Close`: Full-length barrels for the TOZ-34.
+- [x] `Tooltip_TOZ34_Barrel_Open`: Full-length barrels for the TOZ-34.
+- [x] `Tooltip_TOZ34_Barrel_Sawnoff_Close`: Sawn-off barrels for the TOZ-34.
+- [x] `Tooltip_Rail`: Underbarrel 12 gauge shotgun for the M16A2, 5 buckshot shells. Switch between rifle and shotgun from the firearm radial menu.
+- [x] `Tooltip_weapon_LaserBeam`: Laser Beam
+- [x] `Tooltip_Recipe_GunsOfTien_SawOffShotgunStock`: Saws the stock off behind the grip.
+- [x] `Tooltip_GunsOfTien_StockOffcut`: As good as scrap wood.
+- [x] `Tooltip_GunsOfTien_BarrelOffcuts`: As good as a steel bar.
 
 ### Post-93 Tooltip.json
 
-- [ ] `Tooltip_Recipe_Make46x30SS`: Assemble 4.6x30mm SS sub sonic round - 2001
-- [ ] `Tooltip_Recipe_Produce46x30SS`: Assemble 4.6x30mm SS rounds with reloading press
-- [ ] `Tooltip_Recipe_Make57x28SS`: Assemble 5.7x28mm SB193 sub sonic round - 1990s
-- [ ] `Tooltip_Recipe_Produce57x28SS`: Assemble 5.7x28mm SB193 rounds with reloading press
-- [ ] `Tooltip_Recipe_Make57x28SR`: Assemble 5.7x28mm SS197SR polymer tip round - 2000s
-- [ ] `Tooltip_Recipe_Produce57x28SR`: Assemble 5.7x28mm SS197SR rounds with reloading press
-- [ ] `Tooltip_weapon_ForegripIntegrated`: Foregrip (Integrated)
+- [x] `Tooltip_Recipe_Make46x30SS`: Assemble 4.6x30mm SS sub sonic round - 2001.
+- [x] `Tooltip_Recipe_Produce46x30SS`: Assemble 4.6x30mm SS rounds with reloading press.
+- [x] `Tooltip_Recipe_Make57x28SS`: Assemble 5.7x28mm SB193 sub sonic round - 1990s.
+- [x] `Tooltip_Recipe_Produce57x28SS`: Assemble 5.7x28mm SB193 rounds with reloading press.
+- [x] `Tooltip_Recipe_Make57x28SR`: Assemble 5.7x28mm SS197SR polymer tip round - 2000s.
+- [x] `Tooltip_Recipe_Produce57x28SR`: Assemble 5.7x28mm SS197SR rounds with reloading press.
+- [x] `Tooltip_weapon_ForegripIntegrated`: Foregrip (Integrated)
 
 ### Menu and option texts (main mod IG_UI.json)
 
-- [ ] `IGUI_GunsOfTien_LaserOn`: Turn Laser On
-- [ ] `IGUI_GunsOfTien_LaserOff`: Turn Laser Off
-- [ ] `IGUI_GunsOfTien_LaserOnDesc`: Switch the laser on. It shows a short red beam and its aiming bonus applies. Uses its battery while on.
-- [ ] `IGUI_GunsOfTien_LaserOffDesc`: Switch the laser off to save its battery. No aiming bonus while off.
-- [ ] `IGUI_GunsOfTien_LaserEmpty`: The laser's battery is empty. Take the laser off the gun and insert a new battery, as with a weapon light.
-- [ ] `IGUI_ItemCat_Casings`: Casings
-- [ ] `IGUI_ClickToRemove`: Click to remove
-- [ ] `IGUI_SelectAmmunition`: Select Ammunition
+- [x] `IGUI_GunsOfTien_LaserOn`: Turn Laser On
+- [x] `IGUI_GunsOfTien_LaserOff`: Turn Laser Off
+- [x] `IGUI_GunsOfTien_LaserOnDesc`: Switch the laser on. Aiming bonuses apply.
+- [x] `IGUI_GunsOfTien_LaserOffDesc`: Switch the laser off. No aiming bonus while off.
+- [x] `IGUI_GunsOfTien_LaserEmpty`: The laser's battery is empty. Take the laser off the gun and insert a new battery.
+- [x] `IGUI_ItemCat_Casings`: Casings
+- [x] `IGUI_ClickToRemove`: Click to remove
+- [x] `IGUI_SelectAmmunition`: Select Ammunition
 
 ### Post-93 IG_UI.json
 
-- [ ] `IGUI_GunsOfTienPost93_FoldForegrip`: Fold Foregrip
-- [ ] `IGUI_GunsOfTienPost93_UnfoldForegrip`: Unfold Foregrip
-- [ ] `IGUI_GunsOfTienPost93_FoldForegripDesc`: Fold the front grip up under the receiver.
-- [ ] `IGUI_GunsOfTienPost93_UnfoldForegripDesc`: Swing the front grip down for a steadier hold.
+- [x] `IGUI_GunsOfTienPost93_FoldForegrip`: Fold Foregrip
+- [x] `IGUI_GunsOfTienPost93_UnfoldForegrip`: Unfold Foregrip
+- [x] `IGUI_GunsOfTienPost93_FoldForegripDesc`: Fold the front grip up under the receiver.
+- [x] `IGUI_GunsOfTienPost93_UnfoldForegripDesc`: Swing the front grip down for a steadier hold.
 
 ### Sandbox options (main mod Sandbox.json)
 
-- [ ] `Sandbox_GunsOfTien`: Guns of Tien
-- [ ] `Sandbox_GunsOfTien_RealisticPiercing`: Adjusted Piercing
-- [ ] `Sandbox_GunsOfTien_RealisticPiercing_tooltip`: Plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds can pass through a zombie and hit the one behind it in every gun that fires them, as they would in reality. Guns of Marz lets only some of those guns pierce. Soft points never pierce but hit harder, so choosing between them is always a trade-off. Plain .30-30 rounds are flat-nosed soft points in reality (pointed bullets are unsafe in a tube magazine), so they no longer pierce. Off = Guns of Marz's own piercing.
-- [ ] `Sandbox_GunsOfTien_SubsonicRackRule`: 7.62x39mm US Subsonic Cycling
-- [ ] `Sandbox_GunsOfTien_SubsonicRackRule_tooltip`: The Soviet US subsonic round burns too little powder to work an AK's gas system, so the gun has to be racked by hand after every shot. A PBS-1 suppressor traps gas and raises the pressure in the barrel, which pushes enough gas into the gas port to cycle the gun. The round and the suppressor were made as a pair.
-- [ ] `Sandbox_GunsOfTien_SubsonicRackRule_option1`: Always rack after every shot
-- [ ] `Sandbox_GunsOfTien_SubsonicRackRule_option2`: Rack unless a PBS-1 is fitted
-- [ ] `Sandbox_GunsOfTien_SubsonicRackRule_option3`: Never rack
+- [x] `Sandbox_GunsOfTien`: Guns of Tien
+- [x] `Sandbox_GunsOfTien_RealisticPiercing`: Adjusted Piercing
+- [x] `Sandbox_GunsOfTien_RealisticPiercing_tooltip`: Plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds can pass through a zombie and hit the one behind it in every gun that fires them, as they would in reality. Guns of Marz lets only some of those guns pierce. Soft points never pierce but hit harder, so choosing between them is always a trade-off. Plain .30-30 rounds are flat-nosed soft points in reality (pointed bullets are unsafe in a tube magazine), so they no longer pierce. Off = Guns of Marz's own piercing.
+- [x] `Sandbox_GunsOfTien_SubsonicRackRule`: 7.62x39mm US Subsonic Cycling
+- [x] `Sandbox_GunsOfTien_SubsonicRackRule_tooltip`: The Soviet US subsonic round burns too little powder to work an AK's gas system, so the gun has to be racked by hand after every shot. A PBS-1 suppressor traps gas and raises the pressure in the barrel, which pushes enough gas into the gas port to cycle the gun. The round and the suppressor were made as a pair.
+- [x] `Sandbox_GunsOfTien_SubsonicRackRule_option1`: Always rack after every shot
+- [x] `Sandbox_GunsOfTien_SubsonicRackRule_option2`: Rack unless a PBS-1 is fitted
+- [x] `Sandbox_GunsOfTien_SubsonicRackRule_option3`: Never rack
 
 ## Post-93 sub-mod `GoMExtensionGunsOfTienPost93` — in progress
 
@@ -382,12 +418,12 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       DM11 / SS190 boxes and cartons, now also cartons beside vanilla 9mm cartons in police / SWAT / gun stores), the
       high-capacity magazines in GoM's tactical high-cap spawner. To check in game: no special loads in loot, DM11 /
       SS190 cartons and loose drums turn up; nothing of the Five-seveN / UCP in houses.
-- [ ] Lasers (2026-10-18): Turn Laser On / Off from the gun's menu and the radial (its own icons); the short beam part on the laser's lens (GoM rifles,
+- [x] Lasers (2026-10-18): Turn Laser On / Off from the gun's menu and the radial (its own icons); the short beam part on the laser's lens (GoM rifles,
       pistols, MP7 / P90; solid red narrowing to a point, the same length on a lit floor and in the dark; does the unlit shader
       gunsoftien_laser load from the mod's media/shaders, so it stays bright at night), on a slung gun, for another player in MP; the bonus only while on (gun tooltip stats); drain and the
       empty switch-off; a picked-up laser shows a full Remaining bar within a game minute; Remove Battery then Insert
       Battery on a detached laser (its right-click menu offers only what can be done now: Remove while charged, Insert
       while empty with a charged battery carried; the laser stays empty after Remove; in MP too, seen only in SP so far); Dismantle Simple Electronic Item on a laser
       (a screwdriver, gives Electronics Scrap); the new tooltip lines and part-row names.
-- [ ] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
+- [x] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
 

@@ -29,7 +29,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 - **Writing in game texts** (user, 2026-10-19, both mods): tooltips, Information lines, sandbox and UI strings never
   join sentences with a semicolon (a full stop and a new sentence instead), and a colon only introduces a list
-  ("Takes: ..."; "Does not pierce", not "Expands: never pierces"). **Gun lines in GoM's attachment style** (user:
+  ("Takes: ..."; "Does not pierce", not "Expands: never pierces"). A "Subject: Detail" line never ends with a full
+  stop ("Compatible Muzzle Device: AR Muzzle Mount"; user, 2026-10-19), while a text that is a sentence always
+  does, recipe tooltips included ("Assemble ... with reloading press.", "File the jacket off ... so the lead
+  shows."; Ammo Maker writes its own without one); labels (recipe and menu names, part names, sandbox names and
+  choices) and Information stat lines never do; GoM's own such lines lose theirs at run time (`dropAllSubjectStops` in client
+  `GunsOfTien/Tooltips.lua`, at file load and on the first tick, so Post-93's count too). **Gun lines in GoM's attachment style** (user:
   "the way GoM lists the buffs and debuffs is better"): a heading per state ("Folding stock deployed:", "Folded:",
   "Pump action:", "Sawn-off stock:") and one effect per line ("Aiming Time reduced by 15%"), never one packed
   sentence; gen_handling_tooltips.py `line()` writes the stock / bipod / selector lines that way. **Compact, in
@@ -37,9 +42,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   and fix some spellings and grammar"): one fact per line, stat lines without a full stop, GoM's own lines kept but
   spelt right; no explanations ("Does not pierce", not "Expands, so it never pierces"; "Needs racking every shot";
   bayonets "Attachable on compatible guns.", guns "Can attach a bayonet.", no stat lists where the game shows them).
-  The break-action barrels' item tooltips (Tooltip.json, "Sawn-off barrels for the TOZ-34: Aiming Time reduced by
-  25%, ...") keep their own sentence wording, not Information lines (user, 2026-10-19: "the attachments have their
-  own wording"). Long Information
+  The break-action barrels' item tooltips (Tooltip.json) are one sentence ("Sawn-off barrels for the TOZ-34."); the
+  sawn-off barrels' stats are Information lines in the attachment format, one effect per line (client
+  `GunsOfTien/Tooltips.lua` `SAWN_BARRELS`; user, 2026-10-19, replacing the earlier one-sentence stat list). Long Information
   lines are wrapped by ZomboidFixesB42's GoM tooltip fix (`*_GoMTooltips.lua`), not by breaking them up here.
 
 - **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):

@@ -274,8 +274,9 @@ def ammomaker():
     for name, label, desc in AMMOMAKER_TYPES:
         recipe_names[f"Make{name}"] = f"Make {label}"
         recipe_names[f"Produce{name}"] = f"Produce {label}"
-        tooltips[f"Tooltip_Recipe_Make{name}"] = f"Assemble {desc}"
-        tooltips[f"Tooltip_Recipe_Produce{name}"] = f"Assemble {label} rounds with reloading press"
+        # sentences end with a full stop (user, 2026-10-19), unlike Ammo Maker's own recipe tooltips
+        tooltips[f"Tooltip_Recipe_Make{name}"] = f"Assemble {desc}."
+        tooltips[f"Tooltip_Recipe_Produce{name}"] = f"Assemble {label} rounds with reloading press."
     write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipe_names, indent=2) + '\n')
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')
 

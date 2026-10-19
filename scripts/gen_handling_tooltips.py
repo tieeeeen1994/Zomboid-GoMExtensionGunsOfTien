@@ -225,7 +225,7 @@ def info_rows(script, gom_lines, tool_of, names):
             continue
         tool = tool_of.get(p.get("parttype"))
         if p.get("parttype") == "Sling":
-            rows.append((part, "", "Rifles weigh less."))
+            rows.append((part, "", "Reduces encumbrance."))
         elif p.get("parttype") == "Stock":
             rows.append((part, "", "No Direct Stat Changes"))
         else:
@@ -258,7 +258,8 @@ def info_rows(script, gom_lines, tool_of, names):
                               if other in [x.strip() for x in r.get("mounton", "").split(";")]}
                     want = "RailUp" if "Mounting" in prefix else "CanonMount"
                     if line and any(script[q].get("parttype") == want for q in mine & theirs):
-                        rows.append((item, "", line))
+                        # "Subject: Detail" lines end without a full stop (user, 2026-10-19)
+                        rows.append((item, "", line.rstrip(".")))
                         break
     return rows, part_rows
 

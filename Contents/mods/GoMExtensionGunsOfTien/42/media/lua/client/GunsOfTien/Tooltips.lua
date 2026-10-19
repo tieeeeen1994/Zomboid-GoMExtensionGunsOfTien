@@ -35,8 +35,22 @@ local SAWN = {
 for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
     STATES["GunsOfTien." .. gun .. "_Stock_Sawnoff"] = SAWN
 end
+-- the sawn-off barrels, in GoM's attachment style (user, 2026-10-19). GoM's stats on the Double Barrel's,
+-- SawnStock.lua's copy on the other two: Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the guns'
+-- 40 / 65 / 0.6 / 20. GoM gives these parts no lines of its own.
+local SAWN_BARRELS = {
+    "Aiming Time reduced by 25%",
+    "Hit Chance increased by 8%",
+    "Pellet spread increased by 233%",
+    "Range reduced by 25%",
+}
+for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
+    for _, side in ipairs({ "Close", "Open" }) do
+        lines["MarzGuns." .. gun .. "_Barrel_Sawnoff_" .. side] = SAWN_BARRELS
+    end
+end
 local FITS_HOLSTER = "Fits a holster."
-local NEEDS_BARRELS = "Fits a holster with sawn-off barrels."
+local NEEDS_BARRELS = "Fits a holster if barrels are sawed off."
 
 local base = {}        -- gun type -> GoM's own lines, taken the first time a gun of that type has state lines
 
@@ -72,6 +86,28 @@ local function setLines(item)
     lines[fullType] = #list > 0 and list or nil
 end
 
+--- "Subject: Detail" lines end without a full stop (user, 2026-10-19), GoM's own included ("Compatible Muzzle
+--- Device: AR Muzzle Mount."). A line with a second sentence on either side of the colon is left as it is.
+local function dropSubjectStops(list)
+    for i, line in ipairs(list) do
+        local subject, detail
+        if type(line) == "string" then subject, detail = line:match("^([^:]+): (.+)%.$") end
+        if subject and not subject:find("%. ") and not detail:find("%. ") and not detail:find(":") then
+            list[i] = subject .. ": " .. detail
+        end
+    end
+end
+
+local function dropAllSubjectStops()
+    for _, tbl in ipairs({ lines, STATES }) do
+        for _, list in pairs(tbl) do
+            if type(list) == "table" then dropSubjectStops(list) end
+        end
+    end
+end
+-- now for GoM's and this mod's files loaded so far, again on the first tick for every mod loaded after (Post-93)
+dropAllSubjectStops()
+
 local function wrap(class)
     if not class or class.GunsOfTien_render then return end
     class.GunsOfTien_render = class.render
@@ -83,6 +119,7 @@ end
 
 local function install()
     Events.OnTick.Remove(install)
+    dropAllSubjectStops()
     wrap(ISToolTipInv)
     wrap(ISToolTipItemSlot)
 end
