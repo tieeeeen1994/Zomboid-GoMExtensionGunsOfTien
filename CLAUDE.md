@@ -683,6 +683,14 @@ behind it (42.21):
   filter recipes have none either); `SawnStock.Saw` hands the offcut over with `Actions.addOrDropItem`. GoM's barrel
   recipe gets `OnCreate = GunsOfTien_SawnStock.OnCreateBarrels` by `recipe:Load` at OnLoadMapZones (display name kept
   with `overrideTranslationName`, as ZomboidFixesB42's Barricade fix does).
+- **Sawing sounds** (42.21): a craft's sound is its timedAction script's `sound` (`ISHandcraftAction:start` /
+  `animEvent`, from `self.actionScript`, set in `new` from `craftRecipe:getTimedActionScript()`). Vanilla's
+  `SawOffShotgun` plays `Sawing` (Carpentry, also SawLogs); the only other saw sound is `CraftMetalSawing`
+  (SawSmallItemMetal). `CraftRecipe` resolves `timedAction` in `OnScriptsLoaded` (a later `Load` only sets the name)
+  and has no setter, so GoM's barrel recipe gets our `GunsOfTien_SawOffShotgunBarrels` (timedactions_sawnstocks.txt,
+  SawOffShotgun with the metal sound) through a wrapper of `ISHandcraftAction.new`; the stock cut keeps the wood saw.
+  Vanilla's own Saw Off Shotgun (Base.Shotgun / DoubleBarrelShotgun) has the same wood sound on metal: a
+  ZomboidFixesB42 candidate, not done.
 - **Floor pose of a WorldStaticModel** (42.21 `ItemModelRenderer.init`, derived, not yet seen in game):
   transform = rotationZ(90 + flip) · [HandWeapons only: rotateXYZ(0, π, π/2)] · inverse(translate(world offset) ·
   rotateXYZ(world rotate)) · mesh transform, so a model point p lands at R⁻¹(p − offset): the offset is the model

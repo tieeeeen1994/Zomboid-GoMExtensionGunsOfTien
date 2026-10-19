@@ -620,6 +620,27 @@ module Base {{
 	}}
 }}
 """
+    # GoM's barrel recipe uses vanilla's SawOffShotgun action, whose sound is the carpentry saw (Sawing, right for the
+    # walnut stock); a hacksaw through steel barrels gets the metalworking one (CraftMetalSawing, vanilla's
+    # SawSmallItemMetal). The game has only those two saw sounds. A recipe resolves its timedAction in OnScriptsLoaded,
+    # before Lua, so SawnStock.lua hands this one to the action instead (ISHandcraftAction.new).
+    timed = """/* The barrel cut's timed action (shared/GunsOfTien/SawnStock.lua): vanilla's SawOffShotgun with the metal sawing sound. */
+
+module Base {
+
+	timedAction GunsOfTien_SawOffShotgunBarrels
+	{
+		metabolics = MediumWork,
+		actionAnim = SawOffShotgun,
+		sound = CraftMetalSawing,
+		prop1 = Base.Hacksaw,
+		muscleStrainFactor = 0.0133,
+		muscleStrainSkill = Strength,
+		muscleStrainParts = Hand_R;ForeArm_R;UpperArm_R,
+	}
+}
+"""
+    write('scripts/GunsOfTien/timedactions_sawnstocks.txt', timed)
     write('scripts/GunsOfTien/models_sawnstocks.txt', ''.join(models))
     write('scripts/GunsOfTien/items_sawnstocks.txt', ''.join(items))
     write('scripts/GunsOfTien/recipes_sawnstocks.txt', recipe)

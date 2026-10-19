@@ -14,6 +14,10 @@
       GoM's "Saw Off Shotgun Barrels" (craftRecipe Base.SawnOffShotgunBarrels, which had no OnCreate and gave nothing
       back) gets an OnCreate here that hands over <GUN>_BarrelOffcuts (2.0 = GoM's 3.0 - 1.0, steel to smelt). Their
       meshes are the pieces build_sawn_stocks.py cuts off GoM's own.
+    - Sound: both recipes use vanilla's SawOffShotgun action, whose sound is the carpentry saw ("Sawing"): right for
+      the stock, wrong for a hacksaw through steel. GoM's barrel recipe gets timedactions_sawnstocks.txt's
+      GunsOfTien_SawOffShotgunBarrels (the same with "CraftMetalSawing"), handed to the action in ISHandcraftAction.new:
+      a recipe resolves its timedAction in OnScriptsLoaded, before any Lua, and has no setter.
     - Model: the stockless body (scripts/build_sawn_stocks.py cuts GoM's mesh behind the pistol grip) is shown by
       Gunworks' ConditionalModel, a StatsFactory layer that sets the gun's own WeaponSprite (HandWeapon saves it per
       gun) from its parts on every ReapplyAllModifiers: <GUN>_SAWNSTOCK_SHORT with GoM's sawn-off barrels (muzzle point
@@ -270,6 +274,22 @@ local function hookBarrelRecipe()
 end
 
 Events.OnLoadMapZones.Add(hookBarrelRecipe)
+
+-- The metal sawing sound for GoM's barrel recipe: ISHandcraftAction takes its anim, props and sound from
+-- self.actionScript, set in new from the recipe (vanilla's ISHandcraftAction, client and server alike).
+local BARREL_RECIPE = "SawnOffShotgunBarrels"
+local BARREL_ACTION = "GunsOfTien_SawOffShotgunBarrels"
+if ISHandcraftAction and not ISHandcraftAction.GunsOfTien_new then
+    ISHandcraftAction.GunsOfTien_new = ISHandcraftAction.new
+    ISHandcraftAction.new = function(self, character, craftRecipe, ...)
+        local o = ISHandcraftAction.GunsOfTien_new(self, character, craftRecipe, ...)
+        if o and craftRecipe and craftRecipe:getName() == BARREL_RECIPE then
+            local script = ScriptManager.instance:getTimedActionScript(BARREL_ACTION)
+            if script then o.actionScript = script end
+        end
+        return o
+    end
+end
 
 -------------------------------------------------
 -- The owner's copy in multiplayer

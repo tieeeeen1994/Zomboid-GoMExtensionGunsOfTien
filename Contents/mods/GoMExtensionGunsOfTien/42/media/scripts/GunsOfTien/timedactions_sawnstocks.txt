@@ -1,0 +1,15 @@
+/* The barrel cut's timed action (shared/GunsOfTien/SawnStock.lua): vanilla's SawOffShotgun with the metal sawing sound. */
+
+module Base {
+
+	timedAction GunsOfTien_SawOffShotgunBarrels
+	{
+		metabolics = MediumWork,
+		actionAnim = SawOffShotgun,
+		sound = CraftMetalSawing,
+		prop1 = Base.Hacksaw,
+		muscleStrainFactor = 0.0133,
+		muscleStrainSkill = Strength,
+		muscleStrainParts = Hand_R;ForeArm_R;UpperArm_R,
+	}
+}

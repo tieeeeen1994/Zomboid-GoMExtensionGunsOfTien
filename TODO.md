@@ -43,6 +43,9 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       ground, not sunk or floating (`world` points from sawn_offcuts.json, gen_scripts.py `floor_point`); the stock
       offcut burns in a campfire and goes into the charcoal recipe; the barrel offcuts smelt in a furnace (Smelt Large
       Steel Item, 4 uses into a steel crucible).
+- [ ] Sawing sounds (2026-10-19): Saw Off Shotgun Stock plays the wood saw (vanilla `Sawing`), GoM's Saw Off Shotgun
+      Barrels the metal saw (`CraftMetalSawing`, our timed action handed over in `ISHandcraftAction.new`); the barrel
+      cut keeps its anim and saw in hand; in MP other players hear it too.
 - [x] preview5.png (1024, the sawn-off shotguns) on the Steam page (2026-10-19). Rebuild:
       `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad db_full db_sawn`, then
       `python3 scripts/make_workshop_art.py preview5`.
