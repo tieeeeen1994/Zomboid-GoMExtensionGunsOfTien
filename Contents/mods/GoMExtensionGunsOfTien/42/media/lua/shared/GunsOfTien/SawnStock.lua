@@ -277,12 +277,17 @@ Events.OnLoadMapZones.Add(hookBarrelRecipe)
 
 -- The metal sawing sound for GoM's barrel recipe: ISHandcraftAction takes its anim, props and sound from
 -- self.actionScript, set in new from the recipe (vanilla's ISHandcraftAction, client and server alike).
+-- The wrapper must name every one of vanilla's parameters: the server rebuilds the action by calling new with the
+-- client table's values of new's parameter names (NetTimedAction.set reads the prototype's locvars), so a `...`
+-- arrives empty, containers is nil and serverStart's setContainers throws for every handcraft (2026-10-19).
 local BARREL_RECIPE = "SawnOffShotgunBarrels"
 local BARREL_ACTION = "GunsOfTien_SawOffShotgunBarrels"
 if ISHandcraftAction and not ISHandcraftAction.GunsOfTien_new then
     ISHandcraftAction.GunsOfTien_new = ISHandcraftAction.new
-    ISHandcraftAction.new = function(self, character, craftRecipe, ...)
-        local o = ISHandcraftAction.GunsOfTien_new(self, character, craftRecipe, ...)
+    ISHandcraftAction.new = function(self, character, craftRecipe, containers, isoObject, craftBench, manualInputs,
+                                     items, recipeItem, variableInputRatio, eatPercentage)
+        local o = ISHandcraftAction.GunsOfTien_new(self, character, craftRecipe, containers, isoObject, craftBench,
+            manualInputs, items, recipeItem, variableInputRatio, eatPercentage)
         if o and craftRecipe and craftRecipe:getName() == BARREL_RECIPE then
             local script = ScriptManager.instance:getTimedActionScript(BARREL_ACTION)
             if script then o.actionScript = script end
