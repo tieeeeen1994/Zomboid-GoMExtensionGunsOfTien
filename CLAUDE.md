@@ -148,9 +148,15 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - Workshop art: `scripts/render_ad_guns.py` (Blender: `ad_<gun>.png` of the four Post-93 guns fitted out, the MP7 /
   P90 at one scale and the two pistols at another; pistol renders are game-space-as-world, i.e. mirrored, and
   `make_workshop_art.py` flips them back, so their markings read right; the MP7 / P90 ad renders are **not** flipped
-  yet) and `scripts/make_workshop_art.py [preview preview2 preview3 preview4 posters icons]`. preview4 (2026-10-18) is the
-  MP7A2 alone, from render_ad_guns.py's `mp7a2` (fitted out without a light, so the handguard's side rail shows),
-  mirrored to the game's view like the pistols; added on the Steam page by hand like preview2 / preview3.
+  yet) and `scripts/make_workshop_art.py [preview preview2 preview3 preview4 preview5 posters icons]`. preview4
+  (2026-10-18) is the MP7A2 alone, from render_ad_guns.py's `mp7a2` (fitted out without a light, so the handguard's side
+  rail shows), mirrored to the game's view like the pistols; added on the Steam page by hand like preview2 / preview3.
+  preview5 (2026-10-19, user: "I want the three to be included but the main features would just use the double barrel
+  model") is the sawn-off shotguns: GoM's Double Barrel whole and sawn off (render_ad_guns.py `db_full` / `db_sawn`,
+  one scale, lined up on the receiver, mirrored back), then one slot row of the six offcuts under the three guns'
+  names. Only what this mod adds is shown, and the captions carry no pronouns (user: "remove the pronouns. just add
+  the what we add"; GoM's gun and sawn-off barrel icons were dropped). DIN Alternate Bold (the Mac's stand-in for Bahnschrift) has no "·": `text_layer`
+  draws a dot by hand where the font lacks the glyph.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,

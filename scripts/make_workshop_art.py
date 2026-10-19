@@ -5,9 +5,10 @@
 
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
-preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same)
-and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2, preview3, preview4, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
+preview5.png (1024x1024, the sawn-off shotguns, the same) and, for each mod's 42/ folder, poster.png (512x512) and
+icon.png (128x128) for the in-game mod list; NAME (preview, preview2, preview3, preview4, preview5, posters, icons)
+writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -73,6 +74,15 @@ def background(size):
     return Image.composite(Image.new("RGB", size, (90, 94, 100)), bg, stripes)
 
 
+def has_glyph(f, c):
+    """False when the font draws c as its missing-glyph box (DIN Alternate on the Mac has no middle dot)."""
+    def drawn(ch):
+        im = Image.new("L", (f.size * 2, f.size * 2), 0)
+        ImageDraw.Draw(im).text((f.size // 2, f.size // 2), ch, font=f, fill=255)
+        return im.tobytes()
+    return drawn(c) != drawn("\u0378")
+
+
 def text_layer(size, xy, text, f, fill, stroke=0, stroke_fill=INK, anchor="la", spacing=0):
     layer = Image.new("RGBA", size, (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
@@ -83,8 +93,15 @@ def text_layer(size, xy, text, f, fill, stroke=0, stroke_fill=INK, anchor="la", 
             x -= total / 2
         elif anchor[0] == "r":
             x -= total
+        dot = "·" in text and not has_glyph(f, "·")
         for c in text:
-            d.text((x, y), c, font=f, fill=fill, stroke_width=stroke, stroke_fill=stroke_fill, anchor="l" + anchor[1])
+            if c == "·" and dot:            # drawn by hand where the font lacks it, halfway up the capitals
+                l, t, r, b = d.textbbox((x, y), "H", font=f, anchor="l" + anchor[1])
+                cx, cy, rad = x + d.textlength("·", font=f) / 2, (t + b) / 2, max(1.0, f.size * 0.09)
+                d.ellipse((cx - rad, cy - rad, cx + rad, cy + rad), fill=fill)
+            else:
+                d.text((x, y), c, font=f, fill=fill, stroke_width=stroke, stroke_fill=stroke_fill,
+                       anchor="l" + anchor[1])
             x += d.textlength(c, font=f) + spacing
     else:
         d.text(xy, text, font=f, fill=fill, stroke_width=stroke, stroke_fill=stroke_fill, anchor=anchor)
@@ -294,6 +311,52 @@ def preview4(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview5(path, W=1024):
+    """The sawn-off shotguns, laid out on a 512 grid like preview4: GoM's Double Barrel whole and, under it at the same
+    scale and lined up on the receiver, sawn off (stock and barrels; render_ad_guns.py "db_full" / "db_sawn", mirrored
+    back to the game's view), then one row of inventory slots: the six offcuts of the three guns."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "SAWN-OFF SHOTGUNS", 40, "GUNS OF MARZ EXTENSION")
+
+    full = Image.open(os.path.join(RENDERS, "ad_db_full.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    sawn = Image.open(os.path.join(RENDERS, "ad_db_sawn.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    box = full.getchannel("A").getbbox()
+    s = u(440) / (box[2] - box[0])          # one scale for both, so the sawn-off one shows its true size
+    full = full.resize((round(full.width * s), round(full.height * s)), Image.LANCZOS)
+    sawn = sawn.resize((round(sawn.width * s), round(sawn.height * s)), Image.LANCZOS)
+    x0 = (W - round((box[2] - box[0]) * s)) // 2 - round(box[0] * s)
+    y_full = u(92) - round(box[1] * s)
+    sbox = sawn.getchannel("A").getbbox()
+    y_sawn = u(232) - sbox[1]
+    paste_with_shadow(page, placed(size, full, (x0, y_full)), (0, u(6)), u(6), 160)
+    paste_with_shadow(page, placed(size, sawn, (x0, y_sawn)), (0, u(6)), u(6), 160)
+
+    # what sawing off does, beside the sawn-off gun
+    bx = x0 + sbox[2] + u(14)
+    by = y_sawn + sbox[1] + u(14)
+    page.alpha_composite(text_layer(size, (bx, by), "SAWN OFF", font(BOLD, u(17), b"Bold"), (28, 30, 34, 255)))
+    for n, line in enumerate(("FITS A HOLSTER", "QUICKER TO AIM IN", "LESS ACCURATE")):
+        page.alpha_composite(text_layer(size, (bx, by + u(24 + n * 15)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), spacing=u(1)))
+
+    # only what this mod adds (user, 2026-10-19: "just add the what we add"): the offcuts, which name the three guns
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    guns = ("DOUBLEBARREL", "STEVENS_555", "TOZ34")
+    slot_row(page, [p for g in guns for p in (main(g + "_StockOffcut"), main(g + "_BarrelOffcuts"))],
+             256, 380, "DOUBLE BARREL  ·  STEVENS 555  ·  TOZ-34")
+    page.alpha_composite(text_layer(size, (W // 2, u(446)), "OFFCUTS: SCRAP WOOD TO BURN, SCRAP STEEL TO SMELT",
+                                    font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -411,6 +474,8 @@ if __name__ == "__main__":
         preview3(os.path.join(ROOT, "preview3.png"))     # the pistols, added the same way
     if want("preview4"):
         preview4(os.path.join(ROOT, "preview4.png"))     # the MP7A2, added the same way
+    if want("preview5"):
+        preview5(os.path.join(ROOT, "preview5.png"))     # the sawn-off shotguns, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

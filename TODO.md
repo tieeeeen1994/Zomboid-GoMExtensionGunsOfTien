@@ -42,6 +42,9 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       ground, not sunk or floating (`world` points from sawn_offcuts.json, gen_scripts.py `floor_point`); the stock
       offcut burns in a campfire and goes into the charcoal recipe; the barrel offcuts smelt in a furnace (Smelt Large
       Steel Item, 4 uses into a steel crucible).
+- [ ] Add preview5.png (1024, the sawn-off shotguns, 2026-10-19) on the Steam page by hand. Rebuild:
+      `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad db_full db_sawn`, then
+      `python3 scripts/make_workshop_art.py preview5`.
 - [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
       Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
       `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate

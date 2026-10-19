@@ -9,6 +9,11 @@ share another scale, each from the side its markings are on. Parts are placed at
 the engine does (scripts/post93/render_p90.py); all four are held like pistols and so modelled upside down, so
 everything is turned back upright. Game space is used as world space, the mirror image of the game
 (render_fiveseven.py): the pistols' renders (`flip`) are mirrored back by make_workshop_art.py, which lays them out.
+
+The main mod's sawn-off shotgun (preview5): GoM's Double Barrel whole (`db_full`: GoM's body and full barrels) and
+sawn off (`db_sawn`: our stockless body from GunsOfTien_SawnStocks.fbx and GoM's sawn-off barrels), one view and scale
+so the two keep their sizes against each other. GoM's rifle-held guns are modelled upright, so `files` specs are not
+turned; their barrels are drawn at the gun's origin, as the engine draws them (no attachment point).
 """
 
 import json
@@ -22,6 +27,7 @@ from mathutils import Matrix, Vector
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
+MAIN_MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
 GOM = next(p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
                                           "3722134990/mods/GunsOfMarz/42.16/media"),
@@ -36,7 +42,23 @@ SIZE = (1600, 900)
 PISTOL_SCALE = 0.34                  # the same for the two pistols (fitted Five-seveN: 0.28 long)
 PISTOL_SIZE = (2000, 1100)
 
+GOM_DB = (os.path.join(GOM, "models_X/weapons/firearms/DOUBLEBARREL.fbx"),
+          os.path.join(GOM, "textures/weapons/firearms/shotguns/DOUBLEBARREL.png"))
+SAWN = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms/GunsOfTien_SawnStocks.fbx")
+DB_VIEW, DB_SCALE, DB_SIZE = (0.8, 0.45, -0.25), 0.78, (2400, 1000)
+
 GUNS = {
+    # world space is the game's mirror image, so these show the gun's right side, muzzle left, until
+    # make_workshop_art.py mirrors them back to the game's view (left side, muzzle right)
+    "db_full": {
+        "files": [(GOM_DB[0], "DOUBLEBARREL_BODY", GOM_DB[1]), (GOM_DB[0], "DOUBLEBARREL_BARREL_CLOSE", GOM_DB[1])],
+        "view": DB_VIEW, "scale": DB_SCALE, "size": DB_SIZE,
+    },
+    "db_sawn": {
+        "files": [(SAWN, "DOUBLEBARREL_BODY_SAWNSTOCK", GOM_DB[1]),
+                  (GOM_DB[0], "DOUBLEBARREL_BARREL_SAWNOFF_CLOSE", GOM_DB[1])],
+        "view": DB_VIEW, "scale": DB_SCALE, "size": DB_SIZE,
+    },
     "mp7": {
         "points": "post93/mp7_points.json",
         "fbx": "GunsOfTienPost93_MP7A1", "tex": "MP7A1",
@@ -117,17 +139,25 @@ def load(path, texture, keep):
     return found
 
 
-def place(o, point=None):
-    """Engine attachment transform (offset, then rotateXYZ in degrees), turned upright; mesh data z is game -z."""
+def place(o, point=None, upright=True):
+    """Engine attachment transform (offset, then rotateXYZ in degrees), turned upright (guns held like pistols are
+    modelled upside down); mesh data z is game -z."""
     mat = Matrix.Identity(4)
     if point:
         rx, ry, rz = [math.radians(a) for a in point.get("rotate", [0, 0, 0])]
         mat = (Matrix.Translation(Vector(point["offset"])) @ Matrix.Rotation(rx, 4, 'X')
                @ Matrix.Rotation(ry, 4, 'Y') @ Matrix.Rotation(rz, 4, 'Z'))
-    o.matrix_world = UPRIGHT @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
+    o.matrix_world = (UPRIGHT if upright else Matrix.Identity(4)) @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
 
 
 def build(spec):
+    if "files" in spec:
+        objs = []
+        for fbx, node, tex in spec["files"]:
+            o = load(fbx, tex, node)
+            place(o, upright=False)
+            objs.append(o)
+        return objs
     points = json.load(open(os.path.join(HERE, spec["points"])))
     objs = []
     for node, point, *src in spec["nodes"]:
