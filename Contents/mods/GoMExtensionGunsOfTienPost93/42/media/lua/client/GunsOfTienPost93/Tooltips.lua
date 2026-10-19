@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
-    Five-seveN, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time; hard-coded English like
+    Five-seveN, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -10,31 +10,42 @@ if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "tabl
 local lines = tooltips.tooltipsPergun
 local M = "GunsOfTienPost93."
 
+-- The stock's and front grip's lines, shown under an MP7 while that state is fitted (the main mod's
+-- client/GunsOfTien/Tooltips.lua; stats in shared/GunsOfTienPost93/Guns.lua). The A2 has the A1's stock.
+GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
+GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Stock_Deployed"] = {
+    "Collapsible stock deployed:",
+    "Aiming Time reduced by 25%",
+    "Hit Chance increased by 15%",
+}
+GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
+    "Folding front grip unfolded:",
+    "Aiming Time reduced by 20%",
+    "Critical and Hit Chance increased by 15%",
+    "Automatic fire spread reduced by 15%",
+}
+
 lines[M .. "MP7A1"] = {
     "Uses 4.6x30mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right.",
-    -- stock and grip in the wording of the main mod's HandlingTooltips.lua (GoM's guns) and GoM's part tooltips
-    "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.",
-    "Folding front grip: unfolded, Aiming Time reduced by 20%, Critical and Hit Chance increased by 15%, automatic fire spread reduced by 15%.",
-    "Standard rounds pierce: able to hit up to 2 targets.",
+    "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "MP7A2"] = {
     "Uses 4.6x30mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right, Down.",
-    "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.",
-    "Standard rounds pierce: able to hit up to 2 targets.",
+    "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "P90TR"] = {
     "Uses 5.7x28mm rounds.",
     "Integrated Picatinny rails: Up, Left, Right.",
-    "50-round magazine on top; ejects spent cases downward.",
-    "Standard rounds pierce: able to hit up to 2 targets.",
+    "50-round magazine on top. Ejects spent cases downward.",
+    "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines["MarzGuns.FIVESEVEN"] = {
     "Uses 5.7x28mm rounds.",
     "Compatible Mounting Device: Beretta Mount.",
     "Compatible Muzzle Device: 5.7x28mm Muzzle Mount.",
-    "Standard rounds pierce: able to hit up to 2 targets.",
+    "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "57x28Magazine20_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
 lines[M .. "57x28Magazine30_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
@@ -43,7 +54,7 @@ lines[M .. "UCP"] = {
     "H&K prototype, never sold (cancelled 2009).",
     "Compatible Mounting Device: Beretta Mount.",
     "Compatible Muzzle Device: 4.6x30mm Muzzle Mount.",
-    "Standard rounds pierce: able to hit up to 2 targets.",
+    "Standard rounds pierce and can hit up to 2 targets.",
 }
 lines[M .. "46x30Magazine20_UCP"] = { "Uses 4.6x30mm rounds." }
 lines[M .. "46x30Magazine40_UCP"] = { "Uses 4.6x30mm rounds." }
@@ -68,8 +79,8 @@ for _, part in ipairs({ "MP7_Muzzle_Mount_Device", "P90_Muzzle_Mount_Device" }) 
     }
 end
 
-lines[M .. "46x30_Bullet"] = { "DM11: solid copper-plated steel bullet", "Piercing targets", "Able to hit up to 2 targets" }
-lines[M .. "57x28_Bullet"] = { "SS190: steel and aluminium penetrator", "Piercing targets", "Able to hit up to 2 targets" }
+lines[M .. "46x30_Bullet"] = { "DM11 solid copper-plated steel bullet", "Piercing targets", "Able to hit up to 2 targets" }
+lines[M .. "57x28_Bullet"] = { "SS190 steel and aluminium penetrator", "Piercing targets", "Able to hit up to 2 targets" }
 for _, round in ipairs({ "46x30_Bullet_Subsonic", "57x28_Bullet_SB193" }) do
     lines[M .. round] = {
         "Damage to targets decreased by 40%",

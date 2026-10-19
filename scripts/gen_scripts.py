@@ -661,12 +661,11 @@ module Base {
     tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
     tips = json.load(open(tip_path))
     tips['Tooltip_Recipe_GunsOfTien_SawOffShotgunStock'] = (
-        "Saw the buttstock off a break-action shotgun behind the pistol grip; the stock is kept as an offcut. A shell "
-        "holder on the stock comes off first. With sawn-off barrels too, the gun fits a holster.")
+        "Saws the stock off behind the pistol grip. A shell holder comes off with it.")
     tips['Tooltip_GunsOfTien_StockOffcut'] = (
-        "The walnut buttstock sawn off a shotgun. Scrap wood: it burns, or makes charcoal.")
+        "Scrap wood. Burns, or makes charcoal.")
     tips['Tooltip_GunsOfTien_BarrelOffcuts'] = (
-        "The muzzle ends sawn off a shotgun's barrels. Scrap steel: smelt them down in a furnace, enough for a steel bar.")
+        "Scrap steel. Smelts into a steel bar.")
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 

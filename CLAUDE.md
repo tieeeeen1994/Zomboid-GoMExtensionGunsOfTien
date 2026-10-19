@@ -27,6 +27,21 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## Decisions taken with the user (main mod)
 
+- **Writing in game texts** (user, 2026-10-19, both mods): tooltips, Information lines, sandbox and UI strings never
+  join sentences with a semicolon (a full stop and a new sentence instead), and a colon only introduces a list
+  ("Takes: ..."; "Does not pierce", not "Expands: never pierces"). **Gun lines in GoM's attachment style** (user:
+  "the way GoM lists the buffs and debuffs is better"): a heading per state ("Folding stock deployed:", "Folded:",
+  "Pump action:", "Sawn-off stock:") and one effect per line ("Aiming Time reduced by 15%"), never one packed
+  sentence; gen_handling_tooltips.py `line()` writes the stock / bipod / selector lines that way. **Compact, in
+  GoM's own form** (user: "do not overexplain... stay true to GoM's format. we just needed to put the numbers there
+  and fix some spellings and grammar"): one fact per line, stat lines without a full stop, GoM's own lines kept but
+  spelt right; no explanations ("Does not pierce", not "Expands, so it never pierces"; "Needs racking every shot";
+  bayonets "Attachable on compatible guns.", guns "Can attach a bayonet.", no stat lists where the game shows them).
+  The break-action barrels' item tooltips (Tooltip.json, "Sawn-off barrels for the TOZ-34: Aiming Time reduced by
+  25%, ...") keep their own sentence wording, not Information lines (user, 2026-10-19: "the attachments have their
+  own wording"). Long Information
+  lines are wrapped by ZomboidFixesB42's GoM tooltip fix (`*_GoMTooltips.lua`), not by breaking them up here.
+
 - **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):
   7.62x39 **US Subsonic** (×0.5 dmg, sound ×0.5; must rack after every shot **unless a PBS-1 is fitted**: low powder
   short-strokes the AK's gas system, the PBS-1's back pressure pushes enough gas into the port — the user wanted this
@@ -159,7 +174,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   the what we add"; GoM's gun and sawn-off barrel icons were dropped). DIN Alternate Bold (the Mac's stand-in for Bahnschrift) has no "·": `text_layer`
   draws a dot by hand where the font lacks the glyph.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
-  items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/make_art.py`,
+  items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
+  (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
+  (→ RoundTooltips.lua: every round's lines from the profiles), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
   `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json` /
   `fiveseven_points.json` / `ucp_points.json`),
@@ -504,11 +521,21 @@ battery, not a bug. GoM translates most part types; nobody translated `LaserRifl
 visible belt rounds), so `gen_scripts.py` writes them into the main mod's Tooltip.json, and `gen_post93_guns.py`
 writes `ForegripIntegrated` into Post-93's. GoM's own gun lines said only "Has Integrated Stock" / "Has Integrated
 Bipod" (eight guns) and nothing for other guns with one; `scripts/gen_handling_tooltips.py` reads GoM's Stocks.lua,
-Bipods.lua and AttachmentCustomStats.lua and writes `client/GunsOfTien/HandlingTooltips.lua`, one line per gun in the
-wording of GoM's part tooltips ("Folding stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%.";
-folding vs collapsible by the real gun), replacing the vague line or added after the others; the MP7s' lines in
-Post-93's Tooltips.lua use the same wording. GoM registers no stats for the M4A1 and XM177 stocks or the M24 bipod, so
-their lines say "no effect on handling".
+Bipods.lua and AttachmentCustomStats.lua and writes `client/GunsOfTien/HandlingTooltips.lua`, the lines of each gun in
+the style of GoM's part tooltips ("Collapsible stock deployed:" then "Aiming Time reduced by 25%", "Hit Chance
+increased by 15%"; folding vs collapsible by the real gun), in place of the vague line or after the others; the MP7s'
+lines in Post-93's Tooltips.lua use the same style. **Only the current state shows** (user, 2026-10-19: "only
+display the proper CURRENT stats if they are active"): each integrated part's lines are kept in the global
+`GunsOfTien_TooltipStates` (part full type -> heading + effects; HandlingTooltips.lua for GoM's stocks, bipods and
+selectors, Post-93's Tooltips.lua for the MP7 stock and grip, Tooltips.lua for the sawn-off stocks), and GoM's vague
+"Has Integrated Stock / Bipod" lines are removed. GoM's table is per item type, so `client/GunsOfTien/Tooltips.lua`
+wraps `ISToolTipInv.render` and `ISToolTipItemSlot.render` on the first tick after OnGameStart (outside GoM's
+file-load and ZomboidFixesB42's OnGameStart wrappers, which both read `tooltipsPergun[item:getFullType()]` when they
+draw) and sets the type's lines from `self.item`: GoM's own lines (kept per type the first time) plus those of the
+parts fitted on it (`getAllWeaponParts`), and a sawn-off gun's holster line. A state without effects (most folded
+stocks, the M4A1 / XM177 / M24 parts with no stats) shows nothing. Vanilla gives a tooltip its item with
+`ISToolTipInv:new(item)` as well as `setItem`, so render is the one sure place. GoM registers no stats for the M4A1 and XM177 stocks or the M24 bipod, so
+their lines say "has no effect on handling".
 Audit of every part with stats (user: "did we update tooltips that offer stats bonuses... but say nothing about
 them?", 2026-10-18): sights, scopes, lasers, suppressors and muzzle devices matched their stats; missing were
 Gunworks' spread modifiers (RPM.lua `RegisterSpreadPartModifier`: the AKS-74U / AS VAL / G36C stocks, GoM's three
@@ -527,6 +554,30 @@ hidden weapon a fitted bayonet stabs with) and `frag_0-15` (explosion debris), `
 `IGUI_ClickToRemove` and `IGUI_SelectAmmunition`. Deliberately left: GoM's ReloadAllMagazines_Compac.lua looks up
 `ContextMenu_ReloadAllMagazines_*` only to remove another mod's options by their text. Fire mode labels are built
 (`ContextMenu_FireMode_` .. mode) and all covered by vanilla (Auto / Burst / Single) and Gunworks (Real*).
+
+Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of GoM's table against its registries:
+- **Wear is "one chance in N"**: `ConditionLowerChanceOneIn` × m changes the chance by 1 / m, so ×1.5 is a third
+  *less* wear, ×0.85 is 18% more, ×0.5 doubles it. GoM's round lines (and ours, copied from them) quoted m − 1:
+  .223 / .308 civilian "−50%" (really −33%), 5.56 HP "+15%" (+18%), overpressured "+50%" (doubled), subsonic "−100%"
+  (halved); ours: steel core +15% (+18%), 9mm +P+ +40% (+67%), .45 +P +30% (+43%), and SP / HP rounds' +11% unsaid.
+  GoM's lines also left out critical damage / chance changes, had typos ("Change to degrade", "decrease by",
+  "maximun", "One single slug rounds", "Required rack after shoot") and gave the 5.56 subsonic's sound twice; the .38
+  Special has a profile and had no line. `scripts/gen_round_tooltips.py` now writes every round's lines from both
+  mods' profiles (`client/GunsOfTien/RoundTooltips.lua`, replacing GoM's per round; NOTES for what a number cannot
+  say; the plain rounds' RealisticPiercing lines added on OnGameStart, when the option is known). Post-93's hand
+  written round lines matched its profiles.
+- **Parts and guns** (gen_handling_tooltips.py `info_rows`): shell holder "fire 40% faster" = Recoil Delay ×0.6;
+  bayonets: any of the five fits any of 16 guns (`Bayonet.RegisterMountableWeapon` in Bayonets.lua; the M4A1 and XM177
+  take them but did not say so), a fixed bayonet stabs as `MarzGuns.Attack_Bayonet` (1.2-1.7 damage, reach 1.48,
+  crit 20%), and none fits with a suppressor, muzzle device or M203 (`SetExclusives`); the Picatinny Rail becomes the
+  slot picked in the upgrade menu (UniversalAttachments.lua); speedloaders per gun in SpeedLoader.lua (the Mosin's
+  5-round stripper clip had no line); the Remington 700 / Model 70 slings are `WeightModifier = -1`, the VP70M stock
+  has no stats; the Camp Carbine, Glock 17, VP70M, Double Deuce (2-bore) and four magazines had no lines.
+- **Two GoM registrations miss their target**, fixed in `shared/GunsOfTien/GoMFixes.lua`: the Karabiner 98k
+  bayonet's attachment is left out of `RegisterMountableWeapon` (its item script mounts on the same 16 guns), so
+  `Bayonet.CanAttachBayonet` refused it everywhere; the overpressured 5.56's spread penalty is registered as
+  `MarzGuns.556x45_Bullet_Overpressured`, but the round is `SWMG.` and `RateOfFire.getSpreadProfile` looks rounds up
+  by their own type, so it never applied (now: automatic fire spread doubled, as GoM meant).
 
 ## Lasers on a battery (2026-10-18)
 

@@ -27,7 +27,11 @@ found as loot: make them with Ammo Maker.
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on
-- Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named
+- Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
+  every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
+  out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
+- Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
+  automatic fire spread penalty applies
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
   off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept

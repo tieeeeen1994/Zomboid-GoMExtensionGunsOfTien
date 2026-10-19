@@ -1,95 +1,92 @@
 --[[
-    Guns of Tien -- "Information" lines in Guns of Marz's item tooltips for the new rounds and the sawn-off stocks
+    Guns of Tien -- a gun's Information lines for the integrated parts fitted on it now (user, 2026-10-19: "only
+    display the proper CURRENT stats if they are active")
 
-    GoM draws `tooltipsPergun[fullType]` under an item's tooltip (MarzWeapons/CustomItemTooltips.lua, looked up at
-    render time), hard-coded English like its own entries. The round lines match the profiles in
-    shared/GunsOfTien/Ammunition.lua, the stock line shared/GunsOfTien/SawnStock.lua (one line per gun type: the gun's
-    "Stock (Integrated)" row shows whether this one is sawn off).
+    GoM draws `tooltipsPergun[fullType]` under an item's tooltip (MarzWeapons/CustomItemTooltips.lua), and so does
+    ZomboidFixesB42's GoM tooltip fix, both reading it when the tooltip renders. The table is per gun type, but a
+    stock may be deployed or folded, a selector on pump or semi, a Double Barrel's stock sawn off or not. So the lines
+    of each integrated part's state are kept in GunsOfTien_TooltipStates (part full type -> lines, in GoM's
+    attachment style: a heading, then one effect per line): HandlingTooltips.lua fills it for GoM's stocks, bipods
+    and selectors, Post-93's Tooltips.lua for the MP7's stock and grip, this file for the sawn-off stocks. For each
+    render of a gun its type's lines are set to GoM's own plus those of the parts fitted on that gun, and for a
+    sawn-off stock whether the gun fits a holster now. A state without effects shows nothing.
+
+    The wrappers go on the first tick after the game starts, on top of every mod's tooltip render (theirs are
+    installed at file load or OnGameStart), so the lines are set before any of them reads the table. Vanilla hands a
+    tooltip its item with ISToolTipInv:new(item) as well as setItem, so render is the one sure place.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
 if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "table" then return end
+local okStock, SawnStock = pcall(require, "GunsOfTien/SawnStock")
+if not okStock or type(SawnStock) ~= "table" then SawnStock = nil end
 
 local lines = tooltips.tooltipsPergun
+GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
+local STATES = GunsOfTien_TooltipStates
 
-lines["GunsOfTien.762x39_Bullet_US"] = {
-    "Damage to targets decreased by 50%",
-    "Sound radius and volume reduced by 50%",
-    "Chance to degrade weapon condition halved",
-    "Too weak to cycle an AK: rack after every shot",
-    "Cycles normally with a PBS-1 suppressor fitted",
-    "Stacks with suppressors for maximum effect",
+-- the sawn-off stock (SawnStock.HANDLING)
+local SAWN = {
+    "Sawn-off stock:",
+    "Aiming Time reduced by 25%",
+    "Hit Chance reduced by 13%",
+    "Recoil Delay increased by 30%",
 }
-lines["GunsOfTien.762x39_Bullet_SP"] = {
-    "Damage to targets increased by 20%",
-    "Critical damage increased by 15%",
-    "Expands: never pierces",
-}
-lines["GunsOfTien.762x39_Bullet_SteelCore"] = {
-    "Damage to targets decreased by 10%",
-    "Piercing targets",
-    "Able to hit up to 3 targets",
-    "Chance to degrade weapon condition increased by 15%",
-}
-lines["GunsOfTien.9x19_Bullet_Subsonic"] = {
-    "Damage to targets decreased by 15%",
-    "Sound radius and volume reduced by 30% (no supersonic crack)",
-    "Stacks with suppressors for maximum effect",
-}
-lines["GunsOfTien.9x19_Bullet_HollowPoint"] = {
-    "Damage to targets increased by 20%",
-    "Critical damage increased by 15%",
-}
-lines["GunsOfTien.9x19_Bullet_PPP"] = {
-    "Damage to targets increased by 20%",
-    "Critical damage increased by 10%",
-    "Sound radius and volume increased by 10%",
-    "Chance to degrade weapon condition increased by 40%",
-}
-lines["GunsOfTien.45_Bullet_HollowPoint"] = {
-    "Damage to targets increased by 20%",
-    "Critical damage increased by 15%",
-}
-lines["GunsOfTien.45_Bullet_P"] = {
-    "Damage to targets increased by 15%",
-    "Critical damage increased by 10%",
-    "Sound radius and volume increased by 10%",
-    "Chance to degrade weapon condition increased by 30%",
-}
-lines["GunsOfTien.9x39_Bullet_SP6"] = {
-    "Damage to targets decreased by 10%",
-    "Piercing targets",
-    "Able to hit up to 3 targets",
-}
-for _, fullType in ipairs({ "GunsOfTien.3006_Bullet_SP", "GunsOfTien.308_Bullet_SP" }) do
-    lines[fullType] = {
-        "Damage to targets increased by 20%",
-        "Critical damage increased by 15%",
-        "Expands: never pierces, hits one target",
-    }
+for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
+    STATES["GunsOfTien." .. gun .. "_Stock_Sawnoff"] = SAWN
 end
-lines["GunsOfTien.12Gauge_Shell_Birdshot"] = {
-    "Many small pellets: weak beyond a few tiles",
-    "Wider spread, about half the range of buckshot",
-}
-lines["SWMG.3030_Bullet"] = {
-    "Flat-nosed soft point, safe in tube magazines",
-    "Expands: never pierces, hits one target",
-}
-for _, gun in ipairs({ "MarzGuns.DOUBLEBARREL", "MarzGuns.STEVENS_555", "MarzGuns.TOZ34" }) do
-    local list = lines[gun] or {}
-    lines[gun] = list
-    local line = "Stock can be sawn off (Saw Off Shotgun Stock): Aiming Time reduced by 25%, Hit Chance reduced by 13%, "
-        .. "Recoil Delay increased by 30%; with sawn-off barrels too it fits a holster."
-    local present = false
-    for _, l in ipairs(list) do
-        if l == line then present = true end
+local FITS_HOLSTER = "Fits a holster."
+local NEEDS_BARRELS = "Fits a holster with sawn-off barrels."
+
+local base = {}        -- gun type -> GoM's own lines, taken the first time a gun of that type has state lines
+
+local function copy(list)
+    local out = {}
+    for i, line in ipairs(list or {}) do out[i] = line end
+    return out
+end
+
+--- Set the gun type's lines from this gun: GoM's own, then those of the integrated parts fitted on it.
+local function setLines(item)
+    if not item or not instanceof(item, "HandWeapon") then return end
+    local add = {}
+    local parts = item:getAllWeaponParts()
+    if parts then
+        for i = 0, parts:size() - 1 do
+            local part = parts:get(i)
+            local state = part and STATES[part:getFullType()]
+            if state then
+                for _, line in ipairs(state) do add[#add + 1] = line end
+            end
+        end
     end
-    if not present then list[#list + 1] = line end
+    if SawnStock and SawnStock.IsSawn(item) then
+        add[#add + 1] = SawnStock.FitsHolster(item) and FITS_HOLSTER or NEEDS_BARRELS
+    end
+
+    local fullType = item:getFullType()
+    if #add == 0 and not base[fullType] then return end
+    if not base[fullType] then base[fullType] = copy(lines[fullType]) end
+    local list = copy(base[fullType])
+    for _, line in ipairs(add) do list[#list + 1] = line end
+    lines[fullType] = #list > 0 and list or nil
 end
-lines["SWMG.545x39_Bullet"] = {
-    "7N6: steel core",
-    "Piercing targets",
-    "Able to hit up to 3 targets",
-    "Tumbles: critical chance increased by 10%",
-}
+
+local function wrap(class)
+    if not class or class.GunsOfTien_render then return end
+    class.GunsOfTien_render = class.render
+    class.render = function(self, ...)
+        setLines(self.item)
+        return class.GunsOfTien_render(self, ...)
+    end
+end
+
+local function install()
+    Events.OnTick.Remove(install)
+    wrap(ISToolTipInv)
+    wrap(ISToolTipItemSlot)
+end
+
+Events.OnGameStart.Add(function()
+    Events.OnTick.Add(install)
+end)

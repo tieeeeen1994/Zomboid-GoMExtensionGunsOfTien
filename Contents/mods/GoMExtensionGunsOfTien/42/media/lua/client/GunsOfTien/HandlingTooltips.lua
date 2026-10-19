@@ -23,25 +23,90 @@ local function listOf(fullType)
     return list
 end
 
--- { gun, GoM's vague line it replaces ("" = none), the clear line }
+-- { item, GoM's vague line they replace ("" = none), the clear lines }
 local HANDLING = {
-    { "MarzGuns.AKS74U", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 15%, Hit Chance increased by 25%, automatic fire spread reduced by 25% (its widest by 15%)." },
-    { "MarzGuns.ASVAL", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 10%, Hit Chance increased by 15%, automatic fire spread reduced by 25% (its widest by 15%)." },
-    { "MarzGuns.CAR15", "Has Integrated Stock", "Collapsible stock: deployed, Aiming Time reduced by 15%, Hit Chance increased by 15%." },
-    { "MarzGuns.FNC", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 5%, Hit Chance increased by 15%." },
-    { "MarzGuns.G36", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 15%, Hit Chance increased by 15%." },
-    { "MarzGuns.G36C", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%, automatic fire spread reduced by 25% (its widest by 15%)." },
-    { "MarzGuns.M4A1", "Has Integrated Stock", "Collapsible stock: no effect on handling." },
-    { "MarzGuns.MAC10", "Has Integrated Stock", "Collapsible stock: deployed, Aiming Time reduced by 10%, Hit Chance increased by 10%." },
-    { "MarzGuns.MP5", "Has Integrated Stock", "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%." },
-    { "MarzGuns.MP5SD", "Has Integrated Stock", "Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%." },
-    { "MarzGuns.SPAS12", "Has Integrated Stock", "Folding stock: deployed, Aiming Time reduced by 10%, Hit Chance increased by 10%." },
-    { "MarzGuns.XM177", "Has Integrated Stock", "Collapsible stock: no effect on handling." },
-    { "MarzGuns.BAR", "Has Integrated Bipod", "Folding bipod: deployed, Aiming Time increased by 20%, Critical and Hit Chance increased by 25%." },
-    { "MarzGuns.M24", "Has Integrated Bipod", "Folding bipod: no effect on handling." },
-    { "MarzGuns.M60", "Has Integrated Bipod", "Folding bipod: deployed, Aiming Time increased by 30%, Critical and Hit Chance increased by 10%, no endurance used to fire; folded, Hit Chance reduced by 20%, firing uses endurance." },
-    { "MarzGuns.SPAS12", "", "Mode selector: pump action, rack after every shot; semi-automatic, Jam Chance increased by 60%, Recoil Delay reduced by 50%, no racking between shots." },
+    { "MarzGuns.AKS74U", "Has Integrated Stock", {  } },
+    { "MarzGuns.ASVAL", "Has Integrated Stock", {  } },
+    { "MarzGuns.CAR15", "Has Integrated Stock", {  } },
+    { "MarzGuns.FNC", "Has Integrated Stock", {  } },
+    { "MarzGuns.G36", "Has Integrated Stock", {  } },
+    { "MarzGuns.G36C", "Has Integrated Stock", {  } },
+    { "MarzGuns.M4A1", "Has Integrated Stock", {  } },
+    { "MarzGuns.MAC10", "Has Integrated Stock", {  } },
+    { "MarzGuns.MP5", "Has Integrated Stock", {  } },
+    { "MarzGuns.MP5SD", "Has Integrated Stock", {  } },
+    { "MarzGuns.SPAS12", "Has Integrated Stock", {  } },
+    { "MarzGuns.XM177", "Has Integrated Stock", {  } },
+    { "MarzGuns.BAR", "Has Integrated Bipod", {  } },
+    { "MarzGuns.M24", "Has Integrated Bipod", {  } },
+    { "MarzGuns.M60", "Has Integrated Bipod", {  } },
+    { "MarzGuns.Shellholder", "Allows the user to fire 40% faster", { "Recoil Delay reduced by 40%" } },
+    { "MarzGuns.Shellholder", "", { "Attachable on stocks." } },
+    { "MarzGuns.AR15", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.BENELLI_M4", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.FAMAS", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.G3", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.M14", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.M16A1", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.M16A2", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.M16A3", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.M1903", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.M1_GARAND", "Can Attach Bayonets.", { "Can attach a bayonet." } },
+    { "MarzGuns.M4A1", "", { "Can attach a bayonet." } },
+    { "MarzGuns.MOSIN", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.MOSSBERG_590", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.REMINGTON_870", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.TRENCHGUN", "Can Attach Bayonet.", { "Can attach a bayonet." } },
+    { "MarzGuns.XM177", "", { "Can attach a bayonet." } },
+    { "MarzGuns.K98_BAYONET", "Can be attached to compatible rifles", { "Attachable on compatible guns." } },
+    { "MarzGuns.K98_BAYONET", "", { "Cannot install if a muzzle device or M203 is installed." } },
+    { "MarzGuns.M1905_BAYONET", "", { "Attachable on compatible guns." } },
+    { "MarzGuns.M1905_BAYONET", "", { "Cannot install if a muzzle device or M203 is installed." } },
+    { "MarzGuns.M1_BAYONET", "", { "Attachable on compatible guns." } },
+    { "MarzGuns.M1_BAYONET", "", { "Cannot install if a muzzle device or M203 is installed." } },
+    { "MarzGuns.M5_BAYONET", "Can be attached to compatible rifles", { "Attachable on compatible guns." } },
+    { "MarzGuns.M5_BAYONET", "", { "Cannot install if a muzzle device or M203 is installed." } },
+    { "MarzGuns.M9_BAYONET", "Can be attached to compatible rifles", { "Attachable on compatible guns." } },
+    { "MarzGuns.M9_BAYONET", "", { "Cannot install if a muzzle device or M203 is installed." } },
+    { "MarzGuns.Picatinny_Rail", "Allows attachments to be installed on weapons", { "Adds a rail on one of the slots of the gun." } },
+    { "MarzGuns.PYTHON", "Has Speedloader available.", { "Compatible with 6-round speedloader." } },
+    { "MarzGuns.38357SpeedLoader6", "Speedloader needs to be previous fully loaded to reload the revolver.", { "Reloads the revolver faster when fully loaded." } },
+    { "MarzGuns.DETECTIVE_38", "Has Speedloader available.", { "Compatible with 6-round speedloader." } },
+    { "MarzGuns.RHINO", "Has Speedloader available.", { "Compatible with 6-round speedloader." } },
+    { "MarzGuns.MOSIN", "", { "Compatible with 5-round stripper clip." } },
+    { "MarzGuns.Model_70_Sling", "", { "Rifles weigh less." } },
+    { "MarzGuns.Rem700_Sling", "", { "Rifles weigh less." } },
+    { "MarzGuns.VP70M_Stock", "", { "No Direct Stat Changes" } },
+    { "MarzGuns.545x39Magazine60_Bakelite", "", { "Uses 5.45x39mm rounds." } },
+    { "MarzGuns.9x19Magazine17_GLOCK17", "", { "Uses 9x19mm rounds." } },
+    { "MarzGuns.9x39Magazine10", "", { "Uses 9x39mm rounds." } },
+    { "MarzGuns.9x39Magazine20", "", { "Uses 9x39mm rounds." } },
+    { "MarzGuns.CAMP_CARBINE", "", { "Uses .45 rounds." } },
+    { "MarzGuns.DOUBLE_DEUCE", "", { "Uses 2-bore rounds." } },
+    { "MarzGuns.GLOCK17", "", { "Uses 9x19mm rounds." } },
+    { "MarzGuns.GLOCK17", "", { "Compatible Mounting Device: Beretta Mount." } },
+    { "MarzGuns.GLOCK17", "", { "Compatible Muzzle Device: Pistol Muzzle Mount." } },
+    { "MarzGuns.VP70M", "", { "Uses 9x19mm rounds." } },
 }
+
+-- integrated part -> its lines, shown under a gun while that part is fitted (Tooltips.lua sets them per render)
+GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
+local STATES = GunsOfTien_TooltipStates
+STATES["MarzGuns.AKS74U_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 25%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.ASVAL_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 15%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.BAR_Integrated_Bipod_Deployed"] = { "Folding bipod deployed:", "Aiming Time increased by 20%", "Critical and Hit Chance increased by 25%" }
+STATES["MarzGuns.CAR15_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 15%" }
+STATES["MarzGuns.FNC_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 5%", "Hit Chance increased by 15%" }
+STATES["MarzGuns.G36C_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.G36_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 15%" }
+STATES["MarzGuns.M60_Integrated_Bipod_Deployed"] = { "Folding bipod deployed:", "Aiming Time increased by 30%", "Critical and Hit Chance increased by 10%", "No endurance used to fire" }
+STATES["MarzGuns.M60_Integrated_Bipod_Folded"] = { "Folding bipod folded:", "Hit Chance reduced by 20%", "Firing uses endurance" }
+STATES["MarzGuns.MAC10_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 10%" }
+STATES["MarzGuns.MP5SD_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%" }
+STATES["MarzGuns.MP5_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%" }
+STATES["MarzGuns.SPAS12_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 10%" }
+STATES["MarzGuns.SPAS12_Selector_Pump"] = { "Pump action:", "Needs racking every shot" }
+STATES["MarzGuns.SPAS12_Selector_Semi"] = { "Semi-automatic:", "Jam Chance increased by 60%", "Recoil Delay reduced by 50%" }
 
 -- { part, a line its tooltip is missing }
 local PART_LINES = {
@@ -56,19 +121,34 @@ local PART_LINES = {
     { "MarzGuns.Stub_Foregrip", "Automatic fire spread reduced by 15%" },
     { "MarzGuns.Stub_Foregrip", "Needs Screwdriver to install or remove." },
     { "MarzGuns.TL_Light", "Aiming Time increased by 5" },
+    { "MarzGuns.Model_70_Sling", "Needs Screwdriver to install or remove." },
+    { "MarzGuns.Rem700_Sling", "Needs Screwdriver to install or remove." },
+    { "MarzGuns.VP70M_Stock", "Needs Screwdriver to install or remove." },
 }
 
 for _, row in ipairs(HANDLING) do
-    local list, vague, text = listOf(row[1]), row[2], row[3]
-    local done = false
-    for i, entry in ipairs(list) do
-        if entry == text or (vague ~= "" and (entry == vague or entry == vague .. ".")) then
-            list[i] = text
-            done = true
-        end
+    local list, vague, texts = listOf(row[1]), row[2], row[3]
+    local present = false
+    for _, entry in ipairs(list) do
+        if entry == texts[1] then present = true end
     end
-    if not done then
-        list[#list + 1] = text
+    if not present then
+        -- in the vague line's place, else before a part's "Needs ..." line, else at the end
+        local at = nil
+        for i, entry in ipairs(list) do
+            if vague ~= "" and (entry == vague or entry == vague .. ".") then at = i end
+        end
+        if at then
+            table.remove(list, at)
+        else
+            at = #list + 1
+            for i, entry in ipairs(list) do
+                if entry:find("^Needs ") then at = i break end
+            end
+        end
+        for j, text in ipairs(texts) do
+            table.insert(list, at + j - 1, text)
+        end
     end
 end
 

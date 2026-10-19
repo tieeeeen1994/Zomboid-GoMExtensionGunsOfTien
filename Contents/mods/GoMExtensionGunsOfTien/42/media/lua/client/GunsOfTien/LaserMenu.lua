@@ -109,7 +109,7 @@ end)
 -------------------------------------------------
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
 if ok and type(tooltips) == "table" and type(tooltips.tooltipsPergun) == "table" then
-    local NOTE = "Bonus only while switched on: needs a battery (about 3 weeks switched on)."
+    local NOTE = "Bonus only while switched on"
     for fullType in pairs(Lasers.TYPES) do
         local list = tooltips.tooltipsPergun[fullType]
         if not list then

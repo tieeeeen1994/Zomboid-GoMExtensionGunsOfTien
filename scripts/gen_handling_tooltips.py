@@ -10,15 +10,25 @@ own modifiers (the lights' AimingTimeModifier) do. This reads GoM's registries a
 AttachmentCustomStats.lua with its DA.RegisterPair selector pairs, RPM.lua's RegisterSpreadPartModifier,
 OnCreate/AttachAndDetach.lua's tools per part type, the item scripts for base stats and modifiers) and writes
 Contents/mods/GoMExtensionGunsOfTien/42/media/lua/client/GunsOfTien/HandlingTooltips.lua:
-- one line per gun with a folding stock, bipod or mode selector, in the style of GoM's part tooltips and the Post-93
-  MP7s ("Collapsible stock: deployed, Aiming Time reduced by 25%, Hit Chance increased by 15%."), replacing GoM's
-  vague line or added after the others;
+- for every integrated stock, bipod and mode selector state with effects, its lines in the style of GoM's part
+  tooltips: a heading ("Collapsible stock deployed:") and one effect per line ("Aiming Time reduced by 25%"), into
+  the global GunsOfTien_TooltipStates (keyed by the part); client/GunsOfTien/Tooltips.lua shows them under a gun
+  while that part is fitted, so only the current state's stats show. GoM's vague "Has Integrated Stock / Bipod"
+  lines are removed;
 - the lines a part's own tooltip is missing (spread, script modifiers, the tool to fit it), before its "Needs ..."
-  line.
-Run again after a GoM update; never hand-edit the output.
+  line;
+- the vague or missing lines of the rest (2026-10-19): the shell holder's "fire 40% faster" (its Recoil Delay), the
+  bayonets' "Can be attached to compatible rifles" and the guns' "Can Attach Bayonet(s)" (the guns from
+  Registries/Bayonets.lua, the K98 included as shared/GunsOfTien/GoMFixes.lua registers it), the Picatinny Rail,
+  the speedloaders and stripper clip (Registries/SpeedLoader.lua), the slings and the VP70M stock, and "Uses ...
+  rounds." / mounting and muzzle device lines for the magazines and guns GoM gave none (copied from items with the
+  same round or part). Compact, in GoM's own form (user, 2026-10-19: "do not overexplain"): one fact per line, the
+  number where GoM left it out.
+The rounds' lines are gen_round_tooltips.py's. Run again after a GoM update; never hand-edit the output.
 """
 
 import glob
+import json
 import os
 import re
 import sys
@@ -107,11 +117,8 @@ def change(stat, f):
 
 
 def spread_text(s):
-    sustained, widest = s
-    if sustained == widest:
-        return "Automatic fire spread %s by %d%%" % ("reduced" if sustained < 1 else "increased", pct(sustained))
-    return "Automatic fire spread %s by %d%% (its widest by %d%%)" % ("reduced" if sustained < 1 else "increased",
-                                                                    pct(sustained), pct(widest))
+    sustained = s[0]
+    return "Automatic fire spread %s by %d%%" % ("reduced" if sustained < 1 else "increased", pct(sustained))
 
 
 def effects(ops, base=None, spread=None):
@@ -143,9 +150,7 @@ def effects(ops, base=None, spread=None):
     if spread:
         out.append(spread_text(spread)[0].lower() + spread_text(spread)[1:])
     if sets.get("RackAfterShot") == "true":
-        out.append("rack after every shot")
-    elif sets.get("RackAfterShot") == "false":
-        out.append("no racking between shots")
+        out.append("needs racking every shot")
     if sets.get("UseEndurance") == "false":
         out.append("no endurance used to fire")
     elif sets.get("UseEndurance") == "true":
@@ -153,12 +158,109 @@ def effects(ops, base=None, spread=None):
     return out
 
 
-def line(feature, states):
-    """'<Feature>: <state>, <effects>; <state>, <effects>.' or a plain no-effect line."""
-    parts = ["%s, %s" % (state, ", ".join(eff)) for state, eff in states if eff]
-    if not parts:
-        return "%s: no effect on handling." % feature
-    return "%s: %s." % (feature, "; ".join(parts))
+def cap(text):
+    return text[0].upper() + text[1:]
+
+
+def state_lines(heading, eff):
+    """GoM's attachment style (user, 2026-10-19: "the way GoM lists the buffs and debuffs is better"): a heading
+    ("Folding stock deployed:", "Pump action:") and one effect per line, no full stop; nothing for a state without
+    effects (user: "only display the proper CURRENT stats if they are active")."""
+    return [cap(heading) + ":"] + [cap(e) for e in eff] if eff else []
+
+
+def info_rows(script, gom_lines, tool_of, names):
+    """(rows, part_rows) for the vague and missing lines that are not about handling (see the header)."""
+    rows, part_rows = [], []
+    reg = REG
+
+    def name(full_type):
+        return names.get(full_type, full_type.split(".")[-1])
+
+    # shell holder: its real stat, and what it fits
+    stats = part_stats(read(os.path.join(reg, "AttachmentCustomStats.lua")))
+    holder = "MarzGuns.Shellholder"
+    if holder in stats:
+        rows.append((holder, "Allows the user to fire 40% faster", effects(stats[holder])[0]))
+        rows.append((holder, "", "Attachable on stocks."))
+
+    # bayonets
+    btext = read(os.path.join(reg, "Bayonets.lua"))
+    mountable = {}
+    for atts, guns in re.findall(r'RegisterMountableWeapon\(\{([^}]*)\},\s*\{([^}]*)\}', btext, re.S):
+        for gun in re.findall(r'"([\w.]+)"', guns):
+            mountable.setdefault(gun, set()).update(re.findall(r'"([\w.]+)"', atts))
+    knives = dict(re.findall(r'RegisterBayonetKnife\("([\w.]+)",\s*"([\w.]+)"', btext))
+    m5 = "MarzGuns.M5_Bayonet_Attachment"
+    for gun, atts in mountable.items():
+        if m5 in atts:
+            atts.add("MarzGuns.K98_Bayonet_Attachment")      # GoMFixes.lua
+    for gun in sorted(mountable):
+        text = "Can attach a bayonet."
+        old = next((l for l in gom_lines.get(gun, []) if l.startswith("Can Attach Bayonet")), "")
+        rows.append((gun, old, text))
+    for knife in sorted(knives):
+        old = next((l for l in gom_lines.get(knife, []) if "compatible rifles" in l), "")
+        rows.append((knife, old, "Attachable on compatible guns."))
+        rows.append((knife, "", "Cannot install if a muzzle device or M203 is installed."))
+
+    # Picatinny Rail (Registries/UniversalAttachments.lua turns it into the slot picked)
+    rail = "MarzGuns.Picatinny_Rail"
+    rows.append((rail, "Allows attachments to be installed on weapons", "Adds a rail on one of the slots of the gun."))
+
+    # speedloaders and stripper clips
+    for gun, loader in re.findall(r'\["([\w.]+)"\]\s*=\s*"([\w.]+)"', read(os.path.join(reg, "SpeedLoader.lua"))):
+        p = script.get(loader, {})
+        kind = "stripper clip" if "Stripper" in loader else "speedloader"
+        text = "Compatible with %d-round %s." % (int(float(p.get("maxammo", 0))), kind)
+        old = next((l for l in gom_lines.get(gun, []) if l.startswith("Has Speedloader")), "")
+        rows.append((gun, old, text))
+        garbled = next((l for l in gom_lines.get(loader, []) if "previous fully loaded" in l), None)
+        if garbled and (loader, garbled) not in [(r[0], r[1]) for r in rows]:
+            rows.append((loader, garbled, "Reloads the revolver faster when fully loaded."))
+
+    # parts with no line at all: slings, the VP70M stock
+    for part, p in sorted(script.items()):
+        if part in gom_lines or not p.get("parttype") or p.get("mounton") == "MarzGuns.FakeItem":
+            continue
+        tool = tool_of.get(p.get("parttype"))
+        if p.get("parttype") == "Sling":
+            rows.append((part, "", "Rifles weigh less."))
+        elif p.get("parttype") == "Stock":
+            rows.append((part, "", "No Direct Stat Changes"))
+        else:
+            continue
+        if tool:
+            part_rows.append((part, "Needs %s to install or remove." % tool))
+
+    # "Uses ... rounds." for magazines and guns GoM gave no lines, from items with the same round
+    uses = {}
+    for item, lines in gom_lines.items():
+        ammo = script.get(item, {}).get("ammotype")
+        for l in lines:
+            if ammo and l.startswith("Uses "):
+                uses.setdefault(ammo, l)
+    uses.setdefault("swmg:bullet_2bore", "Uses 2-bore rounds.")
+    for item, p in sorted(script.items()):
+        ammo = p.get("ammotype")
+        is_mag = p.get("parttype") == "Clip" and "Magazine" in item
+        is_gun = p.get("subcategory") == "Firearm" and not item.endswith("_Weapon")
+        if item in gom_lines or not ammo or not (is_mag or is_gun) or ammo not in uses:
+            continue
+        rows.append((item, "", uses[ammo]))
+        if is_gun:
+            # mounting / muzzle device lines of a gun that shares the part
+            mine = {q for q, r in script.items() if item in [x.strip() for x in r.get("mounton", "").split(";")]}
+            for prefix in ("Compatible Mounting Device:", "Compatible Muzzle Device:"):
+                for other, lines in sorted(gom_lines.items()):
+                    line = next((l for l in lines if l.startswith(prefix)), None)
+                    theirs = {q for q, r in script.items()
+                              if other in [x.strip() for x in r.get("mounton", "").split(";")]}
+                    want = "RailUp" if "Mounting" in prefix else "CanonMount"
+                    if line and any(script[q].get("parttype") == want for q in mine & theirs):
+                        rows.append((item, "", line))
+                        break
+    return rows, part_rows
 
 
 def lua_str(s):
@@ -177,29 +279,29 @@ def main():
 
     # ---- gun lines: folding stocks and bipods, mode selectors
     rows = []
+    states = {}        # integrated part -> its lines, shown while it is fitted (Tooltips.lua)
     for kind, file in (("stock", "Stocks.lua"), ("bipod", "Bipods.lua")):
         for gun, (folded, deployed) in sorted(registrations(read(os.path.join(REG, file))).items()):
             feature = ("Folding stock" if gun in FOLDING else "Collapsible stock") if kind == "stock" else "Folding bipod"
-            text = line(feature, [("deployed", effects(stats.get(deployed, []), spread=spread.get(deployed))),
-                                  ("folded", effects(stats.get(folded, []), spread=spread.get(folded)))])
-            rows.append((gun, VAGUE[kind], text))
-            missing = [p for p in (folded, deployed) if p not in stats]
-            note = " (no stats registered for %s)" % ", ".join(missing) if missing else ""
-            print("%-18s %s%s" % (gun, text, note))
+            rows.append((gun, VAGUE[kind], []))         # GoM's vague line goes, the state lines show instead
+            for state, part in (("deployed", deployed), ("folded", folded)):
+                lines = state_lines("%s %s" % (feature, state), effects(stats.get(part, []), spread=spread.get(part)))
+                if lines:
+                    states[part] = lines
+                    print("%-18s %-40s %s" % (gun, part, " / ".join(lines)))
     for a, b in re.findall(r'DA\.RegisterPair\("([\w.-]+)",\s*"([\w.-]+)"\)', stats_text):
         pa, pb = script.get(a, {}), script.get(b, {})
         if pa.get("parttype") != "Selector" or pb.get("parttype") != "Selector":
             continue
         gun = pa.get("mounton", "").split(";")[0]
         base = script.get(gun, {})
-        states = []
         for part in (a, b):
             mode = re.search(r'_([^_]+)$', part).group(1).lower()
             mode = {"pump": "pump action", "semi": "semi-automatic"}.get(mode, mode)
-            states.append((mode, effects(stats.get(part, []), base=base, spread=spread.get(part))))
-        text = line("Mode selector", states)
-        rows.append((gun, "", text))
-        print("%-18s %s" % (gun, text))
+            lines = state_lines(mode, effects(stats.get(part, []), base=base, spread=spread.get(part)))
+            if lines:
+                states[part] = lines
+                print("%-18s %-40s %s" % (gun, part, " / ".join(lines)))
     print("GoM vague lines found: %d" % len(re.findall(r'"(Has Integrated (?:Stock|Bipod))', table)))
 
     # ---- part lines GoM's own part tooltips leave out
@@ -223,6 +325,13 @@ def main():
         for text in add:
             part_rows.append((part, text))
             print("%-30s + %s" % (part, text))
+
+    names = json.load(open(os.path.join(MEDIA, "lua/shared/Translate/EN/ItemName.json"), encoding="utf-8"))
+    more_rows, more_parts = info_rows(script, gom_lines, tool_of, names)
+    for gun, vague, text in more_rows:
+        print("%-36s %s%s" % (gun, ("[%s] -> " % vague) if vague else "+ ", text))
+    rows += [(item, vague, [text]) for item, vague, text in more_rows]
+    part_rows += more_parts
 
     out = ['''--[[
     Guns of Tien -- what Guns of Marz's stocks, bipods, selectors and parts really do, in its tooltips (generated by
@@ -249,13 +358,20 @@ local function listOf(fullType)
     return list
 end
 
--- { gun, GoM's vague line it replaces ("" = none), the clear line }
+-- { item, GoM's vague line they replace ("" = none), the clear lines }
 local HANDLING = {
 ''']
-    for gun, vague, text in rows:
-        out.append("    { %s, %s, %s },\n" % (lua_str(gun), lua_str(vague), lua_str(text)))
+    for gun, vague, texts in rows:
+        out.append("    { %s, %s, { %s } },\n" % (lua_str(gun), lua_str(vague), ", ".join(lua_str(t) for t in texts)))
     out.append('''}
 
+-- integrated part -> its lines, shown under a gun while that part is fitted (Tooltips.lua sets them per render)
+GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
+local STATES = GunsOfTien_TooltipStates
+''')
+    for part in sorted(states):
+        out.append("STATES[%s] = { %s }\n" % (lua_str(part), ", ".join(lua_str(t) for t in states[part])))
+    out.append('''
 -- { part, a line its tooltip is missing }
 local PART_LINES = {
 ''')
@@ -264,16 +380,28 @@ local PART_LINES = {
     out.append('''}
 
 for _, row in ipairs(HANDLING) do
-    local list, vague, text = listOf(row[1]), row[2], row[3]
-    local done = false
-    for i, entry in ipairs(list) do
-        if entry == text or (vague ~= "" and (entry == vague or entry == vague .. ".")) then
-            list[i] = text
-            done = true
-        end
+    local list, vague, texts = listOf(row[1]), row[2], row[3]
+    local present = false
+    for _, entry in ipairs(list) do
+        if entry == texts[1] then present = true end
     end
-    if not done then
-        list[#list + 1] = text
+    if not present then
+        -- in the vague line's place, else before a part's "Needs ..." line, else at the end
+        local at = nil
+        for i, entry in ipairs(list) do
+            if vague ~= "" and (entry == vague or entry == vague .. ".") then at = i end
+        end
+        if at then
+            table.remove(list, at)
+        else
+            at = #list + 1
+            for i, entry in ipairs(list) do
+                if entry:find("^Needs ") then at = i break end
+            end
+        end
+        for j, text in ipairs(texts) do
+            table.insert(list, at + j - 1, text)
+        end
     end
 end
 
