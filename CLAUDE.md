@@ -150,7 +150,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `make_workshop_art.py` flips them back, so their markings read right; the MP7 / P90 ad renders are **not** flipped
   yet) and `scripts/make_workshop_art.py [preview preview2 preview3 preview4 preview5 posters icons]`. preview4
   (2026-10-18) is the MP7A2 alone, from render_ad_guns.py's `mp7a2` (fitted out without a light, so the handguard's side
-  rail shows), mirrored to the game's view like the pistols; added on the Steam page by hand like preview2 / preview3.
+  rail shows), mirrored to the game's view like the pistols. preview2-5 are added on the Steam page by hand (all four
+  there since 2026-10-19); only preview.png goes up with the in-game upload.
   preview5 (2026-10-19, user: "I want the three to be included but the main features would just use the double barrel
   model") is the sawn-off shotguns: GoM's Double Barrel whole and sawn off (render_ad_guns.py `db_full` / `db_sawn`,
   one scale, lined up on the receiver, mirrored back), then one slot row of the six offcuts under the three guns'
@@ -174,7 +175,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## Status and how to continue
 
-See `TODO.md`. In short: both mods' code is written and syntax-checked; nothing has been loaded in game. The Post-93
+See `TODO.md`. In short: both mods' code is written and syntax-checked; the Workshop item was last uploaded
+2026-10-19 (with the sawn-off stocks, offcuts and sawn-off barrel stats), but nothing has been loaded in game. The Post-93
 **MP7A1 and P90 TR assets are done**, both rebuilt from the user's photos (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
 P90's `post93_p90_magazine.png`, `post93_p90_attachments.png`, `post93_p90_ammo.png`; the P90
 was rebuilt from the user's photos and approved 2026-10-14). Each gun has: FBX `models_X/weapons/firearms/

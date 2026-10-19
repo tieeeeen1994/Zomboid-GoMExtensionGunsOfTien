@@ -19,7 +19,8 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
 - [x] Workshop: workshop.txt, preview.png (1024, ad), both posters / icons, README, mod.info texts (2026-10-15;
       art from scripts/render_ad_guns.py + scripts/make_workshop_art.py). Upload from the game's Workshop menu.
       The game's uploader refuses any preview.png that is not exactly 256x256 (seen 2026-10-15): preview.png is a
-      simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand.
+      simple 256 one, the 1024 ad is preview2.png, added on the Steam page by hand. Uploaded again 2026-10-19 with
+      the sawn-off stocks, offcuts and sawn-off barrel stats; preview2-5 are on the Steam page.
 - [ ] Sawn-off stocks (2026-10-19, SawnStock.lua): Saw Off Shotgun Stock on a Double Barrel, Stevens 555 and TOZ-34
       (any saw; listed only for a gun with its stock; a shell holder comes back); the stockless
       model in hand, on the back and on the floor, with full and sawn-off barrels, open and closed while reloading;
@@ -42,10 +43,10 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       ground, not sunk or floating (`world` points from sawn_offcuts.json, gen_scripts.py `floor_point`); the stock
       offcut burns in a campfire and goes into the charcoal recipe; the barrel offcuts smelt in a furnace (Smelt Large
       Steel Item, 4 uses into a steel crucible).
-- [ ] Add preview5.png (1024, the sawn-off shotguns, 2026-10-19) on the Steam page by hand. Rebuild:
+- [x] preview5.png (1024, the sawn-off shotguns) on the Steam page (2026-10-19). Rebuild:
       `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad db_full db_sawn`, then
       `python3 scripts/make_workshop_art.py preview5`.
-- [ ] Add preview3.png (1024, the Five-seveN and the UCP fitted out, 2026-10-17) on the Steam page by hand.
+- [x] preview3.png (1024, the Five-seveN and the UCP fitted out) on the Steam page (2026-10-19).
       Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- tmp/ad fiveseven ucp`, then
       `python3 scripts/make_workshop_art.py preview3` (names select what it writes; on the Mac it uses DIN Alternate
       Bold, the nearest to Windows' Bahnschrift that preview2 was drawn with).
