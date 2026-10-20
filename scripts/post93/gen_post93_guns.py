@@ -894,7 +894,7 @@ def translations():
         f'{M}.SCAR_Integrated_Rail_Down': 'SCAR Integrated Rail (Down)',
         f'{M}.SCAR_Integrated_Rail_Left': 'SCAR Integrated Rail (Left)',
         f'{M}.SCAR_Integrated_Rail_Right': 'SCAR Integrated Rail (Right)',
-        f'{M}.SCARH_Suppressor': 'FA762SS Suppressor (7.62x51mm Weapons)',
+        f'{M}.SCARH_Suppressor': 'SOCOM762-RC Suppressor (7.62x51mm Weapons)',
         f'{M}.SCARH_Muzzle_Mount_Device': 'SCAR-H Muzzle Mounting Device',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')

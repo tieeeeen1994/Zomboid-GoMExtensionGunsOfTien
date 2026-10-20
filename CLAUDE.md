@@ -150,7 +150,7 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   cameras. The Five-seveN and the UCP have no optic rail of their own: GoM's pistol sights need its Beretta mount.
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the
   user's photo) in FDE, select fire, standard side-folding stock; the SCAR-L on GoM's 5.56 family and STANAG
-  magazines, the SCAR-H on its 7.62x51 family with its own 20 / 10-round magazines and its own FA762SS suppressor +
+  magazines, the SCAR-H on its 7.62x51 family with its own 20 / 10-round magazines and its own SOCOM762-RC suppressor +
   mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
@@ -560,6 +560,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   magazines out, so their icons use that camera with the MP7's magazine light (fitted on GoM's MP5 magazine).
 - Not in the photos and drawn from FN's layout: the right side (ejection port, ambidextrous selector), the charging
   handle on the left (reversible on the real gun; the SCAR-H photo has it left), the stock's position marks and latch.
+- SCAR-H suppressor in real life (searched 2026-10-20): FN made none for the SCAR, and no source ties a can to the
+  Mk 17. SureFire's FA762SS (first pick, from memory) is the Marines' M40A5 can; its SOCOM762-RC is the 7.62 can
+  USSOCOM adopted (2017 Family of Muzzle Brake Suppressors, sources tie it to the Mk 13): the user chose that one.
 - SCAR-H magazines in real life: FN only made 10 and 20 rounds. The 50-round drum (user, 2026-10-20) is ProMag's
   DRM-A41 for the SCAR 17S, modelled as a single drum facing front and back (its axis along the barrel, like the
   MP7's; the user corrected a first build facing the sides), winding knob on the front face; its icon uses the MP7 drum's camera with the MP7 magazine light (the drum light washed it out too).

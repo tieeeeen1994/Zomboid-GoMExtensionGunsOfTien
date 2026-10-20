@@ -365,7 +365,9 @@ MOUNT_LEN = 52.0
 
 
 def build_suppressor():
-    """A 1.5" 7.62 can of the SureFire FA762SS kind, slid over the mount device; origin at `canon`, along +Y."""
+    """SureFire's SOCOM762-RC (user, 2026-10-20: FN made no suppressor of its own for the SCAR-H, and none is
+    documented as issued with the Mk 17; this is the 7.62 can USSOCOM adopted, 2017): about 1.5" across, slid over
+    the mount device (SureFire's fast-attach muzzle device); origin at `canon`, along +Y."""
     b = kit.Builder()
     L = SUPP_LEN
     b.lathe("y", (0, 0, 0), [(-2.0, 0), (-2.0, 14.0), (-1.0, 15.5), (22.0, 15.5), (24.0, 17.5), (28.0, SUPP_R),

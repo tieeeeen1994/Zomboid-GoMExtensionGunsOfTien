@@ -55,7 +55,7 @@ RIFLE_VIEW, RIFLE_SCALE, RIFLE_SIZE = (0.92, 0.3, -0.16), 0.98, (2400, 1000)
 
 GUNS = {
     # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
-    # its own mount device and FA762SS suppressor; stocks deployed
+    # its own mount device and SOCOM762-RC suppressor; stocks deployed
     "scarl": {
         "rifle": True, "points": "post93/scarl_points.json",
         "fbx": "GunsOfTienPost93_SCARL", "tex": "SCARL",

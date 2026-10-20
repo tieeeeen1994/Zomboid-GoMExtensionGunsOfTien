@@ -431,8 +431,8 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       95.2 %; sheet `docs/post93_scar_preview.png`): models, textures, icons, item / model / repair scripts, names,
       magazine profiles (GoM's STANAG for the L), 625 / 600 rpm, animated charging handle, reload (L default, H GoM's FAL
       clips), shared folding stock, four integral rails, GoM's optics / foregrips / bipods / lights / lasers, the L's GoM
-      AR muzzle parts, the H's own mount device and FA762SS suppressor, spawn parts, loot (Anachronistic spawner as the
-      G36), Hot Brass, tooltips. Suppressor model "FA762SS" chosen by Claude: confirm with the user. To check in game:
+      AR muzzle parts, the H's own mount device and SOCOM762-RC suppressor, spawn parts, loot (Anachronistic spawner as the
+      G36), Hot Brass, tooltips. Suppressor: SureFire's SOCOM762-RC (user, 2026-10-20; FN made none for the SCAR-H). To check in game:
       the hold (grip in the hand, both guns), the stock folding to the right and back (context / radial), the charging
       handle moving back on each shot, GoM's STANAG magazines seated in the SCAR-L (all eight, the 60 / 100 / 150
       drums under it), the SCAR-H's 20 and 10, the reloads (L default rifle, H FAL clips), optics on the top rail over
