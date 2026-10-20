@@ -151,8 +151,14 @@ Both: held as rifles (two hands, back slot), Auto / Single, the charging handle 
 Bolt_Fired swap), one shared side-folding stock (`SCAR_Integrated_Stock_Folded / _Deployed`, GoM's G36 stock stats:
 HitChance x1.15, AimingTime x0.85), folding to the right; four integral rails (`SCAR_Integrated_Rail_Up / Down / Left /
 Right`) for GoM's optics, foregrips, bipods, lights and lasers; no bayonet (no lug); ejection to the right (Hot Brass:
-GoM's M4A1 / FAL values). Loot: GoM's `World_Anachronistic_Spawner` as the G36 (gun, 4 magazines, 4 boxes); the
-suppressor and mount device in GoM's suppressor and muzzle device spawners.
+GoM's M4A1 / FAL values). Loot (user, 2026-10-20: military, the MP7's way): an alternative each in GoM's army rifle
+spawners, packed as GoM's own there: `World_Army_Rifle_Spawner` (M16 family, M14, M24 + the two SCARs, so a SCAR is 2
+in 5 of its kits; army storage, army truck beds, army ALICE packs, the old bunker's storage, `RifleCase3`, late civilian
+gun finds; up to 6 magazines and 6 boxes) and `Zombie_Army_Rifle_Spawner` (M16 family, M14, M60 + the SCARs: the rifle
+on army zombies' backs; up to 4 and 4). Not in GoM's Anachronistic spawner (civilian late safehouses and bags). A
+spawner of our own (`World_SCAR_Spawner`, inserted GoM's way in army storage, truck beds and ALICE packs at a quarter
+of the army rifle's weight) was built and dropped the same day for this. The suppressor and mount device in GoM's
+suppressor and muzzle device spawners.
 
 **SCAR-H 50-round drum** (user, 2026-10-20): FN never made more than 20 (10 and 20, steel then polymer); the only real
 larger one found is ProMag's DRM-A41, a 50-round polymer drum for the civilian SCAR 17S (black or FDE; retailer

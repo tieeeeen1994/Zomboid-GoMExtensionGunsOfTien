@@ -5,12 +5,17 @@
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
       loot) and MarzGuns.Zombie_Police_SMG_Spawner (SWAT zombies, police bags, prison riot storage, SWAT vehicles);
-      the SCAR-L and SCAR-H there too, as GoM's G36 comes (the gun, 4 magazines, 4 boxes of GoM's own 5.56 / 7.62x51);
       the Five-seveN and the UCP Prototype in GoM's police and SWAT handgun spawners (MarzGuns.Zombie_Police_Handgun_
       Spawner, Zombie_SWAT_Handgun_Spawner), next to the Glock 17 and M92FS, as often as either (user, 2026-10-17:
       the UCP is not rare, "treat it like any other gun"). Not in the Anachronistic spawner: GoM puts that in
       vanilla's late survivor safehouses, rooms in civilian homes, and neither pistol belongs in a home (user,
       2026-10-17).
+    - The SCAR-L and SCAR-H (SOCOM rifles, fielded about 2009) are military, the MP7's way (user, 2026-10-20): an
+      alternative each in GoM's army rifle spawners, beside its M16 / CAR-15 / M4 and M14, packed as GoM's own there:
+      MarzGuns.World_Army_Rifle_Spawner (with the M24; army storage, army truck beds, army ALICE packs, the old
+      bunker's storage, RifleCase3, late civilian gun finds; up to 6 magazines and 6 boxes) and
+      MarzGuns.Zombie_Army_Rifle_Spawner (with the M60; the rifle on army zombies' backs; up to 4 and 4). Not in the
+      Anachronistic spawner, which reaches civilian homes.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -83,20 +88,21 @@ local function ucpAlternative(boxes)
     }
 end
 
--- The SCARs as GoM's G36 alternative there: the gun, 4 magazines, 4 boxes of GoM's standard rounds.
-local function scarlAlternative(boxes)
+-- The SCARs as GoM's army rifles come in each spawner: the gun, up to n magazines, up to n boxes of GoM's standard
+-- rounds (the SCAR-L takes GoM's STANAG 30, as the M16 kit).
+local function scarlAlternative(count)
     return {
         { items = { M .. "SCARL" }, amountChance = 1 },
-        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = 4 },
-        { items = { "MarzGuns.556x45_Box" }, amountChance = boxes },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = count },
+        { items = { "MarzGuns.556x45_Box" }, amountChance = count },
     }
 end
 
-local function scarhAlternative(boxes)
+local function scarhAlternative(count)
     return {
         { items = { M .. "SCARH" }, amountChance = 1 },
-        { items = { M .. "762x51Magazine20_SCARH" }, amountChance = 4 },
-        { items = { "MarzGuns.762x51_Box" }, amountChance = boxes },
+        { items = { M .. "762x51Magazine20_SCARH" }, amountChance = count },
+        { items = { "MarzGuns.762x51_Box" }, amountChance = count },
     }
 end
 
@@ -115,8 +121,10 @@ end
 local SPAWNERS = {
     { "MarzGuns.World_Anachronistic_Spawner", mp7Alternative, 4 },
     { "MarzGuns.World_Anachronistic_Spawner", p90Alternative, 4 },
-    { "MarzGuns.World_Anachronistic_Spawner", scarlAlternative, 4 },
-    { "MarzGuns.World_Anachronistic_Spawner", scarhAlternative, 4 },
+    { "MarzGuns.World_Army_Rifle_Spawner", scarlAlternative, 6 },
+    { "MarzGuns.World_Army_Rifle_Spawner", scarhAlternative, 6 },
+    { "MarzGuns.Zombie_Army_Rifle_Spawner", scarlAlternative, 4 },
+    { "MarzGuns.Zombie_Army_Rifle_Spawner", scarhAlternative, 4 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", mp7Alternative, 2 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", p90Alternative, 2 },
     { "MarzGuns.Zombie_Police_Handgun_Spawner", fivesevenAlternative, 4 },
@@ -254,9 +262,11 @@ Events.OnPostDistributionMerge.Add(addWorldLoot)
 -------------------------------------------------
 -- Direct entries: both pistols in survivor and bandit bags
 -------------------------------------------------
--- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its 7 guns
--- evenly, so each gets 2/7 and 1/7 there.
-local SURVIVOR, BANDIT = 2 / 7, 1 / 7
+-- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its guns evenly
+-- (GoM's 5 plus ours: 7 with the MP7 and the P90), so each gets 2/n and 1/n there. n is counted at run time,
+-- so a gun added to SPAWNERS later keeps the pistols in step.
+local ANACHRONISTIC = "MarzGuns.World_Anachronistic_Spawner"
+local SURVIVOR, BANDIT = 2, 1
 local DIRECT = {}
 for _, kit in ipairs({
     { "MarzGuns.FIVESEVEN", M .. "57x28Magazine20_FIVESEVEN", M .. "57x28_Box" },
@@ -267,11 +277,32 @@ for _, kit in ipairs({
     end
 end
 
+-- GoM's own alternatives in the Anachronistic spawner (ours taken out, whether addSpawners has run yet or not) plus ours.
+local function anachronisticGunCount()
+    local ok, spawnerTable = pcall(require, "MarzWeapons/OnCreate/ItemSpawnerTable")
+    local map = ok and type(spawnerTable) == "table" and spawnerTable.ItemSpawnerMap
+    local list = map and map[ANACHRONISTIC]
+    if type(list) ~= "table" then return nil end
+    local count = #list
+    for _, entry in ipairs(added) do
+        if entry[1] == list then count = count - 1 end
+    end
+    for _, entry in ipairs(SPAWNERS) do
+        if entry[1] == ANACHRONISTIC then count = count + 1 end
+    end
+    return count
+end
+
 local function addDirectLoot()
     local multiplier = lootMultiplier()
     if multiplier <= 0 then return end
+    local guns = anachronisticGunCount()
+    if not guns or guns <= 0 then
+        print("[GunsOfTienPost93] " .. ANACHRONISTIC .. " not found, the pistols will not be added to late bags")
+        return
+    end
     for _, entry in ipairs(DIRECT) do
-        local where, name, item, weight = entry[1], entry[2], entry[3], entry[4]
+        local where, name, item, weight = entry[1], entry[2], entry[3], entry[4] / guns
         local list = (where == "vehicle" and VehicleDistributions or BagsAndContainers)[name]
         if type(list) == "table" and type(list.items) == "table" and ScriptManager.instance:getItem(item) then
             list.items[#list.items + 1] = item

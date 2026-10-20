@@ -137,7 +137,14 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `SafehouseLoot_Late` survivor-safehouse rooms in houses, and in `SurvivorBag_Late` / `BanditBag_Late`); the
   Five-seveN and the UCP alike in GoM's police and SWAT handgun spawners (user, 2026-10-17: the UCP is not rare,
   "treat it like any other gun"; it had been a very rare direct police entry with a required magazine), both pistols
-  (+ magazine + box) by direct entries in the two late zombie bags at the 2/7 and 1/7 each Anachronistic gun gets there (Loot.lua `DIRECT`).
+  (+ magazine + box) by direct entries in the two late zombie bags at the 2/n and 1/n each Anachronistic gun gets there
+  (Loot.lua `DIRECT`; n counted at run time, 7 = GoM's 5 + MP7 + P90).
+- **SCAR loot** (2026-10-20): military, the MP7's way: an alternative each in GoM's `World_Army_Rifle_Spawner` and
+  `Zombie_Army_Rifle_Spawner` (see docs/post93_design.md). GoM spawners resolve through Gunworks' `ItemSpawnCore`: an
+  alternative picked evenly, each later group rolls 0..amountChance items. GoM's spawners also arm zombies
+  (`AttachedWeaponDefinitions.lua`: police / SWAT holsters, SWAT and army back slots), so a gun inside one reaches
+  zombies too; a spawner item of our own (any `item` with `OnCreate = MarzGuns_OnCreate.SelectItem` plus an entry in
+  GoM's `ItemSpawnerMap`) would have to be wired into those lists as well.
 - **Loot matches GoM's** (user, 2026-10-17: "everything needs to be lootable the same as GoM"; traced in GoM's
   ItemInsertion.lua / VanillaReplacer*.lua / ItemSpawnerTable.lua): GoM spawns guns only through ~45 spawner items
   inserted in vanilla lists (each a gun + magazines + boxes; zombies carry them through AttachedWeaponDefinitions),
