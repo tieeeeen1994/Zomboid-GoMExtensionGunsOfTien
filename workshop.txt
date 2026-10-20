@@ -43,6 +43,7 @@ description=[*]FN P90: 50-round magazine, suppressor
 description=[*]Both held like pistols, carried on the back, take Guns of Marz optics, lights and lasers
 description=[*]FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor, takes Guns of Marz's pistol sights and pistol lights
 description=[*]H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's suppressor and Guns of Marz's pistol sights and pistol lights
+description=[*]FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an FA762SS suppressor
 description=[*]4.6x30mm DM11, Subsonic
 description=[*]5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
 description=[/list]

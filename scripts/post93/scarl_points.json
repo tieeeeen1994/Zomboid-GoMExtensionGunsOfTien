@@ -1,0 +1,344 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.3822,
+      0.0351
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.0832,
+      0.0201
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0559,
+      0.0596
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0559,
+      0.0619
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0124,
+      0.2031,
+      0.0354
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0124,
+      0.2031,
+      0.0354
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0186,
+      0.2031,
+      0.0354
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0197,
+      0.2031,
+      0.0346
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.181,
+      0.0232
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1794,
+      0.0207
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.3635,
+      0.0351
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0553,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock": {
+    "offset": [
+      0.0,
+      -0.037,
+      0.0351
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock_folded": {
+    "offset": [
+      -0.0312,
+      -0.037,
+      0.0351
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      180.0
+    ]
+  },
+  "bipod": {
+    "offset": [
+      0.0,
+      0.2281,
+      0.0183
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.02,
+      0.13,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.65 of real size, GoM's rifles); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 491, H 132)",
+    "magazine": "GoM's STANAG magazines hang from here (their feed lips)",
+    "stock": "SCAR_STOCK (shared, in GunsOfTienPost93_SCAR_parts.fbx) is modelled deployed with its origin at the hinge: its front face on the bore axis",
+    "stock_folded": "the same node turned 180 degrees about the hinge pin at x -24.0 mm (the right side)",
+    "bolt_fired": "the charging handle back 85 mm real (it reciprocates on the SCAR)",
+    "canon": "as GoM's M4A1, 28.8 mm (0.0187) behind the muzzle: GoM's AR mount device and its muzzle parts"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      491.0,
+      132.0
+    ],
+    "bore_mm": 186.0,
+    "real_mm_per_game_unit": 1538.46,
+    "k": 0.00065
+  },
+  "_bounds": {
+    "SCARL_BODY": {
+      "min": [
+        -0.0179,
+        -0.0371,
+        -0.0621
+      ],
+      "max": [
+        0.0179,
+        0.3822,
+        0.0968
+      ],
+      "tris": 2852
+    },
+    "SCARL_BOLT": {
+      "min": [
+        0.0143,
+        0.132,
+        0.0487
+      ],
+      "max": [
+        0.0273,
+        0.145,
+        0.0553
+      ],
+      "tris": 88
+    },
+    "SCAR_STOCK": {
+      "min": [
+        -0.014,
+        -0.157,
+        -0.0797
+      ],
+      "max": [
+        0.014,
+        0.0,
+        0.0377
+      ],
+      "tris": 352
+    },
+    "762x51Magazine20_SCARH": {
+      "min": [
+        -0.0098,
+        -0.0254,
+        -0.0975
+      ],
+      "max": [
+        0.0098,
+        0.0273,
+        0.0057
+      ],
+      "tris": 308
+    },
+    "762x51Magazine10_SCARH": {
+      "min": [
+        -0.0098,
+        -0.0254,
+        -0.0585
+      ],
+      "max": [
+        0.0098,
+        0.0273,
+        0.0057
+      ],
+      "tris": 308
+    },
+    "762x51Magazine50_SCARH": {
+      "min": [
+        -0.0468,
+        -0.0286,
+        -0.1378
+      ],
+      "max": [
+        0.0468,
+        0.0344,
+        0.0057
+      ],
+      "tris": 808
+    },
+    "SCARH_Suppressor": {
+      "min": [
+        -0.0124,
+        -0.0013,
+        -0.0124
+      ],
+      "max": [
+        0.0124,
+        0.1235,
+        0.0124
+      ],
+      "tris": 400
+    },
+    "SCARH_Muzzle_Mount_Device": {
+      "min": [
+        -0.0094,
+        -0.0007,
+        -0.0093
+      ],
+      "max": [
+        0.0094,
+        0.0338,
+        0.0093
+      ],
+      "tris": 360
+    },
+    "SCAR_STOCK_deployed": {
+      "min": [
+        -0.014,
+        -0.194,
+        -0.0446
+      ],
+      "max": [
+        0.014,
+        -0.037,
+        0.0728
+      ],
+      "tris": 352
+    },
+    "SCAR_STOCK_folded": {
+      "min": [
+        -0.0452,
+        -0.037,
+        -0.0446
+      ],
+      "max": [
+        -0.0172,
+        0.12,
+        0.0728
+      ],
+      "tris": 352
+    }
+  }
+}

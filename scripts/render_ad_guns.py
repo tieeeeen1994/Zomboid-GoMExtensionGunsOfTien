@@ -14,6 +14,10 @@ The main mod's sawn-off shotgun (preview5): GoM's Double Barrel whole (`db_full`
 sawn off (`db_sawn`: our stockless body from GunsOfTien_SawnStocks.fbx and GoM's sawn-off barrels), one view and scale
 so the two keep their sizes against each other. GoM's rifle-held guns are modelled upright, so `files` specs are not
 turned; their barrels are drawn at the gun's origin, as the engine draws them (no attachment point).
+
+The SCAR-L and SCAR-H (preview6) are rifles, modelled upright (`rifle`: nothing turned), one view and scale so they
+keep their real sizes against each other, the double barrel's view (mirrored back by make_workshop_art.py). A node
+entry's file may name a folder (`parts/...`: the shared stock), and the SCAR-L's magazine is GoM's STANAG (`gom_mag`).
 """
 
 import json
@@ -47,7 +51,33 @@ GOM_DB = (os.path.join(GOM, "models_X/weapons/firearms/DOUBLEBARREL.fbx"),
 SAWN = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms/GunsOfTien_SawnStocks.fbx")
 DB_VIEW, DB_SCALE, DB_SIZE = (0.8, 0.45, -0.25), 0.78, (2400, 1000)
 
+RIFLE_VIEW, RIFLE_SCALE, RIFLE_SIZE = (0.92, 0.3, -0.16), 0.98, (2400, 1000)
+
 GUNS = {
+    # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
+    # its own mount device and FA762SS suppressor; stocks deployed
+    "scarl": {
+        "rifle": True, "points": "post93/scarl_points.json",
+        "fbx": "GunsOfTienPost93_SCARL", "tex": "SCARL",
+        "nodes": [("SCARL_BODY", None), ("SCARL_BOLT", None),
+                  ("SCAR_STOCK", "stock", "parts/GunsOfTienPost93_SCAR_parts", "SCAR_STOCK")],
+        "gom_mag": ("magazines/assault_rifles", "556x45Magazine30_STANAG", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip"),
+                ("muzzles", "Muzzle_Mount_Device", "canon"), ("suppressors", "MKI_Suppressor", "canon")],
+        "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
+    },
+    "scarh": {
+        "rifle": True, "points": "post93/scarh_points.json",
+        "fbx": "GunsOfTienPost93_SCARH", "tex": "SCARH",
+        "nodes": [("SCARH_BODY", None), ("SCARH_BOLT", None),
+                  ("SCAR_STOCK", "stock", "parts/GunsOfTienPost93_SCAR_parts", "SCAR_STOCK")],
+        "mag": ("GunsOfTienPost93_SCARH_magazines", "762x51Magazine20_SCARH", "magazine"),
+        "parts": [("GunsOfTienPost93_SCAR_parts", "SCARH_Muzzle_Mount_Device"),
+                  ("GunsOfTienPost93_SCAR_parts", "SCARH_Suppressor")],
+        "gom": [("scopes", "ElcanX2_Scope", "scope"), ("bipods", "Bipod_Deployed", "bipod")],
+        "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
+    },
     # world space is the game's mirror image, so these show the gun's right side, muzzle left, until
     # make_workshop_art.py mirrors them back to the game's view (left side, muzzle right)
     "db_full": {
@@ -159,24 +189,31 @@ def build(spec):
             objs.append(o)
         return objs
     points = json.load(open(os.path.join(HERE, spec["points"])))
+    up = not spec.get("rifle", False)
     objs = []
     for node, point, *src in spec["nodes"]:
         fbx, tex = src if src else (spec["fbx"], spec["tex"])
-        o = load(os.path.join(MEDIA, "models_X/weapons/firearms/%s.fbx" % fbx), os.path.join(TEX, tex + ".png"), node)
-        place(o, points[point] if point else None)
+        folder = "" if "/" in fbx else "firearms/"
+        o = load(os.path.join(MEDIA, "models_X/weapons/%s%s.fbx" % (folder, fbx)), os.path.join(TEX, tex + ".png"), node)
+        place(o, points[point] if point else None, up)
         objs.append(o)
-    f, node, point = spec["mag"]
-    o = load(os.path.join(MEDIA, "models_X/weapons/magazines/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
-    place(o, points[point] if point else None)
+    if "gom_mag" in spec:
+        cat, node, point = spec["gom_mag"]
+        o = load(os.path.join(GOM, "models_X/weapons/%s.fbx" % cat),
+                 os.path.join(GOM, "textures/weapons/%s/%s.png" % (cat, node)), node)
+    else:
+        f, node, point = spec["mag"]
+        o = load(os.path.join(MEDIA, "models_X/weapons/magazines/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
+    place(o, points[point] if point else None, up)
     objs.append(o)
     for f, node in spec["parts"]:
         o = load(os.path.join(MEDIA, "models_X/weapons/parts/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
-        place(o, points["canon"])
+        place(o, points["canon"], up)
         objs.append(o)
     for cat, node, point in spec["gom"]:
         o = load(os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
                  os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, node)), node)
-        place(o, points[point])
+        place(o, points[point], up)
         objs.append(o)
     return objs
 

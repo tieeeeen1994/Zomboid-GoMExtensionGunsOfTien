@@ -127,3 +127,38 @@ cartons of calibres vanilla lacks (GoM's 7.62x39 / 9x39 cartons never spawn, so 
 rounds come from boxes; and every special load (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR, and all of the main
 mod's rounds), since GoM never spawns its own special loads: only the standard 4.6x30mm DM11 and 5.7x28mm SS190 boxes
 and cartons are loot. The Five-seveN, the UCP and their ammunition never spawn in civilian homes.
+
+## FN SCAR-L and SCAR-H (user, 2026-10-20; built)
+
+FN's SOCOM rifles (SCAR program 2004, Mk 16 / Mk 17 fielded about 2009), both in **FDE** (tan): the SCAR-L in its
+standard version (Mk 16 STD, 13.8"), the SCAR-H with the **long barrel** (Mk 17 LB, 20"; user, 2026-10-20), select fire
+with the standard side-folding stock (the user chose the LB over the TPRS of their photo). No new rounds: both use GoM's
+existing families. Modelled from the user's two left-side photos (a SCAR-H TPRS, a licensed SCAR-L CQC replica; neither
+kept in the repo), see CLAUDE.md "FN SCAR-L and SCAR-H".
+
+| | `GunsOfTienPost93.SCARL` "FN SCAR-L Assault Rifle" | `GunsOfTienPost93.SCARH` "FN SCAR-H Battle Rifle" |
+|---|---|---|
+| Real | 5.56x45, 351 mm (13.8") barrel, 3.3 kg | 7.62x51, 508 mm (20") barrel, about 3.9 kg |
+| Family | `5.56x45mm`: GoM's 5.56 (and its AP / HP / [+P] / Subsonic), .223, `Base.556Bullets` | `7.62x51mm`: GoM's 7.62x51, .308, our .308 Soft Point, `Base.308Bullets` |
+| Magazines | GoM's STANAG magazines (20 to 150), its "STANAG" profile | FN's `762x51Magazine20_SCARH` / `10_SCARH` (0.2 / 0.12) and ProMag's 50-round drum `762x51Magazine50_SCARH` (0.5; user, 2026-10-20) |
+| Muzzle | GoM's AR mount device, MKI / NDR suppressors, LR2 compensator, LX flash hider, Trix42 muzzle brake | `SCARH_Muzzle_Mount_Device` + `SCARH_Suppressor` "FA762SS Suppressor (7.62x51mm Weapons)" (SureFire's 1.5" can; GoM's rifle suppressor stats, weight 1.2) |
+| Stats | GoM's M4A1 (1.0-1.4), HitChance 52, RecoilDelay 12, condition 1 in 250, 625 rpm | GoM's FAL (1.3-1.8, range 60), Aimingtime 50 (FAL 65), condition 1 in 240, 600 rpm, default Single |
+| Sound (realistic model) | 196 / 56 (M16 events) | 216 / 62 (FAL's M14 events) |
+| Reload | Gunworks' default, as GoM's M4A1 | GoM's FAL clips (animId "FAL") |
+| Weight | 3.3 | 3.9 |
+
+Both: held as rifles (two hands, back slot), Auto / Single, the charging handle on the left reciprocates (GoM's
+Bolt_Fired swap), one shared side-folding stock (`SCAR_Integrated_Stock_Folded / _Deployed`, GoM's G36 stock stats:
+HitChance x1.15, AimingTime x0.85), folding to the right; four integral rails (`SCAR_Integrated_Rail_Up / Down / Left /
+Right`) for GoM's optics, foregrips, bipods, lights and lasers; no bayonet (no lug); ejection to the right (Hot Brass:
+GoM's M4A1 / FAL values). Loot: GoM's `World_Anachronistic_Spawner` as the G36 (gun, 4 magazines, 4 boxes); the
+suppressor and mount device in GoM's suppressor and muzzle device spawners.
+
+**SCAR-H 50-round drum** (user, 2026-10-20): FN never made more than 20 (10 and 20, steel then polymer); the only real
+larger one found is ProMag's DRM-A41, a 50-round polymer drum for the civilian SCAR 17S (black or FDE; retailer
+listings, not ProMag's own page; no 30 or 40 exists outside airsoft). Built in FDE like the gun: a feed tower like
+the 20-round body into one round drum facing front and back (its axis along the barrel, as the MP7's drum; the
+first build faced the sides, corrected by the user), winding knob on the front face, ~144 mm across and 84 mm
+thick (approximate: no published drawing), "50" moulded under the hub. Named "SCAR-H 50Rds Drum 7.62x51mm
+Magazine" (as the MP7's 60 drum). Spawns on 2 % of found SCAR-Hs (the MP7 drum's chance) and with up to two boxes
+in GoM's high-capacity tactical magazine spawner, as our other drums.

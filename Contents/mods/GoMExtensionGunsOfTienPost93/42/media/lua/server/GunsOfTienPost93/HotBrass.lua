@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN and UCP
+    Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -66,6 +66,27 @@ SpentCasingPhysics.RegisterWeaponParams({
         sideSpread    = 45,
         heightSpread  = 60,
         spinForce     = { 12, 16 },
+    },
+    -- The SCARs eject to the right like GoM's M4A1 / FAL (their values; the SCAR-H's casings fly a little further).
+    ["GunsOfTienPost93.SCARL"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 64, 128 },
+    },
+    ["GunsOfTienPost93.SCARH"] = {
+        forwardOffset = 0.40,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.95,
+        sideSpread    = 60,
+        heightSpread  = 90,
+        ejectAngle    = 80,
+        spinForce     = { 86, 124 },
     },
     ["MarzGuns.FIVESEVEN"] = {
         forwardOffset = 0.40,

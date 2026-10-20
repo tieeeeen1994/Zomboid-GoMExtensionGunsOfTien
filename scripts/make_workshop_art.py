@@ -6,9 +6,9 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same) and, for each mod's 42/ folder, poster.png (512x512) and
-icon.png (128x128) for the in-game mod list; NAME (preview, preview2, preview3, preview4, preview5, posters, icons)
-writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same)
+and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
+preview2, preview3, preview4, preview5, preview6, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -357,6 +357,52 @@ def preview5(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview6(path, W=1024):
+    """The SCAR-L and SCAR-H, laid out on a 512 grid like preview5: both fitted out at one scale, so they keep their
+    real sizes against each other, lined up on the butt (render_ad_guns.py "scarl" / "scarh", mirrored back to the
+    game's view), each under its name; then one row of inventory slots of what this mod adds besides the guns (the
+    SCAR-H's magazines, drum, suppressor and mount device) and a line on what the SCAR-L takes from Guns of Marz."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    # no big title (user, 2026-10-20): the guns' own names carry the page, the add-on line on top
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+
+    ims = {}
+    for name in ("scarl", "scarh"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    s = u(468) / ims["scarh"].width             # one scale for both: the SCAR-H (longest) fills the width
+    x0 = (W - round(ims["scarh"].width * s)) // 2
+    y = u(62)
+    for name, label, sub in (("scarl", "FN SCAR-L", "MK 16  ·  5.56X45MM"),
+                             ("scarh", "FN SCAR-H", "MK 17 LONG BARREL  ·  7.62X51MM")):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, font(BOLD, u(17), b"Bold"), (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(92), y + u(5)), sub, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(24))), (0, u(6)), u(6), 160)
+        y += u(24) + im.height + u(16)
+
+    # only what this mod adds besides the guns (preview5's rule): the SCAR-H's magazines, drum and muzzle parts
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    slot_row(page, [post("SCARH"), post("762x51Magazine20_SCARH"), post("762x51Magazine10_SCARH"),
+                    post("762x51Magazine50_SCARH"), post("SCARH_Suppressor"), post("SCARH_Muzzle_Mount_Device")],
+             256, 400, "SCAR-H  ·  MAGAZINES, 50-ROUND DRUM, SUPPRESSOR")
+    for n, line in enumerate(("SCAR-L TAKES GUNS OF MARZ STANAG MAGAZINES",
+                              "FOLDING STOCK  ·  RAILS FOR GUNS OF MARZ SIGHTS, GRIPS, BIPODS")):
+        page.alpha_composite(text_layer(size, (W // 2, u(464 + n * 16)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -476,6 +522,8 @@ if __name__ == "__main__":
         preview4(os.path.join(ROOT, "preview4.png"))     # the MP7A2, added the same way
     if want("preview5"):
         preview5(os.path.join(ROOT, "preview5.png"))     # the sawn-off shotguns, added the same way
+    if want("preview6"):
+        preview6(os.path.join(ROOT, "preview6.png"))     # the SCAR-L and SCAR-H, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

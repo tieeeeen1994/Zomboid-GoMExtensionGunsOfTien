@@ -23,4 +23,14 @@ module Base {
         Require = GunsOfTienPost93.UCP,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
+
+    fixing Fix SCARL {
+        Require = GunsOfTienPost93.SCARL,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix SCARH {
+        Require = GunsOfTienPost93.SCARH,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
 }

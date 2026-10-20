@@ -1,8 +1,9 @@
-"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype item and model scripts, their parts, repair recipes and names for Guns of
-Tien - Post-93.
+"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H item and model scripts, their parts, repair
+recipes and names for Guns of Tien - Post-93.
 
-Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py), which write the
-attachment points to mp7_points.json, p90_points.json, fiveseven_points.json and ucp_points.json next to this script:
+Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py), which
+write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json, ucp_points.json,
+scarl_points.json and scarh_points.json next to this script:
 python3 scripts/post93/gen_post93_guns.py
 The Five-seveN is the item MarzGuns.FIVESEVEN: Guns of Marz names it ("5.7x28mm Five-SeveN" in its ItemName.json) but
 ships nothing else, so its item block (items_fiveseven.txt) is in GoM's module and everything it uses is ours.
@@ -96,7 +97,7 @@ def pistol_model(name, points):
 """
 
 
-def models(mp7, mp7a2, p90, fiveseven, ucp):
+def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
@@ -106,7 +107,14 @@ def models(mp7, mp7a2, p90, fiveseven, ucp):
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     out.append(pistol_model('FIVESEVEN', fiveseven))
     out.append(pistol_model('UCP', ucp))
+    scar_points = ['stock', 'stock_folded', 'rail_down', 'foregrip', 'bipod']
+    out.append(gun_model('SCARL', 'GunsOfTienPost93_SCARL', 'SCARL_BODY', scarl, scar_points))
+    out.append(gun_model('SCARH', 'GunsOfTienPost93_SCARH', 'SCARH_BODY', scarh, scar_points))
     for model, file, node, tex in [
+            ('SCARL_BOLT', 'firearms/GunsOfTienPost93_SCARL', 'SCARL_BOLT', 'SCARL'),
+            ('SCARH_BOLT', 'firearms/GunsOfTienPost93_SCARH', 'SCARH_BOLT', 'SCARH'),
+            # one folding stock for both SCARs, drawn at each gun's stock / stock_folded point
+            ('SCAR_STOCK', 'parts/GunsOfTienPost93_SCAR_parts', 'SCAR_STOCK', 'SCAR_STOCK'),
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
             ('MP7A1_FOREGRIP', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_FOREGRIP', 'MP7A1'),
@@ -128,6 +136,8 @@ def models(mp7, mp7a2, p90, fiveseven, ucp):
     parts += [(p, 'parts/GunsOfTienPost93_FIVESEVEN_parts') for p in ('FIVESEVEN_Suppressor',
                                                                        'FIVESEVEN_Muzzle_Mount_Device')]
     parts += [('UCP_Muzzle_Mount_Device', 'parts/GunsOfTienPost93_UCP_parts')]
+    parts += [(f'762x51Magazine{n}_SCARH', 'magazines/GunsOfTienPost93_SCARH_magazines') for n in (20, 10, 50)]
+    parts += [(p, 'parts/GunsOfTienPost93_SCAR_parts') for p in ('SCARH_Suppressor', 'SCARH_Muzzle_Mount_Device')]
     for node, file in parts:
         out.append(f"""
     model {node} {{
@@ -585,6 +595,7 @@ def items(mp7, p90):
     }}
 """)
     out.append(ucp_item())
+    out += scar_items()
     out.append("}\n")
     write(f'scripts/{M}/items_guns.txt', ''.join(out))
     write(f'scripts/{M}/fixing_guns.txt', f"""module Base {{
@@ -612,8 +623,228 @@ def items(mp7, p90):
         Require = {M}.UCP,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
+
+    fixing Fix SCARL {{
+        Require = {M}.SCARL,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
+    fixing Fix SCARH {{
+        Require = {M}.SCARH,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
 }}
 """)
+
+
+# ==================================================================================================
+# FN SCAR-L (Mk 16 STD) and SCAR-H (Mk 17 LB), user 2026-10-20 (build_scar.py)
+# ==================================================================================================
+
+STANAGS = ['556x45Magazine%s_STANAG' % n for n in (20, 25, 30, 50, 60, 75, 100, 150)]
+AR_MUZZLE = ['MKI_Suppressor', 'NDR_Suppressor', 'LR2_Compensator', 'LX_Flashhider', 'Trix42_Muzzlebreak']
+SCARH_MAGS = ['762x51Magazine20_SCARH', '762x51Magazine10_SCARH', '762x51Magazine50_SCARH']
+
+
+def scar_parts(gun):
+    """GoM rifle parts on the SCARs' integral rails (their points in scarl / scarh_points.json), the shared folding
+    stock, the charging handle; the SCAR-L's GoM STANAG magazines and AR muzzle parts, the SCAR-H's own."""
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,",
+             f"{w}{M}.SCAR_Integrated_Stock_Folded {M}.SCAR_STOCK stock_folded stock_folded,",
+             f"{w}{M}.SCAR_Integrated_Stock_Deployed {M}.SCAR_STOCK stock stock,"]
+    if gun == 'SCARL':
+        lines += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in STANAGS]
+        lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+        lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
+    else:
+        lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m in SCARH_MAGS]
+        lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
+                  f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    return '\n'.join(lines) + '\n'
+
+
+# Sounds: GoM's M4A1 (M16 events) and FAL (M14 events, MSR788Shoot) sets. Realistic sound (the main mod's model,
+# M16 = 175 / 50): 5.56 from 13.8" = 196 / 56, 7.62x51 from 20" = 216 / 62.
+SCAR_SOUNDS = {
+    'SCARL': dict(prefix='M16', shoot='M16Shoot', gain=1.9, radius=196, volume=56),
+    'SCARH': dict(prefix='M14', shoot='MSR788Shoot', gain=2.5, radius=216, volume=62),
+}
+
+
+def scar_item(gun, stats):
+    snd = SCAR_SOUNDS[gun]
+    p = snd['prefix']
+    body = f"""
+    item {gun} {{
+        MinDamage                    = {stats['min']},
+        MaxDamage                    = {stats['max']},
+        CriticalChance               = {stats['crit']},
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = {stats['critmult']},
+        HitChance                    = {stats['hit']},
+        AimingPerkHitChanceModifier  = {stats['hitmod']},
+        Aimingtime                   = {stats['aim']},
+        RecoilDelay                  = {stats['recoil']},
+        MaxRange                     = {stats['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {stats['minsight']},
+        MaxSightRange                = {stats['maxsight']},
+        MinRange                     = 0.61,
+        MinAngle                     = {stats['minangle']},
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = {stats['jam']},
+        ConditionLowerChanceOneIn    = {stats['cond']},
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {stats['stop']},
+        DoorDamage                   = {stats['door']},
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {stats['weight']},
+        MetalValue                   = {stats['metal']},
+        FireMode                     = {stats['firemode']},
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {stats['ammo']},
+        AmmoBox                      = {stats['box']},
+        ClipSize                     = {stats['clip']},
+        MagazineType                 = {stats['mag']},
+        MaxAmmo                      = {stats['clip']},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = {p}AimRelease,
+        BreakSound                   = {p}Break,
+        BringToBearSound             = {p}BringToBear,
+        ClickSound                   = {p}Jam,
+        DropSound                    = {p}Drop,
+        EjectAmmoStartSound          = {p}EjectAmmoStart,
+        EjectAmmoSound               = {p}EjectAmmo,
+        EjectAmmoStopSound           = {p}EjectAmmoStop,
+        EquipSound                   = {p}Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = {p}InsertAmmoStart,
+        InsertAmmoSound              = {p}InsertAmmo,
+        InsertAmmoStopSound          = {p}InsertAmmoStop,
+        RackSound                    = {p}Rack,
+        ShellFallSound               = {p}CartridgeFall,
+        SwingSound                   = {snd['shoot']},
+        UnequipSound                 = {p}UnEquip,
+        SoundGain                    = {snd['gain']},
+        SoundRadius                  = {snd['radius']},
+        SoundVolume                  = {snd['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{scar_parts(gun)}        KnockBackOnNoDeath           = true,
+    }}
+"""
+    return body
+
+
+def scar_items():
+    """The SCAR-L as GoM's M4A1 (its 14.5" barrel against the Mk 16's 13.8": the same damage), a little steadier
+    (FN's soft-shooting piston gun), more durable; the SCAR-H LB as GoM's FAL (21" barrel against the LB's 20": the
+    same damage and range) but lighter and quicker to aim (3.9 kg against 4.25, folding stock, pistol grip). Both
+    select fire (Auto / Single, no burst); weights at the real kilograms as GoM's rifles."""
+    out = [scar_item('SCARL', dict(min=1.0, max=1.4, crit=18.0, critmult=3.5, hit=52, hitmod=5, aim=15, recoil=12,
+                                   range=40.0, minsight=6, maxsight=14.0, minangle=0.965, jam=0.75, cond=250,
+                                   stop=1.8, door=3, weight=3.3, metal=30.0, firemode='Auto',
+                                   ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30,
+                                   mag='MarzGuns.556x45Magazine30_STANAG')),
+           scar_item('SCARH', dict(min=1.3, max=1.8, crit=30.0, critmult=5.0, hit=52, hitmod=4, aim=50, recoil=15,
+                                   range=60.0, minsight=10, maxsight=18.0, minangle=0.95, jam=0.5, cond=240,
+                                   stop=2.0, door=6, weight=3.9, metal=40.0, firemode='Single',
+                                   ammo='swmg:bullet_762x51', box='MarzGuns.762x51_Box', clip=20,
+                                   mag=f'{M}.762x51Magazine20_SCARH'))]
+    # FN's steel SCAR-H magazines (GoM's FAL 20 weighs 0.2) and ProMag's 50-round drum (GoM's 5.56 drums: 60 = 0.4,
+    # 100 = 0.6)
+    for mag, cap, weight in ((SCARH_MAGS[0], 20, 0.2), (SCARH_MAGS[1], 10, 0.12), (SCARH_MAGS[2], 50, 0.5)):
+        out.append(f"""
+    item {mag} {{
+        AmmoType         = swmg:bullet_762x51,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {M}.SCARH,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in [('SCAR_Integrated_Stock_Folded', 'StockIntegrated', None),
+                                ('SCAR_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+                                ('SCAR_Integrated_Rail_Up', 'RailUp', None),
+                                ('SCAR_Integrated_Rail_Down', 'RailDown', None),
+                                ('SCAR_Integrated_Rail_Left', 'RailLeft', None),
+                                ('SCAR_Integrated_Rail_Right', 'RailRight', None)]:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        out.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    # GoM's weights: its heaviest suppressors 1.2 for the 7.62 can (38 x 190 mm); every mount device 0.5
+    for part, ptype, weight in (('SCARH_Suppressor', 'Canon', 1.2), ('SCARH_Muzzle_Mount_Device', 'CanonMount', 0.5)):
+        out.append(f"""
+    item {part} {{
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_{part},
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        MountOn          = {M}.SCARH,
+        PartType         = {ptype},
+        WorldStaticModel = {M}.{part},
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+    return out
 
 
 def translations():
@@ -651,6 +882,20 @@ def translations():
         f'{M}.P90_Suppressor': 'SP90 Suppressor',          # model only, no calibre (user, 2026-10-16)
         f'{M}.FIVESEVEN_Suppressor': 'SFN-57 Suppressor',
         f'{M}.P90_Muzzle_Mount_Device': '5.7x28mm Family Muzzle Mounting Device',
+        # GoM: "FN FAL Battle Rifle", "FN FNC Assault Rifle", "FAL 20Rds 7.62x51mm Magazine"
+        f'{M}.SCARL': 'FN SCAR-L Assault Rifle',
+        f'{M}.SCARH': 'FN SCAR-H Battle Rifle',
+        f'{M}.762x51Magazine20_SCARH': 'SCAR-H 20Rds 7.62x51mm Magazine',
+        f'{M}.762x51Magazine10_SCARH': 'SCAR-H 10Rds 7.62x51mm Magazine',
+        f'{M}.762x51Magazine50_SCARH': 'SCAR-H 50Rds Drum 7.62x51mm Magazine',     # as the MP7's 60 drum
+        f'{M}.SCAR_Integrated_Stock_Folded': 'SCAR Integrated Stock (Folded)',
+        f'{M}.SCAR_Integrated_Stock_Deployed': 'SCAR Integrated Stock (Deployed)',
+        f'{M}.SCAR_Integrated_Rail_Up': 'SCAR Integrated Rail (Up)',
+        f'{M}.SCAR_Integrated_Rail_Down': 'SCAR Integrated Rail (Down)',
+        f'{M}.SCAR_Integrated_Rail_Left': 'SCAR Integrated Rail (Left)',
+        f'{M}.SCAR_Integrated_Rail_Right': 'SCAR Integrated Rail (Right)',
+        f'{M}.SCARH_Suppressor': 'FA762SS Suppressor (7.62x51mm Weapons)',
+        f'{M}.SCARH_Muzzle_Mount_Device': 'SCAR-H Muzzle Mounting Device',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
@@ -666,7 +911,9 @@ if __name__ == '__main__':
     p90 = load_points('p90_points.json')
     fiveseven = load_points('fiveseven_points.json')
     ucp = load_points('ucp_points.json')
-    models(mp7, mp7a2, p90, fiveseven, ucp)
+    scarl = load_points('scarl_points.json')
+    scarh = load_points('scarh_points.json')
+    models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh)
     fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
     translations()

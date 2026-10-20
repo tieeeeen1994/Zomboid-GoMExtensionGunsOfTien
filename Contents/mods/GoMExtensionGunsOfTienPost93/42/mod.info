@@ -1,6 +1,6 @@
 name=GoM Extension: Guns of Tien - Post-93
 id=GoMExtensionGunsOfTienPost93
-description=Optional add-on for GoM Extension: Guns of Tien with four guns from after July 1993: the H&K MP7 and the FN P90 TR, held like pistols, the FN Five-seveN pistol and the H&K UCP Prototype pistol, with their magazines (MP7 20, 30, 40 and a 60-round drum; P90 50; Five-seveN 20 and 30; UCP 20 and a 40-round drum), suppressors, and 4.6x30mm and 5.7x28mm ammunition you can also make with Ammo Maker. Enable it together with GoM Extension: Guns of Tien.
+description=Optional add-on for GoM Extension: Guns of Tien with six guns from after July 1993: the H&K MP7 and the FN P90 TR, held like pistols, the FN Five-seveN pistol, the H&K UCP Prototype pistol and the FN SCAR-L and SCAR-H rifles, with their magazines (MP7 20, 30, 40 and a 60-round drum; P90 50; Five-seveN 20 and 30; UCP 20 and a 40-round drum; SCAR-H 20, 10 and a 50-round drum, the SCAR-L takes Guns of Marz's STANAG magazines), suppressors, and 4.6x30mm and 5.7x28mm ammunition you can also make with Ammo Maker. Enable it together with GoM Extension: Guns of Tien.
 author=Tien
 modversion=0.1.0
 poster=poster.png

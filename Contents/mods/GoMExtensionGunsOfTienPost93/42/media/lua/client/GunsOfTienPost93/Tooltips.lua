@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
-    Five-seveN, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    Five-seveN, the UCP, the SCAR-L and SCAR-H, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -24,6 +24,27 @@ GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
     "Critical and Hit Chance increased by 15%",
     "Automatic fire spread reduced by 15%",
 }
+
+-- The SCARs' side-folding stock (GoM's G36 stats, shared/GunsOfTienPost93/Guns.lua)
+GunsOfTien_TooltipStates[M .. "SCAR_Integrated_Stock_Deployed"] = {
+    "Folding stock deployed:",
+    "Aiming Time reduced by 15%",
+    "Hit Chance increased by 15%",
+}
+
+lines[M .. "SCARL"] = {
+    "Uses .223/5.56x45mm NATO rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: AR Muzzle Mount",
+}
+lines[M .. "SCARH"] = {
+    "Uses .308/7.62x51mm NATO rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: SCAR-H Muzzle Mount",
+}
+lines[M .. "762x51Magazine20_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+lines[M .. "762x51Magazine10_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
 
 lines[M .. "MP7A1"] = {
     "Uses 4.6x30mm rounds.",
@@ -63,7 +84,7 @@ for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magaz
 end
 lines[M .. "57x28Magazine50_P90"] = { "Uses 5.7x28mm rounds." }
 
-for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppressor" }) do
+for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppressor", "SCARH_Suppressor" }) do
     lines[M .. part] = {
         "Sound Radius and Volume reduced by 70%",
         "Damage to targets decreased by 10%",
@@ -71,7 +92,7 @@ for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppresso
         "Needs its Muzzle Mount Device",
     }
 end
-for _, part in ipairs({ "MP7_Muzzle_Mount_Device", "P90_Muzzle_Mount_Device" }) do
+for _, part in ipairs({ "MP7_Muzzle_Mount_Device", "P90_Muzzle_Mount_Device", "SCARH_Muzzle_Mount_Device" }) do
     lines[M .. part] = {
         "No Direct Stat Changes",
         "Enables its Suppressor",

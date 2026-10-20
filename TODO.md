@@ -427,3 +427,18 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       (a screwdriver, gives Electronics Scrap); the new tooltip lines and part-row names.
 - [x] Test in game (as above, plus folding stock, the MP7A1's front grip (fold / unfold from the context and radial menus, stats), the MP7A2 (spawns half of found MP7s, GoM's foregrips on its bottom rail: fit, look, stats), rails, suppressors, spawns, Hot Brass downward ejection).
 
+- [x] FN SCAR-L (Mk 16 STD) and SCAR-H (Mk 17 LB) built 2026-10-20 from the user's photos (silhouette IoU 94.1 /
+      95.2 %; sheet `docs/post93_scar_preview.png`): models, textures, icons, item / model / repair scripts, names,
+      magazine profiles (GoM's STANAG for the L), 625 / 600 rpm, animated charging handle, reload (L default, H GoM's FAL
+      clips), shared folding stock, four integral rails, GoM's optics / foregrips / bipods / lights / lasers, the L's GoM
+      AR muzzle parts, the H's own mount device and FA762SS suppressor, spawn parts, loot (Anachronistic spawner as the
+      G36), Hot Brass, tooltips. Suppressor model "FA762SS" chosen by Claude: confirm with the user. To check in game:
+      the hold (grip in the hand, both guns), the stock folding to the right and back (context / radial), the charging
+      handle moving back on each shot, GoM's STANAG magazines seated in the SCAR-L (all eight, the 60 / 100 / 150
+      drums under it), the SCAR-H's 20 and 10, the reloads (L default rifle, H FAL clips), optics on the top rail over
+      the folded rear sight, foregrip and bipod on the bottom rail, light left / laser right, GoM's AR mount + MKI /
+      NDR / compensator / flash hider / brake on the SCAR-L, the SCAR-H's mount device + suppressor, on the back and on
+      the floor (GoM's rifle `world` pose), casings to the right, both in the Anachronistic spawner.
+- [x] SCAR-H 50-round drum (ProMag DRM-A41, user 2026-10-20): model, texture, icon, item, name, tooltip, profile, 2 %
+      on found SCAR-Hs, GoM's high-capacity tactical magazine spawner. To check in game: the drum under the magazine
+      well (clear of the trigger guard and the hand), the reload with it, the "50" reading the right way on both faces.

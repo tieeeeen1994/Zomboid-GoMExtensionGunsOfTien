@@ -1,9 +1,11 @@
 --[[
-    Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR, the Five-seveN, the UCP Prototype and their ammunition
+    Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR, the Five-seveN, the UCP Prototype, the SCAR-L and
+    SCAR-H and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
       loot) and MarzGuns.Zombie_Police_SMG_Spawner (SWAT zombies, police bags, prison riot storage, SWAT vehicles);
+      the SCAR-L and SCAR-H there too, as GoM's G36 comes (the gun, 4 magazines, 4 boxes of GoM's own 5.56 / 7.62x51);
       the Five-seveN and the UCP Prototype in GoM's police and SWAT handgun spawners (MarzGuns.Zombie_Police_Handgun_
       Spawner, Zombie_SWAT_Handgun_Spawner), next to the Glock 17 and M92FS, as often as either (user, 2026-10-17:
       the UCP is not rare, "treat it like any other gun"). Not in the Anachronistic spawner: GoM puts that in
@@ -20,7 +22,7 @@
       police, SWAT and gun store lists, rarely. The special loads (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR) never
       spawn as loot, as GoM never spawns its own (its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured):
       they come from Ammo Maker (user, 2026-10-17).
-    - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum) also on their own, each with boxes, as
+    - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum, SCAR-H 50 drum) also on their own, each with boxes, as
       new alternatives of GoM's MarzGuns.World_HighCap_Tactical_Magazine_Spawner (with its M92FS / M93R / MP5 drums).
     Everything that can spawn follows GoM (user, 2026-10-17: "everything needs to be lootable the same as GoM").
     Like GoM's own, the crates (4 cartons) never spawn: they are only packed.
@@ -81,6 +83,23 @@ local function ucpAlternative(boxes)
     }
 end
 
+-- The SCARs as GoM's G36 alternative there: the gun, 4 magazines, 4 boxes of GoM's standard rounds.
+local function scarlAlternative(boxes)
+    return {
+        { items = { M .. "SCARL" }, amountChance = 1 },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = 4 },
+        { items = { "MarzGuns.556x45_Box" }, amountChance = boxes },
+    }
+end
+
+local function scarhAlternative(boxes)
+    return {
+        { items = { M .. "SCARH" }, amountChance = 1 },
+        { items = { M .. "762x51Magazine20_SCARH" }, amountChance = 4 },
+        { items = { "MarzGuns.762x51_Box" }, amountChance = boxes },
+    }
+end
+
 -- High-capacity magazines on their own, as GoM's in its World_HighCap_Tactical_Magazine_Spawner (its M92FS 50, M93R
 -- 60, MP5 60 / 100 drums: the magazine and up to two boxes; SWAT / police storage and gun stores, no homes; only with
 -- GoM's sandbox SpawnHighCapMags on, which places that spawner).
@@ -96,6 +115,8 @@ end
 local SPAWNERS = {
     { "MarzGuns.World_Anachronistic_Spawner", mp7Alternative, 4 },
     { "MarzGuns.World_Anachronistic_Spawner", p90Alternative, 4 },
+    { "MarzGuns.World_Anachronistic_Spawner", scarlAlternative, 4 },
+    { "MarzGuns.World_Anachronistic_Spawner", scarhAlternative, 4 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", mp7Alternative, 2 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", p90Alternative, 2 },
     { "MarzGuns.Zombie_Police_Handgun_Spawner", fivesevenAlternative, 4 },
@@ -106,13 +127,15 @@ local SPAWNERS = {
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "57x28Magazine30_FIVESEVEN", M .. "57x28_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_UCP", M .. "46x30_Box"), 0 },
+    { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "762x51Magazine50_SCARH", "MarzGuns.762x51_Box"), 0 },
 }
 
 -- Parts added to the item list of a GoM spawner's first alternative.
 local PART_SPAWNERS = {
     { "MarzGuns.World_Suppressor_Spawner",
-        { M .. "MP7_Suppressor", M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor" } },
-    { "MarzGuns.World_Muzzle_Device_Spawner", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device" } },
+        { M .. "MP7_Suppressor", M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor", M .. "SCARH_Suppressor" } },
+    { "MarzGuns.World_Muzzle_Device_Spawner", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device",
+        M .. "SCARH_Muzzle_Mount_Device" } },
 }
 
 local added = {}

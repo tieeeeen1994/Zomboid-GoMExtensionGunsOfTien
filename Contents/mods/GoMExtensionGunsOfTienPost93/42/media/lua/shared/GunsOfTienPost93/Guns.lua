@@ -12,6 +12,12 @@
     devices, parts that cannot be removed, spawn-time parts and magazines, and GoM parts allowed on our guns
     (MountOn appended; DoParam replaces the list, so it is read and written back whole).
 
+    The SCAR-L and SCAR-H (user, 2026-10-20) are registered as GoM's M4A1 and FAL are: the SCAR-L in GoM's STANAG
+    magazine profile, the SCAR-H with its own magazines, both at about 600 rpm, the charging handle animated (it rides
+    with the bolt carrier), GoM's default rifle reload (SCAR-L, as the M4A1) and its FAL clips (SCAR-H), the shared
+    side-folding stock with GoM's G36 stock stats, four integral rails as parents of GoM's optics, foregrips,
+    bipods, lights and lasers, GoM's AR muzzle parts on the SCAR-L and the SCAR-H's own mount device and suppressor.
+
     The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
     and M92FS: magazine profile, the animated slide, permanent magazines, spawn parts, GoM's pistol parts allowed on
     it. Like GoM's pistols it has no reload animation entry (Gunworks' default handgun reload) and no rate of fire
@@ -48,6 +54,14 @@ local FIVESEVEN = "MarzGuns.FIVESEVEN"
 local FIVESEVEN_MAGS = { M .. "57x28Magazine20_FIVESEVEN", M .. "57x28Magazine30_FIVESEVEN" }
 local UCP = M .. "UCP"
 local UCP_MAGS = { M .. "46x30Magazine20_UCP", M .. "46x30Magazine40_UCP" }
+local SCARL = M .. "SCARL"
+local SCARH = M .. "SCARH"
+local SCARS = { SCARL, SCARH }
+local SCARH_MAGS = { M .. "762x51Magazine20_SCARH", M .. "762x51Magazine10_SCARH", M .. "762x51Magazine50_SCARH" }
+local STANAGS = {}
+for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
+    STANAGS[#STANAGS + 1] = "MarzGuns.556x45Magazine" .. n .. "_STANAG"
+end
 
 -------------------------------------------------
 -- Magazines
@@ -61,6 +75,9 @@ Magazine.RegisterMagazineProfile("5.7x28mm Five-seveN", FIVESEVEN_MAGS)
 Magazine.RegisterWeaponWithProfile("5.7x28mm Five-seveN", FIVESEVEN)
 Magazine.RegisterMagazineProfile("4.6x30mm UCP", UCP_MAGS)
 Magazine.RegisterWeaponWithProfile("4.6x30mm UCP", UCP)
+Magazine.RegisterWeaponWithProfile("STANAG", SCARL)          -- GoM's own profile (M16s, M4A1, FNC...)
+Magazine.RegisterMagazineProfile("7.62x51mm SCAR-H", SCARH_MAGS)
+Magazine.RegisterWeaponWithProfile("7.62x51mm SCAR-H", SCARH)
 
 -------------------------------------------------
 -- Five-seveN and UCP slides: GoM's pistol slide swap (Slide_Fired / Slide_Lock each shot, AnimationsFiring.lua)
@@ -79,6 +96,17 @@ for _, gun in ipairs(MP7S) do
     RateOfFire.RegisterWeapon(gun, { rpm = 950, enableSpread = true, sustainedSpread = 0.08, maxSpread = 1.3 })
 end
 RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread = 0.06, maxSpread = 1.1 })
+-- SCAR-L 625 rpm, a soft-shooting piston 5.56 (GoM's M4A1: 800, 0.10 / 2.5); SCAR-H 600 rpm, a 7.62x51 between the
+-- M4A1 and GoM's FAL (750, 0.3 / 4.5)
+RateOfFire.RegisterWeapon(SCARL, { rpm = 625, enableSpread = true, sustainedSpread = 0.09, maxSpread = 2.2 })
+RateOfFire.RegisterWeapon(SCARH, { rpm = 600, enableSpread = true, sustainedSpread = 0.22, maxSpread = 3.5 })
+-- The SCARs' charging handle rides with the bolt carrier: GoM's Bolt_Fired / Bolt_Lock swap, as on its rifles.
+for _, gun in ipairs(SCARS) do
+    Animations.RegisterWeaponWithAnimatedParts(gun, {
+        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
+        cycleTicks = 3,
+    })
+end
 -- the MP7's front grip unfolded steadies automatic fire as GoM's Stub Foregrip does
 RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
     { sustainedSpreadMult = 0.85, maxSpreadMult = 0.85 })
@@ -115,6 +143,12 @@ ReloadAnim.RegisterWeapon(P90, {
     magItem = M .. "57x28Magazine50_P90",
     attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
     durations = { unload = 1.4, load = 1.8, rack = 1.2 },
+})
+-- SCAR-H: GoM's FAL clips (its magazineProfile("FAL")); the SCAR-L has no entry, as GoM's M4A1 (Gunworks' default)
+ReloadAnim.RegisterWeapon(SCARH, {
+    animId = "FAL",
+    style = "none",
+    durations = { unload = 1.2, load = 1.5, rack = 1.2 },
 })
 local NO_HAND_MAGAZINE = { MP7A1 = true, P90TR = true }
 -- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
@@ -170,6 +204,18 @@ for _, gun in ipairs(MP7S) do                       -- the A2 has the A1's stock
     })
 end
 
+-- the SCARs' side-folding stock (one part pair for both)
+for _, gun in ipairs(SCARS) do
+    FoldingStock.RegisterWeapon(gun, {
+        attachments = {
+            partType = "StockIntegrated",
+            folded = M .. "SCAR_Integrated_Stock_Folded",
+            deployed = M .. "SCAR_Integrated_Stock_Deployed",
+        },
+        initialState = "folded",
+    })
+end
+
 CSA.RegisterMultipleParts({
     [M .. "MP7A1_Integrated_Stock_Folded"] = {},
     [M .. "MP7A1_Integrated_Stock_Deployed"] = {
@@ -200,6 +246,21 @@ CSA.RegisterMultipleParts({
         SF.Set("SwingSound", "CapGunRifleShoot"),
         SF.Set("MuzzleFlashModelKey", nil),
     },
+    -- SCAR stock deployed: GoM's G36 stock (another side-folding polymer stock)
+    [M .. "SCAR_Integrated_Stock_Folded"] = {},
+    [M .. "SCAR_Integrated_Stock_Deployed"] = {
+        SF.Multiply("HitChance", 1.15),
+        SF.Multiply("AimingTime", 0.85),
+    },
+    -- GoM's rifle suppressors' stats (MKI / NDR), with their rifle swing sound
+    [M .. "SCARH_Suppressor"] = {
+        SF.Multiply("SoundRadius", 0.3),
+        SF.Multiply("SoundVolume", 0.3),
+        SF.Multiply("MaxDamage", 0.9),
+        SF.Multiply("MinDamage", 0.9),
+        SF.Set("SwingSound", "CapGunRevolverShoot"),
+        SF.Set("MuzzleFlashModelKey", nil),
+    },
     [M .. "FIVESEVEN_Suppressor"] = {
         SF.Multiply("SoundRadius", 0.3),
         SF.Multiply("SoundVolume", 0.3),
@@ -222,9 +283,16 @@ local OPTICS = {
 local LIGHTS = { "MarzGuns.BrightPoint-5_Light", "MarzGuns.SR7_Light" }
 local LASERS = { "MarzGuns.AimRight_Laser", "MarzGuns.LRX-7_Laser" }
 
-RequiredAttachment.RegisterRequired(OPTICS, { M .. "MP7A1_Integrated_Rail_Up", M .. "P90TR_Integrated_Rail_Up" })
-RequiredAttachment.RegisterRequired(LIGHTS, { M .. "MP7A1_Integrated_Rail_Left", M .. "P90TR_Integrated_Rail_Left" })
-RequiredAttachment.RegisterRequired(LASERS, { M .. "MP7A1_Integrated_Rail_Right", M .. "P90TR_Integrated_Rail_Right" })
+local BIPODS = { "MarzGuns.Bipod_Deployed", "MarzGuns.Bipod_Folded" }
+RequiredAttachment.RegisterRequired(OPTICS, { M .. "MP7A1_Integrated_Rail_Up", M .. "P90TR_Integrated_Rail_Up",
+    M .. "SCAR_Integrated_Rail_Up" })
+RequiredAttachment.RegisterRequired(LIGHTS, { M .. "MP7A1_Integrated_Rail_Left", M .. "P90TR_Integrated_Rail_Left",
+    M .. "SCAR_Integrated_Rail_Left" })
+RequiredAttachment.RegisterRequired(LASERS, { M .. "MP7A1_Integrated_Rail_Right", M .. "P90TR_Integrated_Rail_Right",
+    M .. "SCAR_Integrated_Rail_Right" })
+RequiredAttachment.RegisterRequired(FOREGRIPS, { M .. "SCAR_Integrated_Rail_Down" })
+RequiredAttachment.RegisterRequired(BIPODS, { M .. "SCAR_Integrated_Rail_Down" })
+RequiredAttachment.RegisterRequired({ M .. "SCARH_Suppressor" }, { M .. "SCARH_Muzzle_Mount_Device" })
 RequiredAttachment.RegisterRequired({ M .. "MP7_Suppressor" }, { M .. "MP7_Muzzle_Mount_Device" })
 -- appended to GoM's own rule (Picatinny_Rail_Down or the G36C's rail): any one of them will do
 RequiredAttachment.RegisterRequired(FOREGRIPS, { M .. "MP7A2_Integrated_Rail_Down" })
@@ -236,12 +304,14 @@ RequiredAttachment.RegisterRequired({ M .. "FIVESEVEN_Suppressor" }, { M .. "P90
 -- Parts that cannot be taken off through the vanilla upgrade menu
 -------------------------------------------------
 local permanent = {}
-for _, list in ipairs({ MP7_MAGS, P90_MAGS, FIVESEVEN_MAGS, UCP_MAGS }) do
+for _, list in ipairs({ MP7_MAGS, P90_MAGS, FIVESEVEN_MAGS, UCP_MAGS, SCARH_MAGS }) do
     for _, part in ipairs(list) do permanent[#permanent + 1] = part end
 end
 for _, part in ipairs({ "MP7A1_Integrated_Rail_Up", "MP7A1_Integrated_Rail_Left", "MP7A1_Integrated_Rail_Right",
     "MP7A2_Integrated_Rail_Down",
-    "P90TR_Integrated_Rail_Up", "P90TR_Integrated_Rail_Left", "P90TR_Integrated_Rail_Right" }) do
+    "P90TR_Integrated_Rail_Up", "P90TR_Integrated_Rail_Left", "P90TR_Integrated_Rail_Right",
+    "SCAR_Integrated_Rail_Up", "SCAR_Integrated_Rail_Down", "SCAR_Integrated_Rail_Left",
+    "SCAR_Integrated_Rail_Right" }) do
     permanent[#permanent + 1] = M .. part
 end
 PreventRemoval.Register(permanent)
@@ -313,6 +383,40 @@ if spawnTable then
             M .. "P90_Muzzle_Mount_Device:10",
         },
     }
+    -- The SCARs as GoM's M4A1 / FAL come (their optics, foregrips, lights and lasers at GoM's chances; no ":PR*"
+    -- rail suffix: the integral rails are always there), the stock folded as GoM's guns spawn.
+    local SCAR_COMMON = {
+        "MarzGuns.ReflexS2_Sight:5", "MarzGuns.EXPS3_Sight:5", "MarzGuns.EXPS1_Sight:5", "MarzGuns.Aimpoint_Sight:5",
+        "MarzGuns.LR4X_Scope:3", "MarzGuns.TA28_Scope:3", "MarzGuns.ElcanX2_Scope:3",
+        "MarzGuns.Stub_Foregrip:5", "MarzGuns.MKC_Foregrip:5", "MarzGuns.MK2_Foregrip:3",
+        "MarzGuns.AimRight_Laser:3", "MarzGuns.LRX-7_Laser:3",
+        "MarzGuns.BrightPoint-5_Light:5", "MarzGuns.SR7_Light:5",
+    }
+    local function scarEntry(mags, extra)
+        local optionals = {}
+        for _, list in ipairs({ mags, SCAR_COMMON, extra }) do
+            for _, e in ipairs(list) do optionals[#optionals + 1] = e end
+        end
+        return {
+            required = {
+                "MarzGuns.Bolt_Lock",
+                M .. "SCAR_Integrated_Stock_Folded",
+                M .. "SCAR_Integrated_Rail_Up",
+                M .. "SCAR_Integrated_Rail_Down",
+                M .. "SCAR_Integrated_Rail_Left",
+                M .. "SCAR_Integrated_Rail_Right",
+            },
+            optionals = optionals,
+        }
+    end
+    -- GoM's M4A1 magazines (20 / 25 / 30 at 50 / 30 / 30); FN's SCAR-H magazines, the 10 rarely, ProMag's 50-round
+    -- drum as rarely as the MP7's 60 (2%); the FAL's bipod
+    spawnTable[SCARL] = scarEntry({ "MarzGuns.556x45Magazine20_STANAG:30", "MarzGuns.556x45Magazine25_STANAG:20",
+        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.Bipod_Folded:2", "MarzGuns.AR_Muzzle_Mount_Device:5" })
+    spawnTable[SCARH] = scarEntry({ M .. "762x51Magazine20_SCARH:60", M .. "762x51Magazine10_SCARH:10",
+        M .. "762x51Magazine50_SCARH:2" },
+        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1", "MarzGuns.Bipod_Folded:5",
+          M .. "SCARH_Muzzle_Mount_Device:5" })
     -- As GoM's Glock 17 (":BM" fits the Beretta mount the sight needs), plus the extended magazine and the mount device.
     spawnTable[FIVESEVEN] = {
         required = {
@@ -384,10 +488,21 @@ local function appendAll()
     for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
     for _, part in ipairs(FOREGRIPS) do appendMountOn(part, { MP7A2 }) end
     for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end
+    -- the SCARs: every GoM optic, foregrip, bipod, light and laser; the SCAR-L also GoM's STANAG magazines and its AR
+    -- muzzle family (mount device, suppressors, compensator, flash hider, muzzle brake)
+    for _, list in ipairs({ OPTICS, LIGHTS, LASERS, FOREGRIPS, BIPODS }) do
+        for _, part in ipairs(list) do appendMountOn(part, SCARS) end
+    end
+    for _, part in ipairs(STANAGS) do appendMountOn(part, { SCARL }) end
+    for _, part in ipairs({ "MarzGuns.AR_Muzzle_Mount_Device", "MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor",
+        "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }) do
+        appendMountOn(part, { SCARL })
+    end
 end
 
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
 
-GunsOfTienPost93_Guns = { MP7 = MP7, MP7A2 = MP7A2, P90 = P90, FIVESEVEN = FIVESEVEN, UCP = UCP }
+GunsOfTienPost93_Guns = { MP7 = MP7, MP7A2 = MP7A2, P90 = P90, FIVESEVEN = FIVESEVEN, UCP = UCP, SCARL = SCARL,
+    SCARH = SCARH }

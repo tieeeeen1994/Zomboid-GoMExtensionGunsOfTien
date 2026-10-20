@@ -148,6 +148,10 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   part box itself (ammomaker_itemDistribution.lua, at container fill). Ours follow the same routes; the special
   loads (main mod's 12, Post-93's 4.6x30 Subsonic and 5.7x28 SB193 / SS197SR) never spawn, as GoM's own do not. Its icons reuse the Five-seveN's Glock-fitted
   cameras. The Five-seveN and the UCP have no optic rail of their own: GoM's pistol sights need its Beretta mount.
+- **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the
+  user's photo) in FDE, select fire, standard side-folding stock; the SCAR-L on GoM's 5.56 family and STANAG
+  magazines, the SCAR-H on its 7.62x51 family with its own 20 / 10-round magazines and its own FA762SS suppressor +
+  mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -178,6 +182,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   names. Only what this mod adds is shown, and the captions carry no pronouns (user: "remove the pronouns. just add
   the what we add"; GoM's gun and sawn-off barrel icons were dropped). DIN Alternate Bold (the Mac's stand-in for Bahnschrift) has no "·": `text_layer`
   draws a dot by hand where the font lacks the glyph.
+  preview6 (2026-10-20) is the SCAR-L and SCAR-H: render_ad_guns.py `scarl` / `scarh` (rifles, upright: spec
+  `rifle`, nothing turned; a side-on view so the two stack with their names above them), no big title (user: only
+  the add-on line on top, the guns' names carry the page), one scale, lined up on the
+  butt, fitted out with GoM's sights, foregrip, bipod and muzzle parts, then one slot row of what the add-on adds
+  besides the guns (the SCAR-H's magazines, drum, suppressor, mount device) and two text lines; added on the Steam
+  page by hand like preview2-5.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
@@ -515,6 +525,44 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   (the P90's "FN HERSTAL BELGIUM" panel, the MP7's markings) was not re-checked: the photos they were matched to are
   not in this repo and were labelled by the mirrored renders ("right side, muzzle left"); check in game against a
   photo before moving any. render_mp7 / render_p90 still do not flip their views (their sheets are mirrored).
+
+## FN SCAR-L and SCAR-H (2026-10-20)
+
+- Builder `scripts/post93/build_scar.py` (both guns, the shared stock, the SCAR-H's magazines and muzzle parts; the
+  MP7 kit's slab / lathe / picatinny / bake helpers, with `kit.K` and `kit.MATS` replaced), review renders
+  `render_scar.py` (Blender, its own copy of render_ucp.py's helpers: importing render_ucp runs its main()), icons
+  and sheet `make_scar_art.py --renders DIR` (`docs/post93_scar_preview.png`). Rebuild: `blender -b --factory-startup
+  -P scripts/post93/build_scar.py` (~1 min at the default 1024 bake), `render_scar.py -- DIR`, `make_scar_art.py
+  --renders DIR`, then `gen_post93_guns.py` and `check_refs.py`.
+- **Rifles at 0.65 of real size** (`K = 0.00065`), not the 0.72 of the MP7 / P90 / pistols: GoM draws its rifles at
+  0.61-0.67 (M4A1 0.63, G36 0.61, FAL 0.67 of their real overall lengths), its SMGs and pistols at ~0.72. At 0.65
+  GoM's own STANAG magazine mesh matches the replica photo's magazine within 2 mm (depth and length), so the SCAR-L
+  just hangs GoM's STANAGs at its `magazine` point (feed lips, photo L 363, H 163).
+- **Photo scale from the rails**: both photos scaled by their Picatinny crossbar pitch (MIL-STD-1913, 10.0 mm), found
+  by autocorrelating the top edge's row profile along the rail (SCAR-H 18.14 px / 10 mm, SCAR-L 14.90). The SCAR-H
+  then measures 1031.5 mm (TPR 20": 1040-1085 published), the SCAR-L replica 789 mm (real CQC ~787 extended).
+  The replica photo is turned ~0.66 degrees (rails slope 4.6 mm over 400 mm): `fix_l()` straightens every SCAR-L
+  point (H += 0.0115 x (L - 300)) and make_scar_art.py does the same to the traced outline. Silhouette IoU against the
+  traced outlines (from the receiver's front; the SCAR-H to just behind the grip, as its photo has the TPRS stock):
+  SCAR-L 94.1 %, SCAR-H 95.2 %, the rest being the folded rear sights, the untraced trigger opening and the
+  SCAR-L's lengthened barrel (+97 mm ahead of the gas block, CQC 10" to STD 13.8").
+- **One stock node for two guns, folded by a rotation**: `SCAR_STOCK` (in the parts FBX, its own 128 texture) is
+  modelled deployed with its origin at the hinge (its front face on the bore axis); each gun's `stock` point puts it
+  there, and `stock_folded` = the same offset + 2 x the hinge pin's x (on the right, -X) with rotate (0, 0, 180): a
+  half turn about Z through the pin (the engine draws a part at offset + rotateXYZ . vertex), so the stock lies
+  along the right side, butt forward, as FN's does. GoM instead ships two stock meshes (G36_STOCK_FOLDED /
+  _DEPLOYED) or slides one (M4A1 `stock_folded` offset only).
+- GoM's bipods (`Bipod_Deployed / _Folded`, a `DA.RegisterPair`) mount on its M4A1 / G36 / FAL... through
+  `Picatinny_Rail_Down` (or the G36C's rail) at a `bipod` point 0.0006 under the rail's bottom (its FAL); both SCARs
+  take them on their integral bottom rail. GoM's M4A1 has no reload animation entry (Gunworks' default rifle reload);
+  its FAL / AA12 / BAR use `animId = "FAL"`. GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
+- GoM's FAL magazine icon is blue-grey: the light fitted on it (gains up to 1.9 on blue) washed the tan SCAR-H
+  magazines out, so their icons use that camera with the MP7's magazine light (fitted on GoM's MP5 magazine).
+- Not in the photos and drawn from FN's layout: the right side (ejection port, ambidextrous selector), the charging
+  handle on the left (reversible on the real gun; the SCAR-H photo has it left), the stock's position marks and latch.
+- SCAR-H magazines in real life: FN only made 10 and 20 rounds. The 50-round drum (user, 2026-10-20) is ProMag's
+  DRM-A41 for the SCAR 17S, modelled as a single drum facing front and back (its axis along the barrel, like the
+  MP7's; the user corrected a first build facing the sides), winding knob on the front face; its icon uses the MP7 drum's camera with the MP7 magazine light (the drum light washed it out too).
 
 ## Gun tooltips (2026-10-18)
 
