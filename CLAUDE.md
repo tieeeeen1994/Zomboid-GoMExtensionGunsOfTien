@@ -232,7 +232,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   removed (user, 2026-10-22). Added on the Steam page by hand.
   preview9 (2026-10-22) is the M249 and belt links: render_ad_guns.py `m249` (body, closed cover, deployed bipod,
   box and belt, seen from its left after the mirror), title "M249 LIGHT MACHINE GUN", then one slot row (the gun,
-  its box, the M27 and M13 links and their boxes). Not yet on the Steam page.
+  its box, the M27 and M13 links and their boxes), then two lines at the bottom: "LMG BELTS NOW NEED LINKS" and what
+  that means (M249 and GoM's M60, one link per round loaded, fired links eject; user 2026-10-22). Not yet on the Steam page.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`

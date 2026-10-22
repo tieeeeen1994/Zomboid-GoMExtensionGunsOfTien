@@ -507,6 +507,12 @@ def preview9(path, W=1024):
     main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
     slot_row(page, [main("M249"), main("556x45Box200_M249"), main("M27_Link"), main("LinkBox_M27"),
                     main("M13_Link"), main("LinkBox_M13")], 256, 360, "200-ROUND BELTS  ·  M27 AND M13 BELT LINKS")
+    # the change existing players must know about (user, 2026-10-22): belt boxes now take links
+    page.alpha_composite(text_layer(size, (W // 2, u(438)), "LMG BELTS NOW NEED LINKS", font(BOLD, u(15), b"Bold"),
+                                    (28, 30, 34, 255), anchor="ma", spacing=u(1)))
+    page.alpha_composite(text_layer(size, (W // 2, u(460)),
+                                    "M249 AND GOM'S M60  ·  ONE LINK PER ROUND LOADED  ·  FIRED LINKS EJECT",
+                                    font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), anchor="ma", spacing=u(1)))
     save_under(page.convert("RGB"), path)
 
 
