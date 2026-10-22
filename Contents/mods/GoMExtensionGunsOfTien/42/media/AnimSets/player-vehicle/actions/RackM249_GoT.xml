@@ -42,13 +42,13 @@
 		<m_ParameterValue></m_ParameterValue>
 	</m_Events>
 	<m_Events>
-		<m_EventName>ejectCasing</m_EventName>
+		<m_EventName>rackBullet</m_EventName>
 		<m_Time>Percentage</m_Time>
 		<m_TimePc>0.422</m_TimePc>
 		<m_ParameterValue></m_ParameterValue>
 	</m_Events>
 	<m_Events>
-		<m_EventName>rackBullet</m_EventName>
+		<m_EventName>ejectCasing</m_EventName>
 		<m_Time>Percentage</m_Time>
 		<m_TimePc>0.422</m_TimePc>
 		<m_ParameterValue></m_ParameterValue>

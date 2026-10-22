@@ -194,7 +194,8 @@ realistic rules, treat links like hot brass").
 - Filling a belt box (the M249's 200-round box, GoM's M60 100-round box) with Gunworks' Load Rounds takes one link
   from the main inventory with each round, any round of the family (belts mix loads freely, as the real 4 ball : 1
   tracer). Without links the action does not start (a "Needs M27 belt links" halo); running out stops it. STANAG
-  magazines never need links. Unloading rounds from a belt box gives each round's link back.
+  magazines never need links. Unloading rounds from a belt box gives each round's link back, and racking a
+  chambered round out (belt box fitted) throws its link out with the round (2026-10-22).
 - Firing from a fitted belt box throws each fired round's empty link out of the gun's right side: with Hot Brass it
   flies and lands as a real item (never despawned) with its own landing sound per surface (synthesised: a short dry
   steel tick on hard floors, a muffled tap on dirt and grass, a plip in water); without Hot Brass it drops at the

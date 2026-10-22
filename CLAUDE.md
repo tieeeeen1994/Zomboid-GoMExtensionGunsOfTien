@@ -770,6 +770,12 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   (`ISUnloadBulletsFromMagazine:animEvent` RemoveBullet) change the magazine where `not isClient()`; the wrappers
   compare the count before and after there. `isLoadFinished` returning true ends the load cleanly (Gunworks checks it
   before every round), so "no link left" is put there. `ItemContainer.getFirstType` takes a full type (compareType).
+  Racking (bug reported 2026-10-22: neither the round nor the link came out): Hot Brass (PermanentCasings) replaces
+  `ISRackFirearm:removeBullet` (no round into the inventory, `emptyRack = false`) and throws the live round at the
+  rack's `ejectCasing` only when `not emptyRack` (an MP client falls back to `hadRoundChambered`), so `rackBullet`
+  must come before `ejectCasing` in the rack AnimSet: Hot Brass's own XMLs list it first; RackM249_GoT.xml had them
+  at the same time the other way round, so in single player the round vanished. The link comes from a
+  `rackBullet` wrapper (Hot Brass re-wraps `removeBullet` at every OnInitGlobalModData, so not there).
   Our shared files load after Gunworks' (mod order), so the wrappers sit on top of its own.
 
 ## Gun tooltips (2026-10-18)

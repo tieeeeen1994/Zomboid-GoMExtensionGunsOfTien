@@ -18,6 +18,8 @@
       shots and sends the count to the server twice a second (client/GunsOfTien/BeltLinks.lua), which throws them a
       few a tick (server/GunsOfTien/BeltLinks.lua). The server also fires the event, but only for shots that hit
       someone, so it does not count there.
+    - Racking a chambered round out of a gun with a belt box fitted throws its link out with it (the round itself is
+      vanilla's / Hot Brass's).
     A box fitted to a found gun counts as linked: firing or unloading it gives links.
 --]]
 
@@ -201,6 +203,29 @@ local function onShot(character, weapon)
         BeltLinks.pending[id] = (BeltLinks.pending[id] or 0) + 1
     else
         BeltLinks.eject(character, weapon, link)
+    end
+end
+
+-------------------------------------------------
+-- Racking: the chambered round leaves the gun with its link
+-------------------------------------------------
+-- Vanilla's rackBullet (run where the action is authoritative) removes a chambered round that is not jammed
+-- (removeBullet: into the inventory, or thrown out by Hot Brass at ejectCasing), so its link goes out with it.
+-- rackBullet is wrapped rather than removeBullet, which Hot Brass replaces at OnInitGlobalModData on every world load.
+require("TimedActions/ISRackFirearm")
+
+if not BeltLinks.rackWrapped then
+    BeltLinks.rackWrapped = true
+
+    local rackBullet = ISRackFirearm.rackBullet
+    function ISRackFirearm:rackBullet()
+        local gun = self.gun
+        local link = not isClient() and gun and gun:haveChamber() and gun:isRoundChambered() and not gun:isJammed()
+            and BeltLinks.linkForGun(gun)
+        rackBullet(self)
+        if link then
+            BeltLinks.eject(self.character, gun, link)
+        end
     end
 end
 
