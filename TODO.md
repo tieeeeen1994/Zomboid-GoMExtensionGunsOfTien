@@ -486,6 +486,57 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       the two Auto entries in the fire mode menu, the feed cover opening and closing during a reload (gwSetPart through
       the attachments style), the box drawn on the gun and lying on its side on the floor, STANAGs slanting down to the
       left, belt rounds vanishing from nine down and gone with a STANAG.
+- [ ] Uzi, Mini Uzi, Micro Uzi built 2026-10-23 (docs/design.md 4f, CLAUDE.md "Uzi family"): models, textures, icons,
+      sheet `docs/uzi_preview.png`, scripts (gen_scripts.py `uzi()`), Uzi.lua, AnimSets + unload clip, loot, Hot Brass,
+      tooltips, README / workshop.txt / mod.info. Not loaded in game yet. To check: all three spawn from the debug item
+      list with the stock folded and a magazine; the Uzi held two-handed and on the back, the Mini / Micro one-handed,
+      upright in the hand and in a belt / shoulder holster, the Micro in an ankle holster too (HolsterSmall; no holster
+      points of their own, as GoM's MP5K / Detective .38; the Micro is 257 mm with its stock, so check it clears the
+      leg and the floor; if one hangs wrong, add points like the sawn-off stocks'); Fold / Unfold Stock (the Mini's and Micro's swing forward along the
+      right side, the butt hanging under the barrel; the Uzi's two nodes swap), the stock lines in the tooltip; every
+      magazine fits every gun, sits flush at the grip's bottom (20) and hangs straight; Auto at 600 / 950 / 1200 and
+      Single; the Mini / Micro reload with vanilla's pistol clips and no magazine in the left hand, the magazine
+      leaving and returning at the clip's events; the Uzi's reload on GoM's MP5 clips (the hand goes ahead of the
+      grip: custom clips if the user wants); the mount device and Mk9 on all three (wrench, can on the bore axis
+      against the nut); casings out to the right (Hot Brass); kits from `MarzGuns.World_Short_SMG_Spawner`,
+      `Zombie_Police_SMG_Spawner` and `Zombie_Crime_Rifle_Spawner` (debug: spawn them into a container), the 40 / 50 from the high-cap spawner; the
+      muzzle flash at the barrel's end; the floor pose of guns and magazines.
+- [ ] Own reload clips for the full-size Uzi and GoM's MP5K (user, 2026-10-23: GoM's MP5 clips put the Uzi's left
+      hand ~10 cm ahead of its grip magazine, GoM's handgun2 clips miss the MP5K's magazine too). Drafts only, not
+      wired into the game; the user found issues in the latest GIFs (not yet listed: ask) and moved computers.
+      Builder `scripts/anim/smg_reload.py` (Blender, ~15 s a gun; TienInspectWeapon's rig, as m249_reload.py):
+      `blender -b --factory-startup -P scripts/anim/smg_reload.py -- "<vanilla media/anims_X/Bob>" "<ABSOLUTE
+      repo>/tmp/anim/smg" uzi|mp5k [Unload Load Rack AimRack] --preview` writes `Bob_GunsOfTien_<Uzi|MP5K>_<clip>.x`
+      + previews; GIFs: `py ../TienInspectWeapon/scripts/anim/gif.py tmp/anim/smg/prev_<gun>_<clip> out.gif 3 0.7`,
+      key frames: `sheet.py <dir> out.png 6,12,...`. (tmp/ is gitignored: regenerate the previews on the other
+      computer.) Clips 36 / 45 / 36 / 36 frames = GoM's magazine durations 1.2 / 1.5 / 1.2 s; SWAP Unload 16, Load 30.
+      Done so far, from the user's notes on the first two rounds:
+      - the left hand takes the magazine by its body just under the well (works for every magazine length, 20-50 and
+        GoM's MP5 drums), vanilla's rifle-load grip (frame 30) moved by `hold_fix`, measured with `SMG_CAL=raw` (the
+        centre of Bob's left hand / finger vertices against the magazine axis: Uzi 0.0023 0.0427 0.0233, MP5K 0.0044
+        0.0524 -0.0181; `SMG_CAL=1` checks it lands at 0); before that the hand floated ~5 cm under the magazine
+        ("weird animation when taking off the mag")
+      - no stall: the unload reaches the hip on its last frame (it used to hold 9 frames)
+      - Uzi work place found by grid search (`SMG_WORK="right,up,forward"`, also `SMG_RACK`, `SMG_RACK_ALONG`,
+        `SMG_RACK_TOP` env overrides for tuning; count "frames out of reach" / elbow steps in the output): pos
+        -0.02 0.68 0.10 (3 frames short, the blend-in)
+      - Uzi AimRack stays in the aim (no reach warnings, smooth elbow); Uzi Rack over the top (L elbow swings 88
+        degrees once)
+      - MP5K Rack: first version (across the belly, muzzle left) "outright unacceptable"; up in front of the face
+        rejected by me; now the AimRack's place (drawn in at the chest, turned a little left, still pointing forward):
+        15 frames short by up to 13 cm. GoM's MP5K origin is at its rear end, the well 0.12 and the lever 0.20 ahead,
+        and GoM draws guns large next to Bob (arm reach 0.274 from the shoulder), so a forward-pointing gun puts the
+        lever out of reach.
+      - MP5K AimRack added (user: "I don't see an MP5K aiming"; GoM's handgun2 has none)
+      Still to do once approved: AnimSets player + player-vehicle (`*UziRifle_GoT.xml`, `*MP5K_GoT.xml`; Load: Start
+      insertAmmoStart, load sound + changeWeaponPart "mag" at 30/45, loadFinished End; Unload: ejectAmmoStart,
+      unload sound + changeWeaponPart at 16/36, unloadFinished; Rack / RackAim (RackAiming condition, as GoM's
+      RackMP5Aim): rack sound, rackStart ~12/36, **rackBullet before ejectCasing** (~0.55 / 0.56: Hot Brass; GoM's own
+      MP5 rack has them the other way), rackEnd, rackingFinished); ship the .x files to anims_X/Bob; Uzi.lua: the UZI
+      handler animId "UziRifle", style "attachments" with the magazine shown in the hand (Gunworks shows the real
+      magazine, resolveReloadMagItem) and the pointMagPart wrapper extended to it; a new shared file registering
+      MarzGuns.MP5K the same way (animId "MP5K_GoT", after GoM's ReloadAnims, a GoM fix: say so in README /
+      workshop.txt / mod.info's fix list); CLAUDE.md notes.
 - [ ] Belt links built 2026-10-22 (docs/design.md 4e): M27 / M13 links and their boxes (models, icons, open / pack /
       make recipes), filling and unloading belt boxes takes / gives links, every shot from a belt box throws its link
       out (Hot Brass physics and our landing sounds, at the feet without Hot Brass, into Ammo Maker's brass catcher;

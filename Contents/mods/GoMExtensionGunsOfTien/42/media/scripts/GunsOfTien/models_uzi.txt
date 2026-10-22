@@ -1,0 +1,111 @@
+module GunsOfTien {
+
+    model UZI {
+        mesh     = weapons/firearms/GunsOfTien_UZI|UZI_BODY,
+        texture  = weapons/GunsOfTien/UZI,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2376 0.0223, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.0288 0.0018, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1915 0.0223, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model UZI_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_UZI|UZI_BOLT,
+        texture  = weapons/GunsOfTien/UZI,
+        cullFace = None,
+    }
+
+    model UZI_STOCK_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_UZI|UZI_STOCK_FOLDED,
+        texture  = weapons/GunsOfTien/UZI,
+        cullFace = None,
+    }
+
+    model UZI_STOCK_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_UZI|UZI_STOCK_DEPLOYED,
+        texture  = weapons/GunsOfTien/UZI,
+        cullFace = None,
+    }
+
+    model MINIUZI {
+        mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_BODY,
+        texture  = weapons/GunsOfTien/MINIUZI,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1858 -0.0238, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0250 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0281 -0.0043, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1570 -0.0238, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0166 -0.0662 -0.0274, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0166 -0.0662 -0.0274, rotate = 0.0000 0.0000 180.0000, }
+    }
+
+    model MINIUZI_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_BOLT,
+        texture  = weapons/GunsOfTien/MINIUZI,
+        cullFace = None,
+    }
+
+    model MINIUZI_STOCK {
+        mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_STOCK,
+        texture  = weapons/GunsOfTien/MINIUZI,
+        cullFace = None,
+    }
+
+    model MICROUZI {
+        mesh     = weapons/firearms/GunsOfTien_MICROUZI|MICROUZI_BODY,
+        texture  = weapons/GunsOfTien/MICROUZI,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1339 -0.0169, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0250 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0281 -0.0058, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1066 -0.0169, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0162 -0.0461 -0.0230, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0162 -0.0461 -0.0230, rotate = 0.0000 0.0000 180.0000, }
+    }
+
+    model MICROUZI_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MICROUZI|MICROUZI_BOLT,
+        texture  = weapons/GunsOfTien/MICROUZI,
+        cullFace = None,
+    }
+
+    model MICROUZI_STOCK {
+        mesh     = weapons/firearms/GunsOfTien_MICROUZI|MICROUZI_STOCK,
+        texture  = weapons/GunsOfTien/MICROUZI,
+        cullFace = None,
+    }
+
+    model 9x19Magazine20_UZI {
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|9x19Magazine20_UZI,
+        texture  = weapons/GunsOfTien/9x19Magazine20_UZI,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine25_UZI {
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|9x19Magazine25_UZI,
+        texture  = weapons/GunsOfTien/9x19Magazine25_UZI,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine32_UZI {
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|9x19Magazine32_UZI,
+        texture  = weapons/GunsOfTien/9x19Magazine32_UZI,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine40_UZI {
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|9x19Magazine40_UZI,
+        texture  = weapons/GunsOfTien/9x19Magazine40_UZI,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine50_UZI {
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|9x19Magazine50_UZI,
+        texture  = weapons/GunsOfTien/9x19Magazine50_UZI,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

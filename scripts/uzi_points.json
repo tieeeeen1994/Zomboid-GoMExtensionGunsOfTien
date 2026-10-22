@@ -1,0 +1,513 @@
+{
+  "UZI": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.2376,
+        0.0223
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.1915,
+        0.0223
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        0.0288,
+        0.0018
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "bolt_fired": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "world": {
+      "offset": [
+        0.02,
+        0.13,
+        0.0
+      ],
+      "rotate": [
+        180.0,
+        0.0,
+        180.0
+      ]
+    },
+    "_notes": {
+      "canon": "the barrel nut's front face (64 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
+      "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
+      "bolt_fired": "the cocking knob on top does not reciprocate",
+      "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin",
+      "units": "game units (0.72 of real size); +Y muzzle; +Z top, +X the gun's left; origin = rear-top of the grip (photo L 330, H 140)"
+    },
+    "_extras": {
+      "handgun_hold": false,
+      "photo_origin_mm": [
+        330.0,
+        140.0
+      ],
+      "bore_mm": 171.0,
+      "k": 0.00072
+    },
+    "_bounds": {
+      "UZI_BODY": {
+        "min": [
+          -0.0173,
+          -0.095,
+          -0.0673
+        ],
+        "max": [
+          0.0173,
+          0.2376,
+          0.0624
+        ],
+        "tris": 1672
+      },
+      "UZI_BOLT": {
+        "min": [
+          -0.0068,
+          0.0958,
+          0.0454
+        ],
+        "max": [
+          0.0068,
+          0.1094,
+          0.058
+        ],
+        "tris": 240
+      },
+      "UZI_STOCK_FOLDED": {
+        "min": [
+          -0.0148,
+          -0.1005,
+          -0.0677
+        ],
+        "max": [
+          0.0148,
+          -0.0137,
+          0.0144
+        ],
+        "tris": 468
+      },
+      "UZI_STOCK_DEPLOYED": {
+        "min": [
+          -0.0148,
+          -0.2232,
+          -0.0605
+        ],
+        "max": [
+          0.0148,
+          -0.0878,
+          0.0259
+        ],
+        "tris": 248
+      }
+    }
+  },
+  "MINIUZI": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.1858,
+        -0.0238
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.157,
+        -0.0238
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        0.0281,
+        -0.0043
+      ],
+      "rotate": [
+        -180.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "bolt_fired": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "stock": {
+      "offset": [
+        0.0166,
+        -0.0662,
+        -0.0274
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "stock_folded": {
+      "offset": [
+        0.0166,
+        -0.0662,
+        -0.0274
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        180.0
+      ]
+    },
+    "world": {
+      "offset": [
+        -0.025,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "_notes": {
+      "canon": "the barrel nut's front face (40 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
+      "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
+      "bolt_fired": "the cocking knob on top does not reciprocate",
+      "stock": "MINIUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 350, H 150, 23 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
+      "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 258, H 112)"
+    },
+    "_extras": {
+      "handgun_hold": true,
+      "photo_origin_mm": [
+        258.0,
+        112.0
+      ],
+      "bore_mm": 145.0,
+      "k": 0.00072
+    },
+    "_bounds": {
+      "MINIUZI_BODY": {
+        "min": [
+          -0.0166,
+          -0.0713,
+          -0.0593
+        ],
+        "max": [
+          0.0166,
+          0.1858,
+          0.0634
+        ],
+        "tris": 1452
+      },
+      "MINIUZI_BOLT": {
+        "min": [
+          -0.0068,
+          0.0626,
+          -0.0576
+        ],
+        "max": [
+          0.0068,
+          0.0763,
+          -0.0468
+        ],
+        "tris": 240
+      },
+      "MINIUZI_STOCK": {
+        "min": [
+          -0.0176,
+          -0.18,
+          -0.0115
+        ],
+        "max": [
+          0.004,
+          0.004,
+          0.1005
+        ],
+        "tris": 328
+      },
+      "MINIUZI_STOCK_folded": {
+        "min": [
+          0.0126,
+          -0.0702,
+          -0.0389
+        ],
+        "max": [
+          0.0342,
+          0.1138,
+          0.0731
+        ],
+        "tris": 328
+      }
+    }
+  },
+  "MICROUZI": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.1339,
+        -0.0169
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.1066,
+        -0.0169
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        0.0281,
+        -0.0058
+      ],
+      "rotate": [
+        -180.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "bolt_fired": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "stock": {
+      "offset": [
+        0.0162,
+        -0.0461,
+        -0.023
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "stock_folded": {
+      "offset": [
+        0.0162,
+        -0.0461,
+        -0.023
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        180.0
+      ]
+    },
+    "world": {
+      "offset": [
+        -0.025,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "_notes": {
+      "canon": "the barrel nut's front face (38 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
+      "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
+      "bolt_fired": "the cocking knob on top does not reciprocate",
+      "stock": "MICROUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 250, H 142, 22 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
+      "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 186, H 110)"
+    },
+    "_extras": {
+      "handgun_hold": true,
+      "photo_origin_mm": [
+        186.0,
+        110.0
+      ],
+      "bore_mm": 133.5,
+      "k": 0.00072
+    },
+    "_bounds": {
+      "MICROUZI_BODY": {
+        "min": [
+          -0.014,
+          -0.0511,
+          -0.0483
+        ],
+        "max": [
+          0.014,
+          0.1339,
+          0.0648
+        ],
+        "tris": 1296
+      },
+      "MICROUZI_BOLT": {
+        "min": [
+          -0.0036,
+          0.0634,
+          -0.0504
+        ],
+        "max": [
+          0.0036,
+          0.0706,
+          -0.0385
+        ],
+        "tris": 240
+      },
+      "MICROUZI_STOCK": {
+        "min": [
+          -0.016,
+          -0.1446,
+          -0.0101
+        ],
+        "max": [
+          0.0036,
+          0.0036,
+          0.0797
+        ],
+        "tris": 244
+      },
+      "MICROUZI_STOCK_folded": {
+        "min": [
+          0.0126,
+          -0.0497,
+          -0.0331
+        ],
+        "max": [
+          0.0322,
+          0.0985,
+          0.0567
+        ],
+        "tris": 244
+      }
+    }
+  },
+  "_mags": {
+    "9x19Magazine20_UZI": {
+      "min": [
+        -0.009,
+        -0.0127,
+        -0.085
+      ],
+      "max": [
+        0.009,
+        0.0127,
+        0.0005
+      ],
+      "tris": 306
+    },
+    "9x19Magazine25_UZI": {
+      "min": [
+        -0.009,
+        -0.0127,
+        -0.1022
+      ],
+      "max": [
+        0.009,
+        0.0127,
+        0.0005
+      ],
+      "tris": 306
+    },
+    "9x19Magazine32_UZI": {
+      "min": [
+        -0.009,
+        -0.0127,
+        -0.1264
+      ],
+      "max": [
+        0.009,
+        0.0127,
+        0.0005
+      ],
+      "tris": 306
+    },
+    "9x19Magazine40_UZI": {
+      "min": [
+        -0.009,
+        -0.0127,
+        -0.1541
+      ],
+      "max": [
+        0.009,
+        0.0127,
+        0.0005
+      ],
+      "tris": 306
+    },
+    "9x19Magazine50_UZI": {
+      "min": [
+        -0.009,
+        -0.0127,
+        -0.1886
+      ],
+      "max": [
+        0.009,
+        0.0127,
+        0.0005
+      ],
+      "tris": 306
+    }
+  }
+}

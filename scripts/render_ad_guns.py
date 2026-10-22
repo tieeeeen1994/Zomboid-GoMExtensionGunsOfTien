@@ -26,6 +26,11 @@ mount device at the `canon` point build_mk9.py measured, scripts/smg9_points.jso
 Suppressors.lua at run time) and on the UMP9 (`main_parts`), and GoM's P45 on the UMP45.
 
 The main mod's M249 (preview9, `m249`): bipod deployed, feed cover closed, its 200-round box and belt, from its left.
+
+The main mod's Uzi, Mini Uzi and Micro Uzi (preview10, `uzi` / `miniuzi` / `microuzi`): one view and scale so they keep
+their real sizes against each other, from their left (the markings) after the mirror; the Uzi and Micro with the stock
+folded, the Mini with it deployed (the user's photo), each with its standard magazine (scripts/uzi_points.json; the
+Mini and Micro are modelled upside down and turned upright, the Uzi is rifle-held and upright).
 """
 
 import json
@@ -69,8 +74,15 @@ M249_SCALE, M249_SIZE = 0.86, (2400, 1300)
 # the M249 from its left (box and belt side) after make_workshop_art.py mirrors it back: game space as world space is
 # the game's mirror image, so the camera looks from the world's +X
 M249_VIEW = (-0.92, 0.3, -0.2)
+UZI_VIEW, UZI_SCALE, UZI_SIZE = (-0.92, 0.3, -0.2), 0.62, (2400, 1400)
 
 GUNS = {
+    # the main mod's Uzis (preview10): (gun, stock folded, magazine)
+    "uzi": {"uzi": ("UZI", True, "9x19Magazine32_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE, "size": UZI_SIZE},
+    "miniuzi": {"uzi": ("MINIUZI", False, "9x19Magazine20_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE,
+                "size": UZI_SIZE},
+    "microuzi": {"uzi": ("MICROUZI", True, "9x19Magazine20_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE,
+                 "size": UZI_SIZE},
     # the main mod's M249 (preview9): bipod deployed, feed cover closed, the 200-round box and its belt
     "m249": {"m249": True, "view": M249_VIEW, "scale": M249_SCALE, "size": M249_SIZE},
     # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
@@ -284,7 +296,32 @@ def m249():
     return objs
 
 
+def uzi(gun, folded, mag):
+    """An Uzi as its item script draws it: body and cocking knob, the stock (the Uzi's two in-place nodes, the Mini's /
+    Micro's one node at stock / stock_folded), the magazine at its point."""
+    pts = json.load(open(os.path.join(HERE, "uzi_points.json")))[gun]
+    up = pts["_extras"]["handgun_hold"]
+    fbx = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms/GunsOfTien_%s.fbx" % gun)
+    tex = os.path.join(SMG9_TEX, gun + ".png")
+    if gun == "UZI":
+        stock = ("UZI_STOCK_FOLDED" if folded else "UZI_STOCK_DEPLOYED", None)
+    else:
+        stock = (gun + "_STOCK", "stock_folded" if folded else "stock")
+    objs = []
+    for node, point in ((gun + "_BODY", None), (gun + "_BOLT", None), stock):
+        o = load(fbx, tex, node)
+        place(o, pts[point] if point else None, up)
+        objs.append(o)
+    o = load(os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx"),
+             os.path.join(SMG9_TEX, mag + ".png"), mag)
+    place(o, pts["magazine"], up)
+    objs.append(o)
+    return objs
+
+
 def build(spec):
+    if "uzi" in spec:
+        return uzi(*spec["uzi"])
     if "m249" in spec:
         return m249()
     if "gom_smg" in spec:

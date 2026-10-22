@@ -205,6 +205,55 @@ realistic rules, treat links like hot brass").
   crafted at any surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch
   (Metalworking 2, 50 links a sheet; vanilla's metalworking conventions); recovered by firing or unloading.
 
+## 4f. Uzi, Mini Uzi and Micro Uzi (2026-10-23, designed, building)
+
+IMI's open-bolt 9x19mm family, all of it 1993 material: the Uzi (1954; Action Arms imported the semi-automatic Uzi
+carbine to the US 1980-1989, and US police units carried the submachine gun), the Mini Uzi (1980) and the Micro Uzi
+(1986). Main mod, module `GunsOfTien`. The user's photos (2026-10-23): two angled views of an Uzi with its stock
+folded, an angled Mini Uzi (compensator cuts), a side-on Mini Uzi (left side, stock deployed), a side-on Micro Uzi
+(left side, stock folded forward, its butt plate a front grip) and a side-on IMI Uzi **Pistol** (right side; the
+1984 semi-automatic, no stock), which the user chose to use for the Micro Uzi's receiver only. The full Uzi is
+traced from the Commons photo "Uzi of the israeli armed forces" (Uziel Galishto, CC BY-SA 3.0; left side, side-on,
+stock folded, Action Arms markings). No photo is kept in the repo (tmp/ref/uzi).
+
+| | `GunsOfTien.UZI` "Uzi Submachine Gun" | `GunsOfTien.MINIUZI` "Mini Uzi Submachine Gun" | `GunsOfTien.MICROUZI` "Micro Uzi Submachine Gun" |
+|---|---|---|---|
+| Real | 260 mm barrel, 3.5 kg, 470 / 640 mm, 600 rpm | 197 mm, about 2.7 kg, 360 / 600 mm, 950 rpm | 117 mm, about 1.95 kg, 282 / 486 mm, 1200 rpm |
+| Held | as a rifle: two hands, back slot (GoM's MP5) | **like a pistol, fits a holster** (user, 2026-10-23: GoM's MP5K / MAC-10 way), modelled upside down | the same, and **fits an ankle holster too** (user, 2026-10-23: `HolsterSmall` as GoM's Detective .38; vanilla's belt and shoulder holsters take it as well) |
+| Stock | twin-strut metal stock folding down under the receiver; GoM's MP5 stock stats (HitChance ×1.15, AimingTime ×0.75) | single-strut stock folding forward along the right side; GoM's MAC-10 stock stats (×1.1, ×0.9) | the same, shorter |
+| Damage | 1.0-1.6 (GoM's MP5) | 0.9-1.4 | 0.6-1.0 (GoM's MP5K, the same barrel) |
+| HitChance / Aimingtime / RecoilDelay / range / crit | 50 / 40 / 15 / 30 / 20 | 48 / 30 / 13 / 27 / 20 | 45 / 25 / 12 / 25 / 25 |
+| Spread (sustained / max) | 0.08 / 1.3 (slow, heavy) | 0.18 / 2.2 | 0.25 / 2.8 (MAC-10 0.2 / 2.0 at 1000) |
+| Weight (GoM's SMG ratio ~0.78) | 2.7 | 2.1 | 1.5 |
+| Sound (sound_model.py) | 89 / 25 | 97 / 28 | 113 / 32 |
+
+All three: Auto / Single, one magazine profile "Uzi" for all, every magazine fits every gun (IMI's steel double-stack
+magazines): **20, 25 and 32 rounds, plus 40 and 50** (user, 2026-10-23), "Uzi 32Rds 9x19mm Magazine", the 40 / 50
+"... Extended Magazine" (GoM's MAC-10 40); weights 0.08 / 0.12 / 0.15 / 0.2 / 0.22. The magazine goes up the pistol
+grip. The **AWC Mk9** fits all three (user, 2026-10-23) on the main mod's 9x19mm SMG mount device (the real Mk9 took
+the Uzi barrel nut's place; the mount device stands in for that adapter), at a `canon` point on the barrel nut's
+front face. No rails, optics, lights, lasers, other muzzle devices or bayonet (none on a 1993 Uzi). Ejection to the
+right (Hot Brass: GoM's MP5 for the Uzi, its MP5K for the Mini / Micro). Repair: RepairPack, Aiming 3 (GoM's SMGs).
+Family `9x19mm` (GoM's 9mm, the main mod's 147gr / Hollow Point / [+P+]). Models built in Blender by script at 0.72
+(GoM's SMGs), the Uzi's top cocking knob does not reciprocate (bolt_fired = bolt_lock), the Uzi's grip safety and
+the Mini's compensator cuts in the model.
+
+Reload: the Mini / Micro as the MP7 (vanilla's handgun load, its reverse baked forward as the unload, handgun rack;
+the main mod's own AnimSets and clip, since Post-93 is optional); the Uzi on GoM's MP5 clips first (its magazine well
+is the grip, about 10 cm behind the MP5's; custom clips later if it shows).
+Loot (GoM's routes), one alternative per spawner whose gun slot picks one Uzi at random (GoM's MP5 family, Post-93's
+MP7s), so GoM's own guns keep most of their share: GoM's `World_Short_SMG_Spawner` (gun stores, pawn shops,
+survivalist glove boxes, bandit bags; beside its MP5K, TEC-9, MAC-10) any of the three + up to 6 magazines of 20 / 25
+/ 32 + up to 6 9x19mm boxes; `Zombie_Police_SMG_Spawner` (SWAT zombies, police bags, prison riot storage, SWAT
+vehicles) the Uzi alone + up to 4 and 4 as GoM's MP5 kit (that spawner also hangs its gun on SWAT zombies' backs,
+no place for a holstered Mini Uzi; first proposed with the Mini too); `Zombie_Crime_Rifle_Spawner` (user,
+2026-10-23: the drug-trade gun of the 1980s; criminal and bounty hunter zombies' backs, bandit bags, pawn shops'
+special guns, plank stashes) the Uzi alone + up to 4 32-round magazines and 4 boxes as GoM's FNC / XM177 kit there,
+which leaves the Uzi half of that spawner's kits; the 40 and 50 loose in
+`World_HighCap_Tactical_Magazine_Spawner` (GoM's SpawnHighCapMags) only. Magazines on a
+found gun (GoM's MP5 rule, shortest likeliest, with each gun's standard first): Uzi 32:30, 25:20, 20:5; Mini and
+Micro 20:30, 25:20, 32:5.
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

@@ -30,8 +30,8 @@ found as loot: make them with Ammo Maker.
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
   every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
   out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
-- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5 and MP5A2 (Guns of Marz's 9mm
-  suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
+- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
+  (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
@@ -52,6 +52,17 @@ found as loot: make them with Ammo Maker.
 - Links come in boxes (200 M27, 100 M13) in the M249 and M60 kits and in army ammunition storage, or are made at any
   surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch (Make M27 5.56mm or
   M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
+
+## Uzi, Mini Uzi and Micro Uzi
+
+- Uzi (held two-handed like the MP5, its metal stock folding under the receiver), Mini Uzi and Micro Uzi (held
+  one-handed and fitting a holster like the MP5K and MAC-10, stocks folding along the right side; the Micro Uzi fits
+  an ankle holster too): automatic at 600, 950 and 1200 rounds a minute, or single shots
+- One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
+- The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
+- Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
+  SMGs and on SWAT zombies, and with its criminals' guns (criminal zombies, bandit bags, pawn shops, stashes); the long
+  magazines with its high-capacity magazines
 
 ## Ammo Maker
 

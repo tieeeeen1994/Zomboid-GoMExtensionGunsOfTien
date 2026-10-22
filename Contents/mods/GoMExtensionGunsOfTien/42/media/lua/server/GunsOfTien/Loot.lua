@@ -21,6 +21,19 @@
     Belt links (shared/GunsOfTien/BeltLinks.lua): a box of M27 links in each M249 kit and of M13 links in each of
     GoM's M60 kits (up to as many as the kit's belt boxes, a group added to GoM's own alternative), and loose boxes of
     both beside the belt boxes in army ammunition storage, at the belt boxes' weights.
+    The Uzis (shared/GunsOfTien/Uzi.lua; docs/design.md 4f) go where GoM's own SMGs of their kind do, one alternative
+    per spawner whose gun slot picks one Uzi at random (GoM's MP5 family, Post-93's MP7s), so GoM's guns keep most of
+    their share: MarzGuns.World_Short_SMG_Spawner (gun stores, pawn shops, survivalist glove boxes, bandit bags; beside
+    its MP5K, TEC-9 and MAC-10) any of the three with up to 6 magazines and 6 boxes as GoM's kits there, and
+    MarzGuns.Zombie_Police_SMG_Spawner (SWAT zombies, police bags, prison riot storage, SWAT vehicles; beside its MP5
+    family) the Uzi alone with up to 4 and 4 as its MP5 kit: that spawner also hangs its gun on SWAT zombies' backs
+    (GoM's AttachedWeaponDefinitions gunOnBackSWAT), where a holstered Mini Uzi does not belong. And
+    MarzGuns.Zombie_Crime_Rifle_Spawner (user, 2026-10-23: the 1980s' drug-trade gun; criminal and bounty hunter
+    zombies' backs, bandit bags, pawn shops' special guns, plank stashes; beside GoM's one FNC / XM177 kit, so an
+    Uzi is half of what it gives) the Uzi alone, also a back-slot gun, with up to 4 of its 32-round magazines and 4
+    boxes as GoM's kit there (its standard magazine only). The long 40 and 50 come loose only, in
+    MarzGuns.World_HighCap_Tactical_Magazine_Spawner (placed while GoM's SpawnHighCapMags is on), each with up to
+    two boxes as GoM's MP5 drums.
 --]]
 
 require("Items/ProceduralDistributions")
@@ -48,6 +61,31 @@ local function m249Alternative(boxes)
         { items = { "MarzGuns.556x45_Box" }, amountChance = 4 },
         { items = { "GunsOfTien.LinkBox_M27" }, amountChance = boxes },
     }
+end
+
+-- Uzi kits: { spawner, guns, magazines, magazines and boxes }; high-capacity magazines: { spawner, magazine }
+local function uziAlternative(guns, mags, count)
+    return {
+        { items = guns, amountChance = 1 },
+        { items = mags, amountChance = count },
+        { items = { "MarzGuns.9x19_Box" }, amountChance = count },
+    }
+end
+local UZI_ALTERNATIVES = {
+    { "MarzGuns.World_Short_SMG_Spawner", uziAlternative(
+        { "GunsOfTien.UZI", "GunsOfTien.MINIUZI", "GunsOfTien.MICROUZI" },
+        { "GunsOfTien.9x19Magazine20_UZI", "GunsOfTien.9x19Magazine25_UZI", "GunsOfTien.9x19Magazine32_UZI" }, 6) },
+    { "MarzGuns.Zombie_Police_SMG_Spawner", uziAlternative(
+        { "GunsOfTien.UZI" },
+        { "GunsOfTien.9x19Magazine25_UZI", "GunsOfTien.9x19Magazine32_UZI" }, 4) },
+    { "MarzGuns.Zombie_Crime_Rifle_Spawner", uziAlternative(
+        { "GunsOfTien.UZI" }, { "GunsOfTien.9x19Magazine32_UZI" }, 4) },
+}
+for _, mag in ipairs({ "GunsOfTien.9x19Magazine40_UZI", "GunsOfTien.9x19Magazine50_UZI" }) do
+    UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", {
+        { items = { mag }, amountChance = 1 },
+        { items = { "MarzGuns.9x19_Box" }, amountChance = 2 },
+    } }
 end
 
 -- GoM's M60 kits get a group of M13 link boxes: { spawner, link boxes } (as many as the kit's belt boxes)
@@ -134,6 +172,15 @@ local function addLoot()
             addedAlternatives[#addedAlternatives + 1] = { list, alternative }
         else
             print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, the M249 will not spawn there")
+        end
+    end
+    for _, entry in ipairs(UZI_ALTERNATIVES) do
+        local list = type(map) == "table" and map[entry[1]]
+        if type(list) == "table" then
+            list[#list + 1] = entry[2]
+            addedAlternatives[#addedAlternatives + 1] = { list, entry[2] }
+        else
+            print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, the Uzis will not spawn there")
         end
     end
     for _, entry in ipairs(M60_KITS) do

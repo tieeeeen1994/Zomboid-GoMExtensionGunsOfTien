@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="LoadUziGrip_GoT.xml">
+	<m_Name>UnloadUziGrip</m_Name>
+	<m_AnimName>Bob_GunsOfTien_Uzi_Unload</m_AnimName>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>isUnloading</m_Name>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>unloadFinished</m_EventName>
+	</m_Events>
+	<m_Events>
+		<m_TimePc>0.15</m_TimePc>
+		<m_ParameterValue>unload</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_ParameterValue>ejectAmmoStart</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_TimePc>0.15</m_TimePc>
+	</m_Events>
+</animNode>

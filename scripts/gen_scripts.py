@@ -493,7 +493,9 @@ def lasers():
 # appended by Post-93. Not the MP5K (flush end cap), the MP5SD (integral can) or the TEC-9 (user). Mesh and textures:
 # scripts/build_mk9.py; icons: scripts/make_mk9_art.py; GoM's guns get the `canon` point and their ModelWeaponPart
 # lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
-SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2'
+# The main mod's Uzis take it too (user, 2026-10-23: the real Mk9 took the Uzi barrel nut's place), listed in their
+# own scripts (uzi() below).
+SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI'
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
 
@@ -1075,6 +1077,246 @@ def belt_links():
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
+# Uzi, Mini Uzi and Micro Uzi (docs/design.md 4f, user 2026-10-23; meshes and points: scripts/build_uzi.py, icons:
+# scripts/make_uzi_art.py, registries: shared/GunsOfTien/Uzi.lua). The Uzi is held as a rifle (GoM's MP5), the Mini
+# and Micro like a pistol and holstered (GoM's MP5K / MAC-10: models upside down, Handgun swing, handgun reload
+# mechanics; the Micro is HolsterSmall, as GoM's Detective .38, so it also fits vanilla's ankle holster: user, 2026-10-23,
+# and every slot that takes Holster takes HolsterSmall too). One set of IMI magazines for all three. Stocks: the Uzi's two in-place nodes drawn at the origin (GoM's
+# MAC-10 lines name a `stock` point its model lacks), the Mini's / Micro's one node at `stock` / `stock_folded`.
+UZI_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uzi_points.json')
+UZIS = ['UZI', 'MINIUZI', 'MICROUZI']
+UZI_MAGS = [(20, 0.08), (25, 0.12), (32, 0.15), (40, 0.2), (50, 0.22)]   # GoM's MP5 20 / 30 / 60: 0.08 / 0.18 / 0.22
+UZI_NAMES = {'UZI': 'Uzi Submachine Gun', 'MINIUZI': 'Mini Uzi Submachine Gun',
+             'MICROUZI': 'Micro Uzi Submachine Gun'}
+# Real: 260 / 197 / 117 mm barrels, 3.5 / 2.7 / 1.95 kg, 600 / 950 / 1200 rpm. Damage and handling between GoM's MP5
+# (8.9", 1.0-1.6) and MP5K (4.5", 0.6-1.0) by barrel; weights by GoM's SMG ratio (~0.78 of the kilograms); sound from
+# sound_model.py's model (9mm from a 10.2" / 7.8" / 4.6" barrel; the main mod's SoundTable is for GoM's guns only).
+UZI_STATS = {
+    'UZI': dict(min=1.0, max=1.6, crit=20.0, hit=50, aim=40, recoil=15, range=30.0, stop=2.0, weight=2.7,
+                radius=89, volume=25, sight=(4, 12.0), angle=(0.965, 0.01), knock=4.0, mag=32),
+    'MINIUZI': dict(min=0.9, max=1.4, crit=20.0, hit=48, aim=30, recoil=13, range=27.0, stop=3.0, weight=2.1,
+                    radius=97, volume=28, sight=(3, 11.0), angle=(0.96, 0.03), knock=3.0, mag=20),
+    'MICROUZI': dict(min=0.6, max=1.0, crit=25.0, hit=45, aim=25, recoil=12, range=25.0, stop=4.0, weight=1.5,
+                     radius=113, volume=32, sight=(2, 10.0), angle=(0.95, 0.05), knock=2.0, mag=20),
+}
+UZI_PARTS = [  # hidden integrated stocks: (item, part type, weight, English name); GoM's MAC-10 stock weighs 0.2
+    ('UZI_Integrated_Stock_Folded', 'StockIntegrated', None, 'Uzi Integrated Stock (Folded)'),
+    ('UZI_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Uzi Integrated Stock (Deployed)'),
+    ('MINIUZI_Integrated_Stock_Folded', 'StockIntegrated', None, 'Mini Uzi Integrated Stock (Folded)'),
+    ('MINIUZI_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Mini Uzi Integrated Stock (Deployed)'),
+    ('MICROUZI_Integrated_Stock_Folded', 'StockIntegrated', None, 'Micro Uzi Integrated Stock (Folded)'),
+    ('MICROUZI_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Micro Uzi Integrated Stock (Deployed)'),
+]
+
+
+def uzi_mag(rounds):
+    return f'9x19Magazine{rounds}_UZI'
+
+
+def uzi_item(gun):
+    s = UZI_STATS[gun]
+    rifle = gun == 'UZI'
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.{gun}_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,"]
+    if rifle:
+        parts += [f"{w}{MODULE}.UZI_Integrated_Stock_Folded {MODULE}.UZI_STOCK_FOLDED stock stock,",
+                  f"{w}{MODULE}.UZI_Integrated_Stock_Deployed {MODULE}.UZI_STOCK_DEPLOYED stock stock,"]
+    else:
+        parts += [f"{w}{MODULE}.{gun}_Integrated_Stock_Folded {MODULE}.{gun}_STOCK stock_folded stock_folded,",
+                  f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
+    parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
+    parts += [f"{w}{MODULE}.{p} {MODULE}.{p} canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster)
+    snd = 'M16' if rifle else 'M9'
+    hold = (f"""        AttachmentType               = Rifle,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        IdleAnim                     = Idle_Weapon2,
+        SwingAnim                    = Rifle,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+""" if rifle else f"""        AttachmentType               = {'HolsterSmall' if gun == 'MICROUZI' else 'Holster'},
+        WeaponReloadType             = handgun,
+        SwingAnim                    = Handgun,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+""")
+    return f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['sight'][0]},
+        MaxSightRange                = {s['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = {s['angle'][0]},
+        AimingPerkMinAngleModifier   = {s['angle'][1]},
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 30.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_9x19,
+        AmmoBox                      = MarzGuns.9x19_Box,
+        ClipSize                     = {s['mag']},
+        MagazineType                 = {MODULE}.{uzi_mag(s['mag'])},
+        MaxAmmo                      = {s['mag']},
+        Reloadtime                   = {25 if rifle else 30},
+{hold}        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_{gun},
+        RunAnim                      = Run_Weapon2,
+        WeaponSprite                 = {MODULE}.{gun},
+        AimReleaseSound              = {snd}AimRelease,
+        BreakSound                   = {snd}Break,
+        BringToBearSound             = {snd}BringToBear,
+        ClickSound                   = {snd}Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = {snd}Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = {snd}Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = {snd}UnEquip,
+        SoundGain                    = {2.0 if rifle else 1.5},
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = {s['knock']},
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+"""
+
+
+def uzi():
+    pts = json.load(open(UZI_POINTS))
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n"]
+    for gun in UZIS:
+        p = pts[gun]
+        models.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTien_{gun}|{gun}_BODY,
+        texture  = {tex}/{gun},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock', 'stock_folded'):
+            if name in p:
+                models.append(m249_attachment(name, p[name]))
+        models.append("    }\n")
+        nodes = ['BOLT'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
+        for node in nodes:
+            models.append(f"""
+    model {gun}_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_{gun}|{gun}_{node},
+        texture  = {tex}/{gun},
+        cullFace = None,
+    }}
+""")
+    for r, _ in UZI_MAGS:
+        models.append(f"""
+    model {uzi_mag(r)} {{
+        mesh     = weapons/magazines/GunsOfTien_UZI_magazines|{uzi_mag(r)},
+        texture  = {tex}/{uzi_mag(r)},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_uzi.txt', ''.join(models))
+
+    items = [f"module {MODULE} {{\n"] + [uzi_item(gun) for gun in UZIS]
+    guns = ';'.join(f'{MODULE}.{g}' for g in UZIS)
+    for r, weight in UZI_MAGS:
+        items.append(f"""
+    item {uzi_mag(r)} {{
+        AmmoType         = swmg:bullet_9x19,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{uzi_mag(r)},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {r},
+        MountOn          = {guns},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{uzi_mag(r)},
+        WorldStaticModel = {MODULE}.{uzi_mag(r)},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight, _ in UZI_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_uzi.txt', ''.join(items))
+    # GoM repairs its SMGs with Aiming=3
+    write('scripts/GunsOfTien/fixing_uzi.txt', "module Base {\n" + ''.join(f"""    fixing Fix {gun} {{
+        Require = {MODULE}.{gun},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for gun in UZIS) + "}\n")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for gun in UZIS:
+        names[f'{MODULE}.{gun}'] = UZI_NAMES[gun]
+    for r, _ in UZI_MAGS:      # GoM's names ("MP5 30Rds 9x19mm Magazine", "MAC-10 40Rds .45 ACP Extended Magazine")
+        names[f'{MODULE}.{uzi_mag(r)}'] = f"Uzi {r}Rds 9x19mm {'Extended ' if r >= 40 else ''}Magazine"
+    for part, _, _, name in UZI_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 if __name__ == '__main__':
     items()
     models()
@@ -1086,4 +1328,5 @@ if __name__ == '__main__':
     smg_suppressor()
     m249()
     belt_links()
+    uzi()
     print('written under', os.path.normpath(ROOT))

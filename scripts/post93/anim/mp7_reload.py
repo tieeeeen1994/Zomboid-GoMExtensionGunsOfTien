@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """The H&K MP7A1's unload clip: vanilla's pistol load played backwards, baked into a forward clip (Python 3).
 
-    py scripts/post93/anim/mp7_reload.py <vanilla anims_X/Bob> <out_dir>
+    py scripts/post93/anim/mp7_reload.py <vanilla anims_X/Bob> <out_dir> [clip name]
 
 Writes <out_dir>/Bob_GunsOfTien_MP7_Unload.x; ship it to Contents/mods/GoMExtensionGunsOfTienPost93/42/media/anims_X/Bob/.
+The main mod's Mini and Micro Uzi reload the same way and ship the same motion under their own clip name (Post-93 is
+optional): `... <out_dir> Bob_GunsOfTien_Uzi_Unload` into Contents/mods/GoMExtensionGunsOfTien/42/media/anims_X/Bob/.
 
 The MP7 is held like a pistol and its magazine goes up into the pistol grip, so it reloads the way vanilla's pistols
 do: the AnimSets *MP7A1_GoT.xml (animId "MP7A1", Guns.lua) play vanilla's Bob_Reload_Handgun_Load for the load and
@@ -39,15 +41,15 @@ def reversed_tracks(xa):
     return out, end
 
 
-def main(src_dir, out_dir):
+def main(src_dir, out_dir, name=NAME):
     src = next(os.path.join(src_dir, SOURCE + e) for e in (".X", ".x") if os.path.isfile(os.path.join(src_dir, SOURCE + e)))
     xa = xanim.read(src)
     tracks, end = reversed_tracks(xa)
     os.makedirs(out_dir, exist_ok=True)
-    out = os.path.join(out_dir, NAME + ".x")
-    xanim.write_clip(src, out, NAME, tracks, xa.ticks_per_second)
+    out = os.path.join(out_dir, name + ".x")
+    xanim.write_clip(src, out, name, tracks, xa.ticks_per_second)
     print("[mp7] %s: %d tracks, %d frames" % (out, len(tracks), end // 160 + 1))
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(*sys.argv[1:4])

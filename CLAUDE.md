@@ -88,6 +88,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   profile (STANAG jam x2), two Auto rates 750 / 1000 (the original gas regulator, the user's choice over the PIP's one
   rate), custom belt reload clips, no links, loot where GoM's M60 spawns, named "M249 Light Machine Gun". Design:
   docs/design.md 4d; build notes: "M249 Light Machine Gun" below.
+- **Uzi, Mini Uzi, Micro Uzi** (user, 2026-10-23; building): IMI's 9mm family, main mod (1954 / 1980 / 1986). The Uzi
+  held as a rifle, the Mini and Micro **like a pistol and holstered** (GoM's MP5K / MAC-10 way, the user's choice
+  over a rifle-held Mini), the Micro also in an ankle holster (user, 2026-10-23: AttachmentType HolsterSmall as GoM's
+  Detective .38; every vanilla slot that takes Holster takes HolsterSmall too); a Micro Uzi, not the Uzi Pistol of the user's sixth photo (that photo serves its
+  receiver); 20 / 25 / 32 plus 40 / 50 magazines shared by all three; the AWC Mk9 on its SMG mount device on all three.
+  Design: docs/design.md 4f; build notes: "Uzi family" below.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -234,6 +240,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   box and belt, seen from its left after the mirror), title "M249 LIGHT MACHINE GUN", then one slot row (the gun,
   its box, the M27 and M13 links and their boxes), then two lines at the bottom: "LMG BELTS NOW NEED LINKS" and what
   that means (M249 and GoM's M60, one link per round loaded, fired links eject; user 2026-10-22). Not yet on the Steam page.
+  preview10 (2026-10-23) is the Uzi, Mini Uzi and Micro Uzi: render_ad_guns.py `uzi` / `miniuzi` / `microuzi` (one
+  view and scale, so their real sizes show; the Uzi and Micro stock folded, the Mini deployed; standard magazines;
+  the M249's view, the gun's left after the mirror), title "UZI · MINI UZI · MICRO UZI", staggered with name and rate
+  of fire, then a slot row (the three guns, the five magazines) and one line (the Mk9 fits all three). Rebuild:
+  `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute path>/tmp/ad uzi miniuzi microuzi` (a
+  relative OUT_DIR lands under C:\ on Windows), then `py scripts/make_workshop_art.py preview10`. Not yet on the Steam page.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
@@ -253,7 +265,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`);
   `scripts/build_mk9.py` (Blender: the Mk9 and its mount device with the Post-93 kit, and GoM's MP5 / MP5A2 `canon`
   measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons); `scripts/build_m249.py`,
-  `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun").
+  `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun"); `scripts/build_uzi.py`,
+  `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family").
 
 ## Status and how to continue
 
@@ -777,6 +790,48 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   at the same time the other way round, so in single player the round vanished. The link comes from a
   `rackBullet` wrapper (Hot Brass re-wraps `removeBullet` at every OnInitGlobalModData, so not there).
   Our shared files load after Gunworks' (mod order), so the wrappers sit on top of its own.
+
+## Uzi family (2026-10-23)
+
+- Files: `scripts/build_uzi.py` (Blender, ~2 min: `GunsOfTien_UZI.fbx` UZI_BODY / UZI_BOLT / UZI_STOCK_FOLDED /
+  _DEPLOYED, `GunsOfTien_MINIUZI.fbx` and `GunsOfTien_MICROUZI.fbx` <GUN>_BODY / _BOLT / _STOCK,
+  `GunsOfTien_UZI_magazines.fbx` 9x19Magazine20/25/32/40/50_UZI, a 256 atlas per gun, 128 per magazine,
+  `scripts/uzi_points.json`), `scripts/render_uzi.py -- DIR` (Blender review renders, the Mini / Micro turned upright),
+  `scripts/make_uzi_art.py [--renders DIR]` (icons with Post-93's MP7 gun / magazine cameras, sheet
+  `docs/uzi_preview.png`), `gen_scripts.py uzi()` (items_uzi.txt, models_uzi.txt, fixing_uzi.txt, names; the Uzis are
+  in `SMG9_GUNS`, the Mk9 parts' MountOn), `shared/GunsOfTien/Uzi.lua`, `client/GunsOfTien/UziTooltips.lua`, loot in
+  `server/GunsOfTien/Loot.lua`, Hot Brass in `server/GunsOfTien/HotBrass.lua`, AnimSets
+  `AnimSets/player(-vehicle)/actions/*UziGrip_GoT.xml` and `anims_X/Bob/Bob_GunsOfTien_Uzi_Unload.x`. Rebuild: build,
+  render, art, then `gen_scripts.py` and `check_refs.py`.
+- **References** (none in the repo; kept in `tmp/ref/uzi`, gitignored): the Uzi from the Commons photo "Uzi of the
+  israeli armed forces" (Uziel Galishto, CC BY-SA 3.0; left side, stock folded, Action Arms markings), scaled to IMI's
+  470 mm folded; the user's two angled Uzi photos cannot be traced. The Mini from the user's side photo (stock
+  deployed) at the published 600 mm (its folded length then comes out at the published 360; scaling it by the
+  magazine instead gave 571). The Micro from the user's side photo (stock folded, butt hanging under the barrel) scaled
+  by its magazine, the same IMI part as in the Uzi photo (83 px = 32.9 mm there): 257 mm (published 250 to 282). The
+  user's sixth photo is an IMI Uzi Pistol (semi-auto, no stock), used only for the receiver's look. Traced with
+  `post93/trace_outline.py`; silhouette IoU against the traces 0.92 / 0.92 / 0.91 (the traced outline fills the
+  trigger-guard openings).
+- The three photos disagree by up to ~15 mm on the height under the receiver (bore to trigger-guard bottom: Uzi 67,
+  Mini 56), so each gun keeps its own photo's proportions; only the magazines are shared. Every gun's `magazine` point
+  (straight down, no rake: the Uzi grip is upright) puts the 20-round's base 22 mm under its own grip as all three
+  photos show; magazines are 118 mm from lips to base for 20, +4.8 mm a round (25 142, 32 175.6, 40 214, 50 262).
+- Mini and Micro are pistol-held: built and baked upright, turned at export (`kit.turned`, the magazine `TURN`, world
+  -0.025 0 0 as GoM's MP5K / MAC-10). Their stock is one node modelled deployed with its origin at a vertical hinge
+  pin on the receiver's right rear; `stock_folded` = the same offset with rotate 0 0 180 (a half turn about Z
+  commutes with the turn about Y, so the rotate stays in the turned model). The Micro's deployed shape is its photo's
+  folded stock mirrored about the pin (L' = 500 - L). The Uzi's stock folds down and under (not a single rotation),
+  so it is two in-place nodes drawn at the origin, GoM's MAC-10 way (its lines name a `stock` point the model lacks).
+- `canon` = the barrel nut's front face (Uzi L 64, Mini 40, Micro 38): the 9x19mm SMG mount device and the Mk9 start
+  there (the real Mk9 replaced the nut; the mount device stands in for that adapter). The Mk9's own coupler collar
+  shows as a short cylinder in front of the nut, as on the MP5.
+- Loot: the police SMG spawner gets the Uzi only, because GoM's `gunOnBackSWAT` hangs that spawner's gun on SWAT
+  zombies' backs, no place for a holstered Mini; GoM's crime spawner (user, 2026-10-23, "as long as it is the GoM
+  way": a kit in GoM's own spawner, no loot insertion of ours) the Uzi only too, for the same reason
+  (`gunOnBackCrime`, the bandits' melee-or-gun back lists).
+- Not traced: the right side (ejection port painted over the magazine well, as on the left's stamped recess), the
+  selector's A / R / S letters (painted, positions read off the photos' grip-top lever), the Uzi's deployed stock
+  (from IMI's 640 mm: struts straight back from the hinge to a butt plate at L 612-640).
 
 ## Gun tooltips (2026-10-18)
 

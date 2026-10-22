@@ -1,0 +1,14 @@
+module Base {
+    fixing Fix UZI {
+        Require = GunsOfTien.UZI,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix MINIUZI {
+        Require = GunsOfTien.MINIUZI,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix MICROUZI {
+        Require = GunsOfTien.MICROUZI,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

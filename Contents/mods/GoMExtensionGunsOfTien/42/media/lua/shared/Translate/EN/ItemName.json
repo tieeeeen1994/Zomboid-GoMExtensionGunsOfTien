@@ -106,5 +106,19 @@
   "GunsOfTien.M27_Link": "M27 5.56mm Belt Link",
   "GunsOfTien.LinkBox_M27": "Box of M27 Belt Links",
   "GunsOfTien.M13_Link": "M13 7.62mm Belt Link",
-  "GunsOfTien.LinkBox_M13": "Box of M13 Belt Links"
+  "GunsOfTien.LinkBox_M13": "Box of M13 Belt Links",
+  "GunsOfTien.UZI": "Uzi Submachine Gun",
+  "GunsOfTien.MINIUZI": "Mini Uzi Submachine Gun",
+  "GunsOfTien.MICROUZI": "Micro Uzi Submachine Gun",
+  "GunsOfTien.9x19Magazine20_UZI": "Uzi 20Rds 9x19mm Magazine",
+  "GunsOfTien.9x19Magazine25_UZI": "Uzi 25Rds 9x19mm Magazine",
+  "GunsOfTien.9x19Magazine32_UZI": "Uzi 32Rds 9x19mm Magazine",
+  "GunsOfTien.9x19Magazine40_UZI": "Uzi 40Rds 9x19mm Extended Magazine",
+  "GunsOfTien.9x19Magazine50_UZI": "Uzi 50Rds 9x19mm Extended Magazine",
+  "GunsOfTien.UZI_Integrated_Stock_Folded": "Uzi Integrated Stock (Folded)",
+  "GunsOfTien.UZI_Integrated_Stock_Deployed": "Uzi Integrated Stock (Deployed)",
+  "GunsOfTien.MINIUZI_Integrated_Stock_Folded": "Mini Uzi Integrated Stock (Folded)",
+  "GunsOfTien.MINIUZI_Integrated_Stock_Deployed": "Mini Uzi Integrated Stock (Deployed)",
+  "GunsOfTien.MICROUZI_Integrated_Stock_Folded": "Micro Uzi Integrated Stock (Folded)",
+  "GunsOfTien.MICROUZI_Integrated_Stock_Deployed": "Micro Uzi Integrated Stock (Deployed)"
 }

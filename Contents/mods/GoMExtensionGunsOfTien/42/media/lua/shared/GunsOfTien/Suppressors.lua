@@ -7,7 +7,9 @@
     its own mount device first, GoM's rule for every can, and fits the 9mm SMGs whose real barrels take one: the MP5
     and MP5A2 (H&K's three-lug barrel), and Post-93's UMP9 (threaded; Post-93's Guns.lua adds it to the parts' MountOn
     and lists the parts in the UMP9's own script). Not the MP5K (a flush end cap, no lugs or threads: only the MP5K-N
-    had them), the MP5SD (integral can) or the TEC-9 (its threaded barrel would take one; the user left it out).
+    had them), the MP5SD (integral can) or the TEC-9 (its threaded barrel would take one; the user left it out). The
+    main mod's Uzi, Mini Uzi and Micro Uzi take it too (user, 2026-10-23; the real Mk9 took the place of the Uzi's
+    barrel nut): the parts' MountOn and the guns' lines are in their own scripts, the `canon` point in their models.
     Stats are GoM's for its 9mm cans, plus Aiming Time x1.1 (GoM's deployed bipod and LR4X scope): 24 oz on a 12" tube
     out at the muzzle. So the MP5SD stays the better quiet gun (user, 2026-10-22: "make it so that MP5SD is better than
     the MP5 with silencer option"): sound_model.py gives it no supersonic crack (its ported barrel slows standard

@@ -6,9 +6,9 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same)
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2, preview3, preview4, preview5, preview6, preview7, preview8, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview2 ... preview10, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -516,6 +516,50 @@ def preview9(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview10(path, W=1024):
+    """The Uzi, Mini Uzi and Micro Uzi (2026-10-23), laid out like preview8: the three at one scale (render_ad_guns.py
+    "uzi" / "miniuzi" / "microuzi", from their left, mirrored back to the game's view), so they keep their real sizes,
+    staggered, each under its name and rate of fire; then the guns and their shared magazines in a slot row, and the
+    suppressor they all take."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "UZI · MINI UZI · MICRO UZI", 36, "GUNS OF MARZ EXTENSION")
+    names = ("uzi", "miniuzi", "microuzi")
+    ims = {}
+    for name in names:
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    # one scale for all three (their real sizes), as large as fits: the widest within 330, the three stacked in 250
+    s = min(u(330) / max(im.width for im in ims.values()), u(250) / sum(im.height for im in ims.values()))
+    y = u(78)
+    big, small = font(BOLD, u(15), b"Bold"), font(BOLD, u(10), b"Bold")
+    for name, label, sub, dx in (("uzi", "UZI", "600 RPM", -u(70)),
+                                 ("miniuzi", "MINI UZI", "950 RPM  ·  FITS A HOLSTER", u(10)),
+                                 ("microuzi", "MICRO UZI", "1200 RPM  ·  FITS AN ANKLE HOLSTER", u(60))):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = (W - im.width) // 2 + dx
+        line_w = u(4) + round(big.getlength(label)) + u(8) + round(small.getlength(sub)) + len(sub) * u(1)
+        x0 = min(x0, W - u(24) - line_w)                  # the name line stays on the page
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(big.getlength(label)) + u(8), y + u(4)), sub, small,
+                                        (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(18))), (0, u(5)), u(5), 160)
+        y += u(18) + im.height + u(6)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main(g) for g in ("UZI", "MINIUZI", "MICROUZI")] +
+             [main("9x19Magazine%d_UZI" % r) for r in (20, 25, 32, 40, 50)],
+             256, 404, "ONE SET OF MAGAZINES  ·  20, 25, 32, 40, 50-ROUND")
+    page.alpha_composite(text_layer(size, (W // 2, u(466)), "AWC MK9 SUPPRESSOR FITS ALL THREE",
+                                    font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -643,6 +687,8 @@ if __name__ == "__main__":
         preview8(os.path.join(ROOT, "preview8.png"))     # the new suppressors, added the same way
     if want("preview9"):
         preview9(os.path.join(ROOT, "preview9.png"))     # the M249 and belt links, added the same way
+    if want("preview10"):
+        preview10(os.path.join(ROOT, "preview10.png"))   # the Uzis, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):
