@@ -40,6 +40,19 @@ found as loot: make them with Ammo Maker.
   as offcuts: wood to burn or make charcoal, steel to smelt. The Stevens 555's and TOZ-34's sawn-off barrels handle
   like the Double Barrel's (GoM gave only those any stats)
 
+## M249 Light Machine Gun and belt links
+
+- M249 Light Machine Gun (the 1993 PIP gun): full auto at 750 or 1000 rounds a minute (its gas regulator), fed from
+  its own 200-round box or, in an emergency, any of Guns of Marz's STANAG magazines (which jam twice as often),
+  integrated bipod; found where Guns of Marz's M60 is (army zombies, army storage, heavy army trucks), with its boxes
+- Belt links: filling the M249's 200-round box or Guns of Marz's M60 100-round box now takes one belt link per round
+  (M27 links for the M249, M13 for the M60). Unloading a round, firing it or racking it out gives its link back: fired
+  and racked links are thrown out of the gun (with Hot Brass they fly and land like casings, without it they drop at
+  your feet; Ammo Maker's brass catchers catch them). A belt box found loaded counts as linked
+- Links come in boxes (200 M27, 100 M13) in the M249 and M60 kits and in army ammunition storage, or are made at any
+  surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch (Make M27 5.56mm or
+  M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
+
 ## Ammo Maker
 
 - Recipes for every new round
