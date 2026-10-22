@@ -6,7 +6,7 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same)
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2, preview3, preview4, preview5, preview6, preview7, preview8, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -485,6 +485,31 @@ def preview8(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview9(path, W=1024):
+    """The M249 and belt links (2026-10-22), laid out like preview8: the gun with its box and belt, bipod deployed
+    (render_ad_guns.py "m249", seen from its left, mirrored back to the game's view), then the box and both kinds of
+    belt links with their boxes in a slot row."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "M249 LIGHT MACHINE GUN", 36, "GUNS OF MARZ EXTENSION")
+    im = Image.open(os.path.join(RENDERS, "ad_m249.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    im = im.crop(im.getchannel("A").getbbox())
+    s = u(470) / im.width
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    y = u(118)
+    paste_with_shadow(page, placed(size, im, ((W - im.width) // 2, y)), (0, u(6)), u(6), 160)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main("M249"), main("556x45Box200_M249"), main("M27_Link"), main("LinkBox_M27"),
+                    main("M13_Link"), main("LinkBox_M13")], 256, 360, "200-ROUND BELTS  ·  M27 AND M13 BELT LINKS")
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -610,6 +635,8 @@ if __name__ == "__main__":
         preview7(os.path.join(ROOT, "preview7.png"))     # the UMP45 and UMP9, added the same way
     if want("preview8"):
         preview8(os.path.join(ROOT, "preview8.png"))     # the new suppressors, added the same way
+    if want("preview9"):
+        preview9(os.path.join(ROOT, "preview9.png"))     # the M249 and belt links, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

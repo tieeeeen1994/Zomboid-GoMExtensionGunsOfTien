@@ -473,3 +473,25 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       over the mount, both drawn on the barrel (mount on the collar in front of the nose, can on the bore axis), quieter
       shots (×0.3) and no muzzle flash, the tooltip's "Compatible Muzzle Device: .45 Muzzle Mount" line; the UMP9
       refuses both and takes the main mod's Mk9 and its mount instead (same canon point).
+- [ ] M249 Light Machine Gun (PIP), main mod, building since 2026-10-22 (design: docs/design.md 4d): model, textures,
+      icons, sheet `docs/m249_preview.png` (traced from the public-domain USAF photo docs/m249_usaf.jpg), item / model /
+      repair scripts and names (gen_scripts.py `m249()`), shared/GunsOfTien/M249.lua (its own magazine profile: the
+      200-round box + GoM's STANAGs, the box in GoM's 5.56 family, 750 / 1000 rpm, the nine belt rounds hidden with a
+      STANAG, the M60's bipod stats, STANAG jam x2, reload handler, spawn parts, STANAG MountOn), loot (GoM's M60
+      spawners, loose boxes in army ammunition storage), Hot Brass, tooltips. Custom belt reload clips (user liked the draft,
+      2026-10-22) shipped as anims_X/Bob/Bob_GunsOfTien_M249_{Unload,Load,Rack,AimRack}.x from
+      scripts/anim/m249_reload.py; still to polish: the stock passing into the chest while the hand works, the left
+      hand 1-3 cm short on the open cover and the right-side handle, left elbow flips (AimRack worst). Then docs
+      (README, workshop.txt, mod.info, forum). To check in game: everything above,
+      the two Auto entries in the fire mode menu, the feed cover opening and closing during a reload (gwSetPart through
+      the attachments style), the box drawn on the gun and lying on its side on the floor, STANAGs slanting down to the
+      left, belt rounds vanishing from nine down and gone with a STANAG.
+- [ ] Belt links built 2026-10-22 (docs/design.md 4e): M27 / M13 links and their boxes (models, icons, open / pack /
+      make recipes), filling and unloading belt boxes takes / gives links, every shot from a belt box throws its link
+      out (Hot Brass physics and our landing sounds, at the feet without Hot Brass, into Ammo Maker's brass catcher;
+      SP direct, MP batched to the server and thrown two a tick), loot (army ammunition storage, M249 and GoM's M60 kits), tooltip lines. To
+      check in game: Load Rounds into an empty M249 box with and without links (halo, stops when links run out), the
+      links count going down one a round, links flying out the right side when firing and landing as items with
+      their clink (SP and MP, misses too), the landing sounds per surface, brass catchers, unloading rounds gives
+      links, STANAG fire gives none, GoM's M60 box the same with M13 links, Open / Pack / Make recipes, the icons and
+      floor models, link boxes in army storage and in M60 / M249 kits.

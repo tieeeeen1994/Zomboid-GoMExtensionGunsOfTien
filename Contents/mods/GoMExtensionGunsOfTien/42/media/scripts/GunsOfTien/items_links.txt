@@ -1,0 +1,40 @@
+module GunsOfTien {
+
+    item M27_Link {
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_M27_Link,
+        WorldStaticModel = GunsOfTien.M27_Link,
+        Weight           = 0.002,
+        Tags             = base:hasmetal,
+        ToolTip          = Tooltip_Item_GunsOfTien_M27_Link,
+    }
+
+    item LinkBox_M27 {
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_LinkBox_M27,
+        WorldStaticModel = GunsOfTien.LinkBox_M27,
+        Weight           = 0.45,
+        ToolTip          = Tooltip_Item_GunsOfTien_LinkBox_M27,
+    }
+
+    item M13_Link {
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_M13_Link,
+        WorldStaticModel = GunsOfTien.M13_Link,
+        Weight           = 0.003,
+        Tags             = base:hasmetal,
+        ToolTip          = Tooltip_Item_GunsOfTien_M13_Link,
+    }
+
+    item LinkBox_M13 {
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_LinkBox_M13,
+        WorldStaticModel = GunsOfTien.LinkBox_M13,
+        Weight           = 0.35,
+        ToolTip          = Tooltip_Item_GunsOfTien_LinkBox_M13,
+    }
+}

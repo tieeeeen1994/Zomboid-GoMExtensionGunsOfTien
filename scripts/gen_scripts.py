@@ -717,6 +717,364 @@ module Base {
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
+# M249 Light Machine Gun (docs/design.md 4d, scripts/build_m249.py, shared/GunsOfTien/M249.lua): the PIP gun, fed from
+# its own 200-round box or GoM's STANAG magazines, belt rounds as GoM's M60 shows its own (GoM's Bullet_1..9 parts,
+# our round models), the feed cover as a part (closed, or open while reloading), GoM's M60 stats pattern.
+M249_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'm249_points.json')
+M249_BOX = '556x45Box200_M249'
+M249_STANAGS = ['556x45Magazine%s_STANAG' % n for n in (20, 25, 30, 50, 60, 75, 100, 150)]
+M249_PARTS = [  # hidden integrated parts: (item, part type, weight, English name)
+    ('M249_Feed_Cover_Closed', 'FeedCover', None, 'M249 Feed Cover (Closed)'),
+    ('M249_Feed_Cover_Open', 'FeedCover', None, 'M249 Feed Cover (Open)'),
+    ('M249_Integrated_Bipod_Folded', 'BipodIntegrated', None, 'M249 Integrated Bipod (Folded)'),
+    ('M249_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.7, 'M249 Integrated Bipod (Deployed)'),
+]
+
+
+def m249_attachment(name, point):
+    o, r = point['offset'], point['rotate']
+    return (f"        attachment {name} {{ offset = {o[0]:.4f} {o[1]:.4f} {o[2]:.4f}, "
+            f"rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}\n")
+
+
+def m249():
+    pts = json.load(open(M249_POINTS))
+    tex = 'weapons/GunsOfTien'
+    out = [f"module {MODULE} {{\n", f"""
+    model M249 {{
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_BODY,
+        texture  = {tex}/M249,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod'):
+        out.append(m249_attachment(name, pts[name]))
+    out.append("    }\n")
+    for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED'):
+        out.append(f"""
+    model {node} {{
+        mesh     = weapons/firearms/GunsOfTien_M249|{node},
+        texture  = {tex}/M249,
+        cullFace = None,
+    }}
+""")
+    # the box lies on its side on the floor (floor_point), like the offcuts; the belt rounds share its texture
+    b = pts['_bounds'][M249_BOX]
+    out.append(f"""
+    model {M249_BOX} {{
+        mesh     = weapons/magazines/GunsOfTien_M249_box|{M249_BOX},
+        texture  = {tex}/{M249_BOX},
+        cullFace = None,
+        attachment world {{ offset = {floor_point((b['min'], b['max']))}, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    for i in range(1, 10):
+        out.append(f"""
+    model 556x45_M249_{i} {{
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_{i},
+        texture  = {tex}/{M249_BOX},
+        cullFace = None,
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTien/models_m249.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}{MODULE}.M249_Feed_Cover_Closed {MODULE}.M249_COVER cover cover,",
+             f"{w}{MODULE}.M249_Feed_Cover_Open {MODULE}.M249_COVER cover_open cover_open,",
+             f"{w}{MODULE}.M249_Integrated_Bipod_Folded {MODULE}.M249_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+             f"{w}{MODULE}.M249_Integrated_Bipod_Deployed {MODULE}.M249_BIPOD_DEPLOYED integrated_bipod "
+             f"integrated_bipod,",
+             f"{w}{MODULE}.{M249_BOX} {MODULE}.{M249_BOX} box box,"]
+    parts += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in M249_STANAGS]
+    parts += [f"{w}MarzGuns.Bullet_{i} {MODULE}.556x45_M249_{i} belt belt," for i in range(1, 10)]
+    items = [f"module {MODULE} {{\n", f"""
+    item M249 {{
+        MinDamage                    = 1.0,
+        MaxDamage                    = 1.8,
+        CriticalChance               = 25.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 35,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 60,
+        RecoilDelay                  = 15,
+        MaxRange                     = 55.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 10,
+        MaxSightRange                = 18.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 0.9,
+        ConditionLowerChanceOneIn    = 210,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 1.8,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 5.3,
+        MetalValue                   = 45.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_556x45,
+        AmmoBox                      = MarzGuns.556x45_Box,
+        MagazineType                 = {MODULE}.{M249_BOX},
+        MaxAmmo                      = 200,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_M249,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.M249,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M16Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.5,
+        SoundRadius                  = 180,
+        SoundVolume                  = 51,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+
+    item {M249_BOX} {{
+        AmmoType         = swmg:bullet_556x45,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{M249_BOX},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 200,
+        MountOn          = {MODULE}.M249,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = 0.8,
+        WeightModifier   = 0.8,
+        StaticModel      = {MODULE}.{M249_BOX},
+        WorldStaticModel = {MODULE}.{M249_BOX},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+"""]
+    for part, ptype, weight, _ in M249_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_m249.txt', ''.join(items))
+    # GoM repairs both its machine guns with Aiming=6 (its M16A2: 3)
+    write('scripts/GunsOfTien/fixing_m249.txt', f"""module Base {{
+    fixing Fix M249 {{
+        Require = {MODULE}.M249,
+        Fixer   = MarzGuns.RepairPack; Aiming=6,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.M249'] = 'M249 Light Machine Gun'
+    names[f'{MODULE}.{M249_BOX}'] = 'M249 200Rds 5.56x45mm Box'
+    for part, _, _, name in M249_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path))
+    tips['Tooltip_weapon_FeedCover'] = 'Feed Cover'          # the gun tooltip's row for the fitted cover part
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
+
+
+# Belt links (docs/design.md 4e, scripts/build_links.py, shared/GunsOfTien/BeltLinks.lua): the M249's M27 and GoM's
+# M60's M13 disintegrating links, consumed when a belt box is filled and given back when it is fired or emptied.
+# (item, box, per box, link weight, links made from one small metal sheet, English names)
+LINKS = [
+    ('M27_Link', 'LinkBox_M27', 200, 0.002, 50, 'M27 5.56mm Belt Link', 'Box of M27 Belt Links'),
+    ('M13_Link', 'LinkBox_M13', 100, 0.003, 40, 'M13 7.62mm Belt Link', 'Box of M13 Belt Links'),
+]
+LINKS_BOUNDS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'links_bounds.json')
+
+
+def belt_links():
+    bounds = json.load(open(LINKS_BOUNDS))
+    models, items = [f"module {MODULE} {{\n"], [f"module {MODULE} {{\n"]
+    recipes = ["/* Belt links: open / pack a box of them, and stamp them from a small sheet of metal (vanilla's metalworking\n"
+               "   tools; shared/GunsOfTien/BeltLinks.lua puts them to use). */\n\nmodule Base {\n"]
+    for link, box, per, weight, made, link_name, box_name in LINKS:
+        for node in (link, box):
+            b = bounds[node]
+            models.append(f"""
+    model {node} {{
+        mesh     = weapons/parts/GunsOfTien_Links|{node},
+        texture  = weapons/GunsOfTien/{node},
+        attachment world {{ offset = {floor_point((b['min'], b['max']))}, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+        items.append(f"""
+    item {link} {{
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_{link},
+        WorldStaticModel = {MODULE}.{link},
+        Weight           = {weight},
+        Tags             = base:hasmetal,
+        ToolTip          = Tooltip_Item_GunsOfTien_{link},
+    }}
+
+    item {box} {{
+        DisplayCategory  = AmmoParts,
+        ItemType         = base:normal,
+        Icon             = GunsOfTien_{box},
+        WorldStaticModel = {MODULE}.{box},
+        Weight           = {round(per * weight + 0.05, 3)},
+        ToolTip          = Tooltip_Item_GunsOfTien_{box},
+    }}
+""")
+        recipes.append(f"""
+    craftRecipe GunsOfTien_Open{box} {{
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {{
+            item 1 [{MODULE}.{box}] flags[Prop2;AllowFavorite;InheritFavorite],
+        }}
+        outputs {{
+            item {per} {MODULE}.{link},
+        }}
+    }}
+
+    craftRecipe GunsOfTien_Pack{box} {{
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {{
+            item {per} [{MODULE}.{link}] flags[AllowFavorite;InheritFavorite],
+        }}
+        outputs {{
+            item 1 {MODULE}.{box},
+        }}
+    }}
+
+    craftRecipe GunsOfTien_Make{link}s {{
+        timedAction   = MakingHammer_Surface,
+        time          = 300,
+        Tags          = AnySurfaceCraft,
+        SkillRequired = MetalWelding:2,
+        xpAward       = MetalWelding:5,
+        category      = AmmoMakerParts,
+        NeedToBeLearn = False,
+        ToolTip       = Tooltip_Recipe_GunsOfTien_Make{link}s,
+        inputs {{
+            item 1 [Base.SmallSheetMetal],
+            item 1 tags[base:sheetmetalsnips] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:hammer] mode:keep flags[MayDegradeVeryLight],
+            item 1 tags[base:metalworkingpunch] mode:keep flags[MayDegradeLight],
+        }}
+        outputs {{
+            item {made} {MODULE}.{link},
+        }}
+    }}
+""")
+    models.append("}\n")
+    items.append("}\n")
+    recipes.append("}\n")
+    write('scripts/GunsOfTien/models_links.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_links.txt', ''.join(items))
+    write('scripts/GunsOfTien/recipes_links.txt', ''.join(recipes))
+    # landing sounds of spent links (scripts/make_link_sounds.py), the events Hot Brass plays for its "Link" family
+    # (shared/GunsOfTien/BeltLinks.lua); set up as Hot Brass's own casing sounds (volume 0.3, heard to 10 tiles)
+    sounds = ["module Base\n{\n"]
+    for surface in ('Concrete', 'Dirt', 'Grass', 'Puddles', 'Snow', 'Wood'):
+        for n in range(1, 7):
+            sounds.append(f"""    sound GunsOfTien_Link_{surface}_{n}
+    {{
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip
+        {{
+            distanceMax = 10,
+            volume = 0.3,
+            file = media/sounds/gunsoftien_link_{surface.lower()}_{n:02d}.ogg,
+        }}
+    }}
+
+""")
+    sounds.append("}\n")
+    write('scripts/GunsOfTien/sounds_links.txt', ''.join(sounds))
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    rec = json.load(open(rec_path))
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path))
+    for link, box, per, _, made, link_name, box_name in LINKS:
+        names[f'{MODULE}.{link}'] = link_name
+        names[f'{MODULE}.{box}'] = box_name
+        short = link_name.split(' ')[0]                       # "M27"
+        gun = 'M249' if short == 'M27' else 'M60'
+        rec[f'GunsOfTien_Open{box}'] = f'Open {box_name}'
+        rec[f'GunsOfTien_Pack{box}'] = f'Pack {link_name}s'
+        rec[f'GunsOfTien_Make{link}s'] = f'Make {link_name}s'
+        tips[f'Tooltip_Item_GunsOfTien_{link}'] = (
+            f"Holds one round in the {gun}'s belt. Filling its belt box takes one link per round. Thrown out of the "
+            f"gun when its round is fired.")
+        tips[f'Tooltip_Item_GunsOfTien_{box}'] = f"{per} links, one {gun} belt."
+        tips[f'Tooltip_Recipe_GunsOfTien_Make{link}s'] = f"Stamp {made} links out of a small sheet of metal."
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(rec, indent=2) + '\n')
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
+
+
 if __name__ == '__main__':
     items()
     models()
@@ -726,4 +1084,6 @@ if __name__ == '__main__':
     lasers()
     sawn_stocks()
     smg_suppressor()
+    m249()
+    belt_links()
     print('written under', os.path.normpath(ROOT))

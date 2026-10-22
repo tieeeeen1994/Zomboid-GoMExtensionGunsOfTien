@@ -1,0 +1,95 @@
+module GunsOfTien {
+
+    model M249 {
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_BODY,
+        texture  = weapons/GunsOfTien/M249,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.4595 0.0455, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0078 0.1118 0.0253, rotate = 0.0000 -45.0000 0.0000, }
+        attachment box { offset = 0.0215 0.1098 0.0123, rotate = 0.0000 0.0000 0.0000, }
+        attachment belt { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment cover { offset = 0.0000 0.1475 0.0657, rotate = 0.0000 0.0000 0.0000, }
+        attachment cover_open { offset = 0.0000 0.1475 0.0657, rotate = -70.0000 0.0000 0.0000, }
+        attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model M249_COVER {
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_COVER,
+        texture  = weapons/GunsOfTien/M249,
+        cullFace = None,
+    }
+
+    model M249_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_BIPOD_FOLDED,
+        texture  = weapons/GunsOfTien/M249,
+        cullFace = None,
+    }
+
+    model M249_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTien/M249,
+        cullFace = None,
+    }
+
+    model 556x45Box200_M249 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45Box200_M249,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+        attachment world { offset = -0.0305 0.0000 -0.0517, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 556x45_M249_1 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_1,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_2 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_2,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_3 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_3,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_4 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_4,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_5 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_5,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_6 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_6,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_7 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_7,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_8 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_8,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+
+    model 556x45_M249_9 {
+        mesh     = weapons/magazines/GunsOfTien_M249_box|556x45_M249_9,
+        texture  = weapons/GunsOfTien/556x45Box200_M249,
+        cullFace = None,
+    }
+}

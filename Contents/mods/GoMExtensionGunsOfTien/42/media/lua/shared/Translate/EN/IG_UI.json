@@ -6,5 +6,6 @@
   "IGUI_GunsOfTien_LaserEmpty": "The laser's battery is empty. Take the laser off the gun and insert a new battery.",
   "IGUI_ItemCat_Casings": "Casings",
   "IGUI_ClickToRemove": "Click to remove",
-  "IGUI_SelectAmmunition": "Select Ammunition"
+  "IGUI_SelectAmmunition": "Select Ammunition",
+  "IGUI_GunsOfTien_NeedLinks": "Needs %1"
 }

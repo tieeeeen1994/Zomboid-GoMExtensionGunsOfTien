@@ -1,0 +1,103 @@
+/* Belt links: open / pack a box of them, and stamp them from a small sheet of metal (vanilla's metalworking
+   tools; shared/GunsOfTien/BeltLinks.lua puts them to use). */
+
+module Base {
+
+    craftRecipe GunsOfTien_OpenLinkBox_M27 {
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 [GunsOfTien.LinkBox_M27] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 200 GunsOfTien.M27_Link,
+        }
+    }
+
+    craftRecipe GunsOfTien_PackLinkBox_M27 {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 200 [GunsOfTien.M27_Link] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 1 GunsOfTien.LinkBox_M27,
+        }
+    }
+
+    craftRecipe GunsOfTien_MakeM27_Links {
+        timedAction   = MakingHammer_Surface,
+        time          = 300,
+        Tags          = AnySurfaceCraft,
+        SkillRequired = MetalWelding:2,
+        xpAward       = MetalWelding:5,
+        category      = AmmoMakerParts,
+        NeedToBeLearn = False,
+        ToolTip       = Tooltip_Recipe_GunsOfTien_MakeM27_Links,
+        inputs {
+            item 1 [Base.SmallSheetMetal],
+            item 1 tags[base:sheetmetalsnips] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:hammer] mode:keep flags[MayDegradeVeryLight],
+            item 1 tags[base:metalworkingpunch] mode:keep flags[MayDegradeLight],
+        }
+        outputs {
+            item 50 GunsOfTien.M27_Link,
+        }
+    }
+
+    craftRecipe GunsOfTien_OpenLinkBox_M13 {
+        timedAction = OpenAmmoBox,
+        time        = 15,
+        category    = Packing,
+        recipeGroup = OpenBox,
+        canWalk     = true,
+        Tags        = InHandCraft;CanBeDoneInDark,
+        inputs {
+            item 1 [GunsOfTien.LinkBox_M13] flags[Prop2;AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 100 GunsOfTien.M13_Link,
+        }
+    }
+
+    craftRecipe GunsOfTien_PackLinkBox_M13 {
+        timedAction = PlaceAmmoInBox,
+        time        = 15,
+        category    = Packing,
+        canWalk     = true,
+        Tags        = InHandCraft,
+        inputs {
+            item 100 [GunsOfTien.M13_Link] flags[AllowFavorite;InheritFavorite],
+        }
+        outputs {
+            item 1 GunsOfTien.LinkBox_M13,
+        }
+    }
+
+    craftRecipe GunsOfTien_MakeM13_Links {
+        timedAction   = MakingHammer_Surface,
+        time          = 300,
+        Tags          = AnySurfaceCraft,
+        SkillRequired = MetalWelding:2,
+        xpAward       = MetalWelding:5,
+        category      = AmmoMakerParts,
+        NeedToBeLearn = False,
+        ToolTip       = Tooltip_Recipe_GunsOfTien_MakeM13_Links,
+        inputs {
+            item 1 [Base.SmallSheetMetal],
+            item 1 tags[base:sheetmetalsnips] mode:keep flags[MayDegradeLight],
+            item 1 tags[base:hammer] mode:keep flags[MayDegradeVeryLight],
+            item 1 tags[base:metalworkingpunch] mode:keep flags[MayDegradeLight],
+        }
+        outputs {
+            item 40 GunsOfTien.M13_Link,
+        }
+    }
+}

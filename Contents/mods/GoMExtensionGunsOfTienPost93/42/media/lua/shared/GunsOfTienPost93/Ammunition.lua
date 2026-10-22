@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- 4.6x30mm and 5.7x28mm in Gunworks' ammo families, and their stat profiles; the UMPs'
-    magazines in Guns of Marz's .45 ACP and 9x19mm families.
+    magazines in Guns of Marz's .45 ACP and 9x19mm families, the SCAR-H's in its 7.62x51mm family.
 
     Two new families. As with Guns of Marz's magazine-fed guns, the magazines are in the family, not the guns.
     The standard rounds (DM11, SS190) are the guns' own script rounds, which Gunworks never gives an ammo profile
@@ -37,6 +37,12 @@ Ammo.RegisterMultipleItemsWithFamilies({
     },
     ["9x19mm"] = {
         M .. "9x19Magazine30_UMP",
+    },
+    -- the SCAR-H's magazines, so they take GoM's .308 and the main mod's .308 Soft Point as well as its 7.62x51
+    ["7.62x51mm"] = {
+        M .. "762x51Magazine20_SCARH",
+        M .. "762x51Magazine10_SCARH",
+        M .. "762x51Magazine50_SCARH",
     },
 })
 

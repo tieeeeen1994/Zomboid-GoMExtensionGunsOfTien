@@ -24,6 +24,8 @@ The suppressors added 2026-10-22 (preview8), one view and scale: the main mod's 
 (`gom_smg`: GoM's own body, bolt, stock and 30-round magazine at its model script's magazine point, the Mk9 and its
 mount device at the `canon` point build_mk9.py measured, scripts/smg9_points.json; the game gets it from
 Suppressors.lua at run time) and on the UMP9 (`main_parts`), and GoM's P45 on the UMP45.
+
+The main mod's M249 (preview9, `m249`): bipod deployed, feed cover closed, its 200-round box and belt, from its left.
 """
 
 import json
@@ -63,7 +65,14 @@ SMG9_PARTS = os.path.join(MAIN_MEDIA, "models_X/weapons/parts/GunsOfTien_SMG9_pa
 SMG9_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTien")
 MK9_SCALE, MK9_SIZE = 0.82, (2400, 1000)
 
+M249_SCALE, M249_SIZE = 0.86, (2400, 1300)
+# the M249 from its left (box and belt side) after make_workshop_art.py mirrors it back: game space as world space is
+# the game's mirror image, so the camera looks from the world's +X
+M249_VIEW = (-0.92, 0.3, -0.2)
+
 GUNS = {
+    # the main mod's M249 (preview9): bipod deployed, feed cover closed, the 200-round box and its belt
+    "m249": {"m249": True, "view": M249_VIEW, "scale": M249_SCALE, "size": M249_SIZE},
     # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
     # its own mount device and SOCOM762-RC suppressor; stocks deployed
     "scarl": {
@@ -258,7 +267,26 @@ def gom_smg(gun):
     return objs
 
 
+def m249():
+    """The M249 as its item script draws it with a full box: body, the closed feed cover at its point, the deployed
+    bipod and the nine belt rounds (modelled in the gun's space), the box at its point (scripts/m249_points.json)."""
+    pts = json.load(open(os.path.join(HERE, "m249_points.json")))
+    gun = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms/GunsOfTien_M249.fbx")
+    box = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_M249_box.fbx")
+    tex, box_tex = os.path.join(SMG9_TEX, "M249.png"), os.path.join(SMG9_TEX, "556x45Box200_M249.png")
+    objs = []
+    for fbx, t, node, point in [(gun, tex, "M249_BODY", None), (gun, tex, "M249_COVER", "cover"),
+                                (gun, tex, "M249_BIPOD_DEPLOYED", None), (box, box_tex, "556x45Box200_M249", "box")] + \
+            [(box, box_tex, "556x45_M249_%d" % i, None) for i in range(1, 10)]:
+        o = load(fbx, t, node)
+        place(o, pts[point] if point else None, False)
+        objs.append(o)
+    return objs
+
+
 def build(spec):
+    if "m249" in spec:
+        return m249()
     if "gom_smg" in spec:
         return gom_smg(spec["gom_smg"])
     if "files" in spec:

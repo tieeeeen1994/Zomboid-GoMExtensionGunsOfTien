@@ -34,3 +34,20 @@ SpentCasingPhysics.RegisterPressureProfiles({
     ["GunsOfTien_45P"] = 1.3,
     ["GunsOfTien_12GaugeBirdshot"] = 0.9,
 })
+
+-- The M249 throws its cases (no links: user, 2026-10-22) down and to the right through the port at the bottom of the
+-- receiver's right side: Post-93's P90 fall (a short drop from under the gun) turned out to the right, at GoM's M60
+-- position along the gun.
+SpentCasingPhysics.RegisterWeaponParams({
+    ["GunsOfTien.M249"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.08,
+        heightOffset  = 0.44,
+        shellForce    = 0.30,
+        sideSpread    = 30,
+        heightSpread  = { 0, 10 },
+        ejectAngle    = 80,
+        verticalForce = -0.05,
+        spinForce     = { 46, 64 },
+    },
+})

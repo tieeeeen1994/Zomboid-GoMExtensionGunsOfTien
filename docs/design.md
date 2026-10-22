@@ -149,6 +149,61 @@ real barrels take one (user: "only if supported", "no pistol"):
 - Loot as GoM's parts: one more choice in its suppressor and muzzle device spawners, and the mount among GoM's mounts
   that replace vanilla's Improved Choke Tube. Found guns never come with one.
 
+## 4d. M249 Light Machine Gun (2026-10-22, designed, building)
+
+The main mod's first gun (adopted 1982, issued from the mid-1980s, so it belongs in July 1993; Fort Campbell and Fort
+Knox are in Kentucky). The **PIP** version (user: "M249E2", the informal name of a PIP gun): M240-style polymer
+stock with buffer, heat shield over the barrel, folding carrying handle, PIP handguard. The January 1994 field
+manual still lists guns without the kit, so both looks were in service; the PIP's public-domain USAF side photo
+(white background, left side, muzzle right) is the modelling reference. No civilian had one in 1993 (no semi-auto
+until FN's M249S in 2015): military loot only.
+
+| | `GunsOfTien.M249` "M249 Light Machine Gun" |
+|---|---|
+| Real | 5.56x45 (M855), 465 mm barrel, 1038 mm, 7.4 kg empty (PIP), gas operated, open bolt, full auto only |
+| Feed | Its own 200-round box, `GunsOfTien.556x45Box200_M249` "M249 200Rds 5.56x45mm Box" (olive drab plastic, clipped under the receiver, the belt rising into the feed tray on the left; stencil "200 CARTRIDGES / 5.56 MM / 4 M855 - 1 M856 / M27 / FOR MG M249"), **plus every GoM STANAG** (20 to 150) in the M249's own magazine profile (user, 2026-10-22). A STANAG sits in the left-side well, tilted about 45 degrees down. |
+| Belt | Nine visible belt rounds from the box to the feed tray, shortening one a shot under nine rounds (GoM's M60 way), shown only while the box is fitted |
+| STANAG feed | Jam chance x2 while a STANAG is fitted (user, 2026-10-22: the manual's "will increase the chance of stoppages") |
+| Family | `5.56x45mm` (the box joins it): GoM's 5.56 and its AP / HP / [+P] / Subsonic, .223, `Base.556Bullets` |
+| Fire | Auto only, two Auto rates as two fire modes, **750 and 1000 rpm** (user, 2026-10-22: the original gun's gas regulator, normal / adverse, as GoM's BAR has two), spread 0.2 / 3.5 (M60 0.35 / 5.0) |
+| Stats | damage 1.0-1.8 (GoM's M16A2: same round), HitChance 35 (M60 20, M16A2 50), Aimingtime 60, crit 25, range 55, jam 0.9, condition 1 in 210, ConditionMax 10 (M60) |
+| Bipod | Integrated (`M249_Integrated_Bipod_Folded / _Deployed`), GoM's M60 bipod stats |
+| Weight | 5.3 (GoM's M60 ratio, 0.71 of real), box 0.8 |
+| Sound | 180 / 51 (realistic model, 18.3" barrel), M16 events |
+| Reload | Custom clips (user, 2026-10-22): unload = open the feed cover, lift the belt, unhook the box; load = hang the box, lay the belt in the tray, close the cover; rack = the right-side cocking handle. STANAGs use the same clips. Gunworks `attachments` style, the box and magazine leaving with the hand. |
+| Casings | Down and to the right (Hot Brass). No links (user, 2026-10-22). |
+| Repair | RepairPack, Aiming 6 (GoM's LMGs) |
+
+No rails, optics, lights, lasers, muzzle devices or bayonet: a 1993 M249 had none. Chambered round kept (no
+`HaveChamber = false`, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
+Loot (user, 2026-10-22: where GoM's M60 spawns): one alternative each in GoM's `Zombie_Army_Rifle_Spawner` (army
+zombies' backs) and `World_Army_Heavy_Spawner` (army storage, heavy truck beds), packed as the M60's (gun, up to 2
+boxes, up to 4 5.56 ammo boxes), and loose 200-round boxes in army ammunition storage as GoM's M60 box. Found guns
+carry the box at GoM's M60 chance (50 %).
+
+## 4e. Belt links (2026-10-22, designed, building)
+
+The belt-fed guns' boxes are belts: each round held by a disintegrating link. User's choices (2026-10-22): links are
+a supply of their own, consumed when a belt box is filled and given back when it is emptied, none lost, found and
+crafted, for the M249 and GoM's M60 alike; a fired round's link is thrown out of the gun as real guns do and is
+picked up off the ground (first decided "straight into the inventory", changed the same day to "follow the
+realistic rules, treat links like hot brass").
+- Items: `GunsOfTien.M27_Link` "M27 5.56mm Belt Link" (the M249's) and `GunsOfTien.M13_Link` "M13 7.62mm Belt Link"
+  (GoM's M60), weight 0.002 each, and a box of each holding one belt ("Box of M27 Belt Links", 200; "Box of M13 Belt
+  Links", 100) with Open / Pack recipes.
+- Filling a belt box (the M249's 200-round box, GoM's M60 100-round box) with Gunworks' Load Rounds takes one link
+  from the main inventory with each round, any round of the family (belts mix loads freely, as the real 4 ball : 1
+  tracer). Without links the action does not start (a "Needs M27 belt links" halo); running out stops it. STANAG
+  magazines never need links. Unloading rounds from a belt box gives each round's link back.
+- Firing from a fitted belt box throws each fired round's empty link out of the gun's right side: with Hot Brass it
+  flies and lands as a real item (never despawned) with its own landing sound per surface (synthesised: a short dry
+  steel tick on hard floors, a muffled tap on dirt and grass, a plip in water); without Hot Brass it drops at the
+  shooter's feet; Ammo Maker's brass catchers catch links as they catch casings. A box fitted to a found gun counts
+  as linked.
+- Getting links: boxes of links in army ammunition storage (beside the 200-round boxes) and in the M249 / M60 kits;
+  crafted at any surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch
+  (Metalworking 2, 50 links a sheet; vanilla's metalworking conventions); recovered by firing or unloading.
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

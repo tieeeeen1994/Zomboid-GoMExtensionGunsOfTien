@@ -60,5 +60,12 @@
   "Tooltip_weapon_LaserBeam": "Laser Beam",
   "Tooltip_Recipe_GunsOfTien_SawOffShotgunStock": "Saws the stock off behind the grip.",
   "Tooltip_GunsOfTien_StockOffcut": "As good as scrap wood.",
-  "Tooltip_GunsOfTien_BarrelOffcuts": "As good as a steel bar."
+  "Tooltip_GunsOfTien_BarrelOffcuts": "As good as a steel bar.",
+  "Tooltip_weapon_FeedCover": "Feed Cover",
+  "Tooltip_Item_GunsOfTien_M27_Link": "Holds one round in the M249's belt. Filling its belt box takes one link per round. Thrown out of the gun when its round is fired.",
+  "Tooltip_Item_GunsOfTien_LinkBox_M27": "200 links, one M249 belt.",
+  "Tooltip_Recipe_GunsOfTien_MakeM27_Links": "Stamp 50 links out of a small sheet of metal.",
+  "Tooltip_Item_GunsOfTien_M13_Link": "Holds one round in the M60's belt. Filling its belt box takes one link per round. Thrown out of the gun when its round is fired.",
+  "Tooltip_Item_GunsOfTien_LinkBox_M13": "100 links, one M60 belt.",
+  "Tooltip_Recipe_GunsOfTien_MakeM13_Links": "Stamp 40 links out of a small sheet of metal."
 }

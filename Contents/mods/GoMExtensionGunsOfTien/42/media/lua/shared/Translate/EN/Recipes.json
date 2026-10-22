@@ -32,5 +32,11 @@
   "GunsOfTien_MakeSoftPointBullet": "Make Soft Point Bullet",
   "GunsOfTien_MakeBirdshot": "Pour Birdshot Pellets",
   "GunsOfTien_ProduceBirdshot": "Pour Birdshot Pellets (Furnace)",
-  "GunsOfTien_SawOffShotgunStock": "Saw Off Shotgun Stock"
+  "GunsOfTien_SawOffShotgunStock": "Saw Off Shotgun Stock",
+  "GunsOfTien_OpenLinkBox_M27": "Open Box of M27 Belt Links",
+  "GunsOfTien_PackLinkBox_M27": "Pack M27 5.56mm Belt Links",
+  "GunsOfTien_MakeM27_Links": "Make M27 5.56mm Belt Links",
+  "GunsOfTien_OpenLinkBox_M13": "Open Box of M13 Belt Links",
+  "GunsOfTien_PackLinkBox_M13": "Pack M13 7.62mm Belt Links",
+  "GunsOfTien_MakeM13_Links": "Make M13 7.62mm Belt Links"
 }

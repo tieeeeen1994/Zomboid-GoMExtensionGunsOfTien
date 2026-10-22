@@ -96,5 +96,15 @@
   "GunsOfTien.TOZ34_StockOffcut": "TOZ-34 Stock Offcut",
   "GunsOfTien.TOZ34_BarrelOffcuts": "TOZ-34 Barrel Offcuts",
   "GunsOfTien.Mk9_Suppressor": "Mk9 Suppressor (9mm SMGs)",
-  "GunsOfTien.SMG9_Muzzle_Mount_Device": "9x19mm SMG Family Muzzle Mounting Device"
+  "GunsOfTien.SMG9_Muzzle_Mount_Device": "9x19mm SMG Family Muzzle Mounting Device",
+  "GunsOfTien.M249": "M249 Light Machine Gun",
+  "GunsOfTien.556x45Box200_M249": "M249 200Rds 5.56x45mm Box",
+  "GunsOfTien.M249_Feed_Cover_Closed": "M249 Feed Cover (Closed)",
+  "GunsOfTien.M249_Feed_Cover_Open": "M249 Feed Cover (Open)",
+  "GunsOfTien.M249_Integrated_Bipod_Folded": "M249 Integrated Bipod (Folded)",
+  "GunsOfTien.M249_Integrated_Bipod_Deployed": "M249 Integrated Bipod (Deployed)",
+  "GunsOfTien.M27_Link": "M27 5.56mm Belt Link",
+  "GunsOfTien.LinkBox_M27": "Box of M27 Belt Links",
+  "GunsOfTien.M13_Link": "M13 7.62mm Belt Link",
+  "GunsOfTien.LinkBox_M13": "Box of M13 Belt Links"
 }

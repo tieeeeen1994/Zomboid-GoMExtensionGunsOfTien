@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix M249 {
+        Require = GunsOfTien.M249,
+        Fixer   = MarzGuns.RepairPack; Aiming=6,
+    }
+}

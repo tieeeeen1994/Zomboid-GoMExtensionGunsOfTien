@@ -1,0 +1,26 @@
+module GunsOfTien {
+
+    model M27_Link {
+        mesh     = weapons/parts/GunsOfTien_Links|M27_Link,
+        texture  = weapons/GunsOfTien/M27_Link,
+        attachment world { offset = -0.0039 0.0000 -0.0013, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model LinkBox_M27 {
+        mesh     = weapons/parts/GunsOfTien_Links|LinkBox_M27,
+        texture  = weapons/GunsOfTien/LinkBox_M27,
+        attachment world { offset = -0.0199 0.0000 0.0230, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model M13_Link {
+        mesh     = weapons/parts/GunsOfTien_Links|M13_Link,
+        texture  = weapons/GunsOfTien/M13_Link,
+        attachment world { offset = -0.0047 0.0000 -0.0015, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model LinkBox_M13 {
+        mesh     = weapons/parts/GunsOfTien_Links|LinkBox_M13,
+        texture  = weapons/GunsOfTien/LinkBox_M13,
+        attachment world { offset = -0.0231 0.0000 0.0262, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

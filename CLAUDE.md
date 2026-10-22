@@ -83,6 +83,11 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   cap, only the MP5K-N had lugs / threads), the MP5SD (integral) or the TEC-9 (its pre-1994 threaded barrel would
   take one; the user left it out). The can is AWC's Mk9, 12" x 2", kept after the user found it huge (no shorter SMG
   can fitting both mounts is both documented and from before July 1993). Build notes: "AWC Mk9 SMG suppressor" below.
+- **M249 Light Machine Gun** (user, 2026-10-22; building): the main mod's first gun (adopted 1982, so it is 1993
+  material). The PIP gun ("M249E2", the user's word for it), its own 200-round box plus every GoM STANAG in one
+  profile (STANAG jam x2), two Auto rates 750 / 1000 (the original gas regulator, the user's choice over the PIP's one
+  rate), custom belt reload clips, no links, loot where GoM's M60 spawns, named "M249 Light Machine Gun". Design:
+  docs/design.md 4d; build notes: "M249 Light Machine Gun" below.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -225,6 +230,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   key `main_parts`), `ump45_p45`), one view and scale, staggered, each under its name and its can, then a slot row
   (Mk9, our mount, GoM's P45 and .45 mount); the can is named "P45" alone and the two lines under the row were
   removed (user, 2026-10-22). Added on the Steam page by hand.
+  preview9 (2026-10-22) is the M249 and belt links: render_ad_guns.py `m249` (body, closed cover, deployed bipod,
+  box and belt, seen from its left after the mirror), title "M249 LIGHT MACHINE GUN", then one slot row (the gun,
+  its box, the M27 and M13 links and their boxes). Not yet on the Steam page.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
@@ -243,7 +251,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   GoM's own FBX files; writes `scripts/sawn_offcuts.json`, read by gen_scripts.py), then `scripts/make_offcut_art.py`
   (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`);
   `scripts/build_mk9.py` (Blender: the Mk9 and its mount device with the Post-93 kit, and GoM's MP5 / MP5A2 `canon`
-  measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons).
+  measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons); `scripts/build_m249.py`,
+  `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun").
 
 ## Status and how to continue
 
@@ -686,6 +695,81 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   threaded barrel for a suppressor or barrel extension (one of the 1994 ban's pistol features). Shorter SMG cans
   offered and declined: AWC MK9A (10"), Gemtech MK9K (about 7-9", Gemtech founded 1993), AWC Tac-9 (no size found),
   and the KAC / H&K Navy can (7.75" x 1.375", direct thread only, so not for three-lug barrels).
+
+## M249 Light Machine Gun (2026-10-22)
+
+- Files: `scripts/build_m249.py` (Blender, ~2 min: `GunsOfTien_M249.fbx` M249_BODY / M249_COVER / M249_BIPOD_FOLDED /
+  _DEPLOYED, `GunsOfTien_M249_box.fbx` the box + belt rounds 556x45_M249_1..9, textures M249.png 256 and
+  556x45Box200_M249.png 128, `scripts/m249_points.json`), `scripts/render_m249.py -- DIR` (Blender review renders),
+  `scripts/make_m249_art.py [--fit] [--renders DIR]` (icons, `docs/m249_preview.png`; cameras in
+  `m249_icon_cameras.json`, fitted on GoM's M60 icons; the box uses the MP7 magazine's camera and light, the M60 box
+  fit laid it on its side and turned it yellow), `gen_scripts.py m249()` (items_m249.txt, models_m249.txt,
+  fixing_m249.txt, names; run from gen_scripts.py's main because that rebuilds ItemName / Tooltip.json),
+  `shared/GunsOfTien/M249.lua`, `client/GunsOfTien/M249Tooltips.lua`, the loot in `server/GunsOfTien/Loot.lua`, Hot
+  Brass in `server/GunsOfTien/HotBrass.lua`, AnimSets `AnimSets/player(-vehicle)/actions/*M249_GoT.xml`.
+- **Reference**: the USAF's public-domain "M249 Automatic Rifle" photo (Commons File:M249_Automatic_Rifle.jpg, kept
+  as docs/m249_usaf.jpg). It shows the **right** side (the cocking handle; muzzle right), not the left as the research
+  first said. Its bore slopes 13.0 degrees: the photo was turned 13 degrees clockwise (barrel top level within 1-2
+  px over 400 px), traced with trace_outline.py (threshold 225, eps 2) and scaled to FM 23-14's 1038 mm (3.817 px/mm):
+  `scripts/m249_reference_outline.json` (its photo_px refer to the turned crop, not kept). Bore H 321, origin (grip
+  meets the trigger housing) L 707 / H 251. The box size (112 x 88 x 165 mm) is read off the 1985 and 1989 photos
+  against the gun; the 1989 Panama photo (DM-ST-90-02821) shows its stencil.
+- Drawn at 0.65 (GoM's rifles; its STANAGs then fit, and GoM's M60 is 0.615 of its real length). The feed cover is one
+  node with its origin at its front hinge: points `cover` / `cover_open` (rotate -70 about X lifts the rear). STANAGs
+  hang at `magazine` (feed lips L 535 / H 290, 12 mm left of centre) with rotate 0 -45 0, slanting down to the gun's
+  left (+X) as the real well does (checked in a front render); a slanted sleeve in the body is the well. The box is
+  drawn at `box` (its top middle, 33 mm left of centre) and lies on its side on the floor (floor_point, like the
+  offcuts). The belt rounds and both bipods are modelled in the gun's space (points at the origin, GoM's M60 way);
+  round 1 sits in the tray under the cover, 9 at the box's mouth.
+- Gunworks facts used: one magazine profile per gun but any items in it, insertion checks no type; the nine belt parts
+  are GoM's own `MarzGuns.Bullet_1..9` (PartType Animated1..9) drawn with our models through the gun's
+  ModelWeaponPart lines, and `Animations.CheckStates` shows them by ammo count whatever the Clip is (M249.lua takes
+  them off with a STANAG fitted); `FireModePossibilities = Auto` with `rpm = { 750, 1000 }` should list two Auto
+  entries (GoM's BAR does it, untested with Auto alone); gwSetPart markers are read only by Gunworks' "none" style,
+  so M249.lua hands the M249's to `ReloadAnim.handleGwSetPartAnimEvent` from the attachments style's
+  `handleWeaponPartAnimEvent`, and `partState.ensure = { cover closed }` closes it after a reload; ReapplyAllModifiers
+  is not run on a magazine swap, so the STANAG jam layer is refreshed from the per-shot `Ammo.AmmoProfileSetter`
+  (only called while the gun has an AmmoList).
+- Reload clips: `scripts/anim/m249_reload.py` (TienInspectWeapon's rig, base Bob_IdleRifle, aim Bob_IdleAimRifle;
+  left-hand templates: vanilla's handgun reload over the slide turned a half turn about the barrel for a rifle's
+  top +Z, its rifle load's magazine hold), 72 / 96 / 45 / 45 frames = M249.lua's durations 2.4 / 3.2 / 1.5. The
+  AnimSets' event percentages are the script's OPEN / CLOSE / SWAP frames over the clip length: change both
+  together. No `x_extends` except the aimed rack (P90 lesson: inherited events are overridden by position). The box
+  shows on Bip01_Prop2 (Gunworks' reload magazine, kept for the M249, unlike the P90), keyed in the hand from / up to
+  the swap; a STANAG fed with the same clips sits in the hand at the box's offset.
+- Sound 180 / 51 is written in the item (sound_model.py's model: 5.56 from 18.3", +0.38 dB on the M16A2's 20"); the
+  main mod's SoundTable.lua is for GoM's guns only.
+
+## Belt links (2026-10-22)
+
+- Design: docs/design.md 4e (user's choices: none lost, found and crafted, M249 and GoM's M60, fired links thrown
+  out like Hot Brass casings). Files: `shared/GunsOfTien/BeltLinks.lua` (fill / unload wrappers, per-shot handler,
+  `BeltLinks.eject`: Ammo Maker's brass catcher, else Hot Brass's `doSpawnCasing` with the link as its
+  `optionalItem` and `ignoreDespawn` true (always a real item, outside Ammo Maker's casing clean-up), else
+  `AddWorldInventoryItem` at the feet; a "Link" family added to Hot Brass's `CasingImpactSoundParams` +
+  `RegisterItemSound`), `client/GunsOfTien/BeltLinks.lua` (MP: shots counted per gun, sent twice a second as
+  `GunsOfTien` / `beltLinks`), `server/GunsOfTien/BeltLinks.lua` (checks the gun in hand has a belt box, caps the
+  count at 1000 rpm since the last report, 40 a message, throws two a tick), `scripts/make_link_sounds.py` (Blender's
+  numpy + `aud` write Ogg Vorbis; 36 synthesised landing sounds (six a surface, noise-driven resonant modes: pure sines stacked in a burst sounded like a chime, user 2026-10-22), events in sounds_links.txt; each link 3 dB under Hot
+  Brass's casing on the same surface, user 2026-10-22). Hot Brass 42.15 flies every casing on every nearby client
+  (the server's `spawnCasingVisual` goes to all) but plays its landing sound only on the shooter's game, on the
+  shooter's emitter (`getPlayer():getEmitter():playSound`, Client.lua ~33-58; a client's character emitter also
+  sends a PlaySoundPacket, so others hear it too, at the shooter). Links use that same
+  path unchanged (user, 2026-10-22: "use the hot brass way"; a local landing-point emitter,
+  `getWorld():getFreeEmitter(x, y, z)`, was tried and removed), `scripts/build_links.py` (after the user's photos of M27 links, 2026-10-22: a wide loop round one round with
+  a stamped hole, and round the next a pair of narrow loops, one at each end of the wide loop, so the gap between them
+  is the wide loop's length (where the next link's wide loop sits); S-bends join them, small rounded tabs end the
+  narrow loops; two earlier guesses were wrong) (links and link boxes, `links_bounds.json`), icons in
+  make_m249_art.py, `gen_scripts.py belt_links()` (items_links / models_links / recipes_links, names, tooltips),
+  loot in `server/GunsOfTien/Loot.lua` (a link box group added to GoM's own M60 kits, taken out again on reload).
+- Engine facts (42.21): `OnWeaponSwingHitPoint` fires on the shooter's game for every shot (vanilla's `onShoot`),
+  but on a dedicated server only from the hit packet (`zombie/network/fields/hit/Player`, once per shot ID and only
+  for `hitCount` > 0), so a missed shot never reaches the server's event: links from firing are counted by the
+  client. Gunworks' magazine loading (`ISLoadBulletsInMagazine:animEvent` InsertBullet) and unloading
+  (`ISUnloadBulletsFromMagazine:animEvent` RemoveBullet) change the magazine where `not isClient()`; the wrappers
+  compare the count before and after there. `isLoadFinished` returning true ends the load cleanly (Gunworks checks it
+  before every round), so "no link left" is put there. `ItemContainer.getFirstType` takes a full type (compareType).
+  Our shared files load after Gunworks' (mod order), so the wrappers sit on top of its own.
 
 ## Gun tooltips (2026-10-18)
 
