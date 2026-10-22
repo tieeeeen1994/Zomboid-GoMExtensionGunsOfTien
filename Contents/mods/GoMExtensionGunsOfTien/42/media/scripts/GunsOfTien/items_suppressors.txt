@@ -1,0 +1,28 @@
+module GunsOfTien {
+
+    item Mk9_Suppressor {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_Mk9_Suppressor,
+        Weight           = 1.2,
+        WeightModifier   = 1.2,
+        MountOn          = MarzGuns.MP5;MarzGuns.MP5A2,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.Mk9_Suppressor,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item SMG9_Muzzle_Mount_Device {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_SMG9_Muzzle_Mount_Device,
+        Weight           = 0.5,
+        WeightModifier   = 0.5,
+        MountOn          = MarzGuns.MP5;MarzGuns.MP5A2,
+        PartType         = CanonMount,
+        WorldStaticModel = GunsOfTien.SMG9_Muzzle_Mount_Device,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+}

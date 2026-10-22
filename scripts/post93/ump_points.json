@@ -11,6 +11,18 @@
       -180.0
     ]
   },
+  "canon": {
+    "offset": [
+      0.0,
+      0.2675,
+      0.0279
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
   "magazine": {
     "offset": [
       0.0,
@@ -172,7 +184,8 @@
     "magazine": "the UMP9's and UMP45's magazines hang from here (their feed lips), their rake built in",
     "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the hinge: its front face on the bore axis",
     "stock_folded": "the same node turned 180 degrees about the hinge pin at x -21.5 mm (the right side)",
-    "bolt_fired": "the charging handle does not reciprocate: the same place as bolt_lock"
+    "bolt_fired": "the charging handle does not reciprocate: the same place as bolt_lock",
+    "canon": "the barrel collar's front face, 21.5 mm behind the muzzle: GoM's .45 mount device and P45 suppressor (UMP45 only)"
   },
   "_extras": {
     "handgun_hold": false,

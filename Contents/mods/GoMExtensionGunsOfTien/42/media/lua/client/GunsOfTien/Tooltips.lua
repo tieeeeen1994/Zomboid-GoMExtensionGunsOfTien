@@ -49,6 +49,27 @@ for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
         lines["MarzGuns." .. gun .. "_Barrel_Sawnoff_" .. side] = SAWN_BARRELS
     end
 end
+-- AWC's Mk9 and its mount device (shared/GunsOfTien/Suppressors.lua), worded as GoM words its 9mm and .45 ones; the
+-- guns that take them get GoM's "Compatible Muzzle Device" line (Post-93's Tooltips.lua for the UMP9)
+lines["GunsOfTien.Mk9_Suppressor"] = {
+    "Requires 9x19mm SMG Muzzle Mount",
+    "Sound Radius and Volume reduced by 70%",
+    "Damage reduced by 10%",
+    "Aiming Time increased by 10%",
+    "Removes Muzzle Flash",
+    "Can be mounted on 9x19mm SMGs",
+    "Needs Wrench to install or remove.",
+}
+lines["GunsOfTien.SMG9_Muzzle_Mount_Device"] = {
+    "No Direct Stat Changes",
+    "Enables 9x19mm SMG Muzzle Attachments",
+    "Needs Wrench to install or remove.",
+}
+for _, gun in ipairs({ "MarzGuns.MP5", "MarzGuns.MP5A2" }) do
+    if type(lines[gun]) == "table" then
+        table.insert(lines[gun], "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount")
+    end
+end
 local FITS_HOLSTER = "Fits a holster."
 local NEEDS_BARRELS = "Fits a holster if barrels are sawed off."
 

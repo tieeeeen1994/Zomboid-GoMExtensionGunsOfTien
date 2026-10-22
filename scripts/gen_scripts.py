@@ -487,6 +487,53 @@ def lasers():
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
+# The 9x19mm SMG suppressor (user, 2026-10-22): GoM's 9mm cans (M&P, Shh9 on its Pistol mount) fit its pistols only.
+# AWC's Mk9 (12.0" x 2.0", AWC's can for the Uzi, MAC and MP5) on its own mount device (Tim Bixler's three-lug adapter),
+# for the 9mm SMGs whose real barrels take a can: GoM's MP5 and MP5A2 (three-lug barrel) here, the UMP9 (threaded)
+# appended by Post-93. Not the MP5K (flush end cap), the MP5SD (integral can) or the TEC-9 (user). Mesh and textures:
+# scripts/build_mk9.py; icons: scripts/make_mk9_art.py; GoM's guns get the `canon` point and their ModelWeaponPart
+# lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
+SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2'
+SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
+              ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
+
+
+def smg_suppressor():
+    models = [f"module {MODULE} {{\n"]
+    items = [f"module {MODULE} {{\n"]
+    for part, ptype, weight, _ in SMG9_PARTS:
+        models.append(f"""
+    model {part} {{
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|{part},
+        texture  = weapons/GunsOfTien/{part},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+        items.append(f"""
+    item {part} {{
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_{part},
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        MountOn          = {SMG9_GUNS},
+        PartType         = {ptype},
+        WorldStaticModel = {MODULE}.{part},
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+    models.append("}\n")
+    items.append("}\n")
+    write('scripts/GunsOfTien/models_suppressors.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_suppressors.txt', ''.join(items))
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for part, _, _, name in SMG9_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # Sawn-off stocks (shared/GunsOfTien/SawnStock.lua, scripts/build_sawn_stocks.py): GoM's three break-action shotguns,
 # the guns whose barrels GoM lets you saw off, get a hidden integrated stock part (the wooden stock, fitted at spawn)
 # that the "Saw Off Shotgun Stock" recipe replaces with its sawn-off twin. The stockless body mesh is
@@ -678,4 +725,5 @@ if __name__ == '__main__':
     ammomaker()
     lasers()
     sawn_stocks()
+    smg_suppressor()
     print('written under', os.path.normpath(ROOT))

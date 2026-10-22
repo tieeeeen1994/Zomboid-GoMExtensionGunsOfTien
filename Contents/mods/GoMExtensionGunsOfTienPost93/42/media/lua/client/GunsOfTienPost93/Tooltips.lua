@@ -44,10 +44,12 @@ GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"] = {
 lines[M .. "UMP45"] = {
     "Uses .45 rounds.",
     "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: .45 Muzzle Mount",
 }
 lines[M .. "UMP9"] = {
     "Uses 9x19mm rounds.",
     "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
 }
 for _, mag in ipairs({ "45Magazine25_UMP", "45Magazine20_UMP", "45Magazine10_UMP" }) do
     lines[M .. mag] = { "Uses .45 rounds." }

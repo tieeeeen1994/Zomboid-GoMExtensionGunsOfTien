@@ -94,5 +94,7 @@
   "GunsOfTien.TOZ34_Stock": "TOZ-34 Stock",
   "GunsOfTien.TOZ34_Stock_Sawnoff": "TOZ-34 Stock Sawnoff",
   "GunsOfTien.TOZ34_StockOffcut": "TOZ-34 Stock Offcut",
-  "GunsOfTien.TOZ34_BarrelOffcuts": "TOZ-34 Barrel Offcuts"
+  "GunsOfTien.TOZ34_BarrelOffcuts": "TOZ-34 Barrel Offcuts",
+  "GunsOfTien.Mk9_Suppressor": "Mk9 Suppressor (9mm SMGs)",
+  "GunsOfTien.SMG9_Muzzle_Mount_Device": "9x19mm SMG Family Muzzle Mounting Device"
 }

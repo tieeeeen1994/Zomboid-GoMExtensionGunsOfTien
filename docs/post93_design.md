@@ -121,7 +121,8 @@ MP7 1.5, P90 2.0 (its SMGs ~0.78 of their kilograms), Five-seveN 0.6, UCP 0.85 (
 
 Every item spawns the way GoM's own item of the same kind does: guns through GoM's spawners (with magazines and boxes),
 high-capacity magazines also loose in GoM's tactical high-cap spawner, suppressors and mount devices in its suppressor
-and muzzle device spawners, boxes and cartons beside vanilla's boxes and cartons, Ammo Maker parts and their boxes
+and muzzle device spawners (mount devices also among GoM's replacements for vanilla's Improved Choke Tube), boxes and
+cartons beside vanilla's boxes and cartons, Ammo Maker parts and their boxes
 through Ammo Maker's own loot (every active part). Not spawning, as GoM's own: crates (packed from 4 cartons), and the
 cartons of calibres vanilla lacks (GoM's 7.62x39 / 9x39 cartons never spawn, so ours of those don't either); loose
 rounds come from boxes; and every special load (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR, and all of the main
@@ -188,8 +189,11 @@ main mod's 9mm 147gr / Hollow Point / [+P+] and .45 Hollow Point / [+P]).
 | Sound | the realistic model (`sound_model.py`), .45 quieter than 9mm | same |
 
 Both: held as rifles (two hands, back slot), **Auto / 2-round burst / Single** (user, 2026-10-22; Gunworks
-`burstCount = 2`, `FireModePossibilities = Auto/Burst/Single` as one GoM gun already has), **no suppressor and no muzzle
-device** (user, 2026-10-22, like GoM's MP5), black, one shared stock folding to the right
+`burstCount = 2`, `FireModePossibilities = Auto/Burst/Single` as one GoM gun already has), the **UMP45 takes GoM's .45
+Muzzle Mounting Device and P45 Suppressor** as GoM's MAC-10, M1911 and USP do (user, 2026-10-22, replacing a first
+"no suppressor, like GoM's MP5"; the real UMP's barrel is threaded for one), the **UMP9 none** (GoM's 9mm suppressors,
+M&P and Shh9 on its Pistol mount, fit its pistols only; it takes the main mod's AWC Mk9 on its 9x19mm SMG mount
+device instead, added the same day), no other muzzle device, black, one shared stock folding to the right
 (`UMP_Integrated_Stock_Folded / _Deployed`, GoM's G36C stock stats and spread modifier), four integral rails
 (`UMP_Integrated_Rail_Up / Down / Left / Right`: receiver top, handguard sides and bottom) for GoM's optics,
 foregrips, lights and lasers, ejection to the right, Hot Brass as GoM's MP5. Model at GoM's SMG ratio (0.72).

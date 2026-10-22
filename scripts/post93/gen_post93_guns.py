@@ -876,14 +876,21 @@ UMP_GUN_MAGS = {'UMP45': UMP_MAGS[1:], 'UMP9': UMP_MAGS[:1]}
 
 def ump_parts(gun):
     """GoM's MP5 accessories on the UMPs' integral rails (their points in ump_points.json): its optics, foregrips,
-    lasers and lights, no bipods, no muzzle device (user, 2026-10-22: no suppressor, as GoM's MP5); the shared folding
-    stock and charging handle; each gun's own magazines."""
+    lasers and lights, no bipods; at canon the UMP45 GoM's .45 mount device and P45 suppressor, as its MAC-10, the UMP9
+    the main mod's 9x19mm SMG mount device and AWC Mk9 (user, 2026-10-22; GoM's 9mm suppressors fit its pistols only);
+    the shared folding stock and charging handle; each gun's own magazines."""
     w = "        ModelWeaponPart              = "
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.UMP_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {M}.UMP_BOLT bolt_fired bolt_fired,",
              f"{w}{M}.UMP_Integrated_Stock_Folded {M}.UMP_STOCK stock_folded stock_folded,",
              f"{w}{M}.UMP_Integrated_Stock_Deployed {M}.UMP_STOCK stock stock,"]
     lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m in UMP_GUN_MAGS[gun]]
+    if gun == 'UMP45':
+        lines += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+                  f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
+    else:
+        lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device canon canon,",
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor canon canon,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]

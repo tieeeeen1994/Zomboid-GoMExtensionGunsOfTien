@@ -64,7 +64,7 @@ return {
     ["MarzGuns.TOZ34"] = { 162, 46 }, -- 12g, 28"
     ["MarzGuns.THOMPSON"] = { 64, 18 }, -- 45, 10.5"
     ["MarzGuns.MP5"] = { 93, 27 }, -- 9mm, 8.9"
-    ["MarzGuns.MP5SD"] = { 33, 9 }, -- 9mm, 5.7"
+    ["MarzGuns.MP5SD"] = { 23, 7 }, -- 9mm, 5.7"
     ["MarzGuns.MP5A2"] = { 93, 27 }, -- 9mm, 8.9"
     ["MarzGuns.MP5K"] = { 114, 33 }, -- 9mm, 4.5"
     ["MarzGuns.TEC9"] = { 110, 32 }, -- 9mm, 5"

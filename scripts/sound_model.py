@@ -23,6 +23,8 @@ def db(cal,barrel,integral=0):
     d+=3*math.log2(ref/barrel)       # +3 dB per halving of barrel vs the caliber's usual barrel
     d+=0 if sup else -5              # no supersonic crack
     if integral: d+=-17              # same as GoM's x0.3 suppressor
+    if integral and sup: d+=-5       # the MP5SD's ported barrel bleeds standard rounds below the speed of sound, so
+                                     # it has no crack either (an add-on can on a plain MP5 keeps it; user 2026-10-22)
     return d
 ref=db('556',20)
 rows=[]

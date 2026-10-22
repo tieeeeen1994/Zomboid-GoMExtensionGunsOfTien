@@ -1,0 +1,58 @@
+{
+  "MarzGuns.MP5": {
+    "offset": [
+      0.0,
+      0.2796,
+      0.041
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "MarzGuns.MP5A2": {
+    "offset": [
+      0.0,
+      0.2811,
+      0.041
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "canon": "GoM's MP5 / MP5A2: the front face of the front sight housing on the bore axis, where a three-lug can stops (shared/GunsOfTien/Suppressors.lua adds it to GoM's model scripts at run time)",
+    "units": "game units, GoM's model space: +Y muzzle, +Z top, +X the gun's left"
+  },
+  "_bounds": {
+    "Mk9_Suppressor": {
+      "min": [
+        -0.0183,
+        -0.0011,
+        -0.0183
+      ],
+      "max": [
+        0.0183,
+        0.2195,
+        0.0183
+      ],
+      "tris": 768
+    },
+    "SMG9_Muzzle_Mount_Device": {
+      "min": [
+        -0.0101,
+        -0.0007,
+        -0.0097
+      ],
+      "max": [
+        0.0101,
+        0.0216,
+        0.0102
+      ],
+      "tris": 456
+    }
+  }
+}

@@ -19,6 +19,11 @@ The SCAR-L and SCAR-H (preview6) are rifles, modelled upright (`rifle`: nothing 
 keep their real sizes against each other, the double barrel's view (mirrored back by make_workshop_art.py). A node
 entry's file may name a folder (`parts/...`: the shared stock), and the SCAR-L's magazine is GoM's STANAG (`gom_mag`).
 The UMP45 and UMP9 (preview7) the same way, from one body file with each gun's texture.
+
+The suppressors added 2026-10-22 (preview8), one view and scale: the main mod's AWC Mk9 on GoM's MP5 and MP5A2
+(`gom_smg`: GoM's own body, bolt, stock and 30-round magazine at its model script's magazine point, the Mk9 and its
+mount device at the `canon` point build_mk9.py measured, scripts/smg9_points.json; the game gets it from
+Suppressors.lua at run time) and on the UMP9 (`main_parts`), and GoM's P45 on the UMP45.
 """
 
 import json
@@ -54,6 +59,9 @@ DB_VIEW, DB_SCALE, DB_SIZE = (0.8, 0.45, -0.25), 0.78, (2400, 1000)
 
 RIFLE_VIEW, RIFLE_SCALE, RIFLE_SIZE = (0.92, 0.3, -0.16), 0.98, (2400, 1000)
 UMP_SCALE, UMP_SIZE = 0.62, (2400, 1400)
+SMG9_PARTS = os.path.join(MAIN_MEDIA, "models_X/weapons/parts/GunsOfTien_SMG9_parts.fbx")
+SMG9_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTien")
+MK9_SCALE, MK9_SIZE = 0.82, (2400, 1000)
 
 GUNS = {
     # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
@@ -81,7 +89,8 @@ GUNS = {
         "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
     },
     # the UMPs (preview7): rifles like the SCARs, the same view, a scale for their length; one body file for both, each
-    # with its own texture; stocks deployed, fitted out with GoM's MP5 accessories (no muzzle parts: they take none)
+    # with its own texture; stocks deployed, fitted out with GoM's MP5 accessories (no muzzle parts; the UMP45's P45
+    # suppressor came after preview7)
     "ump45": {
         "rifle": True, "points": "post93/ump_points.json",
         "fbx": "GunsOfTienPost93_UMP", "tex": "UMP45",
@@ -102,6 +111,27 @@ GUNS = {
         "parts": [],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip")],
         "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
+    },
+    # GoM's MP5 and MP5A2 with the main mod's mount device and AWC Mk9 (preview8), stocks deployed, nothing else fitted
+    "mp5_mk9": {"gom_smg": "MP5", "view": RIFLE_VIEW, "scale": MK9_SCALE, "size": MK9_SIZE},
+    "mp5a2_mk9": {"gom_smg": "MP5A2", "view": RIFLE_VIEW, "scale": MK9_SCALE, "size": MK9_SIZE},
+    "ump9_mk9": {
+        "rifle": True, "points": "post93/ump_points.json",
+        "fbx": "GunsOfTienPost93_UMP", "tex": "UMP9",
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+                  ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
+        "mag": ("GunsOfTienPost93_UMP_magazines", "9x19Magazine30_UMP", "magazine"),
+        "parts": [], "gom": [], "main_parts": ["SMG9_Muzzle_Mount_Device", "Mk9_Suppressor"],
+        "view": RIFLE_VIEW, "scale": MK9_SCALE, "size": MK9_SIZE,
+    },
+    "ump45_p45": {
+        "rifle": True, "points": "post93/ump_points.json",
+        "fbx": "GunsOfTienPost93_UMP", "tex": "UMP45",
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+                  ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
+        "mag": ("GunsOfTienPost93_UMP_magazines", "45Magazine25_UMP", "magazine"),
+        "parts": [], "gom": [("muzzles", "Muzzle_Mount_Device", "canon"), ("suppressors", "P45_Suppressor", "canon")],
+        "view": RIFLE_VIEW, "scale": MK9_SCALE, "size": MK9_SIZE,
     },
     # world space is the game's mirror image, so these show the gun's right side, muzzle left, until
     # make_workshop_art.py mirrors them back to the game's view (left side, muzzle right)
@@ -205,7 +235,32 @@ def place(o, point=None, upright=True):
     o.matrix_world = (UPRIGHT if upright else Matrix.Identity(4)) @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
 
 
+def gom_smg(gun):
+    """GoM's SMG as its item script draws it with the stock deployed (body, bolt and stock nodes at the origin), its
+    30-round magazine at the model script's point, the Mk9 and its mount device at the measured `canon`."""
+    fbx = os.path.join(GOM, "models_X/weapons/firearms/%s.fbx" % gun)
+    tex = os.path.join(GOM, "textures/weapons/firearms/smgs/%s.png" % gun)
+    objs = []
+    for node in (gun + "_BODY", gun + "_BOLT", gun + "_STOCK"):
+        o = load(fbx, tex, node)
+        if o:                                            # the MP5A2's fixed stock is part of its body
+            place(o, upright=False)
+            objs.append(o)
+    o = load(os.path.join(GOM, "models_X/weapons/magazines/smgs.fbx"),
+             os.path.join(GOM, "textures/weapons/magazines/smgs/9x19Magazine30_MP5.png"), "9x19Magazine30_MP5")
+    place(o, {"offset": [0.0, 0.1191, 0.0377]}, False)   # GoM's MP5 / MP5A2 model scripts
+    objs.append(o)
+    canon = json.load(open(os.path.join(HERE, "smg9_points.json")))["MarzGuns." + gun]
+    for node in ("SMG9_Muzzle_Mount_Device", "Mk9_Suppressor"):
+        o = load(SMG9_PARTS, os.path.join(SMG9_TEX, node + ".png"), node)
+        place(o, canon, False)
+        objs.append(o)
+    return objs
+
+
 def build(spec):
+    if "gom_smg" in spec:
+        return gom_smg(spec["gom_smg"])
     if "files" in spec:
         objs = []
         for fbx, node, tex in spec["files"]:
@@ -239,6 +294,10 @@ def build(spec):
         o = load(os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
                  os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, node)), node)
         place(o, points[point], up)
+        objs.append(o)
+    for node in spec.get("main_parts", []):              # the main mod's Mk9 and its mount on a Post-93 gun
+        o = load(SMG9_PARTS, os.path.join(SMG9_TEX, node + ".png"), node)
+        place(o, points["canon"], up)
         objs.append(o)
     return objs
 

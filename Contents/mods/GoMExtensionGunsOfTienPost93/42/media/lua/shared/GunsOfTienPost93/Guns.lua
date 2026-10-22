@@ -21,7 +21,9 @@
     The UMP45 and UMP9 (user, 2026-10-22) are registered as GoM's MP5 is: each with its own magazines (in GoM's .45 ACP
     and 9x19mm families, Ammunition.lua), select fire with H&K's two-round burst, GoM's MP5 reload clips, the shared
     side-folding stock with GoM's G36C stock stats, four integral rails as parents of GoM's MP5 accessories (optics,
-    foregrips, lights, lasers). No suppressor and no animated charging handle (it does not reciprocate, as the MP5's).
+    foregrips, lights, lasers). The UMP45 takes GoM's .45 mount device and P45 suppressor, as its MAC-10 does, the
+    UMP9 the main mod's 9x19mm SMG mount device and AWC Mk9 (GoM's 9mm cans fit its pistols only). No animated
+    charging handle (it does not reciprocate, as the MP5's).
 
     The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
     and M92FS: magazine profile, the animated slide, permanent magazines, spawn parts, GoM's pistol parts allowed on
@@ -568,9 +570,17 @@ local function appendAll()
     for _, part in ipairs(LIGHTS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
     for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
     for _, part in ipairs(FOREGRIPS) do appendMountOn(part, { MP7A2 }) end
-    -- the UMPs: GoM's MP5 accessories (optics, foregrips, lights, lasers)
+    -- the UMPs: GoM's MP5 accessories (optics, foregrips, lights, lasers); the UMP45 also its MAC-10's .45 mount
+    -- device and P45 suppressor, the UMP9 the main mod's 9x19mm SMG mount device and Mk9 (GoM's 9mm cans fit its
+    -- pistols only)
     for _, list in ipairs({ OPTICS, LIGHTS, LASERS, FOREGRIPS }) do
         for _, part in ipairs(list) do appendMountOn(part, UMPS) end
+    end
+    for _, part in ipairs({ "MarzGuns.45_Muzzle_Mount_Device", "MarzGuns.P45_Suppressor" }) do
+        appendMountOn(part, { UMP45 })
+    end
+    for _, part in ipairs({ "GunsOfTien.SMG9_Muzzle_Mount_Device", "GunsOfTien.Mk9_Suppressor" }) do
+        appendMountOn(part, { UMP9 })
     end
     for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end
     -- the SCARs: every GoM optic, foregrip, bipod, light and laser; the SCAR-L also GoM's STANAG magazines and its AR

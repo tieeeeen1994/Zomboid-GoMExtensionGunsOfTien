@@ -26,7 +26,10 @@
       Each added alternative is taken out again before the next world adds it (Lua is not always reloaded).
     - Suppressors and mount devices join the item lists of GoM's MarzGuns.World_Suppressor_Spawner (SWAT gun storage,
       police evidence, drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and
-      army storage): each spawn picks one entry of the list, so ours are two more equal choices in each.
+      army storage): each spawn picks one entry of the list, so ours are two more equal choices in each. The mount
+      devices also join GoM's list for vanilla's Improved Choke Tube (VanillaReplacerTable.VanillaAttachmentMap, used
+      while GoM's sandbox VanillaAttachmentReplacement is on), which GoM turns into one of its mount devices (added
+      2026-10-22, missed before).
     - Standard boxes and cartons (4.6x30mm DM11, 5.7x28mm SS190) turn up next to vanilla 9mm boxes and cartons in
       police, SWAT and gun store lists, rarely. The special loads (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR) never
       spawn as loot, as GoM never spawns its own (its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured):
@@ -171,6 +174,12 @@ local PART_SPAWNERS = {
         M .. "SCARH_Muzzle_Mount_Device" } },
 }
 
+-- Parts added to the item list of a GoM vanilla attachment replacement's first alternative.
+local VANILLA_ATTACHMENTS = {
+    { "Base.ChokeTubeImproved", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device",
+        M .. "SCARH_Muzzle_Mount_Device" } },
+}
+
 local added = {}
 local addedParts = {}
 
@@ -226,6 +235,22 @@ local function addSpawners()
             end
         else
             print("[GunsOfTienPost93] " .. entry[1] .. " not found, its parts will not spawn there")
+        end
+    end
+    local okR, replacer = pcall(require, "MarzWeapons/OnCreate/VanillaReplacerTable")
+    local attachments = okR and type(replacer) == "table" and replacer.VanillaAttachmentMap
+    for _, entry in ipairs(VANILLA_ATTACHMENTS) do
+        local list = type(attachments) == "table" and attachments[entry[1]]
+        local first = type(list) == "table" and list[1]
+        local group = type(first) == "table" and first[1]
+        local items = type(group) == "table" and group.items
+        if type(items) == "table" then
+            for _, item in ipairs(entry[2]) do
+                items[#items + 1] = item
+                addedParts[#addedParts + 1] = { items, item }
+            end
+        else
+            print("[GunsOfTienPost93] Guns of Marz's " .. entry[1] .. " replacement not found, its parts will not spawn there")
         end
     end
 end

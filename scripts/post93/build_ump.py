@@ -66,6 +66,7 @@ kit.MATS[:] = MATS
 L0, H0 = 393.0, 171.0
 BORE = 209.8
 MUZZLE_FACE = 34.2                 # the receiver's nose where the barrel leaves it
+CANON_L = 21.5                     # the barrel collar's front face (build_body's lathe), behind the threads
 HINGE_L = 440.0                    # the receiver's rear face = the stock's front face
 TOP = 252.6                        # upper receiver top (the rail sits on it)
 SEAM = 229.0                       # upper / lower seam
@@ -196,7 +197,7 @@ def build_body():
     # the barrel out of the nose: its shoulder, collar and threaded muzzle (no flash hider, as photographed)
     by, bz = 0.0, BORE - H0
     b.lathe("y", (0, by, bz), [(P(MUZZLE_FACE + 3.0, 0)[0], 0), (P(MUZZLE_FACE + 3.0, 0)[0], 7.4),
-                               (P(25.9, 0)[0], 7.4), (P(24.8, 0)[0], 9.4), (P(21.5, 0)[0], 9.4),
+                               (P(25.9, 0)[0], 7.4), (P(24.8, 0)[0], 9.4), (P(CANON_L, 0)[0], 9.4),
                                (P(16.0, 0)[0], 6.0), (P(1.0, 0)[0], 5.8), (P(0.0, 0)[0], 4.8), (P(0.0, 0)[0], 0)],
             seg=16, mat="metal", phase=0.5)
     return b.to_object("UMP_BODY")
@@ -523,6 +524,9 @@ def points(bounds):
     hinge_x = HINGE_X
     pts = {
         "muzzle": {"offset": gp(0.0, BORE), "rotate": [-90.0, 0.0, -180.0]},
+        # the barrel collar's front face, where a can screwed onto the threads stops (GoM's .45 mount device and P45
+        # suppressor start here, as on its MAC-10, whose canon is 17 mm behind the muzzle)
+        "canon": {"offset": gp(CANON_L, BORE), "rotate": ZERO},
         "magazine": {"offset": gp(*MAG_TOP), "rotate": ZERO},
         # GoM's Picatinny_Rail_Up spans z -0.0011..0.0055 from rail_up, and its scopes sit 0.0032 under that rail's
         # top (the MP7's and SCARs' relations, as on GoM's MP5)
@@ -550,6 +554,8 @@ def points(bounds):
                  "hinge: its front face on the bore axis",
         "stock_folded": "the same node turned 180 degrees about the hinge pin at x %.1f mm (the right side)" % hinge_x,
         "bolt_fired": "the charging handle does not reciprocate: the same place as bolt_lock",
+        "canon": "the barrel collar's front face, %.1f mm behind the muzzle: GoM's .45 mount device and P45 suppressor "
+                 "(UMP45 only)" % CANON_L,
     }
     pts["_extras"] = {"handgun_hold": False, "photo_origin_mm": [L0, H0], "bore_mm": BORE,
                       "real_mm_per_game_unit": round(1.0 / K, 2), "k": K}

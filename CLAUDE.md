@@ -63,7 +63,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 - **Realistic gun sounds, always on** (the user removed the sandbox option): every GoM gun except the M79 / M203 gets
   SoundRadius / SoundVolume = M16 (175 / 50) × f, f = 2^(ΔdB/10), ΔdB from powder burnt (10·log10(grains/25)),
   barrel (+3 dB per halving vs the calibre's usual barrel), no supersonic crack −5 dB, integral suppressor −17 dB
-  (= GoM's ×0.3). AS VAL and MP5SD → 33 / 9; .45 guns quiet; short carbines louder; bolt / lever / shotgun volume
+  (= GoM's ×0.3), and for the MP5SD no crack either (its ported barrel slows standard rounds below the speed of
+  sound; added 2026-10-22 so it beats a plain MP5 with the Mk9, user). AS VAL 33 / 9, MP5SD 23 / 7; .45 guns quiet; short carbines louder; bolt / lever / shotgun volume
   180-250 → ~50-60. `scripts/sound_model.py` writes `shared/GunsOfTien/SoundTable.lua`; `Sounds.lua` applies it with
   the script setters at every `OnInitGlobalModData`. **Changed from Lua, not by redefining items**: a mod's `item X`
   block replaces GoM's whole item (user's correction), and Lua stays flexible with GoM updates. Call them "realistic",
@@ -76,11 +77,23 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   "(Furnace)": same metal / crucible / tongs / charcoal as Ammo Maker's buckshot plus the unused vanilla
   `Base.Strainer` (kept) and 0.5 water — the shot-pan method; the user chose this over a mold). Each part has a box.
   Item display names follow Ammo Maker ("Bullet Rifle S SP", "Box Birdshot Pellets").
+- **AWC Mk9 SMG suppressor** (user, 2026-10-22): GoM's 9mm cans (M&P, Shh9 on its Pistol mount) fit its pistols only,
+  so 9mm SMGs got one: SMG cans only (user: "no pistol"), one 9x19mm SMG mount device for every gun, and only guns whose
+  real barrel takes a can: GoM's MP5 and MP5A2 (three lugs) and Post-93's UMP9 (threaded); not the plain MP5K (flush end
+  cap, only the MP5K-N had lugs / threads), the MP5SD (integral) or the TEC-9 (its pre-1994 threaded barrel would
+  take one; the user left it out). The can is AWC's Mk9, 12" x 2", kept after the user found it huge (no shorter SMG
+  can fitting both mounts is both documented and from before July 1993). Build notes: "AWC Mk9 SMG suppressor" below.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
-  are such special loads, so the main mod has no loot code (its old `server/GunsOfTien/Loot.lua`, boxes beside vanilla
-  boxes plus GoM spawner bonus groups, was deleted); they come from Ammo Maker. Ammo Maker still spawns this mod's
+  are such special loads, so the main mod has no ammunition loot (its old `server/GunsOfTien/Loot.lua`, boxes beside
+  vanilla boxes plus GoM spawner bonus groups, was deleted); they come from Ammo Maker. The Mk9 and its mount device
+  are parts, not ammunition, and join GoM's suppressor and muzzle device spawners (a new `server/GunsOfTien/Loot.lua`,
+  2026-10-22, as Post-93's parts). GoM also spawns its mount devices in place of vanilla's Improved Choke Tube
+  (`VanillaReplacerTable.VanillaAttachmentMap["Base.ChokeTubeImproved"]`, read by `VanillaReplacer.lua` while its
+  sandbox `VanillaAttachmentReplacement` is on; "Base.ChokeTubeFull" gives its compensator / flash hider / brake),
+  so every mount device of ours joins that list too (main mod's SMG mount, Post-93's MP7 / P90 / SCAR-H mounts, the
+  latter missed until 2026-10-22). Ammo Maker still spawns this mod's
   bullet / pellet parts itself, as it does every active part. No loot multiplier of our own (removed 2026-10-17,
   user: "if GoM has it, use their option"): the Post-93 loot follows GoM's `MarzGuns.LootMultiplier` ("GoM Loot
   Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
@@ -161,7 +174,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
 - **H&K UMP45 and UMP9** (user, 2026-10-22; built): two guns on one shared model, no calibre conversion recipe and no
   UMP40 (no .40 S&W round in GoM / Gunworks, and the user chose not to add one); the .45 hits harder than GoM's MP5,
-  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, no suppressor or muzzle device, GoM's MP5 reload clips,
+  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, GoM's MP5 reload clips, the UMP45 GoM's .45 mount device
+  + P45 suppressor as its MAC-10 (user, same day, replacing "no suppressor"), the UMP9 the main mod's 9x19mm SMG mount
+  device + AWC Mk9 (GoM's 9mm cans fit its pistols only),
   loot the MP7 / P90 route, magazines on found guns by GoM's MP5 rule. Design: docs/post93_design.md; build notes:
   "H&K UMP45 and UMP9" below.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
@@ -204,6 +219,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   file, each gun's texture; the view shows the right side after the mirror, so the UMP45 carries GoM's laser rather
   than a light on the hidden left rail), one scale, staggered, each under its name and calibre, then one slot row (each
   gun and its magazines) and one line (the rails line was removed, user 2026-10-22). Added on the Steam page by hand like the others.
+  preview8 (2026-10-22, user: "introduce the two suppressors we added") is "NEW SUPPRESSORS": the AWC Mk9 on GoM's MP5
+  and on the UMP9, GoM's P45 on the UMP45 (render_ad_guns.py `mp5_mk9` (spec `gom_smg`: GoM's own MP5 meshes, its
+  30-round magazine, our mount and can at the measured `canon`; `mp5a2_mk9` is there too, unused), `ump9_mk9` (spec
+  key `main_parts`), `ump45_p45`), one view and scale, staggered, each under its name and its can, then a slot row
+  (Mk9, our mount, GoM's P45 and .45 mount); the can is named "P45" alone and the two lines under the row were
+  removed (user, 2026-10-22). Added on the Steam page by hand.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
@@ -220,7 +241,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `render_ump.py`, `make_ump_art.py`); `trace_outline.py` traces a reference photo's outline. Main mod meshes:
   `scripts/build_sawn_stocks.py` (Blender: the stockless break-action bodies and the stock / barrel offcuts, from
   GoM's own FBX files; writes `scripts/sawn_offcuts.json`, read by gen_scripts.py), then `scripts/make_offcut_art.py`
-  (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`).
+  (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`);
+  `scripts/build_mk9.py` (Blender: the Mk9 and its mount device with the Post-93 kit, and GoM's MP5 / MP5A2 `canon`
+  measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons).
 
 ## Status and how to continue
 
@@ -609,9 +632,60 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - Review renders: Workbench's specular highlight lifted the black polymer so that painted dark details (port, slots)
   vanished (body 44 and port 15 sRGB both rendered ~65); `render_ump.py` turns `show_specular_highlight` off. The
   tan SCARs never showed it.
+- `canon` (UMP45 only uses it) = the barrel collar's front face, `CANON_L` 21.5 mm behind the muzzle (0.0155 units;
+  GoM's MAC-10 has its canon 0.0173 behind its muzzle, its M1911 0.0034). GoM's `Muzzle_Mount_Device` model runs from
+  its origin to +0.0824 (r up to 0.0157), `P45_Suppressor` to +0.1303 (r 0.0137), both along +Y from canon; checked in
+  a review render (render_ad_guns.py specs with GoM's two parts at canon). Added to ump_points.json by hand with the
+  value build_ump.py now writes, so the FBX was not rebuilt.
 - Not in the photo and drawn from H&K's layout: the right side's ejection port over the magazine well, the stock's
   hinge knuckles on the receiver's right rear (the stock folds about them to the right, `stock_folded` as the SCARs'),
   the selector's two-round burst mark, the calibre markings.
+
+## AWC Mk9 SMG suppressor (2026-10-22)
+
+- Files: `scripts/build_mk9.py` (~20 s; `GunsOfTien_SMG9_parts.fbx` with `Mk9_Suppressor` and
+  `SMG9_Muzzle_Mount_Device`, 128 px textures in `textures/weapons/GunsOfTien/`, `scripts/smg9_points.json`),
+  `scripts/make_mk9_art.py` (icons, the MP7's suppressor / mount cameras), `gen_scripts.py smg_suppressor()`
+  (`items_suppressors.txt`, `models_suppressors.txt`, names), `shared/GunsOfTien/Suppressors.lua` (stats, mount rule,
+  GoM's guns' point and lines), `server/GunsOfTien/Loot.lua`, the tooltip lines in `client/GunsOfTien/Tooltips.lua`;
+  Post-93 adds the UMP9 (`appendMountOn` in Guns.lua, its own ModelWeaponPart lines from gen_post93_guns.py, its
+  tooltip line). Display names "Mk9 Suppressor (9mm SMGs)" and "9x19mm SMG Family Muzzle Mounting Device" (GoM's
+  pattern); weights 1.2 / 0.5 (GoM's biggest cans / every mount); stats GoM's 9mm cans' (sound ×0.3, damage ×0.9, no
+  flash) plus Aiming Time ×1.1 (GoM's deployed bipod / LR4X: 24 oz on a 12" tube at the muzzle).
+- **The MP5SD stays the better quiet gun** (user, 2026-10-22: "make it so that MP5SD is better than the MP5 with
+  silencer option"): before, the MP5 + Mk9 was 28 / 8 against the SD's 33 / 9 and hit harder (0.9-1.44 against
+  0.8-1.3), so the SD lost on everything but weight. Now sound_model.py drops the SD's supersonic crack (ported barrel,
+  -5 dB: 23 / 7; an add-on can on a plain MP5 keeps the crack), and the Mk9 slows aiming ×1.1. The SD: quieter,
+  2.1 against 2.0 + 1.2 + 0.5, quicker to bring up; the suppressed MP5: harder hits, 30 against 25 range (the SD's
+  slower bullets, as GoM has them). With the 147gr subsonic round (sound ×0.5 on both) the order stays. The earlier
+  "MP5SD subsonic rule" the user dropped (2026-10-14) is another thing: rounds fired from the SD treated as subsonic
+  ammo (damage too); only its sound changed here. GoM's SD damage (0.8-1.3, ×0.8 of the MP5) already is the slower
+  bullet.
+- The 147gr subsonic round's sound ×0.7 is the crack removed (−5 dB = ×0.71 in the sound model), so in the SD it would
+  count twice: `Ammunition.lua` registers a StatsFactory layer `GunsOfTien_SubsonicInMP5SD` (applicable to
+  `MarzGuns.MP5SD`, active while modData `ActiveAmmoProfile` is `GunsOfTien_9x19Subsonic`) that sets SoundRadius /
+  SoundVolume back to the shadow item's (script + attachments). Gunworks runs layers in registration order, so it
+  comes after its "Ammo" layer; the round's damage ×0.85 stays. Result: SD 23 / 7 with either round, MP5 + Mk9 28 / 8
+  plain or about 20 / 6 with the 147gr (user agreed 2026-10-22).
+- Built at GoM's SMG scale (K 0.00072, 0.72 of real size): the can 304.8 x 50.8 mm (0.2195 x r 0.0183 units) with a
+  knurled three-lug coupler at the rear and "AWC MK9" painted along the left; the mount is Tim Bixler's adapter, a
+  threaded cap with wrench flats and a sleeve with three lugs, 30 mm long, over the barrel. Both start at `canon`.
+- **GoM's MP5 and MP5A2 have no `canon` point**, and a second `model MP5 { ... }` block from our scripts would reset
+  GoM's mesh and texture (model scripts carry ResetExisting, ZomboidFixesB42 CLAUDE.md). Suppressors.lua adds the point
+  at run time, `ModelAttachment.new("canon")` + `getOffset():set` + `ModelScript:addAttachment` on
+  `ScriptManager.instance:getModelScript("MarzGuns.MP5")` (42.21 jar: ModelAttachment and ModelScript are exposed,
+  ModelScript has `addAttachment` / `getAttachmentById`), at every OnGameBoot and OnInitGlobalModData, and appends the
+  guns' ModelWeaponPart lines with `Item.DoParam` (once per script object, as Lasers.lua). Not yet seen in game.
+  build_mk9.py measures the point: the front face of the front sight housing (largest y of the body's vertices more
+  than 0.0105 off the bore axis, behind the barrel tip) on GoM's muzzle z: MP5 y 0.2796 (barrel tip 42.5 mm full
+  size ahead), MP5A2 y 0.2811 (35.6 mm). GoM's MP5K model has an unused `canon` point of its own.
+- Real-gun checks (2026-10-22): H&K's three-lug mount dates from about 1966 and was made for flash hiders and blank
+  adapters; the first three-lug suppressor adapter in the US was Tim Bixler's (Knight's / AWC, patented 1988). The
+  plain MP5K has a flush end cap; the MP5K-N (Navy) has lugs and a 1/2x32 thread. The Mk9 fits MP5s by three lugs or
+  thread (specify when ordering), Uzis in place of the barrel nut, MACs on their threads. The pre-1994 TEC-9 had a
+  threaded barrel for a suppressor or barrel extension (one of the 1994 ban's pistol features). Shorter SMG cans
+  offered and declined: AWC MK9A (10"), Gemtech MK9K (about 7-9", Gemtech founded 1993), AWC Tac-9 (no size found),
+  and the KAC / H&K Navy can (7.75" x 1.375", direct thread only, so not for three-lug barrels).
 
 ## Gun tooltips (2026-10-18)
 

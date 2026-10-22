@@ -251,6 +251,38 @@ if not layerRegistered then
 end
 
 -------------------------------------------------
+-- The 147gr subsonic round is no quieter in the MP5SD
+-------------------------------------------------
+-- The round's sound x0.7 is the supersonic crack taken away (sound_model.py: -5 dB = x0.71). The MP5SD's ported
+-- barrel already slows standard rounds below the speed of sound, and its sound (SoundTable.lua) has no crack, so the
+-- round would take it away twice (user, 2026-10-22). Layers run in registration order, after Gunworks' "Ammo" layer,
+-- so this one puts the SD's sound back to the shadow item's (script + attachments); the round's damage stays.
+local SD = "MarzGuns.MP5SD"
+local SUBSONIC_PROFILE = "GunsOfTien_9x19Subsonic"
+
+local function scriptSound(weapon, base)
+    weapon:setSoundRadius(base:getSoundRadius())
+    weapon:setSoundVolume(base:getSoundVolume())
+end
+
+local sdRegistered = false
+for _, layer in ipairs(SF.ModifierLayers) do
+    if layer.id == "GunsOfTien_SubsonicInMP5SD" then sdRegistered = true end
+end
+if not sdRegistered then
+    SF.RegisterModifierLayer("GunsOfTien_SubsonicInMP5SD",
+        function(weapon)
+            local md = weapon:getModData()
+            if md.ActiveAmmoProfile ~= SUBSONIC_PROFILE then return nil end
+            return { scriptSound }
+        end,
+        { SoundRadius = true, SoundVolume = true },
+        function(weapon)
+            return weapon and weapon.getFullType and weapon:getFullType() == SD
+        end)
+end
+
+-------------------------------------------------
 -- Keep the US round's cycling up to date on the shooter's copy
 -------------------------------------------------
 -- Gunworks re-applies stats on equip, attach / detach (server-side `complete` in MP) and round-type changes, but

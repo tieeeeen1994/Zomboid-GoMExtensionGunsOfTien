@@ -62,7 +62,9 @@ How f is worked out (a model, the inputs are real; `scripts/sound_model.py`):
 - **Blast**: propellant burnt per shot, 10·log10(grains / 25) dB (5.56 ≈ 25 gr, .308 ≈ 45, 9mm ≈ 6, 12 ga ≈ 27).
 - **Barrel**: +3 dB per halving of the barrel against the calibre's usual barrel (short barrels are louder).
 - **Crack**: a subsonic round (.45, .38, 9x39) has no supersonic crack: −5 dB.
-- **Integral suppressor** (AS VAL, MP5SD): −17 dB, the same ×0.3 GoM gives a fitted suppressor.
+- **Integral suppressor** (AS VAL, MP5SD): −17 dB, the same ×0.3 GoM gives a fitted suppressor. The MP5SD's barrel is
+  ported to slow standard rounds below the speed of sound, so it has no crack either (−5 dB more; 2026-10-22, so it
+  beats a plain MP5 with the Mk9, which keeps the crack).
 - dB to game: f = 2^(ΔdB / 10) (perceived loudness doubles every 10 dB), which keeps GoM's scale (pistols ~100,
   rifles ~175-220).
 
@@ -87,7 +89,7 @@ How f is worked out (a model, the inputs are real; `scripts/sound_model.py`):
 | M1 Garand | 220 / 50 | 216 / 62 | | MAC-10 | 100 / 30 | 77 / 22 |
 | FAL | 190 / 45 | 213 / 61 | | MP5, MP5A2 | 150 / 35 | 93 / 27 |
 | G3 | 190 / 40 | 224 / 64 | | MP5K | 100 / 30 | 114 / 33 |
-| SVD | 170 / 30 | 224 / 64 | | MP5SD | 50 / 15 | **33 / 9** |
+| SVD | 170 / 30 | 224 / 64 | | MP5SD | 50 / 15 | **23 / 7** |
 | PSG-1 | 170 / 30 | 201 / 57 | | TEC-9 | 100 / 30 | 110 / 32 |
 | M60 | 230 / 45 | 210 / 60 | | 12 ga pumps / semis | 200 / 200 | 175-185 / 50-53 |
 | BAR | 230 / 45 | 216 / 62 | | 12 ga doubles | 200 / 200 | 162-166 / 46-47 |
@@ -128,6 +130,24 @@ the gun kept). Permanent. A shell holder (it sits on the stock) comes off into t
 - Sawn-off barrels: the Stevens 555's and TOZ-34's get the Double Barrel's (GoM gives stats only to those): Aiming
   Time 30, Hit Chance 70, pellet spread 2.0, range 15, from 40 / 65 / 0.6 / 20 on all three guns.
 - No sandbox option, like the lasers (user).
+
+## 4c. AWC Mk9 SMG suppressor (2026-10-22)
+
+GoM's 9mm suppressors (M&P, Shh9) need its Pistol mount and fit its pistols only. A 9mm SMG can of the time, on its
+own "9x19mm SMG Family Muzzle Mounting Device" (GoM's rule: every can needs its mount first), for the 9mm SMGs whose
+real barrels take one (user: "only if supported", "no pistol"):
+- GoM's MP5 and MP5A2 (H&K's three-lug barrel) and Post-93's UMP9 (threaded). Not the MP5K (flush end cap), the
+  MP5SD (integral can) or the TEC-9 (user's choice, though its threaded barrel would take one).
+- The can: AWC's Mk9 (user), AWC's SMG can for the Uzi, MAC and MP5, made in the 1980s, 12" x 2", fitted to the MP5's
+  lugs with Tim Bixler's adapter (1988), which is the mount device. Big; the user kept it over the shorter options.
+- GoM's 9mm cans' stats (sound and volume ×0.3, damage ×0.9, no muzzle flash) plus Aiming Time ×1.1 (a 24 oz can
+  out at the muzzle), weights 1.2 / 0.5 as GoM's.
+- The MP5SD stays the better quiet gun (user): 23 / 7 (no crack, see section 3) against the suppressed MP5's 28 / 8,
+  lighter and quicker to aim; the suppressed MP5 hits harder and reaches further. The 147gr subsonic round makes no
+  sound difference in the SD (its ×0.7 is the crack, which the SD does not have; its damage ×0.85 stays), so a
+  suppressed MP5 comes close only with that round (about 20 / 6).
+- Loot as GoM's parts: one more choice in its suppressor and muzzle device spawners, and the mount among GoM's mounts
+  that replace vanilla's Improved Choke Tube. Found guns never come with one.
 
 ## 5. Open checks before building
 

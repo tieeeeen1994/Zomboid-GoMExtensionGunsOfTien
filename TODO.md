@@ -30,6 +30,19 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       and a shoulder holster: hang it the right way up and not through the leg (holster points in gen_scripts.py,
       `HOLSTER_POINTS`), draw from the holster; Shell holder's Upgrade option hidden on a sawn-off stock; in MP the
       owner's copy changes model at once, another player sees it after the gun is next equipped.
+- [ ] AWC Mk9 SMG suppressor (2026-10-22, Suppressors.lua, build_mk9.py, make_mk9_art.py): "Mk9 Suppressor (9mm SMGs)"
+      and "9x19mm SMG Family Muzzle Mounting Device" on GoM's MP5 and MP5A2 (Post-93: the UMP9). To check in game:
+      both attach to the MP5, MP5A2 and UMP9 only (not the MP5K, MP5SD, TEC-9 or the pistols), the wrench needed,
+      the can only over the mount; GoM's MP5 / MP5A2 get the run-time `canon` point (no "model script not found" in
+      the log; mount on the barrel, can's rear against the front sight housing, on the bore axis, in hand, on the
+      back and on the floor); the parts lying on the floor (`world` pose) and their icons; quieter shots and no
+      muzzle flash; Aiming Time ×1.1 with the can on; the MP5SD (23 / 7) quieter than an MP5 with the Mk9 (28 / 8),
+      and the 147gr subsonic round changing the SD's damage but not its sound (layer `GunsOfTien_SubsonicInMP5SD`);
+      preview8.png to add on the Steam page by hand; the tooltip lines (both parts, "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount" on the three
+      guns); both turning up from GoM's suppressor and muzzle device spawners (debug: spawn
+      `MarzGuns.World_Suppressor_Spawner` / `MarzGuns.World_Muzzle_Device_Spawner` into a container a few times),
+      and the mount (and Post-93's MP7 / P90 / SCAR-H mounts) from vanilla's Improved Choke Tube with GoM's
+      VanillaAttachmentReplacement on (debug: spawn `Base.ChokeTubeImproved` a few times).
 - [x] Sawn-off stocks, choices (2026-10-19): stats (Hit Chance x0.87, Recoil
       Delay x1.3, weight -0.5; Aiming Time x0.75 is the user's); holster only with sawn-off barrels too; all three holster slots (both
       belts and the shoulder holster), any saw and no sandbox option confirmed by the user; the Stevens 555's and
@@ -455,4 +468,8 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       on the bottom rail, light left / laser right, on the back and on the floor (GoM's rifle `world` pose), casings to
       the right, the markings reading the right way ("HK UMP" and the calibre on the left, "UMP45" / "UMP9" on the
       right), the .45 magazines' translucent look, UMP kits from the Anachronistic spawner (debug: spawn
-      `MarzGuns.World_Anachronistic_Spawner` into a container a few times) and on SWAT zombies.
+      `MarzGuns.World_Anachronistic_Spawner` into a container a few times) and on SWAT zombies. UMP45 + GoM's .45
+      mount device and P45 suppressor (added 2026-10-22): the mount fits only with the wrench, the suppressor only
+      over the mount, both drawn on the barrel (mount on the collar in front of the nose, can on the bore axis), quieter
+      shots (×0.3) and no muzzle flash, the tooltip's "Compatible Muzzle Device: .45 Muzzle Mount" line; the UMP9
+      refuses both and takes the main mod's Mk9 and its mount instead (same canon point).

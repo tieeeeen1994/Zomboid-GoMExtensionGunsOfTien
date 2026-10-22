@@ -30,6 +30,8 @@ found as loot: make them with Ammo Maker.
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
   every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
   out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
+- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5 and MP5A2 (Guns of Marz's 9mm
+  suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
@@ -57,6 +59,6 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
   suppressor and Guns of Marz's pistol sights and pistol lights
 - FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor
-- H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers
+- H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers; the UMP45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the UMP9 the AWC Mk9
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
