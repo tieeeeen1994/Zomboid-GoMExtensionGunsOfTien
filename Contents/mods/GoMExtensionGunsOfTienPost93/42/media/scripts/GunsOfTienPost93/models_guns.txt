@@ -144,6 +144,46 @@ module GunsOfTienPost93 {
         attachment bipod { offset = 0.0000 0.3354 0.0181, rotate = 0.0000 0.0000 0.0000, }
     }
 
+    model UMP45 {
+        mesh     = weapons/firearms/GunsOfTienPost93_UMP|UMP_BODY,
+        texture  = weapons/GunsOfTienPost93/UMP45,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2830 0.0279, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1145 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0670 0.0615, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0670 0.0592, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0129 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0129 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0202 0.2077 0.0280, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0191 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0000 -0.0338 0.0279, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = -0.0310 -0.0338 0.0279, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_down { offset = 0.0000 0.2056 0.0118, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2023 0.0093, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model UMP9 {
+        mesh     = weapons/firearms/GunsOfTienPost93_UMP|UMP_BODY,
+        texture  = weapons/GunsOfTienPost93/UMP9,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2830 0.0279, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1145 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0670 0.0615, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0670 0.0592, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0129 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0129 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0202 0.2077 0.0280, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0191 0.2077 0.0288, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0000 -0.0338 0.0279, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = -0.0310 -0.0338 0.0279, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_down { offset = 0.0000 0.2056 0.0118, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2023 0.0093, rotate = 0.0000 0.0000 0.0000, }
+    }
+
     model SCARL_BOLT {
         mesh     = weapons/firearms/GunsOfTienPost93_SCARL|SCARL_BOLT,
         texture  = weapons/GunsOfTienPost93/SCARL,
@@ -159,6 +199,18 @@ module GunsOfTienPost93 {
     model SCAR_STOCK {
         mesh     = weapons/parts/GunsOfTienPost93_SCAR_parts|SCAR_STOCK,
         texture  = weapons/GunsOfTienPost93/SCAR_STOCK,
+        cullFace = None,
+    }
+
+    model UMP_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_UMP|UMP_BOLT,
+        texture  = weapons/GunsOfTienPost93/UMP9,
+        cullFace = None,
+    }
+
+    model UMP_STOCK {
+        mesh     = weapons/parts/GunsOfTienPost93_UMP_parts|UMP_STOCK,
+        texture  = weapons/GunsOfTienPost93/UMP_STOCK,
         cullFace = None,
     }
 
@@ -309,6 +361,30 @@ module GunsOfTienPost93 {
     model SCARH_Muzzle_Mount_Device {
         mesh     = weapons/parts/GunsOfTienPost93_SCAR_parts|SCARH_Muzzle_Mount_Device,
         texture  = weapons/GunsOfTienPost93/SCARH_Muzzle_Mount_Device,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine30_UMP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UMP_magazines|9x19Magazine30_UMP,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine30_UMP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 45Magazine25_UMP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UMP_magazines|45Magazine25_UMP,
+        texture  = weapons/GunsOfTienPost93/45Magazine25_UMP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 45Magazine20_UMP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UMP_magazines|45Magazine20_UMP,
+        texture  = weapons/GunsOfTienPost93/45Magazine20_UMP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 45Magazine10_UMP {
+        mesh     = weapons/magazines/GunsOfTienPost93_UMP_magazines|45Magazine10_UMP,
+        texture  = weapons/GunsOfTienPost93/45Magazine10_UMP,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 }

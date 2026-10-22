@@ -18,6 +18,7 @@ turned; their barrels are drawn at the gun's origin, as the engine draws them (n
 The SCAR-L and SCAR-H (preview6) are rifles, modelled upright (`rifle`: nothing turned), one view and scale so they
 keep their real sizes against each other, the double barrel's view (mirrored back by make_workshop_art.py). A node
 entry's file may name a folder (`parts/...`: the shared stock), and the SCAR-L's magazine is GoM's STANAG (`gom_mag`).
+The UMP45 and UMP9 (preview7) the same way, from one body file with each gun's texture.
 """
 
 import json
@@ -52,6 +53,7 @@ SAWN = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms/GunsOfTien_SawnStocks
 DB_VIEW, DB_SCALE, DB_SIZE = (0.8, 0.45, -0.25), 0.78, (2400, 1000)
 
 RIFLE_VIEW, RIFLE_SCALE, RIFLE_SIZE = (0.92, 0.3, -0.16), 0.98, (2400, 1000)
+UMP_SCALE, UMP_SIZE = 0.62, (2400, 1400)
 
 GUNS = {
     # fitted out: the SCAR-L with GoM's EXPS3, MKC foregrip, AR mount + MKI; the SCAR-H with GoM's Elcan and bipod,
@@ -77,6 +79,29 @@ GUNS = {
                   ("GunsOfTienPost93_SCAR_parts", "SCARH_Suppressor")],
         "gom": [("scopes", "ElcanX2_Scope", "scope"), ("bipods", "Bipod_Deployed", "bipod")],
         "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
+    },
+    # the UMPs (preview7): rifles like the SCARs, the same view, a scale for their length; one body file for both, each
+    # with its own texture; stocks deployed, fitted out with GoM's MP5 accessories (no muzzle parts: they take none)
+    "ump45": {
+        "rifle": True, "points": "post93/ump_points.json",
+        "fbx": "GunsOfTienPost93_UMP", "tex": "UMP45",
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+                  ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
+        "mag": ("GunsOfTienPost93_UMP_magazines", "45Magazine25_UMP", "magazine"),
+        "parts": [],
+        # the laser: the view shows the right side (after the mirror), where a light on the left rail would be hidden
+        "gom": [("scopes", "Aimpoint_Sight", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
+        "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
+    },
+    "ump9": {
+        "rifle": True, "points": "post93/ump_points.json",
+        "fbx": "GunsOfTienPost93_UMP", "tex": "UMP9",
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+                  ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
+        "mag": ("GunsOfTienPost93_UMP_magazines", "9x19Magazine30_UMP", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip")],
+        "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
     },
     # world space is the game's mirror image, so these show the gun's right side, muzzle left, until
     # make_workshop_art.py mirrors them back to the game's view (left side, muzzle right)

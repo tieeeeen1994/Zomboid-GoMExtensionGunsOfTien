@@ -6,9 +6,9 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same)
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2, preview3, preview4, preview5, preview6, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview2, preview3, preview4, preview5, preview6, preview7, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -403,6 +403,47 @@ def preview6(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview7(path, W=1024):
+    """The UMP45 and UMP9, laid out like preview6: both fitted out at one scale (render_ad_guns.py "ump45" / "ump9",
+    mirrored back to the game's view), each under its name, then one row of inventory slots (each gun and its
+    magazines) and a line on what they have in common."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+
+    ims = {}
+    for name in ("ump45", "ump9"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    s = u(300) / max(im.width for im in ims.values())     # one scale for both: they are the same gun
+    y = u(58)
+    for name, label, sub, dx in (("ump45", "H&K UMP45", ".45 ACP", -u(36)), ("ump9", "H&K UMP9", "9X19MM", u(36))):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = (W - im.width) // 2 + dx
+        big = font(BOLD, u(17), b"Bold")
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(big.getlength(label)) + u(8), y + u(5)), sub,
+                                        font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(24))), (0, u(6)), u(6), 160)
+        y += u(24) + im.height + u(10)
+
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    slot_row(page, [post("UMP45"), post("45Magazine25_UMP"), post("45Magazine20_UMP"), post("45Magazine10_UMP"),
+                    post("UMP9"), post("9x19Magazine30_UMP")],
+             256, 404, "UMP45  ·  25, 20, 10-ROUND  ·  UMP9  ·  30-ROUND")
+    page.alpha_composite(text_layer(size, (W // 2, u(466)), "SIDE-FOLDING STOCK  ·  TWO-ROUND BURST",
+                                    font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -524,6 +565,8 @@ if __name__ == "__main__":
         preview5(os.path.join(ROOT, "preview5.png"))     # the sawn-off shotguns, added the same way
     if want("preview6"):
         preview6(os.path.join(ROOT, "preview6.png"))     # the SCAR-L and SCAR-H, added the same way
+    if want("preview7"):
+        preview7(os.path.join(ROOT, "preview7.png"))     # the UMP45 and UMP9, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

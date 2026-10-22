@@ -443,3 +443,16 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
 - [x] SCAR-H 50-round drum (ProMag DRM-A41, user 2026-10-20): model, texture, icon, item, name, tooltip, profile, 2 %
       on found SCAR-Hs, GoM's high-capacity tactical magazine spawner. To check in game: the drum under the magazine
       well (clear of the trigger guard and the hand), the reload with it, the "50" reading the right way on both faces.
+- [ ] H&K UMP45 and UMP9 built 2026-10-22 from the user's photo (silhouette IoU 86.9 %; sheet
+      `docs/post93_ump_preview.png`): one model and stock for both guns, each with its own texture (markings), magazines
+      (UMP45 25 / 20 / 10 smoked translucent, UMP9 30 curved), item / model / repair scripts, names, magazine profiles,
+      600 / 700 rpm with a two-round burst, GoM's MP5 reload clips, the folding stock (GoM's G36C stats and spread),
+      four integral rails with GoM's MP5 accessories, spawn parts (magazines by GoM's MP5 rule), loot (Anachronistic and
+      police SMG spawners, as the MP7 / P90), Hot Brass (the MP5's), tooltips, realistic sound (96 / 28, 70 / 20). To
+      check in game: the hold (grip in the hand), the stock folding to the right and back (context / radial) and its
+      stats, Auto / Burst / Single on the selector and the burst firing two, the magazines seated in the magazine well
+      (the curved 30, the 25 / 20 / 10), the MP5 reload clips lining up with the magazine, optics on the top rail, foregrip
+      on the bottom rail, light left / laser right, on the back and on the floor (GoM's rifle `world` pose), casings to
+      the right, the markings reading the right way ("HK UMP" and the calibre on the left, "UMP45" / "UMP9" on the
+      right), the .45 magazines' translucent look, UMP kits from the Anachronistic spawner (debug: spawn
+      `MarzGuns.World_Anachronistic_Spawner` into a container a few times) and on SWAT zombies.

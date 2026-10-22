@@ -168,3 +168,42 @@ first build faced the sides, corrected by the user), winding knob on the front f
 thick (approximate: no published drawing), "50" moulded under the hub. Named "SCAR-H 50Rds Drum 7.62x51mm
 Magazine" (as the MP7's 60 drum). Spawns on 2 % of found SCAR-Hs (the MP7 drum's chance) and with up to two boxes
 in GoM's high-capacity tactical magazine spawner, as our other drums.
+
+## H&K UMP45 and UMP9 (user, 2026-10-22; built)
+
+H&K's polymer SMG (1999), the MP5's cheaper successor. One body for every calibre: changing calibre means a new
+barrel, bolt and magazine, and the magazine is the only outside difference (the UMP9's is curved). Two separate guns
+on one model, no conversion recipe (user, 2026-10-22: "different guns would suffice"; Gunworks could do it with a
+part-registered magazine profile, `Magazine.RegisterWeaponPartWithProfile`, but stats, sound and name would have to
+follow the part in our own code). No UMP40: neither GoM nor Gunworks has a .40 S&W round (Ammo Maker's `40SW` type
+waits unused), and the user chose not to add one (2026-10-22). No new rounds: GoM's 9mm and .45 families (with the
+main mod's 9mm 147gr / Hollow Point / [+P+] and .45 Hollow Point / [+P]).
+
+| | `GunsOfTienPost93.UMP45` "UMP45 Submachine Gun" | `GunsOfTienPost93.UMP9` "UMP9 Submachine Gun" |
+|---|---|---|
+| Real | .45 ACP, 200 mm barrel, about 2.5 kg empty | 9x19, 200 mm barrel, about 2.3 kg empty |
+| Magazines | H&K's 10, 20 and 25-round straight (user, 2026-10-22) | 30-round curved |
+| Rate of fire (real 600-700 / 600-750) | 600 rpm, more spread than GoM's MP5 (0.1 / 1.5), e.g. 0.18 / 2.2 | 700 rpm, close to the MP5's, e.g. 0.11 / 1.6 |
+| Damage | a step above GoM's MP5, about 1.1-1.8 (user, 2026-10-22: the .45 hits harder, for its slower fire, recoil and smaller magazine) | GoM's MP5, 1.0-1.6 |
+| Sound | the realistic model (`sound_model.py`), .45 quieter than 9mm | same |
+
+Both: held as rifles (two hands, back slot), **Auto / 2-round burst / Single** (user, 2026-10-22; Gunworks
+`burstCount = 2`, `FireModePossibilities = Auto/Burst/Single` as one GoM gun already has), **no suppressor and no muzzle
+device** (user, 2026-10-22, like GoM's MP5), black, one shared stock folding to the right
+(`UMP_Integrated_Stock_Folded / _Deployed`, GoM's G36C stock stats and spread modifier), four integral rails
+(`UMP_Integrated_Rail_Up / Down / Left / Right`: receiver top, handguard sides and bottom) for GoM's optics,
+foregrips, lights and lasers, ejection to the right, Hot Brass as GoM's MP5. Model at GoM's SMG ratio (0.72).
+
+Reload (user, 2026-10-22): GoM's MP5 clips (animId "MP5", its durations). Loot (user, 2026-10-22: the MP7 / P90
+route): an alternative each in GoM's `World_Anachronistic_Spawner` and `Zombie_Police_SMG_Spawner`, packed as the MP7's
+(gun + the standard magazine + its box: UMP45 25, UMP9 30, GoM's MP5 kit carries its standard 30 likewise).
+Magazines on a found gun (user: "base your decisions on how GoM handles it"): GoM's MP5 rolls 20:30, 25:20, 30:5
+(shortest likeliest), its single-magazine guns 50 (AS VAL, M14, Glock), so the UMP45 10:30, 20:20, 25:5 and the UMP9
+30:50. Reference photos (user, 2026-10-22, kept out of the repo like the SCAR's): H&K's product photo of a UMP9,
+left side, stock deployed, 30-round magazine (marked 9x19); a third-party 3D render of a UMP .45, right side
+(muzzle right), stock deployed, 25-round magazine (for the right side: stock hinge, ejection port, selector).
+Built 2026-10-22: build notes in CLAUDE.md "H&K UMP45 and UMP9". Stats as GoM's MP5 for the UMP9 (1.0-1.6, HitChance 50,
+RecoilDelay 15, range 30), the UMP45 1.1-1.8, HitChance 48, RecoilDelay 17, range 28, crit 25; weights 1.8 / 1.9 (GoM's
+SMG ratio ~0.78 of 2.3 / 2.5 kg); magazines 0.18 (UMP9 30), 0.15 / 0.1 / 0.05 (UMP45 25 / 20 / 10); sound 96 / 28 and
+70 / 20 (the realistic model, 200 mm barrel). The .45 magazines are named in GoM's style for its G36's: "UMP45 25Rds .45
+ACP Translucent Magazine".

@@ -60,5 +60,17 @@
   "GunsOfTienPost93.SCAR_Integrated_Rail_Right": "SCAR Integrated Rail (Right)",
   "GunsOfTienPost93.SCARH_Suppressor": "SOCOM762-RC Suppressor (7.62x51mm Weapons)",
   "GunsOfTienPost93.SCARH_Muzzle_Mount_Device": "SCAR-H Muzzle Mounting Device",
-  "GunsOfTienPost93.762x51Magazine50_SCARH": "SCAR-H 50Rds Drum 7.62x51mm Magazine"
+  "GunsOfTienPost93.762x51Magazine50_SCARH": "SCAR-H 50Rds Drum 7.62x51mm Magazine",
+  "GunsOfTienPost93.UMP45": "UMP45 Submachine Gun",
+  "GunsOfTienPost93.UMP9": "UMP9 Submachine Gun",
+  "GunsOfTienPost93.9x19Magazine30_UMP": "UMP9 30Rds 9x19mm Magazine",
+  "GunsOfTienPost93.45Magazine25_UMP": "UMP45 25Rds .45 ACP Translucent Magazine",
+  "GunsOfTienPost93.45Magazine20_UMP": "UMP45 20Rds .45 ACP Translucent Magazine",
+  "GunsOfTienPost93.45Magazine10_UMP": "UMP45 10Rds .45 ACP Translucent Magazine",
+  "GunsOfTienPost93.UMP_Integrated_Stock_Folded": "UMP Integrated Stock (Folded)",
+  "GunsOfTienPost93.UMP_Integrated_Stock_Deployed": "UMP Integrated Stock (Deployed)",
+  "GunsOfTienPost93.UMP_Integrated_Rail_Up": "UMP Integrated Rail (Up)",
+  "GunsOfTienPost93.UMP_Integrated_Rail_Down": "UMP Integrated Rail (Down)",
+  "GunsOfTienPost93.UMP_Integrated_Rail_Left": "UMP Integrated Rail (Left)",
+  "GunsOfTienPost93.UMP_Integrated_Rail_Right": "UMP Integrated Rail (Right)"
 }

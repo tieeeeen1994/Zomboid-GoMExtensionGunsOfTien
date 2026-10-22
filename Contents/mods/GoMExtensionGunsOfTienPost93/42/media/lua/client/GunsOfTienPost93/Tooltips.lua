@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
-    Five-seveN, the UCP, the SCAR-L and SCAR-H, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -31,6 +31,28 @@ GunsOfTien_TooltipStates[M .. "SCAR_Integrated_Stock_Deployed"] = {
     "Aiming Time reduced by 15%",
     "Hit Chance increased by 15%",
 }
+
+-- The UMPs' side-folding stock (GoM's G36C stats and spread, shared/GunsOfTienPost93/Guns.lua), worded as the main
+-- mod words the G36C's
+GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"] = {
+    "Folding stock deployed:",
+    "Aiming Time reduced by 25%",
+    "Hit Chance increased by 15%",
+    "Automatic fire spread reduced by 25%",
+}
+
+lines[M .. "UMP45"] = {
+    "Uses .45 rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+}
+lines[M .. "UMP9"] = {
+    "Uses 9x19mm rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+}
+for _, mag in ipairs({ "45Magazine25_UMP", "45Magazine20_UMP", "45Magazine10_UMP" }) do
+    lines[M .. mag] = { "Uses .45 rounds." }
+end
+lines[M .. "9x19Magazine30_UMP"] = { "Uses 9x19mm rounds." }
 
 lines[M .. "SCARL"] = {
     "Uses .223/5.56x45mm NATO rounds.",

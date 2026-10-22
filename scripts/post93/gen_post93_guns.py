@@ -1,9 +1,9 @@
-"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H item and model scripts, their parts, repair
-recipes and names for Guns of Tien - Post-93.
+"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 item and model scripts, their
+parts, repair recipes and names for Guns of Tien - Post-93.
 
-Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py), which
-write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json, ucp_points.json,
-scarl_points.json and scarh_points.json next to this script:
+Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py /
+build_ump.py), which write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json,
+ucp_points.json, scarl_points.json, scarh_points.json and ump_points.json next to this script:
 python3 scripts/post93/gen_post93_guns.py
 The Five-seveN is the item MarzGuns.FIVESEVEN: Guns of Marz names it ("5.7x28mm Five-SeveN" in its ItemName.json) but
 ships nothing else, so its item block (items_fiveseven.txt) is in GoM's module and everything it uses is ours.
@@ -97,7 +97,7 @@ def pistol_model(name, points):
 """
 
 
-def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh):
+def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
@@ -110,11 +110,17 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh):
     scar_points = ['stock', 'stock_folded', 'rail_down', 'foregrip', 'bipod']
     out.append(gun_model('SCARL', 'GunsOfTienPost93_SCARL', 'SCARL_BODY', scarl, scar_points))
     out.append(gun_model('SCARH', 'GunsOfTienPost93_SCARH', 'SCARH_BODY', scarh, scar_points))
+    # both UMPs are one mesh (UMP_BODY) with their own textures (markings); bolt and stock shared
+    for gun in UMPS:
+        out.append(gun_model(gun, 'GunsOfTienPost93_UMP', 'UMP_BODY', ump, ['stock', 'stock_folded', 'rail_down', 'foregrip']))
     for model, file, node, tex in [
             ('SCARL_BOLT', 'firearms/GunsOfTienPost93_SCARL', 'SCARL_BOLT', 'SCARL'),
             ('SCARH_BOLT', 'firearms/GunsOfTienPost93_SCARH', 'SCARH_BOLT', 'SCARH'),
             # one folding stock for both SCARs, drawn at each gun's stock / stock_folded point
             ('SCAR_STOCK', 'parts/GunsOfTienPost93_SCAR_parts', 'SCAR_STOCK', 'SCAR_STOCK'),
+            # the charging handle's texels are the same in both UMP textures
+            ('UMP_BOLT', 'firearms/GunsOfTienPost93_UMP', 'UMP_BOLT', 'UMP9'),
+            ('UMP_STOCK', 'parts/GunsOfTienPost93_UMP_parts', 'UMP_STOCK', 'UMP_STOCK'),
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
             ('MP7A1_FOREGRIP', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_FOREGRIP', 'MP7A1'),
@@ -138,6 +144,7 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh):
     parts += [('UCP_Muzzle_Mount_Device', 'parts/GunsOfTienPost93_UCP_parts')]
     parts += [(f'762x51Magazine{n}_SCARH', 'magazines/GunsOfTienPost93_SCARH_magazines') for n in (20, 10, 50)]
     parts += [(p, 'parts/GunsOfTienPost93_SCAR_parts') for p in ('SCARH_Suppressor', 'SCARH_Muzzle_Mount_Device')]
+    parts += [(m, 'magazines/GunsOfTienPost93_UMP_magazines') for m in UMP_MAGS]
     for node, file in parts:
         out.append(f"""
     model {node} {{
@@ -596,6 +603,7 @@ def items(mp7, p90):
 """)
     out.append(ucp_item())
     out += scar_items()
+    out += ump_items()
     out.append("}\n")
     write(f'scripts/{M}/items_guns.txt', ''.join(out))
     write(f'scripts/{M}/fixing_guns.txt', f"""module Base {{
@@ -631,6 +639,16 @@ def items(mp7, p90):
 
     fixing Fix SCARH {{
         Require = {M}.SCARH,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
+    fixing Fix UMP45 {{
+        Require = {M}.UMP45,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+
+    fixing Fix UMP9 {{
+        Require = {M}.UMP9,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
 }}
@@ -847,6 +865,190 @@ def scar_items():
     return out
 
 
+# ==================================================================================================
+# H&K UMP45 and UMP9, user 2026-10-22 (build_ump.py)
+# ==================================================================================================
+
+UMPS = ['UMP45', 'UMP9']
+UMP_MAGS = ['9x19Magazine30_UMP', '45Magazine25_UMP', '45Magazine20_UMP', '45Magazine10_UMP']
+UMP_GUN_MAGS = {'UMP45': UMP_MAGS[1:], 'UMP9': UMP_MAGS[:1]}
+
+
+def ump_parts(gun):
+    """GoM's MP5 accessories on the UMPs' integral rails (their points in ump_points.json): its optics, foregrips,
+    lasers and lights, no bipods, no muzzle device (user, 2026-10-22: no suppressor, as GoM's MP5); the shared folding
+    stock and charging handle; each gun's own magazines."""
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.UMP_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.UMP_BOLT bolt_fired bolt_fired,",
+             f"{w}{M}.UMP_Integrated_Stock_Folded {M}.UMP_STOCK stock_folded stock_folded,",
+             f"{w}{M}.UMP_Integrated_Stock_Deployed {M}.UMP_STOCK stock stock,"]
+    lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m in UMP_GUN_MAGS[gun]]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    return '\n'.join(lines) + '\n'
+
+
+# GoM's MP5 (9mm, M9Shoot) and its .45 guns' shot (MAC-10, M1911: M1911Shoot), the MP5's other sounds. Realistic sound
+# (the main mod's model, M16 = 175 / 50): 9mm and .45 from the UMP's 200 mm (7.9") barrel = 96 / 28 and 70 / 20 (the
+# .45 is subsonic).
+UMP_STATS = {
+    # the MP5's numbers; 2.3 kg x GoM's SMG weight ratio (~0.78)
+    'UMP9': dict(min=1.0, max=1.6, crit=20.0, hit=50, aim=40, recoil=15, range=30.0, stop=2.0, weight=1.8, clip=30,
+                 ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', shoot='M9Shoot', radius=96, volume=28),
+    # user, 2026-10-22: the .45 hits harder than the MP5 for its slower fire, recoil and smaller magazine; a little
+    # less accurate and shorter-ranged (heavier recoil, slower round); 2.5 kg
+    'UMP45': dict(min=1.1, max=1.8, crit=25.0, hit=48, aim=40, recoil=17, range=28.0, stop=2.5, weight=1.9, clip=25,
+                  ammo='swmg:bullet_45', box='MarzGuns.45_Box', shoot='M1911Shoot', radius=70, volume=20),
+}
+
+
+def ump_item(gun):
+    s = UMP_STATS[gun]
+    return f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 4,
+        MaxSightRange                = 12.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 30.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Burst/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {s['ammo']},
+        AmmoBox                      = {s['box']},
+        ClipSize                     = {s['clip']},
+        MagazineType                 = {M}.{UMP_GUN_MAGS[gun][0]},
+        MaxAmmo                      = {s['clip']},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M1911Drop,
+        EjectAmmoStartSound          = M1911EjectAmmoStart,
+        EjectAmmoSound               = M1911EjectAmmo,
+        EjectAmmoStopSound           = M1911EjectAmmoStop,
+        EquipSound                   = M1911Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M1911InsertAmmoStart,
+        InsertAmmoSound              = M1911InsertAmmo,
+        InsertAmmoStopSound          = M1911InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = {s['shoot']},
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.0,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{ump_parts(gun)}        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = 4.0,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+"""
+
+
+def ump_items():
+    """Both UMPs as GoM's MP5 is made (UMP_STATS), select fire with H&K's two-round burst (user, 2026-10-22)."""
+    out = [ump_item(gun) for gun in UMPS]
+    # H&K's polymer magazines by GoM's weights: its MP5 30 = 0.18; Thompson 30 / 20 = 0.15 / 0.1; pistol 0.05
+    for mag, cap, weight, ammo, gun in (('9x19Magazine30_UMP', 30, 0.18, 'swmg:bullet_9x19', 'UMP9'),
+                                        ('45Magazine25_UMP', 25, 0.15, 'swmg:bullet_45', 'UMP45'),
+                                        ('45Magazine20_UMP', 20, 0.1, 'swmg:bullet_45', 'UMP45'),
+                                        ('45Magazine10_UMP', 10, 0.05, 'swmg:bullet_45', 'UMP45')):
+        out.append(f"""
+    item {mag} {{
+        AmmoType         = {ammo},
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {M}.{gun},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in [('UMP_Integrated_Stock_Folded', 'StockIntegrated', None),
+                                ('UMP_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+                                ('UMP_Integrated_Rail_Up', 'RailUp', None),
+                                ('UMP_Integrated_Rail_Down', 'RailDown', None),
+                                ('UMP_Integrated_Rail_Left', 'RailLeft', None),
+                                ('UMP_Integrated_Rail_Right', 'RailRight', None)]:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        out.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    return out
+
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -896,6 +1098,20 @@ def translations():
         f'{M}.SCAR_Integrated_Rail_Right': 'SCAR Integrated Rail (Right)',
         f'{M}.SCARH_Suppressor': 'SOCOM762-RC Suppressor (7.62x51mm Weapons)',
         f'{M}.SCARH_Muzzle_Mount_Device': 'SCAR-H Muzzle Mounting Device',
+        # GoM: "MP5 Submachine Gun", "MP5 30Rds 9x19mm Magazine", "Thompson 20Rds .45 ACP Magazine", "G36 30Rds
+        # 5.56x45mm Translucent Magazine" (the UMP45's are smoked translucent polymer)
+        f'{M}.UMP45': 'UMP45 Submachine Gun',
+        f'{M}.UMP9': 'UMP9 Submachine Gun',
+        f'{M}.9x19Magazine30_UMP': 'UMP9 30Rds 9x19mm Magazine',
+        f'{M}.45Magazine25_UMP': 'UMP45 25Rds .45 ACP Translucent Magazine',
+        f'{M}.45Magazine20_UMP': 'UMP45 20Rds .45 ACP Translucent Magazine',
+        f'{M}.45Magazine10_UMP': 'UMP45 10Rds .45 ACP Translucent Magazine',
+        f'{M}.UMP_Integrated_Stock_Folded': 'UMP Integrated Stock (Folded)',
+        f'{M}.UMP_Integrated_Stock_Deployed': 'UMP Integrated Stock (Deployed)',
+        f'{M}.UMP_Integrated_Rail_Up': 'UMP Integrated Rail (Up)',
+        f'{M}.UMP_Integrated_Rail_Down': 'UMP Integrated Rail (Down)',
+        f'{M}.UMP_Integrated_Rail_Left': 'UMP Integrated Rail (Left)',
+        f'{M}.UMP_Integrated_Rail_Right': 'UMP Integrated Rail (Right)',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
@@ -913,7 +1129,8 @@ if __name__ == '__main__':
     ucp = load_points('ucp_points.json')
     scarl = load_points('scarl_points.json')
     scarh = load_points('scarh_points.json')
-    models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh)
+    ump = load_points('ump_points.json')
+    models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump)
     fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
     translations()

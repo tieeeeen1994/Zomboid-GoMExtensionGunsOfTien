@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR, the Five-seveN, the UCP Prototype, the SCAR-L and
-    SCAR-H and their ammunition
+    SCAR-H, the UMP45 and UMP9 and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -16,6 +16,10 @@
       bunker's storage, RifleCase3, late civilian gun finds; up to 6 magazines and 6 boxes) and
       MarzGuns.Zombie_Army_Rifle_Spawner (with the M60; the rifle on army zombies' backs; up to 4 and 4). Not in the
       Anachronistic spawner, which reaches civilian homes.
+    - The UMP45 and UMP9 (H&K, 1999) the MP7 / P90 route (user, 2026-10-22): an alternative each in the Anachronistic
+      spawner and the police SMG spawner, the gun with its standard magazine (UMP45 25, UMP9 30) and GoM's boxes, as
+      GoM's MP5 kit carries its 30. Two alternatives because their magazines and rounds differ (GoM's MP5 alternative
+      picks one of three guns sharing them).
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -70,6 +74,23 @@ local function p90Alternative(boxes)
     }
 end
 
+-- The UMPs, packed as the MP7's
+local function ump45Alternative(boxes)
+    return {
+        { items = { M .. "UMP45" }, amountChance = 1 },
+        { items = { M .. "45Magazine25_UMP" }, amountChance = 3 },
+        { items = { "MarzGuns.45_Box" }, amountChance = boxes },
+    }
+end
+
+local function ump9Alternative(boxes)
+    return {
+        { items = { M .. "UMP9" }, amountChance = 1 },
+        { items = { M .. "9x19Magazine30_UMP" }, amountChance = 3 },
+        { items = { "MarzGuns.9x19_Box" }, amountChance = boxes },
+    }
+end
+
 -- MarzGuns.FIVESEVEN, as GoM's police pistols come (4 magazines, 4 boxes); the 30-round only on found guns (5%).
 local function fivesevenAlternative(boxes)
     return {
@@ -121,12 +142,16 @@ end
 local SPAWNERS = {
     { "MarzGuns.World_Anachronistic_Spawner", mp7Alternative, 4 },
     { "MarzGuns.World_Anachronistic_Spawner", p90Alternative, 4 },
+    { "MarzGuns.World_Anachronistic_Spawner", ump45Alternative, 4 },
+    { "MarzGuns.World_Anachronistic_Spawner", ump9Alternative, 4 },
     { "MarzGuns.World_Army_Rifle_Spawner", scarlAlternative, 6 },
     { "MarzGuns.World_Army_Rifle_Spawner", scarhAlternative, 6 },
     { "MarzGuns.Zombie_Army_Rifle_Spawner", scarlAlternative, 4 },
     { "MarzGuns.Zombie_Army_Rifle_Spawner", scarhAlternative, 4 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", mp7Alternative, 2 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", p90Alternative, 2 },
+    { "MarzGuns.Zombie_Police_SMG_Spawner", ump45Alternative, 2 },
+    { "MarzGuns.Zombie_Police_SMG_Spawner", ump9Alternative, 2 },
     { "MarzGuns.Zombie_Police_Handgun_Spawner", fivesevenAlternative, 4 },
     { "MarzGuns.Zombie_SWAT_Handgun_Spawner", fivesevenAlternative, 4 },
     { "MarzGuns.Zombie_Police_Handgun_Spawner", ucpAlternative, 4 },
@@ -263,7 +288,7 @@ Events.OnPostDistributionMerge.Add(addWorldLoot)
 -- Direct entries: both pistols in survivor and bandit bags
 -------------------------------------------------
 -- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its guns evenly
--- (GoM's 5 plus ours: 7 with the MP7 and the P90), so each gets 2/n and 1/n there. n is counted at run time,
+-- (GoM's 5 plus ours: 9 with the MP7, the P90 and the two UMPs), so each gets 2/n and 1/n there. n is counted at run time,
 -- so a gun added to SPAWNERS later keeps the pistols in step.
 local ANACHRONISTIC = "MarzGuns.World_Anachronistic_Spawner"
 local SURVIVOR, BANDIT = 2, 1

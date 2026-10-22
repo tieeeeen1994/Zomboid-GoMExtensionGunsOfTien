@@ -159,6 +159,11 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   user's photo) in FDE, select fire, standard side-folding stock; the SCAR-L on GoM's 5.56 family and STANAG
   magazines, the SCAR-H on its 7.62x51 family with its own 20 / 10-round magazines and its own SOCOM762-RC suppressor +
   mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
+- **H&K UMP45 and UMP9** (user, 2026-10-22; built): two guns on one shared model, no calibre conversion recipe and no
+  UMP40 (no .40 S&W round in GoM / Gunworks, and the user chose not to add one); the .45 hits harder than GoM's MP5,
+  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, no suppressor or muzzle device, GoM's MP5 reload clips,
+  loot the MP7 / P90 route, magazines on found guns by GoM's MP5 rule. Design: docs/post93_design.md; build notes:
+  "H&K UMP45 and UMP9" below.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -195,19 +200,24 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   butt, fitted out with GoM's sights, foregrip, bipod and muzzle parts, then one slot row of what the add-on adds
   besides the guns (the SCAR-H's magazines, drum, suppressor, mount device) and two text lines; added on the Steam
   page by hand like preview2-5.
+  preview7 (2026-10-22) is the UMP45 and UMP9, laid out like preview6: render_ad_guns.py `ump45` / `ump9` (one body
+  file, each gun's texture; the view shows the right side after the mirror, so the UMP45 carries GoM's laser rather
+  than a light on the hidden left rail), one scale, staggered, each under its name and calibre, then one slot row (each
+  gun and its magazines) and one line (the rails line was removed, user 2026-10-22). Added on the Steam page by hand like the others.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`
   (→ RoundTooltips.lua: every round's lines from the profiles), `scripts/make_art.py`,
   `scripts/make_ammomaker_art.py`, `scripts/post93/gen_post93_ammo.py`, `scripts/post93/make_ammo_art.py`,
   `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json` /
-  `fiveseven_points.json` / `ucp_points.json`),
+  `fiveseven_points.json` / `ucp_points.json` / `scarl_points.json` / `scarh_points.json` / `ump_points.json`),
   `scripts/check_refs.py` (every item / model / icon / mesh / texture / AnimSet clip name in both mods resolves
   against them, GoM, Gunworks, Ammo Maker, Hot Brass and vanilla, version and common folders), and the model
   builders `scripts/post93/build_mp7.py`, `build_p90.py`, `build_fiveseven.py`, `build_ucp.py` (the others import
   build_mp7 as their library), their review renders `render_mp7.py` / `render_p90.py` / `render_fiveseven.py` /
   `render_ucp.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` / `make_fiveseven_art.py` /
-  `make_ucp_art.py` (Pillow); `trace_outline.py` traces a reference photo's outline. Main mod meshes:
+  `make_ucp_art.py` (Pillow), and the same three for the SCARs (`build_scar.py`...) and the UMPs (`build_ump.py`,
+  `render_ump.py`, `make_ump_art.py`); `trace_outline.py` traces a reference photo's outline. Main mod meshes:
   `scripts/build_sawn_stocks.py` (Blender: the stockless break-action bodies and the stock / barrel offcuts, from
   GoM's own FBX files; writes `scripts/sawn_offcuts.json`, read by gen_scripts.py), then `scripts/make_offcut_art.py`
   (Pillow: the offcut icons, cameras in `offcut_icon_cameras.json`, sheet `docs/sawn_offcuts_preview.png`).
@@ -573,6 +583,35 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - SCAR-H magazines in real life: FN only made 10 and 20 rounds. The 50-round drum (user, 2026-10-20) is ProMag's
   DRM-A41 for the SCAR 17S, modelled as a single drum facing front and back (its axis along the barrel, like the
   MP7's; the user corrected a first build facing the sides), winding knob on the front face; its icon uses the MP7 drum's camera with the MP7 magazine light (the drum light washed it out too).
+
+## H&K UMP45 and UMP9 (2026-10-22)
+
+- Builder `scripts/post93/build_ump.py` (one body and charging handle for both guns, the shared stock, the four
+  magazines; the MP7 kit's slab / lathe / picatinny / bake helpers, `kit.K` 0.00072 and `kit.MATS` replaced), review
+  renders `render_ump.py`, icons and sheet `make_ump_art.py --renders DIR` (`docs/post93_ump_preview.png`). Rebuild:
+  `blender -b --factory-startup -P scripts/post93/build_ump.py` (~2 min at the default 1024 bake), `render_ump.py --
+  DIR`, `make_ump_art.py --renders DIR`, then `gen_post93_guns.py` and `check_refs.py`. On the Mac, Python has no numpy:
+  `pip3 install --target <scratch>/py numpy` and `PYTHONPATH` it for trace_outline.py / make_*_art.py (`python3 -I`
+  ignores PYTHONPATH and user site packages, so run them without it).
+- **Both guns are one mesh** (`UMP_BODY`, `UMP_BOLT` in `GunsOfTienPost93_UMP.fbx`, `UMP_STOCK` in the parts file) and
+  one `ump_points.json`; the bake is done once and painted twice (`UMP9.png`, `UMP45.png`: only the markings differ),
+  and the model scripts `UMP9` / `UMP45` point at the same node with their own texture. `UMP_BOLT`'s model uses
+  `UMP9.png` (its texels are the same in both).
+- **Photo scale from the rail**: H&K's UMP9 photo (1280 px) measured 18.13 px per 10 mm crossbar on its top rail
+  (autocorrelation of the top edge's row profile over L 212-355, as for the SCARs), giving 695 mm with the stock
+  deployed against H&K's published 690. The second reference, a third-party render of a UMP .45 (right side), has
+  rail crossbars 36 px apart, which would make the gun 501 mm long: its proportions are an artist's and were used only
+  for where the right-side features are (stock hinge, ejection port).
+- The UMP9's curved 30-round magazine was fitted to the photo's front and rear edges (grid search: top at L 234 /
+  H 192, rake 16 degrees under the receiver curving to 36 at its base, 42 mm deep, within 1 mm RMS); the .45
+  magazines are straight at 18 degrees, 44 mm deep, with no published drawing. `mag_local()` maps texels back to (along
+  the axis, across it) for both shapes.
+- Review renders: Workbench's specular highlight lifted the black polymer so that painted dark details (port, slots)
+  vanished (body 44 and port 15 sRGB both rendered ~65); `render_ump.py` turns `show_specular_highlight` off. The
+  tan SCARs never showed it.
+- Not in the photo and drawn from H&K's layout: the right side's ejection port over the magazine well, the stock's
+  hinge knuckles on the receiver's right rear (the stock folds about them to the right, `stock_folded` as the SCARs'),
+  the selector's two-round burst mark, the calibre markings.
 
 ## Gun tooltips (2026-10-18)
 

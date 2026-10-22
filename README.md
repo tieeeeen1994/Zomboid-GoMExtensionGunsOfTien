@@ -57,5 +57,6 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
   suppressor and Guns of Marz's pistol sights and pistol lights
 - FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor
+- H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

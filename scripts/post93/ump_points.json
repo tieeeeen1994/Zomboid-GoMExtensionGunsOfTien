@@ -1,0 +1,306 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.283,
+      0.0279
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1145,
+      0.0151
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.067,
+      0.0592
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.067,
+      0.0615
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0129,
+      0.2077,
+      0.0288
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0129,
+      0.2077,
+      0.0288
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0191,
+      0.2077,
+      0.0288
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0202,
+      0.2077,
+      0.028
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.2056,
+      0.0118
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.2023,
+      0.0093
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock": {
+    "offset": [
+      0.0,
+      -0.0338,
+      0.0279
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock_folded": {
+    "offset": [
+      -0.031,
+      -0.0338,
+      0.0279
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      180.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.02,
+      0.13,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.72 of real size, GoM's MP5 family); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 393, H 171)",
+    "magazine": "the UMP9's and UMP45's magazines hang from here (their feed lips), their rake built in",
+    "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the hinge: its front face on the bore axis",
+    "stock_folded": "the same node turned 180 degrees about the hinge pin at x -21.5 mm (the right side)",
+    "bolt_fired": "the charging handle does not reciprocate: the same place as bolt_lock"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      393.0,
+      171.0
+    ],
+    "bore_mm": 209.8,
+    "real_mm_per_game_unit": 1388.89,
+    "k": 0.00072
+  },
+  "_bounds": {
+    "UMP_BODY": {
+      "min": [
+        -0.0184,
+        -0.0338,
+        -0.0803
+      ],
+      "max": [
+        0.0184,
+        0.283,
+        0.0833
+      ],
+      "tris": 2458
+    },
+    "UMP_BOLT": {
+      "min": [
+        0.013,
+        0.2218,
+        0.0472
+      ],
+      "max": [
+        0.0216,
+        0.2362,
+        0.0551
+      ],
+      "tris": 88
+    },
+    "UMP_STOCK": {
+      "min": [
+        -0.0187,
+        -0.1838,
+        -0.0669
+      ],
+      "max": [
+        0.0137,
+        0.0032,
+        0.03
+      ],
+      "tris": 740
+    },
+    "9x19Magazine30_UMP": {
+      "min": [
+        -0.0091,
+        -0.0137,
+        -0.1383
+      ],
+      "max": [
+        0.0091,
+        0.076,
+        0.0036
+      ],
+      "tris": 566
+    },
+    "45Magazine25_UMP": {
+      "min": [
+        -0.0099,
+        -0.0142,
+        -0.1395
+      ],
+      "max": [
+        0.0099,
+        0.0598,
+        0.0042
+      ],
+      "tris": 566
+    },
+    "45Magazine20_UMP": {
+      "min": [
+        -0.0099,
+        -0.0142,
+        -0.1124
+      ],
+      "max": [
+        0.0099,
+        0.051,
+        0.0042
+      ],
+      "tris": 486
+    },
+    "45Magazine10_UMP": {
+      "min": [
+        -0.0099,
+        -0.0142,
+        -0.0583
+      ],
+      "max": [
+        0.0099,
+        0.0334,
+        0.0042
+      ],
+      "tris": 326
+    },
+    "UMP_STOCK_deployed": {
+      "min": [
+        -0.0187,
+        -0.2176,
+        -0.039
+      ],
+      "max": [
+        0.0137,
+        -0.0306,
+        0.0579
+      ],
+      "tris": 740
+    },
+    "UMP_STOCK_folded": {
+      "min": [
+        -0.0447,
+        -0.037,
+        -0.039
+      ],
+      "max": [
+        -0.0123,
+        0.15,
+        0.0579
+      ],
+      "tris": 740
+    }
+  }
+}

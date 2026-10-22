@@ -1,5 +1,6 @@
 --[[
-    Guns of Tien - Post-93 -- 4.6x30mm and 5.7x28mm in Gunworks' ammo families, and their stat profiles.
+    Guns of Tien - Post-93 -- 4.6x30mm and 5.7x28mm in Gunworks' ammo families, and their stat profiles; the UMPs'
+    magazines in Guns of Marz's .45 ACP and 9x19mm families.
 
     Two new families. As with Guns of Marz's magazine-fed guns, the magazines are in the family, not the guns.
     The standard rounds (DM11, SS190) are the guns' own script rounds, which Gunworks never gives an ammo profile
@@ -27,6 +28,15 @@ Ammo.RegisterMultipleItemsWithFamilies({
         M .. "57x28Magazine50_P90",
         M .. "57x28Magazine20_FIVESEVEN",
         M .. "57x28Magazine30_FIVESEVEN",
+    },
+    -- the UMPs' magazines join Guns of Marz's own families (its rounds and the main mod's special loads)
+    [".45 ACP"] = {
+        M .. "45Magazine25_UMP",
+        M .. "45Magazine20_UMP",
+        M .. "45Magazine10_UMP",
+    },
+    ["9x19mm"] = {
+        M .. "9x19Magazine30_UMP",
     },
 })
 
