@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>fromSitOnFurnitureFrontQuickRifle_GoTCompactUzi</m_Name>
+	<m_AnimName>GunsOfTien_CompactUzi_Seated_StandUp_Rifle</m_AnimName>
+	<m_ConditionPriority>100</m_ConditionPriority>
+	<m_DeferredBoneName>Bip01</m_DeferredBoneName>
+	<m_deferredBoneAxis>Z</m_deferredBoneAxis>
+	<m_useDeferedRotation>true</m_useDeferedRotation>
+	<m_Looped>false</m_Looped>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_BlendOutTime>0.20</m_BlendOutTime>
+	<m_SpeedScale>1.50</m_SpeedScale>
+	<m_maxTorsoTwist>0.00</m_maxTorsoTwist>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_Conditions>
+		<m_Name>GunworksGripAnim</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>GunsOfTien_CompactUzi</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>sittingonfurniture</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>SitOnFurnitureDirection</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>Front</m_Value>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>getUpQuick</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>FlagWhileAlive</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue>hideEquippedHandL</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>FlagWhileAlive</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue />
+	</m_Events>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_Value>firearm</m_Value>
+	</m_Conditions>
+</animNode>

@@ -503,13 +503,16 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       muzzle flash at the barrel's end; the floor pose of guns and magazines.
 - [ ] Own reload clips for the full-size Uzi and GoM's MP5K (user, 2026-10-23: GoM's MP5 clips put the Uzi's left
       hand ~10 cm ahead of its grip magazine, GoM's handgun2 clips miss the MP5K's magazine too). Drafts only, not
-      wired into the game; the user found issues in the latest GIFs (not yet listed: ask) and moved computers.
+      wired into the game. Third round (2026-10-23) waits for the user's look at the GIFs.
       Builder `scripts/anim/smg_reload.py` (Blender, ~15 s a gun; TienInspectWeapon's rig, as m249_reload.py):
       `blender -b --factory-startup -P scripts/anim/smg_reload.py -- "<vanilla media/anims_X/Bob>" "<ABSOLUTE
       repo>/tmp/anim/smg" uzi|mp5k [Unload Load Rack AimRack] --preview` writes `Bob_GunsOfTien_<Uzi|MP5K>_<clip>.x`
       + previews; GIFs: `py ../TienInspectWeapon/scripts/anim/gif.py tmp/anim/smg/prev_<gun>_<clip> out.gif 3 0.7`,
       key frames: `sheet.py <dir> out.png 6,12,...`. (tmp/ is gitignored: regenerate the previews on the other
-      computer.) Clips 36 / 45 / 36 / 36 frames = GoM's magazine durations 1.2 / 1.5 / 1.2 s; SWAP Unload 16, Load 30.
+      computer.) Clips 36 / 45 / 36 / 36 frames = GoM's magazine durations 1.2 / 1.5 / 1.2 s; SWAP Unload 10, Load 30.
+      Every build prints body clearance per clip (`... into the body by D (frame f)`; ~0.02 = an arm resting on the
+      side, as vanilla's idle) and, with `SMG_CLEAR=1`, per-frame depths and reach shortfalls. The magazine in the
+      hand renders orange.
       Done so far, from the user's notes on the first two rounds:
       - the left hand takes the magazine by its body just under the well (works for every magazine length, 20-50 and
         GoM's MP5 drums), vanilla's rifle-load grip (frame 30) moved by `hold_fix`, measured with `SMG_CAL=raw` (the
@@ -528,15 +531,49 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
         and GoM draws guns large next to Bob (arm reach 0.274 from the shoulder), so a forward-pointing gun puts the
         lever out of reach.
       - MP5K AimRack added (user: "I don't see an MP5K aiming"; GoM's handgun2 has none)
+      - third round, from the user's notes: "the racking of MP5K makes their racking arm go in their body... just
+        no" and "why is the uzi unload magazine model just rotates? It doesn't go with the hand". Unload swap moved
+        16 -> 10 (the hand closes on the magazine; at 16 the seated magazine stayed while the hand slid 8.5 cm down
+        it, then hung from the hand like a lever) and the hand keeps its turn on the way to the hip (no "belt" grip),
+        the hip target worked out from where the gun really lands (it was 8 cm short). MP5K: the left hand joins the
+        gun only once it is up and lets go before it goes down (the pistol idle's gun hangs at the right thigh: the
+        left arm went through the belly to reach it, also in the Load's end); rack place scanned (reach, clearance,
+        wrist, straight arms) with the rig's new torso twist: close in front of the right shoulder, muzzle forward
+        and a little left, chest turned 15 degrees; work place ch(0.04, 0.68, 0.10). Uzi Rack had the same fault
+        (left upper arm 7 cm into the chest, an 88-degree elbow flip): now low in front of the belly, canted left,
+        twist 15, hand and gun back together after the let-go. The return-to-idle key turned the gun across the
+        thigh (it carried the rack's `top`): fixed. All clips now at contact level or clear.
+      - fourth round: user liked the MP5K AimRack; "mp5k rack ... after racking the gun the racking arm is not
+        smooth and looks like a fast snap", "the uzi unload looks like the wrist is broken". The MP5K's free left
+        hand stays on IK and is steered to / from exactly the idle's hanging hand (`free` = the rig's support_base)
+        instead of fading support over 5 frames (rack, unload start, load end). Uzi: the work place settles the gun
+        to a right wrist of -30/-20 (`wrist`, was -52/-49), the hip hand settles to a natural wrist (was bent 55),
+        the unload's elbows leave the idle's by frame 8 (rig `ramp`; held near it the left forearm twisted -98),
+        the load's hand goes back to its grip with the gun, the rack's hand turns (-60, 30, 0) on the knob (twist
+        -100 -> -62). `SMG_CLEAR=1` also prints both wrists every 2nd frame. Left: Uzi AimRack's right wrist is
+        vanilla's rifle aim (kept on purpose); a few frames as the hands first reach the gun.
       Still to do once approved: AnimSets player + player-vehicle (`*UziRifle_GoT.xml`, `*MP5K_GoT.xml`; Load: Start
       insertAmmoStart, load sound + changeWeaponPart "mag" at 30/45, loadFinished End; Unload: ejectAmmoStart,
-      unload sound + changeWeaponPart at 16/36, unloadFinished; Rack / RackAim (RackAiming condition, as GoM's
+      unload sound + changeWeaponPart at 10/36, unloadFinished; Rack / RackAim (RackAiming condition, as GoM's
       RackMP5Aim): rack sound, rackStart ~12/36, **rackBullet before ejectCasing** (~0.55 / 0.56: Hot Brass; GoM's own
       MP5 rack has them the other way), rackEnd, rackingFinished); ship the .x files to anims_X/Bob; Uzi.lua: the UZI
       handler animId "UziRifle", style "attachments" with the magazine shown in the hand (Gunworks shows the real
       magazine, resolveReloadMagItem) and the pointMagPart wrapper extended to it; a new shared file registering
       MarzGuns.MP5K the same way (animId "MP5K_GoT", after GoM's ReloadAnims, a GoM fix: say so in README /
       workshop.txt / mod.info's fix list); CLAUDE.md notes.
+- [ ] Compact SMG stance (user, 2026-10-23, Option B; CLAUDE.md "Compact SMG stance"): Uzi, Mini Uzi, MP5K, MP7A1 /
+      A2. Idle and aim approved; full coverage built and shipped (3 sets x 240 clips + 4 reloads, packed 7 files a
+      set, 4 sets (Uzi, UziT, MP5K, MP7), 1016 stance nodes (with Gunworks' RealSingle / Auto / Burst shooting and
+      dry-fire nodes), 32 reload nodes;
+      idle hold moved 4 cm in after the first test; CompactStance.lua x2, Uzi.lua and Post-93 Guns.lua reloads; README /
+      workshop / mod.info, beta). Reload clips not yet reviewed by the user. To check in game: the packed clips load
+      (no "animation not found" in the log), the stance on all five guns (MP too: GunworksGripAnim on remote
+      players), the MP7A1 switching sets as its foregrip folds, idle / aim / every pitch / walking aimed / shooting
+      Auto / Single / empty (the left hand staying on the gun) / shove, crouching in the open and by a wall (idle,
+      walk, run, stopping: wrists natural, the gun low and forward), standing to walking and aimed walk to walk, tracers and muzzle flash leaving the drawn
+      muzzle on every gun (the turned ones: Mini Uzi, MP5K, MP7s, on the UziT / MP5K / MP7 clips), sneaking, walking, running, sprinting, vaults, falls, get-ups, sitting, fidgets,
+      emotes, vehicle aiming, the reloads (magazine leaving with the hand, racks, Hot Brass casing at the rack), the
+      guns upright in hand and unchanged in holsters / on the back / on the floor, the Micro Uzi still one-handed.
 - [ ] Belt links built 2026-10-22 (docs/design.md 4e): M27 / M13 links and their boxes (models, icons, open / pack /
       make recipes), filling and unloading belt boxes takes / gives links, every shot from a belt box throws its link
       out (Hot Brass physics and our landing sounds, at the feet without Hot Brass, into Ammo Maker's brass catcher;

@@ -152,14 +152,17 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
 -- events detach the magazine part (looks only) as the left hand leaves the gun in the unload, and put it back as the
 -- new one is pressed home; the real unload / insert still happen at the clips' ends. Durations = the clips' lengths.
 -------------------------------------------------
--- both MP7s play the same clips (animId "MP7A1"); each gets its own table, as pointMagPart below rewrites its spec
+-- both MP7s: the compact SMG stance's reload (CompactStance.lua; clips GunsOfTien_CompactMP7_Reload* in the stance's
+-- packs, from scripts/anim/smg_reload.py's compact_mp7: the magazine carried in the left hand, which is shaped round it,
+-- the T handle pulled with the muzzle turned up and right); each gets its own table, as pointMagPart rewrites its spec.
+-- The old pistol clips (animId "MP7A1", no magazine in the hand) stay in the mod, unused.
 for _, gun in ipairs(MP7S) do
     ReloadAnim.RegisterWeapon(gun, {
-        animId = "MP7A1",
+        animId = "GunsOfTienCompactMP7",
         style = "attachments",
         magItem = MP7_MAGS[1],
         attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
-        durations = { unload = 1.5, load = 1.5, rack = 1.33 },
+        durations = { unload = 1.2, load = 1.5, rack = 1.2 },
     })
 end
 ReloadAnim.RegisterWeapon(P90, {
@@ -204,7 +207,8 @@ end
 -- eject started (_actualMagType), or the gun's saved MagazineType.
 local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
 local function pointMagPart(action, handler)
-    if not (resolveReloadMagItem and action and handler and handler.animId == "MP7A1" and handler.parts) then
+    if not (resolveReloadMagItem and action and handler and handler.parts
+            and (handler.animId == "MP7A1" or handler.animId == "GunsOfTienCompactMP7")) then
         return
     end
     local spec = handler.parts.mag

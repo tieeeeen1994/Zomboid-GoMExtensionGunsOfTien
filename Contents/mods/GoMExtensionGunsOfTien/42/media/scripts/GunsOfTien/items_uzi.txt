@@ -145,6 +145,8 @@ module GunsOfTien {
         Reloadtime                   = 30,
         AttachmentType               = Holster,
         WeaponReloadType             = handgun,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
         SwingAnim                    = Handgun,
         MuzzleFlashModelKey          = muzzle_flash_handgun,
         UseEndurance                 = false,

@@ -1092,6 +1092,219 @@ behind it (42.21):
   -0.044). The cap's UVs copy the middle of the largest walnut-coloured stock face along the cut (taking each corner's
   UV from a neighbour face squeezed it into a strip over dark seams).
 
+## Compact SMG stance (2026-10-23, full coverage built, not loaded in game yet)
+
+- User's choice ("Option B"): the full-size Uzi, Mini Uzi and GoM's MP5K share one custom idle / aim stance; the
+  Micro Uzi and Post-93's P90 stay pistol-held (the MP7 was not decided). Option A (just make them two-handed and
+  use vanilla's rifle stance) was declined. Draft stills: `scripts/anim/compact_stance.py` (sheet in
+  tmp/anim/stance/).
+- Gunworks has a held-pose registry for this: `WeaponSystems/Utils/GripAnim.lua` (Gunworks_gang_framework 42.13).
+  `GripAnim.RegisterWeapon(fullType, { animId = ..., matches = fn|nil })`; while a registered gun is in the primary
+  hand Gunworks sets the animation variable `GunworksGripAnim` = animId (local player from OnPlayerUpdate, remote
+  players from a 3-tick OnTick sweep in MP, only on change). AnimSet nodes gate on it: Heavy Ordnance (workshop
+  3802070967) adds `GunworksGripAnim == "RPG"` + `Weapon == firearm` with `m_ConditionPriority` 100 to ~90 copies of
+  vanilla rifle nodes (idle, aim, aim-strafe, strafe, walk, run, sprint, ranged Auto / Burst / Single / Empty, shove,
+  bumps, climbfence, falling, getup, sitting, ext, emote) and ships 114 `RPG_*.x` clips (23 MB, ~200 KB each).
+- The class decides every state we do not author (TienInspectWeapon CLAUDE.md: `TwoHandWeapon` alone picks
+  `firearm` vs `handgun` for guns), so all three must be two-handed: the MP5K and the Mini Uzi get
+  `TwoHandWeapon = true` and are drawn upright in the hand by a `Bip01_Prop1` attachment `rotate = 0 180 0` on their
+  model scripts (GoM's MP5K model redeclared whole in our scripts: a second block resets it). 394 vanilla player
+  nodes are class-conditioned; outside idle / aim / aim-strafe / strafe / ranged they are whole-body clips.
+- Bob's arm reaches 0.274 from the shoulder; the MP5K's vertical foregrip is ~0.18 ahead of its grip, the Uzis'
+  handguards ~0.07, so a muzzle-down forward low ready leaves the MP5K's foregrip out of the left hand's reach. The
+  stance is one body pose with two left-hand places: two clip sets ("Uzi" for the Uzi and Mini Uzi, "MP5K"), two
+  Gunworks animIds. The draft places were scanned over both sets (reach, wrists, clearance, a muzzle-down
+  preference): low ready across the body (grip ch(0.06, 0.60, 0.08), muzzle (-0.8, -0.3, 0.5), twist 15), aim =
+  the rifle aim's torso with the grip at eye + ch(0.08, -0.10, 0.18), twist 15; the MP5K hand is turned (0, 0, -60)
+  round its foregrip.
+- Aim, chosen 2026-10-23 out of three drafts (square push-pull, compressed square, cheeked): the cheeked one, "more
+  like the rifle's, except the hand controlling the recoil should move in closer". So the gun takes the rifle aim's
+  place exactly (rig `at_aux`: the right arm and wrist are vanilla's, -99/-93/-67), and the left hand is slid back
+  from the rifle's 0.20 ahead of the grip to the gun's support place with vanilla's left-wrist angles kept (3/54/20;
+  `lgrip_with_wrist`: solve, set the wrist, re-anchor the palm, a few rounds). The first draft (the gun placed by
+  hand, pushed 6 cm out, twist 15) was "terrible". The MP7 joins (user): its own set, support 0.142.
+- Then (user: "copy the right hand style in the vanilla one and just adjust the left arm. still looks terrible"):
+  `at_aux` still re-solves the right arm (the rig picks its own elbow) on the idle's legs, so the stance is now built
+  on vanilla's own clips: every bone and Bip01_Prop1 as the vanilla rifle clip has them, only the left arm solved
+  onto the gun's support place (`scripts/anim/stance_vanilla.py`, `left_only`), the hand turned about the gun by a
+  scanned amount per set and pose (`TURN`; left wrists then within ~20 degrees of natural). The idle follows the
+  same rule (vanilla's rifle idle, left hand pulled in). This is also how the full clip set gets built: per frame
+  of each vanilla rifle clip, left arm only. The Uzis then hold forward like the MP7 / MP5K (user: "uzi should use
+  the style of mp7 and mp5k"): support (0, 0.130, -0.014), under the front of the receiver, as far forward as the
+  Mini Uzi allows (receiver ends ~0.13, its folded stock's butt hangs under the barrel at 0.10-0.11); turns Idle
+  (0, -15, 15), Aim (0, 0, 0). The aim is approved (user, 2026-10-23: "the aiming are now correct").
+- Idle muzzle down (user: "the guns should be pointing downwards rather than up"): no vanilla rifle idle points down
+  (Bob_IdleRifle / NoAim / Ext / Sneak all aim up-left; only Bob_IdleAimRifle_Down(75) do, with the aiming hunch).
+  With vanilla's rifle grip a relaxed right wrist puts the barrel ~50 degrees above the forearm, so a down muzzle
+  needs the forearm hanging and the right hand at the hip, from where the left hand cannot reach the gun's front:
+  a scan (`idle_down.py`, grip places x directions x twist x lean, the left hand anywhere from 0.04 along) found only
+  4 reachable two-handed holds 25+ degrees down, all with the left hand against the right (0.04) and both wrists
+  1.3-1.6x past their natural range. Tipping the two-handed hold down gives ~5 degrees before the right wrist stops it.
+  What fits: one-handed, muzzle 53 degrees down-forward at the right side, the left arm hanging (vanilla's handgun
+  idle body, natural wrists): `idle_down.py` O1, shown to the user.
+- User then: "keep the gun close to themselves. like the vanilla one except the right hand is on the upper side and
+  the left hand on the lower side" (vanilla's diagonal reversed). Vanilla's clips do not keep one hand-to-gun
+  relation: Bip01_Prop1 hangs off Bip01 and the hand bones barely move (the right wrist reads (-16, -5, 0) = rest in
+  Bob_IdleRifle, Bob_IdleAimRifle, walk, run), so each clip holds the gun at its own angle in the hand. The rig's
+  `grip_r` (from its base clip) is only one choice: with the rifle idle's, the reversed diagonal asked a -100 degree
+  right wrist; with the pistol idle's (barrel along the forearm, composed with the half turn for an upright gun) it
+  is natural (`idle_down.py` X / X2, `x_rig`). X: grip ch(0.02, 0.58, 0.04), muzzle 38 down to the forward-left; X2:
+  grip ch(0.02, 0.58, 0.12), muzzle (-0.8, -0.5, 0.3), 30 down, across the belly like vanilla's; twist 15, left hand
+  turned per set (scanned), every wrist natural, nothing in the body. User: X2 "terrible and not natural", X "better,
+  but keep the gun closer": X3 = X's 38 degrees with the grip at ch(0.06, 0.58, -0.02), the gun's middle 6 cm nearer
+  the chest (the closest a scan found with gun and arms out of the body, every wrist natural); left turns Uzi
+  (45, 30, -15), MP7 (45, 15, -15), MP5K (30, 15, -30). Not what the user meant: "closer" = "less pointing forward
+  and more to the side". S1: grip ch(0.06, 0.56, 0.0), muzzle (-0.77, -0.61, 0.20); S2: grip ch(0.02, 0.56, 0.0),
+  muzzle (-0.78, -0.62, 0.12); both 38 degrees down, twist 0, the gun lying across the front of the belly
+  (`idle_down.py` ID_S); every wrist natural, the gun touching the body by at most 0.006. Their top faced forward,
+  so the magazine pointed into the belly (user: "rotate the held gun so that the mag doesn't hit the body"). ID_M:
+  S1's direction rolled so the magazine hangs down and a little forward (top = -(0.25, -1, 0.2)); the gun has to
+  sit ~10 cm further out (grip ch(0.02, 0.64, 0.10), twist 15) or the hanging magazine hits the belly; ~40 degrees
+  off straight down is the least with the gun on a 38-degree diagonal; right wrist (-43, 5, -35), left turns Uzi
+  (30, 0, 0), MP7 (30, -15, 0), MP5K (45, -15, 0), nothing in the body. The rig's soft wrist limit rolls a gun back
+  to the wrist's comfort when it can: scan rolls with `limit` off and check the wrist the roll really asks. Approved
+  ("alright this is good").
+- Built (`scripts/anim/compact_build.py`, ~1 min a set): 33 clips per set from vanilla's rifle clips frame by frame
+  (`CLIPS`: idle + heavy breathing, 4 sneak idles, aim at 5 pitches, IdleToAim / AimToIdle, 12 strafe-aim, 6
+  attack, 2 shove), named GunsOfTien_Compact<Set>_<vanilla name without Bob_>; ~190 KB each, 5.7 MB a set. Kinds:
+  aim = vanilla untouched but the left arm; idle = the approved hold rigid with the chest plus the vanilla gun's
+  drift relative to it, both arms solved (rig `grip_r` = the pistol idle's relation, wrist easing off: the hold is
+  already a landed pose); transitions = idle-kind and aim-kind poses blended bone by bone by smoothstep progress,
+  the gun put back in the right hand with the blended hand relation, the left arm re-solved. A per-frame de-clip
+  (`Declip`: elbows swung outward in 0.025 steps, then an idle-kind gun moved forward) keeps arms at contact level;
+  left over: the Uzi / MP7 heavy-breathing idle's left arm 3.3 / 3.5 cm in (vanilla 1.0), the shove's first frame
+  2.6-3.1 cm; the upward aims sink the gun's rear 2.7 cm into the face exactly as vanilla's rifle does.
+- Nodes (`scripts/anim/compact_animsets.py`, system python3): 18 per set, vanilla's rifle nodes (idle, sneak idles,
+  aim, aim-strafe, strafe + slow, ranged firearm Default / Auto / Burst / Single / Empty*, shoveAim) flattened with a
+  port of PZXmlUtil.resolve (42.21: a child element replaces the parent's of the same tag and x_name, an unnamed one
+  the parent's of the same tag at the same index among that tag, the rest is appended), our clips swapped in, the
+  GunworksGripAnim condition + m_ConditionPriority 100 added, transitions into replaced nodes copied to ours.
+- Shipped into the mods' anims_X/Bob and AnimSets/player (main: Uzi + MP5K sets, 11 MB; Post-93: MP7, 5.7 MB).
+  Lua: main `GunsOfTien/CompactStance.lua` (Gunworks.RegisterWeapon(fullType, { grip = { animId } }) at OnGameBoot,
+  which only reaches GripAnim; `turnUpright`: the Bip01_Prop1 point (0 180 0) on the model script + DoParam
+  TwoHandWeapon = true, at OnGameBoot / OnInitGlobalModData) for the Uzi, Mini Uzi, GoM's MP5K; Post-93's own file
+  for the MP7A1 / A2. The turn applies in every hand clip, so the pistol reloads of the Mini Uzi (UziGrip), MP5K
+  (GoM's handgun2) and MP7 (MP7A1) draw those guns upside down until their reloads are rebuilt on the stance.
+  Not covered (rifle class fallback): walk / run / sprint / sneak-walk, vehicles (player-vehicle AnimSets), fence
+  vaults, falls, sitting, emotes, ext fidgets. The MP7's folded foregrip (and the A2) use the unfolded-grip set.
+- After the in-game test (user: "move the gun closer to the body without rotating the gun"): the hold slid straight
+  back 4 cm (MP5K also 3 cm right; `idle_down.py` ID_MC) is the most before the gun's rear, high on the right chest,
+  goes into it; the gun's mean stand-off (clearance.gap against chest + pelvis) drops 8.5 -> 5 cm (MP5K 10 -> 5.5).
+  Closer needs the front end turned in (the gun angles slightly forward). The gun / magazine check must include the
+  pelvis (`clearance.Body(arm_ob, BODY | {"Bip01_Pelvis"})`): the default body is the chest and up. Built in
+  (`SETS[set]["closer"]`, applied to `Stance.hold_rel` in the character's frame); approved ("the closer is good now").
+- Walking and running (user: "when walking and running, let's keep the gun closer still"): the hold adds vanilla's
+  rifle drift relative to the chest, and vanilla carries its rifle out and up on the move (walk +4.5 cm out / +5 up,
+  run +12 / +14, sprint +10 / +18, sneaking +11 / +20). `hold_at` keeps 20 % of the outward part and 40 % of the
+  upward part (`DRIFT_OUT_KEEP` / `DRIFT_UP_KEEP`, env overrides for drafts); lowering only the outward part was not
+  enough, because with the full rise the crossing left arm meets the chest and the de-clip pushes the gun back out.
+  Result (gun's mean distance out from the idle hold): walk 5 -> 1.5 cm, run 12.5 -> 4, sneak 11 -> 2, sprint 11 -> 5
+  (the sprint's arm swing still makes the de-clip push it out to 11 cm at times). Not while crouched (user: "The
+  crouch Short SMG stance have a bad left arm"): the chest leans 53-85 degrees in the sneak clips (walk 14, run 43,
+  sprint 40), and there vanilla's drift is what keeps the gun out in front of the hips; cut back, the gun sat in the
+  belly and the left forearm crossed over it. Clips named Sneak / Sgun (`CROUCH_NAME`, 14) keep all of it; a lean
+  threshold cannot split them (running 43, the sprint start reaches 64). That alone left the wrists broken (user:
+  "the wrists are unnatural"): the hold turns with the chest, so a 53-85 degree lean took the right wrist to 70-85
+  degrees of bend and the left to 60-70 (rig limits 50 / 45; the approved idle has the right at 41). Crouched clips
+  now (1) turn the gun with vanilla's gun against the chest (`follow_turn`, its rotation change in the chest's frame,
+  about our gun's own origin), then (2) `settle_turn`: a local search per frame over a turn about the grip (X, Y, Z,
+  steps 8 / 4 / 2, at most 40) for the least `wrist_cost` of both hands, plus a little per degree away and a lot per
+  hand falling short, (3) `plan_turns`: run twice (the second pass starting from the first's end), then smoothed
+  (kernel 1-2-3-4-3-2-1, twice, circular for loops). Without the smoothing the search hopped between comfortable turns
+  (up to 18 degrees a frame, a 16-degree loop seam); with it, at most 5 degrees a frame and no seam. Every crouched
+  clip of all three sets: wrists within the limits (right bend 25-44, left 5-29 / twist 32-55, vanilla's own crouched
+  shotgun twists 50), arms at most 1 cm in. The gun points down and forward more than the standing hold.
+  Then (user: "the sneakrun seems to be snappy at the end of the animation and replaying it to start"): the clips
+  loop exactly (pelvis-relative seam 0, no quaternion sign flips, the packs end at 3200 ticks like vanilla), and the
+  gun moved smoothly; the arms did not. With all of vanilla's outward drift the hands sat at full reach (shoulder to
+  hand 0.27 of the arm's 0.274), where a hand moving 1 cm swings the elbow 2.5-3 cm (upper arm 10-14 degrees in a
+  frame, vanilla's at most 5): the elbow snapped twice a cycle, once at the loop. Crouched clips now keep 30 % of
+  the outward drift and all of the upward (`CROUCH_KEEP`): reach 0.17-0.24 (vanilla 0.13-0.20; the MP5K's left
+  0.23-0.27, its foregrip is 18 cm out, also at 0 %), elbow steps at most 1.4 cm (vanilla 1.5), the gun carried
+  more level, muzzle forward. Tried and dropped on the way: a mean / per-frame-free gun turn, riding vanilla's gun
+  rigidly, smoother turns and elbow swing hints (the rig's `swivel_hint`, kept: the swings were already smooth).
+  Sneaking has two node families, both firearm-gated and covered: in the open (sneakidleRifle, sneakWalkRifle,
+  sneakRunRifle) and by a wall (`nearWallCrouching`: sneakIdleLowRifle, sneakWalkLowRifle, sneakRunLowRifle).
+- Coverage check (2026-10-23): every node gated on Weapon == firearm (vanilla 248, Gunworks 6) and the one rifle node
+  gated only by its state (`shoveWithFirearm/firearm/FirearmShoveNoAim`, the shove without aiming: the game enters
+  that state only with a gun; `GUN_STATE_NODES`), 255 nodes a set. Left on vanilla on purpose, as for any weapon:
+  states with no rifle node at all (turning in place, 90 / 180 turns, climbing windows / walls / ropes, opening
+  windows, hit / shot reactions, knock-downs, falls, death, corpse dragging, animals, fishing, fitness, beds) and
+  the actions (looting, crafting, `AttachItem_Back` / `DetachItem_Back` with `Bob_Equip_Rifle_Back`): the gun bone
+  follows vanilla's hand there, and the turned guns sit 4-9 cm off it (the bore turn).
+- Node names in transitions match ignoring case (AnimNode uses equalsIgnoreCase; vanilla's transitions name
+  "walkRifle" / "sneakIdleRifle" for the nodes "walkrifle" / "sneakidleRifle"). The inventory compared exactly and
+  missed 4 transition clips (WalkSneakToStop_Sgun, IdleToWalk_Rifle, WalkAimRifleToWalk, ActionToSitIdle_rifle) and
+  their copies aimed at our nodes; now lowercased: 244 clips, 248 a set with the reloads. Gun in the body over 2.5 cm after
+  it: BiteReact_Rifle_R ~6.5, EmoteWipeRightLegRifle ~4, IdleAimRifle_Up75 2.7 (all the same with the full drift; the
+  Up75 aim is vanilla's own), and new with it the failed running vault on the MP7 / MP5K sets (4-5 cm, one moment).
+- Tracers off the barrel (user: "the projectiles do not line up from where the bullets are coming out"): the game
+  shoots from the gun bone × the model's `muzzle` point without the model's `Bip01_Prop1` point (TienInspectWeapon
+  CLAUDE.md), so the turned guns' tracers started 2 × the muzzle's z off the drawn barrel (MP5K 8.9 cm, Mini Uzi 4.8,
+  MP7 4.1; the full Uzi is modelled upright and was right). Fix without Java: `turnUpright` turns them about their
+  bore (point offset (0, 0, 2 × muzzle z), read from the model's `muzzle`), which also keeps the flash on the muzzle,
+  and `compact_pack.py` moves the gun bone of those sets back by as much (`compact_animsets.TURNED_SETS`: set -> muzzle
+  z), so the drawn gun stays in the hands. A set's clips only fit guns turned alike, so the Uzi set is packed twice:
+  "Uzi" (the full Uzi) and "UziT" (`SOURCE_SET`: the Mini Uzi, the MP7A1 folded, the MP7A2; z -0.0222, the mean of
+  -0.0238 and -0.0205, 3 mm either way), with its own reload nodes (GunsOfTienCompactUziT); +18 MB in the main mod.
+- One-handed after equipping (user: "MP7 and mini uzi when equipped is using the handgun style. when i unfold stock,
+  it corrects itself"): `TwoHandWeapon` alone still lets a gun sit in the right hand only ("Equip Primary", or any
+  equip passing twoHands false), and a gun not in both hands is a "handgun" to `WeaponType`, so none of the stance's
+  firearm nodes play. Gunworks' stock fold re-equips with `CallSyncHandWeaponFields` (both hands when
+  `isTwoHandWeapon`), which is why folding fixed it. Every vanilla rifle and the full Uzi also have
+  `RequiresEquippedBothHands = true` (instance field copied from the script at `InstanceItem`, not saved; forces
+  twoHands in `ISEquipWeaponAction:new`, hides "Equip Primary"), as do all of GoM's two-handed guns (16 of 16
+  assault rifles, 4 of 4 two-handed SMGs); only the guns we made two-handed (Mini Uzi, MP7s, GoM's one-handed MP5K)
+  lacked it.
+  Our Mini Uzi and MP7A1 / A2 scripts now declare both flags (user: "let's require them to be 2-handed");
+  `turnUpright` still sets them at run time, which GoM's MP5K needs.
+- Shooting and dry firing with Gunworks (in-game test: "shooting will move the left hand like vanilla way", seen
+  firing an empty magazine): Gunworks sets the `FireMode` variable to `RealSingle` / `RealAuto` / `RealBurst` for every
+  gun it fires, so vanilla's FirearmSingle / Auto / Burst / Empty* (FireMode Single / Auto / Burst / "") never play
+  with it; its own six nodes do (F `AnimSets/player/ranged/firearm/Firearm(Empty)Real*.xml`, vanilla rifle clips,
+  player only). Dry fire is no separate action: `ISReloadWeaponAction.attackHook` runs `DoAttack(0)` +
+  `setRangedWeaponEmpty(true)` and the ranged state picks the Empty node (Java `WeaponEmptyCheck` only plays the
+  click). `compact_animsets.MOD_ANIMSETS` adds Gunworks' AnimSets to the inventory (x_extends resolved against
+  vanilla; its spear nodes extend nodes we lack and are skipped): 254 nodes, the same 240 clips.
+- Then full coverage (user: "in known gaps, let's produce all the animations to match this"). Inventory
+  (`compact_animsets.firearm_nodes` / `firearm_clips`): 248 vanilla nodes resolve to Weapon == firearm (player and
+  player-vehicle), playing 240 clips (each node's own and 2D-blend clips, and its transitions into firearm nodes or
+  with no target). 104 of them are generic (gestures, pains, signals, 2H-melee and 1H clips) played through bone masks
+  that take the arms (25-100 %) but never Bip01_Prop1 from the clip: the gun bone comes from the state underneath, so
+  those are converted on the plain hold (no drift) with the left hand free. All 240 are converted per set and every
+  firearm node gets a copy per set (with Gunworks' six: 762 XML).
+- One rule per frame (`compact_build.frame_pose`): aim clips (by name, and the vehicle aim clips) = vanilla but the
+  left arm; others by how aimed vanilla's rifle is (its place relative to the chest between the idle and aim places,
+  times its muzzle agreeing with the aim's: port arms sits near the aim place muzzle up), carried = the hold, between
+  = both poses blended as the transitions; the left hand follows vanilla's on / off its rifle (gestures keep vanilla's
+  arm). Declip then swings elbows, moves a carried gun forward along the chest's real forward (a bone's local axes are
+  not the character's: measured once on the idle), then eases the left arm toward vanilla's own by the least amount
+  that clears.
+- Packing: every AnimationSet of a .x file is a clip (TienInspectWeapon CLAUDE.md), so each set ships as 7 files of
+  40 clips behind one Bob mesh, every key kept (`compact_pack.py`, ~26 MB a set, main mod 85 MB, Post-93 31 MB). The
+  game's importer (a jassimp harness) read 40 animations from a pack. Keys were first reduced (within 2e-4 / 2e-5,
+  ~18 MB a set): in game the sneak run then jumped for one frame at every loop point (user: "snappy at the end of
+  the animation and replaying it to start"; a 60 fps recording showed the arms and gun wrong on one frame every 43-44
+  frames = one 0.725 s cycle; vanilla's M16 sneak run had none; the Uzi set packed with every key ran smooth). The
+  clips' data looped exactly and the cause was not found in the game's code, so every key is kept
+  (`COMPACT_PACK_LOSSY` = a clip-name regex still reduced, unset).
+- MP7 sets by Gunworks `when`: the A1 with GunsOfTienPost93.MP7A1_Integrated_Foregrip_Deployed = "GunsOfTien_CompactMP7",
+  otherwise (folded, and the A2) "GunsOfTien_CompactUzi" (the hand under the handguard sits within ~1 cm of the Uzi's).
+- Reloads on the stance (`smg_reload.py` specs compact_uzi / compact_mp5k / compact_mp7: rifle rig on the set's own
+  idle / aim clips, pistol-modelled guns turned with FLIP, places from scans for the stance's hand relation:
+  `COMPACT_PLACES`): Uzi set work ch(0.04, 0.70, 0.08) / rack ch(0.10, 0.68, 0.10); MP5K the approved places, the
+  lever taken from the left side (turn (15, 165, -75)); MP7 rack muzzle turned up and right so its rear T handle comes
+  to the left hand (muzzle left, the arm crossed the chest 4-5 cm in), and its aimed rack comes off the aim
+  (`rack_in_aim=False`; in the aim the handle is by the cheek, the hand went 8 cm into the face). Action nodes
+  (`compact_animsets.write_reload_nodes`, player + player-vehicle): WeaponReloadType GunsOfTienCompact<Set>, magazine
+  swap 10/36 (unload) and 30/45 (load), rack 12 / 19 (rackBullet before ejectCasing) / 22 of 36, the aimed rack back to
+  IdleRifle_GoTCompact<Set> (the MP7's to both its sets) with the set's AimToIdle clip. Lua: Uzi.lua (Uzi, Mini Uzi;
+  the Micro keeps UziGrip), CompactStance.lua (GoM's MP5K, replacing its handgun2 entry: Gunworks' registry replaces
+  by id = full type), Post-93 Guns.lua (MP7s); all style "attachments" with the magazine shown in the hand (the MP7's
+  old "no magazine in the hand" was for the pistol clips); `ReloadAnim.GunsOfTienPointMag` lists the animIds whose
+  magazine part spec Uzi.lua's wrapper points at the magazine involved. The rig gives way silently when a key is out of reach (the gun moves to where the arms end):
+  print `r.warnings` when drafting places.
+
 ## Research reference
 
 Paths below: W = `~/Library/Application Support/Steam/steamapps/workshop/content/108600`,

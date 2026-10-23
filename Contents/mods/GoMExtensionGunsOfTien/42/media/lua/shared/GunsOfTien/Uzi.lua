@@ -11,11 +11,12 @@
     - stocks: the Uzi's folding metal stock with GoM's MP5 stock stats, the Mini's and Micro's side-folding stock with
       its MAC-10's (Gunworks' FoldingStock, parts in items_uzi.txt), each folded on a found gun as GoM's;
     - no animated bolt: the top cocking knob does not reciprocate (drawn through the Bolt_Lock part);
-    - reload: the Uzi on GoM's MP5 clips (its magazine well is the grip, some 10 cm behind the MP5's; the user may want
-      clips of its own later); the Mini and Micro as Post-93's MP7, whose magazine also goes up the grip: vanilla's
-      pistol load, its reverse baked forward as the unload (anims_X/Bob/Bob_GunsOfTien_Uzi_Unload.x, from
-      scripts/post93/anim/mp7_reload.py), the pistol rack (AnimSets *UziGrip_GoT.xml, animId "UziGrip"), Gunworks'
-      attachments style with no magazine in the left hand, the part spec pointed at the magazine involved;
+    - reload: the Uzi and the Mini Uzi on the compact SMG stance's own clips (CompactStance.lua, animId
+      "GunsOfTienCompactUzi", the Mini's "GunsOfTienCompactUziT": the magazine drawn out of the grip and carried in
+      the left hand); the Micro as Post-93's
+      MP7 was: vanilla's pistol load, its reverse baked forward as the unload (anims_X/Bob/Bob_GunsOfTien_Uzi_Unload.x,
+      from scripts/post93/anim/mp7_reload.py), the pistol rack (AnimSets *UziGrip_GoT.xml, animId "UziGrip"),
+      Gunworks' attachments style with no magazine in the left hand; each the part spec pointed at the magazine involved;
     - AWC's Mk9 on its 9x19mm SMG mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
       can's stats and rule, the parts' MountOn and the guns' ModelWeaponPart lines are in their scripts);
     - no rails, optics, lights, lasers or bayonet (none on a 1993 Uzi).
@@ -65,13 +66,21 @@ RateOfFire.RegisterWeapon(MICROUZI, { rpm = 1200, enableSpread = true, sustained
 -------------------------------------------------
 -- Reload animations
 -------------------------------------------------
-ReloadAnim.RegisterWeapon(UZI, {
-    animId = "MP5",
-    style = "none",
-    durations = { unload = 1.2, load = 1.5, rack = 1.2 },
-})
--- the Mini and Micro play the same clips (animId "UziGrip"); each gets its own table, as pointMagPart rewrites its spec
-for _, gun in ipairs(GRIP_GUNS) do
+-- the Uzi and the Mini Uzi: the compact SMG stance's reload (CompactStance.lua; clips GunsOfTien_CompactUzi_Reload*
+-- in the stance's packs, from scripts/anim/smg_reload.py's compact_uzi), the magazine in the left hand from its
+-- release to its seating; each gets its own table, as pointMagPart rewrites its spec. The Mini Uzi, turned upright
+-- in the hand, plays the same clips with the gun bone moved for its turn (GunsOfTien_CompactUziT_Reload*)
+for gun, animId in pairs({ [UZI] = "GunsOfTienCompactUzi", [MINIUZI] = "GunsOfTienCompactUziT" }) do
+    ReloadAnim.RegisterWeapon(gun, {
+        animId = animId,
+        style = "attachments",
+        magItem = MAGS[3],
+        attachments = { magPart = { itemType = MAGS[3], partType = "Clip" } },
+        durations = { unload = 1.2, load = 1.5, rack = 1.2 },
+    })
+end
+-- the Micro (held like a pistol): animId "UziGrip"
+for _, gun in ipairs({ MICROUZI }) do
     ReloadAnim.RegisterWeapon(gun, {
         animId = "UziGrip",
         style = "attachments",
@@ -80,6 +89,11 @@ for _, gun in ipairs(GRIP_GUNS) do
         durations = { unload = 1.5, load = 1.5, rack = 1.33 },
     })
 end
+-- the animIds whose magazine part spec is pointed at the magazine involved (shared: CompactStance.lua adds the MP5K's)
+ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
+ReloadAnim.GunsOfTienPointMag.UziGrip = true
+ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactUzi = true
+ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactUziT = true
 if not ReloadAnim.GunsOfTienUziWrapped then
     ReloadAnim.GunsOfTienUziWrapped = true
     pcall(require, "WeaponSystems/ReloadAnim/Visuals")
@@ -99,7 +113,8 @@ if not ReloadAnim.GunsOfTienUziWrapped then
     -- gun's saved MagazineType (ReloadAnim.resolveReloadMagItem).
     local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
     local function pointMagPart(action, handler)
-        if not (resolveReloadMagItem and action and handler and handler.animId == "UziGrip" and handler.parts) then
+        if not (resolveReloadMagItem and action and handler and handler.parts
+                and ReloadAnim.GunsOfTienPointMag[handler.animId]) then
             return
         end
         local spec = handler.parts.mag

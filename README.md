@@ -55,14 +55,26 @@ found as loot: make them with Ammo Maker.
 
 ## Uzi, Mini Uzi and Micro Uzi
 
-- Uzi (held two-handed like the MP5, its metal stock folding under the receiver), Mini Uzi and Micro Uzi (held
-  one-handed and fitting a holster like the MP5K and MAC-10, stocks folding along the right side; the Micro Uzi fits
-  an ankle holster too): automatic at 600, 950 and 1200 rounds a minute, or single shots
+- Uzi (its metal stock folding under the receiver) and Mini Uzi (fitting a holster), both held two-handed in the short
+  SMG stance below, and Micro Uzi (held one-handed and fitting a holster like the MAC-10, also an ankle holster);
+  the Mini's and Micro's stocks fold along the right side: automatic at 600, 950 and 1200 rounds a minute, or single
+  shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
 - The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
   SMGs and on SWAT zombies, and with its criminals' guns (criminal zombies, bandit bags, pawn shops, stashes); the long
   magazines with its high-capacity magazines
+
+## Short SMG stance (beta)
+
+- The Uzi, Mini Uzi, Guns of Marz's MP5K and Post-93's MP7s share one stance of their own: carried with both hands
+  down across the body, magazine hanging clear of the belly; aimed like a rifle with the support hand closer in on the
+  shorter gun (on the foregrip of the MP5K and of the MP7A1 when its grip is unfolded)
+- Every animation of the rifle stance is remade for it: idle, sneaking, walking, running, sprinting, aiming at every
+  angle and while moving, shooting, shoving, vaulting, falling, getting up, sitting, idle fidgets and emotes
+- Their own reloads: the magazine is drawn out and carried in the hand, and each gun is racked by its own handle
+- The Mini Uzi, the MP5K and Post-93's MP7s now need both hands, like every rifle (the Mini Uzi still fits a
+  holster); the Micro Uzi stays a one-handed machine pistol
 
 ## Ammo Maker
 
@@ -77,7 +89,8 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 
 - H&K MP7A1 and MP7A2: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor; the A1 with its folding front grip, the A2 with a rail handguard that takes Guns of Marz's foregrips
 - FN P90: 50-round magazine, suppressor
-- Both held like pistols, carried on the back, take Guns of Marz optics, lights and lasers
+- The MP7s held in the main mod's short SMG stance, the P90 like a pistol; both carried on the back, take Guns of
+  Marz optics, lights and lasers
 - FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
