@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Shift_Weight_Ground_2H_GoTCompactMP5K</m_Name>
-	<m_AnimName>GunsOfTien_CompactMP5K_SitGround_Ext01</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactMP5K_SitGround_Ext01__Ground</m_AnimName>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>
 	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>

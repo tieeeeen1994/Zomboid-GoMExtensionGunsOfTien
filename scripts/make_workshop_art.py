@@ -6,10 +6,10 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same)
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same), preview11.png (1024x1024, the short SMG stance, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2 ... preview10, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
-tmp/ad); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
+preview2 ... preview11, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
 import os
@@ -560,6 +560,56 @@ def preview10(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview11(path, W=1024):
+    """The short SMG stance (2026-10-24): four game characters in four of its poses, one gun each
+    (scripts/anim/render_stance_ad.py "carried" / "aimed" / "crouched" / "running": a survivor, a police officer, a
+    woman in a hoodie, a soldier, dressed from the game's files; one scale, so the figures keep their sizes), standing
+    on one line, each over its pose and gun, then preview2's dark band with the selling points."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "SHORT SMG STANCE", 36, "UZI  ·  MINI UZI  ·  MP5K  ·  MP7")
+    shots = (("carried", "CARRIED", "UZI"), ("aimed", "AIMED", "MP5K"), ("crouched", "SNEAKING", "MP7"),
+             ("running", "RUNNING", "UZI"))
+    ims = {}
+    for name, _, _ in shots:
+        im = Image.open(os.path.join(RENDERS, "stance_%s.png" % name)).convert("RGBA")
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    gap = u(4)
+    big, small = font(BOLD, u(15), b"Bold"), font(BOLD, u(10), b"Bold")
+    band_top = u(424)
+    # spacing from the title: the gun names end as far above the band as the title starts below the page's top, the
+    # pose labels sit just under the feet, and the figures fill the room between the subtitle and the labels
+    d = ImageDraw.Draw(page)
+    title_top = d.textbbox((W // 2, u(36)), "SHORT SMG STANCE", font=font(BOLD, u(30), b"Bold"), anchor="mm")[1]
+    sub_bottom = d.textbbox((W // 2, u(66)), "UZI", font=font(BOLD, u(14), b"Bold"), anchor="mm")[3]
+    name_h = d.textbbox((0, 0), "UZI", font=small, anchor="la")[3]
+    label_y = band_top - title_top - name_h - u(18)
+    ground = label_y - u(8)
+    top = sub_bottom + u(10)
+    s = min((ground - top) / max(im.height for im in ims.values()),
+            (W - u(28) - gap * (len(shots) - 1)) / sum(im.width for im in ims.values()))
+    scaled = {n: im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS) for n, im in ims.items()}
+    x = (W - sum(im.width for im in scaled.values()) - gap * (len(shots) - 1)) // 2
+    for name, label, gun_name in shots:
+        im = scaled[name]
+        paste_with_shadow(page, placed(size, im, (x, ground - im.height)), (0, u(5)), u(5), 150)
+        cx = x + im.width // 2
+        page.alpha_composite(text_layer(size, (cx, label_y), label, big, (28, 30, 34, 255), anchor="ma",
+                                        spacing=u(1)))
+        page.alpha_composite(text_layer(size, (cx, label_y + u(18)), gun_name, small, (60, 64, 70, 255), anchor="ma",
+                                        spacing=u(1)))
+        x += im.width + gap
+    band(page, ["EVERY RIFLE ANIMATION REMADE FOR THEM", "BOTH HANDS ON THE GUN, CARRIED CLOSE",
+                "OWN RELOADS, SNEAKING, SITTING AND EMOTES"], 424)
+    save_under(page.convert("RGB"), path)
+
+
 def preview_small(path, W=256):
     """The in-game uploader's preview: exactly 256x256. The title and the main mod's ammunition, boxes at 2x."""
     page = background((W, W)).convert("RGBA")
@@ -689,6 +739,8 @@ if __name__ == "__main__":
         preview9(os.path.join(ROOT, "preview9.png"))     # the M249 and belt links, added the same way
     if want("preview10"):
         preview10(os.path.join(ROOT, "preview10.png"))   # the Uzis, added the same way
+    if want("preview11"):
+        preview11(os.path.join(ROOT, "preview11.png"))   # the short SMG stance, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

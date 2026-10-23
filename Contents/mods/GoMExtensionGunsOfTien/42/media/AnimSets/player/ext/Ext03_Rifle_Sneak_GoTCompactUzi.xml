@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Ext03_Rifle_GoTCompactUzi</m_Name>
-	<m_AnimName>GunsOfTien_CompactUzi_StealthEmoteShiftWeight</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactUzi_StealthEmoteShiftWeight__Sneak</m_AnimName>
 	<m_ConditionPriority>100</m_ConditionPriority>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>

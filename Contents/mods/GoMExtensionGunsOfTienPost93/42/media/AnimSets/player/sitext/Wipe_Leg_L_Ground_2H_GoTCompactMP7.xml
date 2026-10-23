@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Wipe_Leg_L_Ground_2H_GoTCompactMP7</m_Name>
-	<m_AnimName>GunsOfTien_CompactMP7_SitGround_Wipe_Leg_L_1H</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactMP7_SitGround_Wipe_Leg_L_1H__Ground</m_AnimName>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>
 	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>

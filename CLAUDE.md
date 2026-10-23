@@ -1304,6 +1304,69 @@ behind it (42.21):
   old "no magazine in the hand" was for the pistol clips); `ReloadAnim.GunsOfTienPointMag` lists the animIds whose
   magazine part spec Uzi.lua's wrapper points at the magazine involved. The rig gives way silently when a key is out of reach (the gun moves to where the arms end):
   print `r.warnings` when drafting places.
+- Aim in / aim out (user, 2026-10-23: "aiming in has a twisted wrist on the left hand. aiming out jitters the left
+  arm"): a clip's rig takes its natural wrists from **its own file's bind pose** and its elbow directions from its
+  first frame, and vanilla's files differ (forearm-to-hand bind: Bob_IdleRifle / Bob_IdleToAim_Rifle 60 degrees (L) /
+  76 (R) off Bob_IdleAimRifle / Bob_AimToIdle_Rifle, Bob_WalkRifle a third). So AimToIdle solved its carried half
+  against the aim's references: the left elbow flipped to a second solution at frame 8 (19-23 cm in a frame, all
+  sets), stayed winged out with the wrist twisted 55-73 degrees and ended 7-9 cm off the idle clip; IdleToAim ended
+  1-2 cm off the aim clip on the MP5K / MP7. Now (`Stance.refs`, `joins_idle_and_aim`) the two clips that join the
+  idle and the aim solve carried frames with Bob_IdleRifle's references, aimed ones with Bob_IdleAimRifle's, blended
+  between, the left elbow's swing steered from the carried solution's to the aimed one's, then smoothed with the ends
+  pinned: elbow steps at most 4-5 cm (the raise's own speed), both ends equal to the idle / aim clips, and the game's
+  cross-fade (sequence.py's blend, 0.5 s / 1.5x in, 0.3 s / 1.2x out) keeps both hands within 1 cm of the gun.
+  Only these two clips changed (a wider rule caught 62, runs and sneaks among them); they were swapped into the
+  packs in place (a rebuild of the idle / aim matched the shipped clips to 2e-6). No defect was found in the aim
+  in beyond its end on the MP5K / MP7: its left wrist moves steadily into the approved aim, within vanilla's range.
+- Encumbered walk (user, 2026-10-23: "the encumbered walk is not yet updated to match with the rest of the 'closer
+  gun to the person' feel"): encumbered = WalkSpeed low = the walk blend's `Bob_WalkSlow_Rifle` corner (defaultWalk
+  m_Scalar WalkInjury, m_Scalar2 WalkSpeed). Ours held the gun 10.9 cm out (the walk 1.4): the same per-file
+  references swung the left elbow 65 degrees (the walk's 25), the forearm went 3.5 cm into the belly, and the
+  de-clip pushed the gun forward to its 10-step (10 cm) limit without clearing it. 52 of 60 carried standing clips
+  did that with their own references (limps, IdleRifleExt01-03, heavy breathing, IdleNoAim / WalkNoAim / strafe
+  NoAim, walking backwards, sitting, bites, emotes; 10-13 cm out). `idle_refs_clear` now gives a carried clip
+  (not crouched, not generic) the idle clip's references when they keep the left arm shallower on the plain hold
+  (sampled, before de-clip); the walk, run and sprint stay on their own (shallower there; rebuilt identical to
+  2e-6). Slow walk 1.3 cm out, the fidget 0.4, heavy breathing 1.0, walking backwards 1.8. Of the 72 carried
+  clips 51 (Uzi) / 50 (MP7) / 48 (MP5K) switched, the sprint and sprint-into-aim among them on the Uzi / MP7 (11.6
+  -> 5.2 cm at most); none came out further than shipped (compare a turned set's packed clip only after undoing the
+  pack's gun-bone move). Still 6-10 cm out: the diagonal unaimed walks (WalkNoAim / WalkBwdNoAim _DiagL) and the
+  left heavy limp on the MP7 / MP5K, sitting on the ground (9), vaults (5).
+- Audit of every clip (2026-10-24; scratch scripts audit.py / audit_generic.py / eval_generic.py / node_audit.py,
+  not in the repo): per clip and set, against vanilla's own clip, arms in the chest, the gun in chest + pelvis, the
+  gun out on carried frames, each hand off its grip while vanilla's holds, wrists against the idle's natural range,
+  the largest per-frame jerk of elbows, hands and gun, loop seams; nodes for conditions, ids, coverage, transitions.
+  Artifacts to ignore: aimed clips keep vanilla's right hand (a butt strike moves the gun in it), a carried frame's
+  right hand sits on a grip blended between the idle's and the aim's, reloads let go on purpose, and a **masked**
+  node (emotes, pains, signals: `m_SubStateBoneWeights`, Bip01_Prop1 weight 0) takes the gun and the unmasked bones
+  from the state underneath, so a generic clip can only be judged blended over it. Vanilla's own sneak walk nodes
+  name a node `sprintRifle` that does not exist (it is `sprintFirearm`); our copies inherit it, harmless.
+- Fixes from it (same day): (1) `Scorer` + the variant chooser in `build_clip`: each carried clip is built with its
+  own and with the idle's references, each with and without elbow smoothing and `filter_poses` (the gun's place on
+  the chest, each hand's hold and each elbow's place smoothed, then both arms solved again onto them, elbows steered
+  to the smoothed places; smoothing bone rotations let the left hand drift 3-10 cm), scored as the audit does; the
+  shipped choice is kept unless another scores better by more than 1. Jitter flags 108 -> 0 (tree walks 38 -> 2 cm
+  of jerk, running bump 14 -> 4, sprint 11 -> 3), gun held out 137 -> 47, left hand letting go 58 -> 24, wrists
+  40 -> 24; the approved idle, walk, run and every crouched, aimed and transition clip unchanged (1e-6). Traded:
+  bite reactions and the shotgun run vault let the left hand go 3-4 cm more (their 11-16 cm jerk gone), the tree
+  walks hold the gun 1.5-2 cm further out. (2) Masked generic clips are built once per (context, masks) they play
+  with (`compact_animsets.generic_variants`: 126 clips -> 149 copies `<clip>__Stand / __Sneak / __Ground /
+  __Chair`), each solved in the blended pose the game draws over the context's idle (`generic_masked_solve`: IK in
+  the blended skeleton, each arm bone's local then un-blended through its mask weight, `unmask`); the node writer
+  points each masked node at its own copy (604 node files, one line each). Right hand off the gun in the game's
+  blend, median: standing 2.9 -> 0.5 cm, sneaking 14.3 -> 1.1, ground 11.8 -> 1.5, chair 7.1 -> 0.7 (vanilla's own
+  rifle 7-15); left worst sneaking 24.7 -> 5.1. Left: 7 chair copies (wiping the brow, holding the head) 6-8 cm
+  against vanilla's 3-4, whose masks leave the right hand bone to the chair idle. Sets are now 271 clips (28.4 MB).
+  Partial rebuilds are assembled from the shipped packs (scratch assemble.py: unchanged clips extracted with the
+  pack's gun-bone move undone, compact_pack.main, compact_animsets.build, CRLF kept).
+- preview11.png (2026-10-24): four game characters in the stance (survivor + Uzi carried, police + MP5K aimed, a
+  woman in a hoodie + MP7 sneaking, a soldier + Uzi running), `scripts/anim/render_stance_ad.py` (Blender: dressed
+  from the game's own files, posed from the shipped clips; `OUTFITS` / `SHOTS`) then `make_workshop_art.py
+  preview11`. How the game dresses a character (media/clothing/clothingItems): items with `m_BaseTextures` only
+  (shirts, T-shirts, boots, shoes) are textures over the skin (`textures/Body/MaleBody01..`), items with
+  `m_MaleModel` / `m_FemaleModel` are skinned meshes with a `textureChoices` texture (jackets, trousers, vests,
+  hoodies; `TINT` items tinted), `m_Static` items (helmets) are static meshes on `m_AttachBone`, hair is a skinned
+  mesh from media/hairStyles with `F_Hair_White` tinted. Body masks (parts hidden under clothes) were left out.
 
 ## Research reference
 

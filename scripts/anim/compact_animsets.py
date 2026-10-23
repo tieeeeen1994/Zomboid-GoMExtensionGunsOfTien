@@ -13,6 +13,7 @@ aim at our node too. Written to <out media root>/AnimSets/player/<state>/<file>_
 
 import copy
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -211,6 +212,59 @@ def indent(e, level=0):
         e.tail = pad
 
 
+GENERIC_NAME = re.compile(r"Rifle|Shotgun|SGun|Sgun|Firearm", re.I)
+CONTEXTS = ("Stand", "Sneak", "Ground", "Chair")
+
+
+def node_masks(r):
+    """A node's bone masks: bone -> weight (an empty weight is 1)."""
+    out = {}
+    for w in r.findall("m_SubStateBoneWeights"):
+        b = (w.findtext("boneName") or "").strip()
+        if b:
+            out[b] = float((w.findtext("weight") or "1").strip() or "1")
+    return out
+
+
+def node_context(state, r):
+    """The state a masked node plays over, which keeps the gun bone (weight 0) and the unmasked bones: the standing
+    idle, the sneak idle, sitting on the ground or in a chair."""
+    conds = {(c.findtext("m_Name") or "").strip(): (c.findtext("m_Value") or c.findtext("m_StringValue") or "").strip()
+             for c in r.findall("m_Conditions")}
+    top = state.replace("\\", "/").split("/")[0]
+    if conds.get("sneaking") == "true":
+        return "Sneak"
+    if top == "sitext":
+        return "Ground" if conds.get("sitonground") == "true" else "Chair"
+    return "Stand"
+
+
+def generic_variants(vanilla_root):
+    """Masked nodes playing a generic clip (no gun in its name: gestures, pains, signals, the 2H / 1H ones). The game
+    blends such a clip over the state underneath by the node's masks and takes the gun from that state, so a clip is
+    built once per (context, masks) it plays with (user, 2026-10-24: crouched emotes pulled the hands 14-25 cm off
+    the gun). clip -> [(suffix, context, masks)]; suffix "__<Context>", "__<Context>2" for a second mask set there."""
+    seen = {}
+    for anim, state, f, r in firearm_nodes(vanilla_root):
+        masks = node_masks(r)
+        if not masks:
+            continue
+        ctx = node_context(state, r)
+        for e in [r] + r.findall("m_2DBlends"):
+            a = (e.findtext("m_AnimName") or "").strip()
+            if a and not GENERIC_NAME.search(a):
+                key = (ctx, tuple(sorted(masks.items())))
+                seen.setdefault(a, {}).setdefault(key, masks)
+    out = {}
+    for clip, keys in seen.items():
+        rows, count = [], {}
+        for (ctx, mk) in sorted(keys, key=lambda k: (CONTEXTS.index(k[0]), k[1])):
+            count[ctx] = count.get(ctx, 0) + 1
+            rows.append(("__%s%s" % (ctx, "" if count[ctx] == 1 else count[ctx]), ctx, keys[(ctx, mk)]))
+        out[clip] = rows
+    return out
+
+
 def build(vanilla_root, clip_dir, out_root, set_name):
     """Every firearm node (firearm_nodes: player and player-vehicle) for the set, its clips swapped for the built ones
     (the set's manifest.txt from compact_build.py)."""
@@ -220,12 +274,29 @@ def build(vanilla_root, clip_dir, out_root, set_name):
     swap = {"Bob_" + n[len(src_prefix):]: prefix + n[len(src_prefix):] for n in built if n.startswith(src_prefix)}
     suffix = "_GoTCompact%s" % set_name
     nodes = firearm_nodes(vanilla_root)
+    variants = generic_variants(vanilla_root)
     ours = {r.findtext("m_Name").lower(): r.findtext("m_Name") for _, _, _, r in nodes}
     written = []
     for anim, state, f, r in nodes:
         r = copy.deepcopy(r)
         name = r.findtext("m_Name")
         r.find("m_Name").text = name + suffix
+        # a generic clip in a masked node: its own copy for this node's context and masks (built when the manifest
+        # has it); a generic clip anywhere else (a transition) takes its first copy
+        masks = node_masks(r)
+        key = (node_context(state, r), tuple(sorted(masks.items())))
+        own = set(id(e) for e in [r] + r.findall("m_2DBlends"))
+        for e in r.iter():
+            a = (e.findtext("m_AnimName") or "").strip() if e.find("m_AnimName") is not None else ""
+            if a not in variants:
+                continue
+            rows = variants[a]
+            pick = rows[0][0]
+            if id(e) in own and masks:
+                pick = next((sfx for sfx, ctx, mk in rows if (ctx, tuple(sorted(mk.items()))) == key), pick)
+            nm = prefix + a[4:] + pick if a.startswith("Bob_") else prefix + a + pick
+            if (src_prefix + nm[len(prefix):]) in built:
+                e.find("m_AnimName").text = nm
         # our clips
         for e in r.iter("m_AnimName"):
             if e.text and e.text.strip() in swap:

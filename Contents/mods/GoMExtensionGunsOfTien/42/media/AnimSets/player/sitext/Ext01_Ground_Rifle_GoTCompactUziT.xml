@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Ext01_Ground_Rifle_GoTCompactUziT</m_Name>
-	<m_AnimName>GunsOfTien_CompactUziT_IdleExt01</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactUziT_IdleExt01__Ground</m_AnimName>
 	<m_ConditionPriority>100</m_ConditionPriority>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>
