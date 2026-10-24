@@ -199,6 +199,13 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## File map
 
+- **No `x_extends` in AnimSets** (2026-10-24, Linux report): the game lower-cases an `x_extends` path and fails to
+  open it on a case-sensitive file system (ZomboidFixesB42 CLAUDE.md, "Item and recipe scripts"). Every node that
+  extended another (Uzi grip unload / rack, M249 aim rack; Post-93 MP7A1 / P90TR unload / rack, P90TR aim rack) is
+  written out in full, merged as `PZXmlUtil.resolve` does (an empty `<m_Conditions />` keeps the parent's n-th, an
+  extra one is appended after the parent's children), with a header comment saying so; `compact_animsets.py`
+  already flattens the same way. Write new nodes in full. "Marz Mods Animsets for Linux" (workshop 3774316897)
+  covers only GoM's own `_HB` files.
 - Descriptions (2026-10-24, as in ZomboidFixesB42): `README.md`, `forum.txt` (the pinned Discussions thread, one
   post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
   step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
