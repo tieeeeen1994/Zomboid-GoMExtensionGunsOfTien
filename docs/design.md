@@ -1,7 +1,8 @@
 # GoM Extension: Guns of Tien — design (approved 2026-10-14, building)
 
 Mod id `GoMExtensionGunsOfTien`, item module `GunsOfTien`, ammo type namespace `gunsoftien:`.
-`require=SWMG,GunsOfMarz,ammomaker`, `loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker`. Every new round can be
+`require=SWMG,GunsOfMarz`, `loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker` (Ammo Maker optional since
+2026-10-24, as in Guns of Marz). With it every new round can be
 assembled with Ammo Maker (own Ammo Maker types, see CLAUDE.md). Build 42 folder `42/`.
 Setting: Kentucky, July 1993. Only loads that existed and could plausibly be found there then.
 

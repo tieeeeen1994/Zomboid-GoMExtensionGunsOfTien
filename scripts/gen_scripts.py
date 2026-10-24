@@ -315,12 +315,36 @@ AMMOMAKER_TYPES = [
 
 
 def ammomaker():
-    out = ["/* Placeholders Ammo Maker fills from shared/GunsOfTien/AmmoMaker.lua (recipe:Load at OnInitGlobalModData). */\n\nmodule Base {\n"]
+    # Ammo Maker is optional (as in Guns of Marz): without it AmmoMaker.lua hides these recipes. A recipe whose
+    # timedAction does not exist throws in OnScriptsLoaded and stops that pass for every recipe after it, so the
+    # placeholders use copies of Ammo Maker's MakeAmmo / ProduceAmmo (only its sound names, played when crafting).
+    timed = """/* Ammo Maker's MakeAmmo / ProduceAmmo under names of our own, so the placeholders in recipes_ammomaker.txt load
+   without Ammo Maker (a recipe whose timedAction is missing breaks script loading). Its sounds play only with it. */
+
+module Base {
+
+	timedAction GunsOfTien_MakeAmmo
+	{
+		metabolics = Default,
+		actionAnim = Making,
+		sound = MakeAmmo,
+	}
+
+	timedAction GunsOfTien_ProduceAmmo
+	{
+		metabolics = Default,
+		actionAnim = Making,
+		sound = ProduceAmmo,
+	}
+}
+"""
+    write('scripts/GunsOfTien/timedactions_ammomaker.txt', timed)
+    out = ["/* Placeholders Ammo Maker fills from shared/GunsOfTien/AmmoMaker.lua (recipe:Load at OnInitGlobalModData), hidden without it. */\n\nmodule Base {\n"]
     for name, _, _ in AMMOMAKER_TYPES:
         out.append(f"""
 \tcraftRecipe Make{name}
 \t{{
-\t\ttimedAction = MakeAmmo,
+\t\ttimedAction = GunsOfTien_MakeAmmo,
 \t\tTime = 30,
 \t\tTags = InHandCraft,
 \t\tNeedToBeLearn = False,
@@ -333,7 +357,7 @@ def ammomaker():
 
 \tcraftRecipe Produce{name}
 \t{{
-\t\ttimedAction = ProduceAmmo,
+\t\ttimedAction = GunsOfTien_ProduceAmmo,
 \t\tTime = 100,
 \t\tTags = AnySurfaceCraft;CanBeDoneFromFloor,
 \t\tNeedToBeLearn = False,

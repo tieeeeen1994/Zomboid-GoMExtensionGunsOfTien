@@ -1,0 +1,19 @@
+/* Ammo Maker's MakeAmmo / ProduceAmmo under names of our own, so the placeholders in recipes_ammomaker.txt load
+   without Ammo Maker (a recipe whose timedAction is missing breaks script loading). Its sounds play only with it. */
+
+module Base {
+
+	timedAction GunsOfTien_MakeAmmo
+	{
+		metabolics = Default,
+		actionAnim = Making,
+		sound = MakeAmmo,
+	}
+
+	timedAction GunsOfTien_ProduceAmmo
+	{
+		metabolics = Default,
+		actionAnim = Making,
+		sound = ProduceAmmo,
+	}
+}

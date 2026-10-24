@@ -1,10 +1,10 @@
-/* Placeholders Ammo Maker fills from shared/GunsOfTien/AmmoMaker.lua (recipe:Load at OnInitGlobalModData). */
+/* Placeholders Ammo Maker fills from shared/GunsOfTien/AmmoMaker.lua (recipe:Load at OnInitGlobalModData), hidden without it. */
 
 module Base {
 
 	craftRecipe Make762x39SS
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -17,7 +17,7 @@ module Base {
 
 	craftRecipe Produce762x39SS
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -30,7 +30,7 @@ module Base {
 
 	craftRecipe Make762x39SP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -43,7 +43,7 @@ module Base {
 
 	craftRecipe Produce762x39SP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -56,7 +56,7 @@ module Base {
 
 	craftRecipe Make9x19ParaSS
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -69,7 +69,7 @@ module Base {
 
 	craftRecipe Produce9x19ParaSS
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -82,7 +82,7 @@ module Base {
 
 	craftRecipe Make9x19ParaHP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -95,7 +95,7 @@ module Base {
 
 	craftRecipe Produce9x19ParaHP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -108,7 +108,7 @@ module Base {
 
 	craftRecipe Make9x19ParaPPP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -121,7 +121,7 @@ module Base {
 
 	craftRecipe Produce9x19ParaPPP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -134,7 +134,7 @@ module Base {
 
 	craftRecipe Make45ACPHP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -147,7 +147,7 @@ module Base {
 
 	craftRecipe Produce45ACPHP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -160,7 +160,7 @@ module Base {
 
 	craftRecipe Make45ACPP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -173,7 +173,7 @@ module Base {
 
 	craftRecipe Produce45ACPP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -186,7 +186,7 @@ module Base {
 
 	craftRecipe Make3006SpringSP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -199,7 +199,7 @@ module Base {
 
 	craftRecipe Produce3006SpringSP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -212,7 +212,7 @@ module Base {
 
 	craftRecipe Make308WinSP
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -225,7 +225,7 @@ module Base {
 
 	craftRecipe Produce308WinSP
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -238,7 +238,7 @@ module Base {
 
 	craftRecipe Make12Bird
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -251,7 +251,7 @@ module Base {
 
 	craftRecipe Produce12Bird
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,

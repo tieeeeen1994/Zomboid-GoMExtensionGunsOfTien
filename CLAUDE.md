@@ -13,15 +13,18 @@ master) and is listed in `~/Zomboid/Workshop/TienMods.code-workspace`. Work happ
 One Workshop item, two mods in `Contents/mods/`:
 - **`GoMExtensionGunsOfTien`** (folder `42/`, empty `common/`): an extension of Guns of Marz (GoM, workshop 3722134990,
   id `GunsOfMarz`) on the Gunworks gang framework (workshop 3722064198, id `SWMG`). `mod.info`:
-  `require=SWMG,GunsOfMarz,ammomaker`, `loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker`. Item module `GunsOfTien`,
+  `require=SWMG,GunsOfMarz`, `loadModAfter=HBVCEFb42,SWMG,GunsOfMarz,ammomaker` (Ammo Maker optional, see "Ammo
+  Maker" below). Item module `GunsOfTien`,
   ammo type namespace `gunsoftien:`, sandbox page `GunsOfTien`.
 - **`GoMExtensionGunsOfTienPost93`**: add-on for things that did not exist in July 1993 (the MP7A1, the P90 TR, their
   4.6x30 / 5.7x28 ammo). Requires the main mod too. Module `GunsOfTienPost93`, namespace `gunsoftienpost93:`.
   (The user typed "GoMExtensionGunsOfTIenPost93"; the id was written with a lowercase i, flagged to the user.)
 
 The user (Tien, author of the other `~/Zomboid/Workshop/Tien*` mods) wants **realism, set in Kentucky, July 1993**,
-and rich, consistent designs; decisions are taken with them, step by step. Hard dependencies are fine: "our mod
-fully depends on GoM and Ammo Maker and will not load without them". Before building a feature, check
+and rich, consistent designs; decisions are taken with them, step by step. Hard dependencies on GoM and Gunworks
+are fine; Ammo Maker became optional on 2026-10-24 (user: "Marz specifically requested to make Ammo Maker
+optional... follow GoM's footsteps"), so treat it as GoM does: used when present, nothing breaks without it. Follow
+the vision of GoM. Before building a feature, check
 `~/Zomboid/Workshop/*` for one of the user's own mods that already does it (e.g. `RakeFeathersToo` already rakes
 feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and removed).
 
@@ -69,7 +72,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   the script setters at every `OnInitGlobalModData`. **Changed from Lua, not by redefining items**: a mod's `item X`
   block replaces GoM's whole item (user's correction), and Lua stays flexible with GoM updates. Call them "realistic",
   not "corrected". SoundGain (what players hear) is untouched.
-- **Ammo Maker** (required): every round craftable. Steel Core → Ammo Maker's `762x39AP`, SP-6 → `9x39AP`; the others
+- **Ammo Maker** (optional since 2026-10-24, as in GoM; the rounds then come from nowhere, like GoM's own special
+  loads, see "Ammo Maker" below): every round craftable. Steel Core → Ammo Maker's `762x39AP`, SP-6 → `9x39AP`; the others
   get new types (copies of the calibre's base type) with Make / Produce placeholder recipes. New parts in Ammo Maker
   style: **soft point bullets** `GunsOfTien.BulletRifleSSP` / `BulletRifleMSP` ("Make Soft Point Bullet": standard
   Ammo Maker rifle bullet + Small File Set kept — the dum-dum method of filing the jacket off the nose) and
@@ -195,6 +199,10 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## File map
 
+- Descriptions (2026-10-24, as in ZomboidFixesB42): `README.md`, `forum.txt` (the pinned Discussions thread, one
+  post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
+  step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
+  Workshop description at 8000 characters; a longer one fails the in-game upload).
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
@@ -1459,7 +1467,24 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   `MarzGuns.556x45_Bullet_Overpressured`, which never matches: a GoM bug), Ammo Maker `ammoMakerAddAmmoTypesMap0..9`
   (GoM and V both write Map0), ItemArrange `IA.arrangables`.
 
-## Ammo Maker (workshop 2788256295, mod id `ammomaker`, a hard requirement of this mod)
+## Ammo Maker (workshop 2788256295, mod id `ammomaker`, optional)
+
+- **Optional, the way GoM does it** (user, 2026-10-24: Marz asked for it). GoM only ships a Lua table
+  (`MarzWeapons/ammomaker_apiTablesGoM.lua`, `ammoMakerAddAmmoTypesMap0`) and uses Ammo Maker's own placeholders, so
+  it has no Ammo Maker script at all. Ours keep scripts that must load without it (42.21, traced 2026-10-24):
+  an unknown `timedAction` throws in `CraftRecipe.OnScriptsLoaded` and an `itemMapper` naming a missing item throws
+  in `OutputMapper.OnPostWorldDictionaryInit`; both are caught by `ScriptManager` around the **whole** pass, so every
+  recipe after ours would break. An unknown item in an `inputs` line is only skipped (an error in `-debug`). So the
+  placeholders use `GunsOfTien_MakeAmmo` / `GunsOfTien_ProduceAmmo` (copies of its MakeAmmo / ProduceAmmo,
+  scripts/GunsOfTien/timedactions_ammomaker.txt; Post-93 uses them too), the soft point recipe is an empty placeholder
+  that shared/GunsOfTien/AmmoMaker.lua fills with `recipe:Load` at OnInitGlobalModData only with Ammo Maker (after
+  its handler, so a part recipe it hid, `getOnAddToMenu() == "False"`, stays hidden), and without it both
+  AmmoMaker.lua files hide every recipe of ours that needs it the way its `updateRecipesInactive` does (inputs and
+  outputs cleared, `{ OnAddToMenu = False, NeedToBeLearn = True, }`; the crafting lists call OnAddToMenu through
+  `callLuaBool`, a missing function = false = skipped) and move the belt link recipes from its `AmmoMakerParts`
+  category to vanilla's `Welding`. Presence test: its global `ammoMakerAmmoData` / `ammoMakerAmmoParts` (its shared
+  files load before ours through `loadModAfter`). The parts' items still name its world models (unreachable
+  without it: only its loot code and these recipes make them).
 
 - API (its server/ammomaker_apiFunctions.lua, OnPreDistributionMerge): global tables `ammoMakerAddAmmoTypesMap0..9`
   of `{ modId, itemType, ammoType }` are appended to `ammoMakerAmmoTypes[itemType]` (GoM and Vanilla Weapons Plus both

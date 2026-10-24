@@ -2,13 +2,13 @@
 
 Project Zomboid Build 42 mod.
 
-**Requires:** Gunworks Gang Framework, Guns of Marz, Ammo Maker
-**Optional:** Hot Brass (spent casings)
+**Requires:** Gunworks Gang Framework, Guns of Marz
+**Optional:** Ammo Maker (making the new rounds), Hot Brass (spent casings)
 
 ## New ammunition
 
-Each in boxes, cartons and crates, with Ammo Maker recipes. Like Guns of Marz's own special loads they are not
-found as loot: make them with Ammo Maker.
+Each in boxes, cartons and crates. Like Guns of Marz's own special loads they are not found as loot. With Ammo
+Maker they can be made.
 
 - 7.62x39mm US (Subsonic), Soft Point, Steel Core (Armor Piercing)
 - 9x19mm 147gr (Subsonic), Hollow Point, [+P+]
@@ -76,11 +76,16 @@ found as loot: make them with Ammo Maker.
 - The Mini Uzi, the MP5K and Post-93's MP7s now need both hands, like every rifle (the Mini Uzi still fits a
   holster); the Micro Uzi stays a one-handed machine pistol
 
-## Ammo Maker
+## Ammo Maker (optional)
+
+Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.
 
 - Recipes for every new round
 - Soft point bullets: Make Soft Point Bullet
 - Birdshot pellets: Pour Birdshot Pellets
+
+Removing Ammo Maker from an existing save deletes Ammo Maker's own items (gunpowder, casings, bullets, tools) as
+players log in and areas load, as for any removed mod. Guns of Tien's rounds stay.
 
 ## Optional add-on: Post-93
 

@@ -236,12 +236,14 @@ AMMOMAKER_TYPES = [
 
 
 def ammomaker():
-    out = ["/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load). */\n\nmodule Base {\n"]
+    # Timed actions: the main mod's copies of Ammo Maker's (its scripts/GunsOfTien/timedactions_ammomaker.txt), so
+    # these load without Ammo Maker; AmmoMaker.lua hides the recipes then.
+    out = ["/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load), hidden without it. */\n\nmodule Base {\n"]
     for name, _, _ in AMMOMAKER_TYPES:
         out.append(f"""
 \tcraftRecipe Make{name}
 \t{{
-\t\ttimedAction = MakeAmmo,
+\t\ttimedAction = GunsOfTien_MakeAmmo,
 \t\tTime = 30,
 \t\tTags = InHandCraft,
 \t\tNeedToBeLearn = False,
@@ -254,7 +256,7 @@ def ammomaker():
 
 \tcraftRecipe Produce{name}
 \t{{
-\t\ttimedAction = ProduceAmmo,
+\t\ttimedAction = GunsOfTien_ProduceAmmo,
 \t\tTime = 100,
 \t\tTags = AnySurfaceCraft;CanBeDoneFromFloor,
 \t\tNeedToBeLearn = False,

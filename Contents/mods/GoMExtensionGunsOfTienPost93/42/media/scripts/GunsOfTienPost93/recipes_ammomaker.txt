@@ -1,10 +1,10 @@
-/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load). */
+/* Placeholders Ammo Maker fills from shared/GunsOfTienPost93/AmmoMaker.lua (recipe:Load), hidden without it. */
 
 module Base {
 
 	craftRecipe Make46x30SS
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -17,7 +17,7 @@ module Base {
 
 	craftRecipe Produce46x30SS
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -30,7 +30,7 @@ module Base {
 
 	craftRecipe Make57x28SS
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -43,7 +43,7 @@ module Base {
 
 	craftRecipe Produce57x28SS
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,
@@ -56,7 +56,7 @@ module Base {
 
 	craftRecipe Make57x28SR
 	{
-		timedAction = MakeAmmo,
+		timedAction = GunsOfTien_MakeAmmo,
 		Time = 30,
 		Tags = InHandCraft,
 		NeedToBeLearn = False,
@@ -69,7 +69,7 @@ module Base {
 
 	craftRecipe Produce57x28SR
 	{
-		timedAction = ProduceAmmo,
+		timedAction = GunsOfTien_ProduceAmmo,
 		Time = 100,
 		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
 		NeedToBeLearn = False,

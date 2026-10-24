@@ -1,6 +1,6 @@
 # GoM Extension: Guns of Tien - Post-93 — design (approved 2026-10-14, building)
 
-Sub-mod `GoMExtensionGunsOfTienPost93` in the same Workshop item; requires the main mod, GoM, Gunworks and Ammo Maker.
+Sub-mod `GoMExtensionGunsOfTienPost93` in the same Workshop item; requires the main mod, GoM and Gunworks (Ammo Maker optional, as in the main mod).
 Module `GunsOfTienPost93`, ammo type namespace `gunsoftienpost93:`. Everything is built here: models (Blender,
 headless Python), textures, icons, scripts, registries. How GoM builds a gun: CLAUDE.md, "Gun assets in GoM" and
 "Gun data and registries in GoM".

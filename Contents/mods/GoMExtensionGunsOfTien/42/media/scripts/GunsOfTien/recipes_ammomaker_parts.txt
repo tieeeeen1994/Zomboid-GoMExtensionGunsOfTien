@@ -1,8 +1,11 @@
-/* Making Guns of Tien's Ammo Maker parts. */
+/* Making Guns of Tien's Ammo Maker parts. Ammo Maker is optional: without it shared/GunsOfTien/AmmoMaker.lua hides
+   these recipes. */
 
 module Base {
 
-	/* The dum-dum way: file the jacket off a full metal jacket bullet's nose so the lead core shows. */
+	/* The dum-dum way: file the jacket off a full metal jacket bullet's nose so the lead core shows. A placeholder:
+	   its inputs, outputs and mapper are Ammo Maker's bullets, so shared/GunsOfTien/AmmoMaker.lua loads them only
+	   with Ammo Maker (an itemMapper naming a missing item throws and stops every recipe after it). */
 	craftRecipe GunsOfTien_MakeSoftPointBullet
 	{
 		timedAction = Making,
@@ -11,20 +14,8 @@ module Base {
 		NeedToBeLearn = False,
 		category = AmmoMaker,
 		ToolTip = Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet,
-		inputs
-		{
-			item 1 [ammomaker.ammomaker_BulletRifleS;ammomaker.ammomaker_BulletRifleM] mappers[bulletType] mode:destroy,
-			item 1 [Base.SmallFileSet] mode:keep,
-		}
-		outputs
-		{
-			item 1 mapper:bulletType,
-		}
-		itemMapper bulletType
-		{
-			GunsOfTien.BulletRifleSSP = ammomaker.ammomaker_BulletRifleS,
-			GunsOfTien.BulletRifleMSP = ammomaker.ammomaker_BulletRifleM,
-		}
+		inputs {}
+		outputs {}
 	}
 
 	/* Molten metal poured through a strainer into water forms small round shot (the shot-pan method). Same metal,
