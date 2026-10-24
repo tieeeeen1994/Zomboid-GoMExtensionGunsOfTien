@@ -26,13 +26,17 @@ def db(cal,barrel,integral=0):
     if integral and sup: d+=-5       # the MP5SD's ported barrel bleeds standard rounds below the speed of sound, so
                                      # it has no crack either (an add-on can on a plain MP5 keeps it; user 2026-10-22)
     return d
+# name: (radius, volume) set by the user over the model's numbers (2026-10-24: the integral-suppressor guns quieter
+# than the model's 33 / 9 and 23 / 7; the MP5SD at 25 / 6 so that the 147gr round's x0.7 gives 17 / 4)
+OVERRIDE={'ASVAL':(22,6),'MP5SD':(25,6)}
 ref=db('556',20)
 rows=[]
 for g in G:
     n,cal,b=g[:3]; integ=g[3] if len(g)>3 else 0
     f=2**((db(cal,b,integ)-ref)/10)
-    rows.append((n,cal,b,f,round(175*f),round(50*f)))
-    print(f"{n:16s} {cal:7s} {b:5}\" f={f:4.2f} radius={175*f:5.0f} volume={50*f:4.0f}")
+    r,v=OVERRIDE.get(n,(round(175*f),round(50*f)))
+    rows.append((n,cal,b,f,r,v))
+    print(f"{n:16s} {cal:7s} {b:5}\" f={f:4.2f} radius={r:5d} volume={v:4d}" + (" (override)" if n in OVERRIDE else ""))
 
 # Writes the table the mod reads (shared/GunsOfTien/SoundTable.lua).
 import os

@@ -36,8 +36,8 @@ rounds incl. this mod's parts (soft point bullets S / M filed from standard bull
       the can only over the mount; GoM's MP5 / MP5A2 get the run-time `canon` point (no "model script not found" in
       the log; mount on the barrel, can's rear against the front sight housing, on the bore axis, in hand, on the
       back and on the floor); the parts lying on the floor (`world` pose) and their icons; quieter shots and no
-      muzzle flash; Aiming Time ×1.1 with the can on; the MP5SD (23 / 7) quieter than an MP5 with the Mk9 (28 / 8),
-      and the 147gr subsonic round changing the SD's damage but not its sound (layer `GunsOfTien_SubsonicInMP5SD`);
+      muzzle flash; Aiming Time ×1.1 with the can on; the MP5SD (25 / 6) quieter than an MP5 with the Mk9 (28 / 8),
+      and the 147gr subsonic round making the SD quieter too (17 / 4, against the MP5 + Mk9's 18-19 / 5); the AS VAL at 22 / 6;
       preview8.png to add on the Steam page by hand; the tooltip lines (both parts, "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount" on the three
       guns); both turning up from GoM's suppressor and muzzle device spawners (debug: spawn
       `MarzGuns.World_Suppressor_Spawner` / `MarzGuns.World_Muzzle_Device_Spawner` into a container a few times),
@@ -209,9 +209,9 @@ scripts/list_tooltips.py --diff TODO.md` lists every entry whose text differs fr
 
 - [x] 4.6x30mm DM11 Round (`GunsOfTienPost93.46x30_Bullet`): DM11 solid copper-plated steel bullet / Piercing targets / Able to hit up to 2 targets
 - [x] 4.6x30mm Family Muzzle Mounting Device (`GunsOfTienPost93.MP7_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
-- [x] 4.6x30mm Subsonic Round (`GunsOfTienPost93.46x30_Bullet_Subsonic`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
+- [x] 4.6x30mm Subsonic Round (`GunsOfTienPost93.46x30_Bullet_Subsonic`): Damage to targets decreased by 40% / Sound radius and volume reduced by 30% / Does not pierce / Stacks with suppressors for maximum effect
 - [x] 5.7x28mm Family Muzzle Mounting Device (`GunsOfTienPost93.P90_Muzzle_Mount_Device`): No Direct Stat Changes / Enables its Suppressor / Needs Wrench to install or remove.
-- [x] 5.7x28mm SB193 Round (Subsonic) (`GunsOfTienPost93.57x28_Bullet_SB193`): Damage to targets decreased by 40% / Sound radius and volume reduced by 50% / Does not pierce / Stacks with suppressors for maximum effect
+- [x] 5.7x28mm SB193 Round (Subsonic) (`GunsOfTienPost93.57x28_Bullet_SB193`): Damage to targets decreased by 30% / Sound radius and volume reduced by 30% / Does not pierce / Stacks with suppressors for maximum effect
 - [x] 5.7x28mm SS190 Round (`GunsOfTienPost93.57x28_Bullet`): SS190 steel and aluminium penetrator / Piercing targets / Able to hit up to 2 targets
 - [x] 5.7x28mm SS197SR Round (Hollow Point) (`GunsOfTienPost93.57x28_Bullet_SS197SR`): Polymer tip, expands / Damage to targets increased by 15% / Critical damage increased by 10% / Does not pierce
 - [x] Five-SeveN 20Rds 5.7x28mm Magazine (`GunsOfTienPost93.57x28Magazine20_FIVESEVEN`): Uses 5.7x28mm rounds.

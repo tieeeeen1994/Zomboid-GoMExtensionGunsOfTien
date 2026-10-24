@@ -30,9 +30,9 @@ The armour-piercing small-calibre rounds are the point of both guns: low recoil,
 | Round | Profile |
 |---|---|
 | 4.6x30mm DM11 (standard; solid copper-plated steel bullet) | base stats, pierces 2 |
-| 4.6x30mm Subsonic | ×0.6 damage, sound ×0.5, no pierce |
+| 4.6x30mm Subsonic | ×0.6 damage, sound ×0.7, no pierce |
 | 5.7x28mm SS190 (standard, steel / aluminium penetrator) | base stats, pierces 2 |
-| 5.7x28mm SB193 Subsonic (made for the suppressed P90) | ×0.6 damage, sound ×0.5, no pierce |
+| 5.7x28mm SB193 Subsonic (made for the suppressed P90) | ×0.7 damage, sound ×0.7, no pierce |
 | 5.7x28mm SS197SR (polymer tip, expands) | ×1.15 damage, no pierce |
 
 Boxes / cartons / crates, recipes, loot, Hot Brass casings (`HBVCEF.46x30_Casing`, `57x28_Casing`), Ammo Maker

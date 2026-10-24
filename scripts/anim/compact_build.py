@@ -91,6 +91,15 @@ TURN_SMOOTH = float(os.environ.get("COMPACT_TURN_SMOOTH", "0.01"))        # cost
 TURN_MAX = 40.0
 SMOOTH_ELBOWS = os.environ.get("COMPACT_SMOOTH_ELBOWS", "1") == "1"
 CONTACT = 0.022       # an arm resting on the body reads up to ~0.02 (vanilla's idle); deeper is in
+# ...but the sprint's arms never touch the torso in vanilla's clip, and ours carry the gun close, so the left forearm
+# reaching for it lay along the chest and belly at CONTACT, its centre line on the skin, half of it inside (more under
+# a jacket; user, 2026-10-24: "the full sprint ... there are times the left arm go in the body"; the MP5K's 3.6 cm in
+# the belly, which the chest-only body never saw). Standing sprint clips are de-clipped against chest + pelvis to
+# SPRINT_CONTACT: fully clear (0.002) let the left hand slip 4 cm off the gun, 0.008 keeps it on. Not the start
+# (IdleToSprint): cleared even to 0.016 its left hand jerked 2.5-3 cm a frame past the shipped clip's, so it keeps
+# CONTACT (2.3-3.6 cm in for a moment).
+SPRINT_NAME = re.compile(r"(?<!IdleTo)Sprint")
+SPRINT_CONTACT = 0.008
 
 
 def out_name(set_name, clip):
@@ -253,9 +262,10 @@ class Declip:
     """Each frame checked against the body (clearance.Body on the clip's armature): an arm deeper than CONTACT has its
     elbow swung outward step by step; a carried frame still in then moves its gun forward, away from the chest."""
 
-    def __init__(self, arm_ob, xa):
+    def __init__(self, arm_ob, xa, bones=None, contact=CONTACT):
         self.arm_ob, self.xa = arm_ob, xa
-        self.body = clearance.Body(arm_ob)
+        self.body = clearance.Body(arm_ob, bones)
+        self.contact = contact
         self.fixed = 0
 
     def depth(self, q):
@@ -267,7 +277,7 @@ class Declip:
         """Still in after the elbow swings and the gun moves: ease the left arm toward vanilla's own (`free`, clear
         of the body there) by the least amount that brings it out (bisection, 6 steps)."""
         dl, _ = self.depth(q)
-        if dl <= CONTACT:
+        if dl <= self.contact:
             return q
         solved = pose.copy(q)
         lo, hi = 0.0, 1.0
@@ -281,7 +291,7 @@ class Declip:
             r.blend_local(t2, t, rig.ARM["L"], mid)
             d, _ = self.depth(t2)
             self.fixed += 1
-            if d <= CONTACT:
+            if d <= self.contact:
                 best, hi = t2, mid
             else:
                 lo = mid
@@ -290,12 +300,12 @@ class Declip:
     def arms(self, r, q, lgrip, left=True):
         dl, dr = self.depth(q)
         for k in range(1, 9):
-            if (dl <= CONTACT or not left) and dr <= CONTACT:
+            if (dl <= self.contact or not left) and dr <= self.contact:
                 break
             W = pose.world(self.xa, q)["Bip01_Prop1"]
-            if left and dl > CONTACT:
+            if left and dl > self.contact:
                 r.solve_arm(q, "L", W @ lgrip, pole_extra=rig.UP * -0.05 - rig.RIGHT * 0.025 * k)
-            if dr > CONTACT:
+            if dr > self.contact:
                 r.solve_arm(q, "R", W @ r.grip_r.inverted(), pole_extra=rig.UP * -0.05 + rig.RIGHT * 0.025 * k)
                 w = pose.world(self.xa, q)
                 q["Bip01_Prop1"] = w["Bip01"].inverted() @ (w["Bip01_R_Hand"] @ r.grip_r)
@@ -446,12 +456,12 @@ def carried_pose(st, r, xa, p, f, n, on, dc, generic=False):
     q, d = dc.arms(r, q, st.lgrip_idle, on > 0.5)
     fwd = (w["Bip01_Spine1"].to_3x3() @ st.fwd_local).normalized()
     step = 0
-    while d > CONTACT and step < 10:
+    while d > dc.contact and step < 10:
         step += 1
         q = r.pose_for(Matrix.Translation(fwd * 0.01 * step) @ W, s, f, (0, None), n)
         q = left_to(r, xa, q, p, st.lgrip_idle, on)
         q, d = dc.arms(r, q, st.lgrip_idle, on > 0.5)
-    if d > CONTACT:
+    if d > dc.contact:
         q = dc.release(r, q, p)
     return q
 
@@ -460,7 +470,7 @@ def aim_pose(st, r, xa, p, on, dc):
     q = left_to(r, xa, pose.copy(p), p, st.lgrip_aim, on)
     if dc is not None:
         q, d = dc.arms(r, q, st.lgrip_aim, on > 0.5)
-        if d > CONTACT:
+        if d > dc.contact:
             q = dc.release(r, q, p)
     return q
 
@@ -501,7 +511,7 @@ def frame_pose(st, r, xa, p, f, n, aim_clip, dc, generic=False):
     q = left_to(r, xa, q, p, lg, on)
     if dc is not None:
         q, d = dc.arms(r, q, lg, on > 0.5)
-        if d > CONTACT:
+        if d > dc.contact:
             q = dc.release(r, q, p)
     if hint is None:
         r.swivel_hint.pop("L", None)
@@ -538,7 +548,7 @@ def idle_refs_clear(st, r, xa, frames, n, dc):
     st.use_refs = False
     for side in "LR":       # back to the clip's own (st.ref only writes them while use_refs is on)
         r.wrist_neutral[side], r.pole_local[side] = r.own_refs[0][side], r.own_refs[1][side]
-    use = deepest[False] > CONTACT and deepest[True] < deepest[False] - 0.005
+    use = deepest[False] > dc.contact and deepest[True] < deepest[False] - 0.005
     print("[refs] own L %.3f, idle refs L %.3f: %s" % (deepest[False], deepest[True], "idle" if use else "own"))
     return use
 
@@ -797,9 +807,10 @@ class Scorer:
     chest + pelvis (cm past 2.5), wrists (x10, range ratio past max(1.2, vanilla's + 0.2)), the gun held out on
     carried frames (x0.5, mean cm past 3)."""
 
-    def __init__(self, st, arm_ob, parts):
+    def __init__(self, st, arm_ob, parts, bones=None, contact=CONTACT):
         self.st, self.arm_ob, self.parts = st, arm_ob, parts
-        self.body = clearance.Body(arm_ob)
+        self.body = clearance.Body(arm_ob, bones)
+        self.contact = contact
         self.belly = clearance.Body(arm_ob, clearance.BODY | {"Bip01_Pelvis"})
         self.vanilla = {}
 
@@ -856,7 +867,7 @@ class Scorer:
         terms = {
             "jit": max(0.0, j * 100 - max(1.5, 1.5 * vj * 100)),
             "Loff": max(0.0, loff * 100 - 3.0),
-            "arm": max(0.0, li * 100 - max(CONTACT * 100, vl * 100 + 1)) + max(0.0, ri * 100 - max(CONTACT * 100, vr * 100 + 1)),
+            "arm": max(0.0, li * 100 - max(self.contact * 100, vl * 100 + 1)) + max(0.0, ri * 100 - max(self.contact * 100, vr * 100 + 1)),
             "gun": max(0.0, gi * 100 - 2.5),
             "wr": 10 * (max(0.0, lw - max(1.2, vlw + 0.2)) + max(0.0, rw - max(1.2, vrw + 0.2))),
             "out": 0.5 * max(0.0, out * 100 - 3.0),
@@ -874,8 +885,10 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
     r.own_refs = (dict(r.wrist_neutral), dict(r.pole_local))
     bpy.ops.wm.read_factory_settings(use_empty=True)
     arm_ob = x_import.load(path)
-    dc = Declip(arm_ob, xa)
     crouch = bool(CROUCH_NAME.search(clip))
+    sprint = bool(SPRINT_NAME.search(clip)) and not crouch and not generic
+    clear = (clearance.BODY | {"Bip01_Pelvis"}, SPRINT_CONTACT) if sprint else (None, CONTACT)
+    dc = Declip(arm_ob, xa, *clear)
     st.drift_keep = CROUCH_KEEP if crouch else (DRIFT_OUT_KEEP, DRIFT_UP_KEEP)
     st.follow_turn = CROUCH_TURN if crouch else 0.0
     st.turn_search = crouch and CROUCH_SEARCH
@@ -899,7 +912,7 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
         # the shipped choice (idle_refs_clear's references, no smoothing) against the other three; another is kept
         # only when it scores clearly better (the audit, 2026-10-23: jitter up to 38 cm against vanilla's 2 in the
         # tree walks, and the references picked by arm depth alone made 35 measurements worse)
-        scorer = Scorer(st, arm_ob, parts)
+        scorer = Scorer(st, arm_ob, parts, *clear)
         first = st.use_refs
         results = []
         for refs, smoothed in ((first, False), (first, True), (not first, False), (not first, True)):

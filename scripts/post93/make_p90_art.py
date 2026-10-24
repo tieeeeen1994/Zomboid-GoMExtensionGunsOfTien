@@ -314,7 +314,7 @@ def ammo_sheet(renders):
     p = Page(renders, 2480, 1500, "5.7x28mm for the P90 TR: SS190 (standard, black tip, pierces 2), SB193 (subsonic, "
                                   "violet), SS197SR (polymer tip, blue)")
     y = 70
-    variants = (("SS190", "standard: steel / aluminium penetrator"), ("SB193", "subsonic: x0.6 damage, sound x0.5"),
+    variants = (("SS190", "standard: steel / aluminium penetrator"), ("SB193", "subsonic: x0.7 damage, sound x0.7"),
                 ("SS197SR", "polymer tip: x1.15 damage, no pierce"))
     for i, (v, note) in enumerate(variants):
         x = 20 + i * 820

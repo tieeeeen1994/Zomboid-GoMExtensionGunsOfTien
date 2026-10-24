@@ -83,14 +83,14 @@ How f is worked out (a model, the inputs are real; `scripts/sound_model.py`):
 | AK-74 | 200 / 40 | 166 / 47 | | Python (.357) | 120 / 75 | 144 / 41 |
 | AKS-74U | 200 / 40 | 205 / 59 | | Rhino (.357) | 100 / 65 | 162 / 46 |
 | AK-47 | 200 / 40 | 175 / 50 | | MP-412 (.38) | 60 / 25 | 76 / 22 |
-| AS VAL | 50 / 25 | **33 / 9** | | Detective .38 | 60 / 25 | 94 / 27 |
+| AS VAL | 50 / 25 | **22 / 6** (user; model 33 / 9) | | Detective .38 | 60 / 25 | 94 / 27 |
 | SKS | 170 / 30 | 165 / 47 | | Colt SA (.45) | 100 / 65 | 78 / 22 |
 | Mini-14 | 170 / 40 | 177 / 51 | | Camp Carbine (.45) | 120 / 50 | 56 / 16 |
 | M14 | 200 / 30 | 210 / 60 | | Thompson | 150 / 35 | 64 / 18 |
 | M1 Garand | 220 / 50 | 216 / 62 | | MAC-10 | 100 / 30 | 77 / 22 |
 | FAL | 190 / 45 | 213 / 61 | | MP5, MP5A2 | 150 / 35 | 93 / 27 |
 | G3 | 190 / 40 | 224 / 64 | | MP5K | 100 / 30 | 114 / 33 |
-| SVD | 170 / 30 | 224 / 64 | | MP5SD | 50 / 15 | **23 / 7** |
+| SVD | 170 / 30 | 224 / 64 | | MP5SD | 50 / 15 | **25 / 6** (user; model 23 / 7) |
 | PSG-1 | 170 / 30 | 201 / 57 | | TEC-9 | 100 / 30 | 110 / 32 |
 | M60 | 230 / 45 | 210 / 60 | | 12 ga pumps / semis | 200 / 200 | 175-185 / 50-53 |
 | BAR | 230 / 45 | 216 / 62 | | 12 ga doubles | 200 / 200 | 162-166 / 46-47 |
@@ -143,10 +143,10 @@ real barrels take one (user: "only if supported", "no pistol"):
   lugs with Tim Bixler's adapter (1988), which is the mount device. Big; the user kept it over the shorter options.
 - GoM's 9mm cans' stats (sound and volume ×0.3, damage ×0.9, no muzzle flash) plus Aiming Time ×1.1 (a 24 oz can
   out at the muzzle), weights 1.2 / 0.5 as GoM's.
-- The MP5SD stays the better quiet gun (user): 23 / 7 (no crack, see section 3) against the suppressed MP5's 28 / 8,
-  lighter and quicker to aim; the suppressed MP5 hits harder and reaches further. The 147gr subsonic round makes no
-  sound difference in the SD (its ×0.7 is the crack, which the SD does not have; its damage ×0.85 stays), so a
-  suppressed MP5 comes close only with that round (about 20 / 6).
+- The MP5SD stays the better quiet gun (user): 25 / 6 (no crack, see section 3; set by the user over the model's
+  23 / 7, so that the 147gr gives 17 / 4) against the suppressed MP5's 28 / 8,
+  lighter and quicker to aim; the suppressed MP5 hits harder and reaches further. The 147gr subsonic round (sound
+  ×0.7, damage ×0.85) works in both (user, 2026-10-24), so the order stays with it: SD 17 / 4, MP5 + Mk9 18-19 / 5.
 - Loot as GoM's parts: one more choice in its suppressor and muzzle device spawners, and the mount among GoM's mounts
   that replace vanilla's Improved Choke Tube. Found guns never come with one.
 

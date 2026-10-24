@@ -13,8 +13,8 @@
     Stats are GoM's for its 9mm cans, plus Aiming Time x1.1 (GoM's deployed bipod and LR4X scope): 24 oz on a 12" tube
     out at the muzzle. So the MP5SD stays the better quiet gun (user, 2026-10-22: "make it so that MP5SD is better than
     the MP5 with silencer option"): sound_model.py gives it no supersonic crack (its ported barrel slows standard
-    rounds below the speed of sound; the Mk9 on a plain MP5 keeps the crack), 23 / 7 against the suppressed MP5's
-    28 / 8, and it is far lighter (2.1 against 2.0 + 1.2 + 0.5) and quicker to bring up; the MP5 keeps its harder hits
+    rounds below the speed of sound; the Mk9 on a plain MP5 keeps the crack; the user later set it to 25 / 6),
+    against the suppressed MP5's 28 / 8, and it is far lighter (2.1 against 2.0 + 1.2 + 0.5) and quicker to bring up; the MP5 keeps its harder hits
     and longer range, as the real SD's slower bullets give up.
 
     GoM's MP5 and MP5A2 model scripts have no `canon` point, where GoM draws muzzle parts. A model script cannot be

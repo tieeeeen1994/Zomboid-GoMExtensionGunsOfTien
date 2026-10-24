@@ -67,7 +67,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   SoundRadius / SoundVolume = M16 (175 / 50) × f, f = 2^(ΔdB/10), ΔdB from powder burnt (10·log10(grains/25)),
   barrel (+3 dB per halving vs the calibre's usual barrel), no supersonic crack −5 dB, integral suppressor −17 dB
   (= GoM's ×0.3), and for the MP5SD no crack either (its ported barrel slows standard rounds below the speed of
-  sound; added 2026-10-22 so it beats a plain MP5 with the Mk9, user). AS VAL 33 / 9, MP5SD 23 / 7; .45 guns quiet; short carbines louder; bolt / lever / shotgun volume
+  sound; added 2026-10-22 so it beats a plain MP5 with the Mk9, user). AS VAL 22 / 6 and MP5SD 25 / 6 (user, 2026-10-24, set over the model's 33 / 9 and 23 / 7: `OVERRIDE` in
+  sound_model.py; the SD's so that the 147gr's ×0.7 gives 17 / 4); .45 guns quiet; short carbines louder; bolt / lever / shotgun volume
   180-250 → ~50-60. `scripts/sound_model.py` writes `shared/GunsOfTien/SoundTable.lua`; `Sounds.lua` applies it with
   the script setters at every `OnInitGlobalModData`. **Changed from Lua, not by redefining items**: a mod's `item X`
   block replaces GoM's whole item (user's correction), and Lua stays flexible with GoM updates. Call them "realistic",
@@ -143,7 +144,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   are hidden required parts registered as parents of GoM's optics / lights / lasers. Spawns: GoM's
   `World_Anachronistic_Spawner` and `Zombie_Police_SMG_Spawner`. "You build everything": models in Blender by script.
 - **Ammo**: 4.6x30 **DM11** (standard) and **Subsonic**; 5.7x28 **SS190** (standard), **SB193** subsonic, **SS197SR**
-  (polymer tip, ×1.15, no pierce). Subsonic ×0.6 dmg, sound ×0.5, no pierce. Ammo Maker types `46x30` / `57x28`
+  (polymer tip, ×1.15, no pierce). Subsonic: 4.6x30 ×0.6 dmg, SB193 ×0.7, both sound ×0.7 (the 147gr 9mm's; ×0.5 until
+  2026-10-24, user: a suppressed MP7 was quieter than the MP5SD), no pierce. Ammo Maker types `46x30` / `57x28`
   (existing) + `46x30SS`, `57x28SS`, `57x28SR`. 50-round boxes. Art: copper DM11 bullet (GoM's own is khaki; the user
   can switch it in `make_ammo_art.py`), real tip colours (SS190 black, SB193 violet, SS197SR blue).
 - **FN Five-seveN** (user, 2026-10-16) as `MarzGuns.FIVESEVEN`, GoM's own unused name: GoM's pistol features, 20 /
@@ -695,16 +697,15 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   0.8-1.3), so the SD lost on everything but weight. Now sound_model.py drops the SD's supersonic crack (ported barrel,
   -5 dB: 23 / 7; an add-on can on a plain MP5 keeps the crack), and the Mk9 slows aiming ×1.1. The SD: quieter,
   2.1 against 2.0 + 1.2 + 0.5, quicker to bring up; the suppressed MP5: harder hits, 30 against 25 range (the SD's
-  slower bullets, as GoM has them). With the 147gr subsonic round (sound ×0.5 on both) the order stays. The earlier
+  slower bullets, as GoM has them). With the 147gr subsonic round (sound ×0.7 on both) the order stays. The earlier
   "MP5SD subsonic rule" the user dropped (2026-10-14) is another thing: rounds fired from the SD treated as subsonic
   ammo (damage too); only its sound changed here. GoM's SD damage (0.8-1.3, ×0.8 of the MP5) already is the slower
   bullet.
-- The 147gr subsonic round's sound ×0.7 is the crack removed (−5 dB = ×0.71 in the sound model), so in the SD it would
-  count twice: `Ammunition.lua` registers a StatsFactory layer `GunsOfTien_SubsonicInMP5SD` (applicable to
-  `MarzGuns.MP5SD`, active while modData `ActiveAmmoProfile` is `GunsOfTien_9x19Subsonic`) that sets SoundRadius /
-  SoundVolume back to the shadow item's (script + attachments). Gunworks runs layers in registration order, so it
-  comes after its "Ammo" layer; the round's damage ×0.85 stays. Result: SD 23 / 7 with either round, MP5 + Mk9 28 / 8
-  plain or about 20 / 6 with the 147gr (user agreed 2026-10-22).
+- The 147gr subsonic round works in the SD like in any gun (user, 2026-10-24: "I don't know why we made MP5 SD not
+  work with subsonic"): sound ×0.7, damage ×0.85. A layer `GunsOfTien_SubsonicInMP5SD` (2026-10-22) used to put the
+  SD's sound back with that round, since its ×0.7 stands for the crack the SD's sound already leaves out; it was
+  removed. Result (SD at the user's 25 / 6 since 2026-10-24): SD 25 / 6 plain, 17 / 4 with the 147gr; MP5 + Mk9 28 / 8 plain, 18-19 / 5 with the 147gr (Gunworks
+  stores whole numbers, and which of its suppressor and ammo layers runs first is unconfirmed).
 - Built at GoM's SMG scale (K 0.00072, 0.72 of real size): the can 304.8 x 50.8 mm (0.2195 x r 0.0183 units) with a
   knurled three-lug coupler at the rear and "AWC MK9" painted along the left; the mount is Tim Bixler's adapter, a
   threaded cap with wrench flats and a sleeve with three lugs, 30 mm long, over the barrel. Both start at `canon`.
@@ -1374,6 +1375,18 @@ behind it (42.21):
   against vanilla's 3-4, whose masks leave the right hand bone to the chair idle. Sets are now 271 clips (28.4 MB).
   Partial rebuilds are assembled from the shipped packs (scratch assemble.py: unchanged clips extracted with the
   pack's gun-bone move undone, compact_pack.main, compact_animsets.build, CRLF kept).
+- Sprint arm (user, 2026-10-24: "the full sprint animation ... there are times the left arm go in the body"): on the
+  half of the stride where the right arm swings back the gun crosses the belly and the left forearm lay along the
+  chest at CONTACT (0.021-0.022: the bone's centre line on the skin, half the forearm inside, more under a jacket),
+  and the de-clip's body is the chest only, so the belly took the MP5K's 3.4-3.6 cm unseen; vanilla's sprint arm never
+  touches (0.000). `compact_build.SPRINT_NAME` clips (Sprint_Rifle, SprintToStop_Rifle, SprintToAimRifle, standing)
+  are de-clipped and scored against chest + pelvis to `SPRINT_CONTACT` 0.008: arm 0.021-0.034 -> 0.008 in every set,
+  scores better on all three (gun ~1 cm further out on average). Fully clear (0.002) let the left hand slip 4 cm off
+  the gun. IdleToSprint_Rifle keeps CONTACT (still 2.2 cm in, MP5K 3.6 in the belly for a moment): cleared even to
+  0.016 its left hand jerked 2.5-3 cm a frame more than the shipped clip. The run (in the sprint node's blend at
+  WalkSpeed 0.5) reads 0.015-0.022 too and was left as approved. Swapped into the Pack5 files in place (each clip
+  rewritten as compact_pack.main does, gun bone moved for the turned sets; a round trip of the shipped clip was
+  byte-identical).
 - preview11.png (2026-10-24): four game characters in the stance (survivor + Uzi carried, police + MP5K aimed, a
   woman in a hoodie + MP7 sneaking, a soldier + Uzi running), `scripts/anim/render_stance_ad.py` (Blender: dressed
   from the game's own files, posed from the shipped clips; `OUTFITS` / `SHOTS`) then `make_workshop_art.py

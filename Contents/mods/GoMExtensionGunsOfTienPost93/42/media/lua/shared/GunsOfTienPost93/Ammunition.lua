@@ -69,11 +69,13 @@ local function standard()
     return { a, b }
 end
 
-local function subsonic()
+-- Sound x0.7 as the main mod's 147gr 9mm (user, 2026-10-24; it was GoM's 5.56 subsonic x0.5, which made a suppressed
+-- MP7 quieter than the MP5SD); damage 4.6x30 x0.6, SB193 x0.7.
+local function subsonic(damage)
     local a, b = pierce(1)
     return {
-        SF.Multiply("MaxDamage", 0.6), SF.Multiply("MinDamage", 0.6),
-        SF.Multiply("SoundRadius", 0.5), SF.Multiply("SoundVolume", 0.5),
+        SF.Multiply("MaxDamage", damage), SF.Multiply("MinDamage", damage),
+        SF.Multiply("SoundRadius", 0.7), SF.Multiply("SoundVolume", 0.7),
         a, b,
     }
 end
@@ -81,8 +83,8 @@ end
 Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_46x30DM11"] = standard(),
     ["GunsOfTienPost93_57x28SS190"] = standard(),
-    ["GunsOfTienPost93_46x30Subsonic"] = subsonic(),
-    ["GunsOfTienPost93_57x28SB193"] = subsonic(),
+    ["GunsOfTienPost93_46x30Subsonic"] = subsonic(0.6),
+    ["GunsOfTienPost93_57x28SB193"] = subsonic(0.7),
     ["GunsOfTienPost93_57x28SS197SR"] = (function()
         local a, b = pierce(1)
         return {
