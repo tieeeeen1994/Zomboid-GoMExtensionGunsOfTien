@@ -271,7 +271,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `scripts/post93/gen_post93_guns.py` (needs `scripts/post93/mp7_points.json` / `p90_points.json` /
   `fiveseven_points.json` / `ucp_points.json` / `scarl_points.json` / `scarh_points.json` / `ump_points.json`),
   `scripts/check_refs.py` (every item / model / icon / mesh / texture / AnimSet clip name in both mods resolves
-  against them, GoM, Gunworks, Ammo Maker, Hot Brass and vanilla, version and common folders), and the model
+  against them, GoM, Gunworks, Ammo Maker, Hot Brass and vanilla, version and common folders),
+  `scripts/scale_audit.py` + `scale_audit_report.py` (every gun's drawn size against its real one, "Gun scale"), and the model
   builders `scripts/post93/build_mp7.py`, `build_p90.py`, `build_fiveseven.py`, `build_ucp.py` (the others import
   build_mp7 as their library), their review renders `render_mp7.py` / `render_p90.py` / `render_fiveseven.py` /
   `render_ucp.py` (Blender) and sheets + icons `make_mp7_art.py` / `make_p90_art.py` / `make_fiveseven_art.py` /
@@ -1395,6 +1396,28 @@ behind it (42.21):
   `m_MaleModel` / `m_FemaleModel` are skinned meshes with a `textureChoices` texture (jackets, trousers, vests,
   hoodies; `TINT` items tinted), `m_Static` items (helmets) are static meshes on `m_AttachBone`, hair is a skinned
   mesh from media/hairStyles with `F_Hair_White` tinted. Body masks (parts hidden under clothes) were left out.
+
+## Gun scale (2026-10-25, audit only; open work in TODO.md "Gun scale audit")
+
+- Sizes: vanilla's MaleBody.x is 0.98 units tall (a ~1.78 m man at ~0.55); vanilla's M16_Rifle.x 0.546 long = 0.54
+  of 1006 mm (true to the body), M9 0.70, pump shotgun / MSR788 ~0.60-0.65. GoM's rifle-stance guns: median 0.63
+  (0.53..0.73), pistols and SMGs ~0.70; the M16A2 0.60, MP5A2 0.73. Measured by `scripts/scale_audit.py` (Blender)
+  + `scripts/scale_audit_report.py` (real lengths and variants in its `REAL` table).
+- Vanilla's left palm (between `Bip01_L_Hand` and `Bip01_L_Finger1`, in `Bip01_Prop1` = gun space) does not move
+  through a clip: Bob_IdleRifle / Bob_WalkRifle y 0.218 z -0.004, Bob_IdleAimRifle y 0.204 z -0.021 (the right hand
+  at the grip origin). On vanilla's rifles the gun's underside there is 1.1 cm above it idle, 2.8 aimed; GoM's M16s
+  match that exactly, its MP5s sit ~2 cm higher (the hand floats).
+- Model `scale` (42.21 jar): `ModelInstance.applyModelScriptScale` copies `ModelScript.scale` into the instance when
+  it is created; `AnimatedModelInstanceRenderData.transformToParent` (in-world characters too, via
+  `ModelSlotRenderData`) starts a child from the parent's xfrm, which ends with the parent's scale, so weapon parts,
+  the muzzle flash (`EffectsManager.initMuzzleFlashModel`, a child at `muzzle`) and their attachment offsets all scale
+  with the gun about its origin. Floor items (`ItemModelRenderer`): inverse `world` point, mesh, then the scale, then
+  the parts: the `world` offset is not scaled. `BallisticsController.calculateMuzzlePosition` →
+  `ModelInstance.getAttachmentWorldPosition` = bone transform x the raw `muzzle` offset, no scale. GoM's muzzle
+  devices hang on `canon`, not `muzzle`. `ModelScript.Load` without `reset()` (only a re-declared block resets) keeps
+  mesh and points, and its `scale` key sets the scale; `ModelScript` is `@UsedFromLua`, the `scale` field has no
+  setter (`scaleAttachmentOffset(f)` multiplies every point). Gunworks' reload magazine is an attached item at a
+  location named `Bip01_Prop2` (`ReloadAnim/AttachLocations.lua`), drawn with the magazine's own model.
 
 ## Research reference
 

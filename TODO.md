@@ -583,3 +583,160 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       their clink (SP and MP, misses too), the landing sounds per surface, brass catchers, unloading rounds gives
       links, STANAG fire gives none, GoM's M60 box the same with M13 links, Open / Pack / Make recipes, the icons and
       floor models, link boxes in army storage and in M60 / M249 kits.
+
+## Gun scale audit (2026-10-25)
+
+User: "the MP5A1 and MP5A2 seem a little bit big ... compared to human size ... does it follow the size proportion
+from M16?", then "audit all of the guns from GoM and GoT and list them in TODO. we will try to fix them... but that
+also means we need to fix the stances", then "edit each gun so that they have their own scales rather than apply a
+global scale". So: **every gun gets its own `scale`**, worked out for that gun from its own real size, so that it
+stands in the M16A2's proportion (the M16A2 = 1.00; scale = M16A2's ratio 0.603 / the gun's ratio). Measured, not
+applied yet. Tools: `blender -b --factory-startup -P scripts/scale_audit.py -- <out.json>` (every gun as drawn: body +
+deployed integrated stock / full barrels, plus every part model), then `python3 scripts/scale_audit_report.py
+<out.json>` (each gun's ratio, its own scale, the left palm on it before / after). "Ratio" = drawn length / real
+overall length (stock extended). Reference sizes and the engine trace: CLAUDE.md "Gun scale".
+
+- Vanilla draws people at ~0.55 (body 0.98 units for a ~1.78 m man), its M16 at 0.54, its M9 at 0.70. GoM's
+  rifle-stance guns run 0.53..0.73 (median 0.63), its pistols and SMGs ~0.70-0.73; ours were built at 0.65 (rifles)
+  and 0.72 (SMGs, pistols). The M16A2 is 0.60, the MP5A2 0.73: **the MP5A2 is ~20% too big next to the M16**.
+- [ ] Variants guessed from the models (`?` below and in the report): check each with a render against a photo before
+      fixing its scale: CAR-15 (14.5" assumed, same length as GoM's M4A1), XM177 (E2), Thompson (M1A1 813 mm vs
+      1928A1 852), Remington 870 (28" field assumed: 1.10; a 20" would be 0.91), W1887 (30" original assumed: 1.14;
+      a 22" reproduction 0.93), W1894 (20" carbine), W1873 (24" rifle), W1873 Short Carbine (cut stock, 620 mm
+      assumed), M1895, Model 70, Remington 700, Stevens 555, Double Barrel, S&W 629 (8-3/8"), Rhino (6"), MP-412
+      (5"), Colt SAA (7.5"). GoM's Stolzer & Son 2-bore has no real size: give it a scale by eye.
+- [ ] Pistols: their scales below put them in the M16's proportion too, smaller than vanilla's own pistols (0.70);
+      say per pistol if one should stay larger.
+
+### How a fix works (traced in the 42.21 jar, CLAUDE.md "Gun scale")
+
+- [ ] Try `getScriptManager():getModelScript("MarzGuns.MP5A2"):Load("MP5A2", "model MP5A2 { scale = 0.83, }")`
+      from Lua, one call per gun with its own value from the list below (keeps GoM's mesh, texture and points;
+      nothing copied from GoM; a table of gun -> scale in one shared file). `scale` on a gun's model scales
+      the body **and every part on it** (stock, bolt, magazine, sights, suppressors, bayonets) about the grip origin:
+      in hand, on the back / in holsters, on the floor, and the muzzle flash. To check: `ModelScript:Load` is
+      reachable from Lua; it must run before any gun model instance exists and again after every script reload
+      (instances copy the scale when created).
+- [ ] Not scaled with it, so handle by hand: the ballistic muzzle (bullet origin, tracer start; raw `muzzle`
+      offset: starts (1 - s) x muzzle y ahead of the drawn muzzle, 5.0 cm on the MP5A2 at 0.83; pre-scaling the
+      offset would sink the flash into the barrel instead); the floor `world` point (applied before the scale:
+      offset x s keeps the floor pose); **Gunworks' reload magazine in the left hand** (an attached item at
+      `Bip01_Prop2` drawn with the magazine's own model, unscaled, so it changes size as it goes in or out; a
+      magazine cannot take its own `scale`, it would be scaled twice in the gun: needs hand-only magazine models or
+      a scaled reload point).
+- [ ] Our own guns: rebuild the meshes at the new K (build_*.py) or use `scale` the same way. Recheck what was fitted to
+      their current size: Hot Brass ejection points, Lasers.lua beams, the Mk9's run-time `canon` point on GoM's
+      MP5s, the sawn-off holster points (`HOLSTER_POINTS`), TienInspectWeapon's view.
+
+### Each gun's own scale (model script; ratio now -> scale)
+
+Rifle stance (vanilla's rifle clips):
+- [ ] MarzGuns.MP5A2: 0.73 -> **0.83** (GoM's MP5A2 is drawn longer than its MP5, 0.494 / 0.487, real 680 / 700 mm:
+      one of the two stocks is off; check before both get their scale)
+- [ ] GunsOfTienPost93.UMP45 / UMP9: 0.73 -> **0.83** (the idle palm then lands on a 0.9 cm thin part: check the hand)
+- [ ] MarzGuns.CAMP_CARBINE: 0.71 -> **0.85**
+- [ ] MarzGuns.XM177: 0.70 -> **0.86**?
+- [ ] MarzGuns.MP5: 0.70 -> **0.87**
+- [ ] MarzGuns.MP5SD: 0.69 -> **0.87**
+- [ ] MarzGuns.FAMAS: 0.69 -> **0.88**
+- [ ] MarzGuns.AKS74U: 0.68 -> **0.89**
+- [ ] MarzGuns.W1894: 0.67 -> **0.90**?
+- [ ] MarzGuns.FAL: 0.67 -> **0.91**
+- [ ] MarzGuns.SKS: 0.66 -> **0.91**
+- [ ] MarzGuns.SVD: 0.66 -> **0.91**
+- [ ] MarzGuns.THOMPSON: 0.66 -> **0.91**?
+- [ ] MarzGuns.MINI_14: 0.65 -> **0.92**
+- [ ] GunsOfTienPost93.SCARH / SCARL: 0.65 -> **0.93**
+- [ ] MarzGuns.AK74: 0.65 -> **0.93**
+- [ ] MarzGuns.W1873: 0.64 -> **0.94**?
+- [ ] MarzGuns.AK47: 0.64 -> **0.94**
+- [ ] GunsOfTien.M249: 0.64 -> **0.94**
+- [ ] MarzGuns.G3: 0.64 -> **0.94**
+- [ ] MarzGuns.STEVENS_555: 0.64 -> **0.94**?
+- [ ] MarzGuns.W1873_CARBINE: 0.64 -> **0.95**?
+- [ ] MarzGuns.M79: 0.63 -> **0.95**
+- [ ] MarzGuns.M1903: 0.63 -> **0.95**
+- [ ] MarzGuns.ASVAL: 0.63 -> **0.95**
+- [ ] MarzGuns.FNC: 0.63 -> **0.96**
+- [ ] MarzGuns.M1895: 0.63 -> **0.96**?
+- [ ] MarzGuns.MOSSBERG_590 (and MASTERKEY_Weapon, same model): 0.63 -> **0.96**
+- [ ] MarzGuns.DOUBLEBARREL: 0.63 -> **0.96**?
+- [ ] MarzGuns.M4A1: 0.63 -> **0.96**
+- [ ] MarzGuns.CAR15 (and CAR15_M203_Weapon): 0.63 -> **0.96**?
+- [ ] MarzGuns.REMINGTON_700: 0.62 -> **0.97**?
+- [ ] MarzGuns.M24: 0.62 -> **0.97**
+- [ ] MarzGuns.G36C: 0.62 -> **0.97**
+- [ ] MarzGuns.TOZ34: 0.61 -> **0.98**
+- [ ] MarzGuns.M60: 0.61 -> **0.98**
+- [ ] MarzGuns.M14: 0.61 -> **0.98**
+- [ ] MarzGuns.G36: 0.61 -> **0.98**
+- [ ] MarzGuns.AR15: 0.61 -> **0.98**
+- [ ] MarzGuns.MOSIN: 0.61 -> **0.99**
+- [ ] MarzGuns.M16A1: 0.61 -> **0.99**
+- MarzGuns.M16A2, M16A3, M16A2_M203 (and M203_Weapon): **1.00**, the anchor.
+- [ ] MarzGuns.SPAS12, M1_GARAND, PSG1: 0.60 -> **1.00**; MODEL_70: 0.60 -> **1.00**?
+- [ ] MarzGuns.TRENCHGUN: 0.58 -> **1.04**
+- [ ] MarzGuns.AA12: 0.58 -> **1.05**
+- [ ] MarzGuns.BENELLI_M4: 0.58 -> **1.05**
+- [ ] MarzGuns.BAR: 0.56 -> **1.07**
+- [ ] MarzGuns.REMINGTON_870: 0.55 -> **1.10**?
+- [ ] MarzGuns.W1887: 0.53 -> **1.14**?
+- [ ] MarzGuns.DOUBLE_DEUCE (Stolzer & Son 2-bore): by eye.
+
+Our compact stance:
+- [ ] MarzGuns.MP5K: 0.72 -> **0.84**
+- [ ] GunsOfTien.UZI, MINIUZI: 0.72 -> **0.84**
+
+SMGs held as pistols:
+- [ ] GunsOfTienPost93.P90TR, MP7A1, MP7A2: 0.72 -> **0.84**
+- [ ] GunsOfTien.MICROUZI: 0.71 -> **0.85**
+- [ ] MarzGuns.MAC10: 0.70 -> **0.87**
+- [ ] MarzGuns.TEC9: 0.69 -> **0.88**
+
+Pistols:
+- [ ] MarzGuns.DETECTIVE_38: 0.87 -> **0.69** (a 2" snub drawn the size of a 4")
+- [ ] MarzGuns.MP412: 0.81 -> **0.75**?
+- [ ] MarzGuns.COLT_SINGLE: 0.74 -> **0.82**?
+- [ ] MarzGuns.RHINO: 0.73 -> **0.82**?
+- [ ] MarzGuns.HIPOWER: 0.73 -> **0.83**
+- [ ] MarzGuns.P226: 0.72 -> **0.83**
+- [ ] MarzGuns.GLOCK17, FIVESEVEN (ours, module MarzGuns), GunsOfTienPost93.UCP: 0.72 -> **0.84**
+- [ ] MarzGuns.M93R: 0.71 -> **0.85**
+- [ ] MarzGuns.PYTHON: 0.70 -> **0.86**
+- [ ] MarzGuns.M1911: 0.70 -> **0.86**
+- [ ] MarzGuns.SW629: 0.69 -> **0.87**?
+- [ ] MarzGuns.M92FS: 0.69 -> **0.88**
+- [ ] MarzGuns.USP: 0.67 -> **0.90**
+- [ ] MarzGuns.DEAGLE: 0.64 -> **0.94**
+- [ ] MarzGuns.VP70M: 0.60 -> **1.01**
+
+### Stances and animations
+
+- [ ] Rifle-stance guns (vanilla's rifle clips: the left palm sits 0.20-0.22 ahead of the grip, fixed): with the
+      scales above the palm's distance to the gun's underside changes by under 3 mm on every gun but the UMPs, so
+      resizing alone needs no new clips there. The UMPs at 0.83: the idle palm lands on a 0.9 cm thin part (was a
+      4.9 cm deep one) and the aimed one on a deeper one: check, maybe a left-hand place of their own.
+- [ ] Left hands already off today, whatever the size (vanilla's own rifles: 1.1 cm under the gun idle, 2.8 aimed):
+      GoM's MP5 / MP5A2 / MP5SD ~2 cm lower (3.0 / 4.6: the hand floats under the handguard), our SCAR-L / H, G3,
+      Thompson ~1.1-1.3 cm lower, FAL / FNC / AS VAL / Mossberg ~0.8; FAMAS: the palm is ahead of its handguard (1.4
+      cm thick there: the barrel). Bolt rifles, M79, Stevens, BAR, Camp Carbine: palm 0.5-2 cm into the forend
+      (probably just the fingers round the wood; look). Fixing these = per-gun left-hand places (Gunworks `GripAnim`
+      clip sets, as the compact stance), a separate job from the size: which ones?
+- [ ] Reloads after resizing: the magazine well moves back (1 - s) x its y (MP5 at 0.87: 1.5 cm) and cocking handles
+      likewise (MP5 ~3.1 cm), so check every resized gun's reload and rack in game: vanilla's clips per reload type
+      (magazine rifles, no-magazine bolts, pump, break-action, lever, revolver, handgun) and GoM's own (bullpup, FAL
+      rack, handgun2).
+- [ ] Our clips were solved for today's sizes: the compact stance (4 sets, 1016 nodes: Uzi, UziT, MP5K, MP7) and the
+      reloads (smg_reload.py compact_uzi / mp5k / mp7, m249_reload.py, the P90's, the Uzi's): rebuild them from the
+      scaled points (places x s) once sizes are settled.
+- [ ] Pistols on vanilla's handgun clips hold the grip only; scaling about the grip origin keeps both hands on it,
+      the grip just gets smaller: check the fingers.
+
+### Found on the way
+
+- [ ] Muzzle points away from the barrel's end (flash / tracer start): ahead: AR-15, M16A2 / A3 / A2 M203 +5.4 cm,
+      AS VAL +5.6, W1887 +5.7, Detective .38 +5.5, Model 70 +4.0, M14 and M1 +2.8, AK-47 +2.1, P226 +1.1, FAMAS
+      +1.0; inside: W1894 -7.0, FAL -4.9, Remington 870 -2.1, PSG1 -2.0, 93R -1.9, MP5 -1.4, Rhino -1.2, MP5A2 -1.0.
+      Look in game before touching (the M16s' may sit past a flash hider that is a part).
+- Shared parts are sized loosely (ratio to real): M9 bayonet 0.54, K98 0.54, M5 0.57, M1905 0.60, M1 0.64, PSO-1
+  0.51, EXPS3 0.38. They take the gun's scale, so a resized gun shrinks or grows its parts with it.
