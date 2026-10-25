@@ -1447,7 +1447,10 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   5.56 variant has all three. Box sizes: 7.62x39 and 9x39 = 20 (`OpenBoxOf20Bullets`, tag
   `marzguns:ammobox20`), 9x19 and .45 = 50 (`OpenBoxOf50Bullets`, `marzguns:ammobox50`), 12 gauge = 25
   (`OpenBoxOf25Bullets`, `OpenShellsBox` action; packing = `place25BulletsInBox`); carton = 12 boxes, crate = 4
-  cartons. GoM's recipes (G/scripts/MarzWeapons/recipes/ammunition.txt) use closed `itemMapper` lists, so an
+  cartons. Weights: box = 0.9 × its rounds (GoM's `AmmoPatch.lua` round weights), carton = 0.8 × 12 boxes, crate =
+  0.8 × 4 cartons, each rounded to 3 decimals, so every packing step is lighter per round; every one of ours
+  follows it (user, 2026-10-25: packing must always pay; Post-93's `packed_weights`, link boxes 0.9 of their links).
+  GoM's recipes (G/scripts/MarzWeapons/recipes/ammunition.txt) use closed `itemMapper` lists, so an
   outside mod cannot join them: own tags (`ItemTag.register` in registries.lua) and own recipe names, as V does
   (`OpenBoxOfBullets20_mvgi` etc., V/scripts/MarzVanillaWeapons/items/recipes.txt).
 - **Loot**: GoM gives the 5.56 variants **no loot at all**. Its ammo comes from `ItemInsertion.lua`

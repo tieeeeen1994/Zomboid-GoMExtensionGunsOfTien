@@ -15,7 +15,7 @@ module GunsOfTien {
         ItemType         = base:normal,
         Icon             = GunsOfTien_LinkBox_M27,
         WorldStaticModel = GunsOfTien.LinkBox_M27,
-        Weight           = 0.45,
+        Weight           = 0.36,
         ToolTip          = Tooltip_Item_GunsOfTien_LinkBox_M27,
     }
 
@@ -34,7 +34,7 @@ module GunsOfTien {
         ItemType         = base:normal,
         Icon             = GunsOfTien_LinkBox_M13,
         WorldStaticModel = GunsOfTien.LinkBox_M13,
-        Weight           = 0.35,
+        Weight           = 0.27,
         ToolTip          = Tooltip_Item_GunsOfTien_LinkBox_M13,
     }
 }
