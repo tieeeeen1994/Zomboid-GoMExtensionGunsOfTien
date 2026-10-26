@@ -574,6 +574,7 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
       muzzle on every gun (the turned ones: Mini Uzi, MP5K, MP7s, on the UziT / MP5K / MP7 clips), sneaking, walking, running, sprinting, vaults, falls, get-ups, sitting, fidgets,
       emotes, vehicle aiming, the reloads (magazine leaving with the hand, racks, Hot Brass casing at the rack), the
       guns upright in hand and unchanged in holsters / on the back / on the floor, the Micro Uzi still one-handed.
+      Gunworks' grip cache (CLAUDE.md "Compact SMG stance"): fixed in ZomboidFixesB42 (GunworksGripSync), tested there.
 - [ ] Belt links built 2026-10-22 (docs/design.md 4e): M27 / M13 links and their boxes (models, icons, open / pack /
       make recipes), filling and unloading belt boxes takes / gives links, every shot from a belt box throws its link
       out (Hot Brass physics and our landing sounds, at the feet without Hot Brass, into Ammo Maker's brass catcher;

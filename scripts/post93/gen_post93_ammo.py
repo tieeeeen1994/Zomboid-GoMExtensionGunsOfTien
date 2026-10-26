@@ -13,11 +13,24 @@ ART = 'GunsOfTienPost93_'
 
 # Real cartridge weights: 4.6x30 about 6.6 g, 5.7x28 about 6.0 g. 50-round boxes, as both are sold.
 CALIBRES = {
-    '46x30': dict(name='4.6x30mm', weight='0.0066', mesh='46x30_Round', box_w='0.36', carton_w='4.6',
-                  crate_w='19.0'),
-    '57x28': dict(name='5.7x28mm', weight='0.006', mesh='57x28_Round', box_w='0.33', carton_w='4.2',
-                  crate_w='17.4'),
+    '46x30': dict(name='4.6x30mm', weight='0.0066', mesh='46x30_Round'),
+    '57x28': dict(name='5.7x28mm', weight='0.006', mesh='57x28_Round'),
 }
+ROUNDS_PER_BOX, BOXES_PER_CARTON, CARTONS_PER_CRATE = 50, 12, 4
+
+
+def packed_weights(round_w):
+    """GoM's packing bonus (its ammo_boxes.txt): a box weighs 0.9 of its rounds, a carton 0.8 of its boxes and a
+    crate 0.8 of its cartons, each rounded to 3 decimals from the rounded step before, so every step down is lighter
+    per round (user, 2026-10-25: packing must always pay)."""
+    box = round(float(round_w) * ROUNDS_PER_BOX * 0.9, 3)
+    carton = round(box * BOXES_PER_CARTON * 0.8, 3)
+    crate = round(carton * CARTONS_PER_CRATE * 0.8, 3)
+    return dict(box_w=f"{box:g}", carton_w=f"{carton:g}", crate_w=f"{crate:g}")
+
+
+for _c in CALIBRES.values():
+    _c.update(packed_weights(_c['weight']))
 
 # (calibre, item suffix ('' = the standard round), art suffix, ammo type id, English variant name)
 ROUNDS = [

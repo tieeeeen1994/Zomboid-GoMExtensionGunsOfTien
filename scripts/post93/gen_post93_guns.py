@@ -249,6 +249,14 @@ GUN_HANDGUN = (GUN_COMMON
                .replace("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
                         "MuzzleFlashModelKey          = muzzle_flash_handgun,"))
 assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
+# The MP7s keep the pistol hold but are two-handed, for the compact SMG stance (user: "let's require them to be
+# 2-handed"; CLAUDE.md "One-handed after equipping"); the P90 stays one-handed.
+GUN_HANDGUN_TWO_HANDS = GUN_HANDGUN.replace(
+    "        WeaponReloadType             = handgun,\n",
+    "        WeaponReloadType             = handgun,\n"
+    "        TwoHandWeapon                = true,\n"
+    "        RequiresEquippedBothHands    = true,\n")
+assert GUN_HANDGUN_TWO_HANDS.count("TwoHandWeapon") == 1
 
 
 # GoM's pistol parts the Five-seveN takes (the ModelWeaponPart lines of GoM's Glock 17 / M92FS)
@@ -448,7 +456,7 @@ def mp7_item(name):
         StopPower                    = 2.0,
         Weight                       = 1.5,
         MetalValue                   = 25.0,
-{GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_46x30,
+{GUN_HANDGUN_TWO_HANDS}        AmmoType                     = gunsoftienpost93:bullet_46x30,
         AmmoBox                      = {M}.46x30_Box,
         MagazineType                 = {M}.46x30Magazine20_MP7,
         MaxAmmo                      = 20,

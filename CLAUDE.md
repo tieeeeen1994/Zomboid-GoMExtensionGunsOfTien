@@ -1396,6 +1396,32 @@ behind it (42.21):
   `m_MaleModel` / `m_FemaleModel` are skinned meshes with a `textureChoices` texture (jackets, trousers, vests,
   hoodies; `TINT` items tinted), `m_Static` items (helmets) are static meshes on `m_AttachBone`, hair is a skinned
   mesh from media/hairStyles with `F_Hair_White` tinted. Body masks (parts hidden under clothes) were left out.
+- A sandbox option to turn the stance off was built and dropped (user, 2026-10-26: "there's too much work"), its
+  work discarded. The user wanted off to be a look only. What a one-handed (pistol class) gun would
+  change in 42.21: the off hand free (flashlight, TienDualwield's dual handguns); vehicles (`CombatManager` ~2681: a
+  driver with a two-handed gun hits nothing; `IsoPlayer` ~4389: a driver aiming a FIREARM loses control; passengers'
+  angle penalties x1.5); reload times (Gunworks ends a reload on the clip's *Finished event in SP, times the server on
+  the profile durations in MP); shot / shove timing (`m_TimePc` events of the node's clips); root motion
+  (`doDeferredMovement`, Translation_Data). HANDGUN and FIREARM share attack types, damage, hit and crit rules, and
+  Gunworks' reload `style` is visual only. The stash's way: keep the guns two-handed, a grip `GunsOfTien_PistolHeld`
+  whose 255 nodes are the stance's again with vanilla's pistol clips (handgun twin node, else the weapon-agnostic one,
+  a table for the shooting nodes; `scripts/anim/pistol_animsets.py`), clips differing in length or Translation_Data
+  retimed to the rifle clip's span with its Translation_Data (49 of 191, 5.9 MB), reloads played to the stance's
+  durations with `m_SpeedScaleRandomMultiplierMin/Max`. Left undone there: 96 masked nodes keep the rifle's bone
+  masks where vanilla's pistol node has others (11 none), the 3 PvP `HitRGun*` nodes, an in-game test.
+  Engine notes from it: `Anim2DBlend.speedScale` is parsed but never used (every 2D blend track runs at the node's
+  speed, so only retimed clips can match per-clip lengths); the speed multiplier applies on top of a variable speed
+  scale (`AnimLayer.startLiveNodeTracks`); vanilla's locomotion clips of every weapon class share length and root
+  motion (walk 0.667 s / 0.945, run 2.094, sprint 2.756, sneak run 1.496), and the stance's clips keep vanilla's rifle
+  Translation_Data exactly; B42 ballistics start at the drawn muzzle along the barrel
+  (`BallisticsController.calculateMuzzlePosition`; targets near that line count as well as the reticle's), its
+  `1 / (1 + muzzle offset)` spread scale only for RangeFalloff guns; GoM's .glb clips also carry Blender's stashed
+  actions (a clip's length is the animation named like it).
+- Gunworks grip cache (found 2026-10-26, fixed in ZomboidFixesB42 `*_GunworksGripSync.lua`): `GripAnim.lua`'s `lastGripByOnlineId` remembers the last grip set
+  per online ID, not per character, and only writes the variable on a change. A character rebuilt with the same ID
+  (a remote player back in range after the 5 s timeout, a relog, a respawn, another world without a Lua reload)
+  never gets `GunworksGripAnim` again until its weapon changes: others see the turned guns in vanilla's rifle nodes,
+  4-9 cm off the hands.
 
 ## Gun scale (2026-10-25, audit only; open work in TODO.md "Gun scale audit")
 
@@ -1470,7 +1496,10 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   5.56 variant has all three. Box sizes: 7.62x39 and 9x39 = 20 (`OpenBoxOf20Bullets`, tag
   `marzguns:ammobox20`), 9x19 and .45 = 50 (`OpenBoxOf50Bullets`, `marzguns:ammobox50`), 12 gauge = 25
   (`OpenBoxOf25Bullets`, `OpenShellsBox` action; packing = `place25BulletsInBox`); carton = 12 boxes, crate = 4
-  cartons. GoM's recipes (G/scripts/MarzWeapons/recipes/ammunition.txt) use closed `itemMapper` lists, so an
+  cartons. Weights: box = 0.9 × its rounds (GoM's `AmmoPatch.lua` round weights), carton = 0.8 × 12 boxes, crate =
+  0.8 × 4 cartons, each rounded to 3 decimals, so every packing step is lighter per round; every one of ours
+  follows it (user, 2026-10-25: packing must always pay; Post-93's `packed_weights`, link boxes 0.9 of their links).
+  GoM's recipes (G/scripts/MarzWeapons/recipes/ammunition.txt) use closed `itemMapper` lists, so an
   outside mod cannot join them: own tags (`ItemTag.register` in registries.lua) and own recipe names, as V does
   (`OpenBoxOfBullets20_mvgi` etc., V/scripts/MarzVanillaWeapons/items/recipes.txt).
 - **Loot**: GoM gives the 5.56 variants **no loot at all**. Its ammo comes from `ItemInsertion.lua`

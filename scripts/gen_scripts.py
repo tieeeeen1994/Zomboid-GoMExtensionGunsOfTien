@@ -958,7 +958,8 @@ def m249():
 
 # Belt links (docs/design.md 4e, scripts/build_links.py, shared/GunsOfTien/BeltLinks.lua): the M249's M27 and GoM's
 # M60's M13 disintegrating links, consumed when a belt box is filled and given back when it is fired or emptied.
-# (item, box, per box, link weight, links made from one small metal sheet, English names)
+# (item, box, per box, link weight, links made from one small metal sheet, English names). A box weighs 0.9 of its
+# links, GoM's ammo box bonus, so packing always pays (user, 2026-10-25).
 LINKS = [
     ('M27_Link', 'LinkBox_M27', 200, 0.002, 50, 'M27 5.56mm Belt Link', 'Box of M27 Belt Links'),
     ('M13_Link', 'LinkBox_M13', 100, 0.003, 40, 'M13 7.62mm Belt Link', 'Box of M13 Belt Links'),
@@ -997,7 +998,7 @@ def belt_links():
         ItemType         = base:normal,
         Icon             = GunsOfTien_{box},
         WorldStaticModel = {MODULE}.{box},
-        Weight           = {round(per * weight + 0.05, 3)},
+        Weight           = {round(per * weight * 0.9, 3)},
         ToolTip          = Tooltip_Item_GunsOfTien_{box},
     }}
 """)
@@ -1151,8 +1152,13 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p} canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
-    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster)
+    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster).
+    # The Mini Uzi is two-handed too, for the compact SMG stance (user: "let's require them to be 2-handed"; CLAUDE.md
+    # "One-handed after equipping"); the Micro Uzi stays one-handed.
     snd = 'M16' if rifle else 'M9'
+    both_hands = """        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+""" if gun == 'MINIUZI' else ''
     hold = (f"""        AttachmentType               = Rifle,
         WeaponReloadType             = boltaction,
         TwoHandWeapon                = true,
@@ -1162,7 +1168,7 @@ def uzi_item(gun):
         MuzzleFlashModelKey          = muzzle_flash_shotgun,
 """ if rifle else f"""        AttachmentType               = {'HolsterSmall' if gun == 'MICROUZI' else 'Holster'},
         WeaponReloadType             = handgun,
-        SwingAnim                    = Handgun,
+{both_hands}        SwingAnim                    = Handgun,
         MuzzleFlashModelKey          = muzzle_flash_handgun,
 """)
     return f"""

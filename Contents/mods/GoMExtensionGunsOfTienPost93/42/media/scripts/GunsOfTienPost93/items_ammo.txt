@@ -16,7 +16,7 @@ module GunsOfTienPost93 {
     item 46x30_Box {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.36,
+        Weight             = 0.297,
         Icon               = GunsOfTienPost93_46x30_Box_DM11,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -30,7 +30,7 @@ module GunsOfTienPost93 {
     item 46x30_Carton {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 4.6,
+        Weight             = 2.851,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -44,7 +44,7 @@ module GunsOfTienPost93 {
     item 46x30_Crate {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 19.0,
+        Weight             = 9.123,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -70,7 +70,7 @@ module GunsOfTienPost93 {
     item 46x30_Box_Subsonic {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.36,
+        Weight             = 0.297,
         Icon               = GunsOfTienPost93_46x30_Box_SS,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -84,7 +84,7 @@ module GunsOfTienPost93 {
     item 46x30_Carton_Subsonic {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 4.6,
+        Weight             = 2.851,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -98,7 +98,7 @@ module GunsOfTienPost93 {
     item 46x30_Crate_Subsonic {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 19.0,
+        Weight             = 9.123,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -124,7 +124,7 @@ module GunsOfTienPost93 {
     item 57x28_Box {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.33,
+        Weight             = 0.27,
         Icon               = GunsOfTienPost93_57x28_Box_SS190,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -138,7 +138,7 @@ module GunsOfTienPost93 {
     item 57x28_Carton {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 4.2,
+        Weight             = 2.592,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -152,7 +152,7 @@ module GunsOfTienPost93 {
     item 57x28_Crate {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 17.4,
+        Weight             = 8.294,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -178,7 +178,7 @@ module GunsOfTienPost93 {
     item 57x28_Box_SB193 {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.33,
+        Weight             = 0.27,
         Icon               = GunsOfTienPost93_57x28_Box_SB193,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -192,7 +192,7 @@ module GunsOfTienPost93 {
     item 57x28_Carton_SB193 {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 4.2,
+        Weight             = 2.592,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -206,7 +206,7 @@ module GunsOfTienPost93 {
     item 57x28_Crate_SB193 {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 17.4,
+        Weight             = 8.294,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -232,7 +232,7 @@ module GunsOfTienPost93 {
     item 57x28_Box_SS197SR {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.33,
+        Weight             = 0.27,
         Icon               = GunsOfTienPost93_57x28_Box_SS197SR,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -246,7 +246,7 @@ module GunsOfTienPost93 {
     item 57x28_Carton_SS197SR {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 4.2,
+        Weight             = 2.592,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -260,7 +260,7 @@ module GunsOfTienPost93 {
     item 57x28_Crate_SS197SR {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 17.4,
+        Weight             = 8.294,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
