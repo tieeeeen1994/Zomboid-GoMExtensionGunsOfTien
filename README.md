@@ -26,9 +26,6 @@ Maker they can be made.
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
-- Guns of Marz's guns can be drawn to scale: in proportion to the character and to each other, on the M16A2's scale
-  (Guns of Marz draws most of its guns larger); guns that take the same magazines are drawn the same size. Not the
-  MP5K or the Stolzer & Son 2-Bore (sandbox option, off by default) (beta)
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on
@@ -38,7 +35,8 @@ Maker they can be made.
 - AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
-  automatic fire spread penalty applies
+  automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
+  (they started a little ahead of it or inside it)
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
   off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept

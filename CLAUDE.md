@@ -117,7 +117,7 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `RealisticPiercing`,
   `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never). `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
-  value (TODO.md "Gun scale audit" says where its data and code are kept).
+  value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
   (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
   HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
@@ -292,7 +292,7 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
 
 ## Status and how to continue
 
-See `TODO.md`. In short: both mods' code is written and syntax-checked; the Workshop item was last uploaded
+See `TODO.md` (open work only; built features are taken as working once played). In short: both mods' code is written and syntax-checked; the Workshop item was last uploaded
 2026-10-19 (with the sawn-off stocks, offcuts and sawn-off barrel stats), but nothing has been loaded in game. The Post-93
 **MP7A1 and P90 TR assets are done**, both rebuilt from the user's photos (previews `docs/post93_mp7_preview.png`, `docs/post93_p90_preview.png` plus the
 P90's `post93_p90_magazine.png`, `post93_p90_attachments.png`, `post93_p90_ammo.png`; the P90
@@ -937,6 +937,14 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   `Bayonet.CanAttachBayonet` refused it everywhere; the overpressured 5.56's spread penalty is registered as
   `MarzGuns.556x45_Bullet_Overpressured`, but the round is `SWMG.` and `RateOfFire.getSpreadProfile` looks rounds up
   by their own type, so it never applied (now: automatic fire spread doubled, as GoM meant).
+- **GoM's muzzle points** (2026-10-26, `shared/GunsOfTien/MuzzlePoints.lua`, measured by `scripts/muzzle_audit.py` +
+  `muzzle_audit_sheet.py`, side views in tmp/muzzle): the flash and the bullet / tracer start at the model's `muzzle`
+  point; on 21 of GoM's 72 gun models it sat 1-7 (game units x 100) ahead of the barrel's end or inside it (only the
+  distance along the barrel was off; height within 0.5). Moved to the bore's front at OnGameBoot and OnInitGlobalModData
+  (`getAttachmentById("muzzle"):getOffset():set`). The AR-15 / M16s' point was at the front of GoM's AR muzzle
+  mount device (5.4 cm): with GoM's flash hider, compensator or brake (3.5-4.3 cm) the flash now starts inside the
+  device; suppressors turn it off (AttachmentCustomStats.lua). Left: guns under 1 cm off, the MP5K (compact stance),
+  the `*_M203_Underbarrel` launcher models (CAR-15's point 19 cm ahead of its launcher, M16A2's at the rifle's).
 
 ## Lasers on a battery (2026-10-18)
 
@@ -1463,7 +1471,7 @@ behind it (42.21):
   never gets `GunworksGripAnim` again until its weapon changes: others see the turned guns in vanilla's rifle nodes,
   4-9 cm off the hands.
 
-## Gun scale (2026-10-25; built 2026-10-26 in GunScale.lua, removed the same day, kept in git: TODO.md "Gun scale audit")
+## Gun scale (2026-10-25; built 2026-10-26 in GunScale.lua, removed the same day: `docs/gom_gun_scale.md`)
 
 - Sizes: vanilla's MaleBody.x is 0.98 units tall (a ~1.78 m man at ~0.55); vanilla's M16_Rifle.x 0.546 long = 0.54
   of 1006 mm (true to the body), M9 0.70, pump shotgun / MSR788 ~0.60-0.65. GoM's rifle-stance guns: median 0.63
@@ -1490,7 +1498,7 @@ behind it (42.21):
   AKS-74U 0.1238, G36 / G36C 0.1101): one receiver size per family. FNC, FAMAS and SCAR-L take STANAG magazines
   on receivers of their own. GoM's FAMAS is an F1 (small trigger guard), which really takes only its own 25-round
   magazines (STANAG came with the 1994 G2); GoM gives it STANAG for gameplay. Rule (user, 2026-10-26): guns sharing
-  a magazine share one scale (TODO "Guns sharing a magazine share one scale").
+  a magazine share one scale (`docs/gom_gun_scale.md`).
 - Where the scale sits (42.21): an attached / held model is parent bone x parent point x **the model's own point of
   the same name** x mesh transform x `ModelInstance.scale` (`AnimatedModel$AnimatedModelInstanceRenderData
   .transformToParent`; `invertAttachmentSelfTransform` is false); a floor item is rotation x inverse `world` point x
