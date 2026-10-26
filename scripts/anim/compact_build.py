@@ -314,6 +314,20 @@ class Declip:
         return q, max(dl if left else 0.0, dr)
 
 
+def redeclip(dc, r, xa, poses):
+    """Elbows swung out of the body again (Declip.arms) on every frame still in, each hand kept where it holds the
+    gun in that frame."""
+    out = []
+    for q in poses:
+        q = pose.copy(q)
+        dl, dr = dc.depth(q)
+        if dl > dc.contact or dr > dc.contact:
+            w = pose.world(xa, q)
+            q, _ = dc.arms(r, q, w["Bip01_Prop1"].inverted() @ w["Bip01_L_Hand"])
+        out.append(q)
+    return out
+
+
 def left_to(r, xa, q, free, lgrip, on):
     """The left arm onto the gun at lgrip, blended back to vanilla's own left arm (`free`) by 1 - on."""
     if on <= 0.0:
@@ -925,6 +939,11 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
             filtered = filter_poses(r, xa, poses, is_loop(xa, frames))
             score, parts_of = scorer.score(xa, frames, filtered)
             results.append((score, refs, smoothed, "+filter", filtered, parts_of))
+            # the filter solves the arms again without the de-clip, which can put an arm back into the body (the
+            # MP7's diagonal walk, left arm 3.9 cm in; 2026-10-26): its elbows swung out again, hands kept on the gun
+            redone = redeclip(dc, r, xa, filtered)
+            score, parts_of = scorer.score(xa, frames, redone)
+            results.append((score, refs, smoothed, "+filter+declip", redone, parts_of))
         best = results[0]
         for res in results[1:]:
             if res[0] < best[0] - 1.0 and res[0] < results[0][0] - 1.0:

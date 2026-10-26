@@ -218,7 +218,43 @@ def mp7_spec():
     )
 
 
-SPECS = {"uzi": uzi_spec, "mp5k": mp5k_spec,
+def ump_spec():
+    """Post-93's UMP45 / UMP9 (one body), rifle-held and upright (scripts/post93/ump_points.json): the magazine ahead of
+    the trigger guard, tilted forward as it goes down; the charging handle on the left of the upper receiver's front
+    (UMP_BOLT: y 0.186-0.198, z 0.040-0.046, x 0.011-0.018), pulled back 60 mm. Built 2026-10-26 when the UMPs were
+    resized and GoM's MP5 reload clips (glTF, a rig with other bone axes) no longer met their well and handle."""
+    p = json.load(open(os.path.join(ROOT, "scripts/post93/ump_points.json")))
+    K = p["_extras"]["k"]
+    mag = mat_of(p["magazine"])
+    down = Vector((0.0, 0.030, -0.110)).normalized()                  # the 25-round's axis, lips to base
+    s_grab = (mag.translation.z + 0.026) / -down.z                    # 8 mm under the well's bottom (z -0.018)
+    P93 = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
+    knob = Vector((0.016, 0.192, 0.043))
+    u = uzi_spec()
+    return dict(
+        name="UMP", rifle=True, points=p, mag_point=mag, out=down,
+        grab=mag.translation + down * s_grab,
+        hold_fix=u["hold_fix"],                                       # the rifle hand's own contact offset
+        travel=s_grab + 0.010,
+        knob=knob, knob_back=knob - Vector((0.0, 60.0 * K, 0.0)),
+        knob_turn=(-60, 30, -45),
+        work=u["work"], rack=u["rack"], away=u["away"],
+        fbx=os.path.join(P93, "models_X/weapons/firearms/GunsOfTienPost93_UMP.fbx"),
+        nodes=["UMP_BODY", "UMP_BOLT"],
+        mag_fbx=os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_UMP_magazines.fbx"),
+        mag_node="45Magazine25_UMP",
+        # starts and ends in the UMP's own idle and aim (rifle_hand.py: vanilla's with the left palm moved back), and
+        # is packed with them (compact_pack.py "UMP"); approved from the draft GIFs (user, 2026-10-26)
+        clip_name="GunsOfTien_Compact%s_Reload%s",
+        # the unload starts with the left hand where the idle has it, on the handguard: the magazine, 9 cm behind it,
+        # was out of its reach on the first frame (2.3 cm short)
+        start_on_support=True,
+        base=(os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleRifle.x"),
+              os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleAimRifle.x")),
+    )
+
+
+SPECS = {"uzi": uzi_spec, "mp5k": mp5k_spec, "ump": ump_spec,
          "compact_uzi": lambda: compact(uzi_spec(), "Uzi", False),
          # the lever from the left side (the stance's "over the top" template turned ~half a turn; scanned at the rack place)
     "compact_mp5k": lambda: dict(compact(mp5k_spec(), "MP5K", True), knob_turn=(15, 165, -75),
@@ -362,7 +398,7 @@ def keys_for(clip, r, g, grips):
     if clip == "Unload":
         away = hand_away(r, g, g["work"], on_mag(t))
         return [
-            Key(0, look=0, lean=0, support=0, lgrip=on_mag(0.02)) if g["rifle"] else
+            Key(0, look=0, lean=0, support=0, lgrip=on_mag(0.02)) if g["rifle"] and not g.get("start_on_support") else
             Key(0, look=0, lean=0, support=1, lgrip=free),
             Key(8, support=1, lgrip=on_mag(0.008), ease=True, **W),                # under the well
             Key(SWAP["Unload"], lgrip=on_mag(0.0)),                                 # on the magazine, the release

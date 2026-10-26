@@ -4,7 +4,7 @@ part at its model-script point, rendered front / side / top (Blender 5.2, headle
 
     blender -b --factory-startup -P scripts/anim/hold_preview.py -- <vanilla anims_X/Bob> <out_dir> [gun ...]
 
-gun: uzi miniuzi microuzi mp5k mp7 (default: all). Writes <out_dir>/<gun>_<Idle|Aim>/<view>_<frame>.png; lay them out
+gun: uzi miniuzi microuzi mp5k mp7 p90 (default: all). Writes <out_dir>/<gun>_<Idle|Aim>/<view>_<frame>.png; lay them out
 with TienInspectWeapon's sheet.py / gif.py. Rifle-held guns (SwingAnim Rifle) play Bob_IdleRifle / Bob_IdleAimRifle,
 pistol-held ones Bob_IdleHandgun / Bob_IdleAimHandgun: Guns of Marz ships no idle or aim clips of its own.
 """
@@ -26,7 +26,7 @@ import x_import  # noqa: E402
 import x_preview  # noqa: E402
 from smg_reload import GOM, MEDIA  # noqa: E402
 
-EVERY = 3                       # render every 3rd frame
+EVERY = int(os.environ.get("HOLD_EVERY", 3))   # render every 3rd frame (HOLD_EVERY: another step)
 
 
 def point(offset, rotate=(0, 0, 0)):
@@ -40,6 +40,7 @@ UZI_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_%s.fbx")
 # MP7_S (its size against the 0.72 the stance was solved at) scales the places that were measured by hand.
 MP7_POINTS = json.load(open(os.environ.get("GOT_MP7_POINTS") or os.path.join(ROOT, "scripts/post93/mp7_points.json")))
 MP7_S = 1.0 / MP7_POINTS["_extras"]["real_mm_per_game_unit"] / 0.00072
+P90_POINTS = json.load(open(os.path.join(ROOT, "scripts/post93/p90_points.json")))
 # the Uzis likewise (build_uzi.py's K, the same day)
 UZI_POINTS = json.load(open(os.path.join(ROOT, "scripts/uzi_points.json")))
 UZI_S = UZI_POINTS["UZI"]["_extras"]["k"] / 0.00072
@@ -82,6 +83,13 @@ GUNS = {
         (P93_FBX % "MP7A1", "MP7A1_STOCK", point(MP7_POINTS["stock_folded"]["offset"])),
         (P93_FBX % "MP7A1", "MP7A1_FOREGRIP", point(MP7_POINTS["foregrip_deployed"]["offset"], (-90, 0, 0))),
         (P93_MAGS, "46x30Magazine30_MP7", point(MP7_POINTS["magazine"]["offset"], (-180, 0, -180))),
+    ]),
+    # Post-93's P90 TR, held like a pistol (vanilla's handgun idle and aim), its 50-round magazine on top
+    "p90": dict(rifle=False, parts=[
+        (P93_FBX % "P90TR", "P90TR_BODY", None),
+        (P93_FBX % "P90TR", "P90TR_BOLT", None),
+        (os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"), "57x28Magazine50_P90",
+         point(P90_POINTS["magazine"]["offset"], P90_POINTS["magazine"]["rotate"])),
     ]),
     "mp5k": dict(rifle=False, parts=[
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BODY", None),

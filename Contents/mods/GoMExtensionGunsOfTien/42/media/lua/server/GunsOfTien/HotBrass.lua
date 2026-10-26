@@ -38,9 +38,11 @@ SpentCasingPhysics.RegisterPressureProfiles({
 -- The M249 throws its cases (no links: user, 2026-10-22) down and to the right through the port at the bottom of the
 -- receiver's right side: Post-93's P90 fall (a short drop from under the gun) turned out to the right, at GoM's M60
 -- position along the gun.
+-- forwardOffset: the ejection port moved toward the grip when our guns were resized to the M16A2's proportion
+-- (2026-10-26): each value lowered by (1 - size change) x the port's old distance ahead of the grip x 1.5 tiles a unit.
 SpentCasingPhysics.RegisterWeaponParams({
     ["GunsOfTien.M249"] = {
-        forwardOffset = 0.30,
+        forwardOffset = 0.288,
         sideOffset    = 0.08,
         heightOffset  = 0.44,
         shellForce    = 0.30,
@@ -53,7 +55,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     -- The Uzis throw their cases out to the right as GoM's MP5 (the rifle-held Uzi) and MP5K (the pistol-held Mini
     -- and Micro) do.
     ["GunsOfTien.UZI"] = {
-        forwardOffset = 0.36,
+        forwardOffset = 0.353,
         sideOffset    = 0.08,
         heightOffset  = 0.48,
         shellForce    = 0.65,
@@ -63,7 +65,7 @@ SpentCasingPhysics.RegisterWeaponParams({
         spinForce     = { 24, 34 },
     },
     ["GunsOfTien.MINIUZI"] = {
-        forwardOffset = 0.55,
+        forwardOffset = 0.543,
         sideOffset    = 0.06,
         heightOffset  = 0.53,
         shellForce    = 0.65,
@@ -73,7 +75,7 @@ SpentCasingPhysics.RegisterWeaponParams({
         spinForce     = { 24, 34 },
     },
     ["GunsOfTien.MICROUZI"] = {
-        forwardOffset = 0.55,
+        forwardOffset = 0.543,
         sideOffset    = 0.06,
         heightOffset  = 0.53,
         shellForce    = 0.65,

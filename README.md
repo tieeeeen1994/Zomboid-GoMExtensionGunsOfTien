@@ -78,8 +78,9 @@ Maker they can be made.
 - Every animation of the rifle stance is remade for it: idle, sneaking, walking, running, sprinting, aiming at every
   angle and while moving, shooting, shoving, vaulting, falling, getting up, sitting, idle fidgets and emotes
 - Their own reloads: the magazine is drawn out and carried in the hand, and each gun is racked by its own handle
-- The Mini Uzi, the MP5K and Post-93's MP7s now need both hands, like every rifle (the Mini Uzi still fits a
-  holster); the Micro Uzi stays a one-handed machine pistol
+- The Mini Uzi, the MP5K and Post-93's MP7s go into both hands by default; "Equip Primary" still holds them in one
+  hand, like a pistol, with the pistol reload (the Mini Uzi still fits a holster); the Micro Uzi stays a one-handed
+  machine pistol
 
 ## Ammo Maker (optional)
 

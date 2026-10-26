@@ -1,0 +1,58 @@
+module GunsOfTien {
+
+    model 556x45Magazine20_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine20_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine25_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine25_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine30_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine30_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine30_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine50_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine50_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine50_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine60_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine60_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine60_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine75_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine75_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine75_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine100_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine100_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine100_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+
+    model 556x45Magazine150_STANAG_GoT {
+        mesh     = weapons/magazines/assault_rifles|556x45Magazine150_STANAG,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine150_STANAG,
+        cullFace = None,
+        scale    = 0.9277,
+    }
+}

@@ -16,7 +16,8 @@
       become two-handed (Item.DoParam; isTwoHandWeapon reads the script live) and are turned upright in the hand: they
       are modelled upside down for the pistol clips, and a model's own attachment named after the bone it hangs from
       (Bip01_Prop1) is applied in the hand (ModelInstanceRenderData.testOnBackItem), as vanilla turns its frying pan.
-      Holsters, the back slot and the floor use other points, so they are unchanged.
+      Holsters, the back slot and the floor use other points, so they are unchanged. They can still be held in one
+      hand, on the pistol clips, drawn with a model without the turn (OneHand.lua).
     - The game shoots (tracers, ballistics) from the gun bone and the model's `muzzle` point without that turn
       (BallisticsController.calculateMuzzlePosition), while the muzzle flash hangs on the drawn gun. So the turn is
       about the gun's own bore (the point offset by twice the muzzle's height), which keeps the muzzle where the game
@@ -27,13 +28,14 @@
 --]]
 
 local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
+local OneHand = require "GunsOfTien/OneHand"
 
 local SETS = {
     ["GunsOfTien.UZI"] = "GunsOfTien_CompactUzi",
     ["GunsOfTien.MINIUZI"] = "GunsOfTien_CompactUziT",
     ["MarzGuns.MP5K"] = "GunsOfTien_CompactMP5K",
 }
--- modelled upside down for the pistol clips: turned upright in the hand, and made two-handed
+-- modelled upside down for the pistol clips: turned upright in both hands, and made two-handed
 local TURNED = { ["GunsOfTien.MINIUZI"] = true, ["MarzGuns.MP5K"] = true }
 
 local CompactStance = {}
@@ -52,8 +54,8 @@ Events.OnGameBoot.Add(registerGrips)
 
 local patched = {}       -- item scripts made two-handed (scripts are new objects after a reload)
 
---- Turn a gun modelled upside down upright in the hand, about its bore, and make it two-handed (both hands
---- required). Also used by Post-93 for the MP7.
+--- Turn a gun modelled upside down upright in the hand, about its bore, and make it two-handed (one hand allowed: drawn
+--- with its one-hand model there, OneHand.lua). Also used by Post-93 for the MP7.
 ---@param fullType string
 function CompactStance.turnUpright(fullType)
     local manager = ScriptManager.instance
@@ -72,17 +74,16 @@ function CompactStance.turnUpright(fullType)
     local item = manager:getItem(fullType)
     if item and not patched[item] then
         patched[item] = true
+        -- equipped in both hands by default (hotbar, Equip Two Hands); "Equip Primary" still holds it in one hand, as
+        -- a handgun (WeaponType: two-handed and in both hands = "firearm"). Not RequiresEquippedBothHands: the guns
+        -- are held either way (user, 2026-10-26). Our own Mini Uzi and MP7s have it in their item scripts; GoM's MP5K
+        -- needs this.
         item:DoParam("TwoHandWeapon = true")
-        -- as every vanilla rifle and the full Uzi: no "Equip Primary", and every equip goes to both hands. Without
-        -- it the gun could sit in the right hand alone, which the game plays as a handgun (WeaponType: two-handed
-        -- and in both hands = "firearm"), until something re-equipped it (Gunworks' stock fold). An instance copies
-        -- it from the script when made or loaded, so patched before the world's items load. Our own Mini Uzi and
-        -- MP7s have both in their item scripts; GoM's MP5K needs this.
-        item:DoParam("RequiresEquippedBothHands = true")
     end
 end
 
 local function patchScripts()
+    OneHand.copyModel("MarzGuns.MP5K", "GunsOfTien.MP5K_1H")
     for fullType in pairs(TURNED) do
         CompactStance.turnUpright(fullType)
     end
@@ -107,5 +108,11 @@ if okRA and type(ReloadAnim) == "table" and ReloadAnim.RegisterWeapon then
     ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
     ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactMP5K = true
 end
+-- in one hand: GoM's own reload on its pistol clips (its magazineProfile("handgun2"), the clips' lengths)
+OneHand.register("MarzGuns.MP5K", "MarzGuns.MP5K", "GunsOfTien.MP5K_1H", {
+    animId = "handgun2",
+    style = "none",
+    durations = { unload = 1.29613, load = 1.29613, rack = 0.999844 },
+})
 
 return CompactStance

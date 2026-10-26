@@ -170,9 +170,14 @@ def keys_for(clip, r, g):
         R = dict(look=0.8, lean=4, aux=0.2, **RACK)
         if clip == "Rack":
             first = Key(0, support=1, lgrip=sup, ease=True, **M)
-            last = Key(n, look=0, lean=0, aux=0, lgrip=sup, pos=r.weapon0.translation,
-                       along=rot_of(r.weapon0) @ Vector((0, 1, 0)), top=None, face=rot_of(r.weapon0) @ Vector((1, 0, 0)),
-                       ease=True)
+            # the pistol idle's own hold, its top included: with `top=None` the rack's top (up) was carried into the
+            # last key and the gun ended rolled half a turn about its barrel, top to the back, against the idle's top
+            # to the front (since 2026-10-15; the user saw it on the GIF's last frame, 2026-10-26)
+            home = dict(look=0, lean=0, aux=0, pos=r.weapon0.translation, along=rot_of(r.weapon0) @ Vector((0, 1, 0)),
+                        top=rot_of(r.weapon0) @ Vector((0, 0, r.top_sign)), face=rot_of(r.weapon0) @ Vector((1, 0, 0)))
+            # the unaimed rack ends with the left arm hanging (the pistol idle's); from the let-go it goes back with
+            # the gun, over the same frames and the same easing (settle_left_arm below)
+            last = Key(n, support=0, lgrip=sup, ease=True, **home)
         else:
             first = Key(0, support=1, lgrip=sup, ease=True, at_aux=True, aux=1.0, look=0, lean=0)
             last = Key(n, lgrip=sup, ease=True, at_aux=True, aux=1.0, look=0, lean=0)
@@ -181,7 +186,6 @@ def keys_for(clip, r, g):
             Key(11, lgrip=side(HANDLE), ease=True, **R),                       # on the handle (rackStart at 0.4)
             Key(21, lgrip=side(HANDLE_BACK), ease=True),                       # all the way back (rackBullet 0.6)
             Key(26, lgrip=side(HANDLE_BACK + Vector((-0.02, 0, 0.0)) * S)),         # let go (rackEnd 0.75)
-            *([Key(30, support=0)] if clip == "Rack" else []),                 # the left hand drops to the side
             last,
         ]
     raise ValueError(clip)
@@ -282,11 +286,34 @@ def render_closeups(out_dir, frames, arm_ob, mag_in_hand=None, show_in_hand=True
             bpy.ops.render.render(write_still=True)
 
 
+# The unaimed rack's left arm from the let-go to the end (2026-10-26, user: "make it slower, or at least make it go
+# back the same as when the right hand goes back"): it used to drop to the side in 4 frames (26-30, up to 10 cm a
+# frame) and the gun came home after it. Now both go back together over frames 26-36. The arm cannot be solved onto
+# the handle meanwhile (the gun coming home takes the handle out of its reach, and the rig then flips the elbow), so
+# its bones are blended from the let-go pose to the hanging one, eased as the gun's return (a smoothstep).
+LET_GO = 26
+
+
+def settle_left_arm(poses, n):
+    a, b = poses[LET_GO], poses[n]
+    for f in range(LET_GO + 1, n):
+        x = (f - LET_GO) / float(n - LET_GO)
+        t = x * x * (3 - 2 * x)
+        for bone in rig.ARM["L"]:
+            qa, qb = a[bone].to_quaternion(), b[bone].to_quaternion()
+            if qa.dot(qb) < 0:
+                qb.negate()
+            poses[f][bone] = Matrix.LocRotScale(a[bone].translation.lerp(b[bone].translation, t), qa.slerp(qb, t), None)
+
+
 def build(src_dir, out_dir, clip, preview=False):
     xa, r, grips = build_rig(src_dir)
     n = LENGTHS[clip]
     keys = keys_for(clip, r, grips)
     poses = r.build(keys, n, breath=(0, None), from_base=(clip == "Unload"))
+    if clip == "Rack":
+        # the solver's warnings for frames 27-35 are about left-arm poses replaced here
+        settle_left_arm(poses, n)
     if clip in SWAP:
         key_prop2(xa, poses, SWAP[clip], clip == "Unload")
     if r.warnings:

@@ -155,7 +155,9 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
 -- both MP7s: the compact SMG stance's reload (CompactStance.lua; clips GunsOfTien_CompactMP7_Reload* in the stance's
 -- packs, from scripts/anim/smg_reload.py's compact_mp7: the magazine carried in the left hand, which is shaped round it,
 -- the T handle pulled with the muzzle turned up and right); each gets its own table, as pointMagPart rewrites its spec.
--- The old pistol clips (animId "MP7A1", no magazine in the hand) stay in the mod, unused.
+-- Held in one hand (the main mod's OneHand.lua), drawn with their one-hand models (MP7A1_1H / MP7A2_1H, without the
+-- stance's turn), they play the old pistol clips: animId "MP7A1", no magazine in the left hand.
+local OneHand = require("GunsOfTien/OneHand")
 for _, gun in ipairs(MP7S) do
     ReloadAnim.RegisterWeapon(gun, {
         animId = "GunsOfTienCompactMP7",
@@ -163,6 +165,13 @@ for _, gun in ipairs(MP7S) do
         magItem = MP7_MAGS[1],
         attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
         durations = { unload = 1.2, load = 1.5, rack = 1.2 },
+    })
+    OneHand.register(gun, gun, gun .. "_1H", {
+        animId = "MP7A1",
+        style = "attachments",
+        magItem = MP7_MAGS[1],
+        attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
+        durations = { unload = 1.5, load = 1.5, rack = 1.33 },
     })
 end
 ReloadAnim.RegisterWeapon(P90, {
@@ -178,14 +187,36 @@ ReloadAnim.RegisterWeapon(SCARH, {
     style = "none",
     durations = { unload = 1.2, load = 1.5, rack = 1.2 },
 })
--- the UMPs: GoM's MP5 clips (its magazineProfile("MP5")); the magazine sits where the MP5's does
-for _, gun in ipairs(UMPS) do
+-- the UMPs: their own clips since they were resized (2026-10-26; GoM's MP5 clips, which they used before, reached
+-- ~2 cm ahead of the smaller well and handle): scripts/anim/smg_reload.py `ump`, starting and ending in the UMPs' own
+-- rifle idle and aim (rifle_hand.py), packed with them (GunsOfTien_CompactUMP_Pack*.x), nodes
+-- *GunsOfTienCompactUMP_GoT.xml; Gunworks' "attachments" style, the magazine leaving the gun with the hand as on the
+-- compact stance (user, 2026-10-26: "i like what we did for UMP. let's do it"). Each gets its own table, as
+-- pointMagPart rewrites its spec.
+for gun, mags in pairs({ [UMP45] = UMP45_MAGS, [UMP9] = UMP9_MAGS }) do
     ReloadAnim.RegisterWeapon(gun, {
-        animId = "MP5",
-        style = "none",
+        animId = "GunsOfTienCompactUMP",
+        style = "attachments",
+        magItem = mags[1],
+        attachments = { magPart = { itemType = mags[1], partType = "Clip" } },
         durations = { unload = 1.2, load = 1.5, rack = 1.2 },
     })
 end
+-- The UMPs' left hand: vanilla's rifle clips hold the palm ~0.22 ahead of the grip, an M16's handguard, which the
+-- UMPs (resized to the M16A2's proportion, 2026-10-26) no longer reach. scripts/anim/rifle_hand.py builds every rifle
+-- clip in which the left hand holds the gun with the palm moved back along the gun to the handguard (anims_X/Bob
+-- GunsOfTien_CompactUMP_Pack*.x, AnimSets *_GoTCompactUMP.xml), played through Gunworks' grip registry as the compact
+-- stance is; the rest of the rifle hold is vanilla's.
+local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
+local function registerUmpGrip()
+    if not okGW or type(Gunworks) ~= "table" or not Gunworks.RegisterWeapon then
+        return
+    end
+    for _, gun in ipairs(UMPS) do
+        Gunworks.RegisterWeapon(gun, { grip = { animId = "GunsOfTien_CompactUMP" } })
+    end
+end
+Events.OnGameBoot.Add(registerUmpGrip)
 local NO_HAND_MAGAZINE = { MP7A1 = true, P90TR = true }
 -- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
 -- 2026-10-15). The attachments style shows Gunworks' reload magazine there (the eject's changeWeaponPart and the
@@ -208,7 +239,8 @@ end
 local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
 local function pointMagPart(action, handler)
     if not (resolveReloadMagItem and action and handler and handler.parts
-            and (handler.animId == "MP7A1" or handler.animId == "GunsOfTienCompactMP7")) then
+            and (handler.animId == "MP7A1" or handler.animId == "GunsOfTienCompactMP7"
+                or handler.animId == "GunsOfTienCompactUMP")) then
         return
     end
     local spec = handler.parts.mag

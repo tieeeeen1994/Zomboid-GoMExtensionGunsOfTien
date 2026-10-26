@@ -22,10 +22,12 @@ SpentCasingPhysics.RegisterCasingToAmmo({
 -- Hot Brass launches a casing from a point in front of the shooter (forward / side / height, tiles and levels from
 -- the feet), not from the gun model. Both guns are held like a pistol, out at arm's length, so they start where GoM
 -- starts its handgun-held SMGs (MP5K / TEC9 / MAC10: forward 0.55, side 0.06, height 0.53).
+-- forwardOffset: the ejection port moved toward the grip when our guns were resized to the M16A2's proportion
+-- (2026-10-26): each value lowered by (1 - size change) x the port's old distance ahead of the grip x 1.5 tiles a unit.
 SpentCasingPhysics.RegisterWeaponParams({
     -- Thrown out to the right like GoM's MP5K (about 1 s in the air, 1.7 tiles out).
     ["GunsOfTienPost93.MP7A1"] = {
-        forwardOffset = 0.55,
+        forwardOffset = 0.544,
         sideOffset    = 0.06,
         heightOffset  = 0.53,
         shellForce    = 0.60,
@@ -36,7 +38,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- the MP7A2 ejects as the A1
     ["GunsOfTienPost93.MP7A2"] = {
-        forwardOffset = 0.55,
+        forwardOffset = 0.544,
         sideOffset    = 0.06,
         heightOffset  = 0.53,
         shellForce    = 0.60,
@@ -60,7 +62,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- Pistols ejecting to the right: GoM's M92FS values.
     ["GunsOfTienPost93.UCP"] = {
-        forwardOffset = 0.40,
+        forwardOffset = 0.384,
         sideOffset    = 0.0,
         heightOffset  = 0.50,
         shellForce    = 0.60,
@@ -70,7 +72,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- The SCARs eject to the right like GoM's M4A1 / FAL (their values; the SCAR-H's casings fly a little further).
     ["GunsOfTienPost93.SCARL"] = {
-        forwardOffset = 0.30,
+        forwardOffset = 0.291,
         sideOffset    = 0.10,
         heightOffset  = 0.45,
         shellForce    = 0.90,
@@ -80,7 +82,7 @@ SpentCasingPhysics.RegisterWeaponParams({
         spinForce     = { 64, 128 },
     },
     ["GunsOfTienPost93.SCARH"] = {
-        forwardOffset = 0.40,
+        forwardOffset = 0.39,
         sideOffset    = 0.10,
         heightOffset  = 0.45,
         shellForce    = 0.95,
@@ -91,7 +93,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- The UMPs eject to the right like GoM's MP5 (its values).
     ["GunsOfTienPost93.UMP45"] = {
-        forwardOffset = 0.36,
+        forwardOffset = 0.332,
         sideOffset    = 0.08,
         heightOffset  = 0.48,
         shellForce    = 0.65,
@@ -101,7 +103,7 @@ SpentCasingPhysics.RegisterWeaponParams({
         spinForce     = { 24, 34 },
     },
     ["GunsOfTienPost93.UMP9"] = {
-        forwardOffset = 0.36,
+        forwardOffset = 0.332,
         sideOffset    = 0.08,
         heightOffset  = 0.48,
         shellForce    = 0.65,
@@ -111,7 +113,7 @@ SpentCasingPhysics.RegisterWeaponParams({
         spinForce     = { 24, 34 },
     },
     ["MarzGuns.FIVESEVEN"] = {
-        forwardOffset = 0.40,
+        forwardOffset = 0.383,
         sideOffset    = 0.0,
         heightOffset  = 0.50,
         shellForce    = 0.60,

@@ -9,7 +9,7 @@ and checks, against those mods plus Guns of Marz, Gunworks, Ammo Maker, Hot Bras
     ModelWeaponPart (part item and model), fixing Require / Fixer, Module.Item tokens in recipes;
   - icons: textures/item_<Icon>.png (vanilla icons live in texture packs, so an icon some vanilla item uses counts);
   - models: mesh file models_X/<path>.fbx and its node, texture textures/<path>.png;
-  - AnimSet clips: anims_X/**/<clip>.(x|fbx) in any of the mods or vanilla.
+  - AnimSet clips: anims_X/**/<clip>.(x|fbx), or an AnimationSet of that name inside a .x, in any of the mods or vanilla.
 Media paths are resolved case-insensitively, as the engine does (vanilla's own scripts name WorldItems/RifleAmmoBox for
 RifleAmmoBox.FBX, GoM's Worlditems/... a worlditems folder), so a case-only match is only a note; item and model names
 must match exactly. Each mod's version folder and its common/media are searched.
@@ -195,13 +195,24 @@ def main():
                     checked += 1
                     if not resolve("item", ref, module):
                         errors.append("%s: item %s not found" % (where, ref))
-    # AnimSet clips
+    # AnimSet clips: a file's own name, or any AnimationSet inside it (the game reads every AnimationSet of a .x
+    # file as a clip; the compact stance and the UMP set are packed 40 to a file)
+    clip_names = {os.path.splitext(os.path.basename(k))[0] for k in anims}
+    for k, paths in anims.items():
+        if k.endswith(".x"):
+            for p in paths:
+                for root in ROOTS:
+                    full = os.path.join(root, p)
+                    if os.path.isfile(full):
+                        with open(full, "rb") as fh:
+                            clip_names.update(n.decode("latin-1").lower()
+                                              for n in re.findall(rb"^AnimationSet\s+([\w-]+)", fh.read(), re.M))
+                        break
     for root in OURS:
         for xml in glob.glob(os.path.join(root, "AnimSets", "**", "*.xml"), recursive=True):
             for clip in re.findall(r"<m_AnimName>([^<]+)</m_AnimName>", open(xml, encoding="utf-8").read()):
                 checked += 1
-                hits = [k for k in anims if os.path.splitext(os.path.basename(k))[0] == clip.lower()]
-                if not hits:
+                if clip.lower() not in clip_names:
                     errors.append("AnimSet %s: clip %s not found in any anims_X" % (os.path.basename(xml), clip))
     print("checked %d references in %d script blocks" % (checked, len(ours)))
     for n in sorted(set(notes)):

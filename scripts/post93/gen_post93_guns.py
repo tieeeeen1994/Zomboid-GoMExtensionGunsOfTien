@@ -18,6 +18,8 @@ M = 'GunsOfTienPost93'
 TEX = 'weapons/GunsOfTienPost93'
 
 # GoM accessories the guns can carry, drawn at the gun's points (same lists as the MP5's ModelWeaponPart lines).
+# optic -> how far the UMPs draw it raised (its own `scope` point; fit_audit.py)
+UMP_OPTIC_RAISE = {'PSO1_Scope': 0.0056}
 OPTICS = ['EXPS1_Sight', 'EXPS3_Sight', 'ElcanX2_Scope', 'LR10X_Scope', 'Aimpoint_Sight', 'TA28_Scope', 'LR4X_Scope',
           'OKP3_Sight', 'ReflexS2_Sight', 'JS14_Sight', 'Kobra_Sight', 'TR06X_Scope', 'PSO1_Scope', 'LRX12X_Scope']
 LASERS = ['AimRight_Laser', 'LRX-7_Laser']
@@ -101,9 +103,16 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
+    # held in one hand (OneHand.lua): the same model, which CompactStance.lua does not turn upright, so vanilla's
+    # pistol clips draw it the right way up (they expect pistol-held models upside down, as the MP7's is built)
+    out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
+                         ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag'])
+               .replace('    model MP7A1 {', '    model MP7A1_1H {', 1))
     # the MP7A2's body and texture are its own; bolt and stock are the A1's models (MP7A1_BOLT / MP7A1_STOCK)
     out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
                          ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
+    out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
+                         ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']).replace('    model MP7A2 {', '    model MP7A2_1H {', 1))
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     out.append(pistol_model('FIVESEVEN', fiveseven))
     out.append(pistol_model('UCP', ucp))
@@ -113,6 +122,17 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     # both UMPs are one mesh (UMP_BODY) with their own textures (markings); bolt and stock shared
     for gun in UMPS:
         out.append(gun_model(gun, 'GunsOfTienPost93_UMP', 'UMP_BODY', ump, ['stock', 'stock_folded', 'rail_down', 'foregrip']))
+    # GoM's optics drawn on the UMPs through a model of their own, raised where its mount went into the receiver
+    # (scripts/fit_audit.py, 2026-10-26: the PSO-1's side bracket 6.9 x 0.001 into the UMP against 1.3 on GoM's guns)
+    for o, dz in UMP_OPTIC_RAISE.items():
+        out.append(f"""
+    model {o}_UMP {{
+        mesh     = weapons/parts/scopes|{o},
+        texture  = weapons/parts/scopes/{o},
+        cullFace = None,
+        attachment scope {{ offset = 0.0000 0.0000 {dz:.4f}, rotate = 0.0000 0.0000 0.0000, }}
+    }}
+""")
     for model, file, node, tex in [
             ('SCARL_BOLT', 'firearms/GunsOfTienPost93_SCARL', 'SCARL_BOLT', 'SCARL'),
             ('SCARH_BOLT', 'firearms/GunsOfTienPost93_SCARH', 'SCARH_BOLT', 'SCARH'),
@@ -249,13 +269,14 @@ GUN_HANDGUN = (GUN_COMMON
                .replace("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
                         "MuzzleFlashModelKey          = muzzle_flash_handgun,"))
 assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
-# The MP7s keep the pistol hold but are two-handed, for the compact SMG stance (user: "let's require them to be
-# 2-handed"; CLAUDE.md "One-handed after equipping"); the P90 stays one-handed.
+# The MP7s are two-handed by default (equipping from the hotbar or Equip puts them in both hands: the compact SMG
+# stance) but can be held in one hand too (Equip Primary: vanilla's pistol hold; user, 2026-10-26: "they can be held
+# in one hand, but they can also be held with 2 hands"). Shared OneHand.lua swaps the model the hand draws (`_1H`,
+# not turned upright) and the reload. The P90 stays one-handed.
 GUN_HANDGUN_TWO_HANDS = GUN_HANDGUN.replace(
     "        WeaponReloadType             = handgun,\n",
     "        WeaponReloadType             = handgun,\n"
-    "        TwoHandWeapon                = true,\n"
-    "        RequiresEquippedBothHands    = true,\n")
+    "        TwoHandWeapon                = true,\n")
 assert GUN_HANDGUN_TWO_HANDS.count("TwoHandWeapon") == 1
 
 
@@ -681,7 +702,8 @@ def scar_parts(gun):
              f"{w}{M}.SCAR_Integrated_Stock_Folded {M}.SCAR_STOCK stock_folded stock_folded,",
              f"{w}{M}.SCAR_Integrated_Stock_Deployed {M}.SCAR_STOCK stock stock,"]
     if gun == 'SCARL':
-        lines += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in STANAGS]
+        # GoM's STANAG magazines through the main mod's models at our size (gen_scripts.py stanag_got)
+        lines += [f"{w}MarzGuns.{m} GunsOfTien.{m}_GoT magazine magazine," for m in STANAGS]
         lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
         lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
     else:
@@ -900,7 +922,8 @@ def ump_parts(gun):
         # the main mod's Mk9 at our size (its `_GoT` models; GoM's MP5s draw the GoM-sized ones)
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
                   f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
-    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{o} {(M + '.' + o + '_UMP') if o in UMP_OPTIC_RAISE else 'MarzGuns.' + o} scope scope,"
+              for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
     lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "

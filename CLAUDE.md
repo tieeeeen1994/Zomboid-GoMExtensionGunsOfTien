@@ -192,7 +192,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
 - **H&K UMP45 and UMP9** (user, 2026-10-22; built): two guns on one shared model, no calibre conversion recipe and no
   UMP40 (no .40 S&W round in GoM / Gunworks, and the user chose not to add one); the .45 hits harder than GoM's MP5,
-  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, GoM's MP5 reload clips, the UMP45 GoM's .45 mount device
+  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, GoM's MP5 reload clips (replaced 2026-10-26 by
+  their own, after the resize: smg_reload.py `ump`, packed with rifle_hand.py's UMP set, nodes
+  *GunsOfTienCompactUMP_GoT.xml, "attachments" style with the magazine in the hand), the UMP45 GoM's .45 mount device
   + P45 suppressor as its MAC-10 (user, same day, replacing "no suppressor"), the UMP9 the main mod's 9x19mm SMG mount
   device + AWC Mk9 (GoM's 9mm cans fit its pistols only),
   loot the MP7 / P90 route, magazines on found guns by GoM's MP5 rule. Design: docs/post93_design.md; build notes:
@@ -317,6 +319,20 @@ and its `xanim.py` on the `.x` before copying them in. Base pose vanilla `Bob_Id
 orientation at the belt), anchored on contact points (`grip_on`: a template places the **wrist**, ~5 cm from the palm).
 Staging: the gun across the chest, muzzle forward-left, top to the eyes, for the magazine (`MAG`); turned further left
 so the charging handle faces the body, 5 cm closer, for the rack (`RACK`); hand reach 0.274 from the shoulder.
+The unaimed rack (2026-10-26, user: "make it slower, or at least make it go back the same as when the right hand goes
+back"): from the let-go (frame 26) the left arm and the gun go back together over frames 26-36, the arm's bones blended
+from the let-go pose to the pistol idle's hanging arm with a smoothstep (`settle_left_arm`); the hand peaks at 3.6 cm a
+frame (it used to drop to the side in 4 frames, 26-30, up to 10, then the gun came home in 6). It cannot be solved
+onto the handle meanwhile: the gun coming home takes the handle out of reach and the rig flips the elbow (the build's
+out-of-reach / elbow lines for that clip are about the replaced frames). The aimed rack is unchanged.
+**Reloads must end on their idle's whole hold** (found 2026-10-26, the user on the P90 rack GIF's last frame: "the
+P90 IS REVERSED"): a rig `Key` with `top=None` carries the previous key's top, so the P90 rack's last key (gun home,
+`face` given) kept the racking place's top (up) and ended rolled half a turn about the barrel, top to the back, while
+vanilla's pistol idle has it to the front: the node then blended into the idle with a half-turn snap (since
+2026-10-15). The M249's reloads had the same `top=None` and ended 11 degrees off vanilla's rifle idle. Both now give
+`top=rot_of(r.weapon0) @ Vector((0, 0, r.top_sign))`, as smg_reload.py's `idle` does; every reload of ours now starts
+and ends exactly on its idle (0.0 degrees, 0.0 cm; scratch check: the gun against the chest at the clip's first /
+last frame and the idle's frame 0).
 - Found on the way: a reload with an animId whose clips are missing never ends (the insert waits for `loadFinished`).
   Our unload AnimSet `x_extends` the load one, so its events override in order: `unloadFinished` (Gunworks takes the
   magazine off and the unload ends) inherits `End`. Tried at 0.74, as the hand starts away (`<m_Time>Percentage</m_Time>`
@@ -459,9 +475,11 @@ Spawn parts: the A1's minus the folding grip, plus GoM's foregrips at its MP5 ch
 handler registered once per gun (animId "MP7A1" for both: `pointMagPart` rewrites each handler's spec). The two
 icons differ only by the handguard at 32 px.
 
-## MP7A1 reload (2026-10-15)
+## MP7A1 reload (2026-10-15; removed 2026-10-26)
 
-The MP7's magazine goes up into the pistol grip, so it reloads like vanilla's pistols: AnimSets `*MP7A1_GoT.xml`
+Removed on 2026-10-26 (the MP7s play the compact stance's reloads; nothing played these): the six `*MP7A1_GoT.xml`,
+`Bob_GunsOfTien_MP7_Unload.x` and `scripts/post93/anim/mp7_reload.py` (in git history). What they were: the MP7's
+magazine goes up into the pistol grip, so it reloads like vanilla's pistols: AnimSets `*MP7A1_GoT.xml`
 (animId "MP7A1", player and player-vehicle) play vanilla `Bob_Reload_Handgun_Load` (46 frames, 1.5 s), for the unload
 the same reversed but baked into a forward clip `anims_X/Bob/Bob_GunsOfTien_MP7_Unload.x`
 (`scripts/post93/anim/mp7_reload.py`, plain Python: key times mirrored, everything else vanilla's), and vanilla
@@ -1274,8 +1292,28 @@ behind it (42.21):
   twoHands in `ISEquipWeaponAction:new`, hides "Equip Primary"), as do all of GoM's two-handed guns (16 of 16
   assault rifles, 4 of 4 two-handed SMGs); only the guns we made two-handed (Mini Uzi, MP7s, GoM's one-handed MP5K)
   lacked it.
-  Our Mini Uzi and MP7A1 / A2 scripts now declare both flags (user: "let's require them to be 2-handed");
-  `turnUpright` still sets them at run time, which GoM's MP5K needs.
+  Our Mini Uzi and MP7A1 / A2 scripts declared both flags for a while (user: "let's require them to be 2-handed").
+- One hand allowed again (user, 2026-10-26: "when you hold MP7 and other guns we have in one hand, they were
+  reversed ... they can be held in one hand, but they can also be held with 2 hands"): the turn is a Bip01_Prop1 point
+  on the model script, so it applied in one hand too, where the pistol clips (which these models are made for) drew
+  the gun upside down. Only the turned guns had it (Mini Uzi, MP7A1 / A2, GoM's MP5K); the full Uzi is modelled
+  upright, the Micro Uzi, P90 and pistols are never turned, the SCARs, UMPs and M249 need both hands. Fix
+  (`lua/shared/GunsOfTien/OneHand.lua`): `TwoHandWeapon` only (no `RequiresEquippedBothHands`: hotbar and Equip Two
+  Hands still go to both hands, "Equip Primary" is offered), a second model without the turn per gun (`MINIUZI_1H`,
+  `MP7A1_1H`, `MP7A2_1H` from the generators; `GunsOfTien.MP5K_1H` in `models_onehand.txt`, a copy of GoM's block
+  that `OneHand.copyModel` refreshes from GoM's live script with `ModelScript:Load` at boot and world load: mesh,
+  texture, every point but the turn), and every client swaps `setWeaponSprite` for a gun of its own players and every
+  other player it sees while it is in the primary hand alone (back when it leaves that hand and on `OnSave`, so items
+  keep the script's model; nothing is sent, the hands sync). Reload in one hand: a Gunworks handler with `matches`
+  (tried before the full type index) per gun: the Mini Uzi the Micro's "UziGrip", the MP7s the old "MP7A1" pistol
+  clips (restored from git, no hand magazine), the MP5K GoM's "handgun2" (style none, 1.296 / 1.296 / 1.0 s).
+  Gunworks' `Animations.CallSyncHandWeaponFields` re-equips both hands for any two-handed gun after every magazine
+  insert / eject, fold, part swap and, for guns in GoM's `AnimationsFiring` (the MP5K: `Bolt`), every shot, so it is
+  wrapped to put back what the other hand held for these guns in one hand. The engine's one-hand rules for a
+  two-handed weapon apply (`CombatManager.applyOneHandedDamagePenalty`: damage x `DAMAGE_PENALTY_ONE_HANDED_
+  TWO_HANDED_WEAPON_MULTIPLIER` 0.5, in `IsoGameCharacter.processHitDamage`, ranged included; combat speed x 0.77).
+  Renders of the one-hand hold: `HOLD_EVERY=1000 blender ... hold_preview.py -- <Bob> <out> miniuzi mp7 mp5k`
+  (pistol clips, no turn: all three upright).
 - Shooting and dry firing with Gunworks (in-game test: "shooting will move the left hand like vanilla way", seen
   firing an empty magazine): Gunworks sets the `FireMode` variable to `RealSingle` / `RealAuto` / `RealBurst` for every
   gun it fires, so vanilla's FirearmSingle / Auto / Burst / Empty* (FireMode Single / Auto / Burst / "") never play
@@ -1473,7 +1511,10 @@ behind it (42.21):
   The Mk9 and its mount device stay at GoM's SMG size for GoM's MP5s; our Uzis and the UMP9 draw them through
   `Mk9_Suppressor_GoT` / `SMG9_Muzzle_Mount_Device_GoT`, the same mesh with `scale = 0.8375` (gen_scripts.py
   `GOT_PART_SCALE`; a part model's own `scale` scales it about its origin, here its `canon` point). GoM's STANAG
-  magazine (mesh at 0.65) sits a little large in the SCAR-L and M249 wells, as it does in GoM's own M16A2. GoM's parts
+  magazines (meshes at 0.65) are drawn in the SCAR-L and M249 through `GunsOfTien.<mag>_GoT` (GoM's mesh, scale
+  0.9277; gen_scripts.py `stanag_got`), and the M249's reload shows the hidden item `<mag>_Hand` with that model in
+  the left hand (M249.lua swaps `ReloadAnim.resolveReloadMagItem` for the call of `attachReloadMagazine`, which looks
+  it up on the table at call time); GoM's own ARs keep GoM's size. GoM's parts
   on our guns (optics, lights, lasers, foregrips, GoM's suppressors) keep GoM's sizes. Icons are framed to the icon box,
   so they barely change. Animations: hold_preview.py reads the MP7 and Uzi points and their size factor (MP7_S,
   UZI_S) for the stance's support places and parts; compact_animsets.TURNED_SETS takes the muzzle z from the points
@@ -1481,6 +1522,24 @@ behind it (42.21):
   points files and scale offsets measured on the gun, never the hand's own contact offsets (`hold_fix`, CONTACT).
   The guns on vanilla's or GoM's clips (SCARs, UMPs, Five-seveN, UCP) needed no new clips. GoM's MP5K keeps its size
   in the stance. A HEAD worktree (`git worktree add`) runs the old-size pipeline for like-for-like comparisons.
+- **Fit audit** (`scripts/fit_audit.py`, `--solve` for point shifts): every part placement on our guns against the
+  same part on GoM's guns, measured against the body **plus the gun's rail and mount parts** (GoM fits rails and
+  mounts as parts, so its optics float 1-3 x 0.001 above its bare bodies; without them our rail-in-body guns all
+  looked sunk). Inside test by ray parity in three directions (GoM's meshes are double-sided, face normals do not
+  tell). Our points were derived from GoM's own part relations (scope 0.0032 under the rail top, foregrip 0.003
+  above the rail bottom, as on GoM's MP5), so they agree; the one exception, the PSO-1 on the UMPs, is drawn through
+  `PSO1_Scope_UMP` with its own `scope` point raised. A part model's own point named like the gun's point is applied
+  after the gun's (`T(o) R` of the gun's, then the part's), so a per-gun copy of a GoM part can be offset that way.
+- **Short guns on vanilla's rifle clips**: vanilla holds the left palm ~0.22 ahead of the grip (an M16's handguard).
+  `scripts/anim/rifle_hand.py` rebuilds every rifle clip whose left hand holds the gun with the palm's place scaled
+  about the grip (vanilla otherwise; faded off where vanilla's hand leaves the rifle), packed and noded as a compact
+  set (`GunsOfTien_Compact<Set>`, Gunworks grip registry): the UMPs ("UMP", 116 clips, 8.3 MB). GoM's own reload clips
+  are glTF from a Blender rig whose bone axes differ from the .x files' and whose first frame is no vanilla pose, so
+  they cannot be retargeted by our pipeline (no shared pose to take the per-bone axis offsets from).
+- compact_build's variant chooser also scores `+filter+declip` (the filter re-solves arms without the de-clip; the
+  MP7's diagonal walk had its left arm 3.9 cm in after it).
+- Hot Brass offsets are in tiles from the player (`forwardOffset` along the facing): a gun resized about its grip
+  moves its port by (1 - s) x the port's distance ahead of the grip x 1.5 tiles a game unit.
 
 ## Research reference
 

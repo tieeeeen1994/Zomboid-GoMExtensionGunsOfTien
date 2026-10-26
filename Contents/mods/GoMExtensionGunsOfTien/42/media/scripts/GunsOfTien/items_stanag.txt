@@ -1,0 +1,82 @@
+module GunsOfTien {
+
+    item 556x45Magazine20_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine20_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine20_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine20_STANAG_GoT,
+    }
+
+    item 556x45Magazine25_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine25_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine25_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine25_STANAG_GoT,
+    }
+
+    item 556x45Magazine30_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine30_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine30_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine30_STANAG_GoT,
+    }
+
+    item 556x45Magazine50_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine50_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine50_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine50_STANAG_GoT,
+    }
+
+    item 556x45Magazine60_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine60_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine60_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine60_STANAG_GoT,
+    }
+
+    item 556x45Magazine75_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine75_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine75_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine75_STANAG_GoT,
+    }
+
+    item 556x45Magazine100_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine100_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine100_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine100_STANAG_GoT,
+    }
+
+    item 556x45Magazine150_STANAG_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine150_STANAG,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine150_STANAG_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine150_STANAG_GoT,
+    }
+}

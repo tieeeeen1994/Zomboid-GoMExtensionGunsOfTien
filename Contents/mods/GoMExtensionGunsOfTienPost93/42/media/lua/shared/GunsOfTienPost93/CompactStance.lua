@@ -2,7 +2,8 @@
     Guns of Tien - Post-93 -- the MP7A1 and MP7A2 in the main mod's compact SMG stance (user, 2026-10-23: "MP7 needs
     to join the new stance"; the P90 stays pistol-held). See the main mod's GunsOfTien/CompactStance.lua: Gunworks'
     grip registry plays our AnimSet nodes (AnimSets/player/*/*_GoTCompactMP7.xml) while the gun is in hand, and the
-    gun is made two-handed and turned upright in the hand (it is modelled upside down for the pistol clips).
+    gun is made two-handed and turned upright in both hands (it is modelled upside down for the pistol clips). Held in
+    one hand it is drawn with its one-hand model on the pistol clips (the main mod's OneHand.lua, Guns.lua).
 
     Its own clip set ("GunsOfTien_CompactMP7") while the A1's foregrip is unfolded: the left hand on it, ~0.14 ahead
     of the grip (the Uzis' handguard ~0.13, the MP5K's foregrip ~0.18); folded and on the A2 the hand goes under the

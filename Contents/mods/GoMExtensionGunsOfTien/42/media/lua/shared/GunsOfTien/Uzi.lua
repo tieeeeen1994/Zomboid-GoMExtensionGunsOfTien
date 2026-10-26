@@ -13,7 +13,7 @@
     - no animated bolt: the top cocking knob does not reciprocate (drawn through the Bolt_Lock part);
     - reload: the Uzi and the Mini Uzi on the compact SMG stance's own clips (CompactStance.lua, animId
       "GunsOfTienCompactUzi", the Mini's "GunsOfTienCompactUziT": the magazine drawn out of the grip and carried in
-      the left hand); the Micro as Post-93's
+      the left hand; the Mini held in one hand plays the Micro's, OneHand.lua); the Micro as Post-93's
       MP7 was: vanilla's pistol load, its reverse baked forward as the unload (anims_X/Bob/Bob_GunsOfTien_Uzi_Unload.x,
       from scripts/post93/anim/mp7_reload.py), the pistol rack (AnimSets *UziGrip_GoT.xml, animId "UziGrip"),
       Gunworks' attachments style with no magazine in the left hand; each the part spec pointed at the magazine involved;
@@ -89,6 +89,14 @@ for _, gun in ipairs({ MICROUZI }) do
         durations = { unload = 1.5, load = 1.5, rack = 1.33 },
     })
 end
+-- the Mini Uzi held in one hand (OneHand.lua): drawn without the stance's turn, on the Micro's pistol reload
+require("GunsOfTien/OneHand").register(MINIUZI, MINIUZI, MINIUZI .. "_1H", {
+    animId = "UziGrip",
+    style = "attachments",
+    magItem = MAGS[3],
+    attachments = { magPart = { itemType = MAGS[3], partType = "Clip" } },
+    durations = { unload = 1.5, load = 1.5, rack = 1.33 },
+})
 -- the animIds whose magazine part spec is pointed at the magazine involved (shared: CompactStance.lua adds the MP5K's)
 ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
 ReloadAnim.GunsOfTienPointMag.UziGrip = true

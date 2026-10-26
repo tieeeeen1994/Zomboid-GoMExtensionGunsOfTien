@@ -183,6 +183,29 @@ if not ReloadAnim.GunsOfTienM249Wrapped then
             spec.itemType = magType
         end
     end
+    -- The STANAG in the left hand at our size: the M249 draws GoM's STANAGs through our scaled models (<mag>_GoT, the
+    -- M16A2's proportion), but Gunworks shows an item of the magazine's own type in the hand, drawn with GoM's model;
+    -- for the M249 it gets our hidden <mag>_Hand item instead (gen_scripts.py stanag_got).
+    local attachReloadMagazine = ReloadAnim.attachReloadMagazine
+    if attachReloadMagazine then
+        local hand = {}
+        for _, mag in ipairs(STANAGS) do
+            hand[mag] = "GunsOfTien." .. mag:match("[^.]+$") .. "_Hand"
+        end
+        ReloadAnim.attachReloadMagazine = function(action, handler)
+            local resolve = ReloadAnim.resolveReloadMagItem
+            if not (handler and handler.animId == "M249" and resolve) then
+                return attachReloadMagazine(action, handler)
+            end
+            ReloadAnim.resolveReloadMagItem = function(a, h)
+                local magType = resolve(a, h)
+                return hand[magType] or magType
+            end
+            local ok, err = pcall(attachReloadMagazine, action, handler)
+            ReloadAnim.resolveReloadMagItem = resolve
+            if not ok then error(err) end
+        end
+    end
     for _, name in ipairs({ "handleWeaponPartAnimEvent", "setWeaponAttachmentState" }) do
         local original = ReloadAnim[name]
         if original then

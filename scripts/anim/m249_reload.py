@@ -156,8 +156,10 @@ def keys_for(clip, r, g):
     side = lambda at, rot=(0, 0, 0): grip_on(under, at, rot)
     n = LENGTHS[clip]
     W = dict(look=0.85, lean=6, aux=0.15, **WORK)
+    # the idle's own hold, its top included (with `top=None` the work place's top was carried in and the clips ended
+    # 11 degrees off vanilla's rifle idle, a snap into it; found 2026-10-26 with the P90's half turn)
     idle = dict(look=0, lean=0, aux=0, pos=r.weapon0.translation, along=rot_of(r.weapon0) @ Vector((0, 1, 0)),
-                top=None, face=rot_of(r.weapon0) @ Vector((1, 0, 0)))
+                top=rot_of(r.weapon0) @ Vector((0, 0, r.top_sign)), face=rot_of(r.weapon0) @ Vector((1, 0, 0)))
     if clip == "Unload":
         away = hand_away(r, g, WORK)
         return [

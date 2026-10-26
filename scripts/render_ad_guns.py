@@ -245,15 +245,22 @@ def load(path, texture, keep):
     return found
 
 
-def place(o, point=None, upright=True):
-    """Engine attachment transform (offset, then rotateXYZ in degrees), turned upright (guns held like pistols are
-    modelled upside down); mesh data z is game -z."""
+# Our guns draw GoM's STANAG magazines and the main mod's Mk9 / SMG9 mount through models of their own scaled to our
+# size (gen_scripts.py GOT_PART_SCALE / STANAG_GOT_SCALE; user, 2026-10-26)
+GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
+STANAG_GOT_SCALE = round(0.000603 / 0.00065, 4)
+
+
+def place(o, point=None, upright=True, scale=1.0):
+    """Engine attachment transform (offset, then rotateXYZ in degrees, then the part model's own scale), turned upright
+    (guns held like pistols are modelled upside down); mesh data z is game -z."""
     mat = Matrix.Identity(4)
     if point:
         rx, ry, rz = [math.radians(a) for a in point.get("rotate", [0, 0, 0])]
         mat = (Matrix.Translation(Vector(point["offset"])) @ Matrix.Rotation(rx, 4, 'X')
                @ Matrix.Rotation(ry, 4, 'Y') @ Matrix.Rotation(rz, 4, 'Z'))
-    o.matrix_world = (UPRIGHT if upright else Matrix.Identity(4)) @ mat @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0))
+    o.matrix_world = ((UPRIGHT if upright else Matrix.Identity(4)) @ mat @ Matrix.Scale(scale, 4)
+                      @ Matrix.Diagonal((1.0, 1.0, -1.0, 1.0)))
 
 
 def gom_smg(gun):
@@ -346,10 +353,11 @@ def build(spec):
         cat, node, point = spec["gom_mag"]
         o = load(os.path.join(GOM, "models_X/weapons/%s.fbx" % cat),
                  os.path.join(GOM, "textures/weapons/%s/%s.png" % (cat, node)), node)
+        place(o, points[point] if point else None, up, STANAG_GOT_SCALE)
     else:
         f, node, point = spec["mag"]
         o = load(os.path.join(MEDIA, "models_X/weapons/magazines/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
-    place(o, points[point] if point else None, up)
+        place(o, points[point] if point else None, up)
     objs.append(o)
     for f, node in spec["parts"]:
         o = load(os.path.join(MEDIA, "models_X/weapons/parts/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
@@ -362,7 +370,7 @@ def build(spec):
         objs.append(o)
     for node in spec.get("main_parts", []):              # the main mod's Mk9 and its mount on a Post-93 gun
         o = load(SMG9_PARTS, os.path.join(SMG9_TEX, node + ".png"), node)
-        place(o, points["canon"], up)
+        place(o, points["canon"], up, GOT_PART_SCALE)
         objs.append(o)
     return objs
 

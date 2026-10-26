@@ -528,6 +528,56 @@ SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
 GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
 
 
+# GoM's STANAG magazines at our size (user, 2026-10-26: "i want those with their own sizes"). GoM built them at 0.65
+# of real size, as its rifles, and draws them so in its own ARs; our SCAR-L (Post-93) and M249, drawn at the M16A2's
+# 0.603, draw them through `<magazine>_GoT`: GoM's mesh and texture with `scale` = 0.603 / 0.65 (a part model's own
+# scale, about its origin: the feed lips at the gun's `magazine` point). `<magazine>_Hand` is a hidden item with that
+# model, which M249.lua shows in the left hand during the M249's reload in place of GoM's (Gunworks puts an item of
+# the magazine's type on the reload location, drawn with its own model). GoM's guns keep GoM's models.
+STANAG_GOT_SCALE = round(0.000603 / 0.00065, 4)
+STANAG_TEXTURE = {25: 20}           # GoM's 25-round magazine uses the 20-round's texture
+STANAG_SIZES = (20, 25, 30, 50, 60, 75, 100, 150)
+
+
+def stanag_got():
+    gom_names = {20: 'STANAG 20Rds 5.56x45mm Magazine', 25: 'STANAG 25Rds 5.56x45mm Magazine',
+                 30: 'STANAG 30Rds 5.56x45mm Magazine', 50: 'STANAG 50Rds 5.56x45mm Magazine',
+                 60: 'STANAG 60Rds Jungle-Style 5.56x45mm Magazine', 75: 'STANAG 75Rds 5.56x45mm Magazine',
+                 100: 'STANAG 100Rds 5.56x45mm Magazine', 150: 'STANAG 150Rds 5.56x45mm Magazine'}
+    models = [f"module {MODULE} {{\n"]
+    items = [f"module {MODULE} {{\n"]
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for n in STANAG_SIZES:
+        mag = f'556x45Magazine{n}_STANAG'
+        tex = f'556x45Magazine{STANAG_TEXTURE.get(n, n)}_STANAG'
+        models.append(f"""
+    model {mag}_GoT {{
+        mesh     = weapons/magazines/assault_rifles|{mag},
+        texture  = weapons/magazines/assault_rifles/{tex},
+        cullFace = None,
+        scale    = {STANAG_GOT_SCALE:.4f},
+    }}
+""")
+        items.append(f"""
+    item {mag}_Hand {{
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = {mag},
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = {MODULE}.{mag}_GoT,
+        WorldStaticModel = {MODULE}.{mag}_GoT,
+    }}
+""")
+        names[f'{MODULE}.{mag}_Hand'] = gom_names[n]
+    models.append("}\n")
+    items.append("}\n")
+    write('scripts/GunsOfTien/models_stanag.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_stanag.txt', ''.join(items))
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 def smg_suppressor():
     models = [f"module {MODULE} {{\n"]
     items = [f"module {MODULE} {{\n"]
@@ -821,7 +871,7 @@ def m249():
              f"{w}{MODULE}.M249_Integrated_Bipod_Deployed {MODULE}.M249_BIPOD_DEPLOYED integrated_bipod "
              f"integrated_bipod,",
              f"{w}{MODULE}.{M249_BOX} {MODULE}.{M249_BOX} box box,"]
-    parts += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in M249_STANAGS]
+    parts += [f"{w}MarzGuns.{m} {MODULE}.{m}_GoT magazine magazine," for m in M249_STANAGS]   # at our size
     parts += [f"{w}MarzGuns.Bullet_{i} {MODULE}.556x45_M249_{i} belt belt," for i in range(1, 10)]
     items = [f"module {MODULE} {{\n", f"""
     item M249 {{
@@ -1166,8 +1216,9 @@ def uzi_item(gun):
     # The Mini Uzi is two-handed too, for the compact SMG stance (user: "let's require them to be 2-handed"; CLAUDE.md
     # "One-handed after equipping"); the Micro Uzi stays one-handed.
     snd = 'M16' if rifle else 'M9'
+    # (2026-10-26, user: "they can be held in one hand, but they can also be held with 2 hands": no longer
+    # RequiresEquippedBothHands; two hands by default, Equip Primary for one, shared OneHand.lua swaps model and reload)
     both_hands = """        TwoHandWeapon                = true,
-        RequiresEquippedBothHands    = true,
 """ if gun == 'MINIUZI' else ''
     hold = (f"""        AttachmentType               = Rifle,
         WeaponReloadType             = boltaction,
@@ -1283,6 +1334,12 @@ def uzi():
             if name in p:
                 models.append(m249_attachment(name, p[name]))
         models.append("    }\n")
+        if gun == 'MINIUZI':
+            # held in one hand (OneHand.lua): the same model, not turned upright by CompactStance.lua, so vanilla's
+            # pistol clips draw it the right way up
+            body = models[-1 - sum(1 for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock',
+                                                  'stock_folded') if name in p) - 1:]
+            models.append("".join(body).replace("    model MINIUZI {", "    model MINIUZI_1H {", 1))
         nodes = ['BOLT'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
         for node in nodes:
             models.append(f"""
@@ -1357,6 +1414,52 @@ def uzi():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# GoM's MP5K held in one hand (OneHand.lua): GoM's model (MarzGuns/models/weapons/smgs.txt, Guns of Marz 42.16) under
+# our module, without the turn CompactStance.lua gives GoM's own in the hand, so vanilla's pistol clips draw it the right
+# way up. OneHand.lua copies GoM's live mesh, texture and points over it at game start (a GoM update stays in step).
+MP5K_1H = """module GunsOfTien {
+
+    model MP5K_1H {
+        mesh     = weapons/firearms/MP5K|MP5K_BODY,
+        texture  = weapons/firearms/smgs/MP5K,
+        cullFace = None,
+        attachment muzzle {
+            offset = 0.0000 0.2202 -0.0445,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+        attachment world {
+            offset = -0.0250 -0.0000 -0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment bolt_fired {
+            offset = 0.0000 -0.0297 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment magazine {
+            offset = 0.0000 0.1196 -0.0388,
+            rotate = 171.7924 0.0000 180.0000,
+        }
+        attachment rail_up {
+            offset = 0.0000 0.1153 -0.0663,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+        attachment scope {
+            offset = 0.0000 0.1292 -0.0693,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+        attachment canon {
+            offset = 0.0000 0.2252 -0.0408,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+}
+"""
+
+
+def one_hand():
+    write('scripts/GunsOfTien/models_onehand.txt', MP5K_1H)
+
+
 if __name__ == '__main__':
     items()
     models()
@@ -1366,7 +1469,9 @@ if __name__ == '__main__':
     lasers()
     sawn_stocks()
     smg_suppressor()
+    stanag_got()
     m249()
     belt_links()
     uzi()
+    one_hand()
     print('written under', os.path.normpath(ROOT))
