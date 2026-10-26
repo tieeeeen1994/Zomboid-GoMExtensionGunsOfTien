@@ -86,5 +86,4 @@ On the [b]Guns of Tien[/b] page of the sandbox settings.
 [list]
 [*][i]Adjusted Piercing[/i] (on by default): plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds pierce in every gun that fires them, and plain .30-30 rounds (flat-nosed soft points in reality) no longer do. Off = Guns of Marz's own piercing
 [*][i]7.62x39mm US Subsonic Cycling[/i]: always rack after every shot, rack unless a PBS-1 is fitted (default), or never rack
-[*][i][BETA] Resize Guns of Marz[/i] (off by default): Guns of Marz's guns drawn in proportion to the character and to each other, except the MP5K and the Stolzer & Son 2-Bore. Off = Guns of Marz's own sizes. A change takes effect after a restart
 [/list]

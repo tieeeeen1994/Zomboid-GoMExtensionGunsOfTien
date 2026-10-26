@@ -587,6 +587,13 @@ reload AnimSet XMLs (`AnimSets/player(-vehicle)/actions/*P90TR_GoT.xml`, clips `
 
 ## Gun scale audit (2026-10-25)
 
+**Shelved (user, 2026-10-26: "remove that option for now and all the resizing in GoM in our mod")**: the sandbox
+option "[BETA] Resize Guns of Marz" (`RescaleGuns`) and `GunScale.lua` were removed; GoM's guns are drawn at GoM's
+own sizes again. Kept for picking it up later: the measurements and scales below (per gun, and per magazine group),
+the engine trace (CLAUDE.md "Gun scale"), the audit scripts (`scripts/scale_audit.py`, `scale_audit_report.py`) and
+the last GunScale.lua (the final per-model table with the group scales applied, and the point scaling), in git:
+`git show 6f1f88e:Contents/mods/GoMExtensionGunsOfTien/42/media/lua/shared/GunsOfTien/GunScale.lua`. Our own guns' resize (in their meshes, below) is not affected.
+
 User: "the MP5A1 and MP5A2 seem a little bit big ... compared to human size ... does it follow the size proportion
 from M16?", then "audit all of the guns from GoM and GoT and list them in TODO. we will try to fix them... but that
 also means we need to fix the stances", then "edit each gun so that they have their own scales rather than apply a
@@ -734,9 +741,9 @@ Checked: scale_audit.py again, every Guns of Tien gun now 0.59-0.61 of its real 
       (sights 0.38-0.64 of real). Only the STANAG had a real reference (0.65, a replica magazine within 2 mm).
 - [x] **Decided (user, 2026-10-26: "i like what we did for UMP. let's do it")**: the compact stance reloads keep the
       magazine in the left hand, and the UMPs got it too; the P90 and the one-hand pistol reloads stay without.
-- [ ] **Decide (user)**: "[BETA] Resize Guns of Marz": keep in Guns of Tien, move to its own mod folder in this
-      Workshop item (GoMExtensionGunsOfTienResizeGunsOfMarz; enabling it would be the switch, no option), or drop it.
-      Its open choices above: FNC / SCAR-L strict 1.00, the '?' variants (Remington 870, W1887 most), pistol sizes.
+- [x] **Decided (user, 2026-10-26)**: "[BETA] Resize Guns of Marz" removed for now (see "Gun scale audit"). Open
+      if it comes back: FNC / SCAR-L strict 1.00, the '?' variants (Remington 870, W1887 most), pistol sizes, and
+      keeping it in Guns of Tien or in its own mod folder of this Workshop item.
 - [ ] **In game, every resized gun**: in hand idle / aimed / walking, reload and rack, on the back or in a holster,
       on the floor; the compact stance (Uzi, Mini Uzi, MP7A1 foregrip folded and unfolded, MP7A2); the Mk9 on an Uzi,
       the UMP9 and GoM's MP5; the SCAR-L and M249 with GoM's STANAG magazines; MP as seen by another player.
@@ -782,6 +789,13 @@ old); MP5K places stay:
       hand); Equip Two Hands back to the stance, upright; drop it / put it on the back / holster the Mini Uzi: normal
       model; save and load while holding it in one hand; another player sees the same (MP). Decide whether the
       engine's one-hand penalty stays (half damage, 0.77 combat speed, as any two-handed weapon in one hand).
+- [ ] **No firing animation in one hand with the left hand full** (user, 2026-10-26: "Our guns in GoT that can be
+      held with one hand has no shooting animation when the left hand is holding something else like an
+      umbrella"). Not traced yet. To find out: which guns (the four OneHand.lua guns only, or the P90 / Micro Uzi /
+      pistols too, and whether GoM's own one-handed guns do the same); whether vanilla's pistol with an umbrella
+      animates (engine) or only with Gunworks (its `RealSingle` / `RealAuto` / `RealBurst` nodes and their
+      conditions); what `WeaponType.getWeaponType` gives for a two-handed gun in the primary hand with another item
+      in the secondary.
 
 ### Guns sharing a magazine share one scale (user, 2026-10-26)
 

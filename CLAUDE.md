@@ -115,8 +115,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
   `RealisticPiercing`,
-  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `RescaleGuns` ("[BETA] Resize Guns of Marz", default
-  off, GoM's guns only, read at world load by `GunScale.lua`; user, 2026-10-26).
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never). `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
+  value (TODO.md "Gun scale audit" says where its data and code are kept).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
   (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
   HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
@@ -1462,7 +1463,7 @@ behind it (42.21):
   never gets `GunworksGripAnim` again until its weapon changes: others see the turned guns in vanilla's rifle nodes,
   4-9 cm off the hands.
 
-## Gun scale (2026-10-25; built 2026-10-26 in GunScale.lua, open work in TODO.md "Gun scale audit")
+## Gun scale (2026-10-25; built 2026-10-26 in GunScale.lua, removed the same day, kept in git: TODO.md "Gun scale audit")
 
 - Sizes: vanilla's MaleBody.x is 0.98 units tall (a ~1.78 m man at ~0.55); vanilla's M16_Rifle.x 0.546 long = 0.54
   of 1006 mm (true to the body), M9 0.70, pump shotgun / MSR788 ~0.60-0.65. GoM's rifle-stance guns: median 0.63
@@ -1495,7 +1496,7 @@ behind it (42.21):
   .transformToParent`; `invertAttachmentSelfTransform` is false); a floor item is rotation x inverse `world` point x
   mesh x scale (`ItemModelRenderer.init`, HandWeapon floor model = `getStaticModel()` = the WeaponSprite). So a
   gun's own placing points (`world`, holsters, back, `Bip01_Prop1`) are not scaled, while points parts hang from
-  are (the child starts from the parent's xfrm, scale included). `GunScale.lua` scales the placing points' offsets
+  are (the child starts from the parent's xfrm, scale included). `GunScale.lua` (removed) scaled the placing points' offsets
   by the same factor (T(s o) R S = S T(o) R), so the gun scales about the body point / floor spot. No GoM or Guns
   of Tien gun mesh node has a translation, so the mesh transform does not shift that centre. ModelScript has no
   `scale` getter and Kahlua does not read its public field; GoM's gun models set none (the `scale = 1.1703` in

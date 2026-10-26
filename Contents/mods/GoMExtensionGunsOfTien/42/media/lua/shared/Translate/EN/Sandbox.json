@@ -6,7 +6,5 @@
   "Sandbox_GunsOfTien_SubsonicRackRule_tooltip": "The Soviet US subsonic round burns too little powder to work an AK's gas system, so the gun has to be racked by hand after every shot. A PBS-1 suppressor traps gas and raises the pressure in the barrel, which pushes enough gas into the gas port to cycle the gun. The round and the suppressor were made as a pair.",
   "Sandbox_GunsOfTien_SubsonicRackRule_option1": "Always rack after every shot",
   "Sandbox_GunsOfTien_SubsonicRackRule_option2": "Rack unless a PBS-1 is fitted",
-  "Sandbox_GunsOfTien_SubsonicRackRule_option3": "Never rack",
-  "Sandbox_GunsOfTien_RescaleGuns": "[BETA] Resize Guns of Marz",
-  "Sandbox_GunsOfTien_RescaleGuns_tooltip": "Draws Guns of Marz's guns in proportion to the character and to each other, on the M16A2's scale. Guns that take the same magazines are drawn the same size. Not resized: MP5K Submachine Gun, Stolzer & Son of Kansas 2-Bore Rifle. A change takes effect after a restart."
+  "Sandbox_GunsOfTien_SubsonicRackRule_option3": "Never rack"
 }
