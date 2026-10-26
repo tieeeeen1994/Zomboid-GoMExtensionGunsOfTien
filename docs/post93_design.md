@@ -145,7 +145,7 @@ kept in the repo), see CLAUDE.md "FN SCAR-L and SCAR-H".
 | Muzzle | GoM's AR mount device, MKI / NDR suppressors, LR2 compensator, LX flash hider, Trix42 muzzle brake | `SCARH_Muzzle_Mount_Device` + `SCARH_Suppressor` "SOCOM762-RC Suppressor (7.62x51mm Weapons)" (SureFire's 1.5" can USSOCOM adopted in 2017; FN made none for the SCAR-H and none is documented on the Mk 17; user, 2026-10-20; GoM's rifle suppressor stats, weight 1.2) |
 | Stats | GoM's M4A1 (1.0-1.4), HitChance 52, RecoilDelay 12, condition 1 in 250, 625 rpm | GoM's FAL (1.3-1.8, range 60), Aimingtime 50 (FAL 65), condition 1 in 240, 600 rpm, default Single |
 | Sound (realistic model) | 196 / 56 (M16 events) | 216 / 62 (FAL's M14 events) |
-| Reload | Gunworks' default, as GoM's M4A1 | GoM's FAL clips (animId "FAL") |
+| Reload | Gunworks' default, as GoM's M4A1 | GoM's FAL clips (animId "fal_rifle", "FAL" before GoM's 2026-10-23 update) |
 | Weight | 3.3 | 3.9 |
 
 Both: held as rifles (two hands, back slot), Auto / Single, the charging handle on the left reciprocates (GoM's

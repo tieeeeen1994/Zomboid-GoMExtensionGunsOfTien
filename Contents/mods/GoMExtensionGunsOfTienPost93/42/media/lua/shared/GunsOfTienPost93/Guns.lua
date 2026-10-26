@@ -181,11 +181,13 @@ ReloadAnim.RegisterWeapon(P90, {
     attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
     durations = { unload = 1.4, load = 1.8, rack = 1.2 },
 })
--- SCAR-H: GoM's FAL clips (its magazineProfile("FAL")); the SCAR-L has no entry, as GoM's M4A1 (Gunworks' default)
+-- SCAR-H: GoM's FAL clips and durations (its magazineProfile("fal_rifle"); "FAL" before GoM's 2026-10-23 update, which
+-- left the old id matching no AnimSet node: the insert played a hand raise and never seated the magazine); the SCAR-L
+-- has no entry, as GoM's M4A1 (Gunworks' default)
 ReloadAnim.RegisterWeapon(SCARH, {
-    animId = "FAL",
+    animId = "fal_rifle",
     style = "none",
-    durations = { unload = 1.2, load = 1.5, rack = 1.2 },
+    durations = { unload = 2.7, load = 2.7, rack = 1.2, rackAim = 1.666667 },
 })
 -- the UMPs: their own clips since they were resized (2026-10-26; GoM's MP5 clips, which they used before, reached
 -- ~2 cm ahead of the smaller well and handle): scripts/anim/smg_reload.py `ump`, starting and ending in the UMPs' own

@@ -656,7 +656,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - GoM's bipods (`Bipod_Deployed / _Folded`, a `DA.RegisterPair`) mount on its M4A1 / G36 / FAL... through
   `Picatinny_Rail_Down` (or the G36C's rail) at a `bipod` point 0.0006 under the rail's bottom (its FAL); both SCARs
   take them on their integral bottom rail. GoM's M4A1 has no reload animation entry (Gunworks' default rifle reload);
-  its FAL / AA12 / BAR use `animId = "FAL"`. GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
+  its FAL uses `animId = "fal_rifle"` ("FAL" before GoM's 2026-10-23 update; the SCAR-H kept the old id until
+  2026-10-27, so its insert matched no node, played a hand raise and never seated the magazine), AA12 / BAR
+  `"left_handle_load"`. GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
 - GoM's FAL magazine icon is blue-grey: the light fitted on it (gains up to 1.9 on blue) washed the tan SCAR-H
   magazines out, so their icons use that camera with the MP7's magazine light (fitted on GoM's MP5 magazine).
 - Not in the photos and drawn from FN's layout: the right side (ejection port, ambidextrous selector), the charging
@@ -1771,7 +1773,8 @@ Scratch tools of that trace (inspect_fbx.py, bounds.py, gripzoom.py, rt.py, synt
 - **Reload animations** are chosen by a string: Gunworks sets the `WeaponReloadType` anim variable (and
   `GunworksReloadAnim`) to the `animId` registered per gun full type in GoM's `Registries/ReloadAnims.lua`
   (`ReloadAnim.RegisterMultipleWeapons({ [fullType] = { animId, style = "none", durations } })`; MP5 / G3 / PSG1 =
-  "MP5", MP5K / TEC9 = "handgun2", FAMAS = "BullpupReload"). AnimSet XMLs (both `AnimSets/player/actions/` and
+  "MP5", MP5K / TEC9 = "handgun2", FAMAS = "famas_rifle", FAL = "fal_rifle"; GoM renames ids between versions, so
+  re-check a borrowed id after a GoM update: a stale one matches no node). AnimSet XMLs (both `AnimSets/player/actions/` and
   `player-vehicle/actions/`): Load / Unload / Rack / RackAim per animId, conditions `PerformingAction=Reload`,
   `WeaponReloadType=<animId>`, `isLoading` / `isUnloading` / `isRacking`, events loadFinished, rackBullet,
   ejectCasing... MP5 load = vanilla `Bob_Reload_Rifle_Load`, unload = the same reversed, rack = `MP5_Rack.X`.
