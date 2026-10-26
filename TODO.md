@@ -611,23 +611,91 @@ overall length (stock extended). Reference sizes and the engine trace: CLAUDE.md
 
 ### How a fix works (traced in the 42.21 jar, CLAUDE.md "Gun scale")
 
-- [ ] Try `getScriptManager():getModelScript("MarzGuns.MP5A2"):Load("MP5A2", "model MP5A2 { scale = 0.83, }")`
-      from Lua, one call per gun with its own value from the list below (keeps GoM's mesh, texture and points;
-      nothing copied from GoM; a table of gun -> scale in one shared file). `scale` on a gun's model scales
-      the body **and every part on it** (stock, bolt, magazine, sights, suppressors, bayonets) about the grip origin:
-      in hand, on the back / in holsters, on the floor, and the muzzle flash. To check: `ModelScript:Load` is
-      reachable from Lua; it must run before any gun model instance exists and again after every script reload
-      (instances copy the scale when created).
-- [ ] Not scaled with it, so handle by hand: the ballistic muzzle (bullet origin, tracer start; raw `muzzle`
-      offset: starts (1 - s) x muzzle y ahead of the drawn muzzle, 5.0 cm on the MP5A2 at 0.83; pre-scaling the
-      offset would sink the flash into the barrel instead); the floor `world` point (applied before the scale:
-      offset x s keeps the floor pose); **Gunworks' reload magazine in the left hand** (an attached item at
-      `Bip01_Prop2` drawn with the magazine's own model, unscaled, so it changes size as it goes in or out; a
-      magazine cannot take its own `scale`, it would be scaled twice in the gun: needs hand-only magazine models or
-      a scaled reload point).
-- [ ] Our own guns: rebuild the meshes at the new K (build_*.py) or use `scale` the same way. Recheck what was fitted to
-      their current size: Hot Brass ejection points, Lasers.lua beams, the Mk9's run-time `canon` point on GoM's
-      MP5s, the sawn-off holster points (`HOLSTER_POINTS`), TienInspectWeapon's view.
+- [ ] **Built, not yet seen in game (2026-10-26)**: `lua/shared/GunsOfTien/GunScale.lua` (+ Post-93's
+      `GunScale.lua` for its guns) sets each model's `scale` with `ModelScript:Load` at OnInitGlobalModData,
+      behind sandbox "[Beta] Rescale guns (Requires Restart)" (`RescaleGuns`, default on), and scales the gun's
+      own placing points (`world`, and every point named after a FemaleBody / MaleBody point: holsters, back,
+      Bip01_Prop1), which the engine applies before the model scale. Check in game, also with the option off (sizes
+      as before) and switched between two loads; one gun of each kind: in hand idle / aimed / walking, a reload and a rack, on the back and in a holster, on the
+      floor (not sunk or floating), parts (magazine, sight, suppressor, bayonet, the Mk9 on the MP5), the muzzle flash
+      at the muzzle, a sawn-off break-action in its holster; after leaving to the menu and loading again; in MP, as
+      seen by another player.
+- [ ] Not scaled: the ballistic muzzle (bullet origin, tracer start; raw `muzzle` offset: starts (1 - s) x muzzle y
+      ahead of the drawn muzzle, 3.9 cm on the MP5A2 at 0.87; pre-scaling the offset would sink the flash into the
+      barrel instead); Hot Brass ejection offsets (relative to the player, so the casing leaves (1 - s) x the port's
+      distance off the drawn port; GoM's `HotBrass/CustomParams.lua` and ours): look in game, then decide.
+- [ ] Gunworks' reload magazine in the left hand (an attached item at `Bip01_Prop2`, drawn at the magazine's own
+      size) shows only for handlers with a `magItem`: none of GoM's (its `magazineProfile` has none, style "none"),
+      only our compact stance (MP5K, Uzi, Mini Uzi, MP7s; the P90's is suppressed). Those guns are left out until
+      their clips are rebuilt; then the hand magazine needs a scaled model or reload point per magazine group.
+- [ ] Left out, on our own clips solved for today's sizes: MP5K, Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90, M249;
+      and GoM's Stolzer & Son 2-bore (no real size). Rebuild their clips from the scaled points, then add them
+      (plan below).
+
+### Rebuilding our clips at the new sizes (decided with the user, 2026-10-26; not started)
+
+User: "let's do it. let's rebuild the animations in this branch." Choice taken: these seven guns **always** use the
+new sizes, whatever "[Beta] Rescale guns" says (the stance and the reloads are ours, so their guns follow our sizes;
+one clip set each, no second set kept for the old sizes, which would add ~85 MB to the main mod and ~31 MB to
+Post-93). The option then covers only the guns on vanilla's and GoM's clips. Scales: MP5K **0.87** (the MP5 magazine
+group), Uzi / Mini Uzi / Micro Uzi **0.84** (Uzi group), MP7A1 / A2 **0.84**, P90 **0.84**, M249 **0.94**.
+Everything is generated, so the work is giving each generator a per-gun scale and running it again; the guns scale
+about the grip origin (Bip01_Prop1), so every place in weapon space is x s:
+- [ ] `scripts/anim/compact_build.py` `SETS[*].support` (left-hand place on the gun) and
+      `scripts/anim/compact_stance.py` `GUNS[*].support`: x s. The hold itself (`HOLD`, character space) stays; the
+      de-clip / clearance checks use the gun's meshes, so they must load them scaled.
+- [ ] `scripts/anim/hold_preview.py` `GUNS[*].parts`: the meshes (preview, clearance) and each part's point x s
+      (the point's offset only; the part mesh is scaled with the gun).
+- [ ] Turned guns (MP5K, Mini Uzi, MP7s): `compact_animsets.TURNED_SETS` (set -> muzzle z, used by `compact_pack.py`
+      to move the gun bone back, and by `compact_build.stance_clip` for shipped clips) x s, matching `GunScale.lua`,
+      which scales the `Bip01_Prop1` turn point the same way (T(s o) R S = S T(o) R).
+- [ ] Reloads: `scripts/anim/smg_reload.py` (`COMPACT_PLACES` work / rack places for Uzi, MP5K, MP7; the guns'
+      points from `scripts/uzi_points.json`, `post93/mp7_points.json`, GoM's smgs.txt), `m249_reload.py`
+      (`scripts/m249_points.json`), `post93/anim/p90_reload.py` (`post93/p90_points.json`), and the Micro Uzi's
+      pistol-rack clips ("UziGrip", find their generator): places and points x s.
+- [ ] Gunworks' reload magazine in the left hand (compact stance guns: MP5K, Uzis, MP7s): drawn at the magazine's own
+      size while the one in the gun is scaled. Give it the gun's scale (a hand-only magazine model with `scale` = the
+      group's, swapped in by `ReloadAnim.resolveReloadMagItem`, or a scaled copy of the `Bip01_Prop2` location's point).
+- [ ] `GunScale.lua`: add these models (GoM's MP5K; our UZI, MINIUZI, MICROUZI, M249; Post-93's MP7A1, MP7A2, P90TR)
+      in a second table applied whatever the option says.
+- [ ] Run order per set: compact_build (all clips, ~1 min a set for 33 clips, much longer for the full 240-clip
+      inventory) -> compact_pack -> compact_animsets (nodes unchanged unless names change) -> reloads; ship into
+      anims_X/Bob, keep CRLF where the shipped files have it. Check the build's clearance report against the shipped
+      one (arms at contact level, gun out of the body), then the user approves the stance again in game.
+- [ ] Recheck what we fitted to today's sizes: Lasers.lua beams (a part: scaled with the gun, beam length too), the
+      sawn-off holster points (scaled as holster points now).
+
+### Guns sharing a magazine share one scale (user, 2026-10-26)
+
+User: "when they share a mag like uzi, they [must] still [be] consistent ... while still basing on a basis". A
+magazine is a weapon part, drawn at its gun's scale, so guns that mount the same magazine get **one scale per
+group**, taken from a basis gun whose real size is sure (its own value in the list below). This overrides the
+per-gun values in the list for every other member. It also makes the reload fix possible: one hand-only model per
+magazine (or one scaled reload point) only fits if every gun using that magazine has the same scale.
+Groups = merged `MountOn` lists of the `PartType = Clip` items (GoM + ours). GoM put the `magazine` point at the
+same offset on every member of each family below (AR 0.1015 / 0.0144, MP5 0.1191, AK 0.1238, G36 0.1101), so their
+receivers are built at one size and the spread in the list comes from barrels / stocks drawn long or short, or from
+a guessed variant. Scaling each by its overall length would shrink or grow the receiver and the magazine with it.
+- [ ] AR (STANAG): basis M16A2 **1.00** for M16A1 (0.99), M16A3, M16A2 M203, AR-15 (0.98), M4A1 (0.96), CAR-15
+      (0.96?), XM177 (0.86?). The XM177 then draws 16% longer than a real XM177E2 (787 mm): its barrel / stock or the
+      variant guess is off, look at a render.
+- [ ] STANAG guns of other designs, own receivers: FNC (0.96), SCAR-L (0.93; its STANAG mounting is ours). Both
+      take STANAG magazines for real. At 1.00 they draw 4 / 7% longer than real; at their own value the STANAG
+      magazine is drawn that much smaller in them than in an M16. Decide.
+- [ ] FAMAS (0.88): GoM's model is an **F1** (small trigger guard in front of the grip, not the G2's full-hand
+      guard; side silhouette from `scale_audit.py`), and the F1 takes only its own 25-round magazines. STANAG
+      magazines came with the G2 (1994, after our 1993). GoM mounts STANAG anyway (`Magazines.lua` "STANAG" profile,
+      the magazines' `MountOn`), a gameplay choice. So no real magazine size ties it to the M16: own scale 0.88
+      (the STANAG magazine drawn 12% smaller in it), unless it gets a 25-round F1 magazine of its own (decide).
+- [ ] MP5: basis MP5 **0.87** (the MP5SD agrees) for MP5SD, MP5K (0.84), MP5A2 (0.83). The MP5A2 then draws ~5%
+      long: its stock is the odd one (see its line below).
+- [ ] AK-74 magazines: basis AK-74 **0.93** for the AKS-74U (0.89).
+- [ ] G36: basis G36 **0.98** for the G36C (0.97).
+- [ ] Uzi (ours): basis Uzi **0.84** for the Mini Uzi (0.84) and Micro Uzi (0.85).
+- [ ] MP7: MP7A1 / MP7A2 **0.84** (already equal).
+- [ ] .45 M1911 magazines: basis M1911 **0.86** for the Camp Carbine (0.85).
+- Guns on one model share its scale anyway (Mossberg 590 / Masterkey, CAR-15 / its M203, UMP45 / UMP9). Sights,
+  suppressors and bayonets are shared across families and stay at each gun's scale (GoM sized them loosely).
 
 ### Each gun's own scale (model script; ratio now -> scale)
 
@@ -661,7 +729,8 @@ Rifle stance (vanilla's rifle clips):
 - [ ] MarzGuns.FNC: 0.63 -> **0.96**
 - [ ] MarzGuns.M1895: 0.63 -> **0.96**?
 - [ ] MarzGuns.MOSSBERG_590 (and MASTERKEY_Weapon, same model): 0.63 -> **0.96**
-- [ ] MarzGuns.DOUBLEBARREL: 0.63 -> **0.96**?
+- [ ] MarzGuns.DOUBLEBARREL: 0.60 -> **1.01**? (was 0.63 -> 0.96: the audit took the `scale` of its
+      `shellholder` point for the model's; fixed in scale_audit.py)
 - [ ] MarzGuns.M4A1: 0.63 -> **0.96**
 - [ ] MarzGuns.CAR15 (and CAR15_M203_Weapon): 0.63 -> **0.96**?
 - [ ] MarzGuns.REMINGTON_700: 0.62 -> **0.97**?
@@ -729,7 +798,7 @@ Pistols:
       rack, handgun2).
 - [ ] Our clips were solved for today's sizes: the compact stance (4 sets, 1016 nodes: Uzi, UziT, MP5K, MP7) and the
       reloads (smg_reload.py compact_uzi / mp5k / mp7, m249_reload.py, the P90's, the Uzi's): rebuild them from the
-      scaled points (places x s) once sizes are settled.
+      scaled points (places x s); plan in "Rebuilding our clips at the new sizes".
 - [ ] Pistols on vanilla's handgun clips hold the grip only; scaling about the grip origin keeps both hands on it,
       the grip just gets smaller: check the fingers.
 

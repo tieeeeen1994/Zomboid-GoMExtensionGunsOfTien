@@ -115,7 +115,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
   `RealisticPiercing`,
-  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never).
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `RescaleGuns` ("[Beta] Rescale guns (Requires
+  Restart)", default on, read at world load by `GunScale.lua`; user, 2026-10-26).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
   (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
   HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
@@ -1423,7 +1424,7 @@ behind it (42.21):
   never gets `GunworksGripAnim` again until its weapon changes: others see the turned guns in vanilla's rifle nodes,
   4-9 cm off the hands.
 
-## Gun scale (2026-10-25, audit only; open work in TODO.md "Gun scale audit")
+## Gun scale (2026-10-25; built 2026-10-26 in GunScale.lua, open work in TODO.md "Gun scale audit")
 
 - Sizes: vanilla's MaleBody.x is 0.98 units tall (a ~1.78 m man at ~0.55); vanilla's M16_Rifle.x 0.546 long = 0.54
   of 1006 mm (true to the body), M9 0.70, pump shotgun / MSR788 ~0.60-0.65. GoM's rifle-stance guns: median 0.63
@@ -1444,6 +1445,25 @@ behind it (42.21):
   mesh and points, and its `scale` key sets the scale; `ModelScript` is `@UsedFromLua`, the `scale` field has no
   setter (`scaleAttachmentOffset(f)` multiplies every point). Gunworks' reload magazine is an attached item at a
   location named `Bip01_Prop2` (`ReloadAnim/AttachLocations.lua`), drawn with the magazine's own model.
+- Which model a gun draws for a part is in the **gun's** item script (`ModelWeaponPart = <part item> <model> <self
+  point> <gun point>`, one line per part), so a gun can be given a part model of its own. GoM puts its `magazine`
+  point at the same offset on every gun of a family (all seven ARs 0.1015 / 0.0144, the four MP5s 0.1191, AK-74 /
+  AKS-74U 0.1238, G36 / G36C 0.1101): one receiver size per family. FNC, FAMAS and SCAR-L take STANAG magazines
+  on receivers of their own. GoM's FAMAS is an F1 (small trigger guard), which really takes only its own 25-round
+  magazines (STANAG came with the 1994 G2); GoM gives it STANAG for gameplay. Rule (user, 2026-10-26): guns sharing
+  a magazine share one scale (TODO "Guns sharing a magazine share one scale").
+- Where the scale sits (42.21): an attached / held model is parent bone x parent point x **the model's own point of
+  the same name** x mesh transform x `ModelInstance.scale` (`AnimatedModel$AnimatedModelInstanceRenderData
+  .transformToParent`; `invertAttachmentSelfTransform` is false); a floor item is rotation x inverse `world` point x
+  mesh x scale (`ItemModelRenderer.init`, HandWeapon floor model = `getStaticModel()` = the WeaponSprite). So a
+  gun's own placing points (`world`, holsters, back, `Bip01_Prop1`) are not scaled, while points parts hang from
+  are (the child starts from the parent's xfrm, scale included). `GunScale.lua` scales the placing points' offsets
+  by the same factor (T(s o) R S = S T(o) R), so the gun scales about the body point / floor spot. No GoM or Guns
+  of Tien gun mesh node has a translation, so the mesh transform does not shift that centre. ModelScript has no
+  `scale` getter and Kahlua does not read its public field; GoM's gun models set none (the `scale = 1.1703` in
+  DOUBLEBARREL is its `shellholder` point's).
+- Gunworks' reload magazine in the left hand (`ReloadAnim.attachReloadMagazine`) needs the handler's `magItem`;
+  GoM's `magazineProfile` handlers have none, so only our compact stance guns show one.
 
 ## Research reference
 

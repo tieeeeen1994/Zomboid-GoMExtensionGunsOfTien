@@ -14,3 +14,10 @@ option GunsOfTien.SubsonicRackRule {
     page        = GunsOfTien,
     translation = GunsOfTien_SubsonicRackRule,
 }
+
+option GunsOfTien.RescaleGuns {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_RescaleGuns,
+}

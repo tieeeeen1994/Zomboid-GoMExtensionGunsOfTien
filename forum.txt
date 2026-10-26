@@ -30,6 +30,7 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*]Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's automatic fire spread penalty applies
 [*]Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept as offcuts: wood to burn or make charcoal, steel to smelt. The Stevens 555's and TOZ-34's sawn-off barrels handle like the Double Barrel's
 [*]9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
+[*]Guns drawn to scale: every gun in proportion to the character and to each other, on the M16A2's scale (Guns of Marz draws most of its guns larger); guns that take the same magazines are drawn the same size. Not yet the MP5K, the Uzis, the MP7s, the P90 and the M249 (sandbox option) (beta)
 [/list]
 
 [h2]M249 Light Machine Gun and belt links[/h2]
@@ -83,4 +84,5 @@ On the [b]Guns of Tien[/b] page of the sandbox settings.
 [list]
 [*][i]Adjusted Piercing[/i] (on by default): plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds pierce in every gun that fires them, and plain .30-30 rounds (flat-nosed soft points in reality) no longer do. Off = Guns of Marz's own piercing
 [*][i]7.62x39mm US Subsonic Cycling[/i]: always rack after every shot, rack unless a PBS-1 is fitted (default), or never rack
+[*][i][Beta] Rescale guns (Requires Restart)[/i] (on by default): every gun drawn in proportion to the character and to each other. Off = Guns of Marz's own sizes. A change takes effect after a restart
 [/list]

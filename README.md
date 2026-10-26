@@ -24,6 +24,9 @@ Maker they can be made.
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
+- Guns drawn to scale: every gun in proportion to the character and to each other, on the M16A2's scale (Guns of
+  Marz draws most of its guns larger); guns that take the same magazines are drawn the same size. Not yet the MP5K,
+  the Uzis, the MP7s, the P90 and the M249 (sandbox option) (beta)
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on

@@ -64,7 +64,8 @@ for root in ROOTS:
         t = re.sub(r"/\*.*?\*/", "", open(f, encoding="utf-8", errors="ignore").read(), flags=re.S)
         for mod, name, body in blocks(t, "model"):
             mesh = re.search(r"\bmesh\s*=\s*([^,\n]+)", body)
-            scale = re.search(r"^\s*scale\s*=\s*([\d.]+)", body, re.M)
+            # the model's own scale, not an attachment point's (GoM's DOUBLEBARREL shellholder point has one)
+            scale = re.search(r"^\s*scale\s*=\s*([\d.]+)", re.sub(r"attachment\s+\w+\s*\{.*?\}", "", body, flags=re.S), re.M)
             att = {}
             for a in re.finditer(r"attachment\s+(\w+)\s*\{(.*?)\}", body, re.S):
                 s = re.search(r"scale\s*=\s*([-\d.]+)", a.group(2))
