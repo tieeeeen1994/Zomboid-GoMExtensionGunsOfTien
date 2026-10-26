@@ -32,7 +32,7 @@ GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/
                         "42.16/media") if os.path.isdir(p)), None)
 OUT = sys.argv[sys.argv.index("--") + 1]
 POINTS = json.load(open(os.path.join(HERE, "ucp_points.json")))
-K = 0.00072
+K = 0.000603                       # the builder's (the M16A2's proportion since 2026-10-26)
 L0, H0 = POINTS["_extras"]["photo_origin_mm"]
 UPRIGHT = Matrix.Rotation(math.pi, 4, 'Y')       # GoM's pistols (and this one) are modelled upside down
 

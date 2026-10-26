@@ -22,7 +22,7 @@ were not measured. Profiles are written in the photo's (L, H) mm: L back from th
 point (the 30-round magazine's base).
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z top, +X the gun's LEFT, origin at the
-rear-top of the pistol grip, drawn at 0.72 of real size like GoM's MP5 family and our MP7 / P90; held as a rifle like
+rear-top of the pistol grip, drawn at 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, like GoM's MP5 family); held as a rifle like
 GoM's MP5 (two hands, back slot). The stock is one node modelled deployed with its origin at the hinge (its front face
 on the bore axis); `stock_folded` swings it 180 degrees about the hinge pin on the right, as H&K's folds along the
 receiver's right side. The charging handle does not reciprocate (as the MP5's): `bolt_fired` = `bolt_lock`.
@@ -57,7 +57,8 @@ FBX = {
 }
 POINTS_JSON = os.path.join(HERE, "ump_points.json")
 
-K = 0.00072                        # game units per real mm: GoM's MP5 family
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's MP5 family)
+K_OLD = 0.00072
 kit.K = K
 MATS = ["polymer", "grip", "rail", "metal", "dark", "rubber", "magpoly", "smoke", "brass", "copper"]
 kit.MATS[:] = MATS
@@ -544,10 +545,10 @@ def points(bounds):
         # turned 180 degrees about the hinge pin: offset = stock + 2 x the pin's x
         "stock_folded": {"offset": [round(stock[0] + 2.0 * hinge_x * K, 4), stock[1], stock[2]],
                          "rotate": [0.0, 0.0, 180.0]},
-        "world": {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]},       # every GoM rifle
+        "world": {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]},  # every GoM rifle's, scaled with the gun
     }
     pts["_notes"] = {
-        "units": "game units (0.72 of real size, GoM's MP5 family); +Y muzzle, +Z top, +X the gun's left; origin = "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = "
                  "the rear-top of the pistol grip (photo L %.0f, H %.0f)" % (L0, H0),
         "magazine": "the UMP9's and UMP45's magazines hang from here (their feed lips), their rake built in",
         "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the "

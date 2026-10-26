@@ -26,10 +26,10 @@ trace_outline.py, scaled by their Picatinny rails (10.0 mm per crossbar, MIL-STD
 Profiles are written in each photo's (L, H) mm: L back from the photographed muzzle, H up from the lowest point.
 
 GoM's rifle conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z top, +X the gun's LEFT, origin at
-the rear-top of the pistol grip, every part in its own node or file and drawn at the gun's points. Drawn at 0.65 of
-real size, as GoM draws its rifles (M4A1 0.63, G36 0.61, FAL 0.67 of their real lengths; the MP7 / P90 / pistols
-use 0.72, as GoM's MP5 family). The SCAR-L takes GoM's STANAG magazines at `magazine` (their mesh, 0.65 scale, matches
-the replica's magazine within 2 mm). The stock is one shared node, modelled deployed with its origin at the hinge
+the rear-top of the pistol grip, every part in its own node or file and drawn at the gun's points. Drawn at 0.603 of
+real size, the M16A2's proportion (user, 2026-10-26: every Guns of Tien gun resized in its meshes; 0.65 before, as GoM
+draws most of its rifles: M4A1 0.63, G36 0.61, FAL 0.67). The SCAR-L takes GoM's STANAG magazines at `magazine`
+(their mesh is at 0.65 scale, so it sits a little large in the well, exactly as it does in GoM's M16A2). The stock is one shared node, modelled deployed with its origin at the hinge
 (the front face of the stock's hinge, on the bore axis); each gun's `stock` point puts it there and `stock_folded`
 swings it 180 degrees about the hinge pin on the right side, so it lies along the right of the receiver as FN's does.
 """
@@ -58,7 +58,8 @@ FBX = {
     "parts": os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_SCAR_parts.fbx"),
 }
 
-K = 0.00065                        # game units per real mm: GoM's rifles
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00065, GoM's rifles)
+K_OLD = 0.00065
 kit.K = K
 MATS = ["tan", "polymer", "black", "metal", "dark", "rubber", "magsteel", "brass", "copper", "suppressor"]
 kit.MATS[:] = MATS
@@ -616,9 +617,9 @@ def points(g, bounds):
     }
     # GoM's bipods (its FAL: 0.0006 under the bottom of the rail they clamp to), at the handguard's front
     pts["bipod"] = {"offset": [0.0, round(g.y(g.bipod_l) * K, 4), round(bottom + 0.0006, 4)], "rotate": ZERO}
-    pts["world"] = {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]}       # every GoM rifle
+    pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]}  # every GoM rifle's, scaled
     pts["_notes"] = {
-        "units": "game units (0.65 of real size, GoM's rifles); +Y muzzle, +Z top, +X the gun's left; origin = the "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the "
                  "rear-top of the pistol grip (photo L %.0f, H %.0f)" % (g.L0, g.H0),
         "magazine": ("GoM's STANAG magazines hang from here (their feed lips)" if g is SL
                      else "762x51Magazine20/10_SCARH, origin at their feed lips"),

@@ -897,8 +897,9 @@ def ump_parts(gun):
         lines += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                   f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
     else:
-        lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device canon canon,",
-                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor canon canon,"]
+        # the main mod's Mk9 at our size (its `_GoT` models; GoM's MP5s draw the GoM-sized ones)
+        lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]

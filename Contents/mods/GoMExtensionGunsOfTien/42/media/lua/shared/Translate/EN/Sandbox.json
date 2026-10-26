@@ -7,6 +7,6 @@
   "Sandbox_GunsOfTien_SubsonicRackRule_option1": "Always rack after every shot",
   "Sandbox_GunsOfTien_SubsonicRackRule_option2": "Rack unless a PBS-1 is fitted",
   "Sandbox_GunsOfTien_SubsonicRackRule_option3": "Never rack",
-  "Sandbox_GunsOfTien_RescaleGuns": "[Beta] Rescale guns (Requires Restart)",
-  "Sandbox_GunsOfTien_RescaleGuns_tooltip": "Draws every gun in proportion to the character and to the others, on the M16A2's scale. Guns that take the same magazines are drawn the same size. Guns of Marz draws most of its guns larger than that. The MP5K, the Uzis, the MP7s, the P90 and the M249 keep their size for now. A change takes effect after a restart."
+  "Sandbox_GunsOfTien_RescaleGuns": "[BETA] Resize Guns of Marz",
+  "Sandbox_GunsOfTien_RescaleGuns_tooltip": "Draws Guns of Marz's guns in proportion to the character and to each other, on the M16A2's scale. Guns that take the same magazines are drawn the same size. Not resized: MP5K Submachine Gun, Stolzer & Son of Kansas 2-Bore Rifle. A change takes effect after a restart."
 }

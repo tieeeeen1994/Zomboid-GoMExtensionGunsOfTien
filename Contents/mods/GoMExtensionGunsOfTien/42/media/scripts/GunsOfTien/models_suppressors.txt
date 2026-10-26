@@ -6,9 +6,21 @@ module GunsOfTien {
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 
+    model Mk9_Suppressor_GoT {
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|Mk9_Suppressor,
+        texture  = weapons/GunsOfTien/Mk9_Suppressor,
+        scale    = 0.8375,
+    }
+
     model SMG9_Muzzle_Mount_Device {
         mesh     = weapons/parts/GunsOfTien_SMG9_parts|SMG9_Muzzle_Mount_Device,
         texture  = weapons/GunsOfTien/SMG9_Muzzle_Mount_Device,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model SMG9_Muzzle_Mount_Device_GoT {
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|SMG9_Muzzle_Mount_Device,
+        texture  = weapons/GunsOfTien/SMG9_Muzzle_Mount_Device,
+        scale    = 0.8375,
     }
 }

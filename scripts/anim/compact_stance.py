@@ -39,12 +39,12 @@ GUNS = {
     # forward on the gun like the MP7 / MP5K (user, 2026-10-23: "uzi should use the style of mp7 and mp5k"): under the
     # front of the receiver, as far forward as the Mini Uzi allows (its receiver ends ~0.13, its folded stock's butt
     # hangs under the barrel at 0.10-0.11)
-    "uzi": dict(flip=False, support=Vector((0.0, 0.130, -0.014)), set="Uzi"),
-    "miniuzi": dict(flip=True, support=Vector((0.0, 0.130, -0.014)), set="Uzi"),     # shares the Uzi's clips
+    "uzi": dict(flip=False, support=Vector((0.0, 0.130, -0.014)) * HP.UZI_S, set="Uzi"),
+    "miniuzi": dict(flip=True, support=Vector((0.0, 0.130, -0.014)) * HP.UZI_S, set="Uzi"),     # shares the Uzi's clips
     "mp5k": dict(flip=True, support=Vector((0.0, 0.180, -0.032)), set="MP5K", vertical=True),
     # Post-93's MP7A1 with its foregrip unfolded (0.13-0.155 ahead, hanging under the gun); folded / MP7A2: under the
     # handguard about as far
-    "mp7": dict(flip=True, support=Vector((0.0, 0.142, -0.040)), set="MP7", vertical=True),
+    "mp7": dict(flip=True, support=Vector((0.0, 0.142, -0.040)) * HP.MP7_S, set="MP7", vertical=True),
 }
 
 

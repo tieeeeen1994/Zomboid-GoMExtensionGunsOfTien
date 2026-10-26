@@ -20,7 +20,7 @@ rounded edges (slab(), a filled 2D curve), GoM's flat faceted hard-surface style
 axis that runs straight inside the grip and curves toward the muzzle below it (docs/mp7_1.png, mp7_4.png).
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): game space +Y muzzle, +Z top, +X the gun's LEFT, origin at
-the rear-top of the pistol grip, drawn at 0.72 of real size. The MP7 is held like a pistol, as GoM holds its MP5K,
+the rear-top of the pistol grip, drawn at 0.603 of real size (the M16A2's proportion; 0.72 before 2026-10-26). The MP7 is held like a pistol, as GoM holds its MP5K,
 TEC9 and MAC10: everything is modelled and baked upright and the gun nodes are turned 180 degrees about the bore axis
 at export, with the attachment points (TURN, turned(); build_p90.py does the same). FBX object name = node name, mesh data =
 (game x, game y, -game z), rotation (90, 0, 0), scale 0.01, export_scene.fbx with its defaults.
@@ -53,7 +53,10 @@ TEX_DIR = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
 POINTS_JSON = os.path.join(HERE, "mp7_points.json")
 POINTS_JSON_A2 = os.path.join(HERE, "mp7a2_points.json")
 
-K = 0.00072                       # game units per real millimetre (GoM's MP5 family: 0.72 of real size)
+# game units per real millimetre: the M16A2's proportion (GoM's M16A2 is drawn at 0.603 of its real length, true to
+# vanilla's body; user, 2026-10-26: our guns resized in their meshes, TODO.md "New direction"). Was 0.00072 (GoM's MP5
+# family), as the P90, Five-seveN and UCP still are (they set their own K until they are rebuilt).
+K = 0.000603
 
 # Photo coordinates (mm) of the model origin: the rear-top of the grip, where its back meets the receiver.
 # game y = L0 - L, game z = H - H0.
@@ -1101,8 +1104,9 @@ def turned(point, part=True):
 def handgun_points(pts):
     """Turn upright points for the handgun-held model, add the floor pose and the back-slot points."""
     pts = {k: turned(v) for k, v in pts.items()}
-    # floor pose of GoM's handgun-held SMGs (MP5K, TEC9, MAC10)
-    pts["world"] = {"offset": [-0.025, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]}
+    # floor pose of GoM's handgun-held SMGs (MP5K, TEC9, MAC10), its height off the floor scaled with the gun from the
+    # 0.72 they are drawn at
+    pts["world"] = {"offset": [round(-0.025 * K / 0.00072, 4), 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]}
     # Carried on the back like a rifle (never in a holster): the body's rifle points expect an upright rifle model,
     # and an attached item's own attachment of the same name is applied on top, so these turn the gun back upright
     # (a half turn is its own inverse, so it does not matter whether the engine inverts it).
@@ -1153,7 +1157,7 @@ def points(bounds, a2=False):
     pts = handgun_points(pts)
     pts["_bounds"] = bounds
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
                  "handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of grip "
                  "(photo L %.0f, H %.1f)" % (L0, H0),
         "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model "

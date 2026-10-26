@@ -5,6 +5,8 @@ Project Zomboid Build 42 mod.
 **Requires:** Gunworks Gang Framework, Guns of Marz
 **Optional:** Ammo Maker (making the new rounds), Hot Brass (spent casings)
 
+Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2.
+
 ## New ammunition
 
 Each in boxes, cartons and crates. Like Guns of Marz's own special loads they are not found as loot. With Ammo
@@ -24,9 +26,9 @@ Maker they can be made.
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
-- Guns drawn to scale: every gun in proportion to the character and to each other, on the M16A2's scale (Guns of
-  Marz draws most of its guns larger); guns that take the same magazines are drawn the same size. Not yet the MP5K,
-  the Uzis, the MP7s, the P90 and the M249 (sandbox option) (beta)
+- Guns of Marz's guns can be drawn to scale: in proportion to the character and to each other, on the M16A2's scale
+  (Guns of Marz draws most of its guns larger); guns that take the same magazines are drawn the same size. Not the
+  MP5K or the Stolzer & Son 2-Bore (sandbox option, off by default) (beta)
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on

@@ -9,6 +9,7 @@ with TienInspectWeapon's sheet.py / gif.py. Rifle-held guns (SwingAnim Rifle) pl
 pistol-held ones Bob_IdleHandgun / Bob_IdleAimHandgun: Guns of Marz ships no idle or aim clips of its own.
 """
 
+import json
 import math
 import os
 import sys
@@ -35,8 +36,21 @@ def point(offset, rotate=(0, 0, 0)):
 
 
 UZI_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_%s.fbx")
+# The MP7 is resized in its meshes (build_mp7.py's K; user, 2026-10-26): its points come from the builder's JSON, and
+# MP7_S (its size against the 0.72 the stance was solved at) scales the places that were measured by hand.
+MP7_POINTS = json.load(open(os.environ.get("GOT_MP7_POINTS") or os.path.join(ROOT, "scripts/post93/mp7_points.json")))
+MP7_S = 1.0 / MP7_POINTS["_extras"]["real_mm_per_game_unit"] / 0.00072
+# the Uzis likewise (build_uzi.py's K, the same day)
+UZI_POINTS = json.load(open(os.path.join(ROOT, "scripts/uzi_points.json")))
+UZI_S = UZI_POINTS["UZI"]["_extras"]["k"] / 0.00072
+
+
+def _pt(gun, name):
+    p = UZI_POINTS[gun][name]
+    return point(p["offset"], p.get("rotate", (0, 0, 0)))
 UZI_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx")
-P93 = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
+# GOT_P93_MEDIA / GOT_MP7_POINTS: another copy of the meshes and points (a build of the old size to compare with)
+P93 = os.environ.get("GOT_P93_MEDIA") or os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 P93_FBX = os.path.join(P93, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx")
 P93_MAGS = os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx")
 # (fbx, node, point in the gun's model script) per part, as models_uzi.txt / GoM's smgs.txt place them: stock
@@ -46,28 +60,28 @@ GUNS = {
         (UZI_FBX % "UZI", "UZI_BODY", None),
         (UZI_FBX % "UZI", "UZI_BOLT", None),
         (UZI_FBX % "UZI", "UZI_STOCK_FOLDED", None),          # no `stock` point on the model: drawn at its origin
-        (UZI_MAGS, "9x19Magazine32_UZI", point((0.0, 0.0288, 0.0018))),
+        (UZI_MAGS, "9x19Magazine32_UZI", _pt("UZI", "magazine")),
     ]),
     "miniuzi": dict(rifle=False, parts=[
         (UZI_FBX % "MINIUZI", "MINIUZI_BODY", None),
         (UZI_FBX % "MINIUZI", "MINIUZI_BOLT", None),
-        (UZI_FBX % "MINIUZI", "MINIUZI_STOCK", point((0.0166, -0.0662, -0.0274), (0, 0, 180))),
-        (UZI_MAGS, "9x19Magazine32_UZI", point((0.0, 0.0281, -0.0043), (-180, 0, -180))),
+        (UZI_FBX % "MINIUZI", "MINIUZI_STOCK", _pt("MINIUZI", "stock_folded")),
+        (UZI_MAGS, "9x19Magazine32_UZI", _pt("MINIUZI", "magazine")),
     ]),
     "microuzi": dict(rifle=False, parts=[
         (UZI_FBX % "MICROUZI", "MICROUZI_BODY", None),
         (UZI_FBX % "MICROUZI", "MICROUZI_BOLT", None),
-        (UZI_FBX % "MICROUZI", "MICROUZI_STOCK", point((0.0162, -0.0461, -0.0230), (0, 0, 180))),
-        (UZI_MAGS, "9x19Magazine32_UZI", point((0.0, 0.0281, -0.0058), (-180, 0, -180))),
+        (UZI_FBX % "MICROUZI", "MICROUZI_STOCK", _pt("MICROUZI", "stock_folded")),
+        (UZI_MAGS, "9x19Magazine32_UZI", _pt("MICROUZI", "magazine")),
     ]),
     # Post-93's MP7A1: stock folded (at its stock_folded point), foregrip unfolded (foregrip_deployed, turned 90),
     # 30-round magazine
     "mp7": dict(rifle=False, parts=[
         (P93_FBX % "MP7A1", "MP7A1_BODY", None),
         (P93_FBX % "MP7A1", "MP7A1_BOLT", None),
-        (P93_FBX % "MP7A1", "MP7A1_STOCK", point((0.0, 0.1606, 0.0))),
-        (P93_FBX % "MP7A1", "MP7A1_FOREGRIP", point((0.0, 0.1402, 0.1452), (-90, 0, 0))),
-        (P93_MAGS, "46x30Magazine30_MP7", point((0.0, 0.023, -0.009), (-180, 0, -180))),
+        (P93_FBX % "MP7A1", "MP7A1_STOCK", point(MP7_POINTS["stock_folded"]["offset"])),
+        (P93_FBX % "MP7A1", "MP7A1_FOREGRIP", point(MP7_POINTS["foregrip_deployed"]["offset"], (-90, 0, 0))),
+        (P93_MAGS, "46x30Magazine30_MP7", point(MP7_POINTS["magazine"]["offset"], (-180, 0, -180))),
     ]),
     "mp5k": dict(rifle=False, parts=[
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BODY", None),

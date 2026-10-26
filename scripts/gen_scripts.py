@@ -522,6 +522,10 @@ def lasers():
 SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI'
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
+# Both parts are built at GoM's SMG size (0.72 of real, GoM's MP5s), while Guns of Tien's own guns are drawn at the
+# M16A2's proportion (0.603, user 2026-10-26): our Uzis and the UMP9 draw them through a second model of the same mesh,
+# `<part>_GoT`, scaled down by as much (a gun's ModelWeaponPart line names the model it draws a part with).
+GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
 
 
 def smg_suppressor():
@@ -533,6 +537,12 @@ def smg_suppressor():
         mesh     = weapons/parts/GunsOfTien_SMG9_parts|{part},
         texture  = weapons/GunsOfTien/{part},
         attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+
+    model {part}_GoT {{
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|{part},
+        texture  = weapons/GunsOfTien/{part},
+        scale    = {GOT_PART_SCALE:.4f},
     }}
 """)
         items.append(f"""
@@ -1151,7 +1161,7 @@ def uzi_item(gun):
         parts += [f"{w}{MODULE}.{gun}_Integrated_Stock_Folded {MODULE}.{gun}_STOCK stock_folded stock_folded,",
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
-    parts += [f"{w}{MODULE}.{p} {MODULE}.{p} canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
     # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster).
     # The Mini Uzi is two-handed too, for the compact SMG stance (user: "let's require them to be 2-handed"; CLAUDE.md
     # "One-handed after equipping"); the Micro Uzi stays one-handed.

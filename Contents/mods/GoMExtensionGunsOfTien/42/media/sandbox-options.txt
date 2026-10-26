@@ -17,7 +17,7 @@ option GunsOfTien.SubsonicRackRule {
 
 option GunsOfTien.RescaleGuns {
     type        = boolean,
-    default     = true,
+    default     = false,
     page        = GunsOfTien,
     translation = GunsOfTien_RescaleGuns,
 }

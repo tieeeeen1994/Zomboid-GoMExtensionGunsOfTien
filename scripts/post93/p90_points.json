@@ -2,8 +2,8 @@
   "muzzle": {
     "offset": [
       0.0,
-      0.1706,
-      -0.0143
+      0.1429,
+      -0.0119
     ],
     "rotate": [
       -90.0,
@@ -14,8 +14,8 @@
   "magazine": {
     "offset": [
       0.0,
-      0.1134,
-      -0.0277
+      0.095,
+      -0.0232
     ],
     "rotate": [
       -180.0,
@@ -26,8 +26,8 @@
   "rail_up": {
     "offset": [
       0.0,
-      0.0698,
-      -0.0672
+      0.0585,
+      -0.0554
     ],
     "rotate": [
       -180.0,
@@ -38,8 +38,8 @@
   "scope": {
     "offset": [
       0.0,
-      0.0698,
-      -0.0695
+      0.0585,
+      -0.0577
     ],
     "rotate": [
       -180.0,
@@ -49,9 +49,9 @@
   },
   "rail_left": {
     "offset": [
-      -0.0147,
-      0.1109,
-      -0.059
+      -0.0114,
+      0.0929,
+      -0.0494
     ],
     "rotate": [
       -180.0,
@@ -61,9 +61,9 @@
   },
   "rail_right": {
     "offset": [
-      0.0147,
-      0.1109,
-      -0.059
+      0.0114,
+      0.0929,
+      -0.0494
     ],
     "rotate": [
       -180.0,
@@ -73,9 +73,9 @@
   },
   "light_left": {
     "offset": [
-      -0.0209,
-      0.1109,
-      -0.059
+      -0.0176,
+      0.0929,
+      -0.0494
     ],
     "rotate": [
       -180.0,
@@ -85,9 +85,9 @@
   },
   "laser_right": {
     "offset": [
-      0.022,
-      0.1109,
-      -0.0582
+      0.0187,
+      0.0929,
+      -0.0486
     ],
     "rotate": [
       -180.0,
@@ -98,8 +98,8 @@
   "canon": {
     "offset": [
       0.0,
-      0.1397,
-      -0.0143
+      0.117,
+      -0.0119
     ],
     "rotate": [
       0.0,
@@ -110,7 +110,7 @@
   "bolt_fired": {
     "offset": [
       0.0,
-      -0.0432,
+      -0.0362,
       0.0
     ],
     "rotate": [
@@ -121,7 +121,7 @@
   },
   "world": {
     "offset": [
-      -0.025,
+      -0.0209,
       0.0,
       0.0
     ],
@@ -156,7 +156,7 @@
     ]
   },
   "_notes": {
-    "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column (photo L 237, H 80)",
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column (photo L 237, H 80)",
     "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model upright when it hangs in the back slot",
     "turned": "parts modelled upright (magazine, GoM optics / lights / lasers) get rotate -180 0 -180, as on GoM's MP5K; render_p90.py / make_p90_art.py turn everything back for display",
     "magazine": "57x28Magazine50_P90's origin is its front end, centred, on its bottom face; the node lies along -Y from there on top of the receiver",
@@ -167,79 +167,79 @@
   "_extras": {
     "ejection_port_upright": [
       0.0,
-      -0.0302,
-      -0.0569
+      -0.0253,
+      -0.0476
     ],
     "handgun_hold": true,
     "photo_origin_mm": [
       237.0,
       80.0
     ],
-    "real_mm_per_game_unit": 1388.89
+    "real_mm_per_game_unit": 1658.37
   },
   "_bounds": {
     "P90TR_BODY": {
       "min": [
-        -0.0202,
-        -0.1894,
-        -0.0727
+        -0.0169,
+        -0.1586,
+        -0.0609
       ],
       "max": [
-        0.0202,
-        0.1706,
-        0.0574
+        0.0169,
+        0.1429,
+        0.0481
       ],
       "tris": 2784
     },
     "P90TR_BOLT": {
       "min": [
-        -0.0216,
-        0.1084,
-        -0.023
+        -0.0181,
+        0.0908,
+        -0.0193
       ],
       "max": [
-        0.0216,
-        0.121,
-        -0.0104
+        0.0181,
+        0.1013,
+        -0.0087
       ],
       "tris": 312
     },
     "57x28Magazine50_P90": {
       "min": [
-        -0.0166,
-        -0.1951,
+        -0.0139,
+        -0.1634,
         0.0
       ],
       "max": [
-        0.0166,
+        0.0139,
         0.0,
-        0.0174
+        0.0145
       ],
       "tris": 176
     },
     "P90_Suppressor": {
       "min": [
-        -0.0137,
-        0.0029,
-        -0.0137
+        -0.0115,
+        0.0024,
+        -0.0115
       ],
       "max": [
-        0.0137,
-        0.1238,
-        0.0137
+        0.0115,
+        0.1037,
+        0.0115
       ],
       "tris": 360
     },
     "P90_Muzzle_Mount_Device": {
       "min": [
-        -0.0089,
-        0.0004,
-        -0.0089
+        -0.0075,
+        0.0003,
+        -0.0075
       ],
       "max": [
-        0.0089,
-        0.0328,
-        0.0089
+        0.0075,
+        0.0274,
+        0.0075
       ],
       "tris": 320
     }

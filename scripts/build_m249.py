@@ -23,7 +23,7 @@ left) is from the US Army's 1985 photo DA-SC-85-11586 and the USMC's 1989 photo 
 (112 x 88 x 165 mm) is read off those photos against the gun, no published drawing.
 
 GoM's rifle conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z top, +X the gun's LEFT, origin at
-the rear-top of the pistol grip, drawn at 0.65 of real size as GoM draws its rifles (the SCARs too; GoM's STANAG
+the rear-top of the pistol grip, drawn at 0.603 of real size, the M16A2's proportion (0.65 before 2026-10-26, as GoM draws most of its rifles) (the SCARs too; GoM's STANAG
 magazines then match). GoM's M60 is the pattern for the belt: nine visible round nodes in the gun's own space, shown
 one per round left in the box from nine down.
 """
@@ -49,7 +49,8 @@ FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_M249.fbx")
 FBX_BOX = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_M249_box.fbx")
 POINTS_JSON = os.path.join(HERE, "m249_points.json")
 
-K = 0.00065                        # game units per real mm: GoM's rifles
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00065, GoM's rifles)
+K_OLD = 0.00065
 kit.K = K
 MATS = ["steel", "polymer", "metal", "dark", "rubber", "od", "brass", "copper", "link"]
 kit.MATS[:] = MATS
@@ -434,10 +435,10 @@ def points(bounds):
         "cover": {"offset": hinge, "rotate": ZERO},
         "cover_open": {"offset": hinge, "rotate": [COVER_OPEN, 0.0, 0.0]},
         "integrated_bipod": {"offset": ZERO, "rotate": ZERO},
-        "world": {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]},       # every GoM rifle
+        "world": {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]},  # every GoM rifle's, scaled with the gun
     }
     pts["_notes"] = {
-        "units": "game units (0.65 of real size, GoM's rifles); +Y muzzle, +Z top, +X the gun's left; origin = the "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the "
                  "rear-top of the pistol grip (photo L %.0f, H %.0f)" % (L0, H0),
         "magazine": "GoM's STANAG magazines, their feed lips here, slanting %g degrees down to the left" % -MAG_TILT,
         "box": "556x45Box200_M249, origin at the middle of its top",

@@ -23,7 +23,7 @@ flat faceted hard-surface shapes, the detail (screws, seams, markings, edge wear
 
 Geometry helpers, bakes, noise, FBX export and the deterministic FBX rewrite come from build_mp7.py (imported as a
 library; its material list is replaced by this gun's). GoM's conventions: game +Y muzzle, +Z top, +X the gun's
-LEFT, origin at the rear-top of the pistol grip, 0.72 of real size.
+LEFT, origin at the rear-top of the pistol grip, 0.603 of real size (the M16A2's proportion; 0.72 before 2026-10-26).
 """
 
 import sys as _sys
@@ -49,7 +49,9 @@ FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_par
 TEX_DIR = kit.TEX_DIR
 POINTS_JSON = os.path.join(HERE, "p90_points.json")
 
-K = kit.K                          # game units per real millimetre
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's MP5 family)
+K_OLD = 0.00072
+kit.K = K
 MATS = ["polymer", "grip", "metal", "rail", "dark", "smoke", "magcap", "brass", "copper", "suppressor"]
 kit.MATS[:] = MATS                 # build_mp7's Builder, materials and bake passes index this list
 
@@ -445,7 +447,7 @@ def points(bounds):
     }
     pts = kit.handgun_points(pts)
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's "
                  "handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column "
                  "(photo L %.0f, H %.0f)" % (L0, H0),
         "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model "

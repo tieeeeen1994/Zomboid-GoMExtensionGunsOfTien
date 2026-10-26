@@ -12,6 +12,7 @@ aim at our node too. Written to <out media root>/AnimSets/player/<state>/<file>_
 """
 
 import copy
+import json
 import os
 import re
 import sys
@@ -37,7 +38,12 @@ ANIM_ID = "GunsOfTien_Compact%s"
 # instead (the point offset by 2 x the muzzle's z), and their sets' gun bone moved back by as much (compact_pack.py):
 # set -> the guns' muzzle z (model space). UziT is the Uzi set for the turned guns that hold like the Uzi (the Mini Uzi
 # z -0.0238, the MP7s folded / the A2 -0.0205: the mean, 3 mm either way); the full Uzi is modelled upright.
-TURNED_SETS = {"UziT": -0.0222, "MP5K": -0.0445, "MP7": -0.0205}
+# Ours come from their builders (resized in their meshes, 2026-10-26): the MP7's muzzle z, and for UziT the mean of
+# the Mini Uzi's and the MP7's; GoM's MP5K keeps its size.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_MP7_Z = json.load(open(os.path.join(_HERE, "..", "post93", "mp7_points.json")))["muzzle"]["offset"][2]
+_MINI_Z = json.load(open(os.path.join(_HERE, "..", "uzi_points.json")))["MINIUZI"]["muzzle"]["offset"][2]
+TURNED_SETS = {"UziT": round((_MINI_Z + _MP7_Z) / 2.0, 4), "MP5K": -0.0445, "MP7": _MP7_Z}
 SOURCE_SET = {"UziT": "Uzi"}
 PRIORITY = "100"
 

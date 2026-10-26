@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien -- every gun drawn in the M16A2's proportion to the body (user, 2026-10-25: "the MP5A1 and MP5A2 seem
+    Guns of Tien -- Guns of Marz's guns drawn in the M16A2's proportion to the body (user, 2026-10-25: "the MP5A1 and MP5A2 seem
     a little bit big ... does it follow the size proportion from M16?", then "edit each gun so that they have their own
     scales rather than apply a global scale")
 
@@ -23,11 +23,11 @@
     - Not scaled: the `muzzle` point as a bullet origin (BallisticsController reads its raw offset; scaling it would
       move the flash, drawn at it after the scale, into the barrel), Hot Brass ejection offsets (relative to the
       player). See TODO.md.
-    - Not yet: the guns on our own clips, solved for today's sizes (the compact stance's MP5K, Uzi, Mini Uzi, the
-      MP7s; the Micro Uzi, P90 and M249 reloads), and GoM's Stolzer & Son 2-bore (no real size). They stay as they are
-      until their clips are rebuilt.
+    - GoM's guns only (user, 2026-10-26: Guns of Tien's own guns are to be remodelled at the right size instead).
+      Left out: GoM's MP5K (held in our compact stance, whose clips fit its size) and Stolzer & Son 2-bore (no real
+      size). Our sawn-stock bodies of GoM's break-actions are in, at their gun's scale.
 
-    Sandbox option "[Beta] Rescale guns (Requires Restart)" (GunsOfTien.RescaleGuns, default on; user, 2026-10-26),
+    Sandbox option "[BETA] Resize Guns of Marz" (GunsOfTien.RescaleGuns, default off; user, 2026-10-26),
     read once at world load (OnInitGlobalModData: sandbox options are loaded, on clients too, and scripts are fresh).
     Scripts are rebuilt on leaving a game, so this runs again at every world load; values are absolute, and a point
     already scaled is recognised by the offset written to it, so running twice changes nothing. With the option off,
@@ -49,7 +49,7 @@ GunScale.MODELS = {
     ["MarzGuns.FNC"] = 1.00,
     -- an F1, which never took STANAG magazines (GoM's choice): its own size
     ["MarzGuns.FAMAS"] = 0.88,
-    -- MP5 magazines, basis MP5 (the MP5K waits for its compact stance clips)
+    -- MP5 magazines, basis MP5 (not the MP5K: our compact stance holds it at its own size)
     ["MarzGuns.MP5"] = 0.87, ["MarzGuns.MP5A2"] = 0.87, ["MarzGuns.MP5SD"] = 0.87,
     -- AK-74 magazines, basis AK-74
     ["MarzGuns.AK74"] = 0.93, ["MarzGuns.AKS74U"] = 0.93,
@@ -85,13 +85,6 @@ GunScale.MODELS = {
     ["MarzGuns.M93R"] = 0.85, ["MarzGuns.PYTHON"] = 0.86, ["MarzGuns.SW629"] = 0.87, ["MarzGuns.M92FS"] = 0.88,
     ["MarzGuns.USP"] = 0.90, ["MarzGuns.DEAGLE"] = 0.94, ["MarzGuns.VP70M"] = 1.01,
 }
-
--- Another mod of ours adds its own models (Post-93's Guns.lua), before the world loads.
-function GunScale.add(models)
-    for name, scale in pairs(models) do
-        GunScale.MODELS[name] = scale
-    end
-end
 
 local written = {}       -- attachment -> { x, y, z } we last set it to
 local original = {}      -- attachment -> { x, y, z } as its script had it

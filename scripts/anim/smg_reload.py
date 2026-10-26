@@ -87,7 +87,7 @@ def uzi_spec():
         grab=wp(290.0, 46.5 - 14.0),
         # measured with SMG_CAL (hand_offset): the vanilla grip's hand centre lands this far from the axis point
         hold_fix=Vector((0.0023, 0.0427, 0.0233)),
-        travel=0.085,                                                 # lips (H 142.5) clear of the grip (46.5)
+        travel=0.085 * K / 0.00072,                                   # lips (H 142.5) clear of the grip (46.5)
         knob=wp(187.5, 221.0), knob_back=wp(187.5 + 70.0, 221.0),     # the cocking knob, pulled back 70 mm
         # the hand's turn on the knob at the racking place (weapon X, Y, Z degrees; scanned): straight over the top
         # it took a forearm twist of -100
@@ -193,15 +193,19 @@ def mp7_spec():
     """Post-93's MP7A1, upside down as modelled (scripts/post93/mp7_points.json): its magazine goes up the grip as the
     Uzi's; the T charging handle at the rear top of the receiver (the MP7A1_BOLT node, y -0.076..-0.062, its top
     0.041-0.053 above the grip's top) is pulled back 0.036 (bolt_fired, 50 mm real)."""
-    mag = mat_of({"offset": [0.0, 0.023, -0.009], "rotate": [-180.0, 0.0, -180.0]})
+    # resized in its meshes (build_mp7.py's K, 2026-10-26): points from the builder, the gun's own measured places
+    # below (taken at 0.72) times s; hold_fix is the hand's contact offset, not the gun's
+    pts = json.load(open(os.path.join(ROOT, "scripts/post93/mp7_points.json")))
+    s = 1.0 / pts["_extras"]["real_mm_per_game_unit"] / 0.00072
+    mag = mat_of({"offset": pts["magazine"]["offset"], "rotate": [-180.0, 0.0, -180.0]})
     down = (mag.to_3x3() @ Vector((0, 0, -1))).normalized()
-    well_s = (0.0637 - mag.translation.z) / down.z                    # the grip's bottom (BODY z max, upside down)
+    well_s = (0.0637 * s - mag.translation.z) / down.z                # the grip's bottom (BODY z max, upside down)
     P93 = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
     return dict(
         name="MP7", rifle=False, mag_point=mag, out=down,
-        grab=mag.translation + down * (well_s + 0.010), hold_fix=Vector((0.0023, 0.0427, -0.0233)),
-        travel=well_s + 0.012,
-        knob=Vector((0.0, -0.069, -0.047)), knob_back=Vector((0.0, -0.069 - 0.036, -0.047)),
+        grab=mag.translation + down * (well_s + 0.010 * s), hold_fix=Vector((0.0023, 0.0427, -0.0233)),   # the hand's own, not scaled
+        travel=well_s + 0.012 * s,
+        knob=Vector((0.0, -0.069, -0.047)) * s, knob_back=Vector((0.0, -0.069 - 0.036, -0.047)) * s,
         knob_turn=(-60, 30, 0),
         # its handle is at the rear, by the cheek in the aim: the aimed rack comes off the aim to rack, as a real
         # shooter does (in the aim the left hand went 8 cm into the face reaching for it)

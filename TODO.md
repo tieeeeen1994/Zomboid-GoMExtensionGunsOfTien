@@ -632,15 +632,90 @@ overall length (stock extended). Reference sizes and the engine trace: CLAUDE.md
       and GoM's Stolzer & Son 2-bore (no real size). Rebuild their clips from the scaled points, then add them
       (plan below).
 
-### Rebuilding our clips at the new sizes (decided with the user, 2026-10-26; not started)
+### New direction (user, 2026-10-26): resize Guns of Tien's own guns in their meshes
 
-User: "let's do it. let's rebuild the animations in this branch." Choice taken: these seven guns **always** use the
-new sizes, whatever "[Beta] Rescale guns" says (the stance and the reloads are ours, so their guns follow our sizes;
-one clip set each, no second set kept for the old sizes, which would add ~85 MB to the main mod and ~31 MB to
-Post-93). The option then covers only the guns on vanilla's and GoM's clips. Scales: MP5K **0.87** (the MP5 magazine
-group), Uzi / Mini Uzi / Micro Uzi **0.84** (Uzi group), MP7A1 / A2 **0.84**, P90 **0.84**, M249 **0.94**.
-Everything is generated, so the work is giving each generator a per-gun scale and running it again; the guns scale
-about the grip origin (Bip01_Prop1), so every place in weapon space is x s:
+User: "That sandbox option is now just for GoM. We will most likely abandon that. We have a new plan... just fix
+our own guns and remodel and resize them from the model itself and not the scale. We will do this for all guns in
+Guns of Tien ONLY since we have full control over them." So:
+- "[BETA] Resize Guns of Marz" (`RescaleGuns`, now default **off**) covers GoM's guns only, the MP5K and the 2-bore
+  left out (named in its tooltip); our Post-93 `GunScale.lua` was removed. Maybe moved later into a separate mod
+  folder of this Workshop item (`GoMExtensionGunsOfTienResizeGunsOfMarz`), or dropped.
+- Every Guns of Tien gun (main: Uzi, Mini Uzi, Micro Uzi, M249; Post-93: MP7A1 / A2, P90 TR, Five-seveN, UCP,
+  SCAR-L / H, UMP45 / UMP9; and our sawn-stock bodies only if GoM's break-actions are resized) is rebuilt at the
+  M16A2's proportion in its build script (`build_*.py`, `post93/build_*.py`: the K they were built at, 0.65 rifles /
+  0.72 SMGs and pistols, -> 0.603 x the gun's real length), with its points (`*_points.json`, model scripts) and
+  icons / renders regenerated. The magazine rule still holds: the SCAR-L's STANAG must match GoM's STANAG magazine,
+  which sits in GoM's M16A2 at 1.00, so it fits as built at 0.603.
+- [ ] **MP7 first (user, 2026-10-26: "start with MP7")**: `build_mp7.py` K 0.00072 -> 0.000603 (s = 0.8375; the
+      floor point's height scaled with it), the P90, Five-seveN and UCP builders pin their own K = 0.00072 (they import
+      build_mp7.py as their kit) until their turn; models, textures (UV islands repacked, same look), points, model
+      scripts (gen_post93_guns.py) and icons (make_mp7_art.py, framed to the icon box: 1 pixel changed) rebuilt. The
+      stance scripts read the MP7's points and size from mp7_points.json (hold_preview.MP7_POINTS / MP7_S: support
+      place x s, part points; compact_animsets.TURNED_SETS["MP7"] = the new muzzle z; smg_reload.mp7_spec: the gun's
+      places x s, the hand's own contact offset `hold_fix` not). Built and shipped: the MP7 stance set (compact_build,
+      267 clips in 15 min, tmp/anim/full/MP7), its reloads (smg_reload compact_mp7, tmp/anim/creload: body report as
+      before, the aimed rack's gun no longer touches), packed (compact_pack, 271 clips, same names as shipped); the
+      nodes (compact_animsets) come out byte-identical, so no AnimSet changes. To check: an old-size baseline built by
+      the same code (GOT_P93_MEDIA / GOT_MP7_POINTS = HEAD's meshes and points, tmp/anim/base) against the new
+      build's body report: 46 clip measurements better by over 0.5 cm, 14 worse; the gun into the body less (mean
+      0.69 -> 0.51 cm, 26 -> 17 clips past 2.5 cm), arms about the same. Worse: WalkNoAimRifle_DiagL left arm 2.2 ->
+      3.9 cm in (walking diagonally, look at it), RunRifle_BumpL right 0 -> 1.8, the crouched leg-pain emote's gun 0.5
+      -> 2.6, two sitting-on-the-ground gestures' left arm (5-6 cm, as before, the hand off the gun). Then in game: idle, walk, run, sprint, crouch, aim, reload and rack, both MP7s, foregrip
+      folded and unfolded.
+      Side effects until the rest are resized: the UCP draws the MP7's suppressor (now 0.8375 x) on a gun still at
+      0.72; the MP7A1 folded and the MP7A2 play the UziT set, solved for the Uzi's hand place and packed with the
+      mean of the Mini Uzi's and the MP7's old muzzle z (-0.0222; the MP7 now -0.0172, 5 mm off): redo UziT when the
+      Uzis are resized. Hot Brass's MP7 ejection offsets (player space) and render_mp7.py's Workshop renders not redone.
+- [ ] **All of them (user, 2026-10-26: "can we do all guns now from our mod?")**: every builder at K 0.000603 (Uzi,
+      Mini Uzi, Micro Uzi, M249, P90 TR, Five-seveN, UCP, SCAR-L / H, UMP45 / UMP9, after the MP7), floor points
+      scaled with them, scripts and icons regenerated (one icon changed more than a few pixels: the SCAR-L's, 10). Mk9 /
+      SMG9 mount on our Uzis and the UMP9 drawn through `_GoT` models at 0.8375 (GoM's MP5s keep the GoM-sized ones).
+      Animations rebuilt and shipped: the Uzi stance set (packed as Uzi and UziT; UziT's muzzle z now -0.0186, the mean
+      of the Mini Uzi's and the MP7's), the Uzi stance reloads, the M249 and P90 reloads (the old-size pipeline
+      reproduces the shipped M249 clips byte for byte, the P90's to 1e-6). Against old-size baselines from the same code
+      (a HEAD worktree): Uzi set 39 measurements better by over 0.5 cm, 5 worse (sitting gestures' left arm, the hand
+      off the gun); the gun into the body less (mean 0.73 -> 0.51 cm); reload reports as before or better. Nodes
+      byte-identical, so no AnimSet changes. Not redone: Hot Brass ejection offsets (player space, every resized gun),
+      the Workshop renders and posters. In game: every gun in hand, aimed, reloaded, on the back / in a holster, on the
+      floor; the SCAR-L / M249 with GoM's STANAG magazines; the Mk9 on an Uzi, the UMP9 and GoM's MP5.
+- Then our clips are rebuilt against the new meshes (below; the steps are the same whether the size comes from the
+  mesh or a scale: every place in weapon space x the size change). GoM's MP5K stays at GoM's size in the stance.
+
+### Still open after the resize (2026-10-26)
+
+Checked: scale_audit.py again, every Guns of Tien gun now 0.59-0.61 of its real length (GoM's M16A2 0.60).
+- [ ] **UMP45 / UMP9 left hand**: on GoM's MP5 clips (vanilla's rifle palm, fixed 0.22 ahead of the grip) the idle
+      palm now sits 2.3 cm under a 0.9 cm thin part of the gun (was 1.4 cm under 4.9 cm): it will look as if it
+      floats. Fix with a left-hand place of the UMP's own through Gunworks' grip registry (as the compact stance). The
+      SCARs and the M249 are fine (palm unchanged).
+- [ ] **MP7 walking diagonally left** (WalkNoAimRifle_DiagL): the left arm 3.9 cm into the body (2.2 at the old
+      size); fix that clip alone and swap it into its pack.
+- [ ] **Hot Brass ejection offsets** of every resized gun (server/GunsOfTien/HotBrass.lua M249 / Uzis, Post-93's
+      HotBrass.lua): player space, so casings leave a little off the smaller ports.
+- [ ] **Workshop renders and posters** (render_*.py, make_workshop_art.py, the stance poster preview11, the review
+      sheets in docs/): they show the old sizes.
+- [ ] **Micro Uzi pistol rack** (UziGrip, vanilla's handgun rack motion, never fitted to the gun): check the hand
+      still reaches the knob on the 16% smaller gun.
+- [ ] Known and left: GoM's STANAG magazine (0.65 mesh) sits a little large in the SCAR-L and M249 wells, as in
+      GoM's own M16A2; GoM's parts on our guns (optics, lights, lasers, foregrips, GoM's suppressors) keep GoM's
+      sizes, so they look a little larger on our guns.
+- [ ] **Decide (user)**: the compact stance reloads' magazine in the left hand: keep it, P90 style (the magazine
+      leaves the gun with the hand, nothing drawn in it; one line per gun in the Lua wrapper), or vanilla (it stays on
+      the gun until the action ends). Vanilla and GoM show none; ours was chosen when the stance reloads were built
+      (2026-10-23), with no request from the user on record.
+- [ ] **Decide (user)**: "[BETA] Resize Guns of Marz": keep in Guns of Tien, move to its own mod folder in this
+      Workshop item (GoMExtensionGunsOfTienResizeGunsOfMarz; enabling it would be the switch, no option), or drop it.
+      Its open choices above: FNC / SCAR-L strict 1.00, the '?' variants (Remington 870, W1887 most), pistol sizes.
+- [ ] **In game, every resized gun**: in hand idle / aimed / walking, reload and rack, on the back or in a holster,
+      on the floor; the compact stance (Uzi, Mini Uzi, MP7A1 foregrip folded and unfolded, MP7A2); the Mk9 on an Uzi,
+      the UMP9 and GoM's MP5; the SCAR-L and M249 with GoM's STANAG magazines; MP as seen by another player.
+- [ ] **Release**: commit, bump `modversion` (3.3.1), Workshop change notes that the guns changed size.
+- [ ] Tidy: "Each gun's own scale" below still lists our own guns (now resized in their meshes; that list is for the
+      GoM option only); the unused old MP7 pistol unload clip (Bob_GunsOfTien_MP7_Unload.x) is still shipped.
+
+Rebuilding our clips: everything is generated, so the work is giving each generator the new gun sizes and running
+it again. A gun resized about its grip origin (Bip01_Prop1) moves every place in weapon space by x s (s = new size /
+old); MP5K places stay:
 - [ ] `scripts/anim/compact_build.py` `SETS[*].support` (left-hand place on the gun) and
       `scripts/anim/compact_stance.py` `GUNS[*].support`: x s. The hold itself (`HOLD`, character space) stays; the
       de-clip / clearance checks use the gun's meshes, so they must load them scaled.
@@ -653,11 +728,9 @@ about the grip origin (Bip01_Prop1), so every place in weapon space is x s:
       points from `scripts/uzi_points.json`, `post93/mp7_points.json`, GoM's smgs.txt), `m249_reload.py`
       (`scripts/m249_points.json`), `post93/anim/p90_reload.py` (`post93/p90_points.json`), and the Micro Uzi's
       pistol-rack clips ("UziGrip", find their generator): places and points x s.
-- [ ] Gunworks' reload magazine in the left hand (compact stance guns: MP5K, Uzis, MP7s): drawn at the magazine's own
-      size while the one in the gun is scaled. Give it the gun's scale (a hand-only magazine model with `scale` = the
-      group's, swapped in by `ReloadAnim.resolveReloadMagItem`, or a scaled copy of the `Bip01_Prop2` location's point).
-- [ ] `GunScale.lua`: add these models (GoM's MP5K; our UZI, MINIUZI, MICROUZI, M249; Post-93's MP7A1, MP7A2, P90TR)
-      in a second table applied whatever the option says.
+- [ ] Magazines: resize our own magazine meshes with their guns (Uzi, MP7, P90, Five-seveN, UCP, SCAR-H, UMP, M249
+      box) in the same build. Gunworks' reload magazine in the left hand is that same model, so it then matches the
+      one in the gun with nothing more to do (with a run-time `scale` it would not have).
 - [ ] Run order per set: compact_build (all clips, ~1 min a set for 33 clips, much longer for the full 240-clip
       inventory) -> compact_pack -> compact_animsets (nodes unchanged unless names change) -> reloads; ship into
       anims_X/Bob, keep CRLF where the shipped files have it. Check the build's clearance report against the shipped
@@ -798,7 +871,7 @@ Pistols:
       rack, handgun2).
 - [ ] Our clips were solved for today's sizes: the compact stance (4 sets, 1016 nodes: Uzi, UziT, MP5K, MP7) and the
       reloads (smg_reload.py compact_uzi / mp5k / mp7, m249_reload.py, the P90's, the Uzi's): rebuild them from the
-      scaled points (places x s); plan in "Rebuilding our clips at the new sizes".
+      scaled points (places x s); plan in "New direction (user, 2026-10-26)".
 - [ ] Pistols on vanilla's handgun clips hold the grip only; scaling about the grip origin keeps both hands on it,
       the grip just gets smaller: check the fingers.
 

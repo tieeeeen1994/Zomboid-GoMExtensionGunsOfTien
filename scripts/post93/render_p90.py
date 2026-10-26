@@ -27,7 +27,7 @@ GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/
                         "42.16/media") if os.path.isdir(p)), None)
 OUT = sys.argv[sys.argv.index("--") + 1]
 POINTS = json.load(open(os.path.join(HERE, "p90_points.json")))
-K = 0.00072
+K = 0.000603                       # the builder's (the M16A2's proportion since 2026-10-26)
 L0, H0 = POINTS["_extras"]["photo_origin_mm"]
 
 # GoM's magazine points (scripts/MarzWeapons/models/weapons/smgs.txt and assault_rifles.txt)

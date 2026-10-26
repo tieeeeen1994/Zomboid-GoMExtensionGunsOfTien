@@ -27,7 +27,7 @@ photo's proportions and only the magazines are shared: every gun's `magazine` po
 base 22 mm under its own grip, as all three photos show.
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): +Y muzzle, +Z top, +X the gun's LEFT, origin at the rear-top of
-the pistol grip, 0.72 of real size (GoM's SMGs). The Uzi is held as a rifle (upright model, GoM's MP5). The Mini and
+the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). The Uzi is held as a rifle (upright model, GoM's MP5). The Mini and
 Micro Uzi are held like a pistol (user, 2026-10-23: GoM's MP5K / MAC-10 way), so they are modelled and baked upright
 and their gun nodes are turned 180 degrees about the bore axis at export, with their points (build_mp7.py's TURN /
 turned()); magazines stay upright. The cocking knob on top does not reciprocate (bolt_fired = bolt_lock).
@@ -60,7 +60,8 @@ FBX_DIR = os.path.join(MEDIA, "models_X/weapons/firearms")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx")
 POINTS_JSON = os.path.join(HERE, "uzi_points.json")
 
-K = 0.00072                        # game units per real mm: GoM's SMGs
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's SMGs)
+K_OLD = 0.00072
 kit.K = K
 MATS = ["metal", "polymer", "grip", "dark", "barrel", "hg", "magmetal", "brass", "copper"]
 kit.MATS[:] = MATS
@@ -575,7 +576,7 @@ def points(kind, bounds):
         "bolt_fired": "the cocking knob on top does not reciprocate",
     }
     if kind == "UZI":
-        pts["world"] = {"offset": [0.02, 0.13, 0.0], "rotate": [180.0, 0.0, 180.0]}     # every GoM rifle
+        pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]}  # every GoM rifle's, scaled
         notes["stock"] = ("UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): "
                           "no point, drawn at the origin")
         handgun = False
@@ -593,9 +594,9 @@ def points(kind, bounds):
         # and a half turn about Z commutes with the turn about Y, so its rotates stay
         pts = {k: kit.turned(v, part=(k == "magazine")) for k, v in pts.items()}
         pts["magazine"]["rotate"] = list(kit.TURN)
-        pts["world"] = {"offset": [-0.025, 0.0, 0.0], "rotate": ZERO}                    # GoM's MP5K / MAC-10
+        pts["world"] = {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO}  # GoM's MP5K / MAC-10, scaled
         handgun = True
-    pts["_notes"] = dict(notes, units="game units (0.72 of real size); +Y muzzle; " + (
+    pts["_notes"] = dict(notes, units="game units (0.603 of real size, the M16A2's proportion); +Y muzzle; " + (
         "held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT"
         if handgun else "+Z top, +X the gun's left") + "; origin = rear-top of the grip (photo L %.0f, H %.0f)"
         % (f.L0, f.H0))

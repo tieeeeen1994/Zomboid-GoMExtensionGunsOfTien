@@ -57,9 +57,9 @@ from rig import ch  # noqa: E402
 SETS = {
     # support place (upright weapon space), the left hand's turn in the idle and the aim, the gun drawn in previews,
     # the idle hold's shift towards the body (idle_down.py ID_MC, approved: "the closer is good now")
-    "Uzi": dict(support=Vector((0.0, 0.130, -0.014)), idle_turn=(30, 0, 0), aim_turn=(0, 0, 0), gun="uzi",
+    "Uzi": dict(support=Vector((0.0, 0.130, -0.014)) * HP.UZI_S, idle_turn=(30, 0, 0), aim_turn=(0, 0, 0), gun="uzi",
                 closer=ch(0.0, 0.0, -0.04)),
-    "MP7": dict(support=Vector((0.0, 0.142, -0.040)), idle_turn=(30, -15, 0), aim_turn=(0, 0, 0), gun="mp7",
+    "MP7": dict(support=Vector((0.0, 0.142, -0.040)) * HP.MP7_S, idle_turn=(30, -15, 0), aim_turn=(0, 0, 0), gun="mp7",
                 closer=ch(0.0, 0.0, -0.04)),
     "MP5K": dict(support=Vector((0.0, 0.180, -0.032)), idle_turn=(45, -15, 0), aim_turn=(0, -15, 0), gun="mp5k",
                  closer=ch(0.03, 0.0, -0.04)),

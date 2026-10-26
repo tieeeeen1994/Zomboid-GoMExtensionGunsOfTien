@@ -115,8 +115,8 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
   `RealisticPiercing`,
-  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `RescaleGuns` ("[Beta] Rescale guns (Requires
-  Restart)", default on, read at world load by `GunScale.lua`; user, 2026-10-26).
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `RescaleGuns` ("[BETA] Resize Guns of Marz", default
+  off, GoM's guns only, read at world load by `GunScale.lua`; user, 2026-10-26).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
   (`scripts/make_art.py`; real markings: US black tip + green band, SP grey lead tip, steel core silver, SS blue,
   HP green, +P / +P+ purple, SP-6 black, birdshot blue hull); Ammo Maker parts from Ammo Maker's art
@@ -1464,6 +1464,23 @@ behind it (42.21):
   DOUBLEBARREL is its `shellholder` point's).
 - Gunworks' reload magazine in the left hand (`ReloadAnim.attachReloadMagazine`) needs the handler's `magItem`;
   GoM's `magazineProfile` handlers have none, so only our compact stance guns show one.
+- **Guns of Tien's own guns are drawn at the M16A2's proportion, in their meshes** (user, 2026-10-26: "fix our own
+  guns and remodel and resize them from the model itself and not the scale"): every builder's K = 0.000603 game units
+  per real mm (was 0.00072 for the SMGs, P90, MP7 and pistols, 0.00065 for the M249 and SCARs), `K_OLD` kept to scale
+  the GoM-convention floor points (`world`) with the gun. Everything measured in mm follows K; offsets written in game
+  units for GoM's parts (rail standoffs 0.0055, bipod 0.0006) stay. The builders that import `build_mp7.py` as their
+  kit set `kit.K` themselves. The loose belt links (`build_links.py`) stay at 0.65: floor items next to GoM's rounds.
+  The Mk9 and its mount device stay at GoM's SMG size for GoM's MP5s; our Uzis and the UMP9 draw them through
+  `Mk9_Suppressor_GoT` / `SMG9_Muzzle_Mount_Device_GoT`, the same mesh with `scale = 0.8375` (gen_scripts.py
+  `GOT_PART_SCALE`; a part model's own `scale` scales it about its origin, here its `canon` point). GoM's STANAG
+  magazine (mesh at 0.65) sits a little large in the SCAR-L and M249 wells, as it does in GoM's own M16A2. GoM's parts
+  on our guns (optics, lights, lasers, foregrips, GoM's suppressors) keep GoM's sizes. Icons are framed to the icon box,
+  so they barely change. Animations: hold_preview.py reads the MP7 and Uzi points and their size factor (MP7_S,
+  UZI_S) for the stance's support places and parts; compact_animsets.TURNED_SETS takes the muzzle z from the points
+  (UziT = the mean of the Mini Uzi's and the MP7's); smg_reload.py, m249_reload.py and p90_reload.py take K from the
+  points files and scale offsets measured on the gun, never the hand's own contact offsets (`hold_fix`, CONTACT).
+  The guns on vanilla's or GoM's clips (SCARs, UMPs, Five-seveN, UCP) needed no new clips. GoM's MP5K keeps its size
+  in the stance. A HEAD worktree (`git worktree add`) runs the old-size pipeline for like-for-like comparisons.
 
 ## Research reference
 

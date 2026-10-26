@@ -14,7 +14,7 @@ The gun is the item MarzGuns.FIVESEVEN (Guns of Marz names it, "5.7x28mm Five-Se
 the way GoM builds its pistols (its Glock 17 is the template; CLAUDE.md, "FN Five-seveN"): a body node and a slide
 node drawn through MarzGuns.Slide_Lock / Slide_Fired, magazines whose meshes sit in the gun's own space (the model
 has no `magazine` point, so they are drawn at its origin), the model upside down (game +Z = the gun's bottom, +X its
-right), origin in the web of the grip under the beavertail, 0.72 of real size. Everything below is modelled and baked
+right), origin in the web of the grip under the beavertail, 0.603 of real size (the M16A2's proportion; 0.72 before 2026-10-26). Everything below is modelled and baked
 upright and turned 180 degrees about the bore axis at export, magazines included. Its suppressor, the SFN-57 (Gemtech's
 can for the Five-seveN; user, 2026-10-16: one suppressor per gun), is built straight in that upside-down space with its
 origin at `canon`; the muzzle mount device is the P90's item, shared (gen_post93_guns.py), drawn on this gun as a
@@ -49,7 +49,9 @@ FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_FIVESEV
 TEX_DIR = kit.TEX_DIR
 POINTS_JSON = os.path.join(HERE, "fiveseven_points.json")
 
-K = kit.K                          # game units per real millimetre
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's pistols)
+K_OLD = 0.00072
+kit.K = K
 MATS = ["polymer", "grip", "metal", "rail", "dark", "control", "magpoly", "brass", "copper", "suppressor"]
 kit.MATS[:] = MATS                 # build_mp7's Builder, materials and bake passes index this list
 
@@ -513,9 +515,9 @@ def points(bounds):
         "slide_fired": {"offset": [0.0, round(-SLIDE_TRAVEL * K, 4), 0.0], "rotate": ZERO},
     }
     pts = {k: kit.turned(v) for k, v in pts.items()}
-    pts["world"] = {"offset": [-0.009, 0.062, 0.0], "rotate": ZERO}                  # every GoM pistol's floor pose
+    pts["world"] = {"offset": [round(-0.009 * K / K_OLD, 4), round(0.062 * K / K_OLD, 4), 0.0], "rotate": ZERO}  # every GoM pistol's floor pose, scaled
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's "
                  "BOTTOM, +X its RIGHT; origin = the web of the grip under the beavertail (photo L %.0f, H %.0f)"
                  % (L0, H0),
         "magazine": "no magazine point, as on GoM's Glock 17: 57x28Magazine20/30_FIVESEVEN are modelled in the gun's "

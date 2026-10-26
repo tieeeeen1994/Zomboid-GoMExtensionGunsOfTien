@@ -31,6 +31,7 @@ gun are written in the photo's coordinates (L back from the muzzle tip, H up fro
 turns them into weapon space.
 """
 
+import json
 import os
 import sys
 
@@ -50,7 +51,10 @@ import xanim  # noqa: E402
 from rig import Key, ch, UP, rot_of  # noqa: E402
 
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
-K = 0.00072
+# game units per real mm, from the builder (0.603 since 2026-10-26, the M16A2's proportion; the places below were
+# drafted at 0.72, so offsets measured on the gun are scaled by S; CONTACT is the hand's own, not scaled)
+K = 1.0 / json.load(open(os.path.join(ROOT, "scripts/post93/p90_points.json")))["_extras"]["real_mm_per_game_unit"]
+S = K / 0.00072
 L0, H0 = 237.0, 80.0                       # the model origin in the photo (build_p90.py)
 FPS = 30
 LENGTHS = {"Unload": 42, "Load": 54, "Rack": 36, "AimRack": 36}   # frames (Guns.lua durations 1.4 / 1.8 / 1.2 s)
@@ -143,8 +147,8 @@ def keys_for(clip, r, g):
             Key(9, support=1, lgrip=on_top(MAG_REAR), ease=True, **M),
             Key(15, lgrip=on_top(MAG_REAR_ON), ease=True),
             # lift the rear end out of its catch and pull the magazine back off the gun
-            Key(23, lgrip=on_top(MAG_REAR_ON + Vector((0, -0.008, -0.016)), (18, 0, 0))),
-            Key(31, lgrip=on_top(MAG_REAR_ON + Vector((0, -0.060, -0.028)), (10, 0, 0))),
+            Key(23, lgrip=on_top(MAG_REAR_ON + Vector((0, -0.008, -0.016)) * S, (18, 0, 0))),
+            Key(31, lgrip=on_top(MAG_REAR_ON + Vector((0, -0.060, -0.028)) * S, (10, 0, 0))),
             # and away, in front of the hip
             Key(n, lgrip=away, ease=True),
         ]
@@ -153,12 +157,12 @@ def keys_for(clip, r, g):
         return [
             Key(0, support=1, lgrip=away, ease=True, **M),
             # the new magazine up over the gun, its front end first, the rear held high
-            Key(14, lgrip=on_top(MAG_MID + Vector((0, 0.030, -0.030)), (20, 0, 0))),
-            Key(22, lgrip=on_top(MAG_MID + Vector((0, 0.020, -0.010)), (12, 0, 0)), ease=True),
+            Key(14, lgrip=on_top(MAG_MID + Vector((0, 0.030, -0.030)) * S, (20, 0, 0))),
+            Key(22, lgrip=on_top(MAG_MID + Vector((0, 0.020, -0.010)) * S, (12, 0, 0)), ease=True),
             # swing the rear down and press it home (the click and the swap at 0.66)
             Key(30, lgrip=on_top(MAG_REAR)),
             Key(36, lgrip=on_top(MAG_REAR_ON), ease=True),
-            Key(42, lgrip=on_top(MAG_REAR + Vector((0, 0, -0.014)))),
+            Key(42, lgrip=on_top(MAG_REAR + Vector((0, 0, -0.014)) * S)),
             # back to the support grip
             Key(n, lgrip=sup, ease=True),
         ]
@@ -176,7 +180,7 @@ def keys_for(clip, r, g):
             first,
             Key(11, lgrip=side(HANDLE), ease=True, **R),                       # on the handle (rackStart at 0.4)
             Key(21, lgrip=side(HANDLE_BACK), ease=True),                       # all the way back (rackBullet 0.6)
-            Key(26, lgrip=side(HANDLE_BACK + Vector((-0.02, 0, 0.0)))),         # let go (rackEnd 0.75)
+            Key(26, lgrip=side(HANDLE_BACK + Vector((-0.02, 0, 0.0)) * S)),         # let go (rackEnd 0.75)
             *([Key(30, support=0)] if clip == "Rack" else []),                 # the left hand drops to the side
             last,
         ]

@@ -3,8 +3,8 @@
     "muzzle": {
       "offset": [
         0.0,
-        0.2376,
-        0.0223
+        0.199,
+        0.0187
       ],
       "rotate": [
         -90.0,
@@ -15,8 +15,8 @@
     "canon": {
       "offset": [
         0.0,
-        0.1915,
-        0.0223
+        0.1604,
+        0.0187
       ],
       "rotate": [
         0.0,
@@ -27,8 +27,8 @@
     "magazine": {
       "offset": [
         0.0,
-        0.0288,
-        0.0018
+        0.0241,
+        0.0015
       ],
       "rotate": [
         0.0,
@@ -50,8 +50,8 @@
     },
     "world": {
       "offset": [
-        0.02,
-        0.13,
+        0.0168,
+        0.1089,
         0.0
       ],
       "rotate": [
@@ -65,7 +65,7 @@
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
       "bolt_fired": "the cocking knob on top does not reciprocate",
       "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin",
-      "units": "game units (0.72 of real size); +Y muzzle; +Z top, +X the gun's left; origin = rear-top of the grip (photo L 330, H 140)"
+      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; +Z top, +X the gun's left; origin = rear-top of the grip (photo L 330, H 140)"
     },
     "_extras": {
       "handgun_hold": false,
@@ -74,58 +74,58 @@
         140.0
       ],
       "bore_mm": 171.0,
-      "k": 0.00072
+      "k": 0.000603
     },
     "_bounds": {
       "UZI_BODY": {
         "min": [
-          -0.0173,
-          -0.095,
-          -0.0673
+          -0.0145,
+          -0.0796,
+          -0.0564
         ],
         "max": [
-          0.0173,
-          0.2376,
-          0.0624
+          0.0145,
+          0.199,
+          0.0523
         ],
         "tris": 1672
       },
       "UZI_BOLT": {
         "min": [
-          -0.0068,
-          0.0958,
-          0.0454
+          -0.0057,
+          0.0802,
+          0.038
         ],
         "max": [
-          0.0068,
-          0.1094,
-          0.058
+          0.0057,
+          0.0917,
+          0.0485
         ],
         "tris": 240
       },
       "UZI_STOCK_FOLDED": {
         "min": [
-          -0.0148,
-          -0.1005,
-          -0.0677
+          -0.0124,
+          -0.0842,
+          -0.0567
         ],
         "max": [
-          0.0148,
-          -0.0137,
-          0.0144
+          0.0124,
+          -0.0115,
+          0.0121
         ],
         "tris": 468
       },
       "UZI_STOCK_DEPLOYED": {
         "min": [
-          -0.0148,
-          -0.2232,
-          -0.0605
+          -0.0124,
+          -0.1869,
+          -0.0507
         ],
         "max": [
-          0.0148,
-          -0.0878,
-          0.0259
+          0.0124,
+          -0.0736,
+          0.0217
         ],
         "tris": 248
       }
@@ -135,8 +135,8 @@
     "muzzle": {
       "offset": [
         0.0,
-        0.1858,
-        -0.0238
+        0.1556,
+        -0.0199
       ],
       "rotate": [
         -90.0,
@@ -147,8 +147,8 @@
     "canon": {
       "offset": [
         0.0,
-        0.157,
-        -0.0238
+        0.1315,
+        -0.0199
       ],
       "rotate": [
         0.0,
@@ -159,8 +159,8 @@
     "magazine": {
       "offset": [
         0.0,
-        0.0281,
-        -0.0043
+        0.0235,
+        -0.0036
       ],
       "rotate": [
         -180.0,
@@ -182,9 +182,9 @@
     },
     "stock": {
       "offset": [
-        0.0166,
-        -0.0662,
-        -0.0274
+        0.0139,
+        -0.0555,
+        -0.0229
       ],
       "rotate": [
         0.0,
@@ -194,9 +194,9 @@
     },
     "stock_folded": {
       "offset": [
-        0.0166,
-        -0.0662,
-        -0.0274
+        0.0139,
+        -0.0555,
+        -0.0229
       ],
       "rotate": [
         0.0,
@@ -206,7 +206,7 @@
     },
     "world": {
       "offset": [
-        -0.025,
+        -0.0209,
         0.0,
         0.0
       ],
@@ -221,7 +221,7 @@
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
       "bolt_fired": "the cocking knob on top does not reciprocate",
       "stock": "MINIUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 350, H 150, 23 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
-      "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 258, H 112)"
+      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 258, H 112)"
     },
     "_extras": {
       "handgun_hold": true,
@@ -230,58 +230,58 @@
         112.0
       ],
       "bore_mm": 145.0,
-      "k": 0.00072
+      "k": 0.000603
     },
     "_bounds": {
       "MINIUZI_BODY": {
         "min": [
-          -0.0166,
-          -0.0713,
-          -0.0593
+          -0.0139,
+          -0.0597,
+          -0.0496
         ],
         "max": [
-          0.0166,
-          0.1858,
-          0.0634
+          0.0139,
+          0.1556,
+          0.0531
         ],
         "tris": 1452
       },
       "MINIUZI_BOLT": {
         "min": [
-          -0.0068,
-          0.0626,
-          -0.0576
+          -0.0057,
+          0.0525,
+          -0.0482
         ],
         "max": [
-          0.0068,
-          0.0763,
-          -0.0468
+          0.0057,
+          0.0639,
+          -0.0392
         ],
         "tris": 240
       },
       "MINIUZI_STOCK": {
         "min": [
-          -0.0176,
-          -0.18,
-          -0.0115
+          -0.0148,
+          -0.1507,
+          -0.0096
         ],
         "max": [
-          0.004,
-          0.004,
-          0.1005
+          0.0033,
+          0.0033,
+          0.0842
         ],
         "tris": 328
       },
       "MINIUZI_STOCK_folded": {
         "min": [
-          0.0126,
-          -0.0702,
-          -0.0389
+          0.0106,
+          -0.0588,
+          -0.0325
         ],
         "max": [
-          0.0342,
-          0.1138,
-          0.0731
+          0.0287,
+          0.0952,
+          0.0613
         ],
         "tris": 328
       }
@@ -291,8 +291,8 @@
     "muzzle": {
       "offset": [
         0.0,
-        0.1339,
-        -0.0169
+        0.1122,
+        -0.0142
       ],
       "rotate": [
         -90.0,
@@ -303,8 +303,8 @@
     "canon": {
       "offset": [
         0.0,
-        0.1066,
-        -0.0169
+        0.0892,
+        -0.0142
       ],
       "rotate": [
         0.0,
@@ -315,8 +315,8 @@
     "magazine": {
       "offset": [
         0.0,
-        0.0281,
-        -0.0058
+        0.0235,
+        -0.0048
       ],
       "rotate": [
         -180.0,
@@ -338,9 +338,9 @@
     },
     "stock": {
       "offset": [
-        0.0162,
-        -0.0461,
-        -0.023
+        0.0136,
+        -0.0386,
+        -0.0193
       ],
       "rotate": [
         0.0,
@@ -350,9 +350,9 @@
     },
     "stock_folded": {
       "offset": [
-        0.0162,
-        -0.0461,
-        -0.023
+        0.0136,
+        -0.0386,
+        -0.0193
       ],
       "rotate": [
         0.0,
@@ -362,7 +362,7 @@
     },
     "world": {
       "offset": [
-        -0.025,
+        -0.0209,
         0.0,
         0.0
       ],
@@ -377,7 +377,7 @@
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
       "bolt_fired": "the cocking knob on top does not reciprocate",
       "stock": "MICROUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 250, H 142, 22 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
-      "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 186, H 110)"
+      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 186, H 110)"
     },
     "_extras": {
       "handgun_hold": true,
@@ -386,58 +386,58 @@
         110.0
       ],
       "bore_mm": 133.5,
-      "k": 0.00072
+      "k": 0.000603
     },
     "_bounds": {
       "MICROUZI_BODY": {
         "min": [
-          -0.014,
-          -0.0511,
-          -0.0483
+          -0.0118,
+          -0.0428,
+          -0.0405
         ],
         "max": [
-          0.014,
-          0.1339,
-          0.0648
+          0.0118,
+          0.1122,
+          0.0543
         ],
         "tris": 1296
       },
       "MICROUZI_BOLT": {
         "min": [
-          -0.0036,
-          0.0634,
-          -0.0504
+          -0.003,
+          0.0531,
+          -0.0422
         ],
         "max": [
-          0.0036,
-          0.0706,
-          -0.0385
+          0.003,
+          0.0591,
+          -0.0323
         ],
         "tris": 240
       },
       "MICROUZI_STOCK": {
         "min": [
-          -0.016,
-          -0.1446,
-          -0.0101
+          -0.0134,
+          -0.1211,
+          -0.0084
         ],
         "max": [
-          0.0036,
-          0.0036,
-          0.0797
+          0.003,
+          0.003,
+          0.0668
         ],
         "tris": 244
       },
       "MICROUZI_STOCK_folded": {
         "min": [
-          0.0126,
-          -0.0497,
-          -0.0331
+          0.0106,
+          -0.0416,
+          -0.0277
         ],
         "max": [
-          0.0322,
-          0.0985,
-          0.0567
+          0.027,
+          0.0825,
+          0.0475
         ],
         "tris": 244
       }
@@ -446,66 +446,66 @@
   "_mags": {
     "9x19Magazine20_UZI": {
       "min": [
-        -0.009,
-        -0.0127,
-        -0.085
+        -0.0075,
+        -0.0107,
+        -0.0712
       ],
       "max": [
-        0.009,
-        0.0127,
-        0.0005
+        0.0075,
+        0.0107,
+        0.0004
       ],
       "tris": 306
     },
     "9x19Magazine25_UZI": {
       "min": [
-        -0.009,
-        -0.0127,
-        -0.1022
+        -0.0075,
+        -0.0107,
+        -0.0856
       ],
       "max": [
-        0.009,
-        0.0127,
-        0.0005
+        0.0075,
+        0.0107,
+        0.0004
       ],
       "tris": 306
     },
     "9x19Magazine32_UZI": {
       "min": [
-        -0.009,
-        -0.0127,
-        -0.1264
+        -0.0075,
+        -0.0107,
+        -0.1059
       ],
       "max": [
-        0.009,
-        0.0127,
-        0.0005
+        0.0075,
+        0.0107,
+        0.0004
       ],
       "tris": 306
     },
     "9x19Magazine40_UZI": {
       "min": [
-        -0.009,
-        -0.0127,
-        -0.1541
+        -0.0075,
+        -0.0107,
+        -0.129
       ],
       "max": [
-        0.009,
-        0.0127,
-        0.0005
+        0.0075,
+        0.0107,
+        0.0004
       ],
       "tris": 306
     },
     "9x19Magazine50_UZI": {
       "min": [
-        -0.009,
-        -0.0127,
-        -0.1886
+        -0.0075,
+        -0.0107,
+        -0.158
       ],
       "max": [
-        0.009,
-        0.0127,
-        0.0005
+        0.0075,
+        0.0107,
+        0.0004
       ],
       "tris": 306
     }

@@ -15,7 +15,7 @@ about 2004, cancelled in July 2009, never sold; in game the item "UCP Prototype"
 build_fiveseven.py builds the Five-seveN, which is built the way GoM builds its pistols: body + slide nodes, the
 slide drawn through MarzGuns.Slide_Lock / Slide_Fired, the magazine in the gun's own space (no `magazine` point),
 modelled and baked upright and turned upside down at export, origin in the web of the grip under the beavertail,
-0.72 of real size. It takes the MP7's Rotex-II suppressor on the MP7's mount device (user: "use the MP7 suppressor as
+0.603 of real size (the M16A2's proportion; 0.72 before 2026-10-26). It takes the MP7's Rotex-II suppressor on the MP7's mount device (user: "use the MP7 suppressor as
 well"), drawn on this gun as a threaded-barrel adapter of its own, as the Five-seveN does with the 5.7x28mm mount.
 
 The shape is traced from a side photo of the about-2004 prototype (left side, muzzle left; guns.fandom.com
@@ -47,7 +47,9 @@ FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_UCP_par
 TEX_DIR = kit.TEX_DIR
 POINTS_JSON = os.path.join(HERE, "ucp_points.json")
 
-K = kit.K
+K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's pistols)
+K_OLD = 0.00072
+kit.K = K
 MATS = ["polymer", "grip", "metal", "rail", "dark", "control", "magpoly", "brass", "copper", "suppressor"]
 kit.MATS[:] = MATS
 
@@ -433,9 +435,9 @@ def points(bounds):
         "slide_fired": {"offset": [0.0, round(-SLIDE_TRAVEL * K, 4), 0.0], "rotate": ZERO},
     }
     pts = {k: kit.turned(v) for k, v in pts.items()}
-    pts["world"] = {"offset": [-0.009, 0.062, 0.0], "rotate": ZERO}
+    pts["world"] = {"offset": [round(-0.009 * K / K_OLD, 4), round(0.062 * K / K_OLD, 4), 0.0], "rotate": ZERO}  # GoM pistols', scaled
     pts["_notes"] = {
-        "units": "game units (0.72 of real size); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's "
+        "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's "
                  "BOTTOM, +X its RIGHT; origin = the web of the grip under the beavertail (photo L %.0f, H %.0f)"
                  % (L0, H0),
         "magazine": "no magazine point: 46x30Magazine20_UCP and the 40-round drum 46x30Magazine40_UCP are modelled in "
