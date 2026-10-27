@@ -1014,6 +1014,12 @@ from too, and frame-to-frame moves against vanilla's and the clips before (a de-
   reloads' `compact` spec has no `contact` again (no `match_ends` / `declip_left`). What looked worse was not said;
   ask before trying again, and show it first. The compact_build bullet below records what was tried. The
   de-clipped builds are still in `tmp/anim/compact` and `tmp/anim/full`: rebuild before packing from there.
+- **Reverted for the UMP set too (2026-10-28)**, after the merge with `models-resize` (the set now ships in the main
+  mod and also holds GoM's MP5A3 / MP5A2 / MP5SD; our fixes were measured on the UMP's shape only). User: the old set
+  for everyone. Its three packs are back to the 2026-10-27 build (the UMP's reload clips in them too). The code still
+  does it: rifle_hand.py's "UMP" entry (`contact`, `guns`, `aim_push` 0.045) and smg_reload.py `ump_spec`'s
+  `contact`, and `tmp/anim/rifle/UMP` / `tmp/anim/reload` hold the de-clipped clips; take them out (or add the MP5s'
+  meshes to `guns` and ask) before rebuilding the set. The Bullpup set keeps its fixes.
 
 - Found (shipped before): the bullpup set's left forearm 1 cm deeper than vanilla's in 67 of 116 clips, its butts
   through the jaw on every aim; the UMP set (52 clips), Uzi / UziT (76), MP7 (75), MP5K (67) up to 2.2 cm deeper; the

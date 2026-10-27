@@ -70,6 +70,8 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] Short SMG stance (Uzi, UziT, MP7, MP5K): arms up to 2.2 cm deeper into the body than vanilla's, the reloads'
       ends 1.7-2.5 cm in. A de-clip that measured clear was reverted (user, 2026-10-28: "your current changes are
       worse"; CLAUDE.md "No clipping"). Ask what looked worse, and show the result before packing.
+- [ ] UMP rifle-hand set (UMPs, GoM's MP5A3 / MP5A2 / MP5SD): same old clipping, its de-clip reverted 2026-10-28 (user:
+      the old set for everyone); rifle_hand.py / smg_reload.py still carry the UMP's fixes (CLAUDE.md "No clipping").
 
 - [ ] M249 belt reload clips (`scripts/anim/m249_reload.py`): the stock passes into the chest while the hand works,
       the left hand stops 1-3 cm short on the open cover and the right-side handle, left elbow flips (AimRack worst).
