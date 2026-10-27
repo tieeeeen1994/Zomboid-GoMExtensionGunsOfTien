@@ -67,9 +67,12 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 
 ## Polish
 
-- [ ] Short SMG stance (Uzi, UziT, MP7, MP5K): arms up to 2.2 cm deeper into the body than vanilla's, the reloads'
-      ends 1.7-2.5 cm in. A de-clip that measured clear was reverted (user, 2026-10-28: "your current changes are
-      worse"; CLAUDE.md "No clipping"). Ask what looked worse, and show the result before packing.
+- [ ] **Short SMG stance (Uzi, UziT, MP7, MP5K), before the 3.4.0 release** (user, 2026-10-28: release held for it):
+      arms up to 2.2 cm deeper into the body than vanilla's, the reloads' ends 1.7-2.5 cm in. Goal: **only the arms**
+      out of the body, a natural movement ("I'm generally fine with guns clipping. I just hate unnatural movement in
+      the body"): gun and hands stay where the clips have them; elbows / shoulders only, eased over several frames.
+      The first de-clip (gun moved, elbows swung) was reverted ("your current changes are worse"; CLAUDE.md "No
+      clipping"). Show old and new side by side (GIF) before packing. Also judge the MP5K at its new size here.
 - [ ] UMP rifle-hand set (UMPs, GoM's MP5A3 / MP5A2 / MP5SD): same old clipping, its de-clip reverted 2026-10-28 (user:
       the old set for everyone); rifle_hand.py / smg_reload.py still carry the UMP's fixes (CLAUDE.md "No clipping").
 
