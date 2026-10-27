@@ -208,7 +208,8 @@ end
 -- UMPs (resized to the M16A2's proportion, 2026-10-26) no longer reach. scripts/anim/rifle_hand.py builds every rifle
 -- clip in which the left hand holds the gun with the palm moved back along the gun to the handguard (anims_X/Bob
 -- GunsOfTien_CompactUMP_Pack*.x, AnimSets *_GoTCompactUMP.xml), played through Gunworks' grip registry as the compact
--- stance is; the rest of the rifle hold is vanilla's.
+-- stance is; the rest of the rifle hold is vanilla's. Those files ship in the main mod since 2026-10-27 (GoM's
+-- full-size MP5s use the set too); only the UMP's reload nodes (*GunsOfTienCompactUMP_GoT.xml) are this mod's.
 local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
 local function registerUmpGrip()
     if not okGW or type(Gunworks) ~= "table" or not Gunworks.RegisterWeapon then

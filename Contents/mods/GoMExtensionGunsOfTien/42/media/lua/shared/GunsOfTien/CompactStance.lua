@@ -34,6 +34,12 @@ local SETS = {
     ["GunsOfTien.UZI"] = "GunsOfTien_CompactUzi",
     ["GunsOfTien.MINIUZI"] = "GunsOfTien_CompactUziT",
     ["MarzGuns.MP5K"] = "GunsOfTien_CompactMP5K",
+    -- Not the compact stance: vanilla's rifle hold with the left palm moved back onto the handguard
+    -- (scripts/anim/rifle_hand.py, the set made for Post-93's UMPs, shipped here since 2026-10-27). GoM's full-size MP5s
+    -- are scaled by 0.833 (build_mp5.py), the set's palm by 0.8375, so the hand lands where vanilla's held GoM's own MP5.
+    ["MarzGuns.MP5"] = "GunsOfTien_CompactUMP",
+    ["MarzGuns.MP5A2"] = "GunsOfTien_CompactUMP",
+    ["MarzGuns.MP5SD"] = "GunsOfTien_CompactUMP",
 }
 -- modelled upside down for the pistol clips: turned upright in both hands, and made two-handed
 local TURNED = { ["GunsOfTien.MINIUZI"] = true, ["MarzGuns.MP5K"] = true }

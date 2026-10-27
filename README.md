@@ -34,6 +34,10 @@ Maker they can be made.
   out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
 - AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
+- The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
+  proportion, so the Mk9 sits on them as it does on the Uzis; the MP5A3, MP5A2 and MP5SD are held like rifles with the
+  support hand on the handguard (the MP5K keeps the short SMG stance); Guns of Marz's MP5 is named for what it is, the
+  MP5A3 (retractable stock)
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
   (they started a little ahead of it or inside it)

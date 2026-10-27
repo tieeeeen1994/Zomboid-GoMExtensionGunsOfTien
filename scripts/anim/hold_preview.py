@@ -91,6 +91,22 @@ GUNS = {
         (os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"), "57x28Magazine50_P90",
          point(P90_POINTS["magazine"]["offset"], P90_POINTS["magazine"]["rotate"])),
     ]),
+    # GoM's MP5 (shown as the MP5A3) at our size (build_mp5.py) and at GoM's, held on vanilla's rifle clips: stock
+    # deployed (its `stock` point is absent: drawn at the origin), 30-round magazine at the `magazine` point
+    "mp5": dict(rifle=True, parts=[
+        (os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_MP5.fbx"), "MP5_BODY", None),
+        (os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_MP5.fbx"), "MP5_BOLT", None),
+        (os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_MP5.fbx"), "MP5_STOCK", None),
+        (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_MP5_magazines.fbx"), "9x19Magazine30_MP5",
+         point((0.0, 0.0992, 0.0314), (10.2946, 0.0, 0.0))),
+    ]),
+    "mp5_gom": dict(rifle=True, parts=[
+        (os.path.join(GOM, "models_X/weapons/firearms/MP5.fbx"), "MP5_BODY", None),
+        (os.path.join(GOM, "models_X/weapons/firearms/MP5.fbx"), "MP5_BOLT", None),
+        (os.path.join(GOM, "models_X/weapons/firearms/MP5.fbx"), "MP5_STOCK", None),
+        (os.path.join(GOM, "models_X/weapons/magazines/smgs.fbx"), "9x19Magazine30_MP5",
+         point((0.0, 0.1191, 0.0377), (10.2946, 0.0, 0.0))),
+    ]),
     "mp5k": dict(rifle=False, parts=[
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BODY", None),
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BOLT", None),

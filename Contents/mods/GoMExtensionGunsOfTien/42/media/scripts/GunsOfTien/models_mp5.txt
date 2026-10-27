@@ -1,0 +1,299 @@
+module MarzGuns {
+
+    model 9x19Magazine100_MP5 {
+        mesh     = weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine100_MP5,
+        texture  = weapons/magazines/smgs/9x19Magazine100_MP5,
+        attachment world {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model 9x19Magazine20_MP5 {
+        mesh     = weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine20_MP5,
+        texture  = weapons/magazines/smgs/9x19Magazine20_MP5,
+        attachment world {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model 9x19Magazine25_MP5 {
+        mesh     = weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine25_MP5,
+        texture  = weapons/magazines/smgs/9x19Magazine25_MP5,
+        attachment world {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model 9x19Magazine30_MP5 {
+        mesh     = weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine30_MP5,
+        texture  = weapons/magazines/smgs/9x19Magazine30_MP5,
+        attachment world {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model 9x19Magazine60_MP5 {
+        mesh     = weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine60_MP5,
+        texture  = weapons/magazines/smgs/9x19Magazine60_MP5,
+        attachment world {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model MP5 {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5_BODY,
+        texture  = weapons/firearms/smgs/MP5,
+        cullFace = None,
+        attachment muzzle {
+            offset = 0.0000 0.2585 0.0342,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+        attachment world {
+            offset = 0.0167 0.1083 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+        attachment magazine {
+            offset = 0.0000 0.0992 0.0314,
+            rotate = 10.2946 0.0000 0.0000,
+        }
+        attachment rail_up {
+            offset = 0.0000 0.0961 0.0549,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment scope {
+            offset = 0.0000 0.1142 0.0568,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_down {
+            offset = 0.0000 0.1790 0.0202,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment foregrip {
+            offset = 0.0000 0.1751 0.0181,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_right {
+            offset = -0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_left {
+            offset = 0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment laser_right {
+            offset = -0.0192 0.1706 0.0306,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment light_left {
+            offset = 0.0183 0.1706 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment stock_folded {
+            offset = 0.0000 0.0936 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment bolt_fired {
+            offset = 0.0000 -0.0312 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment canon {
+            offset = 0.0000 0.2330 0.0342,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MP5A2 {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5A2_BODY,
+        texture  = weapons/firearms/smgs/MP5A2,
+        cullFace = None,
+        attachment muzzle {
+            offset = 0.0000 0.2555 0.0342,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+        attachment world {
+            offset = 0.0167 0.1083 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+        attachment magazine {
+            offset = 0.0000 0.0992 0.0314,
+            rotate = 10.2946 0.0000 0.0000,
+        }
+        attachment rail_up {
+            offset = 0.0000 0.0961 0.0549,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment scope {
+            offset = 0.0000 0.1142 0.0568,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_down {
+            offset = 0.0000 0.1790 0.0202,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment foregrip {
+            offset = 0.0000 0.1751 0.0181,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_right {
+            offset = -0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_left {
+            offset = 0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment laser_right {
+            offset = -0.0192 0.1706 0.0306,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment light_left {
+            offset = 0.0183 0.1706 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment stock_folded {
+            offset = 0.0000 0.0936 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment bolt_fired {
+            offset = 0.0000 -0.0312 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment canon {
+            offset = 0.0000 0.2342 0.0342,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MP5A2_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5A2_BOLT,
+        texture  = weapons/firearms/smgs/MP5A2,
+        cullFace = None,
+    }
+
+    model MP5K {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5K_BODY,
+        texture  = weapons/firearms/smgs/MP5K,
+        cullFace = None,
+        attachment muzzle {
+            offset = 0.0000 0.1835 -0.0371,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+        attachment world {
+            offset = -0.0208 -0.0000 -0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment bolt_fired {
+            offset = 0.0000 -0.0247 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment magazine {
+            offset = 0.0000 0.0997 -0.0323,
+            rotate = 171.7924 0.0000 180.0000,
+        }
+        attachment rail_up {
+            offset = 0.0000 0.0961 -0.0552,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+        attachment scope {
+            offset = 0.0000 0.1076 -0.0577,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+        attachment canon {
+            offset = 0.0000 0.1876 -0.0340,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MP5K_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5K_BOLT,
+        texture  = weapons/firearms/smgs/MP5K,
+        cullFace = None,
+    }
+
+    model MP5SD {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5SD_BODY,
+        texture  = weapons/firearms/smgs/MP5SD,
+        cullFace = None,
+        attachment muzzle {
+            offset = 0.0000 0.3174 0.0337,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+        attachment world {
+            offset = 0.0167 0.1083 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+        attachment magazine {
+            offset = 0.0000 0.0992 0.0314,
+            rotate = 10.2946 0.0000 0.0000,
+        }
+        attachment rail_up {
+            offset = 0.0000 0.0961 0.0549,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment scope {
+            offset = 0.0000 0.1142 0.0568,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_down {
+            offset = 0.0000 0.1790 0.0202,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment foregrip {
+            offset = 0.0000 0.1751 0.0181,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_right {
+            offset = -0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment rail_left {
+            offset = 0.0132 0.1697 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment laser_right {
+            offset = -0.0192 0.1706 0.0306,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment light_left {
+            offset = 0.0183 0.1706 0.0312,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment stock_folded {
+            offset = 0.0000 0.0936 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+        attachment bolt_fired {
+            offset = 0.0000 -0.0312 0.0000,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MP5SD_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5SD_BOLT,
+        texture  = weapons/firearms/smgs/MP5SD,
+        cullFace = None,
+    }
+
+    model MP5SD_STOCK {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5SD_STOCK,
+        texture  = weapons/firearms/smgs/MP5SD,
+        cullFace = None,
+    }
+
+    model MP5_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5_BOLT,
+        texture  = weapons/firearms/smgs/MP5,
+        cullFace = None,
+    }
+
+    model MP5_STOCK {
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5_STOCK,
+        texture  = weapons/firearms/smgs/MP5,
+        cullFace = None,
+    }
+}

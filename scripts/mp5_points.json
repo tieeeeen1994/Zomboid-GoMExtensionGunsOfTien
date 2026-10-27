@@ -1,0 +1,797 @@
+{
+  "_notes": {
+    "scale": "every vertex and point of GoM's model x SCALE about the model origin (the Uzis' 0.603 of real size / GoM's 0.72 for its MP5A2 and MP5K); textures and UVs are GoM's",
+    "fixes": "MP5 / MP5A2 muzzle at the barrel's end (MuzzlePoints.lua) and canon for the Mk9 (Suppressors.lua), applied before scaling"
+  },
+  "scale": 0.8332,
+  "models": {
+    "9x19Magazine100_MP5": {
+      "mesh": "weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine100_MP5",
+      "texture": "weapons/magazines/smgs/9x19Magazine100_MP5",
+      "cullFace": null,
+      "attachments": [
+        [
+          "world",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "9x19Magazine20_MP5": {
+      "mesh": "weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine20_MP5",
+      "texture": "weapons/magazines/smgs/9x19Magazine20_MP5",
+      "cullFace": null,
+      "attachments": [
+        [
+          "world",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "9x19Magazine25_MP5": {
+      "mesh": "weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine25_MP5",
+      "texture": "weapons/magazines/smgs/9x19Magazine25_MP5",
+      "cullFace": null,
+      "attachments": [
+        [
+          "world",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "9x19Magazine30_MP5": {
+      "mesh": "weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine30_MP5",
+      "texture": "weapons/magazines/smgs/9x19Magazine30_MP5",
+      "cullFace": null,
+      "attachments": [
+        [
+          "world",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "9x19Magazine60_MP5": {
+      "mesh": "weapons/magazines/GunsOfTien_MP5_magazines|9x19Magazine60_MP5",
+      "texture": "weapons/magazines/smgs/9x19Magazine60_MP5",
+      "cullFace": null,
+      "attachments": [
+        [
+          "world",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            90.0,
+            0.0,
+            -90.0
+          ]
+        ]
+      ]
+    },
+    "MP5": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5_BODY",
+      "texture": "weapons/firearms/smgs/MP5",
+      "cullFace": "None",
+      "attachments": [
+        [
+          "muzzle",
+          [
+            0.0,
+            0.2585,
+            0.0342
+          ],
+          [
+            -90.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "world",
+          [
+            0.0167,
+            0.1083,
+            0.0
+          ],
+          [
+            180.0,
+            0.0,
+            180.0
+          ]
+        ],
+        [
+          "magazine",
+          [
+            0.0,
+            0.0992,
+            0.0314
+          ],
+          [
+            10.2946,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_up",
+          [
+            0.0,
+            0.0961,
+            0.0549
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "scope",
+          [
+            0.0,
+            0.1142,
+            0.0568
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_down",
+          [
+            0.0,
+            0.179,
+            0.0202
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "foregrip",
+          [
+            0.0,
+            0.1751,
+            0.0181
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_right",
+          [
+            -0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_left",
+          [
+            0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "laser_right",
+          [
+            -0.0192,
+            0.1706,
+            0.0306
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "light_left",
+          [
+            0.0183,
+            0.1706,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "stock_folded",
+          [
+            0.0,
+            0.0936,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_fired",
+          [
+            0.0,
+            -0.0312,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "canon",
+          [
+            0.0,
+            0.233,
+            0.0342
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "MP5A2": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5A2_BODY",
+      "texture": "weapons/firearms/smgs/MP5A2",
+      "cullFace": "None",
+      "attachments": [
+        [
+          "muzzle",
+          [
+            0.0,
+            0.2555,
+            0.0342
+          ],
+          [
+            -90.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "world",
+          [
+            0.0167,
+            0.1083,
+            0.0
+          ],
+          [
+            180.0,
+            0.0,
+            180.0
+          ]
+        ],
+        [
+          "magazine",
+          [
+            0.0,
+            0.0992,
+            0.0314
+          ],
+          [
+            10.2946,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_up",
+          [
+            0.0,
+            0.0961,
+            0.0549
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "scope",
+          [
+            0.0,
+            0.1142,
+            0.0568
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_down",
+          [
+            0.0,
+            0.179,
+            0.0202
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "foregrip",
+          [
+            0.0,
+            0.1751,
+            0.0181
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_right",
+          [
+            -0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_left",
+          [
+            0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "laser_right",
+          [
+            -0.0192,
+            0.1706,
+            0.0306
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "light_left",
+          [
+            0.0183,
+            0.1706,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "stock_folded",
+          [
+            0.0,
+            0.0936,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_fired",
+          [
+            0.0,
+            -0.0312,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "canon",
+          [
+            0.0,
+            0.2342,
+            0.0342
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "MP5A2_BOLT": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5A2_BOLT",
+      "texture": "weapons/firearms/smgs/MP5A2",
+      "cullFace": "None",
+      "attachments": []
+    },
+    "MP5K": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5K_BODY",
+      "texture": "weapons/firearms/smgs/MP5K",
+      "cullFace": "None",
+      "attachments": [
+        [
+          "muzzle",
+          [
+            0.0,
+            0.1835,
+            -0.0371
+          ],
+          [
+            -90.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "world",
+          [
+            -0.0208,
+            -0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_fired",
+          [
+            0.0,
+            -0.0247,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "magazine",
+          [
+            0.0,
+            0.0997,
+            -0.0323
+          ],
+          [
+            171.7924,
+            0.0,
+            180.0
+          ]
+        ],
+        [
+          "rail_up",
+          [
+            0.0,
+            0.0961,
+            -0.0552
+          ],
+          [
+            -180.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "scope",
+          [
+            0.0,
+            0.1076,
+            -0.0577
+          ],
+          [
+            -180.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "canon",
+          [
+            0.0,
+            0.1876,
+            -0.034
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "MP5K_BOLT": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5K_BOLT",
+      "texture": "weapons/firearms/smgs/MP5K",
+      "cullFace": "None",
+      "attachments": []
+    },
+    "MP5SD": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5SD_BODY",
+      "texture": "weapons/firearms/smgs/MP5SD",
+      "cullFace": "None",
+      "attachments": [
+        [
+          "muzzle",
+          [
+            0.0,
+            0.3174,
+            0.0337
+          ],
+          [
+            -90.0,
+            0.0,
+            -180.0
+          ]
+        ],
+        [
+          "world",
+          [
+            0.0167,
+            0.1083,
+            0.0
+          ],
+          [
+            180.0,
+            0.0,
+            180.0
+          ]
+        ],
+        [
+          "magazine",
+          [
+            0.0,
+            0.0992,
+            0.0314
+          ],
+          [
+            10.2946,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_up",
+          [
+            0.0,
+            0.0961,
+            0.0549
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "scope",
+          [
+            0.0,
+            0.1142,
+            0.0568
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_down",
+          [
+            0.0,
+            0.179,
+            0.0202
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "foregrip",
+          [
+            0.0,
+            0.1751,
+            0.0181
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_right",
+          [
+            -0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_left",
+          [
+            0.0132,
+            0.1697,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "laser_right",
+          [
+            -0.0192,
+            0.1706,
+            0.0306
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "light_left",
+          [
+            0.0183,
+            0.1706,
+            0.0312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "stock_folded",
+          [
+            0.0,
+            0.0936,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_fired",
+          [
+            0.0,
+            -0.0312,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "MP5SD_BOLT": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5SD_BOLT",
+      "texture": "weapons/firearms/smgs/MP5SD",
+      "cullFace": "None",
+      "attachments": []
+    },
+    "MP5SD_STOCK": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5SD_STOCK",
+      "texture": "weapons/firearms/smgs/MP5SD",
+      "cullFace": "None",
+      "attachments": []
+    },
+    "MP5_BOLT": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5_BOLT",
+      "texture": "weapons/firearms/smgs/MP5",
+      "cullFace": "None",
+      "attachments": []
+    },
+    "MP5_STOCK": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5_STOCK",
+      "texture": "weapons/firearms/smgs/MP5",
+      "cullFace": "None",
+      "attachments": []
+    }
+  }
+}
