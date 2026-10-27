@@ -369,7 +369,7 @@ RELOAD_NODES = {
 }
 
 
-def reload_node(set_name, kind, aim=False, idle_sets=()):
+def reload_node(set_name, kind, aim=False, idle_sets=(), mag_event=True):
     spec = RELOAD_NODES[kind]
     r = ET.Element("animNode")
     ET.SubElement(r, "m_Name").text = "%s%s%s" % (kind, "Aim" if aim else "", RELOAD_ID % set_name)
@@ -388,6 +388,8 @@ def reload_node(set_name, kind, aim=False, idle_sets=()):
         ET.SubElement(c, "m_Type").text = typ
         ET.SubElement(c, "m_StringValue" if typ == "STRING" else "m_BoolValue").text = val
     for ev, when, pc, param in spec["events"]:
+        if ev == "changeWeaponPart" and not mag_event:
+            continue
         e = ET.SubElement(r, "m_Events")
         ET.SubElement(e, "m_EventName").text = ev
         ET.SubElement(e, "m_Time").text = when
@@ -407,13 +409,15 @@ def reload_node(set_name, kind, aim=False, idle_sets=()):
     return r
 
 
-def write_reload_nodes(out_root, set_name, idle_sets):
+def write_reload_nodes(out_root, set_name, idle_sets, mag_event=True):
+    """mag_event False: GoM's way (Gunworks' "none" style, the magazine swapped when the action ends; the bullpups,
+    docs/design.md 4h), no changeWeaponPart "mag" marker."""
     out = []
     for anim in ("player", "player-vehicle"):
         d = os.path.join(out_root, "AnimSets", anim, "actions")
         os.makedirs(d, exist_ok=True)
         for kind, aim in (("Unload", False), ("Load", False), ("Rack", False), ("Rack", True)):
-            r = reload_node(set_name, kind, aim, idle_sets)
+            r = reload_node(set_name, kind, aim, idle_sets, mag_event)
             path = os.path.join(d, "%s%s%s_GoT.xml" % (kind, "Aim" if aim else "", RELOAD_ID % set_name))
             with open(path, "wb") as fh:
                 fh.write(b'<?xml version="1.0" encoding="utf-8"?>\n')

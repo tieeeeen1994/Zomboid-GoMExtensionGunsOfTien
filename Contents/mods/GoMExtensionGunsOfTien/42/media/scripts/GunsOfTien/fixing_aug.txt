@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix AUG {
+        Require = GunsOfTien.AUG,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

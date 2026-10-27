@@ -99,6 +99,12 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   Detective .38; every vanilla slot that takes Holster takes HolsterSmall too); a Micro Uzi, not the Uzi Pistol of the user's sixth photo (that photo serves its
   receiver); 20 / 25 / 32 plus 40 / 50 magazines shared by all three; the AWC Mk9 on its SMG mount device on all three.
   Design: docs/design.md 4f; build notes: "Uzi family" below.
+- **Steyr AUG A1** (user, 2026-10-27; built): main mod (1977; the AUG/SA was imported to the US until 1989). Steyr
+  green, held as a rifle like GoM's FAMAS, its own 30 / 42 magazines (no STANAG), the integral 1.5x scope as a hidden
+  required part, the folding front grip as Post-93's MP7A1's (the fold code moved to the main mod for both), no
+  muzzle parts, rails or bayonet (user's choice), the bullpup animation set it shares with GoM's FAMAS (hold and
+  reloads, section "Bullpup set"), loot in GoM's import rifle spawner.
+  Design: docs/design.md 4g; build notes: "Steyr AUG A1" below.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -210,8 +216,13 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   extended another (Uzi grip unload / rack, M249 aim rack; Post-93 MP7A1 / P90TR unload / rack, P90TR aim rack) is
   written out in full, merged as `PZXmlUtil.resolve` does (an empty `<m_Conditions />` keeps the parent's n-th, an
   extra one is appended after the parent's children), with a header comment saying so; `compact_animsets.py`
-  already flattens the same way. Write new nodes in full. "Marz Mods Animsets for Linux" (workshop 3774316897)
-  covers only GoM's own `_HB` files.
+  already flattens the same way. Write new nodes in full. "Marz Mods Animsets for Linux" (workshop 3774316897,
+  id `Linux_Animsets_Marz_Mods`, no `loadModAfter`) covers only GoM's own `_HB` files, as lowercase copies dated
+  2026-08-17, i.e. from before GoM's 2026-10-23 id renames (its `loadfal_hb.xml` answers `"FAL"`, plays
+  `Bob_Reload_Rifle_Load`, no InsertMag). The game keys AnimSet files by lowercased path (`resolveFileOrGUID` →
+  `activeFileMap`, last mod loaded wins, logged `mod "X" overrides media/animsets/...`), so on a server listing it
+  after GunsOfMarz it replaces GoM's current nodes, GoM's own guns included. So never borrow GoM's animId for a gun
+  of ours: copy its nodes under an id of our own (the SCAR-H, 2026-10-27).
 - Descriptions (2026-10-24, as in ZomboidFixesB42): `README.md`, `forum.txt` (the pinned Discussions thread, one
   post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
   step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
@@ -288,7 +299,9 @@ feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and remov
   `scripts/build_mk9.py` (Blender: the Mk9 and its mount device with the Post-93 kit, and GoM's MP5 / MP5A2 `canon`
   measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons); `scripts/build_m249.py`,
   `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun"); `scripts/build_uzi.py`,
-  `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family").
+  `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family"); `scripts/build_aug.py`, `render_aug.py`,
+  `make_aug_art.py` (the AUG A1, section "Steyr AUG A1"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
+  Foregrip radial icons, moved from post93/ on 2026-10-27).
 
 ## Status and how to continue
 
@@ -433,7 +446,11 @@ space), so offset = hinge - R . hinge; upright the turn is +90, and in the turne
 about Y flips a turn about X), written that way because `turned()` keeps a given rotate. Which end hinges is from
 memory of photos of the unfolded gun (the grip hangs just behind the nose's hand stop), not from a photo in `docs/`.
 Parts `MP7A1_Integrated_Foregrip_Folded / _Deployed` (part type `ForegripIntegrated`, `CannotBeRemoved`), folded
-required at spawn. The fitted part is the state: `shared/GunsOfTienPost93/Foregrip.lua` swaps them with Gunworks'
+required at spawn. (Since 2026-10-27 the fold code below lives in the main mod, `shared/GunsOfTien/Foregrip.lua` with
+`Foregrip.Register(gun, { folded, deployed, foldDesc, unfoldDesc })` and `client/GunsOfTien/ForegripMenu.lua`, icons
+`ui/GunsOfTien_Radial_*Foregrip.png`, for the AUG A1 too; Post-93's Foregrip.lua only registers the MP7A1: a second
+copy would have redefined the global `ISFoldForegripGoT` bound to one mod's gun list.) The fitted part is the state:
+`shared/GunsOfTienPost93/Foregrip.lua` swaps them with Gunworks'
 `FoldingStock.SwapStockAttachment` (a plain part swap by part type) and `StatsFactory.ReapplyAllModifiers`; Gunworks'
 `FoldingStock` itself cannot serve a second fold on one gun (one entry per gun type, state in
 `modData.StockFolded`). Its timed action `ISFoldForegripGoT` copies `ISFoldStock` (swap in `complete`,
@@ -658,7 +675,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   take them on their integral bottom rail. GoM's M4A1 has no reload animation entry (Gunworks' default rifle reload);
   its FAL uses `animId = "fal_rifle"` ("FAL" before GoM's 2026-10-23 update; the SCAR-H kept the old id until
   2026-10-27, so its insert matched no node, played a hand raise and never seated the magazine), AA12 / BAR
-  `"left_handle_load"`. GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
+  `"left_handle_load"`. The SCAR-H now has its own copies of GoM's FAL nodes (`GunsOfTienSCARH`, AnimSets
+  `*GunsOfTienSCARH_GoT.xml`, GoM's clips), as an outdated Linux animsets mod can replace GoM's (see "No
+  `x_extends`"). GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
 - GoM's FAL magazine icon is blue-grey: the light fitted on it (gains up to 1.9 on blue) washed the tan SCAR-H
   magazines out, so their icons use that camera with the MP7's magazine light (fitted on GoM's MP5 magazine).
 - Not in the photos and drawn from FN's layout: the right side (ejection port, ambidextrous selector), the charging
@@ -871,6 +890,169 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - Not traced: the right side (ejection port painted over the magazine well, as on the left's stamped recess), the
   selector's A / R / S letters (painted, positions read off the photos' grip-top lever), the Uzi's deployed stock
   (from IMI's 640 mm: struts straight back from the hinge to a butt plate at L 612-640).
+
+## Steyr AUG A1 (2026-10-27)
+
+- Files: `scripts/build_aug.py` (Blender, ~1 min: `GunsOfTien_AUG.fbx` AUG_BODY / AUG_BOLT / AUG_FOREGRIP,
+  `GunsOfTien_AUG_magazines.fbx` 556x45Magazine30/42_AUG, AUG.png 256, 128 per magazine, `scripts/aug_points.json`),
+  `scripts/render_aug.py -- DIR` (Blender review renders, GoM's FAMAS at the same scale), `scripts/make_aug_art.py
+  [--renders DIR]` (icons: the SCARs' rifle camera, fitted on GoM's M4A1 icon, for the gun; the magazines from the side
+  in the gun's light, the 30 at the 42's scale (the MP7's blue-heavy magazine light ringed them in blue); sheet `docs/aug_preview.png` with the photo's outline over the left side),
+  `gen_scripts.py aug()` (items_aug.txt, models_aug.txt, fixing_aug.txt, names), `shared/GunsOfTien/AUG.lua`
+  (registries), `client/GunsOfTien/AUGTooltips.lua`, loot in `server/GunsOfTien/Loot.lua`, Hot Brass in
+  `server/GunsOfTien/HotBrass.lua`, the fold in `shared/GunsOfTien/Foregrip.lua` + `client/GunsOfTien/ForegripMenu.lua`.
+  Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
+- **Reference** (not in the repo; tmp/ref/aug): Commons "Steyr AUG 5,56 mm" (MoserB, public domain, 4475 px) and its
+  background-removed copy "Steyr AUG 5,56 mm noBG.png" (CC BY-SA 4.0, 5000 px, used for the edges): an Austrian StG 77,
+  left side, muzzle left, front grip down, magazine out and lying beside it, a sling over the butt (so the outline was
+  read by hand on a millimetre grid, `scripts/aug_photo_grid.py`, not traced: the sling joins the gun). Scaled to Steyr's
+  790 mm (5.629 px/mm in the noBG copy, muzzle tip x 270, heel y 2190); the bore is level (barrel centre within 1 px
+  over 1000 px). Dark pixels (luminance < 130) separate the gun from the drop shadow (~150). Silhouette overlap with
+  those pixels 0.76-0.81 (the sling counts against it).
+- Drawn at K 0.000603 (every Guns of Tien gun). Origin = the grip's back meeting the stock's underside (photo L 455,
+  H 100); bore H 143.5. The scope and carrying handle are part of AUG_BODY (the A1's are cast with the receiver); the
+  scope's stats come from the hidden part AUG_Integrated_Scope with no ModelWeaponPart line.
+- The front grip is one node with its origin at its pin (photo L 249, H 115), modelled down: `foregrip_deployed` =
+  the pin, `foregrip_folded` = the pin with rotate (90, 0, 0), a quarter turn forward about X (the engine draws a part
+  at offset + rotateXYZ . vertex; +90 about X takes -Z to +Y), so it lies under the barrel 3 mm below it, as the real
+  A1's folds forward. Baked alone (its node is not in the gun's space).
+- Magazines: curved forward along an arc (`MAG_R` 800 mm, 8 degrees rake at the lips, ~20 at the 30's base;
+  `mag_frame` / `mag_local`), 60 mm front to back, 30 across, 165 mm lips to base for the 30 (measured on the loose one
+  in the photo), the 42 55 mm longer. GoM's textures have no alpha, so the translucent smoke polymer is painted with the
+  rounds inside (brass cases bullets forward, staggered, a dark line between rounds). Lips at photo L 577, H 90, 13 mm
+  above the well's mouth.
+- `charging handle` = AUG_BOLT on the left, `bolt_fired` 92 mm back (the A1's handle rides with the bolt carrier).
+- Hold and reload: the bullpup set, shared with GoM's FAMAS (section "Bullpup set" below). Before it the AUG borrowed
+  GoM's FAMAS reload clips, and vanilla's rifle hold put its left palm (0.218 ahead of the grip) on the bare barrel
+  9 cm behind the flash hider, 4 cm under it (hold_preview.py `aug`).
+
+## Bullpup set (2026-10-27)
+
+- User: "that is why we now need a bullpup animation set", for the AUG A1 and GoM's FAMAS, reloads included (design:
+  docs/design.md 4h). Choices: one hold set for both (the AUG's unfolded grip gets no hold of its own), GoM-style
+  reloads (no magazine in the hand), the gun moved 3-4 cm from the face when aiming. Lua: `shared/GunsOfTien/Bullpup.lua`
+  (Gunworks grip animId `GunsOfTien_CompactBullpup` at OnGameBoot; reload handlers `GunsOfTienCompactBullpupAUG` /
+  `...FAMAS`, style "none", 1.2 / 1.5 / 1.2 / 1.2 s, registered after GoM's so they replace its FAMAS's).
+- Measured (game units, from each gun's grip): magazine lips AUG (0, -0.074, -0.006), FAMAS (0, -0.076, 0.015): 2 mm
+  apart front to back but 2 cm in height (FAMAS well bottom z -0.033, AUG's mouth -0.014), so each gun has its own four
+  reload clips. Left-hand places: the FAMAS's handguard underside z -0.005 over y 0.10-0.22, the AUG's folded grip
+  y 0.12-0.19, its bottom z -0.002; vanilla's palm (0.218 idle, 0.204 aimed) is the FAMAS's handguard tip and the
+  AUG's bare barrel. FAMAS cocking lever = the front of FAMAS_BOLT under the carry handle's bar (y 0.08-0.12, z
+  0.026-0.060, |x| < 0.004; the bar at z ~0.075), back 0.061 with the bolt.
+- Hold: `scripts/anim/rifle_hand.py` SETS "Bullpup" (scale 0.72: palm 0.157 idle / 0.147 aimed; `push` 0.02: the gun
+  moved forward along its own Y every frame, the right arm solved after it and the gun put back from where the hand
+  landed). 116 clips (every vanilla firearm clip with a gun in its name). Needs `GUNWORKS_ANIMSETS` on Windows (the
+  default is the Mac path) or `firearm_clips` finds nothing and the build silently writes no clips.
+- No clipping (user, 2026-10-28, after the reloads: "we wanted to fix the clipping issues"). Measured with
+  TienInspectWeapon's clearance (chest / neck / head, arms by their bones a limb's radius out): vanilla's rifle idle
+  reads L 0.011, compact_build's CONTACT 0.022 is the forearm's centre line on the skin (half inside), and the set had
+  the left forearm 1 cm deeper than vanilla in 67 of 116 clips (0.021-0.028), the right up to 4.1 against 1.6 (bite
+  reacts, where the push re-solves the arm), and the guns' butts 2.4 (AUG) / 3.2 (FAMAS) in the shoulder on every aim
+  (through the jaw in the side view; vanilla's aim has GoM's M16A2 1.8 in). The grips sit alike on the hand
+  (M16A2 / AUG / FAMAS within 1 cm); the bullpups are longer behind it (butts at -0.164 / -0.201 / -0.216). Now
+  (`contact` 0.008, `guns`): every frame of every clip, both arms no deeper than vanilla's own in that frame or 0.008
+  where vanilla is clearer, and both guns no deeper than 0.008 (checked against vanilla's M16A2 per frame: none over).
+  How: (1) the push grows by EXTRA_PUSH 0.063 with `shouldered` (butt-to-right-shoulder distance: 0.02-0.04 in every
+  aim, 0.25-0.37 lowered; full below 0.06, none above 0.16), so all aims hold the gun alike (~10 cm off the eye now,
+  not the user's 3-4) and aim-to-idle eases down with the gun; searched per frame it crept 2.5 cm a frame in still aims
+  (depth is not monotonic in the push), one per clip flipped aim-to-idle's left elbow and left its end off the idle;
+  (2) the right arm eased toward vanilla's (push and arm) where it went in; (3) a gun still in (the AUG's scope in the
+  face in bite reacts, the FAMAS's carry handle in the chest in a bump; pushing on made those worse) moved straight out
+  (mean of nearest-body-point minus vertex over the vertices inside), kept in Bip01_Spine1's frame, spread by
+  `spread_vectors`; (4) the right arm eased again for what (3) put in; (5) the left elbow swung (`clip_swing`: one
+  direction per clip of SWINGS, out / out-back / back / out-up / up in the idle chest's terms turned with the chest,
+  the one clearing most frames with the least swing, up to 0.4; rig.RIGHT is the character's, and in the seated
+  stand-up, body turned, an elbow swung that way left the upper arm 2.8 cm in the chest's side; per-frame directions
+  handed frames a neighbour's swing that did not clear them); (6) what is left: the gun moved out with both hands
+  (`arm_escape`), then the left chain eased toward vanilla's (`release_share`, the hand sliding along the gun); neither
+  is needed by any clip now. The right elbow is solved in the plane of vanilla's own (`carry`: swivel off, pole =
+  vanilla's elbow): searched by the wrist's cost it flipped 16-22 cm between two frames in the sprint vault and
+  FallIdle04 (there since the first build). The left shoulder comes forward (clavicle turned up to 25 degrees,
+  `left_solve`) where the arm falls short of a gun pushed out (aim up 75: 1.2 cm). Each per-frame need is `spread`
+  over RAMP 5 frames either side: compact_build's Declip.arms chose its swing frame by frame and popped, and its
+  release bisects from 0.5 and never reaches vanilla's arm. Result (2026-10-28): every clip clear, the left hand on its
+  place in every frame of every clip, no frame-to-frame move more than 1.6 cm over vanilla's (the walk into the aim,
+  the gun rising and pushing out at once). RIFLE_HAND_DEBUG prints every frame.
+- Reload: `scripts/anim/smg_reload.py` `aug` / `famas` (`bullpup()`: the Uzi spec's rifle hand, rack and hip places, the
+  set's idle / aim as base, clip names `GunsOfTien_CompactBullpup<Gun>_Reload<clip>`). The magazine change's work place
+  had to change: the Uzi's stood a full-length bullpup almost upright, muzzle by the face; a flatter one further out
+  took the well (behind the grip) out of reach (scanned with SMG_WORK / _ALONG / _TOP / _WRIST / _TWIST; `off` turns
+  the wrist settle off). First draft ch(0, 0.62, 0.10) / FAMAS ch(0, 0.64, 0.08), its rear against the chest; moved
+  out and up (user, 2026-10-28): pos ch(0, 0.70, 0.16) for both, along ch(-0.70, 0.15, 0.70), top ch(0.30, 0.95, 0),
+  settle wrist (-45, -35) (option B). Straight out alone lost the well again (2-6 cm short); raised, every frame is in
+  reach. The settle wrist decides how upright the gun stands there, not along / top (no settle: tilted across but
+  the right wrist at -55 / -39 whatever the orientation or chest twist; the Uzi's (-30, -20): upright, muzzle by the
+  face). `[short] f0` entries are `hand_away`'s probe, not frames. The left arm crossed the belly 1.1-1.8 cm on its way
+  from the idle to the work place and back (frames 1-6 / 37-44, the same at every place): `declip_left` (spec
+  `contact` 0.008) swings its elbow out with rifle_hand's smoothed swing, the clip's ends left as built (the idle's own
+  0.9-1.1, the limit easing from that to 0.008 over 5 frames); right arm at most 0.8, guns 0. Racks moved too: the
+  Uzi's place had the left arm 1.3 cm in reaching the FAMAS's lever; AUG ch(0.10, 0.62, 0.14), FAMAS ch(0.10, 0.62,
+  0.16) (scanned with SMG_RACK). Racks: each hand from
+  the left side (the UMP's turn (-60, 30, -45)); the aimed rack stays in the aim (its right wrist reads -91 / -91 every
+  frame, the aim clip's own grip; not visible in renders). Out dir must be absolute on Windows (a relative one under
+  Blender lands in C:	mp).
+- Shipped: `compact_pack.py` (RELOAD_SETS: Bullpup packs both guns' reloads under their own names; 124 clips, 4 files,
+  8.8 MB, main mod anims_X/Bob), `compact_animsets.py ... Bullpup` (255 hold nodes) and `write_reload_nodes(...,
+  mag_event=False)` for BullpupAUG / BullpupFAMAS (16 nodes, player + player-vehicle; no changeWeaponPart: GoM's FAMAS
+  nodes have none either, its `InsertMag` event is read by nothing). Previews: `HOLD_SET=Bullpup hold_preview.py ...
+  aug aug_folded famas`, smg_reload.py `--preview`.
+
+## No clipping: every set we ship (2026-10-28)
+
+User, after the bullpup reloads: "we wanted to fix the clipping issues"; then "the arms not to pass through the body",
+the guns kept out of it too ("a nice extra"). Rule for every animation set: on every frame, each arm no deeper than
+vanilla's own in that frame, or 0.008 where vanilla's is clearer; each gun and its parts no deeper than 0.008. Measure
+before showing anything (TienInspectWeapon's clearance: chest / neck / head; arms by their bones a limb's radius out,
+vanilla's rifle idle reads 0.011; compact_build's old CONTACT 0.022 was half the forearm inside), the clip a clip starts
+from too, and frame-to-frame moves against vanilla's and the clips before (a de-clip can pop).
+
+- **Reverted for the short SMG stance (Uzi, UziT, MP7, MP5K), user 2026-10-28: "your current changes are worse".**
+  Their packs and compact_build.py are back to the 2026-10-27 commit (no `declip_pass` call), and the stance
+  reloads' `compact` spec has no `contact` again (no `match_ends` / `declip_left`). What looked worse was not said;
+  ask before trying again, and show it first. The compact_build bullet below records what was tried. The
+  de-clipped builds are still in `tmp/anim/compact` and `tmp/anim/full`: rebuild before packing from there.
+
+- Found (shipped before): the bullpup set's left forearm 1 cm deeper than vanilla's in 67 of 116 clips, its butts
+  through the jaw on every aim; the UMP set (52 clips), Uzi / UziT (76), MP7 (75), MP5K (67) up to 2.2 cm deeper; the
+  UMP's unfolded stock 2.3 in the shoulder on vanilla's aim; the sprint vault's and FallIdle04's right elbows flipping
+  16-22 cm in a frame; the stance reloads' ends 1.7-2.5 cm in.
+- rifle_hand.py sets (Bullpup, UMP): `contact`, `guns` (bodies and parts at their model points: the AUG's grip both
+  ways and 42-round, the FAMAS's STANAG, the UMP's stock unfolded / folded and 25), `aim_push` (Bullpup 0.063, UMP
+  0.045). Steps in CLAUDE.md "Bullpup set" (No clipping). Gun moves out of the body come in rounds: the spread hands a
+  frame a neighbour's move that can push it in (the UMP's aimed strafe: 1.3 cm), so whatever is still in is moved out
+  again from where it is. Results: every frame of both sets clear, the left hand on its place everywhere, nothing
+  released.
+- (Reverted, see above) compact_build.py (Uzi, MP7, MP5K; UziT packs the Uzi set): the variants and solvers as before, then
+  `declip_pass.run` on every clip written: (1) the gun out of the body with the hands on it (`move_gun`), the least
+  move of GUN_DIRS (forward, forward-up, forward to either side, up, in the chest's terms) and the buried vertices' way
+  out (`gun_escape`'s way alone ran along the chest: the Uzi idle's gun went 7 cm for 0.3 cm in), in rounds;
+  (2-3) each elbow swung, one direction per clip (`clip_swing_keep`; SWINGS / SWINGS_R), the hand kept, re-solved in
+  its own elbow plane at no swing (`solve_keep`: swivel off, pole = the pose's own elbow) so frames needing nothing are
+  unchanged; a frame no swing clears takes the swing that helps most (the maximum taken blindly was a 5 cm pop in the
+  pain emote); swings fade in over SWING_RAMP 10 frames; (4) an arm still in: the gun moved out with the hands, the
+  least move that clears both arms and the gun, in rounds; (5) a right arm still in: eased toward vanilla's own, the
+  gun with the hand (EmotePainLeftArmRifle: the stance carries the gun across the body where vanilla's hangs at the
+  side, 2.5 cm -> 0.6); (6) the left arm toward vanilla's own, then per frame from where it is. Masked gesture copies
+  (generic clips): their clip bones are not what the game shows (`masked(qu, qc, masks)` over the state underneath,
+  bone by bone), so the pass runs on the shown pose and the arm bones go back through `unmask` as
+  `generic_masked_pose` does; no gun moves there (the gun bone comes from the state underneath) and bones a mask
+  leaves at weight 0 cannot be steered. The raw-bone numbers (4-6.7 cm for the emotes) meant nothing.
+- smg_reload.py (spec `contact`: bullpups, UMP; the stance's `compact` specs had it too, reverted): `match_ends` gives a clip end that is
+  one of the clips it joins (first frames of `base_clips`; gun within 5 mm and 3 degrees) both arms from it, faded in
+  over RAMP frames (the rig solves its own elbows there); `declip_left` swings both elbows with declip_pass's
+  per-clip choice and moves the gun out with both hands for what is left; the left shoulder comes forward where the
+  arm falls short (`rifle_hand.shoulder_forward`, wrapped around the rig's solve_arm: the UMP's aimed rack was 2 cm
+  short with its aim pushed out). Rack places moved for the bullpups (CLAUDE.md "Bullpup set").
+- A masked copy keeps the pass only if its shown pose comes out no worse (`over_limits` before / after): through the
+  masks the MP5K's sneaking stomach-pain gestures went from 2.5 to 7 cm (kept as solved: clear as shown).
+- The short SMG stance as shipped (the committed build) keeps its old clipping: arms up to 2.2 cm deeper than
+  vanilla's, its reloads' ends 1.7-2.5 cm in. The de-clipped build had left over: the Uzi / MP7 sneaking stomach-pain
+  gestures' right arm 1.7-2.1 as shown, EmotePainLeftArmRifle's right arm 0.6, the MP7 unload 3 mm, run-to-stop
+  1-4 mm, frame-to-frame moves up to 1.7 cm (EmoteWipeRightLegRifle).
+- Tools: RIFLE_HAND_DEBUG / DECLIP_DEBUG print every frame; `tmp/anim/compact/run.sh <Set>` rebuilds a stance set in
+  six Blender processes (its underlying idles first, then five chunks; GUNWORKS_ANIMSETS set inside), `run_gen.sh` the
+  gestures only; the stance reloads read their bases from `tmp/anim/full/<Set>` (copy the build there with a
+  manifest of the shipped names). Pack with compact_pack.py per set (UziT from the Uzi build).
 
 ## Gun tooltips (2026-10-18)
 
@@ -1774,7 +1956,8 @@ Scratch tools of that trace (inspect_fbx.py, bounds.py, gripzoom.py, rt.py, synt
   `GunworksReloadAnim`) to the `animId` registered per gun full type in GoM's `Registries/ReloadAnims.lua`
   (`ReloadAnim.RegisterMultipleWeapons({ [fullType] = { animId, style = "none", durations } })`; MP5 / G3 / PSG1 =
   "MP5", MP5K / TEC9 = "handgun2", FAMAS = "famas_rifle", FAL = "fal_rifle"; GoM renames ids between versions, so
-  re-check a borrowed id after a GoM update: a stale one matches no node). AnimSet XMLs (both `AnimSets/player/actions/` and
+  re-check a borrowed id after a GoM update: a stale one matches no node; better, copy the nodes under an id of
+  our own, since another mod's same-path node file can replace GoM's). AnimSet XMLs (both `AnimSets/player/actions/` and
   `player-vehicle/actions/`): Load / Unload / Rack / RackAim per animId, conditions `PerformingAction=Reload`,
   `WeaponReloadType=<animId>`, `isLoading` / `isUnloading` / `isRacking`, events loadFinished, rackBullet,
   ejectCasing... MP5 load = vanilla `Bob_Reload_Rifle_Load`, unload = the same reversed, rack = `MP5_Rack.X`.

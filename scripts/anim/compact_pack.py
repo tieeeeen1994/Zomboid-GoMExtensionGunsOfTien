@@ -35,6 +35,9 @@ PACK = 40
 # every key kept, vanilla's own clips keep every key), for a cause not found in the game's code: keys are kept.
 LOSSY = os.environ.get("COMPACT_PACK_LOSSY")
 RELOADS = ("Unload", "Load", "Rack", "AimRack")
+# sets whose reload clips are per gun (smg_reload.py's specs named after these), packed with the set under their own
+# names: the bullpups' wells and handles differ (docs/design.md 4h)
+RELOAD_SETS = {"Bullpup": ("BullpupAUG", "BullpupFAMAS")}
 
 
 def shift_gun_bone(xa, d):
@@ -60,11 +63,12 @@ def main(set_dir, reload_dir, out_dir, set_name):
     src_prefix, prefix = "GunsOfTien_Compact%s_" % src_set, "GunsOfTien_Compact%s_" % set_name
     src_names = [l.strip() for l in open(os.path.join(set_dir, "manifest.txt")) if l.strip()]
     sources = [os.path.join(set_dir, "clips", n + ".x") for n in src_names]
-    for r in RELOADS:
-        n = src_prefix + "Reload" + r
-        src_names.append(n)
-        sources.append(os.path.join(reload_dir, n + ".x"))
-    names = [prefix + n[len(src_prefix):] for n in src_names]
+    for rs in RELOAD_SETS.get(set_name, (src_set,)):
+        for r in RELOADS:
+            n = "GunsOfTien_Compact%s_Reload%s" % (rs, r)
+            src_names.append(n)
+            sources.append(os.path.join(reload_dir, n + ".x"))
+    names = [prefix + n[len(src_prefix):] if n.startswith(src_prefix) else n for n in src_names]
     muzzle_z = CA.TURNED_SETS.get(set_name)
     for old in os.listdir(out_dir):
         if old.startswith(prefix) and old.endswith(".x"):

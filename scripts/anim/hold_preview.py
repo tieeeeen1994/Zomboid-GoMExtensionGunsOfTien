@@ -50,6 +50,14 @@ def _pt(gun, name):
     p = UZI_POINTS[gun][name]
     return point(p["offset"], p.get("rotate", (0, 0, 0)))
 UZI_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx")
+AUG_POINTS = json.load(open(os.path.join(ROOT, "scripts/aug_points.json")))
+AUG_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_AUG.fbx")
+AUG_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_AUG_magazines.fbx")
+
+
+def _aug_pt(name):
+    p = AUG_POINTS[name]
+    return point(p["offset"], p.get("rotate", (0, 0, 0)))
 # GOT_P93_MEDIA / GOT_MP7_POINTS: another copy of the meshes and points (a build of the old size to compare with)
 P93 = os.environ.get("GOT_P93_MEDIA") or os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 P93_FBX = os.path.join(P93, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx")
@@ -91,6 +99,27 @@ GUNS = {
         (os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"), "57x28Magazine50_P90",
          point(P90_POINTS["magazine"]["offset"], P90_POINTS["magazine"]["rotate"])),
     ]),
+    # the main mod's Steyr AUG A1 (build_aug.py), held as a rifle: 30-round magazine, front grip down (aug) or folded
+    # under the barrel (aug_folded)
+    "aug": dict(rifle=True, parts=[
+        (AUG_FBX, "AUG_BODY", None),
+        (AUG_FBX, "AUG_BOLT", None),
+        (AUG_FBX, "AUG_FOREGRIP", _aug_pt("foregrip_deployed")),
+        (AUG_MAGS, "556x45Magazine30_AUG", _aug_pt("magazine")),
+    ]),
+    "aug_folded": dict(rifle=True, parts=[
+        (AUG_FBX, "AUG_BODY", None),
+        (AUG_FBX, "AUG_BOLT", None),
+        (AUG_FBX, "AUG_FOREGRIP", _aug_pt("foregrip_folded")),
+        (AUG_MAGS, "556x45Magazine30_AUG", _aug_pt("magazine")),
+    ]),
+    # GoM's FAMAS (models/weapons/assault_rifles.txt: magazine point 0 -0.0763 0.0146), its 30-round STANAG
+    "famas": dict(rifle=True, parts=[
+        (os.path.join(GOM, "models_X/weapons/firearms/FAMAS.fbx"), "FAMAS_BODY", None),
+        (os.path.join(GOM, "models_X/weapons/firearms/FAMAS.fbx"), "FAMAS_BOLT", None),
+        (os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"), "556x45Magazine30_STANAG",
+         point((0.0, -0.0763, 0.0146))),
+    ]),
     "mp5k": dict(rifle=False, parts=[
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BODY", None),
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BOLT", None),
@@ -100,6 +129,14 @@ GUNS = {
 }
 CLIPS = {True: {"Idle": "Bob_IdleRifle.x", "Aim": "Bob_IdleAimRifle.x"},
          False: {"Idle": "Bob_IdleHandgun.x", "Aim": "Bob_IdleAimHandgun.x"}}
+# HOLD_SET=<Set>: a rifle-held gun on a built set's idle and aim instead of vanilla's (rifle_hand.py's output under
+# tmp/anim/rifle/<Set>/clips, e.g. Bullpup)
+HOLD_SET = os.environ.get("HOLD_SET")
+if HOLD_SET:
+    # HOLD_DIR: another build's output root; HOLD_IDLE / HOLD_AIM: other clips of the set (e.g. IdleNoAimRifle)
+    _d = os.path.join(os.environ.get("HOLD_DIR") or os.path.join(ROOT, "tmp", "anim", "rifle"), HOLD_SET, "clips")
+    CLIPS[True] = {"Idle": os.path.join(_d, "GunsOfTien_Compact%s_%s.x" % (HOLD_SET, os.environ.get("HOLD_IDLE", "IdleRifle"))),
+                   "Aim": os.path.join(_d, "GunsOfTien_Compact%s_%s.x" % (HOLD_SET, os.environ.get("HOLD_AIM", "IdleAimRifle")))}
 VIEWS = {
     # name: (camera location, look-at), Blender space (Z up, the character faces -Y, its left is +X)
     "front": ((0.45, -1.7, 0.95), (0.0, -0.16, 0.62)),

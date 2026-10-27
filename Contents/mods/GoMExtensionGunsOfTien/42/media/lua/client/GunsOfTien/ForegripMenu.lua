@@ -1,24 +1,25 @@
 --[[
-    Guns of Tien - Post-93 -- "Fold / Unfold Foregrip" for the MP7A1's integral front grip (shared/Foregrip.lua), in
-    the two places Gunworks offers "Fold / Unfold Stock": the inventory context menu of the gun
-    (Gunworks_ContextMenu_ISUI addFoldableStockOption, same tooltip and "move to inventory" rule) and the firearm
-    radial menu (Gunworks wraps ISFirearmRadialMenu.fillMenu and adds its slices after vanilla's; this wrapper runs
-    after it, our mod loads after SWMG). The radial icons are ours (scripts/post93/make_foregrip_radial.py), drawn in
-    Gunworks' style.
+    Guns of Tien -- "Fold / Unfold Foregrip" for the integral folding front grips (shared/GunsOfTien/Foregrip.lua: the
+    AUG A1's, Post-93's MP7A1), in the two places Gunworks offers "Fold / Unfold Stock": the inventory context menu of
+    the gun (Gunworks_ContextMenu_ISUI addFoldableStockOption, same tooltip and "move to inventory" rule) and the
+    firearm radial menu (Gunworks wraps ISFirearmRadialMenu.fillMenu and adds its slices after vanilla's; this wrapper
+    runs after it, our mod loads after SWMG). The radial icons are ours (scripts/make_foregrip_radial.py), drawn in
+    Gunworks' style. Moved here from Post-93 with Foregrip.lua (2026-10-27).
 --]]
 
 require("ISUI/ISInventoryPaneContextMenu")
 require("ISUI/ISFirearmRadialMenu")
 
-local Foregrip = require("GunsOfTienPost93/Foregrip")
+local Foregrip = require("GunsOfTien/Foregrip")
 
 local function texts(weapon)
+    local entry = Foregrip.Entry(weapon)
     if Foregrip.IsDeployed(weapon) then
-        return getText("IGUI_GunsOfTienPost93_FoldForegrip"), getText("IGUI_GunsOfTienPost93_FoldForegripDesc"),
-            "media/ui/GunsOfTienPost93_Radial_FoldForegrip.png"
+        return getText("IGUI_GunsOfTien_FoldForegrip"), getText(entry.foldDesc),
+            "media/ui/GunsOfTien_Radial_FoldForegrip.png"
     end
-    return getText("IGUI_GunsOfTienPost93_UnfoldForegrip"), getText("IGUI_GunsOfTienPost93_UnfoldForegripDesc"),
-        "media/ui/GunsOfTienPost93_Radial_UnfoldForegrip.png"
+    return getText("IGUI_GunsOfTien_UnfoldForegrip"), getText(entry.unfoldDesc),
+        "media/ui/GunsOfTien_Radial_UnfoldForegrip.png"
 end
 
 local function addOption(playerObj, item, context)

@@ -248,13 +248,86 @@ def ump_spec():
         clip_name="GunsOfTien_Compact%s_Reload%s",
         # the unload starts with the left hand where the idle has it, on the handguard: the magazine, 9 cm behind it,
         # was out of its reach on the first frame (2.3 cm short)
-        start_on_support=True,
+        start_on_support=True, contact=0.008,
         base=(os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleRifle.x"),
               os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleAimRifle.x")),
     )
 
 
-SPECS = {"uzi": uzi_spec, "mp5k": mp5k_spec, "ump": ump_spec,
+BULLPUP_CLIPS = os.path.join(ROOT, "tmp", "anim", "rifle", "Bullpup", "clips")
+
+
+def bullpup(name, **spec):
+    """The bullpup set (docs/design.md 4h; user, 2026-10-27): reload clips starting and ending in the set's own idle and
+    aim (rifle_hand.py "Bullpup"), one set of four per gun (their wells are 2 cm apart in height, their handles in
+    different places), packed with the set (compact_pack.py). GoM's way: no magazine in the hand (user), the
+    magazine only leaves the gun at the swap; the clips still key Bip01_Prop2, which the "none" style never shows."""
+    u = uzi_spec()
+    # the magazine change: the Uzi's place stood a full-length bullpup almost upright, muzzle by the face; a flatter
+    # gun further out carried the well (behind the grip) out of the left hand's reach. First draft (2026-10-27):
+    # ch(0, 0.62, 0.10), turned ~50 degrees up across the body, its rear against the chest. Moved out and up (user,
+    # 2026-10-28: "more forward so that it doesn't go in the body", "we can also raise the gun higher"): straight out
+    # alone lost the well again, raised it is in reach on every frame. The settle wrist decides how upright it
+    # stands there: (-45, -35) chosen (user, option B) over no settle (tilted across, the right wrist bent 55
+    # degrees the whole change) and the Uzi's (-30, -20) (upright, muzzle by the face). Both guns share it
+    work = dict(u["work"], pos=ch(0.0, 0.70, 0.16), along=ch(-0.70, 0.15, 0.70), top=ch(0.30, 0.95, 0.0),
+                wrist=(-45, -35))
+    # racking: the Uzi's place 5 cm higher and 3 cm further out (user, 2026-10-28, no clipping: there the left arm
+    # crossed the belly 1.3 cm deep reaching the FAMAS's lever, scanned with SMG_RACK)
+    rack = dict(u["rack"], pos=ch(0.10, 0.62, 0.14))
+    g = dict(name=name, rifle=True, hold_fix=u["hold_fix"], work=work, rack=rack, away=u["away"],
+             start_on_support=True, contact=0.008, clip_name="GunsOfTien_Compact%s_Reload%s",
+             base=(os.path.join(BULLPUP_CLIPS, "GunsOfTien_CompactBullpup_IdleRifle.x"),
+                   os.path.join(BULLPUP_CLIPS, "GunsOfTien_CompactBullpup_IdleAimRifle.x")))
+    g.update(spec)
+    return g
+
+
+def aug_spec():
+    """The main mod's Steyr AUG A1 (scripts/aug_points.json), rifle-held and upright: the magazine behind the grip,
+    curving forward (8 degrees at the lips, ~10 at the well's mouth 13 mm under them); the charging handle on the left
+    ahead of the scope (AUG_BOLT: y 0.100-0.121, z 0.024-0.043, x 0.011-0.018), pulled back 92 mm."""
+    p = json.load(open(os.path.join(ROOT, "scripts/aug_points.json")))
+    K = p["_extras"]["k"]
+    L0, H0 = p["_extras"]["photo_origin_mm"]
+    wp = lambda L, H, x=0.0: Vector((x * K, (L0 - L) * K, (H - H0) * K))
+    mag = mat_of(p["magazine"])
+    a = math.radians(9.5)
+    down = Vector((0.0, math.sin(a), -math.cos(a)))
+    s_grab = (13.0 + 10.0) * K                                         # 10 mm under the well's mouth
+    knob = wp(272.0, 155.0, 18.0)
+    return bullpup(
+        "BullpupAUG", points=p, mag_point=mag, out=down, grab=mag.translation + down * s_grab,
+        travel=s_grab + 0.010,
+        knob=knob, knob_back=knob - Vector((0.0, -p["bolt_fired"]["offset"][1], 0.0)),
+        knob_turn=(-60, 30, -45),                                      # the UMP's: a handle on the left, front
+        fbx=os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_AUG.fbx"), nodes=["AUG_BODY", "AUG_BOLT"],
+        mag_fbx=os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_AUG_magazines.fbx"),
+        mag_node="556x45Magazine30_AUG")
+
+
+def famas_spec():
+    """Guns of Marz's FAMAS (models/weapons/assault_rifles.txt), rifle-held and upright: the STANAG's lips at
+    (0, -0.0763, 0.0146), the well's bottom at z -0.033 (FAMAS_BODY, y -0.08..-0.06); the cocking lever is the front of
+    FAMAS_BOLT under the carry handle's bar (y 0.08-0.12, z 0.026-0.060, x within 0.004; the bar at z ~0.075), pulled
+    back 0.061 (bolt_fired), reached from the left side as the AUG's."""
+    mag = mat_of({"offset": [0.0, -0.0763, 0.0146]})
+    down = Vector((0.0, 0.10, -1.0)).normalized()
+    s_grab = (0.0146 + 0.033 + 0.008) / -down.z                        # 8 mm under the well's bottom
+    knob = Vector((0.006, 0.100, 0.045))
+    # its well is 2 cm lower than the AUG's: the first draft's place needed its own spot for it (2 cm higher and
+    # closer); the raised one reaches both
+    # its lever 2 cm further out still (at the AUG's place the left arm stayed 0.2 cm over its limit)
+    rack = dict(uzi_spec()["rack"], pos=ch(0.10, 0.62, 0.16))
+    return bullpup(
+        "BullpupFAMAS", rack=rack, mag_point=mag, out=down, grab=mag.translation + down * s_grab, travel=s_grab + 0.010,
+        knob=knob, knob_back=knob - Vector((0.0, 0.0611, 0.0)), knob_turn=(-60, 30, -45),
+        fbx=os.path.join(GOM, "models_X/weapons/firearms/FAMAS.fbx"), nodes=["FAMAS_BODY", "FAMAS_BOLT"],
+        mag_fbx=os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"),
+        mag_node="556x45Magazine30_STANAG")
+
+
+SPECS = {"uzi": uzi_spec, "mp5k": mp5k_spec, "ump": ump_spec, "aug": aug_spec, "famas": famas_spec,
          "compact_uzi": lambda: compact(uzi_spec(), "Uzi", False),
          # the lever from the left side (the stance's "over the top" template turned ~half a turn; scanned at the rack place)
     "compact_mp5k": lambda: dict(compact(mp5k_spec(), "MP5K", True), knob_turn=(15, 165, -75),
@@ -533,10 +606,14 @@ def render_closeups(out_dir, frames, state):
         cam = x_preview.camera("Cam_" + name, loc, tgt)
         cam.data.ortho_scale = 0.8
         cams[name] = cam
+    views = os.environ.get("SMG_PREVIEW_VIEWS")                     # e.g. "front,side" for a GIF
+    if views:
+        cams = {k: v for k, v in cams.items() if k in views.split(",")}
     obj = bpy.data.objects
     for frame in frames:
         scene.frame_set(frame)
         on_gun, in_hand = state(frame)
+        in_hand = in_hand and os.environ.get("SMG_PREVIEW_HAND_MAG") != "0"   # 0: as in game for style "none"
         obj["MagOnGun"].hide_render, obj["MagInHand"].hide_render = not on_gun, not in_hand
         for name, cam in cams.items():
             scene.camera = cam
@@ -564,6 +641,77 @@ def hand_offset(arm_ob, g, frame):
     return local - g["grab"]
 
 
+def match_ends(r, xa, poses, bases, ramp):
+    """A clip end that is one of the clips it joins (`bases`: their first frames; the gun within 5 mm and 3 degrees)
+    takes both arms from it, faded into the clip over `ramp` frames. The rig solves its own elbows at the ends, with the
+    hand where the idle's is but the elbow elsewhere: the compact stance's de-clipped idle swings its left elbow out,
+    and the reloads' first and last frames had the left arm 1.7-2.5 cm in where the idle has it clear."""
+    import rifle_hand as RH
+    n = len(poses) - 1
+    for end, step in ((0, 1), (n, -1)):
+        W = pose.world(xa, poses[end])["Bip01_Prop1"]
+        for bp in bases:
+            Wb = pose.world(xa, bp)["Bip01_Prop1"]
+            if (W.translation - Wb.translation).length < 0.005 and \
+                    W.to_quaternion().rotation_difference(Wb.to_quaternion()).angle < math.radians(3):
+                for k in range(ramp + 1):
+                    f = end + step * k
+                    if 0 <= f <= n:
+                        r.blend_local(poses[f], bp, RH.LEFT_CHAIN + RH.RIGHT_CHAIN, 1.0 - k / float(ramp))
+                break
+
+
+def declip_left(r, xa, arm_ob, poses, contact, src_dir):
+    """The left arm swung out of the body where it went in, the hand kept where it is (user, 2026-10-28: "we wanted
+    to fix the clipping issues"; the bullpup's hand went 1.1-1.8 cm into the belly between the handguard and the work
+    place, frames 1-6 and 37-44). Each frame no deeper than `contact`, or than the idle at the clip's ends (vanilla's
+    own level there, 0.9-1.1 cm), easing to `contact` over RAMP frames; rifle_hand.py's smoothed swing (the swing each
+    frame needs spread over RAMP frames either side, faded in from the unswung arm so it never jumps). The first and
+    last frames are left as built: they are the idle, or the unload's end the load starts from."""
+    sys.path.insert(0, HERE)
+    import compact_build as CB
+    import rifle_hand as RH
+    dc = CB.Declip(arm_ob, xa)
+    n = len(poses) - 1
+    ends = (dc.depth(poses[0])[0], dc.depth(poses[-1])[0])
+    limit = [max(contact, ends[0] * (1 - f / RH.RAMP), ends[1] * (1 - (n - f) / RH.RAMP)) for f in range(n + 1)]
+    # declip_pass's swing: one direction per clip of rifle_hand's SWINGS in the chest's terms, up to 0.4, the elbow
+    # kept in its own plane at no swing (out along the character's left alone, up to 0.2, left the compact stance's
+    # left arm 2.1-2.5 cm in on its way between the handguard and the magazine)
+    import declip_pass as DP
+    idle_chest = RH.chest_frame(src_dir).inverted()
+    turns = [pose.world(xa, q)["Bip01_Spine1"].to_3x3() @ idle_chest for q in poses]
+    swing = DP.clip_swing_keep(dc, r, xa, poses, limit, turns, "L", RH.SWINGS, list(range(1, n)))
+    # the right arm the same (the MP7 stance's aimed rack: 1.6 cm in), its limit from the ends likewise
+    rends = (dc.depth(poses[0])[1], dc.depth(poses[-1])[1])
+    rlimit = [max(contact, rends[0] * (1 - f / RH.RAMP), rends[1] * (1 - (n - f) / RH.RAMP)) for f in range(n + 1)]
+    rswing = DP.clip_swing_keep(dc, r, xa, poses, rlimit, turns, "R", DP.SWINGS_R, list(range(1, n)))
+    # what the swings leave (the MP7 stance's hand at the magazine: 1 cm): the gun moved a little out with both hands
+    # on it, the least move of declip_pass's directions that clears both arms, spread over RAMP frames
+    chests = [pose.world(xa, q)["Bip01_Spine1"].to_3x3() for q in poses]
+    need = []
+    for f in range(n + 1):
+        add = Vector()
+        if 0 < f < n and (dc.depth(poses[f])[0] > limit[f] + 0.0005 or dc.depth(poses[f])[1] > rlimit[f] + 0.0005):
+            def clear(v):
+                d = dc.depth(DP.move_gun(r, xa, poses[f], v, True))
+                return d[0] <= limit[f] + 0.0005 and d[1] <= rlimit[f] + 0.0005
+            add = DP.least_move(clear, [turns[f] @ g for g in DP.GUN_DIRS], cap=0.05) or Vector()
+        need.append(chests[f].inverted() @ add)
+    moved = 0
+    for f, v in enumerate(RH.spread_vectors(need)):
+        if v.length > 0 and 0 < f < n:
+            poses[f] = DP.move_gun(r, xa, poses[f], chests[f] @ v, True)
+            moved += 1
+    over = [(f, dc.depth(q)[0] - limit[f], dc.depth(q)[1] - rlimit[f]) for f, q in enumerate(poses)]
+    fl = max(over, key=lambda x: x[1])
+    fr = max(over, key=lambda x: x[2])
+    print("[declip] arms swung on %d / %d frames (largest %.3f / %.3f), gun moved out on %d; worst over the limits: "
+          "left %.3f at f%d, right %.3f at f%d" % (
+              sum(1 for s in swing if s.length > 0), sum(1 for s in rswing if s.length > 0),
+              max(s.length for s in swing), max(s.length for s in rswing), moved, fl[1], fl[0], fr[2], fr[0]))
+
+
 def build(src_dir, out_dir, gun, clip, preview=False):
     g = SPECS[gun]()
     for key in ("work", "rack"):                         # tuning: SMG_WORK / SMG_RACK = "right,up,forward"
@@ -572,16 +720,36 @@ def build(src_dir, out_dir, gun, clip, preview=False):
             g[key] = dict(g[key], pos=ch(*[float(x) for x in v.split(",")]))
         v = os.environ.get("SMG_%s_WRIST" % key.upper())                 # "y,z": settle the gun to that right wrist
         if v:
-            g[key] = dict(g[key], wrist=tuple(float(x) for x in v.split(",")))
+            g[key] = dict(g[key], wrist=() if v == "off" else tuple(float(x) for x in v.split(",")))
         for part in ("along", "top"):
             v = os.environ.get("SMG_%s_%s" % (key.upper(), part.upper()))
             if v:
                 g[key] = dict(g[key], **{part: ch(*[float(x) for x in v.split(",")])})
+        v = os.environ.get("SMG_%s_TWIST" % key.upper())                 # the chest turned (degrees)
+        if v:
+            g[key] = dict(g[key], twist=float(v))
     xa, r, grips = build_rig(src_dir, g)
+    if g.get("contact"):
+        # the left shoulder forward where the arm falls short (the UMP's aimed rack, 2 cm short of its handle with the
+        # aim's gun pushed out)
+        sys.path.insert(0, HERE)
+        import rifle_hand as RH
+        solve = r.solve_arm
+
+        def reach(p, side, target, pole_extra=Vector(), limit=0.0):
+            if side == "L":
+                RH.shoulder_forward(xa, p, target)
+            return solve(p, side, target, pole_extra, limit)
+        r.solve_arm = reach
     n = LENGTHS[clip]
     # the unload's arms reach the work place by frame 8: their elbows leave the idle's by then
     poses = r.build(keys_for(clip, r, g, grips), n, breath=(0, None), from_base=(clip in ("Unload", "Rack")),
                     ramp=8 if clip == "Unload" else None)
+    if g.get("contact"):
+        sys.path.insert(0, HERE)
+        import rifle_hand as RH
+        match_ends(r, xa, poses, [pose.from_clip(xanim.read(pth), 0) for pth in base_clips(src_dir, g)], RH.RAMP)
+        declip_left(r, xa, x_import.load(base_clips(src_dir, g)[0]), poses, g["contact"], src_dir)
     if clip in SWAP:
         key_prop2(xa, poses, g, SWAP[clip], clip == "Unload")
     if os.environ.get("SMG_CLEAR"):
@@ -639,7 +807,8 @@ def build(src_dir, out_dir, gun, clip, preview=False):
                 worst[k] = (d, f)
     clearance.report(tag, worst)
     if preview:
-        render_closeups(os.path.join(out_dir, "prev_%s_%s" % (gun, clip)), list(range(0, n + 1, 3)), state)
+        render_closeups(os.path.join(out_dir, "prev_%s_%s" % (gun, clip)),
+                        list(range(0, n + 1, int(os.environ.get("SMG_PREVIEW_STEP") or 3))), state)
 
 
 if __name__ == "__main__":

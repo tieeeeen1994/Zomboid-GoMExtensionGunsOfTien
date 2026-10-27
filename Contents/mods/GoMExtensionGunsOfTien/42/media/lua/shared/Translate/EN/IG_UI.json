@@ -7,5 +7,9 @@
   "IGUI_ItemCat_Casings": "Casings",
   "IGUI_ClickToRemove": "Click to remove",
   "IGUI_SelectAmmunition": "Select Ammunition",
-  "IGUI_GunsOfTien_NeedLinks": "Needs %1"
+  "IGUI_GunsOfTien_NeedLinks": "Needs %1",
+  "IGUI_GunsOfTien_FoldForegrip": "Fold Foregrip",
+  "IGUI_GunsOfTien_UnfoldForegrip": "Unfold Foregrip",
+  "IGUI_GunsOfTien_AUGFoldForegripDesc": "Fold the front grip forward under the barrel.",
+  "IGUI_GunsOfTien_AUGUnfoldForegripDesc": "Swing the front grip down for a steadier hold."
 }

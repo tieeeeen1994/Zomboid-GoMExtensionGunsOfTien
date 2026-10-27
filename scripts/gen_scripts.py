@@ -1414,6 +1414,203 @@ def uzi():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# Steyr AUG A1 (docs/design.md 4g, user 2026-10-27: Steyr green, no muzzle parts; meshes and points:
+# scripts/build_aug.py, icons: scripts/make_aug_art.py, registries: shared/GunsOfTien/AUG.lua). A bullpup held as a
+# rifle, as GoM's FAMAS (its handling sounds and swing); its own 30 / 42 magazines; the integral 1.5x scope a hidden
+# part with no model (the optic is in the body's mesh), the folding front grip two hidden parts drawn with one node at
+# two points (shared/GunsOfTien/Foregrip.lua swaps them). No rails, bayonet or muzzle parts: none fit a 1993 A1.
+AUG_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'aug_points.json')
+AUG_MAGS = [(30, 0.2), (42, 0.25)]       # GoM's STANAG 30 weighs 0.2; Steyr's polymer 42 is a little heavier
+AUG_PARTS = [  # hidden integrated parts: (item, part type, English name)
+    ('AUG_Integrated_Foregrip_Folded', 'ForegripIntegrated', 'AUG A1 Integrated Foregrip (Folded)'),
+    ('AUG_Integrated_Foregrip_Deployed', 'ForegripIntegrated', 'AUG A1 Integrated Foregrip (Deployed)'),
+    ('AUG_Integrated_Scope', 'Scope', 'AUG A1 Integrated 1.5x Scope'),
+]
+
+
+def aug_mag(rounds):
+    return f'556x45Magazine{rounds}_AUG'
+
+
+def aug():
+    pts = json.load(open(AUG_POINTS))
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model AUG {{
+        mesh     = weapons/firearms/GunsOfTien_AUG|AUG_BODY,
+        texture  = {tex}/AUG,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'foregrip_deployed', 'foregrip_folded'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append("    }\n")
+    for node in ('BOLT', 'FOREGRIP'):
+        models.append(f"""
+    model AUG_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_AUG|AUG_{node},
+        texture  = {tex}/AUG,
+        cullFace = None,
+    }}
+""")
+    for r, _ in AUG_MAGS:
+        models.append(f"""
+    model {aug_mag(r)} {{
+        mesh     = weapons/magazines/GunsOfTien_AUG_magazines|{aug_mag(r)},
+        texture  = {tex}/{aug_mag(r)},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_aug.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.AUG_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.AUG_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.AUG_Integrated_Foregrip_Folded {MODULE}.AUG_FOREGRIP foregrip_folded foregrip_folded,",
+             f"{w}{MODULE}.AUG_Integrated_Foregrip_Deployed {MODULE}.AUG_FOREGRIP foregrip_deployed foregrip_deployed,"]
+    parts += [f"{w}{MODULE}.{aug_mag(r)} {MODULE}.{aug_mag(r)} magazine magazine," for r, _ in AUG_MAGS]
+    # Stats (docs/design.md 4g): GoM's M16A1 damage (the same round from the same 20" barrel), between its FAMAS and
+    # M16A1 in handling, GoM's FNC's reliability; 3.6 kg as GoM gives its FAMAS its real weight; sound 175 / 50 from
+    # sound_model.py's model (5.56 from 20", the M16's own figure; the main mod's SoundTable is for GoM's guns only).
+    items = [f"module {MODULE} {{\n", f"""
+    item AUG {{
+        MinDamage                    = 1.0,
+        MaxDamage                    = 1.8,
+        CriticalChance               = 25.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 4.2,
+        HitChance                    = 45,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 45,
+        RecoilDelay                  = 15,
+        MaxRange                     = 50.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 8,
+        MaxSightRange                = 16.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 0.8,
+        ConditionLowerChanceOneIn    = 200,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 6,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 3.6,
+        MetalValue                   = 50.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_556x45,
+        AmmoBox                      = MarzGuns.556x45_Box,
+        MagazineType                 = {MODULE}.{aug_mag(30)},
+        MaxAmmo                      = 30,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_AUG,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.AUG,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M16Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.2,
+        SoundRadius                  = 175,
+        SoundVolume                  = 50,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""]
+    for r, weight in AUG_MAGS:
+        items.append(f"""
+    item {aug_mag(r)} {{
+        AmmoType         = swmg:bullet_556x45,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{aug_mag(r)},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {r},
+        MountOn          = {MODULE}.AUG,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{aug_mag(r)},
+        WorldStaticModel = {MODULE}.{aug_mag(r)},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, _ in AUG_PARTS:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_aug.txt', ''.join(items))
+    # GoM repairs its FAMAS with Aiming=3
+    write('scripts/GunsOfTien/fixing_aug.txt', f"""module Base {{
+    fixing Fix AUG {{
+        Require = {MODULE}.AUG,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.AUG'] = 'Steyr AUG A1 Assault Rifle'          # GoM's "FN FNC Assault Rifle"
+    for r, _ in AUG_MAGS:      # GoM's names ("STANAG 30Rds 5.56x45mm Magazine", "MAC-10 40Rds .45 ACP Extended Magazine")
+        names[f'{MODULE}.{aug_mag(r)}'] = f"AUG {r}Rds 5.56x45mm {'Extended ' if r > 30 else ''}Magazine"
+    for part, _, name in AUG_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # GoM's MP5K held in one hand (OneHand.lua): GoM's model (MarzGuns/models/weapons/smgs.txt, Guns of Marz 42.16) under
 # our module, without the turn CompactStance.lua gives GoM's own in the hand, so vanilla's pistol clips draw it the right
 # way up. OneHand.lua copies GoM's live mesh, texture and points over it at game start (a GoM update stays in step).
@@ -1473,5 +1670,6 @@ if __name__ == '__main__':
     m249()
     belt_links()
     uzi()
+    aug()
     one_hand()
     print('written under', os.path.normpath(ROOT))

@@ -1,9 +1,10 @@
-"""Radial menu icons for folding and unfolding the MP7's integral front grip, in Gunworks' radial icon style
+"""Radial menu icons for folding and unfolding the integral front grips (the AUG A1's, Post-93's MP7A1), in Gunworks' radial icon style
 (GunworksRadial_FoldStock / UnfoldBipod: 32x32 olive pixel art, black outline, red arrows).
 
-    py scripts/post93/make_foregrip_radial.py
+    py scripts/make_foregrip_radial.py
 
-Writes Contents/mods/GoMExtensionGunsOfTienPost93/42/media/ui/GunsOfTienPost93_Radial_{Fold,Unfold}Foregrip.png:
+Writes Contents/mods/GoMExtensionGunsOfTien/42/media/ui/GunsOfTien_Radial_{Fold,Unfold}Foregrip.png (made for the MP7
+in Post-93, moved to the main mod 2026-10-27 with the fold code):
 the grip hanging under a strip of receiver, red arrows up (fold) or down (unfold) on both sides, as Gunworks keeps
 one picture per part and turns only the arrows.
 """
@@ -13,7 +14,7 @@ import os
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-UI = os.path.normpath(os.path.join(HERE, "../../Contents/mods/GoMExtensionGunsOfTienPost93/42/media/ui"))
+UI = os.path.normpath(os.path.join(HERE, "../Contents/mods/GoMExtensionGunsOfTien/42/media/ui"))
 
 # Gunworks' palette (sampled from its radial icons)
 OUTLINE = (0, 0, 0, 255)
@@ -72,7 +73,7 @@ def draw(arrow_up):
 def main():
     os.makedirs(UI, exist_ok=True)
     for name, up in (("FoldForegrip", True), ("UnfoldForegrip", False)):
-        path = os.path.join(UI, "GunsOfTienPost93_Radial_%s.png" % name)
+        path = os.path.join(UI, "GunsOfTien_Radial_%s.png" % name)
         draw(up).save(path)
         print("wrote", path)
 

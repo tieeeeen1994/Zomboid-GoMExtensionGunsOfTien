@@ -4,6 +4,7 @@ Project Zomboid Build 42 mod.
 
 **Requires:** Gunworks Gang Framework, Guns of Marz
 **Optional:** Ammo Maker (making the new rounds), Hot Brass (spent casings)
+**Not compatible with:** mods that change the character's animations, unless support for them is added
 
 Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2.
 
@@ -67,6 +68,18 @@ Maker they can be made.
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
   SMGs and on SWAT zombies, and with its criminals' guns (criminal zombies, bandit bags, pawn shops, stashes); the long
   magazines with its high-capacity magazines
+
+## Steyr AUG A1
+
+- Steyr AUG A1, the green Austrian bullpup of 1977 (imported to the US until 1989): automatic at 700 rounds a minute
+  or single shots, its integral 1.5x scope, and a front grip that folds forward under the barrel (Fold / Unfold
+  Foregrip in the gun's menu and the firearm radial; unfolded, it steadies aim and automatic fire)
+- Its own translucent 30 and 42-round magazines
+- Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
+  .223 boxes; the 42-round magazine with its high-capacity magazines
+- Bullpup animations for the AUG and Guns of Marz's FAMAS: the left hand under the handguard or on the AUG's grip
+  instead of on the bare barrel, the gun held a little further from the face when aiming, and reloads of their own
+  (the AUG's charging handle on the left, the FAMAS's lever under its carry handle)
 
 ## Short SMG stance (beta)
 

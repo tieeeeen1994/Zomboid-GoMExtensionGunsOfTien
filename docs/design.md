@@ -255,6 +255,59 @@ which leaves the Uzi half of that spawner's kits; the 40 and 50 loose in
 found gun (GoM's MP5 rule, shortest likeliest, with each gun's standard first): Uzi 32:30, 25:20, 20:5; Mini and
 Micro 20:30, 25:20, 32:5.
 
+## 4g. Steyr AUG A1 (2026-10-27, designed, built)
+
+Steyr's bullpup, adopted by the Austrian Army in 1977 as the StG 77; Gun South imported the semi-automatic AUG/SA
+into the US from the 1980s until the 1989 import ban, so a Kentucky gun owner could have one in July 1993 (user,
+2026-10-27: "Implement gun AUG A1"; finish Steyr green, a Commons photo as reference, no muzzle parts). Main mod,
+module `GunsOfTien`. Reference: the Commons photo "Steyr AUG 5,56 mm" (MoserB, public domain; an Austrian StG 77, left
+side, front grip down, magazine out), kept out of the repo in tmp/ref/aug, traced at Steyr's 790 mm.
+
+| | `GunsOfTien.AUG` "Steyr AUG A1 Assault Rifle" (GoM's "FN FNC Assault Rifle" naming) |
+|---|---|
+| Real | 5.56x45, 508 mm barrel, 790 mm long, 3.6 kg, 680-750 rpm (Wikipedia; IMFDB says 800-850) |
+| Held | as a rifle, back slot, a bullpup as GoM's FAMAS (its swing, M16 handling sounds) |
+| Fire | Auto / Single (the A1's two-stage trigger), 700 rpm, spread 0.12 / 2.5 (GoM's FAMAS 0.1 / 2.0 at 1000, FNC 0.15 / 3.0 at 750) |
+| Stats | damage 1.0-1.8 (GoM's M16A1: the same round from the same 20" barrel), HitChance 45 (FAMAS / FNC 40, M16A1 50), Aimingtime 45, RecoilDelay 15, range 50, crit 25, jam 0.8 (FNC), wear 1 in 200, weight 3.6 (GoM gives its FAMAS its real weight) |
+| Sound | 175 / 50 (sound_model.py's model gives the M16's 20" figure), M16 events |
+| Optic | the integral 1.5x Swarovski in the carrying handle, cast with the receiver: part of the body mesh, its stats a hidden required part `AUG_Integrated_Scope` (part type Scope, cannot be removed), below GoM's 2x Elcan: Aiming Time ×1.05, Hit and Crit ×1.05, sight range ×1.15. No rail, so none of GoM's sights, lights or lasers fit |
+| Foregrip | the A1's folding front grip, folding forward under the barrel: parts `AUG_Integrated_Foregrip_Folded / _Deployed` (one mesh drawn at two points), "Fold / Unfold Foregrip" in the gun's menu and the radial as Post-93's MP7A1 (the fold code moved to the main mod for both, shared/GunsOfTien/Foregrip.lua); unfolded GoM's Stub Foregrip stats (Aiming Time ×0.8, Hit and Crit ×1.15, auto spread ×0.85); folded on a found gun |
+| Magazines | Steyr's translucent polymer 30 and 42 ("AUG 30Rds 5.56x45mm Magazine", "AUG 42Rds 5.56x45mm Extended Magazine"; 0.2 / 0.25), profile "5.56x45mm AUG", GoM's 5.56x45mm family (its 5.56 loads, .223, the main mod's none). No STANAG: the A1 takes none |
+| Hold, reload | the bullpup set shared with GoM's FAMAS (4h): its own hold and reload clips (first GoM's FAMAS reload on vanilla's rifle hold) |
+| Bolt | the charging handle on the left rides with the bolt carrier (GoM's Bolt_Lock / Bolt_Fired swap, 92 mm) |
+| Casings | right side, GoM's FAMAS Hot Brass values |
+| Repair | RepairPack, Aiming 3 (GoM's FAMAS) |
+
+No bayonet, rails or muzzle parts (user: none fit a 1993 A1). Loot (GoM's routes): one more kit in GoM's
+`World_Import_Rifle_Spawner` beside its FNC, FAL, G3, PSG-1, FAMAS and M93R (gun stores, pawn shops' special guns,
+police evidence, survivalist trucks, RifleCase4, late gun finds), packed as GoM's civilian FNC kit there (the gun, up
+to 6 thirties, up to 6 .223 boxes); the 42 loose only, one more choice in `World_HighCap_AR_Magazine_Spawner`'s
+list (GoM's SpawnHighCapMags). A found gun carries a 30 at 30 %, a 42 at 5 %.
+
+## 4h. Bullpup animation set (2026-10-27, designed, built)
+
+User, 2026-10-27, after the AUG's hold renders (vanilla's rifle clips put the left hand on its bare barrel): "that is
+why we now need a bullpup animation set", for the AUG A1 and GoM's FAMAS, reload included.
+- **Hold**: one set for both guns (user: "One set for all"), the UMP set's method (`scripts/anim/rifle_hand.py`:
+  vanilla's rifle clips with the left arm solved again): the palm under the FAMAS's handguard and on the AUG's folded
+  grip, which lie in the same place (0.12-0.19 ahead of the grip, their undersides 3 mm apart); vanilla's 0.218 is the
+  FAMAS's handguard tip and the AUG's bare barrel. The AUG with its grip unfolded keeps the same hold (the hand just
+  ahead of the grip's bracket). Aiming, the gun sits 3-4 cm further from the face (user), both arms solved again: the
+  AUG's scope eyepiece touched the face. Built (2026-10-28, no clipping): ~10 cm, as far as the bullpups' long butts
+  need to come out of the shoulder (at 3-4 cm they went through the jaw in the side view); arms and guns de-clipped
+  on every frame (CLAUDE.md "Bullpup set").
+- **Reload**: GoM's way (user: no magazine in the hand), clips of our own (GoM's FAMAS clips are glTF from another rig).
+  The magazine wells are 2 mm apart (AUG 0.074 behind the grip, FAMAS 0.076), so one unload and one load clip serve
+  both. The rack differs (user: "famas and AUG have different racking positions"): one rack and one aimed rack per
+  gun, the AUG's left hand to its handle on the left side ahead of the scope (0.10-0.12 ahead, pulled back 0.055), the
+  FAMAS's over the top to the lever under its carry handle (pulled back 0.061). One reload id per gun, both playing the
+  shared load / unload clips; GoM's FAMAS re-registered from this mod.
+- Built: the wells turned out 2 cm apart in height (not 2 mm: that is front to back), so each gun has all four of its
+  reload clips. The magazine change holds the gun out in front of the chest, raised, muzzle up and to the left, the
+  well facing the left hand (the SMGs' upright place put a full-length bullpup's muzzle by the face; flatter and
+  further out took the well out of reach; the first draft, lower and closer, had the gun's rear against the chest;
+  user, 2026-10-28: further out and higher, option B, one place for both guns).
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

@@ -1,0 +1,209 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2744,
+      0.0262
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      -0.0736,
+      -0.006
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0555,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip_deployed": {
+    "offset": [
+      0.0,
+      0.1242,
+      0.009
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip_folded": {
+    "offset": [
+      0.0,
+      0.1242,
+      0.009
+    ],
+    "rotate": [
+      90.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 455, H 100)",
+    "magazine": "556x45Magazine30/42_AUG, origin at their feed lips, inside the well (its mouth L 545-610)",
+    "bolt_fired": "the charging handle back 92 mm real (it rides with the bolt carrier on the A1)",
+    "foregrip": "AUG_FOREGRIP is modelled down with its origin at the hinge pin (photo L 249, H 115); folded = the same node turned 90 degrees forward about X, lying under the barrel",
+    "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / rail points (nothing fits the A1)"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      455.0,
+      100.0
+    ],
+    "bore_mm": 143.5,
+    "k": 0.000603
+  },
+  "_bounds": {
+    "AUG_BODY": {
+      "min": [
+        -0.0172,
+        -0.2008,
+        -0.0585
+      ],
+      "max": [
+        0.0172,
+        0.2744,
+        0.082
+      ],
+      "tris": 2496
+    },
+    "AUG_BOLT": {
+      "min": [
+        0.0109,
+        0.0995,
+        0.0241
+      ],
+      "max": [
+        0.0175,
+        0.1206,
+        0.0434
+      ],
+      "tris": 136
+    },
+    "AUG_FOREGRIP": {
+      "min": [
+        -0.009,
+        -0.0109,
+        -0.0669
+      ],
+      "max": [
+        0.009,
+        0.0103,
+        0.0044
+      ],
+      "tris": 260
+    },
+    "556x45Magazine30_AUG": {
+      "min": [
+        -0.0098,
+        -0.0168,
+        -0.1026
+      ],
+      "max": [
+        0.0098,
+        0.0412,
+        0.0022
+      ],
+      "tris": 426
+    },
+    "556x45Magazine42_AUG": {
+      "min": [
+        -0.0098,
+        -0.0168,
+        -0.1346
+      ],
+      "max": [
+        0.0098,
+        0.053,
+        0.0022
+      ],
+      "tris": 522
+    },
+    "AUG_FOREGRIP_deployed": {
+      "min": [
+        -0.009,
+        0.1133,
+        -0.0579
+      ],
+      "max": [
+        0.009,
+        0.1345,
+        0.0134
+      ],
+      "tris": 260
+    },
+    "AUG_FOREGRIP_folded": {
+      "min": [
+        -0.009,
+        0.1198,
+        -0.0019
+      ],
+      "max": [
+        0.009,
+        0.1911,
+        0.0193
+      ],
+      "tris": 260
+    },
+    "556x45Magazine30_AUG_fitted": {
+      "min": [
+        -0.0098,
+        -0.0904,
+        -0.1086
+      ],
+      "max": [
+        0.0098,
+        -0.0324,
+        -0.0038
+      ],
+      "tris": 426
+    },
+    "556x45Magazine42_AUG_fitted": {
+      "min": [
+        -0.0098,
+        -0.0904,
+        -0.1406
+      ],
+      "max": [
+        0.0098,
+        -0.0206,
+        -0.0038
+      ],
+      "tris": 522
+    }
+  }
+}

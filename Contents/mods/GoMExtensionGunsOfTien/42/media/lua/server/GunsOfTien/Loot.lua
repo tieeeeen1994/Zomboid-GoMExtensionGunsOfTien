@@ -34,6 +34,12 @@
     boxes as GoM's kit there (its standard magazine only). The long 40 and 50 come loose only, in
     MarzGuns.World_HighCap_Tactical_Magazine_Spawner (placed while GoM's SpawnHighCapMags is on), each with up to
     two boxes as GoM's MP5 drums.
+    The Steyr AUG A1 (shared/GunsOfTien/AUG.lua; docs/design.md 4g; user, 2026-10-27) is an import as GoM's FNC, FAL,
+    G3 and FAMAS are: one more alternative in MarzGuns.World_Import_Rifle_Spawner (gun stores, pawn shops' special
+    guns, police evidence, survivalist trucks, rifle cases, late gun finds), packed as GoM's civilian FNC kit there
+    (the gun, up to 6 of its 30-round magazines, up to 6 boxes of .223: the AUG/SA was a civilian import). Its 42-round
+    magazine comes loose only, one more choice in MarzGuns.World_HighCap_AR_Magazine_Spawner's list beside GoM's long
+    STANAGs (placed while GoM's SpawnHighCapMags is on).
 --]]
 
 require("Items/ProceduralDistributions")
@@ -46,6 +52,8 @@ local LISTS = {
         { "GunsOfTien.SMG9_Muzzle_Mount_Device" } },
     { "MarzWeapons/OnCreate/VanillaReplacerTable", "VanillaAttachmentMap", "Base.ChokeTubeImproved",
         { "GunsOfTien.SMG9_Muzzle_Mount_Device" } },
+    { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_HighCap_AR_Magazine_Spawner",
+        { "GunsOfTien.556x45Magazine42_AUG" } },
 }
 
 -- M249 kits, GoM's M60 kits in the same spawners: { spawner, belt boxes }
@@ -87,6 +95,12 @@ for _, mag in ipairs({ "GunsOfTien.9x19Magazine40_UZI", "GunsOfTien.9x19Magazine
         { items = { "MarzGuns.9x19_Box" }, amountChance = 2 },
     } }
 end
+-- the AUG A1 kit, as GoM's FNC kit in the import spawner (its other kits there carry 6 and 6 too)
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner", {
+    { items = { "GunsOfTien.AUG" }, amountChance = 1 },
+    { items = { "GunsOfTien.556x45Magazine30_AUG" }, amountChance = 6 },
+    { items = { "MarzGuns.223_Box" }, amountChance = 6 },
+} }
 
 -- GoM's M60 kits get a group of M13 link boxes: { spawner, link boxes } (as many as the kit's belt boxes)
 local M60_KITS = {
@@ -180,7 +194,8 @@ local function addLoot()
             list[#list + 1] = entry[2]
             addedAlternatives[#addedAlternatives + 1] = { list, entry[2] }
         else
-            print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, the Uzis will not spawn there")
+            print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, " .. entry[2][1].items[1]
+                .. " will not spawn there")
         end
     end
     for _, entry in ipairs(M60_KITS) do

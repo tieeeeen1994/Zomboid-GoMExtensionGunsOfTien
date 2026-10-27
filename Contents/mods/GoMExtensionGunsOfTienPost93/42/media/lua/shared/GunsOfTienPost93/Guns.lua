@@ -181,11 +181,15 @@ ReloadAnim.RegisterWeapon(P90, {
     attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
     durations = { unload = 1.4, load = 1.8, rack = 1.2 },
 })
--- SCAR-H: GoM's FAL clips and durations (its magazineProfile("fal_rifle"); "FAL" before GoM's 2026-10-23 update, which
--- left the old id matching no AnimSet node: the insert played a hand raise and never seated the magazine); the SCAR-L
--- has no entry, as GoM's M4A1 (Gunworks' default)
+-- SCAR-H: GoM's FAL clips and durations (its magazineProfile("fal_rifle")) through nodes of its own (AnimSets
+-- GunsOfTienSCARH_*, GoM's current FAL nodes written out in full). Not GoM's own FAL id: its node files
+-- (LoadFAL_HB.xml...) are one path per file for the game, and the last mod loaded that has it wins, so an old copy
+-- answering "FAL" (GoM before its 2026-10-23 update; Marz Mods Animsets for Linux, 3774316897, still ships one)
+-- replaced GoM's fal_rifle node depending on the server's mod order, and the insert played a hand raise and never
+-- seated the magazine. The clips are GoM's (Ithaca_Reload_FAL_Load...). The SCAR-L has no entry, as GoM's M4A1
+-- (Gunworks' default)
 ReloadAnim.RegisterWeapon(SCARH, {
-    animId = "fal_rifle",
+    animId = "GunsOfTienSCARH",
     style = "none",
     durations = { unload = 2.7, load = 2.7, rack = 1.2, rackAim = 1.666667 },
 })
