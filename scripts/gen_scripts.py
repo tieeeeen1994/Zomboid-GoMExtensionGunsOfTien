@@ -522,9 +522,10 @@ def lasers():
 SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI'
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
-# Both parts are built at GoM's SMG size (0.72 of real, GoM's MP5s), while Guns of Tien's own guns are drawn at the
-# M16A2's proportion (0.603, user 2026-10-26): our Uzis and the UMP9 draw them through a second model of the same mesh,
-# `<part>_GoT`, scaled down by as much (a gun's ModelWeaponPart line names the model it draws a part with).
+# Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
+# (0.603, user 2026-10-26): every gun that takes them (our Uzis, the UMP9, and since 2026-10-27 GoM's MP5 and MP5A2 on
+# our MP5 models, Suppressors.lua) draws them through a second model of the same mesh, `<part>_GoT`, scaled down by as
+# much (a gun's ModelWeaponPart line names the model it draws a part with).
 GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
 
 
@@ -1611,50 +1612,50 @@ def aug():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
-# GoM's MP5K held in one hand (OneHand.lua): GoM's model (MarzGuns/models/weapons/smgs.txt, Guns of Marz 42.16) under
-# our module, without the turn CompactStance.lua gives GoM's own in the hand, so vanilla's pistol clips draw it the right
-# way up. OneHand.lua copies GoM's live mesh, texture and points over it at game start (a GoM update stays in step).
-MP5K_1H = """module GunsOfTien {
-
-    model MP5K_1H {
-        mesh     = weapons/firearms/MP5K|MP5K_BODY,
-        texture  = weapons/firearms/smgs/MP5K,
-        cullFace = None,
-        attachment muzzle {
-            offset = 0.0000 0.2202 -0.0445,
-            rotate = -90.0000 0.0000 -180.0000,
-        }
-        attachment world {
-            offset = -0.0250 -0.0000 -0.0000,
-            rotate = 0.0000 0.0000 0.0000,
-        }
-        attachment bolt_fired {
-            offset = 0.0000 -0.0297 0.0000,
-            rotate = 0.0000 0.0000 0.0000,
-        }
-        attachment magazine {
-            offset = 0.0000 0.1196 -0.0388,
-            rotate = 171.7924 0.0000 180.0000,
-        }
-        attachment rail_up {
-            offset = 0.0000 0.1153 -0.0663,
-            rotate = -180.0000 0.0000 -180.0000,
-        }
-        attachment scope {
-            offset = 0.0000 0.1292 -0.0693,
-            rotate = -180.0000 0.0000 -180.0000,
-        }
-        attachment canon {
-            offset = 0.0000 0.2252 -0.0408,
-            rotate = 0.0000 0.0000 0.0000,
-        }
-    }
-}
-"""
+# GoM's MP5 family at our size (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must stand in one
+# proportion, the Uzis'). scripts/build_mp5.py scales GoM's meshes and points by one factor for the whole family and its
+# magazines (mp5_points.json, see its header); these blocks declare GoM's own model names again (module MarzGuns), so
+# GoM's items and their ModelWeaponPart lines draw our meshes with GoM's textures. A later block resets GoM's mesh,
+# texture and scale but keeps its points (ModelScript.reset), so every point is written here. GoM's MP5 is shown as the
+# MP5A3 it is (retractable stock; the MP5A1 has none), next to GoM's own "MP5A2 Submachine Gun".
+MP5_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mp5_points.json')
+MP5_NAMES = {'MarzGuns.MP5': 'MP5A3 Submachine Gun'}
 
 
+def model_block(name, m):
+    lines = [f"    model {name} {{",
+             f"        mesh     = {m['mesh']},",
+             f"        texture  = {m['texture']},"]
+    if m.get('cullFace'):
+        lines.append(f"        cullFace = {m['cullFace']},")
+    for pid, off, rot in m['attachments']:
+        lines += [f"        attachment {pid} {{",
+                  "            offset = %s," % ' '.join(f"{v:.4f}" for v in off),
+                  "            rotate = %s," % ' '.join(f"{v:.4f}" for v in rot),
+                  "        }"]
+    lines.append("    }")
+    return '\n'.join(lines) + '\n'
+
+
+def mp5_family():
+    data = json.load(open(MP5_POINTS))
+    out = ["module MarzGuns {\n"]
+    for name, m in data['models'].items():
+        out.append('\n' + model_block(name, m))
+    out.append("}\n")
+    write('scripts/GunsOfTien/models_mp5.txt', ''.join(out))
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names.update(MP5_NAMES)
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# GoM's MP5K held in one hand (OneHand.lua): our MP5K model (mp5_family above) under our module, without the turn
+# CompactStance.lua gives the MP5K in both hands, so vanilla's pistol clips draw it the right way up. OneHand.lua copies
+# the live MarzGuns.MP5K mesh, texture and points over it at game start, so this block only has to load.
 def one_hand():
-    write('scripts/GunsOfTien/models_onehand.txt', MP5K_1H)
+    m = json.load(open(MP5_POINTS))['models']['MP5K']
+    write('scripts/GunsOfTien/models_onehand.txt', "module GunsOfTien {\n\n" + model_block('MP5K_1H', m) + "}\n")
 
 
 if __name__ == '__main__':
@@ -1671,5 +1672,6 @@ if __name__ == '__main__':
     belt_links()
     uzi()
     aug()
+    mp5_family()
     one_hand()
     print('written under', os.path.normpath(ROOT))

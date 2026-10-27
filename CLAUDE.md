@@ -719,6 +719,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   its origin to +0.0824 (r up to 0.0157), `P45_Suppressor` to +0.1303 (r 0.0137), both along +Y from canon; checked in
   a review render (render_ad_guns.py specs with GoM's two parts at canon). Added to ump_points.json by hand with the
   value build_ump.py now writes, so the FBX was not rebuilt.
+- Since the 2026-10-26 resize (K 0.000603) the UMP45 draws GoM's P45 and `Muzzle_Mount_Device` at GoM's size, ~19%
+  large for the gun (the UMP9's Mk9 goes through `_GoT` models); the SCAR-L's MKI is ~3-5% large. Both left as they
+  are (user, 2026-10-27: "no change").
 - Not in the photo and drawn from H&K's layout: the right side's ejection port over the magazine well, the stock's
   hinge knuckles on the receiver's right rear (the stock folds about them to the right, `stock_folded` as the SCARs'),
   the selector's two-round burst mark, the calibre markings.
@@ -1713,8 +1716,28 @@ behind it (42.21):
   UZI_S) for the stance's support places and parts; compact_animsets.TURNED_SETS takes the muzzle z from the points
   (UziT = the mean of the Mini Uzi's and the MP7's); smg_reload.py, m249_reload.py and p90_reload.py take K from the
   points files and scale offsets measured on the gun, never the hand's own contact offsets (`hold_fix`, CONTACT).
-  The guns on vanilla's or GoM's clips (SCARs, UMPs, Five-seveN, UCP) needed no new clips. GoM's MP5K keeps its size
-  in the stance. A HEAD worktree (`git worktree add`) runs the old-size pipeline for like-for-like comparisons.
+  The guns on vanilla's or GoM's clips (SCARs, UMPs, Five-seveN, UCP) needed no new clips. A HEAD worktree (`git
+  worktree add`) runs the old-size pipeline for like-for-like comparisons.
+- **GoM's MP5 family at the Uzis' proportion** (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must be one
+  size; "based on Uzi's"): `scripts/build_mp5.py` (Blender, seconds) scales GoM's own MP5 / MP5SD / MP5A2 / MP5K meshes
+  and its five MP5 magazines by one factor about the model origin (`GunsOfTien_MP5.fbx`,
+  `GunsOfTien_MP5_magazines.fbx`, GoM's node names and UVs) and writes GoM's points times it to `mp5_points.json`;
+  `gen_scripts.py mp5_family()` declares GoM's 15 model blocks again (`models_mp5.txt`, `module MarzGuns`) with our
+  meshes and GoM's textures. A later block of the same name resets mesh, texture, scale and the name
+  (`ModelScript.reset`, decompiled 2026-10-27; `getName()` is then nil, as on Plysken's re-declared body models) but
+  keeps the attachment list, so every point is written. GoM's items and their ModelWeaponPart lines are untouched.
+  The factor: GoM draws the family consistently at ~0.72 of real size (MP5A2 0.726 of Wikipedia's 680 mm, MP5K 0.721
+  of 325 mm), so SCALE = 0.603 / their mean = 0.8332 (MP5A2 then 0.605, MP5K 0.601); the doc's earlier -13% rested
+  on an unsourced 700 mm for the MP5 (modernfirearms.net's 660 mm, retractable stock extended, gives GoM's MP5 0.738).
+  Our earlier fixes of these models moved into the JSON before scaling: the MP5 / MP5A2 muzzle at the barrel's end (out
+  of MuzzlePoints.lua) and their `canon` for the Mk9 (out of Suppressors.lua's run-time point); the Mk9 and its mount
+  are drawn on them through the `_GoT` models, one size on every gun. GoM's shared parts (rails, optics, foregrips,
+  lights, lasers) keep GoM's size (user, 2026-10-27). GoM's MP5 is named "MP5A3 Submachine Gun" (retractable stock;
+  the MP5A1 has none; translation override in gen_scripts.py `MP5_NAMES`). Not redone: the MP5K's compact stance clips
+  and reloads are solved for its old size (compact_animsets.TURNED_SETS MP5K -0.0445, now -0.0371: the gun drawn
+  ~1.5 cm off the hands, its foregrip 3 cm nearer the grip than the left hand's place; user: "we'll judge later"),
+  GoM's Hot Brass ejection offsets for the four (relative to the player), the MP5 reloads (GoM's MP5 clips; the
+  magazine well is 2 cm nearer the grip).
 - **Fit audit** (`scripts/fit_audit.py`, `--solve` for point shifts): every part placement on our guns against the
   same part on GoM's guns, measured against the body **plus the gun's rail and mount parts** (GoM fits rails and
   mounts as parts, so its optics float 1-3 x 0.001 above its bare bodies; without them our rail-in-body guns all
@@ -1726,7 +1749,14 @@ behind it (42.21):
 - **Short guns on vanilla's rifle clips**: vanilla holds the left palm ~0.22 ahead of the grip (an M16's handguard).
   `scripts/anim/rifle_hand.py` rebuilds every rifle clip whose left hand holds the gun with the palm's place scaled
   about the grip (vanilla otherwise; faded off where vanilla's hand leaves the rifle), packed and noded as a compact
-  set (`GunsOfTien_Compact<Set>`, Gunworks grip registry): the UMPs ("UMP", 116 clips, 8.3 MB). GoM's own reload clips
+  set (`GunsOfTien_Compact<Set>`, Gunworks grip registry): the UMPs ("UMP", 116 clips, 8.3 MB). Since 2026-10-27 the
+  set's packs (which also hold the UMP's four reload clips) and its 255 stance nodes (`*_GoTCompactUMP.xml`) ship in
+  the main mod, because GoM's MP5 / MP5A2 / MP5SD use it too (user: rifle stance for the full-size MP5s, the MP5K in
+  the short SMG stance; CompactStance.lua registers them): at 0.8332 of GoM's size their handguard sits where the
+  set's palm (vanilla's x 0.8375) goes, so the hand lands where vanilla's held GoM's own MP5 (stills 2026-10-27,
+  hold_preview.py `mp5` on rifle_hand.py's idle / aim). The UMP's reload nodes (`*GunsOfTienCompactUMP_GoT.xml`) stay
+  in Post-93; clips are found by name from any mod. Rebuilding the set: pack and write nodes into the main mod's
+  media. GoM's own reload clips
   are glTF from a Blender rig whose bone axes differ from the .x files' and whose first frame is no vanilla pose, so
   they cannot be retargeted by our pipeline (no shared pose to take the per-bone axis offsets from).
 - compact_build's variant chooser also scores `+filter+declip` (the filter re-solves arms without the de-clip; the

@@ -1,35 +1,35 @@
 module GunsOfTien {
 
     model MP5K_1H {
-        mesh     = weapons/firearms/MP5K|MP5K_BODY,
+        mesh     = weapons/firearms/GunsOfTien_MP5|MP5K_BODY,
         texture  = weapons/firearms/smgs/MP5K,
         cullFace = None,
         attachment muzzle {
-            offset = 0.0000 0.2202 -0.0445,
+            offset = 0.0000 0.1835 -0.0371,
             rotate = -90.0000 0.0000 -180.0000,
         }
         attachment world {
-            offset = -0.0250 -0.0000 -0.0000,
+            offset = -0.0208 -0.0000 -0.0000,
             rotate = 0.0000 0.0000 0.0000,
         }
         attachment bolt_fired {
-            offset = 0.0000 -0.0297 0.0000,
+            offset = 0.0000 -0.0247 0.0000,
             rotate = 0.0000 0.0000 0.0000,
         }
         attachment magazine {
-            offset = 0.0000 0.1196 -0.0388,
+            offset = 0.0000 0.0997 -0.0323,
             rotate = 171.7924 0.0000 180.0000,
         }
         attachment rail_up {
-            offset = 0.0000 0.1153 -0.0663,
+            offset = 0.0000 0.0961 -0.0552,
             rotate = -180.0000 0.0000 -180.0000,
         }
         attachment scope {
-            offset = 0.0000 0.1292 -0.0693,
+            offset = 0.0000 0.1076 -0.0577,
             rotate = -180.0000 0.0000 -180.0000,
         }
         attachment canon {
-            offset = 0.0000 0.2252 -0.0408,
+            offset = 0.0000 0.1876 -0.0340,
             rotate = 0.0000 0.0000 0.0000,
         }
     }

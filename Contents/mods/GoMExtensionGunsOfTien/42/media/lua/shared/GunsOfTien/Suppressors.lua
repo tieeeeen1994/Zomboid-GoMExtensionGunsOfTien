@@ -17,13 +17,13 @@
     against the suppressed MP5's 28 / 8, and it is far lighter (2.1 against 2.0 + 1.2 + 0.5) and quicker to bring up; the MP5 keeps its harder hits
     and longer range, as the real SD's slower bullets give up.
 
-    GoM's MP5 and MP5A2 model scripts have no `canon` point, where GoM draws muzzle parts. A model script cannot be
-    declared again from another mod (every later block resets its mesh and texture), so the point is added to GoM's
-    ModelScript at run time (ModelAttachment, ModelScript:addAttachment), at the front face of the front sight housing
-    on the bore axis, measured on GoM's meshes by scripts/build_mk9.py (scripts/smg9_points.json). The engine looks
-    a part's point up by name in the gun's model script when it draws it. The guns' ModelWeaponPart lines are
-    appended with Item.DoParam (it appends even when the part type is already listed, so each script is patched
-    once, as Lasers.lua does). Scripts are rebuilt on leaving a game, so both run again at every world load.
+    The MP5 and MP5A2 are drawn with Guns of Tien's MP5 models (scripts/build_mp5.py, models_mp5.txt: GoM's meshes at
+    the Uzis' proportion), which carry the `canon` point (the front face of the front sight housing on the bore axis,
+    measured on GoM's meshes by scripts/build_mk9.py, scaled with the gun). At that size the parts are drawn through
+    their `_GoT` models (models_suppressors.txt), as on the Uzis and the UMP9, so the Mk9 is one size on every gun. The
+    guns' ModelWeaponPart lines are appended with Item.DoParam (it appends even when the part type is already listed,
+    so each script is patched once, as Lasers.lua does). Scripts are rebuilt on leaving a game, so it runs again at
+    every world load.
 --]]
 
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
@@ -33,10 +33,12 @@ local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local SUPPRESSOR = "GunsOfTien.Mk9_Suppressor"
 local MOUNT = "GunsOfTien.SMG9_Muzzle_Mount_Device"
 
--- gun item / model script -> its `canon` point (scripts/smg9_points.json)
-local GUNS = {
-    ["MarzGuns.MP5"] = { 0.0, 0.2796, 0.041 },
-    ["MarzGuns.MP5A2"] = { 0.0, 0.2811, 0.041 },
+-- GoM's guns that take the parts (their `canon` point is in our MP5 models)
+local GUNS = { "MarzGuns.MP5", "MarzGuns.MP5A2" }
+-- part item -> the model it is drawn with on those guns (the parts' own size scaled to the guns')
+local MODELS = {
+    [MOUNT] = "GunsOfTien.SMG9_Muzzle_Mount_Device_GoT",
+    [SUPPRESSOR] = "GunsOfTien.Mk9_Suppressor_GoT",
 }
 
 CSA.RegisterMultipleParts({
@@ -56,22 +58,15 @@ local patched = {}       -- gun item scripts given their lines (scripts are new 
 
 local function patchScripts()
     local manager = ScriptManager.instance
-    for gun, offset in pairs(GUNS) do
-        local model = manager:getModelScript(gun)
-        if model and not model:getAttachmentById("canon") then
-            local point = ModelAttachment.new("canon")
-            point:getOffset():set(offset[1], offset[2], offset[3])
-            point:getRotate():set(0.0, 0.0, 0.0)
-            model:addAttachment(point)
-        elseif not model then
-            print("[GunsOfTien] suppressors: model script not found: " .. gun)
-        end
+    for _, gun in ipairs(GUNS) do
         local item = manager:getItem(gun)
         if item and not patched[item] then
             patched[item] = true
             for _, part in ipairs({ MOUNT, SUPPRESSOR }) do
-                item:DoParam("ModelWeaponPart = " .. part .. " " .. part .. " canon canon")
+                item:DoParam("ModelWeaponPart = " .. part .. " " .. MODELS[part] .. " canon canon")
             end
+        elseif not item then
+            print("[GunsOfTien] suppressors: item script not found: " .. gun)
         end
     end
 end

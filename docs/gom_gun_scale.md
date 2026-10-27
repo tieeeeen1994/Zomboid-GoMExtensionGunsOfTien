@@ -42,8 +42,10 @@ and the spread comes from barrels / stocks drawn long or short, or a guessed var
 - FAMAS (0.88): GoM's model is an F1 (small trigger guard), which takes only its own 25-round magazines; STANAG came
   with the G2 (1994). GoM mounts STANAG anyway (gameplay), so no real magazine size ties it to the M16: own scale 0.88
   (the STANAG 12% smaller in it), unless it gets an F1 magazine of its own.
-- MP5: basis MP5 **0.87** (the MP5SD agrees) for MP5SD, MP5K (0.84, left out), MP5A2 (0.83). The MP5A2 then draws
-  ~5% long: its stock is the odd one.
+- MP5: **done 2026-10-27 in the meshes** (scripts/build_mp5.py, CLAUDE.md "Gun scale"): the whole family and its
+  magazines at **0.8332**, on the Uzis' proportion. The 0.87 that stood here took the MP5 as 700 mm, a figure with no
+  source; against Wikipedia's 680 mm (MP5A2) and 325 mm (MP5K) GoM draws the family consistently at ~0.72, so the
+  MP5A2 was not the odd one.
 - AK-74 magazines: basis AK-74 **0.93** for the AKS-74U (0.89).
 - G36: basis G36 **0.98** for the G36C (0.97).
 - .45 M1911 magazines: basis M1911 **0.86** for the Camp Carbine (0.85).
