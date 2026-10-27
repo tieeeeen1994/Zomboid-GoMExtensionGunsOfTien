@@ -700,6 +700,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   its origin to +0.0824 (r up to 0.0157), `P45_Suppressor` to +0.1303 (r 0.0137), both along +Y from canon; checked in
   a review render (render_ad_guns.py specs with GoM's two parts at canon). Added to ump_points.json by hand with the
   value build_ump.py now writes, so the FBX was not rebuilt.
+- Since the 2026-10-26 resize (K 0.000603) the UMP45 draws GoM's P45 and `Muzzle_Mount_Device` at GoM's size, ~19%
+  large for the gun (the UMP9's Mk9 goes through `_GoT` models); the SCAR-L's MKI is ~3-5% large. Both left as they
+  are (user, 2026-10-27: "no change").
 - Not in the photo and drawn from H&K's layout: the right side's ejection port over the magazine well, the stock's
   hinge knuckles on the receiver's right rear (the stock folds about them to the right, `stock_folded` as the SCARs'),
   the selector's two-round burst mark, the calibre markings.

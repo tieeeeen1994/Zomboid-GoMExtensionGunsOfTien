@@ -29,6 +29,28 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       solved for GoM's size (the gun now drawn ~1.5 cm off the hands, the foregrip 3 cm nearer the grip than the left
       hand's place). Rebuild the MP5K set (TURNED_SETS -0.0371, hold_preview / smg_reload places) if it looks off.
 
+## New guns
+
+- [ ] **Steyr AUG A1** (user, 2026-10-27: "start with AUG A1"; main mod, 1977). Not in GoM or Gunworks. Proposal,
+      not approved yet:
+      - Size: the M16 as the basis (user, 2026-10-27), i.e. K = 0.000603 per real mm as every gun of ours: 790 mm
+        real → 0.476 units. Its magazines are its own, so no shared-magazine scale applies.
+      - Stats from GoM's M16A1 (same round, same 508 mm barrel, Auto / Single): damage 1.0-1.8, range 50, crit 20,
+        jam 1, condition 1 in 150, ConditionMax 10; the built-in 1.5x optic baked in (HitChance and crit ×1.05, sight
+        range ×1.15, between GoM's Aimpoint and LR4X); about 700 rpm, spread 0.12 / 2.2 (M16A1 0.15 / 2.5, FAMAS 0.1 /
+        2.0); weight 3.6 (GoM's rifles weigh real); sound as the M16A1 (sound_model.py).
+      - Magazines: profile "AUG", Steyr translucent 30 and 42 (the HBAR's), family `5.56x45mm`; not STANAG, not
+        GoM's G36 magazine.
+      - Folding vertical front grip on its own toggle (the MP7A1's way); no rails, optics, lights, lasers or
+        suppressors on a 1993 A1.
+      - Reload on GoM's FAMAS bullpup clips (`famas_rifle`) first; Hot Brass from GoM's FAMAS values, to the right;
+        RepairPack at GoM's assault rifles' Aiming level.
+      - To decide with the user: select-fire A1 only, or also the semi-automatic AUG SA on the same model (the one a
+        1993 Kentucky civilian could own, imported 1983-1989) and where each spawns; green, black or both textures;
+        bayonet (Austrian Glock knife; a lug on the SA not confirmed); a side-on reference photo (the user's, or a
+        public-domain / CC one from Commons).
+      - Later AUGs: 9mm Para (late 1980s) in the main mod; USR, A2, A3, NATO stock (STANAG) in Post-93.
+
 ## Check in game
 
 - [ ] GoM's MP5 family at the Uzis' size (2026-10-27, scripts/build_mp5.py, models_mp5.txt): no "model script not
