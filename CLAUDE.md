@@ -41,12 +41,35 @@ and multiply the work for every other mod that modifies animations. So:
   aiming, reloading or racking), a magazine family and a rack family. A gun may take its magazine change from one
   family and its rack from another (the MP7: the pistol magazine change, the rear T-handle rack). Reload nodes are
   XML, so mixing families needs no new clips.
-- Stances: vanilla's rifle; **short SMG** (one set: Uzi, Mini Uzi, MP7A1 / A2, GoM's MP5K; its aim is the approved
-  aim with one shared left-hand place, the Uzi's); the H&K rifle-hand hold (UMP45, UMP9, GoM's MP5A3 / A2 / SD);
+- Stances: vanilla's rifle; **short SMG** (one set: Uzi, Mini Uzi, MP7A1 / A2; its aim is the approved
+  aim with one shared left-hand place, the Uzi's); the H&K rifle-hand hold (UMP45, UMP9, GoM's MP5A3 / A2 / SD, and
+  GoM's MP5K in both hands);
   **bullpup** (AUG, FAMAS; built 2026-10-28 as a tucked carry, section "Bullpup stance (built)": vanilla's rifle
   hold with the palm moved back "looked weird", the gun hanging back past the hip). Short SMG = held by the grip, no stock to the
-  shoulder, about half a metre or less as carried: the MP5K is in, the MP5A3 / A2 / SD (550-680 mm, stocks
-  shouldered) stay with the UMPs.
+  shoulder, about half a metre or less as carried; the MP5A3 / A2 / SD (550-680 mm, stocks shouldered) stay with
+  the UMPs. The MP5K was in until the user chose the MP5A3's hold for it (2026-10-28, from a render of both: "i like
+  the sheet with mp5k the same as other mp5a3 stance better"), knowing the set's palm (0.183 ahead of the grip idle,
+  0.171 aimed) lands at its front end, past its short foregrip, the fingertips at the muzzle (0.1835): the rule's
+  accepted imperfection, not a reason for a hand place of its own.
+- **The MP5K in both hands** (built 2026-10-28; approved in game the same day with the resized MP5 family): `CompactStance.lua` registers its grip as a Gunworks
+  matcher that holds only in both hands (`OneHand.heldInBothHands`; the rifle-hand set's nodes do not test the weapon
+  class, unlike the short SMG's `Weapon == firearm`, so a full-type entry would play them in one hand too), its
+  two-hand reload is the UMPs' (`GunsOfTienCompactUMP`, OneHand's `handgun2` matcher still wins in one hand), and
+  `OneHand.setTwoHandModel` swaps the sprite to `GunsOfTien.MP5K_2H` on every client while it is in both hands (back
+  on leaving them and `OnSave`; `MarzGuns.MP5K` and the old `GunsOfTien.MP5K_1H` count as its own model, any other
+  sprite is left alone). MP5K_2H = node `MP5K_BODY_2H` in GunsOfTien_MP5.fbx, the body turned half a turn about the
+  barrel at the grip in the mesh (a Bip01_Prop1 turn would put the tracers 7.4 cm off the drawn barrel), every point
+  turned with it (`TURN_Y` x point: magazine 8.2076 0 0, rail_up / scope 0 0 0) plus a turned `bolt_lock` (GoM's
+  MP5K lacks it, so its bolt part is drawn at the origin); build_mp5.py "two_hand", gen_scripts.py `one_hand()` →
+  models_onehand.txt, hold_preview.py `mp5k_2h` (with `HOLD_SET=UMP`). Its parts are GoM's models by name
+  (`MarzGuns.MP5K_BOLT`, the MP5 magazines), so they are our resized ones only while models_mp5.txt loads after GoM's
+  (see "GoM's MP5 family at the Uzis' proportion"). The rebuilt FBX's other nodes are identical
+  (vertices, faces, UVs). The short SMG's `GunsOfTienCompactShortSMGHK` reload (nodes, clips in Pack7) has no gun now;
+  it stays until a repack (for a short H&K-type gun).
+- Remote players' hand items (42.21 `EquipPacket.parse` on a client): rebuilt from the item bytes on every Equip
+  packet (a new object each time) with `setContainer(remote player's inventory)`, so `gun:getContainer():getCharacter()`
+  finds the holder there too; the bytes are the server's copy, so a client-side `setWeaponSprite` never travels
+  (`SyncHandWeaponFields` carries no sprite either).
 - A family has one clip set per stance it is used in: the pistol family is the Uzi's old stance reload on the short
   SMG stance (magazine into the grip, knob racked overhand, played from the stance, so no blend from a pistol pose)
   and `UziGrip` (vanilla's pistol clips) on the pistol stance (Micro Uzi; Mini Uzi and MP7s in one hand).
@@ -61,8 +84,8 @@ and multiply the work for every other mod that modifies animations. So:
   its grip in the hand and no model point, the muzzle the game shoots from is the drawn muzzle, whatever its muzzle
   height, and one model serves both hands. This is exactly what the old upright turn plus per-set gun shift drew
   (checked: 2e-6 against UziT), with no per-gun numbers. Gone: `TURNED_SETS`, `turnUpright`, the UziT / MP5K / MP7
-  sets (1,020 nodes, 28 packs), OneHand.lua's model swap (the `*_1H` model scripts stay for guns saved with them,
-  identical now), Post-93's `MP7A1` one-hand reload (the MP7 uses the Micro's identical `UziGrip`).
+  sets (1,020 nodes, 28 packs), OneHand.lua's one-hand model swap (the `*_1H` model scripts stay for guns saved with
+  them, identical now; the MP5K's both-hands swap above is new), Post-93's `MP7A1` one-hand reload (the MP7 uses the Micro's identical `UziGrip`).
   - Packs: `GunsOfTien_CompactShortSMG_Pack1-7.x` (main mod, 277 clips, 28.5 MB), made once by
     `scripts/anim/shortsmg_from_packs.py` from the 2026-10-27 packs (the per-gun builds lived in tmp/ on the Mac):
     the Uzi set's clips, and the reloads taken out under family names, each set's gun-bone move measured against
@@ -1093,12 +1116,24 @@ rifle grip (0.064, 0.491, 0.048), muzzle 27 degrees **up**, and a bullpup's butt
   cm, for a build's de-clip. Worst wrists: run R (-45, -16, -67) at frame 0, sprint L twist 71. The run's forward lean
   turns the hold's 25-degree muzzle near vertical in the side view.
 
-## Bullpup stance (built 2026-10-28, not played)
+## Bullpup stance (built 2026-10-28; the AUG approved in game after the square-chest rebuild)
 
 Draft B on every clip played with a gun, by `compact_build.py ... Bullpup` (as the short SMG stance), replacing
 rifle_hand.py's set in the shipped packs (Bullpup.lua unchanged: grip animId `GunsOfTien_CompactBullpup`).
-- Set (`compact_build.SETS["Bullpup"]`): `hold` = B (`_bullpup_hold`: butt at ch(0.14, 0.68, -0.10), 25 down, 30
-  across, twist 15, no look / lean), held with the pistol idle's hand relation (`idle_down.x_rig`, as every
+- **Chest square, no twist (rebuilt 2026-10-28 on the Mac)**: played in game with the chest turned 15, the user:
+  "make it look straight to the direction the player is actually facing ... it's so weird when they run and his body
+  is tilted. no way somebody runs like that". The hold's twist spreads over the spine, so every carried frame had the
+  chest 8-24 degrees and the hips 3-11 off vanilla's (measured: shoulder line's facing, run / walk / sprint / idle).
+  Now `compact_build.BULLPUP_TWIST` = 0 (hold and hold_s): the body is vanilla's own in every carried frame (same
+  numbers frame for frame), the gun still 25 down and 30 across; the butt at ch(0.14, 0.72, -0.10) (bullpup_stance.py
+  `BS_B_TWIST=0 BS_B_ACROSS=30 BS_B_DOWN=25`, 4 cm higher than with the twist). Built in 6 Blender processes (~6 s a
+  clip, 267 clips, a few minutes), reloads by `smg_reload.py ... aug` on the new idle / aim (arms 1.0-1.1 cm, gun
+  0.7), packed: 271 clips, 7 files, 28.2 MB, same names (nodes unchanged). Over 0.008 the gun in 51 clips (worst the
+  crouched pain emotes, 5.1 cm), arms over 3 cm in 5 (EmoteYawn2H on the ground 8.4), as before. On the Mac
+  `tmp/anim/bullpup_aims` was extracted from the shipped twisted packs: their aim clips and aimed frames are
+  rifle_hand.py's as before (the build copies aimed frames), so the aims are unchanged.
+- Set (`compact_build.SETS["Bullpup"]`): `hold` = B (`_bullpup_hold`: butt at ch(0.14, 0.72, -0.10), 25 down, 30
+  across, no twist since the rebuild above (first build: ch(0.14, 0.68, -0.10), twist 15), no look / lean), held with the pistol idle's hand relation (`idle_down.x_rig`, as every
   compact set); left palm at the idle template's palm x 0.72 (`palm_scale`); carried frames keep 0.2 / 0.4 of
   vanilla's gun drift (the module default). `aims`: the aimed frames are rifle_hand.py's earlier build, unchanged
   (vanilla's aim, gun pushed off the face, de-clipped), read from `tmp/anim/bullpup_aims` (`extract_aims` copied
@@ -1858,8 +1893,14 @@ ship, but how the Uzi set (now ShortSMG) was built still holds.
   size; "based on Uzi's"): `scripts/build_mp5.py` (Blender, seconds) scales GoM's own MP5 / MP5SD / MP5A2 / MP5K meshes
   and its five MP5 magazines by one factor about the model origin (`GunsOfTien_MP5.fbx`,
   `GunsOfTien_MP5_magazines.fbx`, GoM's node names and UVs) and writes GoM's points times it to `mp5_points.json`;
-  `gen_scripts.py mp5_family()` declares GoM's 15 model blocks again (`models_mp5.txt`, `module MarzGuns`) with our
-  meshes and GoM's textures. A later block of the same name resets mesh, texture, scale and the name
+  `gen_scripts.py mp5_family()` declares GoM's 15 model blocks again (`zz_GunsOfTien/models_mp5.txt`, `module
+  MarzGuns`) with our meshes and GoM's textures. **The folder must sort after GoM's `MarzWeapons/`**: 42.21
+  `ScriptManager.Load` gathers every mod's script files into one list sorted by lowercase path under media/scripts
+  (`template_*` first; vanilla's list before the mods'; mod order plays no part), so under `GunsOfTien/` the file
+  loaded before GoM's `marzweapons/models/weapons/smgs.txt` and GoM's blocks reset all of ours: from 2026-10-27 to
+  10-28 the whole resize never reached the game (GoM's meshes, muzzles and magazines, no `canon` for the Mk9), which
+  showed only when the MP5K's upright model (our own name, so not replaced) carried GoM's full-size bolt sticking out
+  ahead of its muzzle (user's video, 2026-10-28). A later block of the same name resets mesh, texture, scale and the name
   (`ModelScript.reset`, decompiled 2026-10-27; `getName()` is then nil, as on Plysken's re-declared body models) but
   keeps the attachment list, so every point is written. GoM's items and their ModelWeaponPart lines are untouched.
   The factor: GoM draws the family consistently at ~0.72 of real size (MP5A2 0.726 of Wikipedia's 680 mm, MP5K 0.721

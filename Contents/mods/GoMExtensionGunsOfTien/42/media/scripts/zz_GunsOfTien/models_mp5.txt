@@ -1,3 +1,6 @@
+/* Guns of Tien: GoM's MP5 family at the Uzis' size (scripts/build_mp5.py). This folder sorts after GoM's
+   MarzWeapons/ so these blocks replace GoM's (scripts load sorted by path, not by mod order). */
+
 module MarzGuns {
 
     model 9x19Magazine100_MP5 {

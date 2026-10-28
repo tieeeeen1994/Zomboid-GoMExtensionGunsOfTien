@@ -1638,25 +1638,37 @@ def model_block(name, m):
     return '\n'.join(lines) + '\n'
 
 
+# Where models_mp5.txt lives: ScriptManager.Load (42.21) sorts every mod's script files together by their lowercase
+# path under media/scripts (mod order plays no part) and a later block of a model resets an earlier one, so the file
+# must sort after GoM's own (MarzWeapons/models/...). Under GunsOfTien/ it loaded first and GoM's blocks replaced
+# every one of ours (found 2026-10-28: GoM's full-size MP5K bolt sticking out of our smaller MP5K).
+MP5_MODELS = 'scripts/zz_GunsOfTien/models_mp5.txt'
+
+
 def mp5_family():
     data = json.load(open(MP5_POINTS))
-    out = ["module MarzGuns {\n"]
+    out = ["/* Guns of Tien: GoM's MP5 family at the Uzis' size (scripts/build_mp5.py). This folder sorts after GoM's\n"
+           "   MarzWeapons/ so these blocks replace GoM's (scripts load sorted by path, not by mod order). */\n\n"
+           "module MarzGuns {\n"]
     for name, m in data['models'].items():
         out.append('\n' + model_block(name, m))
     out.append("}\n")
-    write('scripts/GunsOfTien/models_mp5.txt', ''.join(out))
+    write(MP5_MODELS, ''.join(out))
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
     names.update(MP5_NAMES)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
-# GoM's MP5K held in one hand (OneHand.lua): our MP5K model (mp5_family above) under our module, without the turn
-# CompactStance.lua gives the MP5K in both hands, so vanilla's pistol clips draw it the right way up. OneHand.lua copies
-# the live MarzGuns.MP5K mesh, texture and points over it at game start, so this block only has to load.
+# GoM's MP5K in our module (OneHand.lua): MP5K_2H, drawn while the gun is in both hands (the UMPs' rifle-hand set, like
+# the MP5A3), its body turned upright for the rifle clips with every point (build_mp5.py "two_hand"); MP5K_1H, our MP5K
+# model unturned, left from the per-gun stance's one-hand swap (until 2026-10-28) for guns saved with it: OneHand.lua
+# copies the live MarzGuns.MP5K mesh, texture and points over it at game start, so its block only has to load.
 def one_hand():
-    m = json.load(open(MP5_POINTS))['models']['MP5K']
-    write('scripts/GunsOfTien/models_onehand.txt', "module GunsOfTien {\n\n" + model_block('MP5K_1H', m) + "}\n")
+    data = json.load(open(MP5_POINTS))
+    blocks = [model_block('MP5K_1H', data['models']['MP5K'])]
+    blocks += [model_block(name, m) for name, m in data['two_hand'].items()]
+    write('scripts/GunsOfTien/models_onehand.txt', "module GunsOfTien {\n\n" + '\n'.join(blocks) + "}\n")
 
 
 if __name__ == '__main__':

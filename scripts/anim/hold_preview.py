@@ -4,7 +4,7 @@ part at its model-script point, rendered front / side / top (Blender 5.2, headle
 
     blender -b --factory-startup -P scripts/anim/hold_preview.py -- <vanilla anims_X/Bob> <out_dir> [gun ...]
 
-gun: uzi miniuzi microuzi mp5k mp7 p90 (default: all). Writes <out_dir>/<gun>_<Idle|Aim>/<view>_<frame>.png; lay them out
+gun: uzi miniuzi microuzi mp5k mp5k_2h mp7 p90 ... (default: all). Writes <out_dir>/<gun>_<Idle|Aim>/<view>_<frame>.png; lay them out
 with TienInspectWeapon's sheet.py / gif.py. Rifle-held guns (SwingAnim Rifle) play Bob_IdleRifle / Bob_IdleAimRifle,
 pistol-held ones Bob_IdleHandgun / Bob_IdleAimHandgun: Guns of Marz ships no idle or aim clips of its own.
 """
@@ -58,6 +58,11 @@ AUG_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_AUG_magazi
 def _aug_pt(name):
     p = AUG_POINTS[name]
     return point(p["offset"], p.get("rotate", (0, 0, 0)))
+MP5K_2H = {a[0]: a[1:] for a in json.load(open(os.path.join(ROOT, "scripts/mp5_points.json")))["two_hand"]["MP5K_2H"]["attachments"]}
+
+
+def _2h_pt(name):
+    return point(*MP5K_2H[name])
 # GOT_P93_MEDIA / GOT_MP7_POINTS: another copy of the meshes and points (a build of the old size to compare with)
 P93 = os.environ.get("GOT_P93_MEDIA") or os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 P93_FBX = os.path.join(P93, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx")
@@ -143,6 +148,14 @@ GUNS = {
         (os.path.join(GOM, "models_X/weapons/firearms/MP5K.fbx"), "MP5K_BOLT", None),
         (os.path.join(GOM, "models_X/weapons/magazines/smgs.fbx"), "9x19Magazine30_MP5",
          point((0.0, 0.1196, -0.0388), (171.7924, 0.0, 180.0))),
+    ]),
+    # GoM's MP5K at our size in both hands (user, 2026-10-28): GunsOfTien.MP5K_2H on the rifle clips (HOLD_SET=UMP), the
+    # body turned upright in the mesh and every part at its turned point (build_mp5.py "two_hand")
+    "mp5k_2h": dict(rifle=True, parts=[
+        (os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_MP5.fbx"), "MP5K_BODY_2H", None),
+        (os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_MP5.fbx"), "MP5K_BOLT", _2h_pt("bolt_lock")),
+        (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_MP5_magazines.fbx"), "9x19Magazine30_MP5",
+         _2h_pt("magazine")),
     ]),
 }
 CLIPS = {True: {"Idle": "Bob_IdleRifle.x", "Aim": "Bob_IdleAimRifle.x"},

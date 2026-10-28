@@ -98,7 +98,7 @@ require("GunsOfTien/OneHand").register(MINIUZI, {
     attachments = { magPart = { itemType = MAGS[3], partType = "Clip" } },
     durations = { unload = 1.5, load = 1.5, rack = 1.33 },
 })
--- the animIds whose magazine part spec is pointed at the magazine involved (shared: CompactStance.lua adds the MP5K's)
+-- the animIds whose magazine part spec is pointed at the magazine involved (shared: CompactStance.lua adds the MP5s')
 ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
 ReloadAnim.GunsOfTienPointMag.UziGrip = true
 ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactShortSMGPistol = true

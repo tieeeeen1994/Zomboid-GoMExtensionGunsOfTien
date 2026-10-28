@@ -7,6 +7,13 @@
       pistol orientation, so one model serves both. (Until 2026-10-28 the stance turned the guns upright with a model
       point and this file drew a gun held in one hand with a second model without it; those models, *_1H, stay in the
       scripts for guns saved with them, and look the same.)
+    - The MP5K is the exception since 2026-10-28 (user: held like the MP5A3): in both hands it plays the UMPs'
+      rifle-hand set, whose rifle clips need it upright, so every client draws it there with a second model,
+      GunsOfTien.MP5K_2H (its body turned in the mesh, so the tracers leave the drawn muzzle), for its own players and
+      every other player it sees (HandWeapon:setWeaponSprite + resetEquippedHandsModels, as SawnStock.lua does). Each
+      client works it out from the hands, which sync, so nothing is sent (SyncHandWeaponFields carries no sprite). The
+      sprite goes back to the script's model as soon as the gun leaves both hands, and before a save, so items keep
+      it; a sprite other than the gun's own models (another mod's) is left alone.
     - The guns are two-handed without RequiresEquippedBothHands, so "Equip Primary" is offered and the hotbar still
       equips both hands; Gunworks' re-equips (reloads, folds, GoM's MP5K on every shot) keep the hand they found.
       The engine treats a two-handed weapon in one hand as any other: half damage
@@ -18,6 +25,7 @@
 
 local OneHand = {}
 OneHand.GUNS = {}        -- full type -> true
+OneHand.TWO_HAND_MODELS = {}   -- full type -> { two = model in both hands, own = { model drawn otherwise -> true }, base }
 
 local function heldInOneHand(gun)
     local container = gun:getContainer()
@@ -25,6 +33,13 @@ local function heldInOneHand(gun)
     return chr ~= nil and chr:getPrimaryHandItem() == gun and chr:getSecondaryHandItem() ~= gun
 end
 OneHand.heldInOneHand = heldInOneHand
+
+local function heldInBothHands(gun)
+    local container = gun:getContainer()
+    local chr = container and container:getCharacter()
+    return chr ~= nil and chr:getPrimaryHandItem() == gun and chr:getSecondaryHandItem() == gun
+end
+OneHand.heldInBothHands = heldInBothHands
 
 local okRA, ReloadAnim = pcall(require, "WeaponSystems/ReloadAnim/HandlerFactory")
 
@@ -64,6 +79,19 @@ if okAn and type(Animations) == "table" and Animations.CallSyncHandWeaponFields 
     end
 end
 
+--- Draw a gun with another model while it is in both hands.
+---@param fullType string
+---@param twoHandModel string the model in both hands
+---@param baseModel string the script's model, drawn everywhere else
+---@param oldModels table|nil other models the gun may carry that mean the base one (put back to it)
+function OneHand.setTwoHandModel(fullType, twoHandModel, baseModel, oldModels)
+    local own = { [baseModel] = true }
+    for _, model in ipairs(oldModels or {}) do
+        own[model] = true
+    end
+    OneHand.TWO_HAND_MODELS[fullType] = { two = twoHandModel, base = baseModel, own = own }
+end
+
 -------------------------------------------------
 -- Guns of Marz's MP5K: its old one-hand model (kept for guns saved with it) takes GoM's live mesh, texture and points
 -------------------------------------------------
@@ -91,6 +119,73 @@ function OneHand.copyModel(from, to)
     end
     text[#text + 1] = " }"
     dst:Load(name, table.concat(text))
+end
+
+-------------------------------------------------
+-- The model in both hands (clients and single player: a dedicated server draws nothing)
+-------------------------------------------------
+if not isServer() then
+    local twoHanded = {}     -- weapon -> player, while drawn with its two-hand model
+
+    local function check(player)
+        local weapon = player:getPrimaryHandItem()
+        local entry = weapon and OneHand.TWO_HAND_MODELS[weapon:getFullType()]
+        if not (entry and player:getSecondaryHandItem() == weapon and twoHanded[weapon] == nil) then return end
+        if entry.own[weapon:getWeaponSprite()] then
+            weapon:setWeaponSprite(entry.two)
+            player:resetEquippedHandsModels()
+            twoHanded[weapon] = player
+        end
+    end
+
+    local function restore(weapon, player)
+        local entry = OneHand.TWO_HAND_MODELS[weapon:getFullType()]
+        if entry and weapon:getWeaponSprite() == entry.two then
+            weapon:setWeaponSprite(entry.base)
+        end
+        twoHanded[weapon] = nil
+        if player and player:getPrimaryHandItem() == weapon then
+            player:resetEquippedHandsModels()
+        end
+    end
+
+    Events.OnTick.Add(function()
+        local done = nil       -- collected first: the table is not changed while pairs walks it
+        for weapon, player in pairs(twoHanded) do
+            if player:getPrimaryHandItem() ~= weapon or player:getSecondaryHandItem() ~= weapon
+                    or weapon:getWeaponSprite() ~= OneHand.TWO_HAND_MODELS[weapon:getFullType()].two then
+                done = done or {}
+                done[#done + 1] = weapon
+            end
+        end
+        if done then
+            for _, weapon in ipairs(done) do
+                restore(weapon, twoHanded[weapon])
+            end
+        end
+        for i = 0, getNumActivePlayers() - 1 do
+            local player = getSpecificPlayer(i)
+            if player then check(player) end
+        end
+        if isClient() then
+            local players = getOnlinePlayers()
+            for i = 0, players:size() - 1 do
+                local player = players:get(i)
+                if not player:isLocalPlayer() then check(player) end
+            end
+        end
+    end)
+
+    -- saved with the script's model (single player saves on this side); the next tick draws it in both hands again
+    Events.OnSave.Add(function()
+        for weapon in pairs(twoHanded) do
+            local entry = OneHand.TWO_HAND_MODELS[weapon:getFullType()]
+            if entry and weapon:getWeaponSprite() == entry.two then
+                weapon:setWeaponSprite(entry.base)
+            end
+        end
+        twoHanded = {}
+    end)
 end
 
 return OneHand

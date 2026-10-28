@@ -1,7 +1,8 @@
 {
   "_notes": {
     "scale": "every vertex and point of GoM's model x SCALE about the model origin (the Uzis' 0.603 of real size / GoM's 0.72 for its MP5A2 and MP5K); textures and UVs are GoM's",
-    "fixes": "MP5 / MP5A2 muzzle at the barrel's end (MuzzlePoints.lua) and canon for the Mk9 (Suppressors.lua), applied before scaling"
+    "fixes": "MP5 / MP5A2 muzzle at the barrel's end (MuzzlePoints.lua) and canon for the Mk9 (Suppressors.lua), applied before scaling",
+    "two_hand": "the MP5K held in both hands (OneHand.lua): its body turned half a turn about the barrel at the grip, every point turned with it (GunsOfTien.MP5K_2H)"
   },
   "scale": 0.8332,
   "models": {
@@ -792,6 +793,119 @@
       "texture": "weapons/firearms/smgs/MP5",
       "cullFace": "None",
       "attachments": []
+    }
+  },
+  "two_hand": {
+    "MP5K_2H": {
+      "mesh": "weapons/firearms/GunsOfTien_MP5|MP5K_BODY_2H",
+      "texture": "weapons/firearms/smgs/MP5K",
+      "cullFace": "None",
+      "attachments": [
+        [
+          "muzzle",
+          [
+            0.0,
+            0.1835,
+            0.0371
+          ],
+          [
+            -90.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "world",
+          [
+            0.0208,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            180.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_fired",
+          [
+            0.0,
+            -0.0247,
+            0.0
+          ],
+          [
+            0.0,
+            180.0,
+            0.0
+          ]
+        ],
+        [
+          "magazine",
+          [
+            0.0,
+            0.0997,
+            0.0323
+          ],
+          [
+            8.2076,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "rail_up",
+          [
+            0.0,
+            0.0961,
+            0.0552
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "scope",
+          [
+            0.0,
+            0.1076,
+            0.0577
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          "canon",
+          [
+            0.0,
+            0.1876,
+            0.034
+          ],
+          [
+            0.0,
+            180.0,
+            0.0
+          ]
+        ],
+        [
+          "bolt_lock",
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            180.0,
+            0.0
+          ]
+        ]
+      ]
     }
   }
 }

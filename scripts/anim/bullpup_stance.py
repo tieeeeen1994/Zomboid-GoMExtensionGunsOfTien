@@ -20,6 +20,9 @@ B    tucked carry: vanilla's rifle idle body, the butt pinned between the upper 
      than 0.008, arms no deeper than vanilla's idle.
 now  the shipped set's idle for comparison (vanilla's rifle idle, push, palm moved back; before its de-clip).
 Env: BS_PROBE=1 prints the body's landmarks and vanilla's guns in character space (ch: right, up, forward) instead.
+B's scan: BS_B_DOWN / BS_B_ACROSS / BS_B_TWIST (angles, comma lists), BS_B_X / BS_B_U / BS_B_F (butt place),
+BS_PIN (how close the upper arm must pass the butt), BS_B_RIG=rifle (the rifle idle's hand relation), BS_NAME (the
+output's name). Each pose logs its roll (0 = sights up).
 """
 
 import itertools
@@ -49,7 +52,7 @@ PUSH, AIM_PUSH = RH.SETS["Bullpup"]["push"], RH.SETS["Bullpup"]["aim_push"]
 BUTT = 0.21                                   # grip to butt plate (AUG 0.201, FAMAS 0.216)
 GUNS = ["aug_folded", "aug", "famas"]
 BODY_LOW = clearance.BODY | {"Bip01_Pelvis"}  # a gun carried low meets the belly and hips too
-PIN = 0.045                                   # B: the upper arm's bone line this close to the butt (arm radius ~0.022)
+PIN = float(os.environ.get("BS_PIN", "0.045"))  #                                  # B: the upper arm's bone line this close to the butt (arm radius ~0.022)
 
 
 def cv(v):
@@ -60,6 +63,19 @@ def cv(v):
 def down_deg(W):
     a = C.rot_of(W) @ Vector((0, 1, 0))
     return -math.degrees(math.asin(max(-1.0, min(1.0, a.dot(rig.UP)))))
+
+
+def roll_deg(W):
+    """How far the gun is rolled about its barrel: the angle between its top (+Z) and the vertical plane through the
+    barrel, signed (+ = top leaning to the character's right). 0 = sights up."""
+    m = C.rot_of(W)
+    along, top = m @ Vector((0, 1, 0)), m @ Vector((0, 0, 1))
+    up = rig.UP - along * rig.UP.dot(along)
+    if up.length < 1e-6:
+        return 0.0
+    up.normalize()
+    ang = math.degrees(top.angle(up))
+    return ang if top.dot(rig.RIGHT) >= 0 else -ang
 
 
 def probe(src_dir):
@@ -216,7 +232,8 @@ def b_key(pos, along, lg, twist=0.0):
 def draft_b(src_dir, arm_ob, body, gun_obs):
     # the right hand holds the grip as the pistol idle does (barrel along the forearm; idle_down's x_rig): with the
     # rifle idle's relation a relaxed wrist points the barrel ~50 degrees above the forearm
-    xa, r = ID.x_rig(src_dir)
+    # BS_B_RIG=rifle: the rifle idle's hand-to-gun relation instead (a gun held out in front, not along the forearm)
+    xa, r = C.build_rig(src_dir) if os.environ.get("BS_B_RIG") == "rifle" else ID.x_rig(src_dir)
     w = pose.world(xa, r.base)
     lg = left_grip(r)
     # vanilla idle's own depths: the arms may go no deeper than these, or 0.008
@@ -229,8 +246,14 @@ def draft_b(src_dir, arm_ob, body, gun_obs):
     # must pass within PIN of it
     # muzzle at least 25 degrees down (left free, the scan settles on 15: a hip-level low ready, not this carry)
     downs = [int(a) for a in os.environ.get("BS_B_DOWN", "25,35,45").split(",")]
-    for x, u, f, a, b, tw in itertools.product((0.08, 0.10, 0.12, 0.14), (0.60, 0.64, 0.68, 0.72),
-                                               (-0.10, -0.07, -0.04, -0.01), downs, (0, 10, 20, 30), (0.0, 15.0)):
+    # BS_B_ACROSS / BS_B_TWIST: the angles across to the left and the chest twist scanned (user, 2026-10-28: "i want
+    # it to look straight": 0 / 0 points the gun straight ahead)
+    acrosses = [int(a) for a in os.environ.get("BS_B_ACROSS", "0,10,20,30").split(",")]
+    twists = [float(a) for a in os.environ.get("BS_B_TWIST", "0,15").split(",")]
+    xs = [float(v) for v in os.environ.get("BS_B_X", "0.08,0.10,0.12,0.14").split(",")]   # butt, to the right
+    us = [float(v) for v in os.environ.get("BS_B_U", "0.60,0.64,0.68,0.72").split(",")]     # butt height
+    fs = [float(v) for v in os.environ.get("BS_B_F", "-0.10,-0.07,-0.04,-0.01").split(",")]  # butt, forward
+    for x, u, f, a, b, tw in itertools.product(xs, us, fs, downs, acrosses, twists):
         along = ch(-math.cos(math.radians(a)) * math.sin(math.radians(b)), -math.sin(math.radians(a)),
                    math.cos(math.radians(a)) * math.cos(math.radians(b)))
         butt = ch(x, u, f)
@@ -314,6 +337,7 @@ def render(src_dir, out_dir, name, xa, r, q, clip):
         fa = (w["Bip01_R_Hand"].translation - w["Bip01_R_Forearm"].translation).normalized()
         pin = seg_dist(W @ Vector((0, -BUTT + 0.03, 0.0)), w["Bip01_R_UpperArm"].translation,
                        w["Bip01_R_Forearm"].translation)
+        print("[draft] %s %s: roll %.0f" % (name, gun, roll_deg(W)))
         print("[draft] %s %s: grip %s butt %s (upper arm %.3f off), muzzle down %.0f, gun to R forearm %.0f deg, "
               "L wrist %s R wrist %s short %s depth %s" % (
             name, gun, cv(W.translation), cv(W @ Vector((0, -BUTT, 0))), pin, down_deg(W),
@@ -341,7 +365,8 @@ if __name__ == "__main__":
             arm = x_import.load(os.path.join(args[0], "Bob_IdleRifle.x"))
             obs = load_gun(arm, "famas") + load_gun(arm, "aug")
             res = {"A": draft_a, "B": draft_b, "now": draft_now}[which](args[0], arm, clearance.Body(arm, BODY_LOW), obs)
+            label = os.environ.get("BS_NAME", which)     # e.g. BS_NAME=straight for a B scanned with other angles
             if os.environ.get("BS_MOVE"):
-                move_preview(args[0], args[1], which, *res[:3])
+                move_preview(args[0], args[1], label, *res[:3])
             else:
-                render(args[0], args[1], which, *res)
+                render(args[0], args[1], label, *res)

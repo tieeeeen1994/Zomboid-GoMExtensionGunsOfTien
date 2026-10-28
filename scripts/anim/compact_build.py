@@ -74,14 +74,20 @@ HOLD = dict(pos=ch(0.02, 0.64, 0.10), along=ch(-0.77, -0.61, 0.20), top=-(ch(0.2
 HOLD_S = dict(look=0.15, lean=2, aux=0.0, support=1.0, elbow=0.0, twist=15)
 
 
+# the chest turn of the bullpup carry: none (user, 2026-10-28, after playing B with the chest turned 15: "make it look
+# straight to the direction the player is actually facing ... it's so weird when they run and his body is tilted")
+BULLPUP_TWIST = 0
+
+
 def _bullpup_hold():
     """The bullpup stance's carry (bullpup_stance.py draft B, chosen 2026-10-28: "B looks good. implement B"): the butt
-    pinned behind the right upper arm at ch(0.14, 0.68, -0.10), the gun along the right forearm 25 degrees down and 30
-    across to the left, the chest turned 15; eyes ahead (no look, no lean)."""
+    pinned behind the right upper arm, the gun along the right forearm 25 degrees down and 30 across to the left; eyes
+    ahead (no look, no lean), the chest square to where the character faces. With the chest turned 15 (the first
+    build) the scan put the butt at ch(0.14, 0.68, -0.10); square, at ch(0.14, 0.72, -0.10) (BS_B_TWIST=0)."""
     a, b = math.radians(25.0), math.radians(30.0)
     along = ch(-math.cos(a) * math.sin(b), -math.sin(a), math.cos(a) * math.cos(b))
-    return dict(pos=ch(0.14, 0.68, -0.10) + along * 0.21, along=along, top=rig.UP, look=0.0, lean=0, aux=0.0,
-                twist=15)
+    return dict(pos=ch(0.14, 0.72, -0.10) + along * 0.21, along=along, top=rig.UP, look=0.0, lean=0, aux=0.0,
+                twist=BULLPUP_TWIST)
 
 
 # the bullpup set (AUG A1, GoM's FAMAS; CLAUDE.md "Bullpup set"): B's carry, and in aimed frames the set's rifle_hand.py
@@ -90,7 +96,8 @@ def _bullpup_hold():
 BULLPUP_AIMS = os.path.normpath(os.path.join(HERE, "..", "..", "tmp", "anim", "bullpup_aims"))
 SETS["Bullpup"] = dict(support=None, palm_scale=0.72, idle_turn=(0, 0, 0), aim_turn=(0, 0, 0), gun="famas",
                        closer=ch(0.0, 0.0, 0.0), hold=_bullpup_hold(),
-                       hold_s=dict(look=0.0, lean=0, aux=0.0, support=1.0, elbow=0.0, twist=15), aims=BULLPUP_AIMS,
+                       hold_s=dict(look=0.0, lean=0, aux=0.0, support=1.0, elbow=0.0, twist=BULLPUP_TWIST),
+                       aims=BULLPUP_AIMS,
                        gun_path=True, gun_clear=True)
 
 AIM_NAME = re.compile(r"IdleAim|WalkAim|StrafeAim|WalkBwdAim|AttackRifle|Shove_Rifle")

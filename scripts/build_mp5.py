@@ -22,15 +22,25 @@ corrections Guns of Tien already made on GoM's models: the MP5 / MP5A2 `muzzle` 
 (MuzzlePoints.lua, scripts/muzzle_audit.py) and their `canon` for the Mk9 (Suppressors.lua, scripts/smg9_points.json).
 The UVs are GoM's, so the models keep GoM's textures. gen_scripts.py mp5_family() writes the model blocks from the
 JSON, under GoM's own model names (a later block replaces GoM's mesh, texture and points; its items are untouched).
+
+The MP5K in both hands (user, 2026-10-28: held like the MP5A3, on the UMPs' rifle-hand set): GoM models it for
+vanilla's pistol clips, upside down on rifle clips, and a point that turns it (Bip01_Prop1) would leave the tracers
+2 x the muzzle's height off the drawn barrel (the game shoots from the gun bone x the `muzzle` point alone). So the body
+is written a second time turned half a turn about the barrel at the grip, MP5K_BODY_2H, and the JSON's "two_hand" holds
+its model block, GunsOfTien.MP5K_2H (gen_scripts.py one_hand()): every point turned with it, so the bolt, magazine and
+sights (parts keep GoM's meshes) and the muzzle flash come upright, plus a turned `bolt_lock` (absent on GoM's MP5K, so
+drawn at the origin, which the turn would otherwise leave upside down). OneHand.lua draws it while the gun is in both
+hands.
 """
 
 import json
+import math
 import os
 import re
 import sys
 
 import bpy
-from mathutils import Matrix
+from mathutils import Euler, Matrix, Vector
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
@@ -48,6 +58,8 @@ GOM_RATIO = {"MP5A2": 0.4938 / 680.0, "MP5K": 0.2344 / 325.0}   # GoM's drawn le
 SCALE = round(K_UZI / (1000.0 * sum(GOM_RATIO.values()) / len(GOM_RATIO)), 4)
 
 GUNS = ("MP5", "MP5SD", "MP5A2", "MP5K")
+TURN_Y = Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0))   # half a turn about the barrel (game space; the raw FBX data alike)
+TWO_HAND = ("MP5K", "MP5K_2H", "MP5K_BODY_2H", ("bolt_lock",))   # GoM model, ours, turned body node, points GoM lacks
 MAGAZINES = tuple("9x19Magazine%d_MP5" % n for n in (20, 25, 30, 60, 100))
 # Guns of Tien's corrections of GoM's points, in GoM's size (applied before SCALE)
 FIXES = {
@@ -109,6 +121,33 @@ def points():
     return models
 
 
+def point_matrix(off, rot):
+    """A model point as the game builds it (JOML translate . rotateXYZ: Rx . Ry . Rz, degrees)."""
+    rx, ry, rz = [math.radians(a) for a in rot]
+    return (Matrix.Translation(Vector(off)) @ Matrix.Rotation(rx, 4, 'X') @ Matrix.Rotation(ry, 4, 'Y')
+            @ Matrix.Rotation(rz, 4, 'Z'))
+
+
+def turned(off, rot):
+    """The point of a mesh turned by TURN_Y that keeps the same place on it: TURN_Y x the point."""
+    m = TURN_Y @ point_matrix(off, rot)
+    e = m.to_3x3().to_euler('ZYX')                   # Blender's 'ZYX' = Rx . Ry . Rz
+    out = ([round(v, 4) + 0.0 for v in m.to_translation()], [round(math.degrees(a), 4) + 0.0 for a in e])
+    for a, b in zip(sum(map(list, point_matrix(*out)), []), sum(map(list, m), [])):
+        assert abs(a - b) < 1e-3, (off, rot, out)
+    return out
+
+
+def two_hand(models):
+    gom, name, node, missing = TWO_HAND
+    src = models[gom]
+    atts = [[pid, *turned(off, rot)] for pid, off, rot in src["attachments"]]
+    atts += [[pid, *turned((0.0, 0.0, 0.0), (0.0, 0.0, 0.0))] for pid in missing
+             if pid not in {a[0] for a in src["attachments"]}]
+    return {name: {"mesh": "weapons/firearms/GunsOfTien_MP5|%s" % node, "texture": src["texture"],
+                   "cullFace": src["cullFace"], "attachments": atts}}
+
+
 def main():
     if GOM is None:
         sys.exit("Guns of Marz not found")
@@ -125,6 +164,13 @@ def main():
                 continue
             o.data.transform(Matrix.Scale(SCALE, 4))    # raw FBX data, about the model origin
             keep.append(o)
+    body = next(o for o in guns if o.name.split(".")[0] == TWO_HAND[0] + "_BODY")
+    up = body.copy()
+    up.data = body.data.copy()
+    up.data.transform(TURN_Y)                           # a rotation: winding and UVs unchanged
+    up.name = up.data.name = TWO_HAND[2]
+    bpy.context.scene.collection.objects.link(up)
+    guns.append(up)
     for objs, out in ((guns, OUT_GUNS), (mags, OUT_MAGS)):
         bpy.ops.object.select_all(action='DESELECT')
         for o in objs:
@@ -142,6 +188,9 @@ def main():
         "scale": SCALE,
         "models": points(),
     }
+    data["_notes"]["two_hand"] = ("the MP5K held in both hands (OneHand.lua): its body turned half a turn about the "
+                                  "barrel at the grip, every point turned with it (GunsOfTien.MP5K_2H)")
+    data["two_hand"] = two_hand(data["models"])
     with open(POINTS, "w") as fh:
         json.dump(data, fh, indent=2)
         fh.write("\n")

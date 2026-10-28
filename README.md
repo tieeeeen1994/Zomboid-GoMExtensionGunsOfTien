@@ -36,8 +36,8 @@ Maker they can be made.
 - AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
-  proportion, so the Mk9 sits on them as it does on the Uzis; the MP5A3, MP5A2 and MP5SD are held like rifles with the
-  support hand on the handguard (the MP5K keeps the short SMG stance); Guns of Marz's MP5 is named for what it is, the
+  proportion, so the Mk9 sits on them as it does on the Uzis; all four are held like rifles with the support hand on the
+  handguard (the MP5K under its front end) and share the H&K reload; Guns of Marz's MP5 is named for what it is, the
   MP5A3 (retractable stock)
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
@@ -87,13 +87,13 @@ Maker they can be made.
 
 ## Short SMG stance (beta)
 
-- The Uzi, Mini Uzi, Guns of Marz's MP5K and Post-93's MP7s share one stance of their own: carried with both hands
+- The Uzi, Mini Uzi and Post-93's MP7s share one stance of their own: carried with both hands
   down across the body, magazine hanging clear of the belly; aimed like a rifle with the support hand closer in on the
   shorter gun, at one place for all of them (under the front of the gun)
 - Every animation of the rifle stance is remade for it: idle, sneaking, walking, running, sprinting, aiming at every
   angle and while moving, shooting, shoving, vaulting, falling, getting up, sitting, idle fidgets and emotes
 - Reloads shared by how the guns work: the magazine drawn out of the grip and carried in the hand, then the knob racked
-  overhand (Uzi, Mini Uzi); the same magazine change and the rear T-handle pulled back (MP7s); the H&K reload (MP5K)
+  overhand (Uzi, Mini Uzi); the same magazine change and the rear T-handle pulled back (MP7s)
 - The Mini Uzi, the MP5K and Post-93's MP7s go into both hands by default; "Equip Primary" still holds them in one
   hand, like a pistol, with the pistol reload (the Mini Uzi still fits a holster); the Micro Uzi stays a one-handed
   machine pistol
