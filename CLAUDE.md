@@ -28,6 +28,43 @@ the vision of GoM. Before building a feature, check
 `~/Zomboid/Workshop/*` for one of the user's own mods that already does it (e.g. `RakeFeathersToo` already rakes
 feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and removed).
 
+## Animations are generic, never per gun (rule, user, 2026-10-28)
+
+Per-gun sets (the short SMG stance as Uzi / UziT / MP5K / MP7: 255 nodes and ~29 MB each) took 2-3 days of fixes
+and multiply the work for every other mod that modifies animations. So:
+
+- **No animation is made for one gun.** Before adding a stance, reload or rack animation, justify it with other real
+  guns that move and handle nearly the same; otherwise fit the gun to an existing animation (model placement,
+  orientation), not the animation to the gun. Small imperfections are accepted: some clipping, a hand a little off
+  its place. No per-gun hold sets, no per-gun hand places.
+- **Three kinds, chosen separately per gun:** a stance (the hold: idle, movement and everything else that is not
+  aiming, reloading or racking), a magazine family and a rack family. A gun may take its magazine change from one
+  family and its rack from another (the MP7: the pistol magazine change, the rear T-handle rack). Reload nodes are
+  XML, so mixing families needs no new clips.
+- Stances: vanilla's rifle; **short SMG** (one set: Uzi, Mini Uzi, MP7A1 / A2, GoM's MP5K; its aim is the approved
+  aim with one shared left-hand place, the Uzi's); the H&K rifle-hand hold (UMP45, UMP9, GoM's MP5A3 / A2 / SD);
+  **bullpup** (AUG, FAMAS; a real bullpup hold to be made, vanilla's rifle hold with the palm moved back "looks
+  weird": how they are held and how the gun hangs from the hands). Short SMG = held by the grip, no stock to the
+  shoulder, about half a metre or less as carried: the MP5K is in, the MP5A3 / A2 / SD (550-680 mm, stocks
+  shouldered) stay with the UMPs.
+- Families decided: pistol magazine + pistol rack (Uzi, Mini Uzi: the top knob is racked like a slide; later the
+  Micro Uzi and MAC-10 type guns); pistol magazine + rear T-handle rack (MP7; real kin: Steyr TMP 1992, B&T MP9
+  2004, every AR's rack); H&K (MP5s, MP5K, UMPs); bullpup (AUG and FAMAS, one family); belt-fed (M249; M60, PKM, MG3
+  handle alike). The P90's top-magazine reload is the one kept as is ("one of the weird guns"); a future M4 with
+  that kind of magazine (an AR-57 type upper) would use it.
+- Plan (2026-10-28, release 3.4.0 held for it): build the short SMG stance with the gun in the **pistol orientation**
+  (the Mini Uzi, MP7 and MP5K are modelled that way): every gun's grip sits in the hand with no per-gun numbers, the
+  upright turn, `TURNED_SETS`, the UziT copy and OneHand.lua's one-hand models go, pistol reloads play right way up
+  on the same model; only the full Uzi's mesh is re-exported in pistol orientation. "Compact SMG stance" below
+  describes the per-gun build this replaces.
+- Entering a reload: reload nodes live in `AnimSets/player/actions` (a sub-state layer over idle / aim, blended in
+  over the node's `m_BlendTime`, ours 0.20 s), so there is no hard snap, but hands and gun cross-fade separately
+  (the gun bone hangs from Bip01) and can part for a moment when the reload's first pose is far from the stance.
+  A transition clip (`m_Transitions` with `m_AnimName`) cannot cover it: the engine (42.21
+  `AdvancedAnimator.FindTransitionsFromProxy`) only plays one from a node going out to a node coming in, and the root
+  idle node stays active under the reload layer. If the cross-fade looks bad, the fix is a lead-in and lead-out
+  built into the clips of that (stance, family) pair, generic for every gun using them.
+
 ## Decisions taken with the user (main mod)
 
 - **Writing in game texts** (user, 2026-10-19, both mods): tooltips, Information lines, sandbox and UI strings never

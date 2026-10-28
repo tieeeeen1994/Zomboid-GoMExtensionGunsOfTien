@@ -4,30 +4,60 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished and b
 are taken as working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings:
 `CLAUDE.md`. Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
+## Generic animations (release 3.4.0 held for these; CLAUDE.md "Animations are generic")
+
+In order:
+
+- [ ] **Short SMG test render**: the Mini Uzi, MP7 and MP5K drawn with the stance's gun bone in the pistol orientation,
+      no upright turn and no per-set gun shift. They should look as they do today, grip in the hand.
+- [ ] **One short SMG stance** for the Uzi, Mini Uzi, MP7A1 / A2 and GoM's MP5K (MP5A3 / A2 / SD stay with the UMPs:
+      550-680 mm, stocks shouldered), built in the pistol orientation; the approved aim with the Uzi's left-hand place
+      for all four. Re-export the full Uzi's mesh in pistol orientation; remove the upright turn, `TURNED_SETS`, the
+      Uzi / UziT / MP5K / MP7 sets and OneHand.lua's one-hand models. Small clipping and hands a little off are
+      accepted.
+- [ ] **Reloads by family** (magazine and rack chosen separately; reload nodes are XML):
+      - Uzi, Mini Uzi, and the Micro's `UziGrip`: generic pistol magazine change and rack (GoM's `handgun2`).
+      - MP7A1 / A2: pistol magazine change + rear T-handle rack (its current rack, made the generic one; kin: Steyr
+        TMP, B&T MP9, ARs). Its one-hand reload on the pistol family too.
+      - MP5K: H&K on the short SMG stance.
+      - GoM's MP5A3 / A2 / SD: the UMPs' H&K reload instead of GoM's own.
+      - AUG and FAMAS: one bullpup family (one magazine place, one rack).
+- [ ] **Check in game**: entering a pistol reload from the short SMG stance (0.2 s cross-fade; hands and gun blend
+      separately). If they part, build a lead-in / lead-out into that stance + family pair's clips (a transition clip
+      cannot do it: CLAUDE.md "Animations are generic").
+- [ ] **Bullpup stance drafts** (stills to choose from), for the AUG, FAMAS and later the AUG A1. Ours is vanilla's
+      rifle hold with the palm moved back: the gun is held by the grip at the hip, and with the magazine, action and
+      butt all behind the grip it hangs back past the hip with the short front up and left (it dangles). Research
+      (2026-10-28): the support hand sits near the muzzle on the handguard or the AUG's front grip folded down; the
+      rearward balance makes a low ready easy and the raise to aim a hinge; the magazine is the part by the armpit;
+      the length of pull is a rifle's, so shouldered hands sit where a rifle's do with the support hand 10-15 cm
+      nearer. One left-hand place fits both (just ahead of the trigger guard). Drafts:
+      - A. Shouldered low ready: butt in the shoulder pocket, gun tilted 30-45 degrees down, hands as in the aim.
+      - B. Tucked carry: butt against the side under the right arm, gun along the forearm, muzzle down and forward,
+        support hand on the front grip.
+- [ ] Then the bullpup stance built from the chosen draft (the compact_build machinery), replacing the rifle_hand
+      Bullpup set.
+- [ ] To decide: the SCAR-H's own reload under the rule (a side-forward charging handle family with the SCAR-L and
+      FAL, maybe the H&K guns).
+- [ ] Cleanup before rebuilding the UMP set: rifle_hand.py's "UMP" entry and smg_reload.py `ump_spec` still carry the
+      reverted de-clip (`contact`, `guns`, `aim_push`); take it out (CLAUDE.md "No clipping").
+
 ## Bugs
 
 - [ ] **No firing animation in one hand with the left hand full** (user, 2026-10-26: "Our guns in GoT that can be
       held with one hand has no shooting animation when the left hand is holding something else like an
-      umbrella"). Not traced yet. To find out: which guns (the four OneHand.lua guns only, or the P90 / Micro Uzi /
+      umbrella"). Not traced yet. To find out: which guns (the Mini Uzi, MP7s and MP5K only, or the P90 / Micro Uzi /
       pistols too, and whether GoM's own one-handed guns do the same); whether vanilla's pistol with an umbrella
       animates (engine) or only with Gunworks (its `RealSingle` / `RealAuto` / `RealBurst` nodes and their
       conditions); what `WeaponType.getWeaponType` gives for a two-handed gun in the primary hand with another item
       in the secondary.
+- [ ] M249 belt reload clips (`scripts/anim/m249_reload.py`): the left elbow flips (AimRack worst). The stock in the
+      chest and the left hand 1-3 cm short of the cover and handle are accepted.
 
 ## Decide
 
 - [ ] One-hand penalty: the Mini Uzi, MP5K and MP7A1 / A2 held in one hand get the engine's rule for a two-handed
       weapon in one hand (half damage, 0.77 combat speed). Keep it, or not?
-- [ ] Left hands off on rifle-stance guns (vanilla's own rifles: 1.1 cm under the gun idle, 2.8 aimed): GoM's MP5 /
-      MP5A2 / MP5SD ~2 cm lower (3.0 / 4.6: the hand floats under the handguard), G3, Thompson ~1.1-1.3 cm lower, FAL /
-      FNC / AS VAL / Mossberg ~0.8 (the FAMAS is done: the bullpup set, 2026-10-27). Bolt
-      rifles, M79, Stevens, BAR, Camp Carbine: palm 0.5-2 cm into the forend (probably just the fingers round the
-      wood; look). Our SCAR-L / H were ~1.1-1.3 cm lower before the resize (measure again; the MP5 / MP5A2 / MP5SD
-      too, now at 0.833 of GoM's size). Fixing = per-gun left-hand places (Gunworks `GripAnim` clip sets, as the
-      compact stance and the UMPs): which ones?
-- [ ] MP5K in the compact stance at its new size (user, 2026-10-27: "we'll judge later"): its clips and reloads were
-      solved for GoM's size (the gun now drawn ~1.5 cm off the hands, the foregrip 3 cm nearer the grip than the left
-      hand's place). Rebuild the MP5K set (TURNED_SETS -0.0371, hold_preview / smg_reload places) if it looks off.
 
 ## New guns
 
@@ -43,8 +73,8 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
         GoM's G36 magazine.
       - Folding vertical front grip on its own toggle (the MP7A1's way); no rails, optics, lights, lasers or
         suppressors on a 1993 A1.
-      - Reload on GoM's FAMAS bullpup clips (`famas_rifle`) first; Hot Brass from GoM's FAMAS values, to the right;
-        RepairPack at GoM's assault rifles' Aiming level.
+      - Bullpup stance and bullpup reload family (no animation of its own); Hot Brass from GoM's FAMAS values, to the
+        right; RepairPack at GoM's assault rifles' Aiming level.
       - To decide with the user: select-fire A1 only, or also the semi-automatic AUG SA on the same model (the one a
         1993 Kentucky civilian could own, imported 1983-1989) and where each spawns; green, black or both textures;
         bayonet (Austrian Glock knife; a lug on the SA not confirmed); a side-on reference photo (the user's, or a
@@ -59,22 +89,7 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       / 100) seated in each of the four; the stocks fold and deploy in place; the bolt moves on each shot; the muzzle
       flash and the tracers at the barrel's end; the Mk9 mount and can on the MP5 / MP5A2 the same size as on an Uzi,
       against the front sight housing on the bore axis; GoM's optics, foregrips, lights and lasers still on their rails
-      (GoM's size); the MP5 reload (GoM's clips) and the MP5K's stance reload and one-hand reload.
+      (GoM's size). Reloads: after the family rework.
 - [ ] MP5A3 / MP5A2 / MP5SD on the UMP rifle-hand set (2026-10-27, the set moved from Post-93 into the main mod):
       with Post-93 off, no "animation not found" in the log and the left hand on the handguard (not at the muzzle)
-      idle, aimed, walking, running, sneaking, shooting; the MP5 reload (GoM's clips) still plays; with Post-93 on, the
-      UMPs keep their hold and their own reloads (their reload clips are in the main mod's packs now).
-
-## Polish
-
-- [ ] **Short SMG stance (Uzi, UziT, MP7, MP5K), before the 3.4.0 release** (user, 2026-10-28: release held for it):
-      arms up to 2.2 cm deeper into the body than vanilla's, the reloads' ends 1.7-2.5 cm in. Goal: **only the arms**
-      out of the body, a natural movement ("I'm generally fine with guns clipping. I just hate unnatural movement in
-      the body"): gun and hands stay where the clips have them; elbows / shoulders only, eased over several frames.
-      The first de-clip (gun moved, elbows swung) was reverted ("your current changes are worse"; CLAUDE.md "No
-      clipping"). Show old and new side by side (GIF) before packing. Also judge the MP5K at its new size here.
-- [ ] UMP rifle-hand set (UMPs, GoM's MP5A3 / MP5A2 / MP5SD): same old clipping, its de-clip reverted 2026-10-28 (user:
-      the old set for everyone); rifle_hand.py / smg_reload.py still carry the UMP's fixes (CLAUDE.md "No clipping").
-
-- [ ] M249 belt reload clips (`scripts/anim/m249_reload.py`): the stock passes into the chest while the hand works,
-      the left hand stops 1-3 cm short on the open cover and the right-side handle, left elbow flips (AimRack worst).
+      idle, aimed, walking, running, sneaking, shooting; with Post-93 on, the UMPs keep their hold.
