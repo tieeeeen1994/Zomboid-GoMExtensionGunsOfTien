@@ -79,10 +79,12 @@ def uzi_spec():
     K = p["_extras"]["k"]
     L0, H0 = p["_extras"]["photo_origin_mm"]
     wp = lambda L, H, x=0.0: Vector((x * K, (L0 - L) * K, (H - H0) * K))
-    mag = mat_of(p["magazine"])
+    # modelled for the pistol clips since 2026-10-28 (build_uzi.py): its points and mesh are turned half a turn about
+    # Y, so the magazine point is turned back and the mesh drawn turned (model_turn); the places stay upright
+    mag = FLIP @ mat_of(p["magazine"])
     down = (mag.to_3x3() @ Vector((0, 0, -1))).normalized()          # along the magazine, out of the well
     return dict(
-        name="Uzi", rifle=True, points=p, mag_point=mag, out=down,
+        name="Uzi", rifle=True, points=p, mag_point=mag, out=down, model_turn=FLIP,
         # the magazine's axis 14 mm under the grip's bottom (H 46.5): every magazine shows there
         grab=wp(290.0, 46.5 - 14.0),
         # measured with SMG_CAL (hand_offset): the vanilla grip's hand centre lands this far from the axis point
@@ -247,14 +249,16 @@ def ump_spec():
         # is packed with them (compact_pack.py "UMP"); approved from the draft GIFs (user, 2026-10-26)
         clip_name="GunsOfTien_Compact%s_Reload%s",
         # the unload starts with the left hand where the idle has it, on the handguard: the magazine, 9 cm behind it,
-        # was out of its reach on the first frame (2.3 cm short)
-        start_on_support=True, contact=0.008,
+        # was out of its reach on the first frame (2.3 cm short). No `contact` (de-clip reverted with the set, 2026-10-28)
+        start_on_support=True,
         base=(os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleRifle.x"),
               os.path.join(ROOT, "tmp", "anim", "rifle", "UMP", "clips", "GunsOfTien_CompactUMP_IdleAimRifle.x")),
     )
 
 
-BULLPUP_CLIPS = os.path.join(ROOT, "tmp", "anim", "rifle", "Bullpup", "clips")
+# the bullpup stance (compact_build.py "Bullpup", draft B's carry, 2026-10-28; before it rifle_hand.py's set in
+# tmp/anim/rifle/Bullpup)
+BULLPUP_CLIPS = os.environ.get("BULLPUP_CLIPS") or os.path.join(ROOT, "tmp", "anim", "compact", "Bullpup", "clips")
 
 
 def bullpup(name, **spec):
@@ -274,7 +278,10 @@ def bullpup(name, **spec):
                 wrist=(-45, -35))
     # racking: the Uzi's place 5 cm higher and 3 cm further out (user, 2026-10-28, no clipping: there the left arm
     # crossed the belly 1.3 cm deep reaching the FAMAS's lever, scanned with SMG_RACK)
-    rack = dict(u["rack"], pos=ch(0.10, 0.62, 0.14))
+    # On the bullpup stance (2026-10-28, its carry holds the grip with the pistol idle's relation, the barrel along
+    # the forearm): that place left the right hand 4 cm short with the arm straight out; scanned with SMG_RACK,
+    # ch(0.08, 0.60, 0.06) has every frame in reach, the fewest wrists past their range, arms and gun within 0.008
+    rack = dict(u["rack"], pos=ch(0.08, 0.60, 0.06))
     g = dict(name=name, rifle=True, hold_fix=u["hold_fix"], work=work, rack=rack, away=u["away"],
              start_on_support=True, contact=0.008, clip_name="GunsOfTien_Compact%s_Reload%s",
              base=(os.path.join(BULLPUP_CLIPS, "GunsOfTien_CompactBullpup_IdleRifle.x"),
@@ -296,8 +303,9 @@ def aug_spec():
     down = Vector((0.0, math.sin(a), -math.cos(a)))
     s_grab = (13.0 + 10.0) * K                                         # 10 mm under the well's mouth
     knob = wp(272.0, 155.0, 18.0)
+    # the bullpup family (built as the AUG's; CLAUDE.md "Animations are generic")
     return bullpup(
-        "BullpupAUG", points=p, mag_point=mag, out=down, grab=mag.translation + down * s_grab,
+        "Bullpup", points=p, mag_point=mag, out=down, grab=mag.translation + down * s_grab,
         travel=s_grab + 0.010,
         knob=knob, knob_back=knob - Vector((0.0, -p["bolt_fired"]["offset"][1], 0.0)),
         knob_turn=(-60, 30, -45),                                      # the UMP's: a handle on the left, front

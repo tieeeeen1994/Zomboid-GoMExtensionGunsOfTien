@@ -43,20 +43,42 @@ and multiply the work for every other mod that modifies animations. So:
   XML, so mixing families needs no new clips.
 - Stances: vanilla's rifle; **short SMG** (one set: Uzi, Mini Uzi, MP7A1 / A2, GoM's MP5K; its aim is the approved
   aim with one shared left-hand place, the Uzi's); the H&K rifle-hand hold (UMP45, UMP9, GoM's MP5A3 / A2 / SD);
-  **bullpup** (AUG, FAMAS; a real bullpup hold to be made, vanilla's rifle hold with the palm moved back "looks
-  weird": how they are held and how the gun hangs from the hands). Short SMG = held by the grip, no stock to the
+  **bullpup** (AUG, FAMAS; built 2026-10-28 as a tucked carry, section "Bullpup stance (built)": vanilla's rifle
+  hold with the palm moved back "looked weird", the gun hanging back past the hip). Short SMG = held by the grip, no stock to the
   shoulder, about half a metre or less as carried: the MP5K is in, the MP5A3 / A2 / SD (550-680 mm, stocks
   shouldered) stay with the UMPs.
+- A family has one clip set per stance it is used in: the pistol family is the Uzi's old stance reload on the short
+  SMG stance (magazine into the grip, knob racked overhand, played from the stance, so no blend from a pistol pose)
+  and `UziGrip` (vanilla's pistol clips) on the pistol stance (Micro Uzi; Mini Uzi and MP7s in one hand).
 - Families decided: pistol magazine + pistol rack (Uzi, Mini Uzi: the top knob is racked like a slide; later the
   Micro Uzi and MAC-10 type guns); pistol magazine + rear T-handle rack (MP7; real kin: Steyr TMP 1992, B&T MP9
   2004, every AR's rack); H&K (MP5s, MP5K, UMPs); bullpup (AUG and FAMAS, one family); belt-fed (M249; M60, PKM, MG3
   handle alike). The P90's top-magazine reload is the one kept as is ("one of the weird guns"); a future M4 with
   that kind of magazine (an AR-57 type upper) would use it.
-- Plan (2026-10-28, release 3.4.0 held for it): build the short SMG stance with the gun in the **pistol orientation**
-  (the Mini Uzi, MP7 and MP5K are modelled that way): every gun's grip sits in the hand with no per-gun numbers, the
-  upright turn, `TURNED_SETS`, the UziT copy and OneHand.lua's one-hand models go, pistol reloads play right way up
-  on the same model; only the full Uzi's mesh is re-exported in pistol orientation. "Compact SMG stance" below
-  describes the per-gun build this replaces.
+- **Built 2026-10-28 (not loaded in game yet): the short SMG stance holds its gun in the pistol orientation.** The
+  stance's gun bone is the rifle relation turned half a turn about the gun's Y at its origin (`compact_pack.py`
+  `turn_gun_bone` for `compact_animsets.PISTOL_SETS`), so a gun modelled for the pistol clips is drawn upright with
+  its grip in the hand and no model point, the muzzle the game shoots from is the drawn muzzle, whatever its muzzle
+  height, and one model serves both hands. This is exactly what the old upright turn plus per-set gun shift drew
+  (checked: 2e-6 against UziT), with no per-gun numbers. Gone: `TURNED_SETS`, `turnUpright`, the UziT / MP5K / MP7
+  sets (1,020 nodes, 28 packs), OneHand.lua's model swap (the `*_1H` model scripts stay for guns saved with them,
+  identical now), Post-93's `MP7A1` one-hand reload (the MP7 uses the Micro's identical `UziGrip`).
+  - Packs: `GunsOfTien_CompactShortSMG_Pack1-7.x` (main mod, 277 clips, 28.5 MB), made once by
+    `scripts/anim/shortsmg_from_packs.py` from the 2026-10-27 packs (the per-gun builds lived in tmp/ on the Mac):
+    the Uzi set's clips, and the reloads taken out under family names, each set's gun-bone move measured against
+    vanilla's Bob_IdleAimRifle (MP5K 0.0890, MP7 0.0344) and undone first. Nodes: `compact_animsets.py ...
+    ShortSMG` (255, reproduced the shipped Uzi nodes byte for byte before the rename) and `write_reload_nodes`
+    (24: ids `ShortSMGPistol`, `ShortSMGHK`, `ShortSMGPistolRearT` with `clip_sets`). Grip animId
+    `GunsOfTien_CompactShortSMG`; reload ids `GunsOfTienCompactShortSMG<Pistol|HK|PistolRearT>`.
+  - The full Uzi re-exported in pistol orientation (`UZI_ONLY=1 blender ... build_uzi.py`: Uzi alone, a new UV
+    layout and texture from this machine's bake; points turned, its rifle floor pose turned, MP7-style `rifle_back`
+    / `rifle_back_bag` points turning it back upright on the back). Other mods' rifle locations (Plysken's) have no
+    such point and would draw it upside down. smg_reload's `uzi_spec` keeps upright places and draws the mesh with
+    `model_turn`; hold_preview turns it for rifle clips.
+  - Outside the stance's nodes (climbing, hit reactions, actions...) vanilla's generic clips hold the gun in a third
+    relation, matching neither rifles nor pistols (Bob_ClimbWindowStart, Bob_FallIdle): the short SMGs now look
+    there as GoM's MP5K / MAC-10 do.
+  "Compact SMG stance" below describes the per-gun build this replaced.
 - Entering a reload: reload nodes live in `AnimSets/player/actions` (a sub-state layer over idle / aim, blended in
   over the node's `m_BlendTime`, ours 0.20 s), so there is no hard snap, but hands and gun cross-fade separately
   (the gun bone hangs from Bip01) and can part for a moment when the reload's first pose is far from the stance.
@@ -979,6 +1001,8 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   y 0.12-0.19, its bottom z -0.002; vanilla's palm (0.218 idle, 0.204 aimed) is the FAMAS's handguard tip and the
   AUG's bare barrel. FAMAS cocking lever = the front of FAMAS_BOLT under the carry handle's bar (y 0.08-0.12, z
   0.026-0.060, |x| < 0.004; the bar at z ~0.075), back 0.061 with the bolt.
+- Since 2026-10-28 only this set's **aimed** frames ship (the carry is draft B, section "Bullpup stance (built)");
+  the rest of this section describes the rifle_hand.py build those aims come from.
 - Hold: `scripts/anim/rifle_hand.py` SETS "Bullpup" (scale 0.72: palm 0.157 idle / 0.147 aimed; `push` 0.02: the gun
   moved forward along its own Y every frame, the right arm solved after it and the gun put back from where the hand
   landed). 116 clips (every vanilla firearm clip with a gun in its name). Needs `GUNWORKS_ANIMSETS` on Windows (the
@@ -1037,6 +1061,71 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   nodes have none either, its `InsertMag` event is read by nothing). Previews: `HOLD_SET=Bullpup hold_preview.py ...
   aug aug_folded famas`, smg_reload.py `--preview`.
 
+## Bullpup stance drafts (2026-10-28; B chosen: "B looks good. implement B")
+
+How bullpups are held (research, 2026-10-28): the support hand near the muzzle on the handguard or the AUG's front
+grip folded down; the rearward balance makes a low ready easy and the raise to aim a hinge; the magazine is the part
+by the armpit; the length of pull is a rifle's, so shouldered hands sit where a rifle's do with the support hand
+10-15 cm nearer. One left-hand place fits both guns (just ahead of the trigger guard).
+
+`scripts/anim/bullpup_stance.py -- <Bob> <out> A B now` (~10 s for all three on Windows; out dir absolute), sheet
+`tmp/anim/bullpup_stance/bullpup_drafts.png`. Character space (ch: right, up, forward) from vanilla's rifle idle: the
+right shoulder joint (0.10, 0.75, -0.035), the elbow (0.15, 0.63, -0.05), the eye (0, 0.855, 0.01); vanilla's idle
+rifle grip (0.064, 0.491, 0.048), muzzle 27 degrees **up**, and a bullpup's butt (0.21 behind the grip) at (0.24,
+0.40, 0.00), out at the right hip: the dangle. Vanilla's aim: grip (0.07, 0.741, 0.119), level.
+- A, shouldered low ready: the aim's torso and hand relation, the gun at the set's aim place (push + aim_push 0.083)
+  swung 30 degrees down about the butt (0.07, 0.74, -0.01). Wrists L (-48, -4, 35), R (-28, -1, 0); arms clear; gun
+  0.010 (AUG) / 0.007 (FAMAS) in, the AUG 2 mm over the 0.008 rule. 35-45 degrees cost more (wrists, gun 0.012-0.015
+  in). Vanilla's `Bob_IdleAimRifle_Down` as the base hunched over the gun with the head bowed into the FAMAS's carry
+  handle (dropped).
+- B, tucked carry: the rifle idle's body, the grip held with the **pistol** idle's hand relation (`idle_down.x_rig`;
+  with the rifle idle's the right hand fell 10 cm short and the wrist went to (-50, -45)), butt pinned at (0.14,
+  0.68, -0.10), behind the upper arm (its bone line 1 cm off), muzzle 25 down and 30 across to the left, twist 15,
+  the gun touching the side. Wrists L (-28, 44, 42), R (-10, -11, -25); every depth 0.005 or less. Unconstrained the
+  scan drifts to vanilla's butt-behind-the-hip carry or to a 15-degree hip ready; the pin and BS_B_DOWN keep it a
+  carry. Its best still sits on the grid's edge (x 0.14, forward -0.10, 30 across), so a build should rescan wider.
+- The left hand is the set's place in both (palm x 0.72); the AUG's unfolded grip hangs just behind it.
+- B moving (`BS_MOVE=1 ... B`: vanilla's Bob_RunRifle / Bob_Sprint_Rifle, frame by frame as compact_build's carried
+  clips; GIFs `tmp/anim/bullpup_stance/B_Bob_<clip>.gif`, FAMAS). Held rigid to the chest, the gun went 4.6-4.9 cm
+  into the hips and the right arm 2-3 cm in; with the short SMG stance's approved drift shares (vanilla's gun drift
+  against the chest, 0.2 out / 0.4 up) run: gun 0.7, left arm 0.9 cm, butt 3.6-5.4 cm from the upper arm's bone line;
+  sprint: gun 1.0, left arm 1.4 cm (vanilla's own arms 0 in both), butt 0.4-3.1 cm. Over the 0.8 rule by up to 0.6
+  cm, for a build's de-clip. Worst wrists: run R (-45, -16, -67) at frame 0, sprint L twist 71. The run's forward lean
+  turns the hold's 25-degree muzzle near vertical in the side view.
+
+## Bullpup stance (built 2026-10-28, not played)
+
+Draft B on every clip played with a gun, by `compact_build.py ... Bullpup` (as the short SMG stance), replacing
+rifle_hand.py's set in the shipped packs (Bullpup.lua unchanged: grip animId `GunsOfTien_CompactBullpup`).
+- Set (`compact_build.SETS["Bullpup"]`): `hold` = B (`_bullpup_hold`: butt at ch(0.14, 0.68, -0.10), 25 down, 30
+  across, twist 15, no look / lean), held with the pistol idle's hand relation (`idle_down.x_rig`, as every
+  compact set); left palm at the idle template's palm x 0.72 (`palm_scale`); carried frames keep 0.2 / 0.4 of
+  vanilla's gun drift (the module default). `aims`: the aimed frames are rifle_hand.py's earlier build, unchanged
+  (vanilla's aim, gun pushed off the face, de-clipped), read from `tmp/anim/bullpup_aims` (`extract_aims` copied
+  all 120 clips out of the old packs on the first run; it leaves an existing folder alone, so that copy is the only
+  source of the old aims now: keep it, or rebuild rifle_hand.py "Bullpup" to get them back). `gun_path`: frames
+  between carry and aim (`path_pose`) blend the body bone by bone but move the gun on a straight path between its
+  two places on the chest, both hands solved onto it; blending the arm bones (the compact sets' way) swung the gun
+  through the right side, 6 cm in mid-raise. `gun_clear`: carried and between frames move the gun straight out of
+  chest + pelvis (`Declip.gun`, `clear_gun`) to 0.008. `Declip.gun` turns the escape direction from Blender's world
+  into the clip's space through the armature's object matrix (x_import.OBJECT_MATRIX swaps Y and Z); rifle_hand.py's
+  `gun_escape` applies it without that turn.
+- Build: 244 clips + generic copies = 267 (`tmp/anim/compact/Bullpup`), ~5 s a clip; run as 6 Blender processes
+  with `--clips` lists and `--no-pack` (the four UNDERLYING clips first, the generic copies read them from out_dir),
+  then manifest.txt = every built clip. Packed with the reloads: 271 clips, 7 packs, 28.2 MB (was 3 packs, 8.8 MB).
+  Nodes: `compact_animsets.py ... Bullpup` rewrote the same 255 files; every packed clip referenced, none missing.
+- Measured (chest; the build's own report): aim clips (19) as shipped, all within 0.008. Carried / between (81):
+  gun over 0.008 in 4 (SprintToAimRifle 2.8 cm, EmotePainLeftArmRifle 2.2), arms over 0.022 in 4 (VaultOver_End 3.1,
+  BiteReact_Rifle_L 2.9, EmotePainLeftArmRifle 2.7, RunRifle_BumpL 2.4). Generic copies (151): the gun is the carry's
+  under a gesture, not movable per clip: over 0.008 in 50, over 2.5 cm in 6 (crouched pain emotes, StealthEmote
+  PainStomach02 6.0 cm), arms up to 8.6 (EmoteYawn2H on the ground, right arm). Not the "No clipping" rule's 0.008
+  everywhere: compact_build's own de-clip (CONTACT 0.022), as on the short SMG stance; declip_pass was not used.
+- Reloads (`smg_reload.py aug`, base now the new idle and aim, `BULLPUP_CLIPS`): unload, load and aimed rack as
+  placed before; the rack's place moved to ch(0.08, 0.60, 0.06) (at ch(0.10, 0.62, 0.14) the right hand fell 4 cm
+  short with the arm straight: the carry's pistol relation puts the barrel along the forearm). Arms: unload / load
+  1.4-2.1 cm in at the hip end (the magazine in the hand) and the load's frame 10; rack and aimed rack within 0.008.
+- Previews: `tmp/anim/bullpup_gifs` (idle, raise, walk, run, sprint, sneak walk; reload sheets).
+
 ## No clipping: every set we ship (2026-10-28)
 
 User, after the bullpup reloads: "we wanted to fix the clipping issues"; then "the arms not to pass through the body",
@@ -1053,10 +1142,11 @@ from too, and frame-to-frame moves against vanilla's and the clips before (a de-
   de-clipped builds are still in `tmp/anim/compact` and `tmp/anim/full`: rebuild before packing from there.
 - **Reverted for the UMP set too (2026-10-28)**, after the merge with `models-resize` (the set now ships in the main
   mod and also holds GoM's MP5A3 / MP5A2 / MP5SD; our fixes were measured on the UMP's shape only). User: the old set
-  for everyone. Its three packs are back to the 2026-10-27 build (the UMP's reload clips in them too). The code still
-  does it: rifle_hand.py's "UMP" entry (`contact`, `guns`, `aim_push` 0.045) and smg_reload.py `ump_spec`'s
-  `contact`, and `tmp/anim/rifle/UMP` / `tmp/anim/reload` hold the de-clipped clips; take them out (or add the MP5s'
-  meshes to `guns` and ask) before rebuilding the set. The Bullpup set keeps its fixes.
+  for everyone. Its three packs are back to the 2026-10-27 build (the UMP's reload clips in them too). The code is
+  back too (2026-10-28): rifle_hand.py's "UMP" entry is `scale` only (its no-`contact` path is the 2026-10-26 build
+  exactly) and smg_reload.py `ump_spec` has no `contact`; to try again, add the MP5s' meshes to `guns` and ask
+  first. `tmp/anim/rifle/UMP` / `tmp/anim/reload` still hold the de-clipped clips: rebuild before packing from
+  there. The Bullpup set keeps its fixes.
 
 - Found (shipped before): the bullpup set's left forearm 1 cm deeper than vanilla's in 67 of 116 clips, its butts
   through the jaw on every aim; the UMP set (52 clips), Uzi / UziT (76), MP7 (75), MP5K (67) up to 2.2 cm deeper; the
@@ -1368,6 +1458,9 @@ behind it (42.21):
   UV from a neighbour face squeezed it into a strip over dark seams).
 
 ## Compact SMG stance (2026-10-23, full coverage built, not loaded in game yet)
+
+Superseded on 2026-10-28 by one short SMG stance ("Animations are generic" above): the per-gun sets below no longer
+ship, but how the Uzi set (now ShortSMG) was built still holds.
 
 - User's choice ("Option B"): the full-size Uzi, Mini Uzi and GoM's MP5K share one custom idle / aim stance; the
   Micro Uzi and Post-93's P90 stay pistol-held (the MP7 was not decided). Option A (just make them two-handed and

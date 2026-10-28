@@ -38,16 +38,10 @@ import xanim  # noqa: E402
 
 # set -> the guns' size against the rifle the clips fit (the palm's place on the gun is scaled by it)
 SETS = {
-    # the UMPs: their palm place at the old size (0.72 of real), now 0.603
-    # the UMP: its unfolded stock sat 2.3 cm in the shoulder on vanilla's aim; 0.04 forward clears it (0.007)
-    "UMP": dict(scale=0.000603 / 0.00072, contact=0.008, aim_push=0.045,
-                guns=(("p93", "models_X/weapons/firearms/GunsOfTienPost93_UMP.fbx", "UMP_BODY"),
-                      ("p93", "models_X/weapons/parts/GunsOfTienPost93_UMP_parts.fbx", "UMP_STOCK",
-                       {"offset": [0.0, -0.0283, 0.0234]}),
-                      ("p93", "models_X/weapons/parts/GunsOfTienPost93_UMP_parts.fbx", "UMP_STOCK",
-                       {"offset": [-0.0259, -0.0283, 0.0234], "rotate": [0.0, 0.0, 180.0]}),
-                      ("p93", "models_X/weapons/magazines/GunsOfTienPost93_UMP_magazines.fbx", "45Magazine25_UMP",
-                       {"offset": [0.0, 0.0959, 0.0127]}))),
+    # the UMPs: their palm place at the old size (0.72 of real), now 0.603. Also holds GoM's MP5A3 / MP5A2 / MP5SD. No
+    # de-clip (reverted 2026-10-28, user: the old set for everyone; it was measured on the UMP's shape only, and its
+    # unfolded stock sits 2.3 cm in the shoulder on vanilla's aim): to try again, add the MP5s to `guns` and ask first
+    "UMP": dict(scale=0.000603 / 0.00072),
     # the bullpups (docs/design.md 4h; user, 2026-10-27): the AUG A1 and GoM's FAMAS in one set. Vanilla's palm (0.218
     # ahead of the grip idle, 0.204 aimed) lies on the FAMAS's handguard tip and the AUG's bare barrel; at 0.72 it
     # comes to 0.157 / 0.147, under the FAMAS's handguard (0.10-0.22) and the AUG's folded grip (0.12-0.19), whose
@@ -63,7 +57,7 @@ SETS = {
     # further back than GoM's M16A2's and sat 2.4 / 3.2 cm in the shoulder on every aim, through the jaw in the side
     # view (vanilla's own aim has the M16A2 1.8 in); the user's 3-4 cm gap at the eye (`push`) became ~10 cm
     # The parts that hang off the guns are checked at their model points (the AUG's grip both ways, its long magazine,
-    # the FAMAS's STANAG; the UMP's stock unfolded and folded, its 25): a body alone left them unseen
+    # the FAMAS's STANAG): a body alone left them unseen
     "Bullpup": dict(scale=0.72, push=0.02, contact=0.008, aim_push=0.063,
                     guns=(("main", "models_X/weapons/firearms/GunsOfTien_AUG.fbx", "AUG_BODY"),
                           ("main", "models_X/weapons/firearms/GunsOfTien_AUG.fbx", "AUG_FOREGRIP",

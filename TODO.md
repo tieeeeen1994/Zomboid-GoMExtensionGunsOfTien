@@ -6,41 +6,13 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 
 ## Generic animations (release 3.4.0 held for these; CLAUDE.md "Animations are generic")
 
-In order:
+Done 2026-10-28 (built, not played; see "Check in game"): one short SMG stance in the pistol orientation, reloads
+by family (short SMG: pistol, H&K, pistol + rear T-handle; GoM's MP5s on the UMPs' H&K reload; one bullpup family),
+the full Uzi re-exported in pistol orientation, the bullpup stance (draft B, a tucked carry) with its reloads rebuilt
+on it. Still to do:
 
-- [ ] **Short SMG test render**: the Mini Uzi, MP7 and MP5K drawn with the stance's gun bone in the pistol orientation,
-      no upright turn and no per-set gun shift. They should look as they do today, grip in the hand.
-- [ ] **One short SMG stance** for the Uzi, Mini Uzi, MP7A1 / A2 and GoM's MP5K (MP5A3 / A2 / SD stay with the UMPs:
-      550-680 mm, stocks shouldered), built in the pistol orientation; the approved aim with the Uzi's left-hand place
-      for all four. Re-export the full Uzi's mesh in pistol orientation; remove the upright turn, `TURNED_SETS`, the
-      Uzi / UziT / MP5K / MP7 sets and OneHand.lua's one-hand models. Small clipping and hands a little off are
-      accepted.
-- [ ] **Reloads by family** (magazine and rack chosen separately; reload nodes are XML):
-      - Uzi, Mini Uzi, and the Micro's `UziGrip`: generic pistol magazine change and rack (GoM's `handgun2`).
-      - MP7A1 / A2: pistol magazine change + rear T-handle rack (its current rack, made the generic one; kin: Steyr
-        TMP, B&T MP9, ARs). Its one-hand reload on the pistol family too.
-      - MP5K: H&K on the short SMG stance.
-      - GoM's MP5A3 / A2 / SD: the UMPs' H&K reload instead of GoM's own.
-      - AUG and FAMAS: one bullpup family (one magazine place, one rack).
-- [ ] **Check in game**: entering a pistol reload from the short SMG stance (0.2 s cross-fade; hands and gun blend
-      separately). If they part, build a lead-in / lead-out into that stance + family pair's clips (a transition clip
-      cannot do it: CLAUDE.md "Animations are generic").
-- [ ] **Bullpup stance drafts** (stills to choose from), for the AUG, FAMAS and later the AUG A1. Ours is vanilla's
-      rifle hold with the palm moved back: the gun is held by the grip at the hip, and with the magazine, action and
-      butt all behind the grip it hangs back past the hip with the short front up and left (it dangles). Research
-      (2026-10-28): the support hand sits near the muzzle on the handguard or the AUG's front grip folded down; the
-      rearward balance makes a low ready easy and the raise to aim a hinge; the magazine is the part by the armpit;
-      the length of pull is a rifle's, so shouldered hands sit where a rifle's do with the support hand 10-15 cm
-      nearer. One left-hand place fits both (just ahead of the trigger guard). Drafts:
-      - A. Shouldered low ready: butt in the shoulder pocket, gun tilted 30-45 degrees down, hands as in the aim.
-      - B. Tucked carry: butt against the side under the right arm, gun along the forearm, muzzle down and forward,
-        support hand on the front grip.
-- [ ] Then the bullpup stance built from the chosen draft (the compact_build machinery), replacing the rifle_hand
-      Bullpup set.
 - [ ] To decide: the SCAR-H's own reload under the rule (a side-forward charging handle family with the SCAR-L and
       FAL, maybe the H&K guns).
-- [ ] Cleanup before rebuilding the UMP set: rifle_hand.py's "UMP" entry and smg_reload.py `ump_spec` still carry the
-      reverted de-clip (`contact`, `guns`, `aim_push`); take it out (CLAUDE.md "No clipping").
 
 ## Bugs
 
@@ -83,13 +55,27 @@ In order:
 
 ## Check in game
 
+- [ ] **Bullpup stance** (2026-10-28, draft B; CLAUDE.md "Bullpup stance (built)"): the AUG and FAMAS carried tucked,
+      the butt behind the right upper arm, muzzle down and across, in idle, walk, run, sprint, crouched, falls,
+      vaults, sitting and emotes; the aim as before (pushed off the face); raising and lowering without the gun
+      passing through the side; no "animation not found" in the log. Reloads (Unload / Load / Rack / AimRack) start
+      and end in the carry; the rack now comes in closer. Crouched pain / wipe emotes put the gun 2-6 cm into the
+      body (the gun bone comes from the carry under them), accepted unless it shows.
+- [ ] **Short SMG stance** (2026-10-28, CLAUDE.md "Animations are generic"): Uzi, Mini Uzi, MP7A1 / A2 and GoM's
+      MP5K in both hands: right way up, grip in the hand, the left hand at the one shared place (MP5K and MP7 ~1-2 cm
+      off it, accepted), tracers and muzzle flash at the barrel's end; no "animation not found" in the log (the old
+      `GunsOfTien_CompactUzi` / `UziT` / `MP5K` / `MP7` names are gone). Reloads: Uzi / Mini Uzi (pistol family), MP7s
+      (pistol magazine + rear T-handle rack), MP5K (H&K); in one hand: Mini Uzi and MP7s on `UziGrip`, MP5K on GoM's
+      `handgun2`, all upright with the same model. The full Uzi's new model (re-exported, new texture bake) in the hand,
+      on the back (upright: its `rifle_back` points), on the floor. GoM's MP5A3 / A2 / SD reloading with the UMPs'
+      H&K clips (magazine in the left hand, the right magazine type shown). AUG and FAMAS on the one bullpup reload.
 - [ ] GoM's MP5 family at the Uzis' size (2026-10-27, scripts/build_mp5.py, models_mp5.txt): no "model script not
       found" / mesh errors in the log; the MP5 (named "MP5A3 Submachine Gun"), MP5A2, MP5SD and MP5K about 17% smaller,
       with GoM's textures, in the hand, on the back / in the holster and on the floor; every magazine (20 / 25 / 30 / 60
       / 100) seated in each of the four; the stocks fold and deploy in place; the bolt moves on each shot; the muzzle
       flash and the tracers at the barrel's end; the Mk9 mount and can on the MP5 / MP5A2 the same size as on an Uzi,
       against the front sight housing on the bore axis; GoM's optics, foregrips, lights and lasers still on their rails
-      (GoM's size). Reloads: after the family rework.
+      (GoM's size). Reloads: see "Short SMG stance" above.
 - [ ] MP5A3 / MP5A2 / MP5SD on the UMP rifle-hand set (2026-10-27, the set moved from Post-93 into the main mod):
       with Post-93 off, no "animation not found" in the log and the left hand on the handguard (not at the muzzle)
       idle, aimed, walking, running, sneaking, shooting; with Post-93 on, the UMPs keep their hold.

@@ -82,17 +82,18 @@ Maker they can be made.
 - Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
   .223 boxes; the 42-round magazine with its high-capacity magazines
 - Bullpup animations for the AUG and Guns of Marz's FAMAS: the left hand under the handguard or on the AUG's grip
-  instead of on the bare barrel, the gun held a little further from the face when aiming, and reloads of their own
-  (the AUG's charging handle on the left, the FAMAS's lever under its carry handle)
+  instead of on the bare barrel, the gun held a little further from the face when aiming, and one bullpup reload for
+  both (the magazine changed behind the grip, the handle racked from the left)
 
 ## Short SMG stance (beta)
 
 - The Uzi, Mini Uzi, Guns of Marz's MP5K and Post-93's MP7s share one stance of their own: carried with both hands
   down across the body, magazine hanging clear of the belly; aimed like a rifle with the support hand closer in on the
-  shorter gun (on the foregrip of the MP5K and of the MP7A1 when its grip is unfolded)
+  shorter gun, at one place for all of them (under the front of the gun)
 - Every animation of the rifle stance is remade for it: idle, sneaking, walking, running, sprinting, aiming at every
   angle and while moving, shooting, shoving, vaulting, falling, getting up, sitting, idle fidgets and emotes
-- Their own reloads: the magazine is drawn out and carried in the hand, and each gun is racked by its own handle
+- Reloads shared by how the guns work: the magazine drawn out of the grip and carried in the hand, then the knob racked
+  overhand (Uzi, Mini Uzi); the same magazine change and the rear T-handle pulled back (MP7s); the H&K reload (MP5K)
 - The Mini Uzi, the MP5K and Post-93's MP7s go into both hands by default; "Equip Primary" still holds them in one
   hand, like a pistol, with the pistol reload (the Mini Uzi still fits a holster); the Micro Uzi stays a one-handed
   machine pistol

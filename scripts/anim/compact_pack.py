@@ -10,10 +10,10 @@ jump for a frame in game) and packed PACK to a file behind one Bob mesh: the gam
 file as a clip (ImportedSkeleton / ModelManager, checked with the game's importer), so 248 clips cost ~26 MB instead
 of ~45 MB as single files. Old GunsOfTien_Compact<Set>_*.x files in the output folder are removed first.
 
-Sets of guns modelled upside down (CA.TURNED_SETS) get their gun bone moved by twice the muzzle's height off the model's
-Y axis, the other way from the offset CompactStance.lua gives the guns' Bip01_Prop1 point: the guns are drawn where they
-were (turned about their own bore instead of the model's Y axis), and the muzzle the game shoots from (the bone and the
-`muzzle` point, without the turn) is the drawn muzzle. CA.SOURCE_SET packs one built set under another name (UziT).
+Sets of guns modelled for the pistol clips (CA.PISTOL_SETS) get their gun bone turned half a turn about its own Y (the
+barrel) at its origin (the grip): the guns are drawn upright with their grip in the hand and no model point, and the
+muzzle the game shoots from (the bone and the model's `muzzle` point) is the drawn muzzle. CA.SOURCE_SET packs one
+built set under another name (ShortSMG = the Uzi build).
 """
 
 import os
@@ -35,9 +35,29 @@ PACK = 40
 # every key kept, vanilla's own clips keep every key), for a cause not found in the game's code: keys are kept.
 LOSSY = os.environ.get("COMPACT_PACK_LOSSY")
 RELOADS = ("Unload", "Load", "Rack", "AimRack")
-# sets whose reload clips are per gun (smg_reload.py's specs named after these), packed with the set under their own
-# names: the bullpups' wells and handles differ (docs/design.md 4h)
-RELOAD_SETS = {"Bullpup": ("BullpupAUG", "BullpupFAMAS")}
+# reload families packed with a set (smg_reload.py's specs named after these; CLAUDE.md "Animations are generic": a family
+# per mechanism, never per gun)
+RELOAD_SETS = {"Bullpup": ("Bullpup",),     # one family (built as the AUG's; the FAMAS had its own until 2026-10-28)
+               # the short SMG stance's reload families (CLAUDE.md "Animations are generic"): the pistol magazine change
+               # and rack (built as the Uzi's), H&K (built as the MP5K's), the rear T-handle rack (built as the MP7's)
+               "ShortSMG": ("ShortSMGPistol", "ShortSMGHK", ("ShortSMGRearT", ("Rack", "AimRack")))}
+
+
+def turn_gun_bone(xa):
+    """Bip01_Prop1 turned half a turn about its own Y at its origin on every key (W' = W @ Ry(180)): the rotation
+    times Ry(180), the translation kept."""
+    tr = next(t for t in xa.tracks if t.bone == "Bip01_Prop1")
+    out, prev = {}, None
+    for t in sorted(tr.R):
+        w, x, y, z = tr.R[t]
+        r = xanim.quat_to_mat3(w, -x, -y, -z)          # the file stores the conjugate
+        r = [[-r[i][0], r[i][1], -r[i][2]] for i in range(3)]
+        q = xanim.mat3_to_quat(r)
+        q = (q[0], -q[1], -q[2], -q[3])
+        if prev is not None and sum(a * b for a, b in zip(q, prev)) < 0:      # no sign flips between keys
+            q = tuple(-c for c in q)
+        out[t] = prev = q
+    tr.R = out
 
 
 def shift_gun_bone(xa, d):
@@ -58,18 +78,19 @@ def shift_gun_bone(xa, d):
 
 
 def main(set_dir, reload_dir, out_dir, set_name):
-    """set_dir holds the source set's clips (CA.SOURCE_SET: UziT packs the Uzi set's under its own names)."""
+    """set_dir holds the source set's clips (CA.SOURCE_SET: ShortSMG packs the Uzi set's under its own names)."""
     src_set = CA.SOURCE_SET.get(set_name, set_name)
     src_prefix, prefix = "GunsOfTien_Compact%s_" % src_set, "GunsOfTien_Compact%s_" % set_name
     src_names = [l.strip() for l in open(os.path.join(set_dir, "manifest.txt")) if l.strip()]
     sources = [os.path.join(set_dir, "clips", n + ".x") for n in src_names]
     for rs in RELOAD_SETS.get(set_name, (src_set,)):
-        for r in RELOADS:
+        rs, kinds = rs if isinstance(rs, tuple) else (rs, RELOADS)
+        for r in kinds:
             n = "GunsOfTien_Compact%s_Reload%s" % (rs, r)
             src_names.append(n)
             sources.append(os.path.join(reload_dir, n + ".x"))
     names = [prefix + n[len(src_prefix):] if n.startswith(src_prefix) else n for n in src_names]
-    muzzle_z = CA.TURNED_SETS.get(set_name)
+    pistol = set_name in CA.PISTOL_SETS
     for old in os.listdir(out_dir):
         if old.startswith(prefix) and old.endswith(".x"):
             os.remove(os.path.join(out_dir, old))
@@ -78,8 +99,8 @@ def main(set_dir, reload_dir, out_dir, set_name):
     for n, src in zip(names, sources):
         dst = os.path.join(tmp, n + ".x")
         xa = xanim.read(src)
-        if muzzle_z is not None:
-            shift_gun_bone(xa, (0.0, 0.0, -2.0 * muzzle_z))
+        if pistol:
+            turn_gun_bone(xa)
         lossy = bool(LOSSY and re.search(LOSSY, n))
         saved, xanim.TOLERANCE = xanim.TOLERANCE, ({"R": 2e-4, "T": 2e-5, "S": 1e-6} if lossy else None)
         try:

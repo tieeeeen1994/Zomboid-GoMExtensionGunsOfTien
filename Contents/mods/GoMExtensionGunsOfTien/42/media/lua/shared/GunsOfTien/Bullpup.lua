@@ -2,32 +2,34 @@
     Guns of Tien -- the bullpup set (docs/design.md 4h; user, 2026-10-27: "we now need a bullpup animation set", for
     the AUG A1 and Guns of Marz's FAMAS, reload included).
 
-    Hold: vanilla's rifle clips put the left palm ~0.22 ahead of the grip, an M16's handguard: on the AUG that is its
-    bare barrel near the flash hider, on the FAMAS the tip of its handguard. scripts/anim/rifle_hand.py "Bullpup"
-    builds every rifle clip in which the left hand holds the gun with the palm moved back to 0.72 of vanilla's place
-    (~0.15 ahead: under the FAMAS's handguard and on the AUG's folded grip, which lie in the same place; with the
-    AUG's grip unfolded the hand stays there, user's choice), and the gun moved 0.02 forward along its length, the
-    right arm following (user: aiming left the AUG's scope eyepiece against the face). Packed as
+    Hold (2026-10-28, scripts/anim/bullpup_stance.py draft B, user: "B looks good. implement B"): a tucked carry, the
+    butt pinned behind the right upper arm, the gun along the right forearm 25 degrees down and across to the left,
+    built on every vanilla clip played with a gun by scripts/anim/compact_build.py "Bullpup" (as the short SMG stance).
+    Aiming keeps the set's earlier aims (scripts/anim/rifle_hand.py: vanilla's rifle aim, the gun pushed forward off
+    the face); raising and lowering move the gun on a straight path between the two. The left palm sits 0.72 of
+    vanilla's distance ahead of the grip (~0.15: under the FAMAS's handguard and on the AUG's folded grip, which lie
+    in the same place; with the AUG's grip unfolded the hand stays there, user's choice). Packed as
     anims_X/Bob/GunsOfTien_CompactBullpup_Pack*.x, nodes AnimSets *_GoTCompactBullpup.xml, played through Gunworks' grip
     registry (animId "GunsOfTien_CompactBullpup") as the UMPs' and the compact stance's are.
 
     Reload: GoM's way (user: no magazine in the hand; Gunworks' "none" style, the magazine swapped when the action
-    ends), clips of our own (scripts/anim/smg_reload.py `aug` / `famas`; GoM's FAMAS clips are glTF from another rig),
-    one set of four per gun because their wells sit 2 cm apart in height and their handles differ (user: "famas and
-    AUG have different racking positions"): the AUG's left hand to its handle on the left ahead of the scope, the
-    FAMAS's to the lever under its carry handle. Packed with the hold set, nodes *GunsOfTienCompactBullpupAUG_GoT.xml /
-    *BullpupFAMAS_GoT.xml. This replaces GoM's own FAMAS reload registration (this file loads after GoM's).
+    ends), one bullpup family for every bullpup (user, 2026-10-28; CLAUDE.md "Animations are generic"): the clips
+    built for the AUG (scripts/anim/smg_reload.py `aug`: the magazine behind the grip, the left hand to the handle on
+    the left ahead of the scope), so the FAMAS's well sits 2 cm off and its lever under the carry handle is racked
+    from the side. Packed with the hold set (GunsOfTien_CompactBullpup_Reload*), nodes
+    *GunsOfTienCompactBullpup_GoT.xml, animId "GunsOfTienCompactBullpup". (A FAMAS set of its own shipped until
+    2026-10-28.) This replaces GoM's own FAMAS reload registration (this file loads after GoM's).
 --]]
 
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 pcall(require, "MarzWeapons/Registries/ReloadAnims")
 
-local GUNS = { ["GunsOfTien.AUG"] = "AUG", ["MarzGuns.FAMAS"] = "FAMAS" }
+local GUNS = { ["GunsOfTien.AUG"] = true, ["MarzGuns.FAMAS"] = true }
 
 -- smg_reload.py's lengths at 30 fps: unload 36 frames, load 45, rack / aimed rack 36
-for gun, name in pairs(GUNS) do
+for gun in pairs(GUNS) do
     ReloadAnim.RegisterWeapon(gun, {
-        animId = "GunsOfTienCompactBullpup" .. name,
+        animId = "GunsOfTienCompactBullpup",
         style = "none",
         durations = { unload = 1.2, load = 1.5, rack = 1.2, rackAim = 1.2 },
     })

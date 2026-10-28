@@ -64,12 +64,14 @@ P93_FBX = os.path.join(P93, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx")
 P93_MAGS = os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx")
 # (fbx, node, point in the gun's model script) per part, as models_uzi.txt / GoM's smgs.txt place them: stock
 # folded, 32-round magazine (GoM's MP5 30 in the MP5K), bolt forward (bolt_fired, identity)
+_TURN_Y = Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0))      # half a turn about the barrel: a pistol model upright on a rifle clip
 GUNS = {
+    # modelled for the pistol clips since 2026-10-28 (the short SMG stance): turned upright for vanilla's rifle clips
     "uzi": dict(rifle=True, parts=[
-        (UZI_FBX % "UZI", "UZI_BODY", None),
-        (UZI_FBX % "UZI", "UZI_BOLT", None),
-        (UZI_FBX % "UZI", "UZI_STOCK_FOLDED", None),          # no `stock` point on the model: drawn at its origin
-        (UZI_MAGS, "9x19Magazine32_UZI", _pt("UZI", "magazine")),
+        (UZI_FBX % "UZI", "UZI_BODY", _TURN_Y),
+        (UZI_FBX % "UZI", "UZI_BOLT", _TURN_Y),
+        (UZI_FBX % "UZI", "UZI_STOCK_FOLDED", _TURN_Y),       # no `stock` point on the model: drawn at its origin
+        (UZI_MAGS, "9x19Magazine32_UZI", _TURN_Y @ _pt("UZI", "magazine")),
     ]),
     "miniuzi": dict(rifle=False, parts=[
         (UZI_FBX % "MINIUZI", "MINIUZI_BODY", None),

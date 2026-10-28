@@ -12,7 +12,6 @@ aim at our node too. Written to <out media root>/AnimSets/player/<state>/<file>_
 """
 
 import copy
-import json
 import os
 import re
 import sys
@@ -31,20 +30,18 @@ NODES = [
     ("shoveAim/firearm", "FirearmShoveBehind.xml"),
 ]
 ANIM_ID = "GunsOfTien_Compact%s"
-# Guns modelled upside down (pistol models) are turned upright in the hand by a Bip01_Prop1 point on their model
-# (CompactStance.lua). The game shoots from the gun bone and the model's `muzzle` point without that turn
-# (BallisticsController.calculateMuzzlePosition -> ModelInstance.getAttachmentWorldPosition), so a turn about the
-# model's Y axis put the tracers' start 2 x the muzzle's height off the drawn barrel. They are turned about their bore
-# instead (the point offset by 2 x the muzzle's z), and their sets' gun bone moved back by as much (compact_pack.py):
-# set -> the guns' muzzle z (model space). UziT is the Uzi set for the turned guns that hold like the Uzi (the Mini Uzi
-# z -0.0238, the MP7s folded / the A2 -0.0205: the mean, 3 mm either way); the full Uzi is modelled upright.
-# Ours come from their builders (resized in their meshes, 2026-10-26): the MP7's muzzle z, and for UziT the mean of
-# the Mini Uzi's and the MP7's; GoM's MP5K keeps its size.
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_MP7_Z = json.load(open(os.path.join(_HERE, "..", "post93", "mp7_points.json")))["muzzle"]["offset"][2]
-_MINI_Z = json.load(open(os.path.join(_HERE, "..", "uzi_points.json")))["MINIUZI"]["muzzle"]["offset"][2]
-TURNED_SETS = {"UziT": round((_MINI_Z + _MP7_Z) / 2.0, 4), "MP5K": -0.0445, "MP7": _MP7_Z}
-SOURCE_SET = {"UziT": "Uzi"}
+# Sets whose guns are modelled for vanilla's pistol clips (upside down to a rifle clip: GoM's MP5K / MAC-10, our Mini
+# Uzi, MP7s and, since 2026-10-28, the full Uzi). compact_build.py solves in the rifle clips' gun relation; compact_pack.py
+# turns the gun bone half a turn about its own Y (the barrel) at its origin (the grip), so every such gun is drawn
+# upright with its grip in the hand and no model point, and the muzzle the game shoots from (the gun bone and the
+# model's `muzzle` point, BallisticsController.calculateMuzzlePosition) is the drawn muzzle, whatever the gun.
+# (Until 2026-10-28 the guns carried a turn point about their bore and each set's gun bone was moved by its guns'
+# muzzle height, one set per height: TURNED_SETS, the UziT copy.) The pistol reloads play right way up on the same
+# model, and one-handed the guns need no second model.
+PISTOL_SETS = {"ShortSMG"}
+# the short SMG stance (CLAUDE.md "Animations are generic"): the Uzi set's build (the Uzi's left-hand place) for every
+# short SMG
+SOURCE_SET = {"ShortSMG": "Uzi"}
 PRIORITY = "100"
 
 
@@ -369,11 +366,14 @@ RELOAD_NODES = {
 }
 
 
-def reload_node(set_name, kind, aim=False, idle_sets=(), mag_event=True):
+def reload_node(set_name, kind, aim=False, idle_sets=(), mag_event=True, clip_set=None):
+    """clip_set: the reload family whose clip this node plays (default set_name); a gun may take its magazine change
+    from one family and its rack from another (CLAUDE.md "Animations are generic")."""
     spec = RELOAD_NODES[kind]
     r = ET.Element("animNode")
     ET.SubElement(r, "m_Name").text = "%s%s%s" % (kind, "Aim" if aim else "", RELOAD_ID % set_name)
-    ET.SubElement(r, "m_AnimName").text = "GunsOfTien_Compact%s_Reload%s" % (set_name, "AimRack" if aim else spec["clip"])
+    ET.SubElement(r, "m_AnimName").text = "GunsOfTien_Compact%s_Reload%s" % (clip_set or set_name,
+                                                                         "AimRack" if aim else spec["clip"])
     for tag, text in (("m_deferredBoneAxis", "Y"), ("m_Looped", "false"), ("m_SyncTrackingEnabled", "false"),
                       ("m_EarlyTransitionOut", "true"), ("m_SpeedScale", "ReloadSpeed"),
                       ("m_BlendTime", spec["blend"]), ("m_ConditionPriority", "10")):
@@ -409,15 +409,16 @@ def reload_node(set_name, kind, aim=False, idle_sets=(), mag_event=True):
     return r
 
 
-def write_reload_nodes(out_root, set_name, idle_sets, mag_event=True):
+def write_reload_nodes(out_root, set_name, idle_sets, mag_event=True, clip_sets=None):
     """mag_event False: GoM's way (Gunworks' "none" style, the magazine swapped when the action ends; the bullpups,
-    docs/design.md 4h), no changeWeaponPart "mag" marker."""
+    docs/design.md 4h), no changeWeaponPart "mag" marker. clip_sets: {"Unload" / "Load" / "Rack": family} for a reload
+    id mixing families (the MP7: the pistol magazine change, the rear T-handle rack)."""
     out = []
     for anim in ("player", "player-vehicle"):
         d = os.path.join(out_root, "AnimSets", anim, "actions")
         os.makedirs(d, exist_ok=True)
         for kind, aim in (("Unload", False), ("Load", False), ("Rack", False), ("Rack", True)):
-            r = reload_node(set_name, kind, aim, idle_sets, mag_event)
+            r = reload_node(set_name, kind, aim, idle_sets, mag_event, (clip_sets or {}).get(kind))
             path = os.path.join(d, "%s%s%s_GoT.xml" % (kind, "Aim" if aim else "", RELOAD_ID % set_name))
             with open(path, "wb") as fh:
                 fh.write(b'<?xml version="1.0" encoding="utf-8"?>\n')

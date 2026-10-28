@@ -152,22 +152,25 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
 -- events detach the magazine part (looks only) as the left hand leaves the gun in the unload, and put it back as the
 -- new one is pressed home; the real unload / insert still happen at the clips' ends. Durations = the clips' lengths.
 -------------------------------------------------
--- both MP7s: the compact SMG stance's reload (CompactStance.lua; clips GunsOfTien_CompactMP7_Reload* in the stance's
--- packs, from scripts/anim/smg_reload.py's compact_mp7: the magazine carried in the left hand, which is shaped round it,
--- the T handle pulled with the muzzle turned up and right); each gets its own table, as pointMagPart rewrites its spec.
--- Held in one hand (the main mod's OneHand.lua), drawn with their one-hand models (MP7A1_1H / MP7A2_1H, without the
--- stance's turn), they play the old pistol clips: animId "MP7A1", no magazine in the left hand.
+-- both MP7s on the main mod's short SMG stance, by family (CLAUDE.md "Animations are generic"): the pistol magazine
+-- change (the magazine into the grip, carried in the left hand) and the rear T-handle rack (the muzzle turned up and
+-- right, built as the MP7's by scripts/anim/smg_reload.py's compact_mp7; the Steyr TMP, B&T MP9 and the ARs rack the
+-- same way): animId "GunsOfTienCompactShortSMGPistolRearT", clips in the main mod's stance packs. Each gets its own
+-- table, as pointMagPart rewrites its spec. Held in one hand (the main mod's OneHand.lua) they play the pistol family
+-- on the pistol stance (the Micro Uzi's "UziGrip": vanilla's pistol clips, no magazine in the left hand).
 local OneHand = require("GunsOfTien/OneHand")
+ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
+ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactShortSMGPistolRearT = true
 for _, gun in ipairs(MP7S) do
     ReloadAnim.RegisterWeapon(gun, {
-        animId = "GunsOfTienCompactMP7",
+        animId = "GunsOfTienCompactShortSMGPistolRearT",
         style = "attachments",
         magItem = MP7_MAGS[1],
         attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
         durations = { unload = 1.2, load = 1.5, rack = 1.2 },
     })
-    OneHand.register(gun, gun, gun .. "_1H", {
-        animId = "MP7A1",
+    OneHand.register(gun, {
+        animId = "UziGrip",
         style = "attachments",
         magItem = MP7_MAGS[1],
         attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
@@ -213,7 +216,8 @@ end
 -- clip in which the left hand holds the gun with the palm moved back along the gun to the handguard (anims_X/Bob
 -- GunsOfTien_CompactUMP_Pack*.x, AnimSets *_GoTCompactUMP.xml), played through Gunworks' grip registry as the compact
 -- stance is; the rest of the rifle hold is vanilla's. Those files ship in the main mod since 2026-10-27 (GoM's
--- full-size MP5s use the set too); only the UMP's reload nodes (*GunsOfTienCompactUMP_GoT.xml) are this mod's.
+-- full-size MP5s use the set too), and its reload nodes (*GunsOfTienCompactUMP_GoT.xml) since 2026-10-28 (the H&K
+-- family: the MP5s reload with it too, CompactStance.lua).
 local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
 local function registerUmpGrip()
     if not okGW or type(Gunworks) ~= "table" or not Gunworks.RegisterWeapon then
@@ -224,7 +228,8 @@ local function registerUmpGrip()
     end
 end
 Events.OnGameBoot.Add(registerUmpGrip)
-local NO_HAND_MAGAZINE = { MP7A1 = true, P90TR = true }
+-- (the MP7 held in one hand plays the main mod's "UziGrip", which Uzi.lua keeps the same way)
+local NO_HAND_MAGAZINE = { P90TR = true }
 -- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
 -- 2026-10-15). The attachments style shows Gunworks' reload magazine there (the eject's changeWeaponPart and the
 -- insert's start, both through ReloadAnim.attachReloadMagazine, looked up on the shared table at call time), so that
@@ -240,14 +245,14 @@ if attachReloadMagazine then
     end
 end
 -- The magazine part spec names one item type, and Gunworks only detaches a part of that type and attaches that type
--- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The MP7 takes four (20 / 30 / 40, the 60 drum), so before
--- each swap the spec is pointed at the magazine involved: ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the
--- eject started (_actualMagType), or the gun's saved MagazineType.
+-- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The UMPs take several, so before each swap the spec is
+-- pointed at the magazine involved (the MP7's ids are in the main mod's ReloadAnim.GunsOfTienPointMag, Uzi.lua):
+-- ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the eject started
+-- (_actualMagType), or the gun's saved MagazineType.
 local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
 local function pointMagPart(action, handler)
     if not (resolveReloadMagItem and action and handler and handler.parts
-            and (handler.animId == "MP7A1" or handler.animId == "GunsOfTienCompactMP7"
-                or handler.animId == "GunsOfTienCompactUMP")) then
+            and handler.animId == "GunsOfTienCompactUMP") then
         return
     end
     local spec = handler.parts.mag

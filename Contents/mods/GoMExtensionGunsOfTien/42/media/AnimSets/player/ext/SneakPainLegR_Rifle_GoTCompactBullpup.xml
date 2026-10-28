@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>SneakPainLegR_Rifle_GoTCompactBullpup</m_Name>
-	<m_AnimName>Bob_StealthEmotePainRightLeg2H</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactBullpup_StealthEmotePainRightLeg2H__Sneak</m_AnimName>
 	<m_ConditionPriority>100</m_ConditionPriority>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>

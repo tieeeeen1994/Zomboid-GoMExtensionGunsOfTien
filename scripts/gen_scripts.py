@@ -1331,15 +1331,16 @@ def uzi():
         texture  = {tex}/{gun},
         cullFace = None,
 """)
-        for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock', 'stock_folded'):
+        names = ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock', 'stock_folded', 'rifle_back',
+                 'rifle_back_bag')
+        for name in names:
             if name in p:
                 models.append(m249_attachment(name, p[name]))
         models.append("    }\n")
         if gun == 'MINIUZI':
-            # held in one hand (OneHand.lua): the same model, not turned upright by CompactStance.lua, so vanilla's
-            # pistol clips draw it the right way up
-            body = models[-1 - sum(1 for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock',
-                                                  'stock_folded') if name in p) - 1:]
+            # the one-hand model OneHand.lua swapped in until 2026-10-28 (when CompactStance.lua still turned the gun
+            # upright with a model point): the same model, kept for guns saved with it
+            body = models[-1 - sum(1 for name in names if name in p) - 1:]
             models.append("".join(body).replace("    model MINIUZI {", "    model MINIUZI_1H {", 1))
         nodes = ['BOLT'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
         for node in nodes:

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>PainHead2_2H_GoTCompactBullpup</m_Name>
-	<m_AnimName>Bob_EmotePainHead02</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactBullpup_EmotePainHead02__Chair</m_AnimName>
 	<m_ConditionPriority>100</m_ConditionPriority>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.25</m_BlendTime>

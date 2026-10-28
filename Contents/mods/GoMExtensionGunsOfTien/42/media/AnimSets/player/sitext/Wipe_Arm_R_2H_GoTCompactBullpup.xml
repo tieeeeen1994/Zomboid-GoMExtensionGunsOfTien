@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Wipe_Arm_R_2H_GoTCompactBullpup</m_Name>
-	<m_AnimName>Bob_Emote_Wipe_Sat_Arm_R_2H</m_AnimName>
+	<m_AnimName>GunsOfTien_CompactBullpup_Emote_Wipe_Sat_Arm_R_2H__Chair</m_AnimName>
 	<m_ConditionPriority>100</m_ConditionPriority>
 	<m_Looped>false</m_Looped>
 	<m_BlendTime>0.70</m_BlendTime>

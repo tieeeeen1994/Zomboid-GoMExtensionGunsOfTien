@@ -27,10 +27,12 @@ photo's proportions and only the magazines are shared: every gun's `magazine` po
 base 22 mm under its own grip, as all three photos show.
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): +Y muzzle, +Z top, +X the gun's LEFT, origin at the rear-top of
-the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). The Uzi is held as a rifle (upright model, GoM's MP5). The Mini and
-Micro Uzi are held like a pistol (user, 2026-10-23: GoM's MP5K / MAC-10 way), so they are modelled and baked upright
-and their gun nodes are turned 180 degrees about the bore axis at export, with their points (build_mp7.py's TURN /
-turned()); magazines stay upright. The cocking knob on top does not reciprocate (bolt_fired = bolt_lock).
+the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). All three are
+modelled for vanilla's pistol clips (GoM's MP5K / MAC-10 way; the Mini and Micro since 2026-10-23, the Uzi since
+2026-10-28: the short SMG stance holds its guns in that orientation, CLAUDE.md "Animations are generic"), so they are
+modelled and baked upright and their gun nodes are turned 180 degrees about the model's Y axis at export, with their
+points (build_mp7.py's TURN / turned()); magazines stay upright. The Uzi, carried on the back like a rifle, gets the
+MP7's rifle_back points that turn it back upright there. UZI_ONLY=1 rebuilds the Uzi alone (the others' points kept). The cocking knob on top does not reciprocate (bolt_fired = bolt_lock).
 Stocks: the Uzi's twin-strut metal stock folds down under the receiver with its butt plate standing behind the grip,
 so it is two nodes modelled in the gun's own space (UZI_STOCK_FOLDED / _DEPLOYED, drawn at the gun's origin, GoM's
 MAC-10 way). The Mini's and Micro's single-strut stock folds forward along the right side about a vertical hinge pin
@@ -576,10 +578,19 @@ def points(kind, bounds):
         "bolt_fired": "the cocking knob on top does not reciprocate",
     }
     if kind == "UZI":
-        pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]}  # every GoM rifle's, scaled
         notes["stock"] = ("UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): "
-                          "no point, drawn at the origin")
-        handgun = False
+                          "no point, drawn at the origin (turned with the gun)")
+        # held like a pistol (the short SMG stance): everything turned with the gun, as the Mini's and Micro's below
+        pts = {k: kit.turned(v, part=(k == "magazine")) for k, v in pts.items()}
+        pts["magazine"]["rotate"] = list(kit.TURN)
+        # every GoM rifle's floor pose, scaled, for the turned model: the floor draws the inverse of the point, so a
+        # point W becomes Ry(180) W (offset x negated, the half turn gone)
+        pts["world"] = {"offset": [round(-0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": ZERO}
+        # carried on the back like a rifle: the body's rifle points expect an upright rifle model, and an attached
+        # item's own point of the same name is applied on top (build_mp7.py's handgun_points)
+        for name in ("rifle_back", "rifle_back_bag"):
+            pts[name] = {"offset": ZERO, "rotate": list(kit.TURN)}
+        handgun = True
     else:
         hl, hh = MINI_HINGE if kind == "MINIUZI" else MICRO_HINGE
         hx = -(SPEC[kind]["w"] + 3.0)
@@ -623,13 +634,18 @@ def main():
         "MINIUZI": [mini_body(), knob(MINI, 161.5, 178.0, 192.0, 9.5, "MINIUZI_BOLT"), mini_stock()],
         "MICROUZI": [micro_body(), knob(MICRO, 93.0, 164.5, 180.0, 5.0, "MICROUZI_BOLT"), micro_stock()],
     }
-    mags = [build_magazine(r) for r in MAG_LEN]
+    only_uzi = bool(os.environ.get("UZI_ONLY"))
+    if only_uzi:                # the Uzi alone: the others' files, points and the magazines are kept
+        for kind in ("MINIUZI", "MICROUZI"):
+            for o in guns.pop(kind):
+                bpy.data.objects.remove(o, do_unlink=True)
+    mags = [] if only_uzi else [build_magazine(r) for r in MAG_LEN]
     for objs in guns.values():
         kit.unwrap(objs, 0.006)
     for m in mags:
         kit.unwrap([m], 0.012)
 
-    all_points = {}
+    all_points = json.load(open(POINTS_JSON)) if only_uzi else {}
     for kind, objs in guns.items():
         body, bolt = objs[0], objs[1]
         stocks = objs[2:]
@@ -640,20 +656,19 @@ def main():
             maps.append(bake(st, ctx, 256))
             kinds.append((kind, "stock"))
         texture(maps, kinds, 256, os.path.join(TEX_DIR, kind + ".png"))
-        handgun = kind != "UZI"
-        if handgun:                                        # held like a pistol: turned 180 degrees about the bore
-            for o in objs:
-                o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
+        for o in objs:                                     # held like a pistol: turned 180 degrees about Y
+            o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
         bounds = {o.name: kit.bounds_of(o) for o in objs}
         pts = points(kind, bounds)
-        if handgun:
+        if kind != "UZI":
             bounds[kind + "_STOCK_folded"] = kit.bounds_at(stocks[0], pts["stock_folded"])
         all_points[kind] = pts
         kit.export(objs, os.path.join(FBX_DIR, "GunsOfTien_%s.fbx" % kind))
     for r, m in zip(MAG_LEN, mags):
         texture([bake(m, [m], 128)], [(r, "mag")], 128, os.path.join(TEX_DIR, m.name + ".png"))
-    all_points["_mags"] = {m.name: kit.bounds_of(m) for m in mags}
-    kit.export(mags, FBX_MAGS)
+    if not only_uzi:
+        all_points["_mags"] = {m.name: kit.bounds_of(m) for m in mags}
+        kit.export(mags, FBX_MAGS)
     with open(POINTS_JSON, "w") as fh:
         json.dump(all_points, fh, indent=2)
         fh.write("\n")

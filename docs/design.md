@@ -302,6 +302,9 @@ why we now need a bullpup animation set", for the AUG A1 and GoM's FAMAS, reload
   gun, the AUG's left hand to its handle on the left side ahead of the scope (0.10-0.12 ahead, pulled back 0.055), the
   FAMAS's over the top to the lever under its carry handle (pulled back 0.061). One reload id per gun, both playing the
   shared load / unload clips; GoM's FAMAS re-registered from this mod.
+- Since 2026-10-28 one bullpup family for both (CLAUDE.md "Animations are generic"): the AUG's four clips, id
+  `GunsOfTienCompactBullpup`; the FAMAS's own set was dropped (its well sits 2 cm off, its lever is racked from the
+  side). Before that:
 - Built: the wells turned out 2 cm apart in height (not 2 mm: that is front to back), so each gun has all four of its
   reload clips. The magazine change holds the gun out in front of the chest, raised, muzzle up and to the left, the
   well facing the left hand (the SMGs' upright place put a full-length bullpup's muzzle by the face; flatter and

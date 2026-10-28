@@ -6,8 +6,11 @@ headless; TienInspectWeapon's rig).
     blender -b --factory-startup -P scripts/anim/compact_build.py -- <vanilla anims_X/Bob> <vanilla AnimSets> <out_dir>
         [set ...] [--clips Bob_IdleRifle,...] [--preview] [--no-pack]
 
-Sets (one Gunworks grip animId each): Uzi (the Uzi, the Mini Uzi, the MP7s with the foregrip folded or none), MP7
-(the MP7A1 with its foregrip unfolded), MP5K (GoM's). The clip list is the vanilla inventory
+Sets: Uzi, shipped as the short SMG stance for every short SMG (compact_pack.py ... ShortSMG, CLAUDE.md "Animations are
+generic"); MP7 and MP5K, per-gun sets that no longer ship (the bases the rear T-handle and H&K reloads were solved
+on); Bullpup (AUG, FAMAS; 2026-10-28, bullpup_stance.py draft B): its own carry (`hold`, `hold_s`), its aimed frames
+from the set's earlier rifle_hand.py build (`aims`, extract_aims), the gun on a straight path between carry and aim
+(`gun_path`) and kept out of chest + pelvis (`gun_clear`). The clip list is the vanilla inventory
 (compact_animsets.firearm_clips: 240 in 42.21). Each clip is built into <out_dir>/<set>/clips/<name>.x, its body
 clearance printed; then the set is packed (PACK clips a file, one Bob mesh each: the game reads every AnimationSet
 of a file as a clip) into <out_dir>/<set>/GunsOfTien_Compact<Set>_Pack<n>.x, with <out_dir>/<set>/manifest.txt
@@ -69,6 +72,26 @@ SETS = {
 HOLD = dict(pos=ch(0.02, 0.64, 0.10), along=ch(-0.77, -0.61, 0.20), top=-(ch(0.25, -1.0, 0.2)), look=0.15, lean=2,
             aux=0.0, twist=15)
 HOLD_S = dict(look=0.15, lean=2, aux=0.0, support=1.0, elbow=0.0, twist=15)
+
+
+def _bullpup_hold():
+    """The bullpup stance's carry (bullpup_stance.py draft B, chosen 2026-10-28: "B looks good. implement B"): the butt
+    pinned behind the right upper arm at ch(0.14, 0.68, -0.10), the gun along the right forearm 25 degrees down and 30
+    across to the left, the chest turned 15; eyes ahead (no look, no lean)."""
+    a, b = math.radians(25.0), math.radians(30.0)
+    along = ch(-math.cos(a) * math.sin(b), -math.sin(a), math.cos(a) * math.cos(b))
+    return dict(pos=ch(0.14, 0.68, -0.10) + along * 0.21, along=along, top=rig.UP, look=0.0, lean=0, aux=0.0,
+                twist=15)
+
+
+# the bullpup set (AUG A1, GoM's FAMAS; CLAUDE.md "Bullpup set"): B's carry, and in aimed frames the set's rifle_hand.py
+# aims as shipped before it (pushed off the face, de-clipped; approved), read from BULLPUP_AIMS (extract_aims). The
+# left palm at the set's place: the idle template's own palm x 0.72 about the grip (0.157 ahead of it)
+BULLPUP_AIMS = os.path.normpath(os.path.join(HERE, "..", "..", "tmp", "anim", "bullpup_aims"))
+SETS["Bullpup"] = dict(support=None, palm_scale=0.72, idle_turn=(0, 0, 0), aim_turn=(0, 0, 0), gun="famas",
+                       closer=ch(0.0, 0.0, 0.0), hold=_bullpup_hold(),
+                       hold_s=dict(look=0.0, lean=0, aux=0.0, support=1.0, elbow=0.0, twist=15), aims=BULLPUP_AIMS,
+                       gun_path=True, gun_clear=True)
 
 AIM_NAME = re.compile(r"IdleAim|WalkAim|StrafeAim|WalkBwdAim|AttackRifle|Shove_Rifle")
 PACK = 40
@@ -147,11 +170,13 @@ class Stance:
 
     def __init__(self, src_dir, set_name):
         spec = SETS[set_name]
+        self.hold_s = spec.get("hold_s", HOLD_S)
         xa, r = I.x_rig(src_dir)
         self.grip_idle = r.grip_r.copy()
-        self.lgrip_idle = C.grip_on(r.support_base, spec["support"], spec["idle_turn"])
+        support = spec["support"] if spec["support"] is not None else C.palm(r.support_base) * spec["palm_scale"]
+        self.lgrip_idle = C.grip_on(r.support_base, support, spec["idle_turn"])
         r.warnings.clear()
-        p = r.build([rig.Key(0, support=1, lgrip=self.lgrip_idle, **HOLD)], 1, breath=(0, None))[0]
+        p = r.build([rig.Key(0, support=1, lgrip=self.lgrip_idle, **spec.get("hold", HOLD))], 1, breath=(0, None))[0]
         w0 = pose.world(xa, r.base)
         # moved straight in (no turn), in the character's frame: 4 cm back is the most before the gun's rear, high
         # on the right chest, goes into it
@@ -171,7 +196,16 @@ class Stance:
         wa = pose.world(xa_a, pose.from_clip(xa_a, 0))
         self.gun_aim = wa["Bip01_Spine1"].inverted() @ wa["Bip01_Prop1"]
         self.left_aim = wa["Bip01_Prop1"].inverted() @ wa["Bip01_L_Hand"]
-        self.lgrip_aim = C.grip_on(self.left_aim, spec["support"], spec["aim_turn"])
+        self.gun_path = spec.get("gun_path", False)
+        self.aims = spec.get("aims")
+        self.aim_frames = None      # per clip (build_clip): the set's own aimed frames, when it has them
+        if self.aims:
+            # the left hand as the shipped aim holds it
+            xs = xanim.read(os.path.join(self.aims, "Bob_IdleAimRifle.x"))
+            ws = pose.world(xs, pose.from_clip(xs, 0))
+            self.lgrip_aim = ws["Bip01_Prop1"].inverted() @ ws["Bip01_L_Hand"]
+        else:
+            self.lgrip_aim = C.grip_on(self.left_aim, spec["support"], spec["aim_turn"])
         # A clip's rig judges wrists from its file's bind pose and swings elbows from its first frame's, and vanilla's
         # files differ (the forearm-to-hand bind of Bob_IdleRifle is 60 / 76 degrees off Bob_IdleAimRifle's), so a
         # raise or a lowering solved with its own file's put its arms elsewhere than the idle and aim clips it joins
@@ -267,11 +301,41 @@ class Declip:
         self.body = clearance.Body(arm_ob, bones)
         self.contact = contact
         self.fixed = 0
+        self.parts, self.belly = [], None
+
+    def set_gun(self, parts):
+        """Also keep the gun (its meshes) out of chest + pelvis (sets with `gun_clear`)."""
+        self.parts = parts
+        self.belly = clearance.Body(self.arm_ob, clearance.BODY | {"Bip01_Pelvis"})
 
     def depth(self, q):
         x_import.apply_pose(self.arm_ob, pose.world(self.xa, q))
         d = self.body.now()
         return d["L"], d["R"]
+
+    def gun(self, q):
+        """How deep the gun is in chest + pelvis at q, and the way out in the clip's (skeleton) space: the mean of
+        (nearest body point - vertex) over the vertices inside, normalised (zero when none is). The armature's object
+        matrix (x_import.OBJECT_MATRIX, Y and Z swapped, its own inverse) takes Blender's world back to the clip's."""
+        x_import.apply_pose(self.arm_ob, pose.world(self.xa, q))
+        bpy.context.view_layer.update()
+        dg = bpy.context.evaluated_depsgraph_get()
+        ob = self.belly.body
+        ev = ob.evaluated_get(dg).to_mesh()
+        tree = BVHTree.FromPolygons([ob.matrix_world @ v.co for v in ev.vertices], self.belly.polys)
+        ob.evaluated_get(dg).to_mesh_clear()
+        deepest, way = 0.0, Vector()
+        for o in self.parts:
+            mw = o.matrix_world
+            for v in o.data.vertices:
+                pt = mw @ v.co
+                if clearance.inside(tree, pt):
+                    near, _, _, d = tree.find_nearest(pt)
+                    deepest = max(deepest, d)
+                    way += near - pt
+        if way.length < 1e-9:
+            return deepest, way
+        return deepest, (self.arm_ob.matrix_world.to_3x3().inverted() @ way).normalized()
 
     def release(self, r, q, free):
         """Still in after the elbow swings and the gun moves: ease the left arm toward vanilla's own (`free`, clear
@@ -382,7 +446,7 @@ def plan_turns(st, r, xa, frames, n):
     """settle_turn over the whole clip twice (the second pass starts where the first ended, so a looping clip's
     seam meets), then the turns smoothed (circularly for a loop: vanilla's first and last frames alike), so the gun
     never jumps when the search moves from one comfortable turn to another."""
-    s = dict(HOLD_S, support=0.0)
+    s = dict(st.hold_s, support=0.0)
     turns = []
     for _ in range(2):
         turns = []
@@ -455,7 +519,7 @@ def carried_pose(st, r, xa, p, f, n, on, dc, generic=False):
     r.base = p
     w = pose.world(xa, p)
     W = st.hold_at(xa, w, generic)
-    s = dict(HOLD_S, support=0.0)
+    s = dict(st.hold_s, support=0.0)
     if st.turn_fixed is not None and not generic:
         W = W @ Euler([math.radians(a) for a in st.turn_fixed[f]], 'XYZ').to_matrix().to_4x4()
         q = r.pose_for(W, s, f, (0, None), n)
@@ -477,10 +541,35 @@ def carried_pose(st, r, xa, p, f, n, on, dc, generic=False):
         q, d = dc.arms(r, q, st.lgrip_idle, on > 0.5)
     if d > dc.contact:
         q = dc.release(r, q, p)
+    if dc.parts:
+        W = pose.world(xa, q)["Bip01_Prop1"]            # where the arms' de-clip left it
+        q = clear_gun(r, xa, q, dc, lambda add: left_to(r, xa, r.pose_for(Matrix.Translation(add) @ W, s, f, (0, None),
+                                                                            n), p, st.lgrip_idle, on),
+                      st.lgrip_idle, on)
     return q
 
 
-def aim_pose(st, r, xa, p, on, dc):
+GUN_CONTACT = 0.008     # the gun's own limit (CLAUDE.md "No clipping")
+
+
+def clear_gun(r, xa, q, dc, place, lgrip, on):
+    """The gun moved straight out of chest + pelvis (Declip.gun's way) with both hands on it, re-placed by
+    `place(offset)`, until no deeper than GUN_CONTACT (8 rounds; the arms de-clipped after each move)."""
+    add = Vector()
+    for _ in range(8):
+        d, way = dc.gun(q)
+        if d <= GUN_CONTACT or way.length == 0:
+            break
+        add = add + way * (d - GUN_CONTACT + 0.003)
+        q = place(add)
+        q, _ = dc.arms(r, q, lgrip, on > 0.5)
+        dc.fixed += 1
+    return q
+
+
+def aim_pose(st, r, xa, p, on, dc, f=None):
+    if st.aim_frames is not None and f is not None:
+        return pose.copy(st.aim_frames[f])          # the set's own aim as built and approved: arms and gun
     q = left_to(r, xa, pose.copy(p), p, st.lgrip_aim, on)
     if dc is not None:
         q, d = dc.arms(r, q, st.lgrip_aim, on > 0.5)
@@ -497,7 +586,7 @@ def frame_pose(st, r, xa, p, f, n, aim_clip, dc, generic=False):
     a = 1.0 if aim_clip else st.aimed(w)
     if a >= 0.999:
         st.ref(r, 1.0)
-        return aim_pose(st, r, xa, p, on, dc)
+        return aim_pose(st, r, xa, p, on, dc, f)
     if a <= 0.001:
         st.ref(r, 0.0)
         return carried_pose(st, r, xa, p, f, n, on, dc)
@@ -507,9 +596,11 @@ def frame_pose(st, r, xa, p, f, n, aim_clip, dc, generic=False):
     sw_i = [d for s, d in r.swivels[k:] if s == "L"]
     st.ref(r, 1.0)
     k = len(r.swivels)
-    qa = aim_pose(st, r, xa, p, on, None)
+    qa = aim_pose(st, r, xa, p, on, None, f)
     sw_a = [d for s, d in r.swivels[k:] if s == "L"]
     st.ref(r, a)
+    if st.gun_path:
+        return path_pose(st, r, xa, p, on, dc, qi, qa, a)
     hint = r.swivel_hint.get("L")
     if st.use_refs and hint is None and sw_i and sw_a:
         # the elbow swung from the carried solution's to the aimed one's, not picked afresh (a flat cost let it hop)
@@ -532,6 +623,44 @@ def frame_pose(st, r, xa, p, f, n, aim_clip, dc, generic=False):
     return q
 
 
+ARM_BONES = set(rig.ARM["L"]) | set(rig.ARM["R"]) | {"Bip01_Prop1"}
+
+
+def path_pose(st, r, xa, p, on, dc, qi, qa, a):
+    """A frame between the carry (qi) and the aim (qa) for sets with `gun_path` (the bullpup's carry lies across the
+    body, its aim at the shoulder): the body blended bone by bone, the gun on a straight path between its two places
+    on the chest (slerped and lerped by a), both hands solved onto it with their blended holds. Blending the arm
+    bones instead swung the gun through the right side (6 cm in, mid-raise)."""
+    q = pose.copy(qi)
+    r.blend_local(q, qa, [b for b in q if b not in ARM_BONES], a)
+    wi, wa = pose.world(xa, qi), pose.world(xa, qa)
+    gun = blend_mat(wi["Bip01_Spine1"].inverted() @ wi["Bip01_Prop1"],
+                    wa["Bip01_Spine1"].inverted() @ wa["Bip01_Prop1"], a)
+    rel = blend_mat(wi["Bip01_R_Hand"].inverted() @ wi["Bip01_Prop1"],
+                    wa["Bip01_R_Hand"].inverted() @ wa["Bip01_Prop1"], a)
+    lg = blend_mat(wi["Bip01_Prop1"].inverted() @ wi["Bip01_L_Hand"],
+                   wa["Bip01_Prop1"].inverted() @ wa["Bip01_L_Hand"], a)
+    chest = pose.world(xa, q)["Bip01_Spine1"]
+    keep = r.grip_r
+    r.grip_r = rel                              # dc.arms re-solves the right hand with the rig's grip
+
+    def place(add):
+        t = pose.copy(q)
+        W = Matrix.Translation(add) @ chest @ gun
+        r.solve_arm(t, "R", W @ rel.inverted(), pole_extra=rig.UP * -0.05)
+        wt = pose.world(xa, t)
+        t["Bip01_Prop1"] = wt["Bip01"].inverted() @ (wt["Bip01_R_Hand"] @ rel)
+        return left_to(r, xa, t, p, lg, on)
+
+    t = place(Vector())
+    if dc is not None:
+        t, _ = dc.arms(r, t, lg, on > 0.5)
+        if dc.parts:
+            t = clear_gun(r, xa, t, dc, place, lg, on)
+    r.grip_r = keep
+    return t
+
+
 def idle_refs_clear(st, r, xa, frames, n, dc):
     """A carried clip solved with its own file's wrists and elbows swings the left elbow 45-84 degrees in most clips
     (the idle 12-25), which drives the forearm into the belly; the de-clip then pushed the gun forward to its 10 cm
@@ -540,7 +669,7 @@ def idle_refs_clear(st, r, xa, frames, n, dc):
     not yet updated to match with the rest of the 'closer gun to the person' feel"). True when the idle clip's
     references keep the left arm on the plain hold shallower (sampled frames, before any de-clip), as they do there;
     the walk, run and sprint keep their own (shallower with them, and approved as built)."""
-    s = dict(HOLD_S, support=0.0)
+    s = dict(st.hold_s, support=0.0)
     deepest = {}
     for refs in (False, True):
         st.use_refs = refs
@@ -683,9 +812,11 @@ def filter_poses(r, xa, poses, loop, kernel=(1, 2, 3, 2, 1), times=2):
 
 UNDERLYING = {"Stand": "Bob_IdleRifle", "Sneak": "Bob_IdleSneak_Shotgun", "Ground": "Bob_SitGround_Idle_Rifle",
               "Chair": "Bob_SatChair_rifle"}
+# where each built set ships, and under which name: the Uzi build is the short SMG stance (CLAUDE.md "Animations are
+# generic"); the MP7 and MP5K sets no longer ship (their builds were the bases of the rear T-handle and H&K reloads)
 SHIPPED_BOB = {s: os.path.normpath(os.path.join(HERE, "..", "..", "Contents", "mods", m, "42", "media", "anims_X", "Bob"))
-               for s, m in (("Uzi", "GoMExtensionGunsOfTien"), ("MP5K", "GoMExtensionGunsOfTien"),
-                            ("MP7", "GoMExtensionGunsOfTienPost93"))}
+               for s, m in (("Uzi", "GoMExtensionGunsOfTien"),)}
+SHIPPED_AS = {"Uzi": "ShortSMG"}
 
 
 def stance_clip(src_dir, out_dir, set_name, clip):
@@ -693,25 +824,52 @@ def stance_clip(src_dir, out_dir, set_name, clip):
     undone): (xa, frames)."""
     name = out_name(set_name, clip)
     p = os.path.join(out_dir, set_name, "clips", name + ".x")
+    shipped = SHIPPED_AS.get(set_name, set_name)
     if not os.path.exists(p):
         head = open(os.path.join(src_dir, "Bob_IdleRifle.x"), encoding="latin-1").read()
         head = head[:re.search(r"^AnimationSet ", head, re.M).start()]
         bob = SHIPPED_BOB[set_name]
+        packed = out_name(shipped, clip)
         for fn in sorted(os.listdir(bob)):
-            if fn.startswith("GunsOfTien_Compact%s_Pack" % set_name):
+            if fn.startswith("GunsOfTien_Compact%s_Pack" % shipped):
                 t = open(os.path.join(bob, fn), "rb").read().decode("latin-1").replace("\r\n", "\n")
-                m = re.search(r"^AnimationSet %s \{.*?(?=^AnimationSet |\Z)" % re.escape(name), t, re.M | re.S)
+                m = re.search(r"^AnimationSet %s \{.*?(?=^AnimationSet |\Z)" % re.escape(packed), t, re.M | re.S)
                 if m:
                     p = os.path.join(out_dir, "_shipped_%s.x" % name)
                     os.makedirs(out_dir, exist_ok=True)
                     open(p, "w", encoding="latin-1").write(head + m.group(0))
                     break
     xa = xanim.read(p)
-    z = CA.TURNED_SETS.get(set_name)
-    if z is not None and "_shipped_" in p:
+    if shipped in CA.PISTOL_SETS and "_shipped_" in p:
         import compact_pack as CP
-        CP.shift_gun_bone(xa, (0.0, 0.0, 2.0 * z))
+        CP.turn_gun_bone(xa)            # half a turn again: back to the rifle relation the build works in
     return xa, frames_of(xa)
+
+
+MAIN_BOB = os.path.normpath(os.path.join(HERE, "..", "..", "Contents", "mods", "GoMExtensionGunsOfTien", "42", "media",
+                                         "anims_X", "Bob"))
+
+
+def extract_aims(src_dir, dest, set_name="Bullpup", bob=MAIN_BOB):
+    """Every clip of a shipped set's packs as its own file in `dest`, named as vanilla's (Bob_<clip>.x): the bullpup
+    set's rifle_hand.py build (aims and reloads) kept before this build packs over it. Done once: an existing `dest`
+    is left as it is."""
+    if os.path.isdir(dest) and os.listdir(dest):
+        return
+    os.makedirs(dest, exist_ok=True)
+    head = open(os.path.join(src_dir, "Bob_IdleRifle.x"), encoding="latin-1").read()
+    head = head[:re.search(r"^AnimationSet ", head, re.M).start()]
+    prefix = "GunsOfTien_Compact%s_" % set_name
+    count = 0
+    for fn in sorted(os.listdir(bob)):
+        if not fn.startswith(prefix + "Pack"):
+            continue
+        t = open(os.path.join(bob, fn), "rb").read().decode("latin-1").replace("\r\n", "\n")
+        for m in re.finditer(r"^AnimationSet (%s\w+) \{.*?(?=^AnimationSet |\Z)" % re.escape(prefix), t, re.M | re.S):
+            name = "Bob_" + m.group(1)[len(prefix):]
+            open(os.path.join(dest, name + ".x"), "w", encoding="latin-1").write(head + m.group(0))
+            count += 1
+    print("[aims] %d clips of the shipped %s set kept in %s" % (count, set_name, dest))
 
 
 def masked(qu, qc, masks):
@@ -908,6 +1066,15 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
     st.turn_search = crouch and CROUCH_SEARCH
     st.turn_prev = (0.0, 0.0, 0.0)
     st.turn_fixed = None
+    st.aim_frames = None
+    if st.aims and not generic:
+        own = os.path.join(st.aims, clip + ".x")
+        if os.path.exists(own):
+            af = frames_of(xanim.read(own))
+            if len(af) == len(frames):
+                st.aim_frames = af
+            else:
+                print("[aims] %s: %d frames against vanilla's %d, not used" % (clip, len(af), len(frames)))
     st.use_refs = raises = not aim_clip and not generic and st.joins_idle_and_aim(xa, frames)
     carried = not raises and not aim_clip and not generic and not crouch
     if carried:
@@ -915,13 +1082,15 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
     if st.turn_search and not generic:
         st.turn_fixed = plan_turns(st, r, xa, frames, n)
     gun = SETS[set_name]["gun"]
-    spec = C.GUNS[gun]
+    spec = C.GUNS.get(gun, dict(flip=False))       # rifle-modelled guns (the bullpups) are drawn as modelled
     parts = []
     for part_path, node, mat in HP.GUNS[gun]["parts"]:
         before = set(bpy.data.objects)
         HP.load_part(arm_ob, part_path, node, (C.FLIP @ mat) if (spec["flip"] and mat is not None) else
                      (C.FLIP if spec["flip"] else mat))
         parts += list(set(bpy.data.objects) - before)
+    if SETS[set_name].get("gun_clear") and not generic:
+        dc.set_gun(parts)
     if carried and CHOOSE_VARIANT:
         # the shipped choice (idle_refs_clear's references, no smoothing) against the other three; another is kept
         # only when it scores clearly better (the audit, 2026-10-23: jitter up to 38 cm against vanilla's 2 in the
@@ -1049,6 +1218,8 @@ if __name__ == "__main__":
     # the states masked generic clips play over first: their copies are solved on these as built
     clips = [c for c in UNDERLYING.values() if c in clips] + [c for c in clips if c not in UNDERLYING.values()]
     for set_name in args[3:] or list(SETS):
+        if SETS[set_name].get("aims"):
+            extract_aims(src_dir, SETS[set_name]["aims"], set_name)
         st = Stance(src_dir, set_name)
         names = []
         for clip in clips:
