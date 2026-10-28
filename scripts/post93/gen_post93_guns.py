@@ -1,5 +1,6 @@
-"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 item and model scripts, their
-parts, repair recipes and names for Guns of Tien - Post-93.
+"""Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
+item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93 (the AUGs' points:
+build_aug3.py's auga3 / augpara / aughbar_points.json).
 
 Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py /
 build_ump.py), which write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json,
@@ -1088,6 +1089,239 @@ def ump_items():
     return out
 
 
+# ==================================================================================================
+# Steyr AUG A3, AUG Para and AUG HBAR, user 2026-10-28 (build_aug3.py; docs/post93_design.md)
+# ==================================================================================================
+
+AUG3 = ['AUGA3', 'AUGPARA', 'AUGHBAR']
+AUG3_MAGS = {
+    'AUGA3': ['GunsOfTien.556x45Magazine30_AUG', 'GunsOfTien.556x45Magazine42_AUG'],   # the A1's (main mod)
+    'AUGPARA': [f'{M}.9x19Magazine25_AUG', f'{M}.9x19Magazine32_AUG'],
+    'AUGHBAR': [f'{M}.762x39Magazine30_AUG', f'{M}.762x39Magazine50_AUG'],
+}
+# our magazines: (item, rounds, weight, ammo, gun): GoM's weights (MP5 30 = 0.18, AK 30 = 0.2, its AK drum 75 = 0.6)
+AUG3_OWN_MAGS = [('9x19Magazine25_AUG', 25, 0.15, 'swmg:bullet_9x19', 'AUGPARA'),
+                 ('9x19Magazine32_AUG', 32, 0.18, 'swmg:bullet_9x19', 'AUGPARA'),
+                 ('762x39Magazine30_AUG', 30, 0.2, 'swmg:bullet_762x39', 'AUGHBAR'),
+                 ('762x39Magazine50_AUG', 50, 0.4, 'swmg:bullet_762x39', 'AUGHBAR')]
+# Stats (docs/post93_design.md: balanced on each gun's real rate of fire and what reviews say): the A3 the A1's, the
+# Para from GoM's MP5, the HBAR from GoM's AK-47. Sounds from sound_model.py (5.56 from 20" = the A1's 175 / 50, 9mm
+# from 16.5" = 77 / 22, 7.62x39 from 24.4" = 155 / 44); the A1's M16 handling sounds, the round's shot (GoM's MP5 9mm,
+# its AK-47's JS14Shoot).
+AUG3_STATS = {
+    'AUGA3': dict(min=1.0, max=1.8, crit=25.0, critmult=4.2, hit=45, hitmod=5, aim=45, recoil=15, range=50.0,
+                  minsight=8, maxsight=16.0, jam=0.8, cond=200, condmax=10, stop=2.0, door=6, weight=3.6, metal=50.0,
+                  ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30, shoot='M16Shoot', gain=2.2,
+                  radius=175, volume=50),
+    'AUGPARA': dict(min=1.0, max=1.7, crit=20.0, critmult=4.0, hit=52, hitmod=4, aim=40, recoil=13, range=35.0,
+                    minsight=4, maxsight=12.0, jam=0.8, cond=200, condmax=10, stop=2.0, door=5, weight=3.3,
+                    metal=40.0, ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', clip=25, shoot='M9Shoot', gain=2.0,
+                    radius=77, volume=22),
+    'AUGHBAR': dict(min=1.6, max=1.9, crit=25.0, critmult=6.0, hit=55, hitmod=4, aim=65, recoil=13, range=60.0,
+                    minsight=8, maxsight=16.0, jam=0.8, cond=220, condmax=15, stop=2.0, door=6, weight=4.9,
+                    metal=60.0, ammo='swmg:bullet_762x39', box='MarzGuns.762x39_Box', clip=30, shoot='JS14Shoot',
+                    gain=2.0, radius=155, volume=44),
+}
+
+
+def aug3_parts(gun):
+    """Every A3-receiver AUG: the charging handle, the A1's folding grip parts (the Para draws its own sand copies),
+    its magazines, GoM's optics on the integral top rail, lasers on the integral right rail, lights on GoM's optional
+    left rail drawn as our short AUG_RAIL_LEFT; the A3 GoM's AR muzzle family, the Para the main mod's 9x19mm SMG
+    mount and Mk9 (their `_GoT` models), the HBAR its integrated bipod and no muzzle parts."""
+    w = "        ModelWeaponPart              = "
+    bolt = f'{M}.AUGPARA_BOLT' if gun == 'AUGPARA' else 'GunsOfTien.AUG_BOLT'
+    grip = f'{M}.AUGPARA_FOREGRIP' if gun == 'AUGPARA' else 'GunsOfTien.AUG_FOREGRIP'
+    lines = [f"{w}MarzGuns.Bolt_Lock {bolt} bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {bolt} bolt_fired bolt_fired,",
+             f"{w}GunsOfTien.AUG_Integrated_Foregrip_Folded {grip} foregrip_folded foregrip_folded,",
+             f"{w}GunsOfTien.AUG_Integrated_Foregrip_Deployed {grip} foregrip_deployed foregrip_deployed,"]
+    lines += [f"{w}{m} {m} magazine magazine," for m in AUG3_MAGS[gun]]
+    if gun == 'AUGA3':
+        lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+        lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
+    elif gun == 'AUGPARA':
+        lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
+    else:
+        lines += [f"{w}{M}.AUGHBAR_Integrated_Bipod_Folded {M}.AUGHBAR_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+                  f"{w}{M}.AUGHBAR_Integrated_Bipod_Deployed {M}.AUGHBAR_BIPOD_DEPLOYED integrated_bipod "
+                  f"integrated_bipod,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.Picatinny_Rail_Left {M}.AUG_RAIL_LEFT rail_left rail_left,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    return '\n'.join(lines) + '\n'
+
+
+def aug3_item(gun):
+    s = AUG3_STATS[gun]
+    return f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = {s['critmult']},
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = {s['hitmod']},
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['minsight']},
+        MaxSightRange                = {s['maxsight']},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = {s['jam']},
+        ConditionLowerChanceOneIn    = {s['cond']},
+        ConditionMax                 = {s['condmax']},
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = {s['door']},
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = {s['metal']},
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {s['ammo']},
+        AmmoBox                      = {s['box']},
+        MagazineType                 = {AUG3_MAGS[gun][0]},
+        MaxAmmo                      = {s['clip']},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = {s['shoot']},
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = {s['gain']},
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{aug3_parts(gun)}        KnockBackOnNoDeath           = true,
+    }}
+"""
+
+
+def augs():
+    """Models, items and repairs of the three A3-receiver AUGs (files of their own: models_aug.txt, items_aug.txt,
+    fixing_aug.txt)."""
+    pts = {g: load_points(g.lower() + '_points.json') for g in AUG3}
+    out = [f"module {M} {{\n"]
+    for gun in AUG3:
+        extra = ['foregrip_deployed', 'foregrip_folded'] + (['integrated_bipod'] if gun == 'AUGHBAR' else [])
+        out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun], extra))
+    for model, file, tex in [('AUG_RAIL_LEFT', 'GunsOfTienPost93_AUGA3', 'AUGA3'),
+                             ('AUGPARA_BOLT', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
+                             ('AUGPARA_FOREGRIP', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
+                             ('AUGHBAR_BIPOD_FOLDED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR'),
+                             ('AUGHBAR_BIPOD_DEPLOYED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR')]:
+        out.append(f"""
+    model {model} {{
+        mesh     = weapons/firearms/{file}|{model},
+        texture  = {TEX}/{tex},
+        cullFace = None,
+    }}
+""")
+    for mag, *_ in AUG3_OWN_MAGS:
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|{mag},
+        texture  = {TEX}/{mag},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_aug.txt', ''.join(out))
+
+    items = [f"module {M} {{\n"] + [aug3_item(g) for g in AUG3]
+    for mag, cap, weight, ammo, gun in AUG3_OWN_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = {ammo},
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {M}.{gun},
+        PartType         = Clip,
+        Tags             = {'base:hasmetal;' if gun == 'AUGPARA' else ''}base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype in [('AUG_Integrated_Rail_Up', 'RailUp'), ('AUG_Integrated_Rail_Right', 'RailRight'),
+                        ('AUGHBAR_Integrated_Bipod_Folded', 'BipodIntegrated'),
+                        ('AUGHBAR_Integrated_Bipod_Deployed', 'BipodIntegrated')]:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_aug.txt', ''.join(items))
+    # GoM repairs its FAMAS with Aiming=3, as the main mod's AUG A1
+    write(f'scripts/{M}/fixing_aug.txt', "module Base {\n" + "\n".join(f"""    fixing Fix {g} {{
+        Require = {M}.{g},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for g in AUG3) + "}\n")
+
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -1151,6 +1385,19 @@ def translations():
         f'{M}.UMP_Integrated_Rail_Down': 'UMP Integrated Rail (Down)',
         f'{M}.UMP_Integrated_Rail_Left': 'UMP Integrated Rail (Left)',
         f'{M}.UMP_Integrated_Rail_Right': 'UMP Integrated Rail (Right)',
+        # the main mod's "Steyr AUG A1 Assault Rifle" and "AUG 30Rds 5.56x45mm Magazine"; the HBAR's 50 is long, as
+        # GoM's "Extended" magazines
+        f'{M}.AUGA3': 'Steyr AUG A3 Assault Rifle',
+        f'{M}.AUGPARA': 'Steyr AUG Para Submachine Gun',
+        f'{M}.AUGHBAR': 'Steyr AUG HBAR Light Machine Gun',
+        f'{M}.9x19Magazine25_AUG': 'AUG Para 25Rds 9x19mm Magazine',
+        f'{M}.9x19Magazine32_AUG': 'AUG Para 32Rds 9x19mm Magazine',
+        f'{M}.762x39Magazine30_AUG': 'AUG 30Rds 7.62x39mm Magazine',
+        f'{M}.762x39Magazine50_AUG': 'AUG 50Rds 7.62x39mm Extended Magazine',
+        f'{M}.AUG_Integrated_Rail_Up': 'AUG Integrated Rail (Up)',
+        f'{M}.AUG_Integrated_Rail_Right': 'AUG Integrated Rail (Right)',
+        f'{M}.AUGHBAR_Integrated_Bipod_Folded': 'AUG HBAR Integrated Bipod (Folded)',
+        f'{M}.AUGHBAR_Integrated_Bipod_Deployed': 'AUG HBAR Integrated Bipod (Deployed)',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
@@ -1172,5 +1419,6 @@ if __name__ == '__main__':
     models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump)
     fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
+    augs()
     translations()
     print('written under', os.path.normpath(ROOT))

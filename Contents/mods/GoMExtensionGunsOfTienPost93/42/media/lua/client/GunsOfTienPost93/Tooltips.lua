@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
-    Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -55,6 +55,33 @@ for _, mag in ipairs({ "45Magazine25_UMP", "45Magazine20_UMP", "45Magazine10_UMP
     lines[M .. mag] = { "Uses .45 rounds." }
 end
 lines[M .. "9x19Magazine30_UMP"] = { "Uses 9x19mm rounds." }
+
+-- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): integral top and right rails, GoM's Picatinny Rail upgrade on the
+-- left ("Available Picatinny Slots", GoM's wording for its rail upgrades); the folding grip's state lines are the main
+-- mod's (the same parts as its A1); the HBAR's bipod states as the main mod words GoM's bipods'.
+for gun, first in pairs({ AUGA3 = "Uses .223/5.56x45mm NATO rounds.", AUGPARA = "Uses 9x19mm rounds.",
+    AUGHBAR = "Uses 7.62x39mm rounds." }) do
+    lines[M .. gun] = {
+        first,
+        "Integrated Picatinny rails: Up, Right",
+        "Available Picatinny Slots: Left",
+    }
+end
+table.insert(lines[M .. "AUGA3"], "Compatible Muzzle Device: AR Muzzle Mount")
+table.insert(lines[M .. "AUGPARA"], "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount")
+table.insert(lines[M .. "AUGHBAR"], "Heavy barrel with an integrated folding bipod.")
+for _, mag in ipairs({ "9x19Magazine25_AUG", "9x19Magazine32_AUG" }) do
+    lines[M .. mag] = { "Uses 9x19mm rounds." }
+end
+for _, mag in ipairs({ "762x39Magazine30_AUG", "762x39Magazine50_AUG" }) do
+    lines[M .. mag] = { "Uses 7.62x39mm rounds." }
+end
+GunsOfTien_TooltipStates[M .. "AUGHBAR_Integrated_Bipod_Deployed"] = {
+    "Folding bipod deployed:",
+    "Aiming Time increased by 10%",
+    "Critical and Hit Chance increased by 15%",
+    "Automatic fire spread reduced by 35%",
+}
 
 lines[M .. "SCARL"] = {
     "Uses .223/5.56x45mm NATO rounds.",

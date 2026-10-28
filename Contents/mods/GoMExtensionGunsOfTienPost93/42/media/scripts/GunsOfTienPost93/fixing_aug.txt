@@ -1,0 +1,16 @@
+module Base {
+    fixing Fix AUGA3 {
+        Require = GunsOfTienPost93.AUGA3,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix AUGPARA {
+        Require = GunsOfTienPost93.AUGPARA,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix AUGHBAR {
+        Require = GunsOfTienPost93.AUGHBAR,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

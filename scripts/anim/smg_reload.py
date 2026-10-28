@@ -146,7 +146,7 @@ def mp5k_spec():
 
 
 FLIP = Matrix.Rotation(math.pi, 4, 'Y')            # an upside-down (pistol) model turned upright in the hand
-COMPACT = os.path.join(ROOT, "tmp", "anim", "full")
+COMPACT = os.environ.get("SMG_COMPACT_DIR") or os.path.join(ROOT, "tmp", "anim", "full")
 
 
 # scanned for the stance's hand relation (reach, wrists, clearance; scan.py MODE=work / rack on compact_uzi)
@@ -188,6 +188,20 @@ def compact(spec, set_name, turned):
     g.update(rifle=True, name=set_name, clip_name="GunsOfTien_Compact%s_Reload%s",
              base=(os.path.join(d, "GunsOfTien_Compact%s_IdleRifle.x" % set_name),
                    os.path.join(d, "GunsOfTien_Compact%s_IdleAimRifle.x" % set_name)))
+    return g
+
+
+SHORT_ARMS = {c: 0.011 for c in ("Unload", "Load", "Rack", "AimRack")}
+
+
+def short_family(spec, places, family, turned):
+    """A reload family of the short SMG stance: `places`' work and rack places (compact()), started and ended in the
+    stance's own idle and aim (the Uzi build), named GunsOfTien_Compact<family>_Reload<clip> as compact_pack.py packs
+    them."""
+    g = compact(spec, places, turned)
+    d = os.path.join(COMPACT, "Uzi", "clips")
+    g.update(name=family, base=(os.path.join(d, "GunsOfTien_CompactUzi_IdleRifle.x"),
+                                os.path.join(d, "GunsOfTien_CompactUzi_IdleAimRifle.x")))
     return g
 
 
@@ -340,7 +354,18 @@ SPECS = {"uzi": uzi_spec, "mp5k": mp5k_spec, "ump": ump_spec, "aug": aug_spec, "
          # the lever from the left side (the stance's "over the top" template turned ~half a turn; scanned at the rack place)
     "compact_mp5k": lambda: dict(compact(mp5k_spec(), "MP5K", True), knob_turn=(15, 165, -75),
                                  aim_knob_turn=(15, 165, -75)),
-         "compact_mp7": lambda: compact(mp7_spec(), "MP7", True)}
+         "compact_mp7": lambda: compact(mp7_spec(), "MP7", True),
+         # the short SMG stance's families (compact_pack.py RELOAD_SETS "ShortSMG"), each with its own places, all
+         # starting and ending in the stance's idle and aim (the Uzi build, squared 2026-10-29)
+         # the short SMG families' arms: both elbows swung out to the stance's own level (compact_build's arm_target,
+         # vanilla's idle), the gun kept where it is (user, 2026-10-29: the rear T-handle rack's left arm went 3.6 cm
+         # into the chest reaching across for the handle, "improve the arms here. they go inside the body"; then the
+         # idle itself, "very close but doesn't clip")
+         "short_pistol": lambda: dict(short_family(uzi_spec(), "Uzi", "ShortSMGPistol", False),
+                                      arms_contact=SHORT_ARMS),
+         "short_hk": lambda: dict(short_family(mp5k_spec(), "MP5K", "ShortSMGHK", True), knob_turn=(15, 165, -75),
+                                  aim_knob_turn=(15, 165, -75), arms_contact=SHORT_ARMS),
+         "short_reart": lambda: dict(short_family(mp7_spec(), "MP7", "ShortSMGRearT", True), arms_contact=SHORT_ARMS)}
 
 
 # ==================================================================================================
@@ -669,13 +694,55 @@ def match_ends(r, xa, poses, bases, ramp):
                 break
 
 
-def declip_left(r, xa, arm_ob, poses, contact, src_dir):
+def elbows_to_ends(r, xa, poses, bases, ramp=8):
+    """A clip end that is one of the clips it joins (as match_ends) gets that clip's arms exactly, and over `ramp`
+    frames each elbow is steered from its own place toward that clip's (in the chest's frame, smoothstep), the hand
+    re-solved where it is: the clip leaves and rejoins the idle without the elbow snapping, and without match_ends'
+    whole-arm blend, which held the hand back and then moved it 4.5 cm in a frame (the short SMG racks, 2026-10-29,
+    when the stance's idle swung its elbows out to vanilla's level and the reloads ended 2.5 cm off it)."""
+    import rifle_hand as RH
+    n = len(poses) - 1
+    hint_cost, scale = rig.SWIVEL_HINT, r.swivel_scale
+    rig.SWIVEL_HINT, r.swivel_scale = 1.0, 1.0
+    try:
+        for end, step in ((0, 1), (n, -1)):
+            W = pose.world(xa, poses[end])["Bip01_Prop1"]
+            bp = next((bp for bp in bases if
+                       (W.translation - pose.world(xa, bp)["Bip01_Prop1"].translation).length < 0.005), None)
+            if bp is None:
+                continue
+            wb = pose.world(xa, bp)
+            for side, chain in (("L", RH.LEFT_CHAIN), ("R", RH.RIGHT_CHAIN)):
+                U, F, H = rig.ARM[side]
+                d_end = wb["Bip01_Spine1"].to_3x3().inverted() @ (wb[F].translation - wb[U].translation)
+                for b in chain:
+                    poses[end][b] = bp[b].copy()
+                for k in range(1, ramp):
+                    f = end + step * k
+                    if not 0 < f < n:
+                        continue
+                    t = 1.0 - k / float(ramp)
+                    t = t * t * (3 - 2 * t)
+                    wp = pose.world(xa, poses[f])
+                    d_cur = wp["Bip01_Spine1"].to_3x3().inverted() @ (wp[F].translation - wp[U].translation)
+                    saved, hints = r.pole_local[side], r.swivel_hint
+                    r.pole_local[side], r.swivel_hint = d_cur.lerp(d_end, t), {side: 0.0}
+                    try:
+                        r.solve_arm(poses[f], side, wp[H].copy())
+                    finally:
+                        r.pole_local[side], r.swivel_hint = saved, hints
+    finally:
+        rig.SWIVEL_HINT, r.swivel_scale = hint_cost, scale
+
+
+def declip_left(r, xa, arm_ob, poses, contact, src_dir, move_gun=True):
     """The left arm swung out of the body where it went in, the hand kept where it is (user, 2026-10-28: "we wanted
     to fix the clipping issues"; the bullpup's hand went 1.1-1.8 cm into the belly between the handguard and the work
     place, frames 1-6 and 37-44). Each frame no deeper than `contact`, or than the idle at the clip's ends (vanilla's
     own level there, 0.9-1.1 cm), easing to `contact` over RAMP frames; rifle_hand.py's smoothed swing (the swing each
     frame needs spread over RAMP frames either side, faded in from the unswung arm so it never jumps). The first and
-    last frames are left as built: they are the idle, or the unload's end the load starts from."""
+    last frames are left as built: they are the idle, or the unload's end the load starts from. move_gun False: the
+    swings only, the gun never moved (the user's rule: arms out of the body, the gun where the clip has it)."""
     sys.path.insert(0, HERE)
     import compact_build as CB
     import rifle_hand as RH
@@ -700,7 +767,8 @@ def declip_left(r, xa, arm_ob, poses, contact, src_dir):
     need = []
     for f in range(n + 1):
         add = Vector()
-        if 0 < f < n and (dc.depth(poses[f])[0] > limit[f] + 0.0005 or dc.depth(poses[f])[1] > rlimit[f] + 0.0005):
+        if move_gun and 0 < f < n and (dc.depth(poses[f])[0] > limit[f] + 0.0005 or
+                                       dc.depth(poses[f])[1] > rlimit[f] + 0.0005):
             def clear(v):
                 d = dc.depth(DP.move_gun(r, xa, poses[f], v, True))
                 return d[0] <= limit[f] + 0.0005 and d[1] <= rlimit[f] + 0.0005
@@ -753,11 +821,17 @@ def build(src_dir, out_dir, gun, clip, preview=False):
     # the unload's arms reach the work place by frame 8: their elbows leave the idle's by then
     poses = r.build(keys_for(clip, r, g, grips), n, breath=(0, None), from_base=(clip in ("Unload", "Rack")),
                     ramp=8 if clip == "Unload" else None)
-    if g.get("contact"):
+    arms = g.get("arms_contact", {}).get(clip)
+    if g.get("contact") or arms:
         sys.path.insert(0, HERE)
         import rifle_hand as RH
-        match_ends(r, xa, poses, [pose.from_clip(xanim.read(pth), 0) for pth in base_clips(src_dir, g)], RH.RAMP)
-        declip_left(r, xa, x_import.load(base_clips(src_dir, g)[0]), poses, g["contact"], src_dir)
+        bases = [pose.from_clip(xanim.read(pth), 0) for pth in base_clips(src_dir, g)]
+        if not arms:
+            match_ends(r, xa, poses, bases, RH.RAMP)
+        declip_left(r, xa, x_import.load(base_clips(src_dir, g)[0]), poses, g.get("contact") or arms, src_dir,
+                    move_gun=not arms)
+        if arms:
+            elbows_to_ends(r, xa, poses, bases)
     if clip in SWAP:
         key_prop2(xa, poses, g, SWAP[clip], clip == "Unload")
     if os.environ.get("SMG_CLEAR"):

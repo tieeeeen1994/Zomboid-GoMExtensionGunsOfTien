@@ -810,9 +810,13 @@ module Base {
 M249_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'm249_points.json')
 M249_BOX = '556x45Box200_M249'
 M249_STANAGS = ['556x45Magazine%s_STANAG' % n for n in (20, 25, 30, 50, 60, 75, 100, 150)]
+# The feed cover swings open and shut in the reload clips one of these steps a frame (m249_reload.py's COVER_STEP, the
+# clip's gotFeedCover events): hinged where `cover` is, turned up `d` degrees (cover_open is 70).
+M249_COVER_STEPS = (10, 20, 30, 40, 50, 60)
 M249_PARTS = [  # hidden integrated parts: (item, part type, weight, English name)
     ('M249_Feed_Cover_Closed', 'FeedCover', None, 'M249 Feed Cover (Closed)'),
     ('M249_Feed_Cover_Open', 'FeedCover', None, 'M249 Feed Cover (Open)'),
+] + [('M249_Feed_Cover_%d' % d, 'FeedCover', None, 'M249 Feed Cover (Opening)') for d in M249_COVER_STEPS] + [
     ('M249_Integrated_Bipod_Folded', 'BipodIntegrated', None, 'M249 Integrated Bipod (Folded)'),
     ('M249_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.7, 'M249 Integrated Bipod (Deployed)'),
 ]
@@ -835,6 +839,8 @@ def m249():
 """]
     for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod'):
         out.append(m249_attachment(name, pts[name]))
+    for d in M249_COVER_STEPS:
+        out.append(m249_attachment('cover_%d' % d, dict(offset=pts['cover']['offset'], rotate=[-float(d), 0.0, 0.0])))
     out.append("    }\n")
     for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED'):
         out.append(f"""
@@ -867,11 +873,12 @@ def m249():
 
     w = "        ModelWeaponPart              = "
     parts = [f"{w}{MODULE}.M249_Feed_Cover_Closed {MODULE}.M249_COVER cover cover,",
-             f"{w}{MODULE}.M249_Feed_Cover_Open {MODULE}.M249_COVER cover_open cover_open,",
-             f"{w}{MODULE}.M249_Integrated_Bipod_Folded {MODULE}.M249_BIPOD_FOLDED integrated_bipod integrated_bipod,",
-             f"{w}{MODULE}.M249_Integrated_Bipod_Deployed {MODULE}.M249_BIPOD_DEPLOYED integrated_bipod "
-             f"integrated_bipod,",
-             f"{w}{MODULE}.{M249_BOX} {MODULE}.{M249_BOX} box box,"]
+             f"{w}{MODULE}.M249_Feed_Cover_Open {MODULE}.M249_COVER cover_open cover_open,"]
+    parts += [f"{w}{MODULE}.M249_Feed_Cover_{d} {MODULE}.M249_COVER cover_{d} cover_{d}," for d in M249_COVER_STEPS]
+    parts += [f"{w}{MODULE}.M249_Integrated_Bipod_Folded {MODULE}.M249_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+              f"{w}{MODULE}.M249_Integrated_Bipod_Deployed {MODULE}.M249_BIPOD_DEPLOYED integrated_bipod "
+              f"integrated_bipod,",
+              f"{w}{MODULE}.{M249_BOX} {MODULE}.{M249_BOX} box box,"]
     parts += [f"{w}MarzGuns.{m} {MODULE}.{m}_GoT magazine magazine," for m in M249_STANAGS]   # at our size
     parts += [f"{w}MarzGuns.Bullet_{i} {MODULE}.556x45_M249_{i} belt belt," for i in range(1, 10)]
     items = [f"module {MODULE} {{\n", f"""
@@ -1424,8 +1431,8 @@ def uzi():
 AUG_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'aug_points.json')
 AUG_MAGS = [(30, 0.2), (42, 0.25)]       # GoM's STANAG 30 weighs 0.2; Steyr's polymer 42 is a little heavier
 AUG_PARTS = [  # hidden integrated parts: (item, part type, English name)
-    ('AUG_Integrated_Foregrip_Folded', 'ForegripIntegrated', 'AUG A1 Integrated Foregrip (Folded)'),
-    ('AUG_Integrated_Foregrip_Deployed', 'ForegripIntegrated', 'AUG A1 Integrated Foregrip (Deployed)'),
+    ('AUG_Integrated_Foregrip_Folded', 'ForegripIntegrated', 'AUG Integrated Foregrip (Folded)'),
+    ('AUG_Integrated_Foregrip_Deployed', 'ForegripIntegrated', 'AUG Integrated Foregrip (Deployed)'),
     ('AUG_Integrated_Scope', 'Scope', 'AUG A1 Integrated 1.5x Scope'),
 ]
 

@@ -12,8 +12,24 @@ by family (short SMG: pistol, H&K, pistol + rear T-handle; GoM's MP5s on the UMP
 the full Uzi re-exported in pistol orientation, the bullpup stance (draft B, a tucked carry) with its reloads rebuilt
 on it. Still to do:
 
-- [ ] To decide: the SCAR-H's own reload under the rule (a side-forward charging handle family with the SCAR-L and
-      FAL, maybe the H&K guns).
+- [ ] **Short SMG arms, what is left** (packed 2026-10-29 with the idle's elbows at vanilla's level): 12 clips kept
+      from the build before (the elbow-only swing pushed the gun or added jitter there: idle fidgets Ext02 / Ext03,
+      sneak breathing idle, both shivers, heavy landing, heavy limp right, chair sit-down / sit-down right / stand-up
+      right, run bump right, tree walk), list in tmp/anim/square_final/kept_old.txt: their arms at the old level
+      (2.0-2.2); a frame-smoothed swing (as generic_declip's spread) would let them take the new one. 58 of 118 own
+      clips still past 1.1 (walks 2.2 where the 8-step swing runs out); the vaults and the left bite reaction are
+      vanilla's own depth. The sneaking stomach-pain emotes' right arm 2.8 / 2.4 shown.
+
+## Audit
+
+- [ ] **GoM's optional Picatinny rail upgrades on our guns** (user, 2026-10-28): GoM sells `MarzGuns.Picatinny_Rail_Up
+      / _Down / _Left / _Right` as removable parts (MountOn lists in its rails.txt, drawn at the gun's `rail_up` /
+      `rail_down` / `rail_left` / `rail_right` points) and ties each side to a kind of part: Up optics, Down foregrips
+      and bipods, Left lights, Right lasers. None of our guns is in those lists yet (the AUGs above are the first). Go
+      gun by gun through both mods (main: AUG A1, M249, Uzi, Mini Uzi, Micro Uzi; Post-93: MP7A1, MP7A2, P90 TR,
+      SCAR-L / H, UMP45 / UMP9, Five-seveN, UCP) and list for each side: integral rail, a real rail that could be
+      bolted on (an upgrade), or none (a grip, handle or slot in the way, or never made). Then decide with the user
+      which upgrades to add (a model point each, the gun appended to the rail's MountOn).
 
 ## Bugs
 
@@ -24,8 +40,6 @@ on it. Still to do:
       animates (engine) or only with Gunworks (its `RealSingle` / `RealAuto` / `RealBurst` nodes and their
       conditions); what `WeaponType.getWeaponType` gives for a two-handed gun in the primary hand with another item
       in the secondary.
-- [ ] M249 belt reload clips (`scripts/anim/m249_reload.py`): the left elbow flips (AimRack worst). The stock in the
-      chest and the left hand 1-3 cm short of the cover and handle are accepted.
 
 ## Decide
 
@@ -33,6 +47,13 @@ on it. Still to do:
       weapon in one hand (half damage, 0.77 combat speed). Keep it, or not?
 
 ## Check in game
+
+- [ ] **Steyr AUG A3, AUG Para, AUG HBAR** (Post-93, built 2026-10-28, docs/aug3_preview.png): held and reloaded on
+      the bullpup stance (no "animation not found"), each magazine in the well (the Para's 9mm through its adapter, the
+      HBAR's 50), the charging handle cycling, Fold / Unfold Foregrip, the HBAR's bipod toggle and its stats; GoM's
+      optics on the top rail, lasers on the right, Picatinny Rail (Left) installed (drawn as our short rail, the
+      universal rail offering only Left) with a light on it; the A3's AR muzzle parts, the Para's Mk9; found guns'
+      parts, spawns, Hot Brass ejection from the port behind the grip.
 
 - [ ] **FAMAS on the bullpup stance** (the AUG approved in game 2026-10-28, chest square): GoM's FAMAS carried, aimed
       and reloaded like the AUG (its carry handle and STANAG in the same places), no "animation not found".

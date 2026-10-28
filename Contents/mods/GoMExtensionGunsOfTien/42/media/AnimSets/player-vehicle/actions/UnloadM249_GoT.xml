@@ -35,18 +35,6 @@
 		<m_ParameterValue>ejectAmmoStart</m_ParameterValue>
 	</m_Events>
 	<m_Events>
-		<m_EventName>gwSetPart</m_EventName>
-		<m_Time>Percentage</m_Time>
-		<m_TimePc>0.208</m_TimePc>
-		<m_ParameterValue>FeedCover=GunsOfTien.M249_Feed_Cover_Open</m_ParameterValue>
-	</m_Events>
-	<m_Events>
-		<m_EventName>gwSetPart</m_EventName>
-		<m_Time>Percentage</m_Time>
-		<m_TimePc>0.528</m_TimePc>
-		<m_ParameterValue>FeedCover=GunsOfTien.M249_Feed_Cover_Closed</m_ParameterValue>
-	</m_Events>
-	<m_Events>
 		<m_EventName>changeWeaponPart</m_EventName>
 		<m_Time>Percentage</m_Time>
 		<m_TimePc>0.708</m_TimePc>
@@ -57,5 +45,89 @@
 		<m_Time>Percentage</m_Time>
 		<m_TimePc>0.708</m_TimePc>
 		<m_ParameterValue>unload</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.1944</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_10</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2083</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_20</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2222</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_30</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2361</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_40</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2500</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_50</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2639</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_60</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gwSetPart</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.2778</m_TimePc>
+		<m_ParameterValue>FeedCover=GunsOfTien.M249_Feed_Cover_Open</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.4722</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_60</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.4861</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_50</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.5000</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_40</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.5139</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_30</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.5278</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_20</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gotFeedCover</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.5417</m_TimePc>
+		<m_ParameterValue>GunsOfTien.M249_Feed_Cover_10</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>gwSetPart</m_EventName>
+		<m_Time>Percentage</m_Time>
+		<m_TimePc>0.5556</m_TimePc>
+		<m_ParameterValue>FeedCover=GunsOfTien.M249_Feed_Cover_Closed</m_ParameterValue>
 	</m_Events>
 </animNode>

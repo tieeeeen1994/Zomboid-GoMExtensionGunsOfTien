@@ -12,6 +12,12 @@ module GunsOfTien {
         attachment cover { offset = 0.0000 0.1369 0.0609, rotate = 0.0000 0.0000 0.0000, }
         attachment cover_open { offset = 0.0000 0.1369 0.0609, rotate = -70.0000 0.0000 0.0000, }
         attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment cover_10 { offset = 0.0000 0.1369 0.0609, rotate = -10.0000 0.0000 0.0000, }
+        attachment cover_20 { offset = 0.0000 0.1369 0.0609, rotate = -20.0000 0.0000 0.0000, }
+        attachment cover_30 { offset = 0.0000 0.1369 0.0609, rotate = -30.0000 0.0000 0.0000, }
+        attachment cover_40 { offset = 0.0000 0.1369 0.0609, rotate = -40.0000 0.0000 0.0000, }
+        attachment cover_50 { offset = 0.0000 0.1369 0.0609, rotate = -50.0000 0.0000 0.0000, }
+        attachment cover_60 { offset = 0.0000 0.1369 0.0609, rotate = -60.0000 0.0000 0.0000, }
     }
 
     model M249_COVER {

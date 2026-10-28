@@ -12,7 +12,8 @@
     - rate of fire: two Auto rates, 750 and 1000 rpm (user, 2026-10-22: the original gun's gas regulator, normal and
       adverse; Gunworks lists one Auto entry per rate, as for GoM's BAR).
     - the integrated bipod with GoM's M60 bipod stats; the feed cover a hidden part (closed, or open while reloading:
-      the reload clips swap it with Gunworks' gwSetPart events).
+      the reload clips swap it with Gunworks' gwSetPart events, and swing it a 10-degree step a frame in between
+      with our gotFeedCover events, see the reload section).
     - no bolt part: the cocking handle does not move when firing. The chambered round is kept (no HaveChamber =
       false, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
     - STANAG feed: jam chance x2 (user, 2026-10-22: FM 23-14 warns magazine feed "will increase the chance of
@@ -41,6 +42,11 @@ local M249 = "GunsOfTien.M249"
 local BOX = "GunsOfTien.556x45Box200_M249"
 local COVER_CLOSED = "GunsOfTien.M249_Feed_Cover_Closed"
 local COVER_OPEN = "GunsOfTien.M249_Feed_Cover_Open"
+-- the cover part way open (gen_scripts.py M249_COVER_STEPS): the reload clips' gotFeedCover events
+local COVER_STEPS = {}
+for _, d in ipairs({ 10, 20, 30, 40, 50, 60 }) do
+    COVER_STEPS["GunsOfTien.M249_Feed_Cover_" .. d] = true
+end
 local BIPOD_FOLDED = "GunsOfTien.M249_Integrated_Bipod_Folded"
 local BIPOD_DEPLOYED = "GunsOfTien.M249_Integrated_Bipod_Deployed"
 local STANAGS = {}
@@ -159,6 +165,13 @@ end
 -- Gunworks' gwSetPart marker ("FeedCover=GunsOfTien.M249_Feed_Cover_Open"), which only its "none" style reads, so
 -- the M249's markers are passed to it from the attachments style's part event; partState.ensure puts the closed
 -- cover back once a reload ends or is cut short.
+-- In between, the cover swings a 10-degree step a frame with the hand on it (user, 2026-10-29: the hand floated over
+-- the gun while the cover was still drawn shut): our gotFeedCover events ("GunsOfTien.M249_Feed_Cover_30"), drawn on
+-- the reloading game only. Sent through the server like gwSetPart, each step would come back a round trip late and
+-- could overtake another (client commands are unordered), so an MP client sets them on its own copy for looks, as
+-- Gunworks' observers do with relayed swaps, and also sets open and shut there at once before sending them on; other
+-- players still see the cover jump open and shut. A reload cut short between steps leaves the server's cover shut and
+-- nothing to sync back, so the reload's end shuts a part way open cover here too.
 -------------------------------------------------
 ReloadAnim.RegisterWeapon(M249, {
     animId = "M249",
@@ -206,17 +219,55 @@ if not ReloadAnim.GunsOfTienM249Wrapped then
             if not ok then error(err) end
         end
     end
+    -- the cover on this game's copy of the gun only (no sync)
+    local function coverHere(action, handler, fullType)
+        if not (COVER_STEPS[fullType] or fullType == COVER_OPEN or fullType == COVER_CLOSED) then
+            return
+        end
+        local character = action and action.character
+        local gun = character and ReloadAnim.resolveActionGun and ReloadAnim.resolveActionGun(action, handler, true)
+        if isM249(gun) and ReloadAnim.applyRemotePartSwapEvent then
+            ReloadAnim.applyRemotePartSwapEvent(character, gun, "FeedCover", fullType)
+        end
+    end
     for _, name in ipairs({ "handleWeaponPartAnimEvent", "setWeaponAttachmentState" }) do
         local original = ReloadAnim[name]
         if original then
             ReloadAnim[name] = function(action, handler, event, ...)
-                if name == "handleWeaponPartAnimEvent" and handler and handler.animId == "M249"
-                        and event == "gwSetPart" and ReloadAnim.handleGwSetPartAnimEvent then
-                    return ReloadAnim.handleGwSetPartAnimEvent(action, handler, event, ...)
+                if name == "handleWeaponPartAnimEvent" and handler and handler.animId == "M249" then
+                    if event == "gotFeedCover" then
+                        coverHere(action, handler, ...)
+                        return true
+                    end
+                    if event == "gwSetPart" and ReloadAnim.handleGwSetPartAnimEvent then
+                        if isClient() and ReloadAnim.parsePartSwapValue then
+                            local partType, fullType = ReloadAnim.parsePartSwapValue(...)
+                            if partType == "FeedCover" then
+                                coverHere(action, handler, fullType)
+                            end
+                        end
+                        return ReloadAnim.handleGwSetPartAnimEvent(action, handler, event, ...)
+                    end
                 end
                 pointMagPart(action, handler)
                 return original(action, handler, event, ...)
             end
+        end
+    end
+    -- every end of the attachments style's unload and load (stop and perform) detaches the hand's box
+    local detachReloadMagazine = ReloadAnim.detachReloadMagazine
+    if detachReloadMagazine then
+        ReloadAnim.detachReloadMagazine = function(action, ...)
+            local result = detachReloadMagazine(action, ...)
+            local handler = action and ReloadAnim.getHandlerForAction and ReloadAnim.getHandlerForAction(action)
+            if handler and handler.animId == "M249" and ReloadAnim.resolveActionGun then
+                local gun = ReloadAnim.resolveActionGun(action, handler, true)
+                local cover = isM249(gun) and gun:getWeaponPart("FeedCover")
+                if cover and COVER_STEPS[cover:getFullType()] then
+                    coverHere(action, handler, COVER_CLOSED)
+                end
+            end
+            return result
         end
     end
 end
@@ -224,7 +275,11 @@ end
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu (the box goes with the reload, as GoM's M60 box)
 -------------------------------------------------
-PreventRemoval.Register({ BOX, COVER_CLOSED, COVER_OPEN })
+local permanent = { BOX, COVER_CLOSED, COVER_OPEN }
+for step in pairs(COVER_STEPS) do
+    permanent[#permanent + 1] = step
+end
+PreventRemoval.Register(permanent)
 
 -------------------------------------------------
 -- A found gun: the cover closed, the bipod folded, the box at GoM's M60 chance

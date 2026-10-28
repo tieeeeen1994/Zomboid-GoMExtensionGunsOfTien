@@ -72,5 +72,16 @@
   "GunsOfTienPost93.UMP_Integrated_Rail_Up": "UMP Integrated Rail (Up)",
   "GunsOfTienPost93.UMP_Integrated_Rail_Down": "UMP Integrated Rail (Down)",
   "GunsOfTienPost93.UMP_Integrated_Rail_Left": "UMP Integrated Rail (Left)",
-  "GunsOfTienPost93.UMP_Integrated_Rail_Right": "UMP Integrated Rail (Right)"
+  "GunsOfTienPost93.UMP_Integrated_Rail_Right": "UMP Integrated Rail (Right)",
+  "GunsOfTienPost93.AUGA3": "Steyr AUG A3 Assault Rifle",
+  "GunsOfTienPost93.AUGPARA": "Steyr AUG Para Submachine Gun",
+  "GunsOfTienPost93.AUGHBAR": "Steyr AUG HBAR Light Machine Gun",
+  "GunsOfTienPost93.9x19Magazine25_AUG": "AUG Para 25Rds 9x19mm Magazine",
+  "GunsOfTienPost93.9x19Magazine32_AUG": "AUG Para 32Rds 9x19mm Magazine",
+  "GunsOfTienPost93.762x39Magazine30_AUG": "AUG 30Rds 7.62x39mm Magazine",
+  "GunsOfTienPost93.762x39Magazine50_AUG": "AUG 50Rds 7.62x39mm Extended Magazine",
+  "GunsOfTienPost93.AUG_Integrated_Rail_Up": "AUG Integrated Rail (Up)",
+  "GunsOfTienPost93.AUG_Integrated_Rail_Right": "AUG Integrated Rail (Right)",
+  "GunsOfTienPost93.AUGHBAR_Integrated_Bipod_Folded": "AUG HBAR Integrated Bipod (Folded)",
+  "GunsOfTienPost93.AUGHBAR_Integrated_Bipod_Deployed": "AUG HBAR Integrated Bipod (Deployed)"
 }

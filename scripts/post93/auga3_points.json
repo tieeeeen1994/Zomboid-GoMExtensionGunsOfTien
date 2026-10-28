@@ -1,0 +1,203 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2744,
+      0.0262
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      -0.0736,
+      -0.006
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0555,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip_deployed": {
+    "offset": [
+      0.0,
+      0.1242,
+      0.009
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip_folded": {
+    "offset": [
+      0.0,
+      0.1242,
+      0.009
+    ],
+    "rotate": [
+      90.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0332,
+      0.0464
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0332,
+      0.0487
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0093,
+      0.0745,
+      0.0259
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0166,
+      0.0745,
+      0.0251
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0127,
+      0.1076,
+      0.0178
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0155,
+      0.1076,
+      0.0178
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.2557,
+      0.0262
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (the A1's photo L 455, H 100)",
+    "magazine": "the A1's 556x45Magazine30/42_AUG (their feed lips)",
+    "bolt_fired": "GunsOfTien.AUG_BOLT (the A1's charging handle) back 92 mm real",
+    "foregrip": "GunsOfTien.AUG_FOREGRIP (the A1's grip) at its hinge pin; folded = turned 90 degrees forward",
+    "rails": "integral top (L 264-494, crossbars H 186) and right (L 282-381, H 143); left = GoM's optional Picatinny_Rail_Left, drawn as AUG_RAIL_LEFT (L 256-297, H 129.5)",
+    "canon": "GoM's AR mount device and its muzzle parts, 0.0187 behind the muzzle (its M4A1)"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      455.0,
+      100.0
+    ],
+    "bore_mm": 143.5,
+    "k": 0.000603
+  },
+  "_bounds": {
+    "AUGA3_BODY": {
+      "min": [
+        -0.0172,
+        -0.2008,
+        -0.0585
+      ],
+      "max": [
+        0.0172,
+        0.2744,
+        0.0519
+      ],
+      "tris": 2404
+    },
+    "AUG_RAIL_LEFT": {
+      "min": [
+        -0.0003,
+        -0.0124,
+        -0.0064
+      ],
+      "max": [
+        0.0021,
+        0.0124,
+        0.0064
+      ],
+      "tris": 188
+    }
+  }
+}

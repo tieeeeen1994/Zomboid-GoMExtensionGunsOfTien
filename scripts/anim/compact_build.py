@@ -78,6 +78,23 @@ HOLD_S = dict(look=0.15, lean=2, aux=0.0, support=1.0, elbow=0.0, twist=15)
 # straight to the direction the player is actually facing ... it's so weird when they run and his body is tilted")
 BULLPUP_TWIST = 0
 
+# the short SMG stance (the Uzi set, shipped as ShortSMG) squared the same way (user, 2026-10-29: "SMG Short stance
+# suffers from the same thing ... straighten it so that the character is facing directly to the player direction"):
+# the approved hold's gun place is kept; only the chest no longer turns to it (idle_down.py ID_MC at ID_TWIST=0: both
+# hands reach, wrists natural, the left arm's contact 0.022 against 0.021 turned)
+SHORTSMG_TWIST = 0
+# and the head no longer turns to the gun either (look 0, as the bullpup's): squared with the hold's look of 0.15 the
+# chest was vanilla's to 0.1 degree but the head turned 7-8 degrees to the right, towards the gun (user: "it's now
+# tilted the other way"); the turned chest had hidden it (head 7 to the left of a chest turned 15)
+SETS["Uzi"].update(hold=dict(HOLD, twist=SHORTSMG_TWIST, look=0.0), hold_s=dict(HOLD_S, twist=SHORTSMG_TWIST, look=0.0))
+# ...and its elbows swung out to vanilla's idle level, not just CONTACT (user, 2026-10-29: "in idle, the left arm clips
+# into the body ... make it very close but doesn't clip"; approved from the idle's GIFs, top and game-angle views):
+# Declip.arms aims for ARM_TARGET, while moving the gun forward and easing toward vanilla's arm still start only past
+# CONTACT. One limit for both (COMPACT_CONTACT 0.011, tried) pushed the gun forward in 71 clips, up to 10 cm (every
+# chair emote, the diagonal walks), and made 28 jerkier; the swing alone moved only the elbow (idle: 2.5 cm out, the
+# gun and hands where they were)
+SETS["Uzi"]["arm_target"] = 0.011
+
 
 def _bullpup_hold():
     """The bullpup stance's carry (bullpup_stance.py draft B, chosen 2026-10-28: "B looks good. implement B"): the butt
@@ -307,6 +324,7 @@ class Declip:
         self.arm_ob, self.xa = arm_ob, xa
         self.body = clearance.Body(arm_ob, bones)
         self.contact = contact
+        self.arm_target = contact       # the elbow swings aim here (a set's arm_target); the rest acts past contact
         self.fixed = 0
         self.parts, self.belly = [], None
 
@@ -370,13 +388,14 @@ class Declip:
 
     def arms(self, r, q, lgrip, left=True):
         dl, dr = self.depth(q)
+        aim = self.arm_target
         for k in range(1, 9):
-            if (dl <= self.contact or not left) and dr <= self.contact:
+            if (dl <= aim or not left) and dr <= aim:
                 break
             W = pose.world(self.xa, q)["Bip01_Prop1"]
-            if left and dl > self.contact:
+            if left and dl > aim:
                 r.solve_arm(q, "L", W @ lgrip, pole_extra=rig.UP * -0.05 - rig.RIGHT * 0.025 * k)
-            if dr > self.contact:
+            if dr > aim:
                 r.solve_arm(q, "R", W @ r.grip_r.inverted(), pole_extra=rig.UP * -0.05 + rig.RIGHT * 0.025 * k)
                 w = pose.world(self.xa, q)
                 q["Bip01_Prop1"] = w["Bip01"].inverted() @ (w["Bip01_R_Hand"] @ r.grip_r)
@@ -392,7 +411,7 @@ def redeclip(dc, r, xa, poses):
     for q in poses:
         q = pose.copy(q)
         dl, dr = dc.depth(q)
-        if dl > dc.contact or dr > dc.contact:
+        if dl > dc.arm_target or dr > dc.arm_target:
             w = pose.world(xa, q)
             q, _ = dc.arms(r, q, w["Bip01_Prop1"].inverted() @ w["Bip01_L_Hand"])
         out.append(q)
@@ -906,10 +925,12 @@ def unmask(qu_b, want, w, cap=math.radians(170)):
     return Matrix.LocRotScale(t, qa @ Quaternion(axis, ang), None)
 
 
-def generic_masked_pose(st, r, xa, p, qu, masks, on):
+def generic_masked_pose(st, r, xa, p, qu, masks, on, push=None):
     """A generic frame whose arms, after the game's blend over qu, hold the gun qu holds (the right always, the left
     while vanilla's holds its weapon, blended back to vanilla's own arm by `on`). Arm bones the mask leaves to qu
-    (weight 0) cannot be steered: their hand stays where qu has it."""
+    (weight 0) cannot be steered: their hand stays where qu has it. push: {side: k}, that elbow swung outward as
+    Declip.arms does (its pole 0.025 k further out), for generic_declip."""
+    push = push or {}
     qc = pose.copy(p)
     qg = masked(qu, qc, masks)
     gun = pose.world(xa, qg)["Bip01_Prop1"]
@@ -917,7 +938,8 @@ def generic_masked_pose(st, r, xa, p, qu, masks, on):
     if on > 0.0:
         targets.append(("L", gun @ st.lgrip_idle, on))
     for side, target, amount in targets:
-        r.solve_arm(qg, side, target, pole_extra=rig.UP * -0.05)
+        out = rig.RIGHT * (0.025 * push.get(side, 0.0) * (1.0 if side == "R" else -1.0))
+        r.solve_arm(qg, side, target, pole_extra=rig.UP * -0.05 + out)
         for b in rig.ARM[side]:
             w = masks.get(b, 0.0)
             if w <= 1e-3:
@@ -935,21 +957,28 @@ def generic_masked_pose(st, r, xa, p, qu, masks, on):
     return qc
 
 
-def generic_masked_solve(st, r, xa, frames, qu, masks):
-    """generic_masked_pose over the clip, twice: the second time with each elbow's swing smoothed as hints."""
-    def run(hints):
+def generic_masked_solve(st, r, xa, frames, qu, masks, dc=None):
+    """generic_masked_pose over the clip, twice: the second time with each elbow's swing smoothed as hints; with a
+    Declip, then generic_declip."""
+    def one(f, hints, push=None):
+        p = frames[f]
+        r.base = p
+        r.warnings.clear()
+        r.swivel_hint = {s: h[f] for s, h in hints.items()}
+        k = len(r.swivels)
+        q = generic_masked_pose(st, r, xa, p, qu, masks, st.left_on(pose.world(xa, p)), push)
+        last = {}
+        for side, deg in r.swivels[k:]:
+            last[side] = deg
+        del r.swivels[k:]
+        return q, last
+
+    def run(hints, pushes=None):
         poses, swings = [], []
-        for f, p in enumerate(frames):
-            r.base = p
-            r.warnings.clear()
-            r.swivel_hint = {s: h[f] for s, h in hints.items()}
-            k = len(r.swivels)
-            poses.append(generic_masked_pose(st, r, xa, p, qu, masks, st.left_on(pose.world(xa, p))))
-            last = {}
-            for side, deg in r.swivels[k:]:
-                last[side] = deg
+        for f in range(len(frames)):
+            q, last = one(f, hints, {s: ks[f] for s, ks in pushes.items()} if pushes else None)
+            poses.append(q)
             swings.append(last)
-            del r.swivels[k:]
         return poses, swings
     poses, swings = run({})
     loop = is_loop(xa, frames)
@@ -960,8 +989,136 @@ def generic_masked_solve(st, r, xa, frames, qu, masks):
             hints[side] = [t[0] for t in smooth_turns([(v, 0.0, 0.0) for v in seq], loop, (1, 2, 3, 2, 1), 2)]
     if hints:
         poses, _ = run(hints)
+    if dc is not None:
+        poses = generic_declip(dc, xa, frames, qu, masks, poses, hints, one, run, loop)
     r.swivel_hint = {}
     return poses
+
+
+GENERIC_PUSH_MAX = 16.0      # the elbow's pole at most 0.40 further out (Declip.arms goes to 8 x 0.025)
+GENERIC_PUSH_STEP = 0.5
+GENERIC_PUSH_SPREAD = 5      # frames: a push held this long either side of the frames that need it, then eased
+
+
+def generic_declip(dc, xa, frames, qu, masks, poses, hints, one, run, loop):
+    """The emote copies' arms out of the body (user, 2026-10-29, on the short SMG's gestures: "holy crap that looks
+    terrible. fix these"). In a generic copy the gun stays where the stance underneath holds it while the gesture
+    bends the chest, so the chest closes on the forearm holding the gun (a sneeze: the right forearm 5 cm into the
+    chest; vanilla's own arms there 0.8-1.6). For every frame of the shown pose (the game's blend over qu) whose arm
+    is deeper than dc.contact, the least outward elbow swing that brings it to contact (the hand stays on the gun),
+    searched in GENERIC_PUSH_STEP; per arm the pushes are held GENERIC_PUSH_SPREAD frames either side and eased
+    (a smoothstep ramp down from the held value), so the elbow moves out and back in without a pop; then the clip is
+    solved again with them."""
+    n = len(frames)
+    need = {"L": [0.0] * n, "R": [0.0] * n}
+    for f, q in enumerate(poses):
+        dl, dr = dc.depth(masked(qu, q, masks))
+        for side, d in (("L", dl), ("R", dr)):
+            if d <= dc.arm_target:
+                continue
+            k, best = GENERIC_PUSH_STEP, (d, 0.0)
+            while k <= GENERIC_PUSH_MAX:
+                qk, _ = one(f, hints, {side: k})
+                dk = dc.depth(masked(qu, qk, masks))[0 if side == "L" else 1]
+                dc.fixed += 1
+                if dk < best[0] - 0.0005:
+                    best = (dk, k)
+                if dk <= dc.arm_target:
+                    break
+                k += GENERIC_PUSH_STEP
+            need[side][f] = best[1]
+    pushes = {}
+    for side, ks in need.items():
+        if not any(ks):
+            continue
+        out = [0.0] * n
+        for f in range(n):
+            for g in range(n):
+                dist = abs(f - g)
+                if loop:
+                    dist = min(dist, n - dist)
+                if ks[g] <= 0.0:
+                    continue
+                if dist <= GENERIC_PUSH_SPREAD:
+                    w = 1.0
+                else:
+                    t = min(1.0, (dist - GENERIC_PUSH_SPREAD) / float(GENERIC_PUSH_SPREAD))
+                    w = 1.0 - t * t * (3 - 2 * t)
+                out[f] = max(out[f], ks[g] * w)
+        pushes[side] = out
+    if not pushes:
+        return poses
+    redone, _ = run(hints, pushes)
+    print("[generic declip] pushes: %s" % ", ".join("%s max %.1f over %d frames" % (s, max(v), sum(1 for x in v if x > 0))
+                                                   for s, v in pushes.items()))
+    return generic_release(dc, frames, qu, masks, redone, loop)
+
+
+def generic_release(dc, frames, qu, masks, poses, loop):
+    """A left arm still in after the swing (the ground emotes' first frames, where the left hand leaves the gun for
+    the gesture: sitting on the ground, 3.7 cm in at the swing's limit) eased toward vanilla's own left arm in that
+    frame, which is clear of the body, by the least amount that brings it to contact (bisection, as Declip.release),
+    held and eased over the frames round it as the pushes are. Only where the node plays the left arm fully (the
+    clip's bones are what the game shows)."""
+    arm = list(rig.ARM["L"])
+    if any(masks.get(b, 0.0) < 0.999 for b in arm):
+        return poses
+    n = len(poses)
+    need = [0.0] * n
+    for f, q in enumerate(poses):
+        if dc.depth(masked(qu, q, masks))[0] <= dc.contact:
+            continue
+        lo, hi, best = 0.0, 1.0, 1.0
+        for _ in range(7):
+            mid = (lo + hi) / 2
+            t = pose.copy(q)
+            for bn in arm:
+                t[bn] = frames[f][bn].copy()
+            t2 = pose.copy(q)
+            blend_local_bones(t2, t, arm, mid)
+            dc.fixed += 1
+            if dc.depth(masked(qu, t2, masks))[0] <= dc.contact:
+                best, hi = mid, mid
+            else:
+                lo = mid
+        need[f] = best
+    if not any(need):
+        return poses
+    amount = [0.0] * n
+    for f in range(n):
+        for g in range(n):
+            if need[g] <= 0.0:
+                continue
+            dist = abs(f - g)
+            if loop:
+                dist = min(dist, n - dist)
+            if dist <= GENERIC_PUSH_SPREAD:
+                w = 1.0
+            else:
+                t = min(1.0, (dist - GENERIC_PUSH_SPREAD) / float(GENERIC_PUSH_SPREAD))
+                w = 1.0 - t * t * (3 - 2 * t)
+            amount[f] = max(amount[f], need[g] * w)
+    out = []
+    for f, q in enumerate(poses):
+        q = pose.copy(q)
+        if amount[f] > 0.0:
+            t = pose.copy(q)
+            for bn in arm:
+                t[bn] = frames[f][bn].copy()
+            blend_local_bones(q, t, arm, amount[f])
+        out.append(q)
+    print("[generic declip] left arm eased to vanilla's: max %.2f over %d frames" % (max(amount), sum(1 for a in amount if a > 0)))
+    return out
+
+
+def blend_local_bones(p, other, bones, t):
+    """rig.Rig.blend_local without a rig: bones' locals slerped / lerped toward other's by t."""
+    for bn in bones:
+        la, lb = p[bn], other[bn]
+        qa, qb = la.to_quaternion(), lb.to_quaternion()
+        if qa.dot(qb) < 0:
+            qb.negate()
+        p[bn] = Matrix.LocRotScale(la.translation.lerp(lb.translation, t), qa.slerp(qb, t), None)
 
 
 CHOOSE_VARIANT = os.environ.get("COMPACT_CHOOSE_VARIANT", "1") == "1"
@@ -1068,6 +1225,8 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
     sprint = bool(SPRINT_NAME.search(clip)) and not crouch and not generic
     clear = (clearance.BODY | {"Bip01_Pelvis"}, SPRINT_CONTACT) if sprint else (None, CONTACT)
     dc = Declip(arm_ob, xa, *clear)
+    if not sprint:
+        dc.arm_target = min(dc.contact, SETS[set_name].get("arm_target", dc.contact))
     st.drift_keep = CROUCH_KEEP if crouch else (DRIFT_OUT_KEEP, DRIFT_UP_KEEP)
     st.follow_turn = CROUCH_TURN if crouch else 0.0
     st.turn_search = crouch and CROUCH_SEARCH
@@ -1137,7 +1296,7 @@ def build_clip(src_dir, out_dir, set_name, st, clip, aim_clip, preview=False, ge
         outputs = []
         for sfx, ctx, masks in variants:
             xu, fu = stance_clip(src_dir, out_dir, set_name, UNDERLYING[ctx])
-            outputs.append((sfx, generic_masked_solve(st, r, xa, frames, fu[0], masks)))
+            outputs.append((sfx, generic_masked_solve(st, r, xa, frames, fu[0], masks, dc)))
         st.use_refs = False
     else:
         outputs = [("", solve(st, r, xa, frames, n, aim_clip, dc, generic, (crouch or raises) and SMOOTH_ELBOWS,

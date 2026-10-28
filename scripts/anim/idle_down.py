@@ -208,10 +208,14 @@ if os.environ.get("ID_M"):           # S1 rolled so the magazine hangs down, a l
     # the held gun so that the mag doesn't hit the body"; S1's top faced forward, its magazine into the belly). The
     # gun sits ~10 cm further out so the hanging magazine clears the belly; right wrist natural (-43, -3, -35)
     X_KEY = dict(X_KEY, pos=ch(0.02, 0.64, 0.10), along=ch(-0.77, -0.61, 0.20), top=-(ch(0.25, -1.0, 0.2)), twist=15)
+# the chest's turn to the right in the held idle (ID_TWIST; 15 as approved and shipped, 0 = square to where the
+# character faces, as the bullpup carry since 2026-10-28)
+ID_TWIST = float(os.environ.get("ID_TWIST", "15"))
 if os.environ.get("ID_MC"):          # ID_M moved in, same angle (user: "move the gun closer to the body without rotating
     # the gun"): 4 cm straight back is the most before the gun's rear goes into the chest (MP5K also 3 cm right)
     off = ch(0.03, 0.0, -0.04) if os.environ.get("ID_MC") == "mp5k" else ch(0.0, 0.0, -0.04)
-    X_KEY = dict(X_KEY, pos=ch(0.02, 0.64, 0.10), along=ch(-0.77, -0.61, 0.20), top=-(ch(0.25, -1.0, 0.2)), twist=15)
+    X_KEY = dict(X_KEY, pos=ch(0.02, 0.64, 0.10), along=ch(-0.77, -0.61, 0.20), top=-(ch(0.25, -1.0, 0.2)),
+                 twist=ID_TWIST)
     X_OFFSET = off
 if os.environ.get("ID_X3"):          # X closer to the body (user: "X is better, but keep the gun closer if possible"):
     # the grip 4 cm right and 6 cm back, the same 38 degrees; the gun's middle 6 cm nearer the chest, the closest
@@ -253,7 +257,7 @@ def render3(src_dir, out_dir, gun):
         solve = r.solve_arm
         r.solve_arm = lambda p, side, target, pole_extra=Vector(), limit=0.0: solve(p, side, target, pole_extra, 0.0)
         r.warnings.clear()
-        q = r.pose_for(W, dict(look=0.15, lean=2, aux=0.0, support=1.0, elbow=0.0, twist=15), 0, (0, None), 1,
+        q = r.pose_for(W, dict(look=0.15, lean=2, aux=0.0, support=1.0, elbow=0.0, twist=ID_TWIST), 0, (0, None), 1,
                        lgrip=C.grip_on(r.support_base, spec["support"], t))
     short = list(r.warnings)
     W = pose.world(xa, q)["Bip01_Prop1"]
@@ -279,7 +283,7 @@ def render3(src_dir, out_dir, gun):
         cam = x_preview.camera("Cam_" + view, loc, tgt)
         cam.data.ortho_scale = 0.9
         scene.camera = cam
-        scene.render.filepath = os.path.join(out_dir, "%s_X%s_%s.png" % (gun, "2" if os.environ.get("ID_X2") else "3" if os.environ.get("ID_X3") else ("MC" if os.environ.get("ID_MC") else "M" if os.environ.get("ID_M") else os.environ.get("ID_S", "")), view))
+        scene.render.filepath = os.path.join(out_dir, "%s_X%s%s_%s.png" % (gun, "2" if os.environ.get("ID_X2") else "3" if os.environ.get("ID_X3") else ("MC" if os.environ.get("ID_MC") else "M" if os.environ.get("ID_M") else os.environ.get("ID_S", "")), "_t%g" % ID_TWIST, view))
         bpy.ops.render.render(write_still=True)
 
 

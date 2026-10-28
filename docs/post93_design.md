@@ -211,3 +211,79 @@ RecoilDelay 15, range 30), the UMP45 1.1-1.8, HitChance 48, RecoilDelay 17, rang
 SMG ratio ~0.78 of 2.3 / 2.5 kg); magazines 0.18 (UMP9 30), 0.15 / 0.1 / 0.05 (UMP45 25 / 20 / 10); sound 96 / 28 and
 70 / 20 (the realistic model, 200 mm barrel). The .45 magazines are named in GoM's style for its G36's: "UMP45 25Rds .45
 ACP Translucent Magazine".
+
+## Steyr AUG A3, AUG Para and AUG HBAR (user, 2026-10-28; built, not played in game yet)
+
+Three more AUGs beside the main mod's A1 (docs/design.md 4g), all on the **A3 receiver** (2005: the A1's cast scope
+and carry handle replaced by a Picatinny rail), so all in Post-93. The user's reasons: the A3 is post-1993 by itself;
+the Para "should be the same as the A3 era" (the 1988 Para on the A1 receiver would belong in the main mod); the HBAR
+is "the AK-AUG" (spartanat's name for Steyr's 7.62x39 AUG, shown at Enforce Tac 2025 as a rifle and a stock + barrel
+conversion) with the heavy barrel and its integrated bipod. No 7.62x39 HBAR was found in any source (the 621 mm HBAR
+barrel is sold in 5.56 only); the user: "it's not a prototype but a possible setup" (the AUG changes calibre by its
+barrel and stock), so no "Prototype" in the name.
+
+| | `GunsOfTienPost93.AUGA3` "Steyr AUG A3 Assault Rifle" | `GunsOfTienPost93.AUGPARA` "Steyr AUG Para Submachine Gun" | `GunsOfTienPost93.AUGHBAR` "Steyr AUG HBAR Light Machine Gun" |
+|---|---|---|---|
+| Real | 5.56x45, 508 mm barrel, 790 mm, 3.6 kg, 680-750 rpm | 9x19, 420 mm barrel, about 665 mm, 3.3 kg, 650-720 rpm, fires from a closed bolt | 7.62x39 on the 621 mm heavy barrel (a possible setup), about 900 mm, about 4.9 kg (the 5.56 HBAR's), 680 rpm (the HBAR's; no figure is published for the 7.62x39 AUG) |
+| Family | GoM's 5.56x45mm (its loads, .223), as the A1 | GoM's 9x19mm (its loads, the main mod's 147gr / Hollow Point / [+P+]) | GoM's 7.62x39mm |
+| Magazines | the A1's `GunsOfTien.556x45Magazine30_AUG` / `42_AUG` (main mod), profile "5.56x45mm AUG": the standard stock (user, 2026-10-28; the A3 NATO stock's STANAG well was the other choice) | Steyr's 25 and 32-round 9mm (MPi 69 pattern, straight) in the AUG well through an adapter drawn as part of the body: `9x19Magazine25_AUG` / `9x19Magazine32_AUG` (user, 2026-10-28) | Steyr's own: `762x39Magazine30_AUG`, translucent smoke polymer with the AUG's waffle, curved like an AK magazine (TFB's Enforce Tac 2025 video; a retailer lists "Steyr Arms AUG 7.62x39mm 30 Round Magazine"; no longer 7.62x39mm AUG magazine exists). GoM's AK magazines do not fit (user, 2026-10-28). And `762x39Magazine50_AUG` (user, 2026-10-28), the LMG's long box: the 30's curve carried on to 251 mm, wide as a coffin (50 mm across against the 30's 34, the rounds four abreast as in SureFire's high-capacity magazines) from the well to the base plate ("thick all the way"); its base hangs about 5 cm under the deployed bipod's feet, as an RPK's long magazines do. C-Mag style drums (a 150 twin and a one-sided 75; Beta sold a 100-round C-Mag for the AUG / A3 in 5.56) were built and dropped for it |
+| Muzzle | GoM's AR muzzle family as the SCAR-L and M16s (user, 2026-10-28): AR Muzzle Mount Device, MKI / NDR suppressors, LR2 compensator, LX flash hider, Trix42 muzzle brake; a `canon` point at the muzzle | the main mod's 9x19mm SMG mount device + AWC Mk9, as the UMP9 (user, 2026-10-28) | none (no 7.62x39 can or device in GoM; user, 2026-10-28); its muzzle brake is part of the barrel mesh |
+| Under the barrel | the folding grip (on every AUG the grip belongs to the barrel) | the folding grip (seen in the Para photo) | the folding grip **and** a folding bipod (sold as "AUG barrel, green grip, with bipod") |
+
+All three:
+- **Rails** (user, 2026-10-28): the A3's short top rail on the receiver (user: "standard short one", not the A3 M1
+  Long Rail) and the A3 SF's right-side rail, both integral: hidden required parts `AUG_Integrated_Rail_Up` (GoM's
+  optics) and `AUG_Integrated_Rail_Right` (GoM's lasers), one pair shared by the three guns. **No left rail from the
+  factory** (the charging handle runs in a slot along the receiver's left), so the left side takes **GoM's own
+  `MarzGuns.Picatinny_Rail_Left` as a removable upgrade** (GoM's lights; Corvus Defensio sells such a rail for either
+  side), the guns appended to its MountOn and drawn with **our own short model** `AUG_RAIL_LEFT` (the item's
+  `ModelWeaponPart` names the model, as the UCP draws the MP7's mount device): 4 crossbars, 41 mm, on the receiver's
+  front-left at L 256-297, centred H 129.5, under the charging handle's path (H 140 up, L 255-382) and ahead of the
+  stock's shell and the trigger frame (L 298). GoM's own model (125 mm long, 25 mm across) ran into the handle there
+  (A3 review renders, 2026-10-28; user: "can't we shorten the rail?"); a barrel clamp was tried in between.
+  **No bottom rail** (user,
+  2026-10-28: the folding grip is underneath, and an optional `Picatinny_Rail_Down` was dropped). GoM ties each rail
+  side to a kind of part: Up optics, Down foregrips and bipods, Left lights, Right lasers.
+- **Folding grip**: the A1's (`GunsOfTien.AUG_Integrated_Foregrip_Folded / _Deployed`, its fold code in the main mod's
+  Foregrip.lua), drawn at each gun's own `foregrip_*` points. Its display name says "AUG A1"; drop the A1 for all four.
+- **Held and reloaded** as the A1: the bullpup stance (grip animId `GunsOfTien_CompactBullpup`) and the AUG's bullpup
+  reload (`GunsOfTienCompactBullpupAUG`), no new animation (CLAUDE.md "Animations are generic"); each gun's magazine
+  point at the A1's lips, so the Para's straight 9mm and the HBAR's curved 7.62 sit in the same place. Charging handle
+  on the left riding with the bolt (GoM's Bolt_Lock / Bolt_Fired swap, as the A1). Back slot, Auto / Single.
+- **HBAR bipod**: integrated, folded on a found gun, through Gunworks' `FoldingBipod` registry as GoM's M60 / BAR / M24
+  and the main mod's M249 (`AUGHBAR_Integrated_Bipod_Folded / _Deployed`), beside the grip's own fold.
+- **Finish**: the A3 Steyr green with the black receiver and rail (the Interpolitex photo's green gun, the A3 SF), the
+  HBAR the same (the green 7.62x39 gun of TFB's video), the **Para sand** (user, 2026-10-28), receiver black.
+- **Stats** (user, 2026-10-28: "check reviews if they are better or not, and balance it around the real rate of
+  fire"). The rate sets the Gunworks `RateOfFire` entry and the spread growth (this mod's and GoM's guns: slower guns
+  spread less per shot fired), the reviews move accuracy, handling and jams against the gun each is measured from.
+  | | AUG A3 | AUG Para | AUG HBAR |
+  |---|---|---|---|
+  | Measured from | the A1 (same barrel, round and rate) | GoM's MP5 (800 rpm, 0.1 / 1.5, 1.0-1.6, HitChance 50, Aimingtime 40, RecoilDelay 15, range 30) and Post-93's UMP9 (700, 0.11 / 1.6) | GoM's AK-47 (650 rpm, 0.3 / 3.5, 1.5-1.8, HitChance 50, Aimingtime 60, RecoilDelay 15, range 50, jam 0.5) |
+  | Reviews | A3 M1 reviews: reliable (2 stoppages in 600 rounds, none in 500 over five loads), 2-3 MOA held back by a heavy factory trigger (~9.5 lb); nothing better or worse than the A1 | no independent range test found; Steyr's and reference sheets credit the long barrel (higher velocity than usual for 9mm) and the closed bolt (nothing moves before the shot) with accuracy above other 9mm SMGs; heavy for a 9mm | no review of the 7.62x39 AUG exists yet; the HBAR was made for sustained automatic fire "without loss of accuracy" (its heavy barrel); the conversion's gas system is new |
+  | Rate, spread | 700, 0.12 / 2.5 (the A1's) | 685 (650-720), 0.09 / 1.4: slower than the MP5 and steadier (3.3 kg, closed bolt) | 680, 0.2 / 2.8: a little faster than the AK-47 but the heavy barrel and 1.4 kg more hold it far tighter; looser than the 5.56 A1 for the bigger round |
+  | Damage | 1.0-1.8 (the A1's) | 1.0-1.7 (the MP5's, + 0.1 for the 420 mm barrel's velocity) | 1.6-1.9 (the AK-47's + 0.1 for 621 mm against its 415) |
+  | HitChance, aim, recoil | 45, 45, 15 (the A1's; no gain: same trigger) | 52, 40, 13 (closed bolt, heavy gun, mild 9mm) | 55, 65, 13 (heavier and longer: more accurate, slower to raise; recoil soaked by the weight) |
+  | Range, crit | 50, 25 | 35, 20 | 60 (GoM's M60), 25 |
+  | Jam, wear | 0.8, 1 in 200 (the A1's; the reviews agree) | 0.8, 1 in 200 | 0.8 (the AUG's, not the AK's 0.5: a new gas system), 1 in 220 (heavy barrel) |
+  | Weight | 3.6 | 3.3 (the AUG family keeps real weights, as GoM's FAMAS) | 4.9 |
+  Sounds from `sound_model.py`: the A3 175 / 50 (the A1's), the Para 77 / 22 (9mm from 16.5"), the HBAR 155 / 44
+  (7.62x39 from 24.4"); the A1's M16 handling sounds, the shot of the round (GoM's MP5 `M9Shoot`, its AK-47's
+  `JS14Shoot`). The HBAR's bipod: GoM's rail bipod (deployed Aiming Time x1.1, Hit and Crit x1.15, auto spread
+  x0.65), not the M249's M60 numbers (a 7.5 kg belt-fed gun).
+- **Loot** (user's "go", 2026-10-28): GoM's routes as the other Post-93 guns: the A3 in GoM's Anachronistic
+  spawner (the US A3 M1 is a civilian rifle; the A1's 30s and .223 boxes), the Para there and in its police SMG
+  spawner (the UMPs' route), the HBAR in its two army rifle spawners (the SCARs' route); the HBAR's 50 also loose
+  in GoM's World_HighCap_Russian_Magazine_Spawner beside its 7.62x39 75. On a found gun: the A3 the A1's 30 at 30%
+  and 42 at 5%, the Para 25 / 32 at 30 / 20%, the HBAR 30 / 50 at 50 / 5%, GoM's optics and lasers at its rifles'
+  chances, lights with GoM's left rail.
+- Built: models scripts/post93/build_aug3.py, review renders render_aug3.py, icons and the preview
+  (docs/aug3_preview.png) make_aug3_art.py, scripts gen_post93_guns.py `augs()`, registries
+  shared/GunsOfTienPost93/AUG.lua (CLAUDE.md "Steyr AUG A3, Para and HBAR").
+
+References (kept out of the repo in `tmp/ref/aug_variants`): Commons "Interpolitex 2011 (405-9)" (Vitaly V. Kuzmin,
+CC BY-SA 4.0, 2250 px: two A3s, right side, one green with the short top rail, one black with the right-side rail);
+Commons "Steyr-AUG-A3-SF" (CC BY-SA 4.0, 650 px, left side, muzzle left); Commons "AUG 9mm 03" (Steyr Mannlicher,
+CC BY 2.0, 550 px: the 1988 Para, left side: barrel, straight magazine, magazine-well adapter, grip); TFB's video
+thumbnail of the 7.62x39 AUG (1280 px, right side; rights unclear, a reference only, as the UCP's photo). No usable
+HBAR photo: its barrel and bipod are built from the published numbers on the A3's receiver.

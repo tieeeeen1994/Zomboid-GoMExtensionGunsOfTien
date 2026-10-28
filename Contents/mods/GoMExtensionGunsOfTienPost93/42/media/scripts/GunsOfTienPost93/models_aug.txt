@@ -1,0 +1,113 @@
+module GunsOfTienPost93 {
+
+    model AUGA3 {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGA3|AUGA3_BODY,
+        texture  = weapons/GunsOfTienPost93/AUGA3,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2744 0.0262, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0736 -0.0060, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0332 0.0487, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0332 0.0464, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0127 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0093 0.0745 0.0259, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2557 0.0262, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
+    }
+
+    model AUGPARA {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_BODY,
+        texture  = weapons/GunsOfTienPost93/AUGPARA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1990 0.0262, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0736 -0.0060, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0332 0.0487, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0332 0.0464, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0127 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0093 0.0745 0.0259, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1857 0.0262, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
+    }
+
+    model AUGHBAR {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGHBAR|AUGHBAR_BODY,
+        texture  = weapons/GunsOfTienPost93/AUGHBAR,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3407 0.0262, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0736 -0.0060, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0332 0.0487, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0332 0.0464, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0127 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0093 0.0745 0.0259, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
+        attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model AUG_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGA3|AUG_RAIL_LEFT,
+        texture  = weapons/GunsOfTienPost93/AUGA3,
+        cullFace = None,
+    }
+
+    model AUGPARA_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_BOLT,
+        texture  = weapons/GunsOfTienPost93/AUGPARA,
+        cullFace = None,
+    }
+
+    model AUGPARA_FOREGRIP {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_FOREGRIP,
+        texture  = weapons/GunsOfTienPost93/AUGPARA,
+        cullFace = None,
+    }
+
+    model AUGHBAR_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGHBAR|AUGHBAR_BIPOD_FOLDED,
+        texture  = weapons/GunsOfTienPost93/AUGHBAR,
+        cullFace = None,
+    }
+
+    model AUGHBAR_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGHBAR|AUGHBAR_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTienPost93/AUGHBAR,
+        cullFace = None,
+    }
+
+    model 9x19Magazine25_AUG {
+        mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|9x19Magazine25_AUG,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine25_AUG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine32_AUG {
+        mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|9x19Magazine32_AUG,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine32_AUG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 762x39Magazine30_AUG {
+        mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|762x39Magazine30_AUG,
+        texture  = weapons/GunsOfTienPost93/762x39Magazine30_AUG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 762x39Magazine50_AUG {
+        mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|762x39Magazine50_AUG,
+        texture  = weapons/GunsOfTienPost93/762x39Magazine50_AUG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

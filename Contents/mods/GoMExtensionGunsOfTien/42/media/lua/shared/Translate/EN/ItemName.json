@@ -109,6 +109,12 @@
   "GunsOfTien.556x45Box200_M249": "M249 200Rds 5.56x45mm Box",
   "GunsOfTien.M249_Feed_Cover_Closed": "M249 Feed Cover (Closed)",
   "GunsOfTien.M249_Feed_Cover_Open": "M249 Feed Cover (Open)",
+  "GunsOfTien.M249_Feed_Cover_10": "M249 Feed Cover (Opening)",
+  "GunsOfTien.M249_Feed_Cover_20": "M249 Feed Cover (Opening)",
+  "GunsOfTien.M249_Feed_Cover_30": "M249 Feed Cover (Opening)",
+  "GunsOfTien.M249_Feed_Cover_40": "M249 Feed Cover (Opening)",
+  "GunsOfTien.M249_Feed_Cover_50": "M249 Feed Cover (Opening)",
+  "GunsOfTien.M249_Feed_Cover_60": "M249 Feed Cover (Opening)",
   "GunsOfTien.M249_Integrated_Bipod_Folded": "M249 Integrated Bipod (Folded)",
   "GunsOfTien.M249_Integrated_Bipod_Deployed": "M249 Integrated Bipod (Deployed)",
   "GunsOfTien.M27_Link": "M27 5.56mm Belt Link",
@@ -132,8 +138,8 @@
   "GunsOfTien.AUG": "Steyr AUG A1 Assault Rifle",
   "GunsOfTien.556x45Magazine30_AUG": "AUG 30Rds 5.56x45mm Magazine",
   "GunsOfTien.556x45Magazine42_AUG": "AUG 42Rds 5.56x45mm Extended Magazine",
-  "GunsOfTien.AUG_Integrated_Foregrip_Folded": "AUG A1 Integrated Foregrip (Folded)",
-  "GunsOfTien.AUG_Integrated_Foregrip_Deployed": "AUG A1 Integrated Foregrip (Deployed)",
+  "GunsOfTien.AUG_Integrated_Foregrip_Folded": "AUG Integrated Foregrip (Folded)",
+  "GunsOfTien.AUG_Integrated_Foregrip_Deployed": "AUG Integrated Foregrip (Deployed)",
   "GunsOfTien.AUG_Integrated_Scope": "AUG A1 Integrated 1.5x Scope",
   "MarzGuns.MP5": "MP5A3 Submachine Gun"
 }

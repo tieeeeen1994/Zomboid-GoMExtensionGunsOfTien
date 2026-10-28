@@ -84,6 +84,12 @@ module GunsOfTien {
         OnCreate                     = MarzGuns_OnCreate.AttachParts,
         ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_Closed GunsOfTien.M249_COVER cover cover,
         ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_Open GunsOfTien.M249_COVER cover_open cover_open,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_10 GunsOfTien.M249_COVER cover_10 cover_10,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_20 GunsOfTien.M249_COVER cover_20 cover_20,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_30 GunsOfTien.M249_COVER cover_30 cover_30,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_40 GunsOfTien.M249_COVER cover_40 cover_40,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_50 GunsOfTien.M249_COVER cover_50 cover_50,
+        ModelWeaponPart              = GunsOfTien.M249_Feed_Cover_60 GunsOfTien.M249_COVER cover_60 cover_60,
         ModelWeaponPart              = GunsOfTien.M249_Integrated_Bipod_Folded GunsOfTien.M249_BIPOD_FOLDED integrated_bipod integrated_bipod,
         ModelWeaponPart              = GunsOfTien.M249_Integrated_Bipod_Deployed GunsOfTien.M249_BIPOD_DEPLOYED integrated_bipod integrated_bipod,
         ModelWeaponPart              = GunsOfTien.556x45Box200_M249 GunsOfTien.556x45Box200_M249 box box,
@@ -138,6 +144,60 @@ module GunsOfTien {
     }
 
     item M249_Feed_Cover_Open {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_10 {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_20 {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_30 {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_40 {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_50 {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = FeedCover,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item M249_Feed_Cover_60 {
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
         MountOn         = MarzGuns.FakeItem,

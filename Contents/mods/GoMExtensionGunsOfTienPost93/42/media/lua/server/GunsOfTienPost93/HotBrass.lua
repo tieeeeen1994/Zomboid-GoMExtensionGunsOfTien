@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H,
-    UMP45 and UMP9
+    UMP45 and UMP9, Steyr AUG A3, Para and HBAR
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -111,6 +111,38 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
+    },
+    -- The AUGs eject to the right from the main mod's AUG A1 port, behind the grip (its values); the Para's 9mm cases
+    -- thrown as gently as the UMPs', the HBAR's 7.62x39 a little further, as the SCAR-H's.
+    ["GunsOfTienPost93.AUGA3"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 55,
+        spinForce     = { 64, 128 },
+    },
+    ["GunsOfTienPost93.AUGPARA"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.65,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 55,
+        spinForce     = { 24, 34 },
+    },
+    ["GunsOfTienPost93.AUGHBAR"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.95,
+        sideSpread    = 60,
+        heightSpread  = 60,
+        ejectAngle    = 60,
+        spinForce     = { 86, 124 },
     },
     ["MarzGuns.FIVESEVEN"] = {
         forwardOffset = 0.383,

@@ -77,7 +77,9 @@ and multiply the work for every other mod that modifies animations. So:
   Micro Uzi and MAC-10 type guns); pistol magazine + rear T-handle rack (MP7; real kin: Steyr TMP 1992, B&T MP9
   2004, every AR's rack); H&K (MP5s, MP5K, UMPs); bullpup (AUG and FAMAS, one family); belt-fed (M249; M60, PKM, MG3
   handle alike). The P90's top-magazine reload is the one kept as is ("one of the weird guns"); a future M4 with
-  that kind of magazine (an AR-57 type upper) would use it.
+  that kind of magazine (an AR-57 type upper) would use it. The SCAR-H plays GoM's FAL reload (GoM's own clips and
+  durations through our copy of GoM's current FAL nodes, animId `GunsOfTienSCARH`, kept only because an old copy of
+  GoM's node files can replace them by mod order): no animation of its own, so it meets the rule (user, 2026-10-29).
 - **Built 2026-10-28 (not loaded in game yet): the short SMG stance holds its gun in the pistol orientation.** The
   stance's gun bone is the rifle relation turned half a turn about the gun's Y at its origin (`compact_pack.py`
   `turn_gun_bone` for `compact_animsets.PISTOL_SETS`), so a gun modelled for the pistol clips is drawn upright with
@@ -93,6 +95,44 @@ and multiply the work for every other mod that modifies animations. So:
     ShortSMG` (255, reproduced the shipped Uzi nodes byte for byte before the rename) and `write_reload_nodes`
     (24: ids `ShortSMGPistol`, `ShortSMGHK`, `ShortSMGPistolRearT` with `clip_sets`). Grip animId
     `GunsOfTien_CompactShortSMG`; reload ids `GunsOfTienCompactShortSMG<Pistol|HK|PistolRearT>`.
+  - **Squared 2026-10-29** (user: "SMG Short stance suffers from the same thing [as the AUG's tilt] ... facing
+    directly to the player direction"; approved from GIFs: "they look great now"): the Uzi set rebuilt with no chest
+    turn and no head turn (`compact_build.py` `SHORTSMG_TWIST = 0`, the Uzi hold's `look` 0), the gun's place and
+    hand relation unchanged. The twist alone was not enough: with the hold's `look` 0.15 the chest was vanilla's but
+    the head turned 7-8 degrees to the gun ("it's now tilted the other way"); the turned chest had hidden it. Measure
+    stances absolutely (yaw / roll of pelvis, spines, neck, head against the facing): pelvis to head now within 1.5
+    degrees of vanilla in idle, walk, run, sprint, sneak run and strafe, as the bullpup's. Rebuild: the scratch
+    runner's steps (compact_build.py `Uzi --clips <list> --no-pack` per chunk into tmp/anim/square), the reloads
+    (`SMG_COMPACT_DIR=tmp/anim/square` smg_reload.py `short_pistol` / `short_hk` / `short_reart`), a manifest in the
+    packs' AnimationSet order, `compact_pack.py tmp/anim/square/Uzi tmp/anim/square/reload <anims_X/Bob> ShortSMG`
+    (277 clips, names and order as before, gun bone and hand-to-gun relation identical to the old packs). Arms past
+    contact (clearance.Body, 0.022): 29 clips, was 42 (TODO lists the deepest and the four that got deeper).
+    Review GIFs: tmp/anim/square/cmp3 (vanilla | bullpup | short SMG), reloads tmp/anim/square/reload_gif.
+  - **Emote copies: judge them as the game shows them, never from the file** (2026-10-29). A generic copy plays in a
+    masked node (weights per bone, `includeDescendants` false, resolved through `x_extends` by position: Sneeze2Rifle
+    plays the right arm at 0.2), so `unmask` stores that arm's swing five times over; rendered or measured raw it
+    looked 4-6 cm through the chest ("holy crap that looks terrible"), shown it was clear. `shown_compare.py` renders
+    `compact_build.masked(underlying frame 0, clip frame, masks)`. Shown, 7 of 149 copies were past max(vanilla's
+    own shown, contact) by more than 3 mm, all left arms where the hand leaves the gun for the gesture (sitting on the
+    ground: arm wipe 6.3, sneeze 5.0; chair / ground pain and wipes 0.4-0.8 past). `generic_declip` (compact_build.py,
+    on every generic copy): per frame of the shown pose the least outward elbow swing to contact (Declip.arms' pole,
+    0.025 a step, at most 16), held 5 frames either side and eased; a left arm still in then eased toward vanilla's own
+    (`generic_release`, bisection; 12 % at most, the ground arm wipe). All seven now at contact (0.021-0.022). Not
+    reached: the sneaking stomach-pain pair's right arm (2.8 / 2.4, the upper arm on the curled chest).
+  - **Arms at vanilla's level** (2026-10-29; user: "in idle, the left arm clips into the body ... very close but
+    doesn't clip", approved from top / game-angle GIFs): CONTACT 0.022 is the forearm's centre on the skin; vanilla's
+    idle reads 0.011. The set's `arm_target` 0.011 is what the elbow swings (Declip.arms, the filter's redeclip,
+    generic_declip) aim for, while moving the gun and easing toward vanilla's arm still start past CONTACT (one limit
+    for both pushed the gun up to 10 cm in 71 clips). The idle: elbow 2.5 cm out, gun and hands unchanged. Built into
+    tmp/anim/square12; 12 clips where the gun still moved or the jerk grew kept the previous build
+    (tmp/anim/square_final = the packed set, kept_old.txt). Own clips: median deepest arm 1.9 -> 1.1, past 1.5 cm
+    65 -> 43. Reloads (`smg_reload.py` SHORT_ARMS, every short family and clip): `declip_left` with `move_gun`
+    False (elbows only) to 0.011, and `elbows_to_ends` instead of match_ends: the ends get the idle's arms exactly and
+    the elbows are steered toward them over 8 frames with the hands re-solved where they are (match_ends' whole-arm
+    blend held the hand still and then moved it 4.5 cm in a frame). Reload arms 1.1-1.5 (were 2.3-3.6), hands and
+    gun unchanged. The aimed racks start 2-5 cm off the stance's aim arms (as shipped; not changed).
+    Previews: `stance_compare.py` views `top` / `iso_l` / `iso_r` (straight down, and from above at the game camera's
+    slope) with STANCE_Z=chest; tmp/anim/square_final/gif.
   - The full Uzi re-exported in pistol orientation (`UZI_ONLY=1 blender ... build_uzi.py`: Uzi alone, a new UV
     layout and texture from this machine's bake; points turned, its rifle floor pose turned, MP7-style `rifle_back`
     / `rifle_back_bag` points turning it back upright on the back). Other mods' rifle locations (Plysken's) have no
@@ -288,6 +328,21 @@ and multiply the work for every other mod that modifies animations. So:
   device + AWC Mk9 (GoM's 9mm cans fit its pistols only),
   loot the MP7 / P90 route, magazines on found guns by GoM's MP5 rule. Design: docs/post93_design.md; build notes:
   "H&K UMP45 and UMP9" below.
+- **Steyr AUG A3, AUG Para, AUG HBAR** (user, 2026-10-28; built, not played): all on the A3 receiver, so
+  Post-93 (the Para "the same as the A3 era", in sand; the HBAR is Steyr's 7.62x39 "AK-AUG" of Enforce Tac 2025 with
+  the 621 mm heavy barrel and integrated bipod: no source shows one, but the user calls it "not a prototype but a
+  possible setup", so no "Prototype" in its name). Stats balanced on each gun's real rate of fire (700 / 685 / 680)
+  and what reviews say against the A1, GoM's MP5 and AK-47 (table in the design). A3: the A1's AUG 30 / 42 (standard
+  stock, not the NATO stock's STANAG), GoM's AR muzzle family as the SCAR-L. Para: Steyr's 25 / 32 9mm, the 9x19mm
+  SMG mount + Mk9. HBAR: Steyr's own AK-curved 7.62x39 AUG magazine (GoM's AK magazines do not fit), no muzzle parts,
+  folding grip + folding bipod. All: integral short top rail + right rail, GoM's `Picatinny_Rail_Left` as an optional
+  upgrade (no factory left rail: the charging handle's slot), no bottom rail, the A1's folding grip, the bullpup stance
+  and AUG reload. Design: docs/post93_design.md; references in tmp/ref/aug_variants.
+- **GoM's rail sides** (traced 2026-10-28 in its `AttachmentsRequiredParts.lua` / `rails.txt`): each side takes one
+  kind of part: Up optics (also `AK_Mount`, `Sniper_Mount`, G36C rail), Down foregrips and bipods (both at once, e.g.
+  M16A2, M4A1, G36), Left lights (BrightPoint-5, SR7), Right lasers (AimRight, LRX-7). `Picatinny_Rail_Up / _Down /
+  _Left / _Right` are removable upgrades drawn at `rail_up` / ... points; a gun with only an integral right rail takes
+  lasers but no light. Which of our guns should take them is an open audit (TODO.md, user 2026-10-28).
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -382,7 +437,8 @@ and multiply the work for every other mod that modifies animations. So:
   measured into `scripts/smg9_points.json`), then `scripts/make_mk9_art.py` (their icons); `scripts/build_m249.py`,
   `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun"); `scripts/build_uzi.py`,
   `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family"); `scripts/build_aug.py`, `render_aug.py`,
-  `make_aug_art.py` (the AUG A1, section "Steyr AUG A1"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
+  `make_aug_art.py` (the AUG A1, section "Steyr AUG A1"); Post-93's `scripts/post93/build_aug3.py`, `render_aug3.py`,
+  `make_aug3_art.py` (the AUG A3, Para and HBAR, section "Steyr AUG A3, Para and HBAR"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
   Foregrip radial icons, moved from post93/ on 2026-10-27).
 
 ## Status and how to continue
@@ -890,10 +946,40 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - Reload clips: `scripts/anim/m249_reload.py` (TienInspectWeapon's rig, base Bob_IdleRifle, aim Bob_IdleAimRifle;
   left-hand templates: vanilla's handgun reload over the slide turned a half turn about the barrel for a rifle's
   top +Z, its rifle load's magazine hold), 72 / 96 / 45 / 45 frames = M249.lua's durations 2.4 / 3.2 / 1.5. The
-  AnimSets' event percentages are the script's OPEN / CLOSE / SWAP frames over the clip length: change both
-  together. No `x_extends` except the aimed rack (P90 lesson: inherited events are overridden by position). The box
-  shows on Bip01_Prop2 (Gunworks' reload magazine, kept for the M249, unlike the P90), keyed in the hand from / up to
-  the swap; a STANAG fed with the same clips sits in the hand at the box's offset.
+  cover events are written by the script (`-- --animsets`: `cover_events` from LIFT / PRESS, both AnimSet folders);
+  the other events' percentages (SWAP, the load click at CLOSE) are by hand: change both together. No `x_extends`
+  except the aimed rack (P90 lesson: inherited events are overridden by position). The box shows on Bip01_Prop2
+  (Gunworks' reload magazine, kept for the M249, unlike the P90), keyed in the hand from / up to the swap; a STANAG
+  fed with the same clips sits in the hand at the box's offset.
+- They are the belt-fed family's reload, kept for the LMGs still to come rather than GoM's M60 one (user,
+  2026-10-29). Reworked the same day (user: the left elbow flips; then "fix these problems" for the rest):
+  - Elbow flip: on the cover the left elbow rose level with the shoulder and the rig hopped between that and a low
+    one, 11-18 cm in a frame (the wrist cost was flat between them); the rack held it up at the swing limit. The
+    hand's turn about the barrel was the cause: over the top it is the slide grip turned a further 60 degrees towards
+    the gun's left (`OVER_TURN`), under the receiver the magazine hold as it is, palm up (`RACK_TURN`, was a half
+    turn). `steer_elbows` builds a clip twice when an elbow's swing jumps more than 12 degrees between frames, the
+    second time with `swivel_hint` along an eased path. Measure with the elbow's **position** per frame, not the swing
+    angle: the swing is about a reference that flips when the arm points along the pole, so a -80 to +76 step can be
+    a real 18 cm jump or nothing.
+  - The cover swings 10 degrees a frame (parts `M249_Feed_Cover_10..60`, M249.lua's gotFeedCover, local to the
+    reloading game; open / shut stay gwSetPart): the hand presses the latch, lifts the rear to 30 degrees and lets
+    the cover go on alone, and rides it all the way down when shutting. Before, the cover snapped between shut and
+    open and the hand lifted 30 degrees of a cover still drawn shut.
+  - Wrists, measured on the same rig against vanilla's 17 Bob_Reload_* clips: every frame of all four clips is within
+    their range (left twist at most 100 on the cover, vanilla's shotgun loads 142-152). The rig's own limit (80) is
+    vanilla's 99th percentile over all clips, so over-the-top work always reads past it; a palm-down-on-top hand
+    needs 100-130 on this rig (searched: turn x spin about the palm, gun cant and place; a sideways yaw cleared it
+    only by standing the hand on its edge). Unload's elbows reach their own swing in 8 frames (`RAMP`; over the
+    whole clip the forearm twisted 130-143 while still near the idle's elbow); the racks and the load bring the gun
+    home while the hand returns to the handguard (both at 38 / 84; hand on the handguard with the gun still canted
+    bent the wrist 55-63).
+  - AimRack: the left hand holds the aim clip's own place on the handguard (`r.support_aux`; the idle's put it 6 cm
+    off and bent the wrist 40 more), the right hand's grip blends from the aim clip's to the idle's and back
+    (`aim_grip`, AIM_GRIP; the rig's single idle grip turned the hand 67 degrees at the aim, wrist 100-130), and the
+    arms blend into the aim clip's at the ends (`aim_ends`), so both ends are vanilla's aim arms exactly (the whole
+    body 1.9 cm off it, the rig keeping the idle's hips).
+  - Left as it was: the right wrist under the gun in Unload / Load bends 42 (vanilla's reloads 36, its all-clip
+    limit 50); Unload's first frames, where the hand comes from the hip (support 0), are not on any mark.
 - Sound 180 / 51 is written in the item (sound_model.py's model: 5.56 from 18.3", +0.38 dB on the M16A2's 20"); the
   main mod's SoundTable.lua is for GoM's guns only.
 
@@ -1010,6 +1096,44 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 - Hold and reload: the bullpup set, shared with GoM's FAMAS (section "Bullpup set" below). Before it the AUG borrowed
   GoM's FAMAS reload clips, and vanilla's rifle hold put its left palm (0.218 ahead of the grip) on the bare barrel
   9 cm behind the flash hider, 4 cm under it (hold_preview.py `aug`).
+
+## Steyr AUG A3, Para and HBAR (Post-93, 2026-10-28)
+
+- Files: `scripts/post93/build_aug3.py -- --gun a3|para|hbar|mags` (Blender, ~40 s each; imports the main mod's
+  build_aug.py as `a1`: its photo frame, stock, frame, grip, barrel, painting; `mags` needs `augpara_points.json`, so
+  after `para`), `render_aug3.py -- DIR --gun ...` (review renders with GoM's ElcanX2, SR7, AimRight, AR mount / MKI or
+  SMG mount / Mk9 at their points, the left rail with the handle forward and back, bipod views),
+  `make_aug3_art.py --renders DIR` (icons, and docs/aug3_preview.png from DIR/auga3, augpara, aughbar),
+  `gen_post93_guns.py augs()` (models_aug.txt, items_aug.txt, fixing_aug.txt, names), registries
+  `shared/GunsOfTienPost93/AUG.lua`, loot, Hot Brass and tooltip lines in Post-93's Loot / HotBrass / Tooltips.lua.
+  Rebuild: a3, para, hbar, mags, render each, art, `gen_post93_guns.py`, `check_refs.py`.
+- A3 upper measured on Commons "Interpolitex 2011 (405-9)" scaled by the receiver (the A1's L 249-402: 2.575 px/mm),
+  anchored at the receiver's face and the bore: rail crossbars H 186 from L 264 to 494, rail floor H 177 (kit.picatinny:
+  crossbar tops at base_h + tooth_h - 1); the right rail (the A3 SF's) L 282-381, H 143. Its butt does not match that
+  photo (taken at an angle, a longer barrel): the A1's stock kept.
+- GoM's Picatinny_Rail meshes (rails.fbx, x100 in Blender's import): 125 mm long, 25 mm across, the Left one spanning
+  x -0.0011..+0.0055 from its point (base inward). The receiver's left has 14 mm between the stock's shell (H 126)
+  and the charging handle's path (H 140+, L 255-382), so GoM's rail ran into the handle; a barrel clamp was tried; the
+  answer (user: "can't we shorten the rail?") is our own 41 mm, 4-crossbar AUG_RAIL_LEFT at L 256-297, H 129.5, drawn
+  for GoM's item through the gun's ModelWeaponPart line (the line names the model). Lights sit 0.0007 out from a
+  rail's crossbar face (the SCAR's rail_left + 0.0062 with rail_left 0.0055 inside it). The universal Picatinny Rail
+  is offered Left only (UniversalAttachment.RegisterWeapons); GoM keeps that item's MountOn at FakeItem.
+- Para: muzzle 125 mm behind the A1's (Steyr: 665 mm), barrel stepped, collar at L 147 = `canon` for the SMG mount
+  (the UMP9's 22 mm relation); adapter (the `scope` material, unused on the A3 receiver, painted grey) filling the
+  well's mouth, its release paddle's top edge run up inside the stock's sloping underside (a gap showed; user). Its
+  own sand AUGPARA_BOLT / _FOREGRIP: rename the object **and its mesh data** (the FBX geometry takes the mesh's name;
+  make_mp7_art.load_game found none).
+- HBAR: muzzle 110 mm ahead of the A1's (900 mm), barrel r 10.5, ported brake, bipod clamp at L -34..-14; legs 245 mm
+  (deployed feet H -110: the 30's base is about -100, the 50's about -159, as an RPK's long magazines hang),
+  folded back beside the folded grip (x 21, ending at L 221 before the grip's bracket at 228).
+- Magazines: the AK-curved 30 is the A1's sweep with build_aug's globals pointed at R 420 mm, rake 6 (its base one
+  magazine depth ahead, TFB's photo; R 300 / rake 10 curved too far); the 50 the same curve to 251 mm, 50 mm across
+  all the way ("thick all the way", user; a version widening only below the top was refused). Drums were built and
+  dropped (user): an RPK-layout drum under the tower, then Beta C-Mag twins / one-sided "musical note" (first with
+  the drum axes across the gun: wrong, C-Mag drums' axes run along the bore; then in GoM's STANAG 150 style, its own
+  C-Mag: 12-sided black drums, sunken end panels, a straight tower: the curved tower was wrong too).
+- GoM's STANAG 75 / 100 / 150 renders: tmp/review/gom_drums (scratch script render_gom_drums.py loads
+  magazines/assault_rifles.fbx with each texture).
 
 ## Bullpup set (2026-10-27)
 
