@@ -6,7 +6,8 @@ Project Zomboid Build 42 mod.
 **Optional:** Ammo Maker (making the new rounds), Hot Brass (spent casings)
 
 Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2,
-and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's).
+and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's); their charging
+handles move as Guns of Marz's do (back on each shot, held back when empty, with the rack).
 
 ## New ammunition
 

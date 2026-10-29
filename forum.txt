@@ -5,7 +5,7 @@ More ammunition, guns and fixes for Guns of Marz, set in Kentucky, July 1993: on
 [b]Requires:[/b] Gunworks Gang Framework, Guns of Marz
 [b]Optional:[/b] Ammo Maker (making the new rounds), Hot Brass (spent casings)
 
-Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2, and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's).
+Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2, and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's); their charging handles move as Guns of Marz's do (back on each shot, held back when empty, with the rack).
 
 Found a problem? Post it in this thread and say which gun or item, whether it was single player or a server, and what you did.
 

@@ -291,6 +291,9 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
   step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
   Workshop description at 8000 characters; a longer one fails the in-game upload).
+- **Change notes** (user, 2026-10-29): whenever a release is being planned, write the Workshop change note into
+  `changenotes.txt` at the repo root, plain text (no BBCode), overwriting whatever was there: what changed since the
+  last upload, for subscribers.
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
