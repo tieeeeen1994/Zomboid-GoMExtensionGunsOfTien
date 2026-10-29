@@ -12,12 +12,12 @@ by family (short SMG: pistol, H&K, pistol + rear T-handle; GoM's MP5s on the UMP
 the full Uzi re-exported in pistol orientation, the bullpup stance (draft B, a tucked carry) with its reloads rebuilt
 on it. Still to do:
 
-- [ ] **Short SMG arms, what is left** (packed 2026-10-29 with the idle's elbows at vanilla's level): 12 clips kept
-      from the build before (the elbow-only swing pushed the gun or added jitter there: idle fidgets Ext02 / Ext03,
-      sneak breathing idle, both shivers, heavy landing, heavy limp right, chair sit-down / sit-down right / stand-up
-      right, run bump right, tree walk), list in tmp/anim/square_final/kept_old.txt: their arms at the old level
-      (2.0-2.2); a frame-smoothed swing (as generic_declip's spread) would let them take the new one. 58 of 118 own
-      clips still past 1.1 (walks 2.2 where the 8-step swing runs out); the vaults and the left bite reaction are
+- [ ] **Short SMG arms, what is left** (2026-10-29, CLAUDE.md "The 12 kept clips swivelled" and "Snaps and hands in
+      the belly"): the 12 old-level clips swivelled (eight at 1.0-1.2, the landing 1.4, run bump 1.6, sitting shiver
+      1.7, tree walk 1.8), snaps smoothed in 30 clips, the gun moved out of the belly in 17; 50 clips changed in all.
+      To do: approve from tmp/anim/review/gif, then play them in game (watch the blends in and out). Left: the
+      no-aim walks' left wrist on the belly (4-5 cm against chest + pelvis, the stance's design), the sprint vault's
+      last frame, 58 of 118 own clips past 1.1 against the chest. The vaults and the left bite reaction are
       vanilla's own depth. The sneaking stomach-pain emotes' right arm 2.8 / 2.4 shown.
 
 ## Audit

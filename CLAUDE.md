@@ -133,6 +133,55 @@ and multiply the work for every other mod that modifies animations. So:
     gun unchanged. The aimed racks start 2-5 cm off the stance's aim arms (as shipped; not changed).
     Previews: `stance_compare.py` views `top` / `iso_l` / `iso_r` (straight down, and from above at the game camera's
     slope) with STANCE_Z=chest; tmp/anim/square_final/gif.
+  - **The 12 kept clips swivelled in the packs** (2026-10-29, `scripts/anim/arm_swivel.py`, Blender; user: "we
+    cannot absolutely ignore this"): IdleRifleExt02 / Ext03, IdleSneak_Rifle_HBreathing (the low one was already
+    clean), EmoteShiverRifle, Emote_Shiver_Sat_Rifle, FallLanding_Heavy_Rifle, WalkHeavyLimpR_Rifle,
+    Seated_SitDown(_R)_Rifle, Seated_StandUp_R_Rifle, RunRifle_BumpR, WalkTrees_Rifle. The square / tmp builds live on
+    the other machine, so they were edited in place from the shipped packs (every other clip byte for byte; the
+    xanim read / write_clip round trip is exact). Each arm turns about its shoulder-to-hand line (shoulder, hand and
+    gun exactly where they were), one way per clip, the least turn to 0.011 per frame, then held 2 x SPREAD (3)
+    frames either side and averaged twice over SPREAD: never below a frame's own need, no plateau corners (a max hold
+    plus a smoothstep ramp tripled the idles' jitter). **Forearms stay pure hinges** (zero twist about their own
+    length, as in every vanilla clip and every clip of the stance; the hand takes the twist, rig._place): the first
+    version rolled the forearm to spare the wrist, 7-49 degrees of forearm twist jumping up to 13 a frame, which flicked
+    back on every blend into a neighbouring clip (user: "there's some twitching across all your reworks"; frame-level
+    jerk and skin measures did not show it, a forearm-twist check does). No wrist ends past max(1.2, vanilla's + 0.2,
+    the shipped clip's worst) (Scorer's ratio; the cap bisected per frame so it moves smoothly). Left arms 1.9-2.7 ->
+    1.0-1.2 in eight, held by the wrist: FallLanding_Heavy 1.4, RunRifle_BumpR 1.6, Emote_Shiver_Sat 1.7,
+    WalkTrees 1.8. The idle fidgets, standing shiver, landing and stand-up now meet IdleRifle exactly at their ends
+    (elbow 0.0 cm, forearm 0-1 degrees; the shipped ones were 2.5 cm and 15 degrees off, a jump on every blend).
+    RunRifle_BumpR's start is 1.4 cm / 14 degrees off RunRifle (was 0.3 / 8). GIFs (before | after, every frame,
+    fixed camera, game angle and front): tmp/anim/swivel/gif.
+  - **Snaps and hands in the belly, the whole set** (2026-10-29; user: "FallLanding_Heavy_Rifle has an insta move on
+    the left arm ... smoothen this", "Emote_Shiver_Sat_Rifle ... by the near end, the wrists go inside the body...
+    why?", "check for other animations that has a similar effect and fix them"). `stance_audit.py` compares every
+    pack clip with its vanilla clip (generic copies as shown, compact_build.masked over the context's idle): a hand or
+    the gun stepping relative to the chest past max(1.5 x vanilla's step, vanilla's + 1) + 1 cm in a frame is a snap,
+    unless the hand stays on the gun (< 1 cm a frame against it: a raise turns the gun fast and our support hand
+    sits further out on it than vanilla's, which flagged IdleToAim / AimToIdle / SprintToAim falsely). 39 clips had
+    snaps: the left hand switching between vanilla's free arm and the gun in 2-3 frames (compact_build left_on:
+    FallLanding 5.6 + 5.2 cm where vanilla's hand moved 1; emote wipes, sneezes, pains, scrambles, vaults,
+    RunStumble 25 cm in a frame) and three gun jumps (IdleToSprint, IdleSeatedExt01, FallIdle04).
+    `smooth_snaps.py` takes each cluster's jump out of the motion (each step less the step blended from the ones
+    round it) and puts it back spread over a window by a smootherstep (about 1.5 cm a frame, at least 8 frames,
+    widened on later passes, the pass that leaves least kept), relative to the chest; the arm is solved onto it with
+    rig._place keeping each frame's own roll (`arm_deltas`: an unmoved frame is exactly the clip's), fingers and the
+    elbow direction layered the same way; gun jumps move the gun and keep both hands' relation to it. Every other
+    step is kept: an earlier version blending between the window's end attachments froze a wipe emote's whole arm.
+    Left over: ValultOver_Sprint_Rifle's last frame (3.5 cm, vanilla 1.1; no frame after it to spread into).
+    FallIdle04_Rifle was put back as shipped (the gun fix doubled its arms' acceleration in a fall whose own gun
+    moves 4.7 cm a frame). Forearm twist stays 0 in every changed clip.
+    Hands in the belly: the build's arm audit measures the chest only (clearance.BODY), never chest + belly + pelvis.
+    The stance holds the gun rigid with the chest, low in front of the belly, so where vanilla's body bends or
+    straightens at the waist under it the gun and the hands on it swing into the belly or lap (the sitting shiver's
+    left wrist 1.9 cm deep most of the clip, 3.4 at frames 81-87 as the chest comes upright). `clear_hands.py` moves
+    the gun out (one direction per clip, the mean way out in the chest's frame, the least distance per frame,
+    spread as arm_swivel.spread) where a hand on the gun sinks past max(clip median + 1, 2.5) cm, the right hand
+    always following, the left by a smoothed on-the-gun weight (a per-frame flag made arms jump), each frame keeping
+    its own roll. 17 clips, gun moved 0.7-3.9 cm (sitting shiver 3.4 -> 2.4, Seated_StandUp 3.9 -> 2.2,
+    Emote_Bent_Double_Sat 4.1 -> 2.6). By design of the stance the left wrist rests on the belly everywhere
+    (IdleRifle 2.3, the no-aim walks 4-5 cm with the pelvis counted, SatChair_rifle 3.3-3.9); not changed.
+    Review GIFs (before | after, every frame, front and side, generic copies as shown): tmp/anim/review/gif.
   - The full Uzi re-exported in pistol orientation (`UZI_ONLY=1 blender ... build_uzi.py`: Uzi alone, a new UV
     layout and texture from this machine's bake; points turned, its rifle floor pose turned, MP7-style `rifle_back`
     / `rifle_back_bag` points turning it back upright on the back). Other mods' rifle locations (Plysken's) have no
