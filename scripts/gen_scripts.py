@@ -1322,9 +1322,10 @@ def belt_links():
 
 
 # Uzi, Mini Uzi and Micro Uzi (docs/design.md 4f, user 2026-10-23; meshes and points: scripts/build_uzi.py, icons:
-# scripts/make_uzi_art.py, registries: shared/GunsOfTien/Uzi.lua). The Uzi is held as a rifle (GoM's MP5), the Mini
-# and Micro like a pistol and holstered (GoM's MP5K / MAC-10: models upside down, Handgun swing, handgun reload
-# mechanics; the Micro is HolsterSmall, as GoM's Detective .38, so it also fits vanilla's ankle holster: user, 2026-10-23,
+# scripts/make_uzi_art.py, registries: shared/GunsOfTien/Uzi.lua). All three are held like a pistol (GoM's MP5K /
+# MAC-10: models upside down, Handgun swing, handgun reload mechanics; the Uzi since 2026-10-30, user: "the rifle
+# stance doesn't look good on it"). The Uzi still hangs on the back (AttachmentType Rifle, its model's rifle_back
+# turns it upright there), the Mini and Micro are holstered; the Micro is HolsterSmall, as GoM's Detective .38, so it also fits vanilla's ankle holster: user, 2026-10-23,
 # and every slot that takes Holster takes HolsterSmall too). One set of IMI magazines for all three. Stocks: the Uzi's two in-place nodes drawn at the origin (GoM's
 # MAC-10 lines name a `stock` point its model lacks), the Mini's / Micro's one node at `stock` / `stock_folded`.
 UZI_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uzi_points.json')
@@ -1359,7 +1360,7 @@ def uzi_mag(rounds):
 
 def uzi_item(gun):
     s = UZI_STATS[gun]
-    rifle = gun == 'UZI'
+    rifle = gun == 'UZI'      # the full-size Uzi: back slot, rifle handling sounds; held like a pistol as the others
     w = "        ModelWeaponPart              = "
     parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.{gun}_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,",
@@ -1373,21 +1374,16 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
-    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster,
-    # one-handed: GoM's animations only since 2026-10-29, CLAUDE.md "GoM's animations only")
+    # all pistol-held as GoM's MP5K (one-handed, Handgun swing: GoM's animations only since 2026-10-29, CLAUDE.md
+    # "GoM's animations only"); the Uzi keeps the back slot and the M16 handling sounds, the Mini and Micro M9 sounds
+    # and a holster
     snd = 'M16' if rifle else 'M9'
-    hold = (f"""        AttachmentType               = Rifle,
-        WeaponReloadType             = boltaction,
-        TwoHandWeapon                = true,
-        RequiresEquippedBothHands    = true,
-        IdleAnim                     = Idle_Weapon2,
-        SwingAnim                    = Rifle,
-        MuzzleFlashModelKey          = muzzle_flash_shotgun,
-""" if rifle else f"""        AttachmentType               = {'HolsterSmall' if gun == 'MICROUZI' else 'Holster'},
+    attach = 'Rifle' if rifle else 'HolsterSmall' if gun == 'MICROUZI' else 'Holster'
+    hold = f"""        AttachmentType               = {attach},
         WeaponReloadType             = handgun,
         SwingAnim                    = Handgun,
         MuzzleFlashModelKey          = muzzle_flash_handgun,
-""")
+"""
     return f"""
     item {gun} {{
         MinDamage                    = {s['min']},

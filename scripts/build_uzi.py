@@ -28,10 +28,11 @@ photo's proportions and only the magazines are shared: every gun's `magazine` po
 base 22 mm under its own grip, as all three photos show.
 
 GoM's conventions (CLAUDE.md, "Gun assets in GoM"): +Y muzzle, +Z top, +X the gun's LEFT, origin at the rear-top of
-the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). The Uzi is held as a rifle (upright model, GoM's MP5). The Mini and
-Micro Uzi are held like a pistol (user, 2026-10-23: GoM's MP5K / MAC-10 way), so they are modelled and baked upright
-and their gun nodes are turned 180 degrees about the bore axis at export, with their points (build_mp7.py's TURN /
-turned()); magazines stay upright. The cocking knob on top (`<GUN>_HANDLE`) slides back in a slot in the top cover
+the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). All three are held like a pistol (Mini and Micro: user,
+2026-10-23, GoM's MP5K / MAC-10 way; the Uzi too since 2026-10-30, user: "the rifle stance doesn't look good on it"),
+so they are modelled and baked upright and their gun nodes are turned 180 degrees about the bore axis at export, with
+their points (build_mp7.py's TURN / turned()); magazines stay upright. The Uzi still hangs on the back like a rifle,
+so its `rifle_back` / `rifle_back_bag` turn it upright there (build_mp7.py's handgun_points, the MP7's way). The cocking knob on top (`<GUN>_HANDLE`) slides back in a slot in the top cover
 only while the gun is racked (`handle_back`): IMI's knob does not reciprocate (user, 2026-10-30). What moves on each
 shot, and stays back on an empty gun, is the bolt seen through the ejection port on the right (`<GUN>_BOLT`, Guns of
 Marz's bolt swap, `bolt_fired`): a plate over the port's front half, which is painted as the open chamber, sliding
@@ -640,10 +641,8 @@ def points(kind, bounds):
                        "racked; IMI's knob does not reciprocate" % (kind, SPEC[kind]["travel"]),
     }
     if kind == "UZI":
-        pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]}  # every GoM rifle's, scaled
         notes["stock"] = ("UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): "
                           "no point, drawn at the origin")
-        handgun = False
     else:
         hl, hh = MINI_HINGE if kind == "MINIUZI" else MICRO_HINGE
         hx = -(SPEC[kind]["w"] + 3.0)
@@ -653,13 +652,20 @@ def points(kind, bounds):
         notes["stock"] = ("%s_STOCK is modelled deployed with its origin at the hinge pin (photo L %.0f, H %.0f, %.0f "
                           "mm right of centre); stock_folded turns it half a turn about Z through the pin, forward "
                           "along the right side" % (kind, hl, hh, -hx))
-        # held like a pistol: everything turned with the gun (build_mp7.py's turned()); the magazine (upright) gets
-        # TURN; muzzle and canon keep GoM's MP5K values; the stock is a node of the gun's own file, turned with it,
-        # and a half turn about Z commutes with the turn about Y, so its rotates stay
-        pts = {k: kit.turned(v, part=(k == "magazine")) for k, v in pts.items()}
-        pts["magazine"]["rotate"] = list(kit.TURN)
-        pts["world"] = {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO}  # GoM's MP5K / MAC-10, scaled
-        handgun = True
+    # held like a pistol: everything turned with the gun (build_mp7.py's turned()); the magazine (upright) gets
+    # TURN; muzzle and canon keep GoM's MP5K values; the stock is a node of the gun's own file, turned with it,
+    # and a half turn about Z commutes with the turn about Y, so its rotates stay
+    pts = {k: kit.turned(v, part=(k == "magazine")) for k, v in pts.items()}
+    pts["magazine"]["rotate"] = list(kit.TURN)
+    pts["world"] = {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO}  # GoM's MP5K / MAC-10, scaled
+    handgun = True
+    if kind == "UZI":
+        # carried on the back like a rifle (police SMG loot, GoM's SWAT zombies hang it there): the body's rifle
+        # points expect an upright rifle, and the item model's own point of the same name turns it back upright
+        for name in ("rifle_back", "rifle_back_bag"):
+            pts[name] = {"offset": [0.0, 0.0, 0.0], "rotate": list(kit.TURN)}
+        notes["rifle_back"] = ("rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down "
+                               "model upright when it hangs in the back slot")
     pts["_notes"] = dict(notes, units="game units (0.603 of real size, the M16A2's proportion); +Y muzzle; " + (
         "held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT"
         if handgun else "+Z top, +X the gun's left") + "; origin = rear-top of the grip (photo L %.0f, H %.0f)"
@@ -707,15 +713,13 @@ def main():
             maps.append(bake(st, ctx, 256))
             kinds.append((kind, "stock"))
         texture(maps, kinds, 256, os.path.join(TEX_DIR, kind + ".png"))
-        handgun = kind != "UZI"
-        if handgun:                                        # held like a pistol: turned 180 degrees about the bore
-            for o in objs:
-                o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
+        for o in objs:                                     # held like a pistol: turned 180 degrees about the bore
+            o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
         bounds = {o.name: kit.bounds_of(o) for o in objs}
         bounds[kind + "_BOLT_fired"] = kit.bounds_of(bolt, (0, -carrier_travel(kind) * K, 0))
         bounds[kind + "_HANDLE_back"] = kit.bounds_of(handle, (0, -SPEC[kind]["travel"] * K, 0))
         pts = points(kind, bounds)
-        if handgun:
+        if kind != "UZI":
             bounds[kind + "_STOCK_folded"] = kit.bounds_at(stocks[0], pts["stock_folded"])
         all_points[kind] = pts
         kit.export(objs, os.path.join(FBX_DIR, "GunsOfTien_%s.fbx" % kind))

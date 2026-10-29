@@ -36,8 +36,9 @@ held with vanilla's rifle or pistol clips, as GoM's guns are, and reloads with o
 Gunworks' registry (`shared/GunsOfTien/GoMReloads.lua`: `profile(animId)`, Gunworks' "none" style, GoM's durations
 copied from the local table in its `Registries/ReloadAnims.lua`). No grip registrations (`GunworksGripAnim`) either.
 
-- Per gun, the closest GoM gun: Uzi (rifle, two-handed) "MP5"; Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR (one-handed,
-  pistol clips) "handgun2" (GoM's MP5K / TEC-9); Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
+- Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR (one-handed, pistol clips) "handgun2"
+  (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance doesn't look
+  good on it"); Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
   "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
   left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 "MP5"; M249 "m60_lmg" (its feed cover stays
   shut; `partState.ensure` shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own
@@ -56,7 +57,11 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   clips, to a two-handed gun in both hands, which would draw it upside down); a rifle-held one must be modelled upright.
   So the Mini Uzi and MP7s lost `TwoHandWeapon` (gen_scripts.py, gen_post93_guns.py), and the full Uzi went back to its
   upright model of before 2026-10-28 (`GunsOfTien_UZI.fbx`, `UZI.png`, `scripts/uzi_points.json`,
-  `scripts/build_uzi.py` restored from 75b3d8c^; models_uzi.txt regenerates byte for byte as it was then).
+  `scripts/build_uzi.py` restored from 75b3d8c^). Since 2026-10-30 (3.6.1) the full Uzi is pistol-held too:
+  build_uzi.py turns it at export like the Mini (its texture is baked upright, so `UZI.png` is unchanged), no
+  `TwoHandWeapon` / `RequiresEquippedBothHands` (both read from the script, so saved Uzis follow), Handgun swing and
+  reload type, but AttachmentType Rifle with `rifle_back` / `rifle_back_bag` turns (the MP7's way: GoM's SWAT zombies
+  and the police SMG loot hang it on the back); Hot Brass took the Mini's numbers.
 - Gone with the animations: CompactStance.lua (both mods), Bullpup.lua, OneHand.lua (one- / two-hand swaps, the
   MP5K's both-hands model), and the reload wrappers keyed on our animIds (magazine in the left hand, part spec pointed
   at the magazine, the M249's cover steps and STANAG hand models). `SavedModels.lua` copies GoM's live MP5K model over
@@ -1517,6 +1522,15 @@ in Java (Assimp import with JOIN_IDENTICAL_VERTICES etc., see ZomboidFixesB42's 
 export degenerate faces; the beam is now one real triangle per plane.
 
 ## Mosin-Nagant Obrez (published in 3.5.0, 2026-10-29; recovered here)
+
+Barrel cut broken until 3.6.1 (user, 2026-10-30: "the sawing off runs... nothing happens to the gun... It gives me
+the offcuts"): the barrel layer's `bigFlash` passed a string to `HandWeapon.setMuzzleFlashModelKey`, which takes a
+Java `ModelKey` (42.21), so every `ReapplyAllModifiers` of a gun with the sawn-off barrel threw, the one in
+`SawBarrel`'s `finish` included: offcuts given and part swapped on the server, then nothing sent. It now takes the
+key from `Base.DoubleBarrelShotgunSawnoff`'s script. Sawn names on a dedicated server: it never has mod translations
+(`GameServer.main` runs `Translator.loadFiles` before `doMinimumInit` loads the mods), so `getText` gave the key and
+guns in containers showed "IGUI_GunsOfTien_..."; `SawnStock.NameFor` now falls back to `SawnStock.ENGLISH` (keep it
+in step with IG_UI.json) and `client/GunsOfTien/SawnNames.lua` renames our guns in every container a pane lists.
 
 Built on the Mac and uploaded in 3.5.0, then lost there before it was committed: the Windows repo got it back by
 copying the Workshop item's `mods/` over `main` (`be5745f`), merged into gom-anims (`c724fb5`). What the feature does

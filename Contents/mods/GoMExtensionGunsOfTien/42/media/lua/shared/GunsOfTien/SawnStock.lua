@@ -70,7 +70,11 @@
     the script's name, so it is set again in this machine's language after every ReapplyAllModifiers (a StatsFactory
     restore handler: Gunworks re-applies a player's whole inventory at game start and a gun on every equip and part
     change). A name the player gave the gun (isCustomName) is left alone. A gun nobody has handled since the server
-    named it keeps the server's language.
+    named it keeps the server's language: English on a dedicated server, which has no mod translations at all (42.21
+    GameServer.main runs Translator.loadFiles once at startup, before doMinimumInit loads the mods, and never again;
+    getText of our key gave the key back, so guns sawn there showed "IGUI_GunsOfTien_..." in every container the
+    client did not rename them in). So the name comes from getTextOrNull, else from ENGLISH (a copy of IG_UI.json's),
+    and a client renames our guns in every container it lists (client/GunsOfTien/SawnNames.lua).
     Icons (user, 2026-10-29): each cut state has its own (make_offcut_art.py: the gun drawn as GoM's icon of it, at
     the same scale, so it reads shorter), shown through modData customInventoryIcon, set with the name.
 --]]
@@ -186,9 +190,20 @@ SawnStock.HANDLING = {
 }
 
 --- Vanilla's sawn-off shotgun flash, unless something before (a suppressor) changed the gun's own.
+--- HandWeapon:setMuzzleFlashModelKey takes a Java ModelKey, not its name: a string threw here (3.5.0 - 3.6.0), which
+--- broke every ReapplyAllModifiers of a gun with its barrel sawn off, the barrel cut's own included (OnCreate had
+--- already handed over the offcuts and swapped the part on the server, then threw before sending the gun back, so
+--- the owner's Mosin kept its barrel). The key is taken from the vanilla item that uses it.
+local SAWN_FLASH_ITEM = "Base.DoubleBarrelShotgunSawnoff"
+local sawnFlashKey
 local function bigFlash(weapon, base)
+    if not sawnFlashKey then
+        local script = ScriptManager.instance:getItem(SAWN_FLASH_ITEM)
+        sawnFlashKey = script and script:getMuzzleFlashModelKey()
+        if not sawnFlashKey then return end
+    end
     if weapon:getMuzzleFlashModelKey() == base:getMuzzleFlashModelKey() then
-        weapon:setMuzzleFlashModelKey("muzzle_flash_shotgun_double_barrel_sawed_off")
+        weapon:setMuzzleFlashModelKey(sawnFlashKey)
     end
 end
 
@@ -248,13 +263,31 @@ function SawnStock.State(weapon)
     return stock and barrel and "SawnBoth" or barrel and "SawnBarrel" or stock and "SawnStock" or nil
 end
 
---- The gun's name for its cuts, in this machine's language; the script's name when nothing is sawn off.
+-- IG_UI.json's names, for a machine without the mod's translations (a dedicated server); keep the two in step
+SawnStock.ENGLISH = {
+    IGUI_GunsOfTien_DOUBLEBARREL_SawnBarrel = "Sawn-Off Double Barrel Shotgun",
+    IGUI_GunsOfTien_DOUBLEBARREL_SawnStock = "Double Barrel Shotgun (Sawn-Off Stock)",
+    IGUI_GunsOfTien_DOUBLEBARREL_SawnBoth = "Sawn-Off Double Barrel Pistol",
+    IGUI_GunsOfTien_STEVENS_555_SawnBarrel = "Sawn-Off Stevens 555 Shotgun",
+    IGUI_GunsOfTien_STEVENS_555_SawnStock = "Stevens 555 Double Barrel Shotgun (Sawn-Off Stock)",
+    IGUI_GunsOfTien_STEVENS_555_SawnBoth = "Sawn-Off Stevens 555 Pistol",
+    IGUI_GunsOfTien_TOZ34_SawnBarrel = "Sawn-Off TOZ-34 Shotgun",
+    IGUI_GunsOfTien_TOZ34_SawnStock = "TOZ-34 Double Barrel Shotgun (Sawn-Off Stock)",
+    IGUI_GunsOfTien_TOZ34_SawnBoth = "Sawn-Off TOZ-34 Pistol",
+    IGUI_GunsOfTien_MOSIN_SawnBarrel = "Mosin-Nagant Bolt Rifle (Sawn-Off Barrel)",
+    IGUI_GunsOfTien_MOSIN_SawnStock = "Mosin-Nagant Bolt Rifle (Sawn-Off Stock)",
+    IGUI_GunsOfTien_MOSIN_SawnBoth = "Mosin-Nagant Obrez",
+}
+
+--- The gun's name for its cuts, in this machine's language (English where the mod's translations are missing); the
+--- script's name when nothing is sawn off.
 function SawnStock.NameFor(weapon)
     local entry = SawnStock.Entry(weapon)
     if not entry then return nil end
     local state = SawnStock.State(weapon)
     if not state then return weapon:getScriptItem():getDisplayName() end
-    return getText("IGUI_GunsOfTien_" .. entry.gun .. "_" .. state)
+    local key = "IGUI_GunsOfTien_" .. entry.gun .. "_" .. state
+    return getTextOrNull(key) or SawnStock.ENGLISH[key] or key
 end
 
 --- Name and inventory icon for the gun's cuts. The icon goes in modData customInventoryIcon, which

@@ -52,12 +52,12 @@ SpentCasingPhysics.RegisterWeaponParams({
         verticalForce = -0.05,
         spinForce     = { 46, 64 },
     },
-    -- The Uzis throw their cases out to the right as GoM's MP5 (the rifle-held Uzi) and MP5K (the pistol-held Mini
-    -- and Micro) do.
+    -- The Uzis throw their cases out to the right as GoM's MP5K does: all three are held like a pistol (the Uzi since
+    -- 2026-10-30, so it took the Mini's numbers).
     ["GunsOfTien.UZI"] = {
-        forwardOffset = 0.353,
-        sideOffset    = 0.08,
-        heightOffset  = 0.48,
+        forwardOffset = 0.543,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
         shellForce    = 0.65,
         sideSpread    = 50,
         heightSpread  = { 80, 100 },

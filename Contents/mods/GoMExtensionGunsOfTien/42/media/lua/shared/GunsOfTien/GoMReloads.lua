@@ -9,8 +9,8 @@
     fresh table each call (Gunworks keeps the one it is given).
 
     Which gun takes which (the closest GoM gun in how it is held and loaded):
-    - "MP5" (GoM's MP5 / MP5A2 / MP5SD): the Uzi, the UMP45 and UMP9;
-    - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Mini and Micro Uzi, the MP7A1 / A2, the P90 TR;
+    - "MP5" (GoM's MP5 / MP5A2 / MP5SD): the UMP45 and UMP9;
+    - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Uzi, Mini Uzi and Micro Uzi, the MP7A1 / A2, the P90 TR;
     - "pistol_reload" (GoM's pistols): the Five-seveN, the UCP Prototype;
     - "famas_rifle" (GoM's FAMAS): the AUG A1, A3, Para and HBAR;
     - "left_handle_load" (GoM's BAR / AA-12: rifle magazine pushed straight in, charging handle on the left): the

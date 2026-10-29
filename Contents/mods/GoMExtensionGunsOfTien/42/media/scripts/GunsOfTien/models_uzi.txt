@@ -4,12 +4,14 @@ module GunsOfTien {
         mesh     = weapons/firearms/GunsOfTien_UZI|UZI_BODY,
         texture  = weapons/GunsOfTien/UZI,
         cullFace = None,
-        attachment muzzle { offset = 0.0000 0.1990 0.0187, rotate = -90.0000 0.0000 -180.0000, }
-        attachment world { offset = 0.0168 0.1089 0.0000, rotate = 180.0000 0.0000 180.0000, }
-        attachment magazine { offset = 0.0000 0.0241 0.0015, rotate = 0.0000 0.0000 0.0000, }
-        attachment canon { offset = 0.0000 0.1604 0.0187, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.1990 -0.0187, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0241 -0.0015, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1604 -0.0187, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0154 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment handle_back { offset = 0.0000 -0.0482 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
     }
 
     model UZI_BOLT {

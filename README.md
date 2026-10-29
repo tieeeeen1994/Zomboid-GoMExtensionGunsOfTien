@@ -71,9 +71,9 @@ Maker they can be made.
 
 ## Uzi, Mini Uzi and Micro Uzi
 
-- Uzi (held like a rifle, as the MP5, its metal stock folding under the receiver), Mini Uzi and Micro Uzi (held
-  one-handed and fitting a holster like the MP5K and MAC-10, the Micro also an ankle holster); the Mini's and Micro's
-  stocks fold along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
+- Uzi, Mini Uzi and Micro Uzi, all held one-handed like the MP5K and MAC-10; the Uzi is carried on the back, its
+  metal stock folding under the receiver, the Mini and Micro fit a holster (the Micro also an ankle holster), their
+  stocks folding along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
 - The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police

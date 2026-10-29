@@ -2,8 +2,9 @@
     Guns of Tien -- the Uzi, Mini Uzi and Micro Uzi (docs/design.md 4f; user, 2026-10-23) in Gunworks' and Guns of
     Marz's registries.
 
-    IMI's open-bolt 9mm family, registered as GoM registers its MP5 (the Uzi, held as a rifle) and its MP5K / MAC-10
-    (the Mini and Micro, held like a pistol and holstered; items_uzi.txt):
+    IMI's open-bolt 9mm family, registered as GoM registers its MP5K / MAC-10, all three held like a pistol (the Uzi
+    since 2026-10-30, user: "the rifle stance doesn't look good on it"; it still hangs on the back, the Mini and Micro
+    are holstered; items_uzi.txt):
     - one magazine profile, "9x19mm Uzi", for all three (IMI's 20 / 25 / 32 and the long 40 / 50 fit every Uzi), the
       magazines in GoM's 9x19mm family (its rounds and the main mod's 147gr / Hollow Point / [+P+]);
     - rate of fire 600 / 950 / 1200 rpm (IMI's figures), the slow heavy Uzi steadier than GoM's MP5 (800, 0.1 / 1.5),
@@ -13,7 +14,7 @@
     - the bolt seen through the ejection port on the right moves as GoM animates its MP5K / MAC-10 (its Bolt_Lock /
       Bolt_Fired swap: back on each shot and on an empty gun); IMI's top cocking knob does not reciprocate, so it
       slides back along its top cover slot only while racked (ChargingHandle.lua; user, 2026-10-30);
-    - reload: GoM's own animations (GoMReloads.lua), the Uzi its MP5's, the Mini and Micro its MP5K's ("handgun2");
+    - reload: GoM's own animations (GoMReloads.lua), its MP5K's ("handgun2") for all three;
     - AWC's Mk9 on its 9x19mm SMG mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
       can's stats and rule, the parts' MountOn and the guns' ModelWeaponPart lines are in their scripts);
     - no rails, optics, lights, lasers or bayonet (none on a 1993 Uzi).
@@ -40,7 +41,6 @@ local UZI = M .. "UZI"
 local MINIUZI = M .. "MINIUZI"
 local MICROUZI = M .. "MICROUZI"
 local GUNS = { UZI, MINIUZI, MICROUZI }
-local GRIP_GUNS = { MINIUZI, MICROUZI }
 local MAGS = {}
 for _, n in ipairs({ 20, 25, 32, 40, 50 }) do
     MAGS[#MAGS + 1] = M .. "9x19Magazine" .. n .. "_UZI"
@@ -75,12 +75,10 @@ for _, gun in ipairs(GUNS) do
 end
 
 -------------------------------------------------
--- Reload animations: GoM's (GoMReloads.lua), the Uzi held as a rifle on its MP5's, the Mini and Micro held like a
--- pistol on its MP5K's
+-- Reload animations: GoM's (GoMReloads.lua), all three held like a pistol on its MP5K's
 -------------------------------------------------
 local GoMReloads = require("GunsOfTien/GoMReloads")
-ReloadAnim.RegisterWeapon(UZI, GoMReloads.profile("MP5"))
-for _, gun in ipairs(GRIP_GUNS) do
+for _, gun in ipairs(GUNS) do
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("handgun2"))
 end
 

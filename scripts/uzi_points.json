@@ -4,7 +4,7 @@
       "offset": [
         0.0,
         0.199,
-        0.0187
+        -0.0187
       ],
       "rotate": [
         -90.0,
@@ -16,7 +16,7 @@
       "offset": [
         0.0,
         0.1604,
-        0.0187
+        -0.0187
       ],
       "rotate": [
         0.0,
@@ -28,12 +28,12 @@
       "offset": [
         0.0,
         0.0241,
-        0.0015
+        -0.0015
       ],
       "rotate": [
+        -180.0,
         0.0,
-        0.0,
-        0.0
+        -180.0
       ]
     },
     "bolt_fired": {
@@ -62,14 +62,38 @@
     },
     "world": {
       "offset": [
-        0.0168,
-        0.1089,
+        -0.0209,
+        0.0,
         0.0
       ],
       "rotate": [
-        180.0,
         0.0,
-        180.0
+        0.0,
+        0.0
+      ]
+    },
+    "rifle_back": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        -180.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "rifle_back_bag": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        -180.0,
+        0.0,
+        -180.0
       ]
     },
     "_notes": {
@@ -78,10 +102,11 @@
       "bolt_fired": "UZI_BOLT (the bolt in the ejection port) back 25.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
       "handle_back": "UZI_HANDLE (the cocking knob) pulled back 80 mm real along its top cover slot, only while racked; IMI's knob does not reciprocate",
       "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin",
-      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; +Z top, +X the gun's left; origin = rear-top of the grip (photo L 330, H 140)"
+      "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model upright when it hangs in the back slot",
+      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 330, H 140)"
     },
     "_extras": {
-      "handgun_hold": false,
+      "handgun_hold": true,
       "photo_origin_mm": [
         330.0,
         140.0
@@ -94,25 +119,25 @@
         "min": [
           -0.0145,
           -0.0796,
-          -0.0564
+          -0.0523
         ],
         "max": [
           0.0145,
           0.199,
-          0.0523
+          0.0564
         ],
         "tris": 1672
       },
       "UZI_BOLT": {
         "min": [
-          -0.0129,
+          0.0124,
           0.0206,
-          0.0244
+          -0.0347
         ],
         "max": [
-          -0.0124,
+          0.0129,
           0.0359,
-          0.0347
+          -0.0244
         ],
         "tris": 44
       },
@@ -120,12 +145,12 @@
         "min": [
           -0.0057,
           0.0802,
-          0.038
+          -0.0485
         ],
         "max": [
           0.0057,
           0.0917,
-          0.0485
+          -0.038
         ],
         "tris": 240
       },
@@ -133,12 +158,12 @@
         "min": [
           -0.0124,
           -0.0842,
-          -0.0567
+          -0.0121
         ],
         "max": [
           0.0124,
           -0.0115,
-          0.0121
+          0.0567
         ],
         "tris": 468
       },
@@ -146,25 +171,25 @@
         "min": [
           -0.0124,
           -0.1869,
-          -0.0507
+          -0.0217
         ],
         "max": [
           0.0124,
           -0.0736,
-          0.0217
+          0.0507
         ],
         "tris": 248
       },
       "UZI_BOLT_fired": {
         "min": [
-          -0.0129,
+          0.0124,
           0.0052,
-          0.0244
+          -0.0347
         ],
         "max": [
-          -0.0124,
+          0.0129,
           0.0205,
-          0.0347
+          -0.0244
         ],
         "tris": 44
       },
@@ -172,12 +197,12 @@
         "min": [
           -0.0057,
           0.032,
-          0.038
+          -0.0485
         ],
         "max": [
           0.0057,
           0.0434,
-          0.0485
+          -0.038
         ],
         "tris": 240
       }
