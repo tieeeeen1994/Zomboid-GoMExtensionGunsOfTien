@@ -6,7 +6,8 @@
     GoM models these stocks into the gun's body mesh, so there was nothing to take off. Now:
     - Part: each gun has a hidden integrated stock (part type StockIntegrated, like GoM's SPAS-12 stock, so the gun
       tooltip's row reads "Stock (Integrated): Stevens 555 Stock"), fitted at spawn through GoM's required parts. A gun
-      without one (spawned before this existed) has its full stock too. The recipe "Saw Off Shotgun Stock"
+      without one (spawned before this existed) gets it when its look is next applied (ApplyLook: re-applied, or
+      listed in a client's container). The recipe "Saw Off Shotgun Stock"
       (recipes_sawnstocks.txt: any saw, gun kept) fits the sawn-off twin instead; it is never removed, the fitted part
       is the whole state (saved and synced with the gun's parts).
     - Offcuts (user, 2026-10-19: "we should just introduce new items"): what is sawn away is kept, weighing what the gun
@@ -290,12 +291,28 @@ function SawnStock.NameFor(weapon)
     return getTextOrNull(key) or SawnStock.ENGLISH[key] or key
 end
 
---- Name and inventory icon for the gun's cuts. The icon goes in modData customInventoryIcon, which
---- InventoryItem.getTexture reads (Texture.getSharedTexture of it) before the item's own texture; modData is saved
---- and travels with the item, so a gun the server sawed shows it on every client, in any container.
+--- Fit the full integrated stock / barrel to a gun found before they existed (GoM's spawn table only gives them to
+--- guns made since), so the gun tooltip lists them ("Barrel (Integrated): Full Barrel"). They change no stat and no
+--- model; doChange false skips the part's stat sums and OnAttach.
+local function fitMissingParts(weapon, entry)
+    if entry.stock and not weapon:getWeaponPart(SawnStock.PART_TYPE) then
+        local part = instanceItem(entry.stock)
+        if part then weapon:attachWeaponPart(part, false) end
+    end
+    if entry.barrel and not weapon:getWeaponPart(SawnStock.BARREL_PART_TYPE) then
+        local part = instanceItem(entry.barrel)
+        if part then weapon:attachWeaponPart(part, false) end
+    end
+end
+
+--- Name and inventory icon for the gun's cuts, and its integrated parts if it lacks them. The icon goes in modData
+--- customInventoryIcon, which InventoryItem.getTexture reads (Texture.getSharedTexture of it) before the item's own
+--- texture; modData is saved and travels with the item, so a gun the server sawed shows it on every client, in any
+--- container.
 function SawnStock.ApplyLook(weapon)
     local entry = SawnStock.Entry(weapon)
     if not entry then return end
+    fitMissingParts(weapon, entry)
     local state = SawnStock.State(weapon)
     local icon = state and ("media/textures/item_GunsOfTien_" .. entry.gun .. "_" .. state .. ".png") or nil
     if icon or weapon:hasModData() then

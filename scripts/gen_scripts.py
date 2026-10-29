@@ -922,10 +922,14 @@ module Base {
         names[f'{MODULE}.{gun}_StockOffcut'] = f'{name} Stock Offcut'
         # GoM calls the Double Barrel's barrels "Double Barrel" and the others' "<gun> Barrel"
         names[f'{MODULE}.{gun}_BarrelOffcuts'] = f'{name} Offcuts' if gun == 'DOUBLEBARREL' else f'{name} Barrel Offcuts'
-    for suffix, label in (('Stock', 'Stock'), ('Stock_Sawnoff', 'Stock Sawnoff'), ('Barrel', 'Barrel'),
-                          ('Barrel_Sawnoff', 'Barrel Sawnoff'), ('StockOffcut', 'Stock Offcut'),
-                          ('BarrelOffcut', 'Barrel Offcut'), ('ForendOffcut', 'Forend Offcut')):
-        names[f'{MODULE}.MOSIN_{suffix}'] = f'Mosin-Nagant {label}'
+    # the integrated parts name their state in the gun tooltip's "Stock (Integrated)" / "Barrel (Integrated)" rows
+    # (user, 2026-10-30: "Full Barrel"); both rows are ours on the Mosin, while a shotgun's barrel row is GoM's part,
+    # so the shotguns' stocks keep GoM's style
+    for suffix, label in (('Stock', 'Full Stock'), ('Stock_Sawnoff', 'Sawn-Off Stock'), ('Barrel', 'Full Barrel'),
+                          ('Barrel_Sawnoff', 'Sawn-Off Barrel'), ('StockOffcut', 'Mosin-Nagant Stock Offcut'),
+                          ('BarrelOffcut', 'Mosin-Nagant Barrel Offcut'),
+                          ('ForendOffcut', 'Mosin-Nagant Forend Offcut')):
+        names[f'{MODULE}.MOSIN_{suffix}'] = label
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
     rec = json.load(open(rec_path))

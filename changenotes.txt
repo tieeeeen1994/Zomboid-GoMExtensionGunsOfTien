@@ -1,6 +1,9 @@
 Uzi
 - The full-size Uzi is now held one-handed like the Mini Uzi, Micro Uzi and Guns of Marz's MP5K, and reloads with the MP5K's animation. It is still carried on the back
 
+Mosin-Nagant
+- The gun's tooltip lists its barrel and stock as parts: "Barrel (Integrated): Full Barrel" or "Sawn-Off Barrel", "Stock (Integrated): Full Stock" or "Sawn-Off Stock". Mosins and sawn-off shotguns found before these parts existed get them when picked up, equipped or looked at in a container
+
 Fixes
 - Sawing off the Mosin-Nagant's barrel now works: the gun used to keep its full barrel while the offcuts were handed over. A Mosin sawn that way before already has its sawn-off barrel on the server and shows it after reconnecting
 - Sawn-off guns no longer show a name like "IGUI_GunsOfTien_MOSIN_SawnBoth" in containers on dedicated servers
