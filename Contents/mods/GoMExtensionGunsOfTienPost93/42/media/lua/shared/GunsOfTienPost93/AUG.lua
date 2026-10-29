@@ -9,7 +9,9 @@
       50-round extended box in GoM's 7.62x39mm family;
     - rate of fire by each gun's real one (A3 700, the A1's; Para 685 from 650-720; HBAR 680, the HBAR's), spread
       balanced on it (docs/post93_design.md, "Stats");
-    - the charging handle rides with the bolt (GoM's Bolt_Fired / Bolt_Lock swap), as on the A1;
+    - the bolt carrier in the ejection port moves on each shot and stays back when empty (GoM's Bolt_Fired /
+      Bolt_Lock swap, the A1's AUG_BOLT); the charging handle moves only while racked (the main mod's
+      ChargingHandle.lua), as on the A1;
     - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as the A1 (the main mod's GoMReloads.lua);
     - the folding grip: the A1's two parts and their stats (the main mod's AUG.lua), folded through the main mod's
       Foregrip.lua (the Para draws them with its own sand model);
@@ -35,6 +37,7 @@ local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local UniversalAttachment = require("WeaponSystems/Utils/UniversalAttachment")
 local Foregrip = require("GunsOfTien/Foregrip")
 local GoMReloads = require("GunsOfTien/GoMReloads")
+local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments", "UniversalAttachments" }) do
@@ -76,13 +79,14 @@ RateOfFire.RegisterWeapon(HBAR, { rpm = 680, enableSpread = true, sustainedSprea
 RateOfFire.RegisterSpreadPartModifier(BIPOD_DEPLOYED, { sustainedSpreadMult = 0.65, maxSpreadMult = 0.65 })
 
 -------------------------------------------------
--- The charging handle, GoM's FAMAS reload, the folding grip
+-- The bolt carrier, the charging handle (moved only while racked), GoM's FAMAS reload, the folding grip
 -------------------------------------------------
 for _, gun in ipairs(GUNS) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
         SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
         cycleTicks = 3,
     })
+    ChargingHandle.Register(gun)
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("famas_rifle"))
     Foregrip.Register(gun, {
         folded = GRIP_FOLDED,
@@ -158,7 +162,7 @@ if spawnTable then
         for _, list in ipairs({ mags, COMMON, extra }) do
             for _, e in ipairs(list) do optionals[#optionals + 1] = e end
         end
-        local req = { "MarzGuns.Bolt_Lock", GRIP_FOLDED, RAIL_UP, RAIL_RIGHT }
+        local req = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, GRIP_FOLDED, RAIL_UP, RAIL_RIGHT }
         for _, e in ipairs(required or {}) do req[#req + 1] = e end
         return { required = req, optionals = optionals }
     end

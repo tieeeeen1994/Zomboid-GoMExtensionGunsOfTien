@@ -1,11 +1,10 @@
-No more animations of our own
-- Every gun of this mod and Post-93 is now held and reloaded with Guns of Marz's own animations, those of the closest Guns of Marz gun: Uzi and UMPs like the MP5; Mini Uzi, Micro Uzi, MP7s and P90 like the MP5K; Five-seveN and UCP like Guns of Marz's pistols; all AUGs like the FAMAS; SCAR-L like the FNC; SCAR-H like the FAL; M249 like the M60
-- The short SMG stance and the bullpup stance are gone. The Uzi is held as a rifle again, and the Mini Uzi and MP7s are one-handed again, like the MP5K
-- Guns of Marz's MP5s, MP5K and FAMAS are back on Guns of Marz's own holds and reloads
-- No longer clashes with mods that change the character's animations, and the download is about 65 MB smaller
+Bolts and charging handles
+- Every gun's charging handle except the SCARs' now stays forward while firing and moves only when the gun is racked, as on the real guns (the SCAR's rides with its bolt carrier)
+- What moves on each shot, and stays back on an empty gun, is the bolt, seen through the ejection port: on the right of the Uzis, MP7s, UMPs and AUGs, under the P90 and the M249
+- The SCAR-L and SCAR-H are now held and reloaded like Guns of Marz's BAR, racked on the left where the SCAR's charging handle is
 
-Charging handles
-- The Uzis, MP7s, P90, UMPs and M249 now move their charging handle as Guns of Marz's guns do: back on each shot, held back when empty, and moving with the rack
-- Remodelled from photos: the MP7's T-handle, the P90's handles and their steel tracks, the slot in the Uzis' top cover, and the M249's handle as a separate part
+Attachment slots
+- The MP7s and P90 now hang the right way up on attachment slots added by other mods (such as Plysken Attachments Reborn's backpack slots), not only on the back slot; sawn-off shotguns likewise in modded holsters. New sandbox option, on by default: Upright Guns in Modded Attachment Slots
 
-Guns from older saves keep working; an M249 gets its handle back as soon as it is equipped. Servers need a restart to download the update.
+Fixes
+- No more error in the log when an NPC from a mod such as A-Life equips a gun

@@ -3,7 +3,7 @@
     blender -b --factory-startup -P scripts/post93/build_p90.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    P/models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx          P90TR_BODY, P90TR_BOLT
+    P/models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx          P90TR_BODY, P90TR_BOLT (the bolt under the gun), P90TR_HANDLE
     P/models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx  57x28Magazine50_P90
     P/models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx          P90_Suppressor, P90_Muzzle_Mount_Device
     P/textures/weapons/GunsOfTienPost93/<name>.png                  P90TR (256, body + bolt), one 128 texture per
@@ -65,7 +65,14 @@ RAIL_TOP_H = 181.0                 # top of the Picatinny teeth
 BOSS_L, BOSS_H = 83.0, 162.0       # side accessory boss on the rail block (both sides)
 BOSS_X = 28.0                      # its outer face
 MAG_L, MAG_H = 79.5, 118.5         # magazine origin: front end, bottom face, centred
-CH_TRAVEL = 60.0                   # charging handle pull
+CH_TRAVEL = 60.0                   # charging handle pull (only while racked: the handles do not reciprocate)
+# The ejection port under the gun behind the grip (the chute) and the bolt seen through it (user, 2026-10-30: the
+# handle and the bolt are not the same part): the port's front half is painted as the open chamber, its rear half as
+# the bolt's underside; P90TR_BOLT is a thin plate over the front half, flush with the frame's flat belly (H 0.9 from
+# L 254.8 to 300.2). Fired or held open it slides back over the rear half (build_mp7.py's port, 2026-10-30).
+PORT_L, PORT_X, BELLY_H = (262.0, 296.0), 8.0, 0.9
+PORT_SPLIT = (PORT_L[0] + PORT_L[1]) / 2.0
+CARRIER_TRAVEL = PORT_SPLIT - PORT_L[0] - 0.5
 
 W_FRAME, W_BAND, W_BUTT, W_METAL, W_MAG = 23.5, 25.0, 27.5, 25.5, 23.0   # half widths
 
@@ -172,15 +179,25 @@ def build_body():
     return b.to_object("P90TR_BODY")
 
 
-def build_bolt():
-    """The two charging handles, forward (bolt_lock); bolt_fired slides them back along the side tracks."""
+def build_carrier():
+    """The bolt's underside in the ejection port's front half (bolt_lock); bolt_fired slides it back over the port's
+    rear half. A plate 0.35 mm proud of the frame's belly, reaching 0.4 mm into it."""
+    b = kit.Builder()
+    box(b, PORT_L[0] + 0.5, PORT_SPLIT - 0.2, BELLY_H - 0.35, BELLY_H + 0.4, -(PORT_X - 0.5), PORT_X - 0.5,
+        mat="metal", bevel=0.1)
+    return b.to_object("P90TR_BOLT")
+
+
+def build_handle():
+    """The two charging handles, forward (handle); handle_back slides them back along the side tracks while racked
+    (they do not reciprocate when firing)."""
     b = kit.Builder()
     hole = circle(77.5, 103.5, 4.2, 8, 0.5)
     # out past the tracks (they end W_METAL + 1.5), which the handles slide back over
     both(lambda s: slab(b, HANDLE, [hole], half=2.5, bevel=0.8, res=0, mat="metal", x0=s * (W_METAL + 4.0)))
     both(lambda s: slab(b, HANDLE_TAB, half=2.0, bevel=0.8, res=0, mat="metal", x0=s * (W_METAL + 4.0)))
     both(lambda s: box(b, 72.0, 99.0, 101.0, 106.0, s * (W_METAL - 1.5), s * (W_METAL + 2.0), mat="metal"))
-    return b.to_object("P90TR_BOLT")
+    return b.to_object("P90TR_HANDLE")
 
 
 def build_magazine():
@@ -343,8 +360,15 @@ def paint(maps, kind):
         screw(col, L, H, up, 85.0, 99.0, r=2.2, cross=True)
         # Underside: ejection port behind the grip, a seam along the belly.
         under = n[..., 2] < -0.7
-        port = under & (L > 262) & (L < 296) & (np.abs(x) < 8.0)
-        col[port] = col[port] * 0.2 + 3
+        # the open chamber in the port's front half (P90TR_BOLT covers it while the bolt is forward), the bolt's
+        # grooved steel underside in the rear half
+        port = under & (L > PORT_L[0]) & (L < PORT_L[1]) & (np.abs(x) < PORT_X)
+        chamber = port & (L < PORT_SPLIT)
+        col[chamber] = col[chamber] * 0.2 + 3
+        carrier = port & ~chamber
+        col[carrier] = np.array(BASE["metal"]) * 1.45
+        col[carrier & (np.abs(np.abs(x) - 3.0) < 0.5)] *= 0.6
+        col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5
         # Trigger ribs, flash hider ports, knurled ring, the bore.
         trig = mat == MATS.index("dark")
         col[trig & (np.mod(L, 2.0) < 0.8)] += 9
@@ -361,6 +385,11 @@ def paint(maps, kind):
     elif kind == "bolt":
         hole_in = side & (np.hypot(L - 77.5, H - 103.5) < 5.0)
         col[hole_in] *= 0.8
+    elif kind == "carrier":
+        # the bolt's underside in the port: its front edge and the port's two grooves
+        face = (n[..., 2] < -0.7) & (H < BELLY_H - 0.2)
+        col[face & (np.abs(np.abs(x) - 3.0) < 0.5)] *= 0.6
+        col[face & (L < PORT_L[0] + 2.0)] *= 0.55
     elif kind == "mag":
         smoke = mat == MATS.index("smoke")
         cap = mat == MATS.index("magcap")
@@ -455,7 +484,8 @@ def points(bounds):
         "light_left": {"offset": [round(side - 0.0055 + 0.0062, 4), round(by * K, 4), round(bz * K, 4)]},
         "laser_right": {"offset": [round(-(side - 0.0055 + 0.0073), 4), round(by * K, 4), round(bz * K - 0.0008, 4)]},
         "canon": {"offset": g(CANON_L, BORE_H), "rotate": [0.0, 0.0, 0.0]},          # round parts: GoM leaves 0
-        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
+        "bolt_fired": {"offset": [0.0, round(-CARRIER_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
+        "handle_back": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
     pts = kit.handgun_points(pts)
     pts["_notes"] = {
@@ -471,8 +501,10 @@ def points(bounds):
         "canon": "receiver front face where the barrel collar starts; P90_Muzzle_Mount_Device and P90_Suppressor "
                  "have their origin there and extend along +Y over the flash hider",
         "rail_left/right": "the accessory bosses on the sides of the rail block",
-        "bolt_fired": "charging handles pulled back 60 mm real (P90TR_BOLT is modelled forward); they do not "
-                      "reciprocate when firing",
+        "bolt_fired": "P90TR_BOLT (the bolt in the ejection port under the gun) back %.1f mm real: each shot and "
+                      "while the gun is empty (GoM's Bolt_Fired)" % CARRIER_TRAVEL,
+        "handle_back": "P90TR_HANDLE (both charging handles) pulled back %.0f mm real, only while racked; they do not "
+                       "reciprocate when firing" % CH_TRAVEL,
     }
     pts["_extras"] = {
         "ejection_port_upright": g(279.0, 1.0),
@@ -495,28 +527,32 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, bolt = build_body(), build_bolt()
+    body, bolt, handle = build_body(), build_carrier(), build_handle()
     mag = build_magazine()
     supp, mount = build_suppressor(), build_mount()
 
-    kit.unwrap([body, bolt], 0.006)
+    kit.unwrap([body, bolt, handle], 0.006)
     for o in (mag, supp, mount):
         kit.unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
-    texture([body, bolt], [[body, bolt], [body, bolt]], ["gun", "bolt"], 256, os.path.join(TEX_DIR, "P90TR.png"))
+    # the bolt is baked with the body only (it moves, so the handles' shadow would not stay on it)
+    texture([body, bolt, handle], [[body, handle], [body, bolt], [body, handle]], ["gun", "carrier", "bolt"], 256,
+            os.path.join(TEX_DIR, "P90TR.png"))
     texture([mag], [[mag]], ["mag"], 128, os.path.join(TEX_DIR, "57x28Magazine50_P90.png"))
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "P90_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "P90_Muzzle_Mount_Device.png"))
 
-    for o in (body, bolt):                              # held like a pistol: turned 180 degrees about the bore axis
+    for o in (body, bolt, handle):                      # held like a pistol: turned 180 degrees about the bore axis
         o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
-    bounds = {o.name: kit.bounds_of(o) for o in (body, bolt, mag, supp, mount)}
+    bounds = {o.name: kit.bounds_of(o) for o in (body, bolt, handle, mag, supp, mount)}
+    bounds["P90TR_BOLT_fired"] = kit.bounds_of(bolt, (0, -CARRIER_TRAVEL * K, 0))
+    bounds["P90TR_HANDLE_back"] = kit.bounds_of(handle, (0, -CH_TRAVEL * K, 0))
     with open(POINTS_JSON, "w") as fh:
         json.dump(points(bounds), fh, indent=2)
         fh.write("\n")
 
-    kit.export([body, bolt], FBX_GUN)
+    kit.export([body, bolt, handle], FBX_GUN)
     kit.export([mag], FBX_MAGS)
     kit.export([supp, mount], FBX_PARTS)
     for name, b in bounds.items():

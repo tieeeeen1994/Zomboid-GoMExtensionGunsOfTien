@@ -10,8 +10,9 @@
       the Micro wilder than its MAC-10 (1000, 0.2 / 2.0); select fire Auto / Single;
     - stocks: the Uzi's folding metal stock with GoM's MP5 stock stats, the Mini's and Micro's side-folding stock with
       its MAC-10's (Gunworks' FoldingStock, parts in items_uzi.txt), each folded on a found gun as GoM's;
-    - the top cocking knob animated as GoM animates its MP5K / MAC-10 (its Bolt_Lock / Bolt_Fired swap: back along
-      its top cover slot on each shot, on an empty gun and with the rack);
+    - the bolt seen through the ejection port on the right moves as GoM animates its MP5K / MAC-10 (its Bolt_Lock /
+      Bolt_Fired swap: back on each shot and on an empty gun); IMI's top cocking knob does not reciprocate, so it
+      slides back along its top cover slot only while racked (ChargingHandle.lua; user, 2026-10-30);
     - reload: GoM's own animations (GoMReloads.lua), the Uzi its MP5's, the Mini and Micro its MP5K's ("handgun2");
     - AWC's Mk9 on its 9x19mm SMG mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
       can's stats and rule, the parts' MountOn and the guns' ModelWeaponPart lines are in their scripts);
@@ -27,6 +28,7 @@ local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
+local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
     "PermanentAttachments" }) do
@@ -61,13 +63,15 @@ RateOfFire.RegisterWeapon(MINIUZI, { rpm = 950, enableSpread = true, sustainedSp
 RateOfFire.RegisterWeapon(MICROUZI, { rpm = 1200, enableSpread = true, sustainedSpread = 0.25, maxSpread = 2.8 })
 
 -------------------------------------------------
--- The cocking knob: GoM's bolt swap (its AnimationsFiring.lua "Bolt")
+-- The bolt in the ejection port: GoM's bolt swap (its AnimationsFiring.lua "Bolt"); the cocking knob, back only while
+-- racked
 -------------------------------------------------
 for _, gun in ipairs(GUNS) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
         SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
         cycleTicks = 3,
     })
+    ChargingHandle.Register(gun)
 end
 
 -------------------------------------------------
@@ -131,7 +135,7 @@ if spawnTable then
         for _, e in ipairs(mags) do optionals[#optionals + 1] = e end
         optionals[#optionals + 1] = M .. "SMG9_Muzzle_Mount_Device:5"
         return {
-            required = { "MarzGuns.Bolt_Lock", gun .. "_Integrated_Stock_Folded" },
+            required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, gun .. "_Integrated_Stock_Folded" },
             optionals = optionals,
         }
     end

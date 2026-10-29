@@ -52,7 +52,8 @@ def gun_objs(gun):
     up = {"offset": [0.0, 0.0, 0.0], "rotate": [0.0, 180.0 if handgun else 0.0, 0.0]}
     stock = (A.load_game(fbx(gun), "UZI_STOCK_FOLDED") if gun == "UZI"
              else A.attach(A.load_game(fbx(gun), gun + "_STOCK"), p["stock_folded"]))
-    objs = [(A.load_game(fbx(gun), gun + "_BODY"), 0), (A.load_game(fbx(gun), gun + "_BOLT"), 0), (stock, 0),
+    objs = [(A.load_game(fbx(gun), gun + "_BODY"), 0), (A.load_game(fbx(gun), gun + "_BOLT"), 0),
+            (A.load_game(fbx(gun), gun + "_HANDLE"), 0), (stock, 0),
             (A.attach(A.load_game(FBX_MAGS, GUN_MAG[gun]), p["magazine"]), 1)]
     objs = [(A.attach(t, up), i) for t, i in objs]
     return objs, [A.img(os.path.join(TEX, gun + ".png")), A.img(os.path.join(TEX, GUN_MAG[gun] + ".png"))]

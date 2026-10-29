@@ -76,6 +76,13 @@ COVER_OPEN = -70.0                 # the feed cover swung up about its hinge (ro
 PIVOT = (255.0, 266.0, 11.0)       # bipod leg pivots: L, H, |x|
 W_RECV, W_COVER, W_TRIG, W_GRIP, W_STOCK, W_HG, W_SHIELD = 27.0, 28.0, 15.0, 15.0, 20.0, 30.0, 22.0
 COCKING_TRAVEL = 110.0             # the cocking handle's pull: from the slot's front (L 494) to its rear (L 640)
+# The ejection port under the receiver's right side and the bolt seen through it (user, 2026-10-30: FN's cocking
+# handle does not reciprocate, only the bolt moves): on the receiver's flat underside (H 274.5, L 482-582), its front
+# half painted as the open chamber, its rear half as the bolt's underside; M249_BOLT is a thin plate over the front
+# half, flush with the receiver. Fired or held open it slides back over the rear half (build_mp7.py's port).
+PORT_L, PORT_X, RECV_BOTTOM = (540.0, 580.0), (-24.0, -5.0), 274.5
+PORT_SPLIT = (PORT_L[0] + PORT_L[1]) / 2.0
+CARRIER_TRAVEL = PORT_SPLIT - PORT_L[0] - 0.5
 
 # the belt: centre (x, H) of each round on its way from the tray (1, inside the receiver, seen with the cover open) to
 # the box's mouth (9); the rounds lie along the bore, case heads at L 545
@@ -217,15 +224,24 @@ def build_body():
     return b.to_object("M249_BODY")
 
 
-def build_bolt():
-    """The cocking handle on the right, at the front of its slot (bolt_lock); bolt_fired is it pulled back
-    COCKING_TRAVEL, to the slot's rear (GoM's bolt swap, as on its M60; 2026-10-29: a node of its own, it was part of
-    the body)."""
+def build_carrier():
+    """The bolt's underside in the ejection port's front half (bolt_lock); bolt_fired slides it back over the port's
+    rear half (GoM's bolt swap, as on its M60). A plate 0.35 mm proud of the receiver's underside."""
+    b = kit.Builder()
+    box(b, PORT_L[0] + 0.5, PORT_SPLIT - 0.2, RECV_BOTTOM - 0.35, RECV_BOTTOM + 0.4, PORT_X[0] + 0.5, PORT_X[1] - 0.5,
+        mat="steel", bevel=0.1)
+    return b.to_object("M249_BOLT")
+
+
+def build_handle():
+    """The cocking handle on the right, at the front of its slot (handle); handle_back is it pulled back
+    COCKING_TRAVEL, to the slot's rear, only while racked: FN's handle does not reciprocate (2026-10-29 a node of its
+    own, it was part of the body; 2026-10-30 its own part, ChargingHandle.lua)."""
     b = kit.Builder()
     box(b, 494.0, 524.0, 303.0, 318.0, -W_RECV + 1.0, -W_RECV - 9.0, mat="steel", bevel=1.0)
     b.lathe("x", (-W_RECV - 9.0, *P(506.0, 311.0)), [(0.0, 0.0), (0.0, 7.0), (-10.0, 7.0), (-11.0, 5.5),
                                                      (-11.0, 0.0)], seg=12, mat="dark")
-    return b.to_object("M249_BOLT")
+    return b.to_object("M249_HANDLE")
 
 
 def build_cover():
@@ -347,7 +363,16 @@ def paint(maps, kind):
         # under the right side
         col[recv & left & rounded_rect(L, H, 494.0, 556.0, 312.0, 342.0, 2.0)] = 12
         col[recv & right & rounded_rect(L, H, 494.0, 640.0, 304.0, 310.0, 2.5)] = 12
-        col[steel & (n[..., 2] < -0.7) & (x < -4.0) & (x > -W_RECV + 2.0) & (L > 548.0) & (L < 600.0)] = 10
+        # the port: the open chamber in its front half (M249_BOLT covers it while the bolt is forward), the bolt's
+        # grooved steel underside in the rear half
+        port = (steel & (n[..., 2] < -0.7) & (x > PORT_X[0]) & (x < PORT_X[1]) & (L > PORT_L[0]) & (L < PORT_L[1])
+                & (H < RECV_BOTTOM + 0.6))
+        chamber = port & (L < PORT_SPLIT)
+        col[chamber] = 10
+        carrier = port & ~chamber
+        col[carrier] = np.array(BASE["steel"]) * 1.45
+        col[carrier & ((np.abs(x + 11.0) < 0.5) | (np.abs(x + 18.0) < 0.5))] *= 0.6
+        col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5
         # rivets and pins along the receiver, the stamped markings on its left
         for cL in (500.0, 560.0, 620.0, 680.0, 740.0, 772.0):
             pin(col, L, H, recv, cL, 280.0)
@@ -378,6 +403,12 @@ def paint(maps, kind):
         col[metal & (L > 5.0) & (L < 26.0) & (r > 9.4) & (np.abs(ang - 0.5) < 0.13)] = 8
         col[metal & (r < 4.6) & (L < 6.5)] = 6
         col[steel & (np.abs(x) < 6.5) & (L > 189.0) & (L < 216.0) & (H > 362.0)] *= 0.8
+    elif kind == "carrier":
+        # the bolt's underside in the port: its front edge and the port's two grooves
+        L = L0 - y
+        face = (n[..., 2] < -0.7) & (z + H0 < RECV_BOTTOM - 0.2)
+        col[face & ((np.abs(x + 11.0) < 0.5) | (np.abs(x + 18.0) < 0.5))] *= 0.6
+        col[face & (L < PORT_L[0] + 2.0)] *= 0.55
     elif kind == "cover":
         L, H = HINGE[0] - y, z + HINGE[1]
         cov = steel & side & (np.abs(x) > W_COVER - 0.6)
@@ -440,7 +471,8 @@ def points(bounds):
         "magazine": {"offset": gp(MAG_LIPS[0], MAG_LIPS[1], MAG_LIPS[2]), "rotate": [0.0, MAG_TILT, 0.0]},
         "box": {"offset": gp(BOX_TOP[0], BOX_TOP[1], BOX_TOP[2]), "rotate": ZERO},
         "belt": {"offset": ZERO, "rotate": ZERO},
-        "bolt_fired": {"offset": [0.0, round(-COCKING_TRAVEL * K, 4), 0.0], "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-CARRIER_TRAVEL * K, 4), 0.0], "rotate": ZERO},
+        "handle_back": {"offset": [0.0, round(-COCKING_TRAVEL * K, 4), 0.0], "rotate": ZERO},
         "cover": {"offset": hinge, "rotate": ZERO},
         "cover_open": {"offset": hinge, "rotate": [COVER_OPEN, 0.0, 0.0]},
         "integrated_bipod": {"offset": ZERO, "rotate": ZERO},
@@ -453,8 +485,10 @@ def points(bounds):
         "box": "556x45Box200_M249, origin at the middle of its top",
         "belt": "556x45_M249_1..9 are modelled in the gun's space (GoM's M60 way)",
         "cover": "M249_COVER, origin at its hinge; cover_open swings it up %g degrees" % -COVER_OPEN,
-        "bolt_fired": "M249_BOLT (the cocking handle, modelled forward) pulled back %.0f mm real to its slot's rear"
-                      % COCKING_TRAVEL,
+        "bolt_fired": "M249_BOLT (the bolt in the ejection port under the receiver) back %.1f mm real: each shot "
+                      "and while the gun is empty (GoM's Bolt_Fired)" % CARRIER_TRAVEL,
+        "handle_back": "M249_HANDLE (the cocking handle, modelled forward) pulled back %.0f mm real to its slot's "
+                       "rear, only while racked; FN's handle does not reciprocate" % COCKING_TRAVEL,
         "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space",
     }
     # hand targets for the reload clips (game units, gun space)
@@ -482,21 +516,24 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, cover, bolt = build_body(), build_cover(), build_bolt()
+    body, cover, bolt, handle = build_body(), build_cover(), build_carrier(), build_handle()
     bip_f, bip_d = build_bipod(False), build_bipod(True)
     bx = build_box()
     rounds = [build_round(i + 1, x, H) for i, (x, H) in enumerate(BELT)]
-    gun = [body, cover, bip_f, bip_d, bolt]
+    gun = [body, cover, bip_f, bip_d, bolt, handle]
     kit.unwrap(gun, 0.004)
     kit.unwrap([bx] + rounds, 0.008)
 
     os.makedirs(TEX_DIR, exist_ok=True)
-    texture(gun, [[o] for o in gun], ["body", "cover", "bipod", "bipod", "bolt"], 256, os.path.join(TEX_DIR, "M249.png"))
+    texture(gun, [[o] for o in gun], ["body", "cover", "bipod", "bipod", "carrier", "bolt"], 256,
+            os.path.join(TEX_DIR, "M249.png"))
     texture([bx] + rounds, [[o] for o in [bx] + rounds], ["box"] + ["round"] * len(rounds), 128,
             os.path.join(TEX_DIR, "556x45Box200_M249.png"))
 
     bounds = {o.name: kit.bounds_of(o) for o in gun + [bx] + rounds}
     pts = points(bounds)
+    bounds["M249_BOLT_fired"] = kit.bounds_of(bolt, (0, -CARRIER_TRAVEL * K, 0))
+    bounds["M249_HANDLE_back"] = kit.bounds_of(handle, (0, -COCKING_TRAVEL * K, 0))
     bounds["M249_COVER_closed"] = kit.bounds_at(cover, pts["cover"])
     bounds["M249_COVER_open"] = kit.bounds_at(cover, pts["cover_open"])
     bounds["556x45Box200_M249_fitted"] = kit.bounds_at(bx, pts["box"])

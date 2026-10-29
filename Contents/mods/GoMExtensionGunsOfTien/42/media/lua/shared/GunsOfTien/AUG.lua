@@ -7,7 +7,9 @@
       5.56x45mm family (its 5.56 loads and .223);
     - 700 rpm (Steyr gives 680-750), steadier than GoM's FAMAS (1000) and FNC (750) between them, select fire Auto /
       Single (the A1's two-stage trigger);
-    - the charging handle on the left rides with the bolt carrier: GoM's Bolt_Lock / Bolt_Fired swap moves it;
+    - the bolt carrier in the ejection port moves on each shot and stays back when empty (GoM's Bolt_Lock /
+      Bolt_Fired swap); the charging handle on the left does not reciprocate and moves only while racked
+      (ChargingHandle.lua);
     - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as its FAMAS (GoMReloads.lua);
     - the integral 1.5x scope, a hidden part with no model, below GoM's 2x Elcan: Aiming Time x1.05, Hit and Crit
       Chance x1.05, sight range x1.15;
@@ -24,6 +26,7 @@ local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Foregrip = require("GunsOfTien/Foregrip")
+local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "AnimationsFiring", "AttachmentCustomStats",
     "PermanentAttachments" }) do
@@ -51,12 +54,13 @@ RateOfFire.RegisterWeapon(AUG, { rpm = 700, enableSpread = true, sustainedSpread
 RateOfFire.RegisterSpreadPartModifier(DEPLOYED, { sustainedSpreadMult = 0.85, maxSpreadMult = 0.85 })
 
 -------------------------------------------------
--- The charging handle rides with the bolt (GoM's rifles' bolt swap)
+-- The bolt carrier (GoM's rifles' bolt swap) and the charging handle, which moves only while racked
 -------------------------------------------------
 Animations.RegisterWeaponWithAnimatedParts(AUG, {
     SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
     cycleTicks = 3,
 })
+ChargingHandle.Register(AUG)
 
 -------------------------------------------------
 -- Reload: GoM's FAMAS reload
@@ -102,7 +106,7 @@ local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
     spawnTable[AUG] = {
-        required = { "MarzGuns.Bolt_Lock", SCOPE, FOLDED },
+        required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, SCOPE, FOLDED },
         optionals = { MAGS[1] .. ":30", MAGS[2] .. ":5" },
     }
 end

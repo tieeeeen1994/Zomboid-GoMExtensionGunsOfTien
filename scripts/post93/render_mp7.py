@@ -122,6 +122,7 @@ def main():
             else:
                 bpy.data.objects.remove(ob)
     body, bolt, stock, fgrip = gun["MP7A1_BODY"], gun["MP7A1_BOLT"], gun["MP7A1_STOCK"], gun["MP7A1_FOREGRIP"]
+    handle = gun["MP7A1_HANDLE"]
     body2 = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx"),
                  os.path.join(TEX, "MP7A2.png"))["MP7A2_BODY"]
     stub = load(os.path.join(GOM, "models_X/weapons/parts/foregrips.fbx"),
@@ -148,11 +149,13 @@ def main():
     q34 = (-0.75, -0.55, -0.42)           # 3/4 front left, from above
     top = (0, 0, -1)
 
-    def gun_state(stock_in, mag, supp_on, grip_down=False, a2=False, vgrip=False):
+    def gun_state(stock_in, mag, supp_on, grip_down=False, a2=False, vgrip=False, fired=False, racked=False):
+        """fired: the bolt carrier back (each shot, held open when empty); racked: the handle back as well."""
         place(body2 if a2 else body)
-        place(bolt)
+        place(bolt, POINTS["bolt_fired"] if fired or racked else None)
+        place(handle, POINTS["handle_back"] if racked else None)
         place(stock, POINTS["stock_folded"] if stock_in else None)
-        objs = [body2 if a2 else body, bolt, stock]
+        objs = [body2 if a2 else body, bolt, handle, stock]
         if a2:
             if vgrip:                                     # GoM's Stub Foregrip on the A2's bottom rail
                 place(stub, POINTS_A2["foregrip"])
@@ -176,6 +179,13 @@ def main():
     render("side_in", side, c_in, 0.42, 900, 600)
     render("right_in", right, c_in, 0.42, 900, 600)
     render("top_in", top, (0, 0.06, 0), 0.42, 900, 300)
+    # the bolt carrier in the ejection port (closed / fired or held open) and the handle (back only while racked)
+    port = (0, round((289.0 - 221.0) * 0.000603, 4), round((145.5 - 91.5) * 0.000603, 4))   # shown upright (UPRIGHT)
+    for name, state in (("closed", {}), ("fired", {"fired": True}), ("racked", {"racked": True})):
+        gun_state(True, 30, False, **state)
+        render("port_%s_right" % name, right, port, 0.1, 600, 400)
+        render("port_%s_left" % name, side, port, 0.1, 600, 400)
+        render("%s_q34" % name, q34, c_in, 0.42, 900, 600)
     gun_state(False, 40, False, grip_down=True)
     render("side_out", side, c_out, 0.62, 1200, 600)
     render("q34_out", q34, c_out, 0.62, 1200, 600)

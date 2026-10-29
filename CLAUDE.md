@@ -38,9 +38,19 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
 
 - Per gun, the closest GoM gun: Uzi (rifle, two-handed) "MP5"; Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR (one-handed,
   pistol clips) "handgun2" (GoM's MP5K / TEC-9); Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
-  "famas_rifle"; SCAR-L "fnc_rifle" (rifle magazine change, side charging handle; GoM's M4A1 has "ar15_rifle", the
-  rear T-handle); SCAR-H "fal_rifle"; UMP45 / UMP9 "MP5"; M249 "m60_lmg" (its feed cover stays shut; `partState.ensure`
-  shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own registrations again.
+  "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
+  left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 "MP5"; M249 "m60_lmg" (its feed cover stays
+  shut; `partState.ensure` shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own
+  registrations again.
+- **Which side GoM's racks reach** (measured 2026-10-30: the left hand's knuckles in the Prop1 bone's frame, imported
+  from GoM's `anims_X/Bob/*.glb` in Blender; each file stashes many actions, sample the one named after the file;
+  gun axes from the aimed clips, where the gun is upright: right = Prop1 -x, up = +y, muzzle = +z): left side =
+  `Ithaca_Reload_Rifle_Rack` + `Ithaca_IdleAimRifle_RackFAL` ("fal_rifle"), `Bob_Reload_FAL_Rack` / `_RackAim`
+  ("left_handle_load"); right side, the hand over the top = `Ithaca_Reload_AK_Rack` + `Ithaca_IdleAimRifle_RackLeft`
+  ("fnc_rifle", "ak_rifle"; the name means the left hand). Both SCARs have their handle on the left (`*_BOLT` at +X,
+  the game's left), so the SCAR-L moved off "fnc_rifle" and the SCAR-H off "fal_rifle" (user, 2026-10-30). Only
+  GoM's animIds, never our own nodes. Marz Mods Animsets for Linux has no `*rifleleft*` copies, so this reload is
+  GoM's current one whatever the load order.
 - Model orientation decides the hold: a gun modelled for the pistol clips (GoM's MP5K / MAC-10 way: the Mini and Micro
   Uzi, MP7s, P90, pistols) must be one-handed (no `TwoHandWeapon`: `WeaponType.getWeaponType` gives "firearm", the rifle
   clips, to a two-handed gun in both hands, which would draw it upside down); a rifle-held one must be modelled upright.
@@ -64,6 +74,43 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   ours from six angles: the MP7's T-handle (stem under the rail end, crossbar, ribbed wing tabs; was one 40 mm
   block), the P90's tab behind its ring and the tracks. The Uzi knobs were already where IMI's are (measured: 75 /
   66 / 81 % from rear to front sight), the UMP's at the front of its slot high on the left.
+- **The charging handle and the bolt are not always the same part** (user, 2026-10-30): on the **MP7** and the
+  **AUG** (then, user: "update all guns ... in GoT", **every gun of both mods but the SCARs**) the handle stays forward
+  while the gun fires; only the bolt carrier inside moves (seen through the ejection
+  port) and locks back after the last round. So drawing their handle at `bolt_fired` on every shot and while empty is
+  wrong for them; the handle should move only when racked. AUG (Wikipedia "Steyr AUG", read 2026-10-30): a
+  non-reciprocating plastic cocking handle in a slot on the left of the receiver, joined to the carrier's left guide
+  rod (with a forward assist); the right guide rod is the action rod that carries the gas piston's push; a hold-open
+  locks the carrier back after the last round (A3: a bolt release button; earlier AUGs were racked to release it). MP7
+  (Wikipedia: short-stroke gas piston as the G36 / HK416, rotating bolt, ambidextrous bolt catch lever; the rest from
+  general knowledge, no H&K manual found): an AR-15 style T-handle at the rear top, squeezed to unlatch, pulled back to
+  charge, non-reciprocating; ejection port on the right. The others (searched 2026-10-30): the **Uzi**'s top-cover
+  knob is non-reciprocating (Wikipedia "Uzi": the cover and handle spring forward once the bolt is caught; open
+  bolt); the **UMP** is closed bolt and locks open after the last round, release catch on the left (Wikipedia; its
+  H&K-style left handle as non-reciprocating from general knowledge); the **P90** is straight blowback, closed bolt,
+  handles on both sides, cases down a chute behind the grip (Wikipedia; non-reciprocating handles from general
+  knowledge); the **M249** fires from an open bolt (Wikipedia), FN's civilian M249S lists a non-reciprocating
+  handle. The SCAR's handle reciprocates (left as GoM's swap). GoM's own MP5 family (our models, GoM's guns and
+  registrations) stays as GoM animates it (user, 2026-10-30: "GoM does it correctly"). Open-bolt guns (Uzis, M249) keep Gunworks' states
+  (bolt back after each shot and on an empty gun), not the real rest-open bolt.
+  **Built 2026-10-30** (user: "i want them fixed"): GoM's Bolt part now draws the **bolt / carrier** (`<gun>_BOLT`:
+  a thin plate over the ejection port's front half, flush with the receiver / stock; `bolt_fired` = half the port,
+  real mm: MP7 24.5, AUG 17, Uzi 25.5, Mini 28, Micro 19.5, UMP 28.5, P90 16.5 (port under the gun, L 262-296), M249
+  19.5 (port moved onto the receiver's flat underside, L 540-580)), and the handle is a part of its own,
+  `GunsOfTien.ChargingHandle_Forward` / `_Back` (PartType ChargingHandle, `items_handles.txt` from gen_scripts.py
+  `charging_handles()`), drawn as `<gun>_HANDLE` (MP7A1, AUG, AUGPARA, UZI, MINIUZI, MICROUZI, UMP, P90TR, M249) at
+  the origin or `handle_back` (the old bolt travels: MP7 50, AUG 92, Uzi 80 / 65 / 50, UMP 70, P90 60, M249 110). The port's
+  front half is painted as the open chamber, its rear half as the carrier's grooved steel side, so the plate sliding
+  back shows the chamber and never stands outside the port (no cut in the meshes). Every AUG draws the A1's
+  `AUG_BOLT` (the A3 / Para / HBAR share the A1's stock and its `paint_body`). `shared/GunsOfTien/ChargingHandle.lua`
+  sets the handle back on the rack clip's `rackStart` and forward on `rackEnd` / complete / stop, before Gunworks'
+  own ISRackFirearm hooks, whose `CallAnimate` re-sends the parts; guns saved before get the forward part on equip or
+  at their first shot (wrapped `Animations.CallAnimationFunction`), found guns from the spawn tables. A separate part
+  is needed because the back slot (`AttachedModelNames`) and the floor (`ItemModelRenderer`) draw only the **first**
+  ModelWeaponPart line matching a part (`break`); in hand (`ModelManager.addWeaponPartModels`) every match is drawn.
+  Gunworks moves all registered parts together (one open / locked state for shots, empty and rack), so it cannot
+  move a part only while racked by itself. Review renders: render_mp7.py `port_*` / `*_q34`, render_aug.py
+  `AUG_port_*` / `AUG_handle_*`.
 - Kept for reference only, nothing of them ships on this branch: the sections below on the short SMG / compact SMG
   stance, the bullpup set and stance, "No clipping", the P90 and MP7A1 reloads. The build tooling they name
   (`scripts/anim/`, `scripts/post93/anim/`) and the `tmp/` build output were deleted from this branch (2026-10-29);
@@ -171,7 +218,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   user: "if GoM has it, use their option"): the Post-93 loot follows GoM's `MarzGuns.LootMultiplier` ("GoM Loot
   Multiplier"; it scales GoM's spawner placements, and Loot.lua scales our own entries by it). Removing
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
-  `RealisticPiercing`,
+  `RealisticPiercing`, `ModdedSlotsUpright` (default on, `client/GunsOfTien/SlotTurns.lua`, applies from the next
+  world load),
   `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never). `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
@@ -285,8 +333,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   `Bob_Reload_Rifle_Load`, no InsertMag). The game keys AnimSet files by lowercased path (`resolveFileOrGUID` →
   `activeFileMap`, last mod loaded wins, logged `mod "X" overrides media/animsets/...`), so on a server listing it
   after GunsOfMarz it replaces GoM's current nodes, GoM's own guns included. The SCAR-H had copies of GoM's FAL
-  nodes under an id of its own for that (2026-10-27); since 2026-10-29 it uses GoM's "fal_rifle" itself, so with that
-  mod after GunsOfMarz it gets the old FAL reload as GoM's FAL does.
+  nodes under an id of its own for that (2026-10-27); since 2026-10-30 it uses GoM's "left_handle_load" (BAR / AA-12),
+  which that mod has no copy of.
 - Descriptions (2026-10-24, as in ZomboidFixesB42): `README.md`, `forum.txt` (the pinned Discussions thread, one
   post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
   step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
@@ -297,9 +345,11 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
-  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`), `lua/server/GunsOfTien/HotBrass.lua` (no
-  loot: see "Loot: none"), `lua/client/GunsOfTien/Tooltips.lua`, `lua/shared/Translate/EN/` (ItemName, Recipes, Tooltip,
-  Sandbox), `textures/`.
+  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `ChargingHandle.lua`: the non-reciprocating
+  handles of the AUGs and MP7s, with `scripts/GunsOfTien/items_handles.txt`), `lua/server/GunsOfTien/HotBrass.lua` (no
+  loot: see "Loot: none"), `lua/client/GunsOfTien/Tooltips.lua`, `lua/client/GunsOfTien/SlotTurns.lua` (our guns'
+  turns on modded attachment slots, sandbox `ModdedSlotsUpright`), `lua/shared/Translate/EN/` (ItemName, Recipes,
+  Tooltip, Sandbox), `textures/`.
 - Post-93 `Contents/mods/GoMExtensionGunsOfTienPost93/42/media/`: `registries.lua`, `scripts/GunsOfTienPost93/`
   (ammo items / models / recipes / Ammo Maker placeholders; guns to come from `gen_post93_guns.py`),
   `lua/shared/GunsOfTienPost93/` (`Ammunition.lua`, `AmmoMaker.lua`, `Guns.lua`), `lua/server/GunsOfTienPost93/`
@@ -639,8 +689,14 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   `AnimatedModel$AnimatedModelInstanceRenderData.transformToParent`): parent bone · the body's attachment named by the
   location · the item model's attachment of that **same name** · mesh node transform; the item model is the weapon's
   `StaticModel`, else its `WeaponSprite` (`HandWeapon.getStaticModel`). So modded slots with their own location names
-  (Plysken Attachments Reborn's per-bag `<Bag>_rifle` points) get no turn and show the upside-down model; left to
-  Tien's Attachment Slots (user, 2026-10-15). An upright `StaticModel` would fix every slot but also changes the floor
+  (Plysken Attachments Reborn's per-bag `<Bag>_rifle` points) got no turn and showed the upside-down model. Since
+  2026-10-30 `client/GunsOfTien/SlotTurns.lua` adds them at run time (user: "make it dynamic"; sandbox
+  `ModdedSlotsUpright`, default on): points grouped by the
+  AttachmentType that reaches them in `ISHotbarAttachDefinition`; one of our model scripts with an attachment for one
+  point of a group gets a copy for each other point of it (MP7s / P90 `rifle_back` → every rifle slot, sawn-offs
+  `holster_right` → every holster slot; the Mini / Micro Uzi, Five-seveN, UCP have none, holster points being made
+  for upside-down pistols). `ModelInstance.getAttachmentById` reads the script live, so added attachments apply at once;
+  Tien's Attachment Positions clones them onto its `@ns` points. An upright `StaticModel` would fix every slot but also changes the floor
   model (`WorldItemAtlas` uses it for weapons).
 - Ejection port underneath L 262-296. Rails are cosmetic: optics / lights / lasers mount through the hidden
   `P90TR_Integrated_Rail_*` parts (Guns.lua), placed by `scope` / `rail_up` / `rail_*` / `light_left` / `laser_right`.
@@ -753,9 +809,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   take them on their integral bottom rail. GoM's M4A1 has no reload animation entry (Gunworks' default rifle reload);
   its FAL uses `animId = "fal_rifle"` ("FAL" before GoM's 2026-10-23 update; the SCAR-H kept the old id until
   2026-10-27, so its insert matched no node, played a hand raise and never seated the magazine), AA12 / BAR
-  `"left_handle_load"`. The SCAR-H now has its own copies of GoM's FAL nodes (`GunsOfTienSCARH`, AnimSets
-  `*GunsOfTienSCARH_GoT.xml`, GoM's clips), as an outdated Linux animsets mod can replace GoM's (see "No
-  `x_extends`"). GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
+  `"left_handle_load"`, which both SCARs use since 2026-10-30 (see "Which side GoM's racks reach"). GoM's STANAG magazines are one Gunworks magazine profile, "STANAG".
 - GoM's FAL magazine icon is blue-grey: the light fitted on it (gains up to 1.9 on blue) washed the tan SCAR-H
   magazines out, so their icons use that camera with the MP7's magazine light (fitted on GoM's MP5 magazine).
 - Not in the photos and drawn from FN's layout: the right side (ejection port, ambidextrous selector), the charging
@@ -1032,7 +1086,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   in the photo), the 42 55 mm longer. GoM's textures have no alpha, so the translucent smoke polymer is painted with the
   rounds inside (brass cases bullets forward, staggered, a dark line between rounds). Lips at photo L 577, H 90, 13 mm
   above the well's mouth.
-- `charging handle` = AUG_BOLT on the left, `bolt_fired` 92 mm back (the A1's handle rides with the bolt carrier).
+- `charging handle` = AUG_BOLT on the left, `bolt_fired` 92 mm back. Wrong: the AUG's handle is non-reciprocating and stays forward when firing (see "The charging handle and the bolt are not always the same part").
 - Hold and reload: the bullpup set, shared with GoM's FAMAS (section "Bullpup set" below). Before it the AUG borrowed
   GoM's FAMAS reload clips, and vanilla's rifle hold put its left palm (0.218 ahead of the grip) on the bare barrel
   9 cm behind the flash hider, 4 cm under it (hold_preview.py `aug`).
@@ -2173,6 +2227,30 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   (`NeedToBeLearn = False` everywhere), and each new type keeps its calibre's casing, so the casing gate applies.
 
 ## Combat mechanics that matter here (42.21 Java, traced 2026-10-14; decompiles in the session scratchpad)
+
+- **Bullet tracers beside the crosshair: Gunworks' spread puts automatic fire on the barrel line** (user,
+  2026-10-30: "the bullet flies left of the crosshair", pistol-held guns most, rifles slightly; zombies on the
+  crosshair are still hit). Cosmetic, left alone. `CombatManager.fireWeapon` (~3562) has two paths. A gun with
+  `isRangeFalloff()` (script `RangeFalloff`, GoM's shotguns) gets its projectiles from the native
+  `getSpreadData`, laid along the **barrel** direction (the `muzzle` point's forward through the hand bone), and each
+  tracer ends on one of them. Any other gun: a hit draws to the hit point; a miss runs along
+  `getLookAngleRadians()` (character centre to the reticle), or, when `LosUtil.getFirstBlockingIsoGridSquare` finds
+  something solid within range, ends on the barrel line at the blocking point. Both lines start at
+  `BallisticsController.getMuzzlePosition()`: the muzzle point slid back along the barrel to the plane through the
+  character, so it keeps the muzzle's sideways place in the stance. Gunworks' `RateOfFire.applySpreadOnShot` calls
+  `setRangeFalloff(true)` on the first shot of every gun with a spread profile (its automatic fire), so those
+  tracers follow the barrel line. Measured in game (`-debug` + debug option `Character.Debug.Render.AimVector`,
+  which draws that line from `BallisticsController.renderlast`): on the Glock 17, M92FS and MP7 the line runs
+  **parallel** to the aim, shifted left by the same amount near and far, so it is the stance's sideways muzzle
+  offset, not an angle; the Glock's and M92FS's single shots go to the crosshair (look path), the MP7's automatic
+  fire follows the line. A turned `muzzle` point cannot fix a parallel shift (and the point's roll changes nothing:
+  the forward axis (0, 0, 1) of rotateXYZ(-90, 0, z) is the same for any z; tried in game, no change); moving the
+  point sideways would take the flash off the barrel; moving the gun means animations. Ruled out on the way: the
+  look angle (logged: within 0.2 degrees of the mouse), Gunworks' per-shot part swap / re-equip, the per-round
+  tracer settings (`media/effects/bullet_tracer_effect_<ammo id>.txt`, read only from the game's own media folder:
+  rounds without a file, GoM's, Gunworks' and ours, get the engine defaults, a heavier line), the mesh transforms
+  (identity, measured with the engine's importer through an ECJ harness; the mesh never enters the muzzle maths),
+  JOML's axis-angle extraction (normalises, exact away from 180 degrees).
 
 - **Piercing** (`CombatManager.calculateHitInfoList` ~2296-2396): candidates within MaxRange, within 2.75 tiles of the
   aim line, in line of sight, and listed by the native ballistics code; nearest first; the loop stops at

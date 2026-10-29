@@ -120,12 +120,14 @@ def main():
     # every A3-receiver gun draws the A3's short left rail
     rail = own.get("AUG_RAIL_LEFT") or load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_AUGA3.fbx"),
                                             os.path.join(TEX, "AUGA3.png"), keep=["AUG_RAIL_LEFT"])["AUG_RAIL_LEFT"]
-    if NAME + "_BOLT" in own:                            # the Para's own sand copies
-        bolt, fg = own[NAME + "_BOLT"], own[NAME + "_FOREGRIP"]
+    # every AUG draws the A1's bolt carrier; the Para its own sand handle and grip, the others the A1's
+    a1 = load(os.path.join(MAIN, "models_X/weapons/firearms/GunsOfTien_AUG.fbx"),
+              os.path.join(MAIN_TEX, "AUG.png"), keep=["AUG_BOLT", "AUG_HANDLE", "AUG_FOREGRIP"])
+    bolt = a1["AUG_BOLT"]
+    if NAME + "_HANDLE" in own:                          # the Para's own sand copies
+        handle, fg = own[NAME + "_HANDLE"], own[NAME + "_FOREGRIP"]
     else:
-        a1 = load(os.path.join(MAIN, "models_X/weapons/firearms/GunsOfTien_AUG.fbx"),
-                  os.path.join(MAIN_TEX, "AUG.png"), keep=["AUG_BOLT", "AUG_FOREGRIP"])
-        bolt, fg = a1["AUG_BOLT"], a1["AUG_FOREGRIP"]
+        handle, fg = a1["AUG_HANDLE"], a1["AUG_FOREGRIP"]
     own_mags = {"para": ("9x19Magazine%d_AUG", (25, 32)), "hbar": ("762x39Magazine%d_AUG", (30, 50))}
     if GUN in own_mags:
         fmt, counts = own_mags[GUN]
@@ -163,11 +165,13 @@ def main():
                   "hbar": (None, None)}.get(GUN, ("Muzzle_Mount_Device", "MKI_Suppressor"))
     bipods = {k: own.get("AUGHBAR_BIPOD_" + k.upper()) for k in ("folded", "deployed")}
 
-    def state(folded=False, fired=False, with_mag=True, dressed=(), bipod="folded"):
+    def state(folded=False, fired=False, with_mag=True, dressed=(), bipod="folded", racked=False):
+        """fired: the bolt carrier back (each shot, held open when empty); racked: the handle back as well."""
         place(body)
-        place(bolt, PTS["bolt_fired"] if fired else None)
+        place(bolt, PTS["bolt_fired"] if fired or racked else None)
+        place(handle, PTS["handle_back"] if racked else None)
         place(fg, PTS["foregrip_folded" if folded else "foregrip_deployed"])
-        shown = [body, bolt, fg]
+        shown = [body, bolt, handle, fg]
         if bipods[bipod] is not None:
             place(bipods[bipod], PTS["integrated_bipod"])
             shown.append(bipods[bipod])
@@ -229,11 +233,11 @@ def main():
         state(folded=True)
         place(mag)
         place(m, PTS["magazine"])
-        show_only([body, bolt, fg, m])
+        show_only([body, bolt, handle, fg, m])
         render(NAME + "_mag%d_left" % r, left, centre, span, w, int(h * 1.2))
         if bipods["deployed"] is not None:               # standing on its legs with this magazine
             place(bipods["deployed"], PTS["integrated_bipod"])
-            show_only([body, bolt, fg, m, bipods["deployed"]])
+            show_only([body, bolt, handle, fg, m, bipods["deployed"]])
             render(NAME + "_mag%d_bipod_left" % r, left, centre, span, w, int(h * 1.3))
             render(NAME + "_mag%d_bipod_q_left" % r, q_left, centre, span, w, int(h * 1.4))
         place(m)

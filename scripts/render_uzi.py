@@ -118,12 +118,13 @@ def main():
         L0, H0 = p["_extras"]["photo_origin_mm"]
         objs = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_%s.fbx" % kind),
                     os.path.join(TEX, kind + ".png"))
-        body, bolt = objs[kind + "_BODY"], objs[kind + "_BOLT"]
+        body, bolt, handle = objs[kind + "_BODY"], objs[kind + "_BOLT"], objs[kind + "_HANDLE"]
 
         def state(folded, magname=mag, can=False):
             place(body, None, hg)
             place(bolt, None, hg)
-            shown = [body, bolt]
+            place(handle, None, hg)
+            shown = [body, bolt, handle]
             if kind == "UZI":
                 st = objs["UZI_STOCK_FOLDED" if folded else "UZI_STOCK_DEPLOYED"]
                 place(st, None, hg)

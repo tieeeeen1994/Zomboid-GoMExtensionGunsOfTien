@@ -26,6 +26,18 @@
   "bolt_fired": {
     "offset": [
       0.0,
+      -0.0103,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
       -0.0555,
       0.0
     ],
@@ -158,7 +170,8 @@
   "_notes": {
     "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (the A1's photo L 455, H 100)",
     "magazine": "762x39Magazine30_AUG (its feed lips)",
-    "bolt_fired": "GunsOfTien.AUG_BOLT (the A1's charging handle) back 92 mm real",
+    "bolt_fired": "GunsOfTien.AUG_BOLT (the A1's bolt carrier in the ejection port) back 17.0 mm real: each shot and held open when empty",
+    "handle_back": "GunsOfTien.AUG_HANDLE (the A1's charging handle) back 92 mm real, only while racked",
     "foregrip": "GunsOfTien.AUG_FOREGRIP (the A1's grip) at its hinge pin; folded = turned 90 degrees forward",
     "rails": "integral top (L 264-494, crossbars H 186) and right (L 282-381, H 143); left = GoM's optional Picatinny_Rail_Left, drawn as AUG_RAIL_LEFT (L 256-297, H 129.5)",
     "integrated_bipod": "AUGHBAR_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space"

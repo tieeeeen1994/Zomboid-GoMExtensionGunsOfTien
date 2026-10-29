@@ -40,6 +40,7 @@ GUN_MAG = {"UMP9": "9x19Magazine30_UMP", "UMP45": "45Magazine25_UMP"}
 def gun_objs(gun):
     """The gun with its stock deployed (as GoM's MP5 icon shows its own) and its standard magazine."""
     objs = [(A.load_game(FBX_GUN, "UMP_BODY"), 0), (A.load_game(FBX_GUN, "UMP_BOLT"), 0),
+            (A.load_game(FBX_GUN, "UMP_HANDLE"), 0),
             (A.attach(A.load_game(FBX_PARTS, "UMP_STOCK"), PTS["stock"]), 1),
             (A.attach(A.load_game(FBX_MAGS, GUN_MAG[gun]), PTS["magazine"]), 2)]
     texes = [A.img(os.path.join(TEX, gun + ".png")), A.img(os.path.join(TEX, "UMP_STOCK.png")),
@@ -61,7 +62,7 @@ def make_icons():
 
 
 def check():
-    for path, names in ((FBX_GUN, ("UMP_BODY", "UMP_BOLT")), (FBX_MAGS, tuple(MAGS)), (FBX_PARTS, ("UMP_STOCK",))):
+    for path, names in ((FBX_GUN, ("UMP_BODY", "UMP_BOLT", "UMP_HANDLE")), (FBX_MAGS, tuple(MAGS)), (FBX_PARTS, ("UMP_STOCK",))):
         objects, unit, lcl = A.header_check(path)
         print("%s: objects %s, UnitScaleFactor %s" % (os.path.basename(path), objects, unit))
         for n, rot, scl in lcl:

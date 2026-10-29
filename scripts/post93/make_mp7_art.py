@@ -361,6 +361,7 @@ def our_scenes():
     out = {}
     mag30 = attach(load_game(FBX_MAGS, "46x30Magazine30_MP7"), POINTS["magazine"])
     gun = [(load_game(FBX_GUN, "MP7A1_BODY"), 0), (load_game(FBX_GUN, "MP7A1_BOLT"), 0),
+           (load_game(FBX_GUN, "MP7A1_HANDLE"), 0),
            (attach(load_game(FBX_GUN, "MP7A1_STOCK"), POINTS["stock_folded"]), 0),
            (load_game(FBX_GUN, "MP7A1_FOREGRIP"), 0), (mag30, 1)]
     out["MP7A1"] = ("gun", [(attach(t, UPRIGHT), i) for t, i in gun],
@@ -418,7 +419,7 @@ def bounds(tris):
 
 def check():
     lines = []
-    for path, names in ((FBX_GUN, ("MP7A1_BODY", "MP7A1_BOLT", "MP7A1_STOCK", "MP7A1_FOREGRIP")),
+    for path, names in ((FBX_GUN, ("MP7A1_BODY", "MP7A1_BOLT", "MP7A1_HANDLE", "MP7A1_STOCK", "MP7A1_FOREGRIP")),
                         (FBX_MAGS, ("46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7")),
                         (FBX_PARTS, ("MP7_Suppressor", "MP7_Muzzle_Mount_Device"))):
         objects, unit, lcl = header_check(path)

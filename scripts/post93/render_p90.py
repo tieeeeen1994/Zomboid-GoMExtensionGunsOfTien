@@ -107,7 +107,7 @@ def main():
     sc.camera = cam
 
     gun = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx"), os.path.join(TEX, "P90TR.png"))
-    body, bolt = gun["P90TR_BODY"], gun["P90TR_BOLT"]
+    body, bolt, handle = gun["P90TR_BODY"], gun["P90TR_BOLT"], gun["P90TR_HANDLE"]
     mag = load(os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"),
                os.path.join(TEX, "57x28Magazine50_P90.png"))["57x28Magazine50_P90"]
     parts = {}
@@ -116,10 +116,12 @@ def main():
                           os.path.join(TEX, n + ".png"), keep=n))
     supp, mount = parts["P90_Suppressor"], parts["P90_Muzzle_Mount_Device"]
 
-    def gun_state(mag_on=True, supp_on=False, fired=False):
+    def gun_state(mag_on=True, supp_on=False, fired=False, racked=False):
+        """fired: the bolt back (each shot, while empty); racked: the handles back as well."""
         place(body)
-        place(bolt, POINTS["bolt_fired"] if fired else None)
-        objs = [body, bolt]
+        place(bolt, POINTS["bolt_fired"] if fired or racked else None)
+        place(handle, POINTS["handle_back"] if racked else None)
+        objs = [body, bolt, handle]
         if mag_on:
             place(mag, POINTS["magazine"])
             objs.append(mag)
@@ -153,7 +155,7 @@ def main():
     render("supp_q34", like2, (0, c[1] + 0.05, c[2]), 0.52, 1400, 800)
     gun_state(mag_on=False)
     place(mount, POINTS["canon"])
-    show_only([body, bolt, mount])
+    show_only([body, bolt, handle, mount])
     render("mount_q34", like2, (0, 0.15, POINTS["canon"]["offset"][2]), 0.12, 500, 400)
 
     place(mag, p90=False)

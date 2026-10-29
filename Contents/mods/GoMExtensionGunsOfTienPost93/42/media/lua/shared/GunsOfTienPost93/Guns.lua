@@ -14,7 +14,7 @@
 
     The SCAR-L and SCAR-H (user, 2026-10-20) are registered as GoM's M4A1 and FAL are: the SCAR-L in GoM's STANAG
     magazine profile, the SCAR-H with its own magazines, both at about 600 rpm, the charging handle animated (it rides
-    with the bolt carrier), GoM's FNC reload (SCAR-L) and its FAL reload (SCAR-H), the shared side-folding stock with GoM's G36 stock stats, four integral rails as parents of GoM's optics, foregrips,
+    with the bolt carrier), GoM's BAR reload (left charging handle) for both, the shared side-folding stock with GoM's G36 stock stats, four integral rails as parents of GoM's optics, foregrips,
     bipods, lights and lasers, GoM's AR muzzle parts on the SCAR-L and the SCAR-H's own mount device and suppressor.
 
     The UMP45 and UMP9 (user, 2026-10-22) are registered as GoM's MP5 is: each with its own magazines (in GoM's .45 ACP
@@ -43,6 +43,7 @@ local SF = require("WeaponSystems/Utils/StatsFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
+local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
 for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
@@ -139,10 +140,11 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
     { sustainedSpreadMult = 0.85, maxSpreadMult = 0.85 })
 
 -------------------------------------------------
--- The MP7s', the P90's and the UMPs' charging handles: GoM's bolt swap, as GoM animates every one of its guns (its
--- MP5s and MAC-10 too; user, 2026-10-29: "I want us to use GoM's way"). The real handles stay put when firing; they
--- flick back on each shot, stay back on an empty gun and move with the rack, drawn at bolt_lock / bolt_fired
--- (the builders' handle travel).
+-- GoM's bolt swap, as GoM animates every one of its guns (its MP5s and MAC-10 too; user, 2026-10-29: "I want us to
+-- use GoM's way"): it flicks back on each shot, stays back on an empty gun and moves with the rack (bolt_lock /
+-- bolt_fired). The handles of the MP7, P90 and UMP do not reciprocate (user, 2026-10-30): the swap moves the bolt
+-- seen through each gun's ejection port (<gun>_BOLT; the P90's under the gun), and the handle (<gun>_HANDLE) is the
+-- main mod's ChargingHandle part, back only while racked. The SCARs' handle rides with their carrier (above).
 -------------------------------------------------
 for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
@@ -150,17 +152,21 @@ for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
         cycleTicks = 3,
     })
 end
+for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
+    ChargingHandle.Register(gun)
+end
 
 -------------------------------------------------
 -- Reload animations: GoM's own (the main mod's GoMReloads.lua). Held like a pistol, the MP7s and the P90 take its
--- MP5K's ("handgun2"), the Five-seveN and the UCP its pistols'; the SCAR-L its FNC's (rifle magazine, side charging
--- handle), the SCAR-H its FAL's, the UMPs its MP5's.
+-- MP5K's ("handgun2"), the Five-seveN and the UCP its pistols'; both SCARs its BAR's ("left_handle_load": the
+-- magazine pushed straight in, racked on the left, where the SCAR's handle is; the FNC's racks reach over to the
+-- right, the FAL's rocks its magazine in), the UMPs its MP5's.
 -------------------------------------------------
 local GoMReloads = require("GunsOfTien/GoMReloads")
 for gun, animId in pairs({
     [MP7] = "handgun2", [MP7A2] = "handgun2", [P90] = "handgun2",
     [FIVESEVEN] = "pistol_reload", [UCP] = "pistol_reload",
-    [SCARL] = "fnc_rifle", [SCARH] = "fal_rifle",
+    [SCARL] = "left_handle_load", [SCARH] = "left_handle_load",
     [UMP45] = "MP5", [UMP9] = "MP5",
 }) do
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(animId))
@@ -322,6 +328,7 @@ if spawnTable then
     spawnTable[MP7] = {
         required = {
             "MarzGuns.Bolt_Lock",
+            ChargingHandle.FORWARD,
             M .. "MP7A1_Integrated_Stock_Folded",
             M .. "MP7A1_Integrated_Foregrip_Folded",
             M .. "MP7A1_Integrated_Rail_Up",
@@ -345,6 +352,7 @@ if spawnTable then
     spawnTable[MP7A2] = {
         required = {
             "MarzGuns.Bolt_Lock",
+            ChargingHandle.FORWARD,
             M .. "MP7A1_Integrated_Stock_Folded",
             M .. "MP7A1_Integrated_Rail_Up",
             M .. "MP7A1_Integrated_Rail_Left",
@@ -367,6 +375,7 @@ if spawnTable then
     spawnTable[P90] = {
         required = {
             "MarzGuns.Bolt_Lock",
+            ChargingHandle.FORWARD,
             M .. "P90TR_Integrated_Rail_Up",
             M .. "P90TR_Integrated_Rail_Left",
             M .. "P90TR_Integrated_Rail_Right",
@@ -432,6 +441,7 @@ if spawnTable then
         return {
             required = {
                 "MarzGuns.Bolt_Lock",
+                ChargingHandle.FORWARD,
                 M .. "UMP_Integrated_Stock_Folded",
                 M .. "UMP_Integrated_Rail_Up",
                 M .. "UMP_Integrated_Rail_Down",

@@ -982,12 +982,13 @@ def m249():
         texture  = {tex}/M249,
         cullFace = None,
 """]
-    for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod', 'bolt_fired'):
+    for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod', 'bolt_fired',
+                 'handle_back'):
         out.append(m249_attachment(name, pts[name]))
     for d in M249_COVER_STEPS:
         out.append(m249_attachment('cover_%d' % d, dict(offset=pts['cover']['offset'], rotate=[-float(d), 0.0, 0.0])))
     out.append("    }\n")
-    for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED', 'M249_BOLT'):
+    for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED', 'M249_BOLT', 'M249_HANDLE'):
         out.append(f"""
     model {node} {{
         mesh     = weapons/firearms/GunsOfTien_M249|{node},
@@ -1028,7 +1029,9 @@ def m249():
     parts += [f"{w}MarzGuns.Bullet_{i} {MODULE}.556x45_M249_{i} belt belt," for i in range(1, 10)]
     # the cocking handle, GoM's bolt swap (bolt_lock = the origin, as GoM's)
     parts += [f"{w}MarzGuns.Bolt_Lock {MODULE}.M249_BOLT bolt_lock bolt_lock,",
-              f"{w}MarzGuns.Bolt_Fired {MODULE}.M249_BOLT bolt_fired bolt_fired,"]
+              f"{w}MarzGuns.Bolt_Fired {MODULE}.M249_BOLT bolt_fired bolt_fired,",
+              f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.M249_HANDLE handle handle,",
+              f"{w}{MODULE}.ChargingHandle_Back {MODULE}.M249_HANDLE handle_back handle_back,"]
     items = [f"module {MODULE} {{\n", f"""
     item M249 {{
         MinDamage                    = 1.0,
@@ -1359,7 +1362,9 @@ def uzi_item(gun):
     rifle = gun == 'UZI'
     w = "        ModelWeaponPart              = "
     parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.{gun}_BOLT bolt_lock bolt_lock,",
-             f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,"]
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.{gun}_HANDLE handle handle,",
+             f"{w}{MODULE}.ChargingHandle_Back {MODULE}.{gun}_HANDLE handle_back handle_back,"]
     if rifle:
         parts += [f"{w}{MODULE}.UZI_Integrated_Stock_Folded {MODULE}.UZI_STOCK_FOLDED stock stock,",
                   f"{w}{MODULE}.UZI_Integrated_Stock_Deployed {MODULE}.UZI_STOCK_DEPLOYED stock stock,"]
@@ -1481,8 +1486,8 @@ def uzi():
         texture  = {tex}/{gun},
         cullFace = None,
 """)
-        names = ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'stock', 'stock_folded', 'rifle_back',
-                 'rifle_back_bag')
+        names = ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back', 'stock', 'stock_folded',
+                 'rifle_back', 'rifle_back_bag')
         for name in names:
             if name in p:
                 models.append(m249_attachment(name, p[name]))
@@ -1492,7 +1497,8 @@ def uzi():
             # upright with a model point): the same model, kept for guns saved with it
             body = models[-1 - sum(1 for name in names if name in p) - 1:]
             models.append("".join(body).replace("    model MINIUZI {", "    model MINIUZI_1H {", 1))
-        nodes = ['BOLT'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
+        # <GUN>_BOLT = the bolt in the ejection port, <GUN>_HANDLE = the cocking knob (moved only while racked)
+        nodes = ['BOLT', 'HANDLE'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
         for node in nodes:
             models.append(f"""
     model {gun}_{node} {{
@@ -1584,6 +1590,28 @@ def aug_mag(rounds):
     return f'556x45Magazine{rounds}_AUG'
 
 
+def charging_handles():
+    """The charging handle of guns whose handle does not reciprocate (every Guns of Tien gun but the SCARs: the
+    Uzis, M249, AUGs, Post-93's MP7s, P90 and UMPs; user, 2026-10-30):
+    GoM's Bolt part draws their bolt carrier, these two their handle, forward or (only while racked) back. Part items
+    as GoM's Bolt_Lock / Bolt_Fired: no model of their own, never mounted or removed by hand
+    (shared/GunsOfTien/ChargingHandle.lua swaps them)."""
+    out = [f"module {MODULE} {{\n"]
+    for state in ('Forward', 'Back'):
+        out.append(f"""
+    item ChargingHandle_{state} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = ChargingHandle,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTien/items_handles.txt', ''.join(out))
+
+
 def aug():
     pts = json.load(open(AUG_POINTS))
     tex = 'weapons/GunsOfTien'
@@ -1593,10 +1621,12 @@ def aug():
         texture  = {tex}/AUG,
         cullFace = None,
 """]
-    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'foregrip_deployed', 'foregrip_folded'):
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'handle_back', 'foregrip_deployed',
+                 'foregrip_folded'):
         models.append(m249_attachment(name, pts[name]))
     models.append("    }\n")
-    for node in ('BOLT', 'FOREGRIP'):
+    # AUG_BOLT = the bolt carrier in the ejection port, AUG_HANDLE = the charging handle (moved only while racked)
+    for node in ('BOLT', 'HANDLE', 'FOREGRIP'):
         models.append(f"""
     model AUG_{node} {{
         mesh     = weapons/firearms/GunsOfTien_AUG|AUG_{node},
@@ -1618,6 +1648,8 @@ def aug():
     w = "        ModelWeaponPart              = "
     parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.AUG_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {MODULE}.AUG_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.AUG_HANDLE handle handle,",
+             f"{w}{MODULE}.ChargingHandle_Back {MODULE}.AUG_HANDLE handle_back handle_back,",
              f"{w}{MODULE}.AUG_Integrated_Foregrip_Folded {MODULE}.AUG_FOREGRIP foregrip_folded foregrip_folded,",
              f"{w}{MODULE}.AUG_Integrated_Foregrip_Deployed {MODULE}.AUG_FOREGRIP foregrip_deployed foregrip_deployed,"]
     parts += [f"{w}{MODULE}.{aug_mag(r)} {MODULE}.{aug_mag(r)} magazine magazine," for r, _ in AUG_MAGS]
@@ -1834,6 +1866,7 @@ if __name__ == '__main__':
     belt_links()
     uzi()
     aug()
+    charging_handles()
     mp5_family()
     one_hand()
     print('written under', os.path.normpath(ROOT))

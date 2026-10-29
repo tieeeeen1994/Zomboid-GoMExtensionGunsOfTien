@@ -13,8 +13,9 @@
       adverse; Gunworks lists one Auto entry per rate, as for GoM's BAR).
     - the integrated bipod with GoM's M60 bipod stats; the feed cover a hidden part, always shut (the open and part
       way open covers only remain for guns saved while an older version's reload clips swung it).
-    - the cocking handle a part of its own (M249_BOLT), animated as GoM animates its M60 (Bolt_Lock / Bolt_Fired:
-      back along its slot on each shot, on an empty gun and with the rack). The chambered round is kept (no
+    - the bolt seen through the ejection port under the receiver (M249_BOLT), animated as GoM animates its M60
+      (Bolt_Lock / Bolt_Fired: back on each shot and on an empty gun); FN's cocking handle (M249_HANDLE) does not
+      reciprocate, so it moves back along its slot only while racked (ChargingHandle.lua; user, 2026-10-30). The chambered round is kept (no
       HaveChamber = false, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
     - STANAG feed: jam chance x2 (user, 2026-10-22: FM 23-14 warns magazine feed "will increase the chance of
       stoppages"), a stat layer for the M249 alone (the same STANAGs keep their stats on an M16). Gunworks re-applies
@@ -32,6 +33,7 @@ local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
+local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
 for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats", "PermanentAttachments",
     "AnimationsFiring", "Ammunition" }) do
@@ -95,11 +97,14 @@ Animations.RegisterWeaponWithAnimatedParts(M249, {
     SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
     cycleTicks = 3,
 })
+ChargingHandle.Register(M249)
 -- An M249 from before 2026-10-29 has the handle in its body mesh and no Bolt part, so nothing would draw it until
 -- its first shot or rack (Gunworks attaches the part then): the owner's game fits the closed one when it is equipped,
--- the way Gunworks does (Animations.CallAnimate: attach, sync, re-equip).
+-- the way Gunworks does (Animations.CallAnimate: attach, sync, re-equip). OnEquipPrimary also fires for zombies
+-- (A-Life NPCs), which have no isLocalPlayer.
 Events.OnEquipPrimary.Add(function(character, item)
-    if not (item and character and character:isLocalPlayer() and isM249(item)) or item:getWeaponPart("Bolt") then
+    if not (item and character and character.isLocalPlayer and character:isLocalPlayer() and isM249(item))
+        or item:getWeaponPart("Bolt") then
         return
     end
     Animations.CallAnimate(character, item, false)
@@ -195,7 +200,7 @@ local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
     spawnTable[M249] = {
-        required = { "MarzGuns.Bolt_Lock", COVER_CLOSED, BIPOD_FOLDED },
+        required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, COVER_CLOSED, BIPOD_FOLDED },
         optionals = { BOX .. ":50" },
     }
 end

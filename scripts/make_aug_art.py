@@ -50,6 +50,7 @@ PHOTO_X0, PHOTO_Y0, PHOTO_S = 270.0, 2190.0, 5.62911
 def gun_objs():
     """The gun with its grip folded and its 30-round magazine."""
     objs = [(A.load_game(FBX_GUN, "AUG_BODY"), 0), (A.load_game(FBX_GUN, "AUG_BOLT"), 0),
+            (A.load_game(FBX_GUN, "AUG_HANDLE"), 0),
             (A.attach(A.load_game(FBX_GUN, "AUG_FOREGRIP"), PTS["foregrip_folded"]), 0),
             (A.attach(A.load_game(FBX_MAGS, MAGS[0]), PTS["magazine"]), 1)]
     return objs, [A.img(os.path.join(TEX, "AUG.png")), A.img(os.path.join(TEX, MAGS[0] + ".png"))]

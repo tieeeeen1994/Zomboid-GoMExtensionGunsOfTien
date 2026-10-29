@@ -7,13 +7,20 @@ module GunsOfTien {
         attachment muzzle { offset = 0.0000 0.2744 0.0262, rotate = -90.0000 0.0000 -180.0000, }
         attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
         attachment magazine { offset = 0.0000 -0.0736 -0.0060, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0103 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
     }
 
     model AUG_BOLT {
         mesh     = weapons/firearms/GunsOfTien_AUG|AUG_BOLT,
+        texture  = weapons/GunsOfTien/AUG,
+        cullFace = None,
+    }
+
+    model AUG_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_AUG|AUG_HANDLE,
         texture  = weapons/GunsOfTien/AUG,
         cullFace = None,
     }

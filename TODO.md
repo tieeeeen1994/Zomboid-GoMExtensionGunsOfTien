@@ -10,8 +10,7 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       drawn upside down, each reload ends and swaps the magazine. Uzi held as a rifle (its model back to the upright
       one of before 2026-10-28; on the back too) on GoM's MP5 reload; Mini and Micro Uzi, MP7A1 / A2, P90 one-handed on
       its MP5K's ("handgun2"); Five-seveN, UCP on its pistol reload; AUG A1 / A3 / Para / HBAR on its FAMAS's; SCAR-L
-      on its FNC's, SCAR-H on its FAL's (GoM's own nodes now: an old copy of them, Marz Mods Animsets for Linux, would
-      play instead, as for GoM's FAL); UMPs on its MP5's; M249 on its M60's (cover shut throughout); GoM's MP5s, MP5K
+      and SCAR-H on its BAR's (racked on the left, at the SCAR's handle); UMPs on its MP5's; M249 on its M60's (cover shut throughout); GoM's MP5s, MP5K
       and FAMAS back on GoM's own. Also a gun saved held in both hands (Mini Uzi, MP7s) and an MP5K saved with its
       old two-hand model.
 - [ ] **Charging handles** (2026-10-29, CLAUDE.md "Charging handles move as GoM's do"): on every Uzi, MP7, P90, UMP

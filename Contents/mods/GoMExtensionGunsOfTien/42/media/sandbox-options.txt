@@ -7,6 +7,13 @@ option GunsOfTien.RealisticPiercing {
     translation = GunsOfTien_RealisticPiercing,
 }
 
+option GunsOfTien.ModdedSlotsUpright {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_ModdedSlotsUpright,
+}
+
 option GunsOfTien.SubsonicRackRule {
     type        = enum,
     numValues   = 3,

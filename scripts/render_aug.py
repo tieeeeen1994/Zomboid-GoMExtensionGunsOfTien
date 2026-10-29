@@ -105,15 +105,17 @@ def main():
     sc.camera = cam
 
     objs = load(GUN, os.path.join(TEX, "AUG.png"))
-    body, bolt, fg = objs["AUG_BODY"], objs["AUG_BOLT"], objs["AUG_FOREGRIP"]
+    body, bolt, handle, fg = objs["AUG_BODY"], objs["AUG_BOLT"], objs["AUG_HANDLE"], objs["AUG_FOREGRIP"]
     mags = {r: load(MAGS, os.path.join(TEX, "556x45Magazine%d_AUG.png" % r), keep=["556x45Magazine%d_AUG" % r])
             ["556x45Magazine%d_AUG" % r] for r in (30, 42)}
 
-    def state(folded=False, mag=30, fired=False):
+    def state(folded=False, mag=30, fired=False, racked=False):
+        """fired: the bolt carrier back (each shot, held open when empty); racked: the handle back as well."""
         place(body)
-        place(bolt, PTS["bolt_fired"] if fired else None)
+        place(bolt, PTS["bolt_fired"] if fired or racked else None)
+        place(handle, PTS["handle_back"] if racked else None)
         place(fg, PTS["foregrip_folded" if folded else "foregrip_deployed"])
-        shown = [body, bolt, fg]
+        shown = [body, bolt, handle, fg]
         if mag:
             place(mags[mag], PTS["magazine"])
             shown.append(mags[mag])
@@ -136,6 +138,12 @@ def main():
     render("AUG_q_left", q_left, low, span, w, int((tall + 140) * PX_PER_MM))
     render("AUG_top", (0, 0, -1), centre, span, w, int(160 * PX_PER_MM))
     render("AUG_front", (0, -1, 0), low, 300, 600, 700)
+    # the bolt carrier in the ejection port on the right (closed / fired or held open), the handle on the left
+    port = Vector((0.0, (L0 - 525.5) * K, (120.25 - H0) * K))
+    for name, kw in (("closed", {}), ("fired", {"fired": True}), ("racked", {"racked": True})):
+        state(**kw)
+        render("AUG_port_%s" % name, right, port, 120, 600, 400)
+        render("AUG_handle_%s" % name, left, low, span, w, int((tall + 100) * PX_PER_MM))
     state(folded=True, mag=42, fired=True)
     render("AUG_folded_42_fired", left, low, span, w, int((tall + 160) * PX_PER_MM))
     render("AUG_folded_q", q_right, low, span, w, int((tall + 160) * PX_PER_MM))

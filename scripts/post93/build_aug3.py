@@ -6,7 +6,7 @@ Writes (M = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
     --gun a3    M/models_X/weapons/firearms/GunsOfTienPost93_AUGA3.fbx     AUGA3_BODY, AUG_RAIL_LEFT
                 M/textures/weapons/GunsOfTienPost93/AUGA3.png              256 atlas (body, the short left rail)
                 scripts/post93/auga3_points.json
-    --gun para  M/models_X/weapons/firearms/GunsOfTienPost93_AUGPARA.fbx   AUGPARA_BODY, AUGPARA_BOLT,
+    --gun para  M/models_X/weapons/firearms/GunsOfTienPost93_AUGPARA.fbx   AUGPARA_BODY, AUGPARA_HANDLE,
                                                                            AUGPARA_FOREGRIP
                 M/textures/weapons/GunsOfTienPost93/AUGPARA.png            256 atlas
                 scripts/post93/augpara_points.json
@@ -23,8 +23,9 @@ Design: docs/post93_design.md, "Steyr AUG A3, AUG Para and AUG HBAR". Everything
 real mm), the same stock, trigger frame, grip, folding grip and painting. The A3 receiver replaces the A1's cast scope
 and carrying handle with a raised upper carrying a Picatinny rail, and adds the right-side rail of the A3 SF.
 
-A3: the A1's barrel; the charging handle (GunsOfTien.AUG_BOLT), the folding grip (GunsOfTien.AUG_FOREGRIP) and the
-magazines are the A1's own models, drawn at this gun's points (the same Steyr green). Measured on Commons "Interpolitex
+A3: the A1's barrel; the bolt carrier in the ejection port (GunsOfTien.AUG_BOLT; the port is painted by the A1's
+paint_body on this same stock), the charging handle (GunsOfTien.AUG_HANDLE), the folding grip (GunsOfTien.AUG_FOREGRIP)
+and the magazines are the A1's own models, drawn at this gun's points (the same Steyr green). Measured on Commons "Interpolitex
 2011 (405-9)" (Vitaly V. Kuzmin, CC BY-SA 4.0; two A3s, right side, kept out of the repo in references/aug_variants),
 scaled by the receiver (the A1's L 249-402, 153 mm: 2.575 px/mm) and anchored at the receiver's front face and the
 bore: the rail's crossbars reach H ~186 from L ~264 back to L ~494 over the stock's top; the right-side rail (the black
@@ -347,7 +348,8 @@ def points(bounds):
     pts = {
         "muzzle": {"offset": muzzle, "rotate": [-90.0, 0.0, -180.0]},
         "magazine": {"offset": gp(*a1.MAG_LIPS), "rotate": ZERO},
-        "bolt_fired": {"offset": [0.0, round(-a1.TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-a1.CARRIER_TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
+        "handle_back": {"offset": [0.0, round(-a1.TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
         "foregrip_deployed": {"offset": hinge, "rotate": ZERO},
         "foregrip_folded": {"offset": hinge, "rotate": [90.0, 0.0, 0.0]},
         # GoM's Picatinny_Rail_Up spans z -0.0011..0.0055 from rail_up and its scopes sit 0.0032 under that rail's
@@ -380,8 +382,10 @@ def points(bounds):
         "magazine": {"para": "9x19Magazine25/32_AUG (their feed lips), in the A1's well through the adapter",
                      "hbar": "762x39Magazine30_AUG (its feed lips)"}.get(
                          GUN, "the A1's 556x45Magazine30/42_AUG (their feed lips)"),
-        "bolt_fired": "%s (the A1's charging handle) back %.0f mm real" % (
-            NAME + "_BOLT" if own else "GunsOfTien.AUG_BOLT", a1.TRAVEL),
+        "bolt_fired": "GunsOfTien.AUG_BOLT (the A1's bolt carrier in the ejection port) back %.1f mm real: each "
+                      "shot and held open when empty" % a1.CARRIER_TRAVEL,
+        "handle_back": "%s (the A1's charging handle) back %.0f mm real, only while racked" % (
+            NAME + "_HANDLE" if own else "GunsOfTien.AUG_HANDLE", a1.TRAVEL),
         "foregrip": "%s (the A1's grip) at its hinge pin; folded = turned 90 degrees forward" % (
             NAME + "_FOREGRIP" if own else "GunsOfTien.AUG_FOREGRIP"),
         "rails": "integral top (L %.0f-%.0f, crossbars H %.0f) and right (L %.0f-%.0f, H %.0f); left = GoM's "
@@ -424,10 +428,10 @@ def main():
         kinds = ["bolt"]
     else:
         a1.BASE.update(PARA_COLOURS)
-        bolt, fg = a1.build_bolt(), a1.build_foregrip()
-        for o, suffix in ((bolt, "_BOLT"), (fg, "_FOREGRIP")):         # object and mesh (the FBX geometry's name)
+        handle, fg = a1.build_handle(), a1.build_foregrip()
+        for o, suffix in ((handle, "_HANDLE"), (fg, "_FOREGRIP")):         # object and mesh (the FBX geometry's name)
             o.name = o.data.name = NAME + suffix
-        extra = [bolt, fg]
+        extra = [handle, fg]
         kinds = ["bolt", "foregrip"]
     kit.unwrap([body] + extra, 0.005)
     # parts with their own origin (the rail at its point, the grip at its pin) are baked alone; the handle and the
@@ -435,7 +439,7 @@ def main():
     near = extra[:1] if GUN in ("para", "hbar") else []
     maps = [a1.bake(body, [body] + near, 256)]
     for o in extra:
-        in_gun = o.name.endswith("_BOLT") or "_BIPOD_" in o.name
+        in_gun = o.name.endswith("_HANDLE") or "_BIPOD_" in o.name
         maps.append(a1.bake(o, [body, o] if in_gun else [o], 256))
     texture(maps, ["body"] + kinds, 256, os.path.join(TEX_DIR, NAME + ".png"))
     objs = [body] + extra

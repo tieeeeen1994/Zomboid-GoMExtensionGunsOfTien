@@ -5,7 +5,7 @@ More ammunition, guns and fixes for Guns of Marz, set in Kentucky, July 1993: on
 [b]Requires:[/b] Gunworks Gang Framework, Guns of Marz
 [b]Optional:[/b] Ammo Maker (making the new rounds), Hot Brass (spent casings)
 
-Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2, and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's); their charging handles move as Guns of Marz's do (back on each shot, held back when empty, with the rack).
+Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2, and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's); as on the real guns, the charging handle stays forward while firing and moves only when the gun is racked, while the bolt moves in the ejection port on each shot and stays back on an empty gun (the SCARs' handle rides with their bolt carrier, as on the real gun).
 
 Found a problem? Post it in this thread and say which gun or item, whether it was single player or a server, and what you did.
 
@@ -34,6 +34,7 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*]Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept as offcuts: wood to burn or make charcoal, steel to smelt. The Stevens 555's and TOZ-34's sawn-off barrels handle like the Double Barrel's
 [*]Mosin-Nagant Obrez: Guns of Marz's Mosin-Nagant can have its stock sawn off (Saw Off Rifle Stock, any saw) and its barrel and forend sawn off ahead of the rear sight (Saw Off Rifle Barrel, a metal saw), each on its own. The short barrel hits less hard, reaches half as far, is louder with a bigger flash and loses the bayonet lug, but aims in faster; with both cuts it fits a holster. The stock, barrel and forend are kept as offcuts
 [*]A sawn-off gun is named and drawn for what was cut ("Mosin-Nagant Obrez", "Sawn-Off Double Barrel Pistol"), with its own icon
+[*]Guns held like a pistol (Post-93's MP7s and P90) hang the right way up on attachment slots other mods add, such as Plysken Attachments Reborn's backpack slots, and sawn-off shotguns in modded holsters (sandbox option)
 [*]9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
 [/list]
 
@@ -87,5 +88,6 @@ Enable [i]GoM Extension: Guns of Tien - Post-93[/i] as well.
 On the [b]Guns of Tien[/b] page of the sandbox settings.
 [list]
 [*][i]Adjusted Piercing[/i] (on by default): plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds pierce in every gun that fires them, and plain .30-30 rounds (flat-nosed soft points in reality) no longer do. Off = Guns of Marz's own piercing
+[*][i]Upright Guns in Modded Attachment Slots[/i] (on by default): guns held like a pistol hang upright on other mods' rifle slots, sawn-off shotguns in their holster slots. Takes effect the next time the game is loaded
 [*][i]7.62x39mm US Subsonic Cycling[/i]: always rack after every shot, rack unless a PBS-1 is fitted (default), or never rack
 [/list]

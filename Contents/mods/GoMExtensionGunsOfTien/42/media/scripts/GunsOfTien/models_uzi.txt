@@ -8,11 +8,18 @@ module GunsOfTien {
         attachment world { offset = 0.0168 0.1089 0.0000, rotate = 180.0000 0.0000 180.0000, }
         attachment magazine { offset = 0.0000 0.0241 0.0015, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.1604 0.0187, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0482 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0154 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0482 0.0000, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model UZI_BOLT {
         mesh     = weapons/firearms/GunsOfTien_UZI|UZI_BOLT,
+        texture  = weapons/GunsOfTien/UZI,
+        cullFace = None,
+    }
+
+    model UZI_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_UZI|UZI_HANDLE,
         texture  = weapons/GunsOfTien/UZI,
         cullFace = None,
     }
@@ -37,7 +44,8 @@ module GunsOfTien {
         attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment magazine { offset = 0.0000 0.0235 -0.0036, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1315 -0.0199, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0169 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 180.0000, }
     }
@@ -50,13 +58,20 @@ module GunsOfTien {
         attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment magazine { offset = 0.0000 0.0235 -0.0036, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1315 -0.0199, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0169 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 180.0000, }
     }
 
     model MINIUZI_BOLT {
         mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_BOLT,
+        texture  = weapons/GunsOfTien/MINIUZI,
+        cullFace = None,
+    }
+
+    model MINIUZI_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_HANDLE,
         texture  = weapons/GunsOfTien/MINIUZI,
         cullFace = None,
     }
@@ -75,13 +90,20 @@ module GunsOfTien {
         attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment magazine { offset = 0.0000 0.0235 -0.0048, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.0892 -0.0142, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0118 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0136 -0.0386 -0.0193, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0136 -0.0386 -0.0193, rotate = 0.0000 0.0000 180.0000, }
     }
 
     model MICROUZI_BOLT {
         mesh     = weapons/firearms/GunsOfTien_MICROUZI|MICROUZI_BOLT,
+        texture  = weapons/GunsOfTien/MICROUZI,
+        cullFace = None,
+    }
+
+    model MICROUZI_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_MICROUZI|MICROUZI_HANDLE,
         texture  = weapons/GunsOfTien/MICROUZI,
         cullFace = None,
     }

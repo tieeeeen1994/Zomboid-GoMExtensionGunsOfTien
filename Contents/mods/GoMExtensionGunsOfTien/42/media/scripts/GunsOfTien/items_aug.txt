@@ -84,6 +84,8 @@ module GunsOfTien {
         OnCreate                     = MarzGuns_OnCreate.AttachParts,
         ModelWeaponPart              = MarzGuns.Bolt_Lock GunsOfTien.AUG_BOLT bolt_lock bolt_lock,
         ModelWeaponPart              = MarzGuns.Bolt_Fired GunsOfTien.AUG_BOLT bolt_fired bolt_fired,
+        ModelWeaponPart              = GunsOfTien.ChargingHandle_Forward GunsOfTien.AUG_HANDLE handle handle,
+        ModelWeaponPart              = GunsOfTien.ChargingHandle_Back GunsOfTien.AUG_HANDLE handle_back handle_back,
         ModelWeaponPart              = GunsOfTien.AUG_Integrated_Foregrip_Folded GunsOfTien.AUG_FOREGRIP foregrip_folded foregrip_folded,
         ModelWeaponPart              = GunsOfTien.AUG_Integrated_Foregrip_Deployed GunsOfTien.AUG_FOREGRIP foregrip_deployed foregrip_deployed,
         ModelWeaponPart              = GunsOfTien.556x45Magazine30_AUG GunsOfTien.556x45Magazine30_AUG magazine magazine,

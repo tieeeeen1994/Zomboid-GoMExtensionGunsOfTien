@@ -110,6 +110,18 @@
   "bolt_fired": {
     "offset": [
       0.0,
+      -0.0099,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
       -0.0362,
       0.0
     ],
@@ -162,7 +174,8 @@
     "magazine": "57x28Magazine50_P90's origin is its front end, centred, on its bottom face; the node lies along -Y from there on top of the receiver",
     "canon": "receiver front face where the barrel collar starts; P90_Muzzle_Mount_Device and P90_Suppressor have their origin there and extend along +Y over the flash hider",
     "rail_left/right": "the accessory bosses on the sides of the rail block",
-    "bolt_fired": "charging handles pulled back 60 mm real (P90TR_BOLT is modelled forward); they do not reciprocate when firing"
+    "bolt_fired": "P90TR_BOLT (the bolt in the ejection port under the gun) back 16.5 mm real: each shot and while the gun is empty (GoM's Bolt_Fired)",
+    "handle_back": "P90TR_HANDLE (both charging handles) pulled back 60 mm real, only while racked; they do not reciprocate when firing"
   },
   "_extras": {
     "ejection_port_upright": [
@@ -192,6 +205,19 @@
       "tris": 2872
     },
     "P90TR_BOLT": {
+      "min": [
+        -0.0045,
+        -0.0252,
+        0.0475
+      ],
+      "max": [
+        0.0045,
+        -0.0154,
+        0.0479
+      ],
+      "tris": 44
+    },
+    "P90TR_HANDLE": {
       "min": [
         -0.0193,
         0.082,
@@ -242,6 +268,32 @@
         0.0075
       ],
       "tris": 320
+    },
+    "P90TR_BOLT_fired": {
+      "min": [
+        -0.0045,
+        -0.0352,
+        0.0475
+      ],
+      "max": [
+        0.0045,
+        -0.0253,
+        0.0479
+      ],
+      "tris": 44
+    },
+    "P90TR_HANDLE_back": {
+      "min": [
+        -0.0193,
+        0.0458,
+        -0.0193
+      ],
+      "max": [
+        0.0193,
+        0.0651,
+        -0.0087
+      ],
+      "tris": 400
     }
   }
 }

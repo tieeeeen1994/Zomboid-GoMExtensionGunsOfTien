@@ -13,8 +13,9 @@
     - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Mini and Micro Uzi, the MP7A1 / A2, the P90 TR;
     - "pistol_reload" (GoM's pistols): the Five-seveN, the UCP Prototype;
     - "famas_rifle" (GoM's FAMAS): the AUG A1, A3, Para and HBAR;
-    - "fnc_rifle" (GoM's FNC: rifle magazine change, side charging handle): the SCAR-L;
-    - "fal_rifle" (GoM's FAL): the SCAR-H;
+    - "left_handle_load" (GoM's BAR / AA-12: rifle magazine pushed straight in, charging handle on the left): the
+      SCAR-L and SCAR-H, whose handles are on the left (GoM's FNC reload, "fnc_rifle", racks with the left hand
+      reaching over to the right side; its FAL's, "fal_rifle", racks on the left but rocks the magazine in);
     - "m60_lmg" (GoM's M60): the M249.
 --]]
 
@@ -26,8 +27,7 @@ local DURATIONS = {
     handgun2 = { unload = 1.29613, load = 1.29613, rack = 0.999844 },
     pistol_reload = { unload = 1.466667, load = 1.466667, rack = 1.7 },
     famas_rifle = { unload = 1.533333, load = 1.533333, rack = 2.2, rackAim = 1.5 },
-    fnc_rifle = { unload = 2.5, load = 2.5, rack = 2.066667, rackAim = 1.666667 },
-    fal_rifle = { unload = 2.7, load = 2.7, rack = 1.2, rackAim = 1.666667 },
+    left_handle_load = { unload = 1.733333, load = 1.733333, rack = 1.966667, rackAim = 1.966667 },
     m60_lmg = { unload = 7.533333, load = 8.7, rack = 2.766667 },
 }
 

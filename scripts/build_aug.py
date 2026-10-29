@@ -3,7 +3,7 @@
     blender -b --factory-startup -P scripts/build_aug.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
-    M/models_X/weapons/firearms/GunsOfTien_AUG.fbx        AUG_BODY, AUG_BOLT, AUG_FOREGRIP
+    M/models_X/weapons/firearms/GunsOfTien_AUG.fbx        AUG_BODY, AUG_BOLT, AUG_HANDLE, AUG_FOREGRIP
     M/models_X/weapons/magazines/GunsOfTien_AUG_magazines.fbx  556x45Magazine30_AUG, 556x45Magazine42_AUG
     M/textures/weapons/GunsOfTien/AUG.png                 256 atlas (body, charging handle, foregrip)
     M/textures/weapons/GunsOfTien/556x45Magazine30/42_AUG.png  128 each
@@ -21,8 +21,9 @@ GoM's rifle conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z
 the rear-top of the pistol grip, drawn at 0.603 of real size (the M16A2's proportion, every Guns of Tien gun since
 2026-10-26). A bullpup as GoM's FAMAS: the grip near the middle, the magazine and action behind it.
 Nodes: AUG_BODY (stock, receiver, the integral 1.5x scope and carrying handle, barrel, flash hider, trigger guard,
-grip); AUG_BOLT = the charging handle on the left, which rides with the bolt carrier (GoM's Bolt_Fired swap pulls it
-back by `travel`); AUG_FOREGRIP = the folding front grip, modelled down (as photographed) with its origin at its hinge
+grip); AUG_BOLT = the bolt carrier seen through the ejection port on the right (GoM's Bolt_Fired swap slides it back
+on each shot and while the gun is empty); AUG_HANDLE = the charging handle on the left, which does not reciprocate on
+the real gun: drawn back by `handle_back` only while racked (GunsOfTien.ChargingHandle_Back); AUG_FOREGRIP = the folding front grip, modelled down (as photographed) with its origin at its hinge
 pin, drawn at `foregrip_deployed` and, turned 90 degrees forward about the pin, at `foregrip_folded`, where it lies
 under the barrel as on the real A1. The scope is part of the body (the A1's optic is cast into the receiver); its
 stats come from a hidden part item with no model. The magazines (translucent smoke polymer, painted with the rounds
@@ -68,7 +69,7 @@ ZERO = [0.0, 0.0, 0.0]
 # Photo frame: origin = the grip's back meeting the stock's underside (the rear-top of the pistol grip).
 L0, H0 = 455.0, 100.0
 BORE = 143.5
-TRAVEL = 92.0                      # charging handle stroke with the bolt carrier
+TRAVEL = 92.0                      # charging handle stroke, only while racked (it does not reciprocate)
 W_STOCK, W_RCV, W_GRIP, W_GUARD, W_FG = 27.0, 21.0, 15.0, 9.0, 15.0     # half widths, mm
 FG_HINGE = (249.0, 115.0)          # the front grip's pin under the barrel bracket
 MAG_LIPS = (577.0, 90.0)           # the magazine's feed lips, inside the well (its mouth L 545-610 at H 77)
@@ -142,6 +143,13 @@ SAFETY = (405.0, 416.0, 116.5, 124.5)                       # the cross-bolt saf
 MAG_RELEASE = [(612.0, 77.0), (615.0, 66.0), (628.0, 58.0), (648.0, 56.0), (651.0, 60.0), (636.0, 66.0),
                (628.0, 77.0)]
 PORT_COVER = (512.0, 535.0, 113.0, 125.5)                   # the left side's blanked port plate (ejection right)
+# The ejection port on the right and the bolt carrier seen through it (user, 2026-10-30: the AUG's handle does not
+# reciprocate, only the carrier moves): the port's front half is painted as the open chamber, its rear half as the
+# carrier's side; AUG_BOLT is a thin plate over the front half, flush with the stock. Fired or held open it slides back
+# over the rear half, so the chamber shows in front of it and nothing stands outside the port.
+PORT = (PORT_COVER[0] - 4.0, PORT_COVER[1] + 8.0, PORT_COVER[2] + 1.0, PORT_COVER[3] + 1.0)   # L 508-543, H 114-126.5
+PORT_SPLIT = (PORT[0] + PORT[1]) / 2.0
+CARRIER_TRAVEL = PORT_SPLIT - PORT[0] - 0.5
 BUTT_PLATE_L = 774.0                                        # the butt plate's seam (behind it: the plate)
 # The aluminium receiver (the scope and carrying handle are cast into it on the A1)
 RECEIVER = (249.0, 402.0, 120.0, 161.0)
@@ -204,12 +212,22 @@ def build_body():
     return b.to_object("AUG_BODY")
 
 
-def build_bolt():
-    """The charging handle, forward (bolt_lock), out of the receiver's left side."""
+def build_carrier():
+    """The bolt carrier's side in the ejection port's front half (bolt_lock); bolt_fired slides it back over the
+    port's rear half. A plate 0.35 mm proud of the stock's right face (-X), reaching 0.4 mm into it."""
+    b = kit.Builder()
+    box(b, PORT[0] + 0.5, PORT_SPLIT - 0.2, PORT[2] + 0.5, PORT[3] - 0.5, -(W_STOCK + 0.35), -(W_STOCK - 0.4),
+        mat="metal", bevel=0.1)
+    return b.to_object("AUG_BOLT")
+
+
+def build_handle():
+    """The charging handle, forward (handle), out of the receiver's left side; handle_back pulls it back while
+    racked."""
     b = kit.Builder()
     slab(b, CH, half=4.5, bevel=1.0, res=1, mat="grip", x0=W_RCV + 3.5)
     box(b, 258.0, 286.0, 145.0, 158.0, W_RCV - 3.0, W_RCV + 1.0, mat="dark", bevel=0.5)
-    return b.to_object("AUG_BOLT")
+    return b.to_object("AUG_HANDLE")
 
 
 def build_foregrip():
@@ -334,10 +352,18 @@ def paint_body(maps, col):
     d = np.hypot(L - 745.0, H - 100.0)
     col[poly & (d < 4.5)] = (120, 120, 118)
     col[poly & (d < 2.4)] = (40, 40, 40)
-    # the ejection port on the right (spring cover, closed), the left one's blanked plate ribbed
+    # the ejection port on the right: its rim, the open chamber in its front half (AUG_BOLT covers it while the bolt
+    # is closed), the bolt carrier's steel side with its lengthwise grooves in the rear half; the left one's blanked
+    # plate ribbed
     La, Lb, Ha, Hb = PORT_COVER
     col[poly & right & rounded_rect(L, H, La - 6, Lb + 10, Ha - 1, Hb + 3, 2.0)] *= 0.55
-    col[poly & right & rounded_rect(L, H, La - 4, Lb + 8, Ha + 1, Hb + 1, 1.5)] += 18
+    port = poly & right & rounded_rect(L, H, PORT[0], PORT[1], PORT[2], PORT[3], 1.5)
+    chamber = port & (L < PORT_SPLIT)
+    col[chamber] = col[chamber] * 0.25 + np.array([4, 4, 5])
+    carrier = port & ~chamber
+    col[carrier] = np.array(BASE["metal"]) * 1.45          # lit like the plate's face (the port's AO darkens it)
+    col[carrier & ((np.abs(H - 118.5) < 0.5) | (np.abs(H - 122.5) < 0.5))] *= 0.6
+    col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5                      # the shadow of the plate's rear edge
     plate = (mat == MATS.index("metal")) & left & (np.abs(x) > W_STOCK)
     col[plate & (np.mod(L, 1.8) < 0.7)] *= 0.6
     d = np.hypot(L - (La + Lb) / 2.0, H - (Ha + Hb) / 2.0)
@@ -406,6 +432,13 @@ def paint(maps, kind):
         col[g & (zz < -20.0) & (zz > -100.0) & (np.mod(zz, 3.0) < 1.1)] *= 0.75        # moulded rings
     elif kind == "bolt":
         pass
+    elif kind == "carrier":
+        # the bolt carrier's side in the port: the bolt head's front edge and the port's two grooves
+        n = maps["nrm"]
+        L, H = L0 - p[..., 1], p[..., 2] + H0
+        face = (n[..., 0] < -0.7) & (np.abs(p[..., 0]) > W_STOCK + 0.2)
+        col[face & ((np.abs(H - 118.5) < 0.5) | (np.abs(H - 122.5) < 0.5))] *= 0.6
+        col[face & (L < PORT[0] + 2.0)] *= 0.55
     elif isinstance(kind, int):
         paint_mag(maps, col, kind)
     col = common(maps, col, mat)
@@ -442,7 +475,8 @@ def points(bounds):
     pts = {
         "muzzle": {"offset": gp(0.0, BORE), "rotate": [-90.0, 0.0, -180.0]},
         "magazine": {"offset": gp(*MAG_LIPS), "rotate": ZERO},
-        "bolt_fired": {"offset": [0.0, round(-TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-CARRIER_TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
+        "handle_back": {"offset": [0.0, round(-TRAVEL * K, 4) + 0.0, 0.0], "rotate": ZERO},
         "foregrip_deployed": {"offset": hinge, "rotate": ZERO},
         # turned 90 degrees forward about the pin: the grip's foot swings toward the muzzle, under the barrel
         "foregrip_folded": {"offset": hinge, "rotate": [90.0, 0.0, 0.0]},
@@ -453,7 +487,10 @@ def points(bounds):
         "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; "
                  "origin = the rear-top of the pistol grip (photo L %.0f, H %.0f)" % (L0, H0),
         "magazine": "556x45Magazine30/42_AUG, origin at their feed lips, inside the well (its mouth L 545-610)",
-        "bolt_fired": "the charging handle back %.0f mm real (it rides with the bolt carrier on the A1)" % TRAVEL,
+        "bolt_fired": "AUG_BOLT (the bolt carrier in the ejection port) back %.1f mm real: each shot and held open "
+                      "when empty (GoM's Bolt_Fired)" % CARRIER_TRAVEL,
+        "handle_back": "AUG_HANDLE (the charging handle) back %.0f mm real, only while racked "
+                       "(GunsOfTien.ChargingHandle_Back); the AUG's handle does not reciprocate" % TRAVEL,
         "foregrip": "AUG_FOREGRIP is modelled down with its origin at the hinge pin (photo L %.0f, H %.0f); folded = "
                     "the same node turned 90 degrees forward about X, lying under the barrel" % FG_HINGE,
         "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / rail points (nothing fits the A1)",
@@ -475,18 +512,22 @@ def main():
     scene.world.color = (0, 0, 0)
     os.makedirs(TEX_DIR, exist_ok=True)
 
-    body, bolt, fg = build_body(), build_bolt(), build_foregrip()
+    body, bolt, handle, fg = build_body(), build_carrier(), build_handle(), build_foregrip()
     mags = [build_magazine(r) for r in MAG_LEN]
-    kit.unwrap([body, bolt, fg], 0.005)
+    kit.unwrap([body, bolt, handle, fg], 0.005)
     for m in mags:
         kit.unwrap([m], 0.012)
-    # the grip is baked alone (its node is at the pin, not in the gun's space)
-    maps = [bake(body, [body, bolt], 256), bake(bolt, [body, bolt], 256), bake(fg, [fg], 256)]
-    texture(maps, ["body", "bolt", "foregrip"], 256, os.path.join(TEX_DIR, "AUG.png"))
+    # the grip is baked alone (its node is at the pin, not in the gun's space); the carrier with the body only (it
+    # moves)
+    maps = [bake(body, [body, handle], 256), bake(bolt, [body, bolt], 256), bake(handle, [body, handle], 256),
+            bake(fg, [fg], 256)]
+    texture(maps, ["body", "carrier", "bolt", "foregrip"], 256, os.path.join(TEX_DIR, "AUG.png"))
     for r, m in zip(MAG_LEN, mags):
         texture([bake(m, [m], 128)], [r], 128, os.path.join(TEX_DIR, m.name + ".png"))
 
-    bounds = {o.name: kit.bounds_of(o) for o in (body, bolt, fg)}
+    bounds = {o.name: kit.bounds_of(o) for o in (body, bolt, handle, fg)}
+    bounds["AUG_BOLT_fired"] = kit.bounds_of(bolt, (0, -CARRIER_TRAVEL * K, 0))
+    bounds["AUG_HANDLE_back"] = kit.bounds_of(handle, (0, -TRAVEL * K, 0))
     bounds.update({m.name: kit.bounds_of(m) for m in mags})
     pts = points(bounds)
     bounds["AUG_FOREGRIP_deployed"] = kit.bounds_at(fg, pts["foregrip_deployed"])
@@ -496,7 +537,7 @@ def main():
     with open(POINTS_JSON, "w") as fh:
         json.dump(pts, fh, indent=2)
         fh.write("\n")
-    kit.export([body, bolt, fg], FBX_GUN)
+    kit.export([body, bolt, handle, fg], FBX_GUN)
     kit.export(mags, FBX_MAGS)
     for name, bb in bounds.items():
         print("AUG %-28s tris %5d  min %s  max %s" % (name, bb["tris"], bb["min"], bb["max"]))

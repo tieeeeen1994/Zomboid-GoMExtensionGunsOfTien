@@ -3,9 +3,10 @@
     blender -b --factory-startup -P scripts/build_uzi.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
-    M/models_X/weapons/firearms/GunsOfTien_UZI.fbx        UZI_BODY, UZI_BOLT, UZI_STOCK_FOLDED, UZI_STOCK_DEPLOYED
-    M/models_X/weapons/firearms/GunsOfTien_MINIUZI.fbx    MINIUZI_BODY, MINIUZI_BOLT, MINIUZI_STOCK
-    M/models_X/weapons/firearms/GunsOfTien_MICROUZI.fbx   MICROUZI_BODY, MICROUZI_BOLT, MICROUZI_STOCK
+    M/models_X/weapons/firearms/GunsOfTien_UZI.fbx        UZI_BODY, UZI_BOLT, UZI_HANDLE, UZI_STOCK_FOLDED,
+                                                          UZI_STOCK_DEPLOYED
+    M/models_X/weapons/firearms/GunsOfTien_MINIUZI.fbx    MINIUZI_BODY, MINIUZI_BOLT, MINIUZI_HANDLE, MINIUZI_STOCK
+    M/models_X/weapons/firearms/GunsOfTien_MICROUZI.fbx   MICROUZI_BODY, MICROUZI_BOLT, MICROUZI_HANDLE, MICROUZI_STOCK
     M/models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx  9x19Magazine20/25/32/40/50_UZI (all three guns)
     M/textures/weapons/GunsOfTien/<gun>.png                one 256 atlas per gun (body, cocking knob, stock),
                                                            128 per magazine
@@ -30,8 +31,11 @@ GoM's conventions (CLAUDE.md, "Gun assets in GoM"): +Y muzzle, +Z top, +X the gu
 the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, GoM's SMGs). The Uzi is held as a rifle (upright model, GoM's MP5). The Mini and
 Micro Uzi are held like a pistol (user, 2026-10-23: GoM's MP5K / MAC-10 way), so they are modelled and baked upright
 and their gun nodes are turned 180 degrees about the bore axis at export, with their points (build_mp7.py's TURN /
-turned()); magazines stay upright. The cocking knob on top slides back in a slot in the top cover: bolt_fired is the
-knob pulled back (UZI_TRAVEL), drawn by Guns of Marz's bolt swap as on its guns (2026-10-29).
+turned()); magazines stay upright. The cocking knob on top (`<GUN>_HANDLE`) slides back in a slot in the top cover
+only while the gun is racked (`handle_back`): IMI's knob does not reciprocate (user, 2026-10-30). What moves on each
+shot, and stays back on an empty gun, is the bolt seen through the ejection port on the right (`<GUN>_BOLT`, Guns of
+Marz's bolt swap, `bolt_fired`): a plate over the port's front half, which is painted as the open chamber, sliding
+back over its rear half, painted as the bolt's side (build_mp7.py's port, 2026-10-30).
 Stocks: the Uzi's twin-strut metal stock folds down under the receiver with its butt plate standing behind the grip,
 so it is two nodes modelled in the gun's own space (UZI_STOCK_FOLDED / _DEPLOYED, drawn at the gun's origin, GoM's
 MAC-10 way). The Mini's and Micro's single-strut stock folds forward along the right side about a vertical hinge pin
@@ -128,6 +132,29 @@ def sight_ears(b, f, outline, gap, base, mat="metal", post=None, drum=None):
         (dl, dh, dr) = drum
         dy, dz = f.P(dl, dh)
         b.lathe("x", (0, dy, dz), [(-gap, 0), (-gap, dr), (gap, dr), (gap, 0)], seg=14, mat="dark")
+
+
+def carrier(kind, name):
+    """The bolt's side in the right ejection port's front half (bolt_lock); bolt_fired slides it back over the
+    port's rear half. A plate 0.35 mm proud of the receiver's right face (-X upright), reaching 0.4 mm into it."""
+    s = SPEC[kind]
+    f = s["frame"]
+    La, Lb, Ha, Hb = port_of(kind)
+    b = kit.Builder()
+    ya, yb = sorted((f.y(La + 0.5), f.y((La + Lb) / 2.0 - 0.2)))
+    b.box(-(s["w"] + 0.35), -(s["w"] - 0.4), ya, yb, f.z(Ha + 0.5), f.z(Hb - 0.5), mat="metal", bevel=0.1)
+    return b.to_object(name)
+
+
+def port_of(kind):
+    """The right ejection port's opening (L, L, H, H): the painted port's rounded rectangle."""
+    La, Lb, Ha, Hb = SPEC[kind]["port"]
+    return La, Lb, Ha + 2.0, Hb - 2.0
+
+
+def carrier_travel(kind):
+    La, Lb, _, _ = port_of(kind)
+    return (Lb - La) / 2.0 - 0.5
 
 
 def knob(f, L, H_base, H_top, r, name):
@@ -450,9 +477,18 @@ def paint_gun(maps, kind, col):
     La, Lb, Ha, Hb = s["port"]
     col[rec & left & rounded_rect(L, H, La, Lb, Ha, Hb, 2.0)] *= 0.62
     col[rec & left & rounded_rect(L, H, La - 1.2, Lb + 1.2, Hb, Hb + 1.0, 0.4)] += 14
-    port = rec & right & rounded_rect(L, H, La, Lb, Ha + 2.0, Hb - 2.0, 2.0)
-    col[port] = col[port] * 0.2 + 10
-    col[port & (np.abs(H - (Ha + Hb) / 2.0) < (Hb - Ha) * 0.22)] += 30                     # the bolt's side
+    pLa, pLb, pHa, pHb = port_of(kind)
+    port = rec & right & rounded_rect(L, H, pLa, pLb, pHa, pHb, 2.0)
+    split = (pLa + pLb) / 2.0
+    # the open chamber in the port's front half (the <GUN>_BOLT plate covers it while the bolt is forward), the bolt's
+    # grooved steel side in the rear half
+    chamber = port & (L < split)
+    col[chamber] = col[chamber] * 0.2 + 10
+    side_ = port & ~chamber
+    col[side_] = np.array(BASE["metal"]) * 1.45
+    mid = (pHa + pHb) / 2.0
+    col[side_ & ((np.abs(H - mid + 3.0) < 0.5) | (np.abs(H - mid - 3.0) < 0.5))] *= 0.6
+    col[side_ & (L < split + 0.8)] *= 0.5
     # the cocking knob's slot in the top cover, from the knob back by its travel (the knob's neck rides in it)
     kL, kr = s["knob"]
     half = max(kr * 0.5, 2.5) + 0.5
@@ -512,6 +548,19 @@ def paint_knob(maps, kind, col):
     knurl(col, side & (np.hypot(x, y - yk) > SPEC[kind]["knob"][1] - 0.8), np.arctan2(x, y - yk), 12.0)
 
 
+def paint_carrier(maps, kind, col):
+    """The bolt's side in the port: its front edge and the port's two grooves."""
+    s = SPEC[kind]
+    f = s["frame"]
+    p, n = maps["pos"], maps["nrm"]
+    L, H = f.L0 - p[..., 1], p[..., 2] + f.H0
+    face = (n[..., 0] < -0.7) & (np.abs(p[..., 0]) > s["w"] + 0.2)
+    pLa, _, pHa, pHb = port_of(kind)
+    mid = (pHa + pHb) / 2.0
+    col[face & ((np.abs(H - mid + 3.0) < 0.5) | (np.abs(H - mid - 3.0) < 0.5))] *= 0.6
+    col[face & (L < pLa + 2.0)] *= 0.55
+
+
 def paint(maps, kind):
     p, mat = maps["pos"], maps["mat"]
     col = np.zeros(p.shape, np.float32)
@@ -522,6 +571,8 @@ def paint(maps, kind):
         paint_gun(maps, gun, col)
     elif part == "knob":
         paint_knob(maps, gun, col)
+    elif part == "carrier":
+        paint_carrier(maps, gun, col)
     elif part == "mag":
         n = maps["nrm"]
         x, z = p[..., 0], p[..., 2]
@@ -573,15 +624,20 @@ def points(kind, bounds):
         # the barrel nut's front face: the 9x19mm SMG mount device and the Mk9 start here, along +Y
         "canon": {"offset": f.gp(canon_L, f.bore), "rotate": ZERO},
         "magazine": {"offset": f.gp(*mag), "rotate": ZERO},
-        # the knob pulled back by its travel (GoM's bolt swap, Animations.lua)
-        "bolt_fired": {"offset": [0.0, round(-SPEC[kind]["travel"] * K, 4), 0.0], "rotate": ZERO},
+        # the bolt in the ejection port, back (GoM's bolt swap, Animations.lua: each shot, held when empty)
+        "bolt_fired": {"offset": [0.0, round(-carrier_travel(kind) * K, 4), 0.0], "rotate": ZERO},
+        # the cocking knob pulled back by its travel, only while racked (shared/GunsOfTien/ChargingHandle.lua)
+        "handle_back": {"offset": [0.0, round(-SPEC[kind]["travel"] * K, 4), 0.0], "rotate": ZERO},
     }
     notes = {
         "canon": "the barrel nut's front face (%.0f mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and "
                  "Mk9_Suppressor start here" % canon_L,
         "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's "
                     "base 22 mm under the grip",
-        "bolt_fired": "the cocking knob pulled back %.0f mm real along its top cover slot" % SPEC[kind]["travel"],
+        "bolt_fired": "%s_BOLT (the bolt in the ejection port) back %.1f mm real: each shot and held open when "
+                      "empty (GoM's Bolt_Fired)" % (kind, carrier_travel(kind)),
+        "handle_back": "%s_HANDLE (the cocking knob) pulled back %.0f mm real along its top cover slot, only while "
+                       "racked; IMI's knob does not reciprocate" % (kind, SPEC[kind]["travel"]),
     }
     if kind == "UZI":
         pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]}  # every GoM rifle's, scaled
@@ -626,10 +682,12 @@ def main():
     os.makedirs(TEX_DIR, exist_ok=True)
 
     guns = {
-        "UZI": [uzi_body(), knob(UZI, 187.5, 204.0, 220.5, 9.5, "UZI_BOLT"), uzi_stock_folded(),
-                uzi_stock_deployed()],
-        "MINIUZI": [mini_body(), knob(MINI, 161.5, 178.0, 192.0, 9.5, "MINIUZI_BOLT"), mini_stock()],
-        "MICROUZI": [micro_body(), knob(MICRO, 93.0, 164.5, 180.0, 5.0, "MICROUZI_BOLT"), micro_stock()],
+        "UZI": [uzi_body(), carrier("UZI", "UZI_BOLT"), knob(UZI, 187.5, 204.0, 220.5, 9.5, "UZI_HANDLE"),
+                uzi_stock_folded(), uzi_stock_deployed()],
+        "MINIUZI": [mini_body(), carrier("MINIUZI", "MINIUZI_BOLT"),
+                    knob(MINI, 161.5, 178.0, 192.0, 9.5, "MINIUZI_HANDLE"), mini_stock()],
+        "MICROUZI": [micro_body(), carrier("MICROUZI", "MICROUZI_BOLT"),
+                     knob(MICRO, 93.0, 164.5, 180.0, 5.0, "MICROUZI_HANDLE"), micro_stock()],
     }
     mags = [build_magazine(r) for r in MAG_LEN]
     for objs in guns.values():
@@ -639,10 +697,11 @@ def main():
 
     all_points = {}
     for kind, objs in guns.items():
-        body, bolt = objs[0], objs[1]
-        stocks = objs[2:]
-        maps = [bake(body, [body, bolt], 256), bake(bolt, [body, bolt], 256)]
-        kinds = [(kind, "body"), (kind, "knob")]
+        body, bolt, handle = objs[0], objs[1], objs[2]
+        stocks = objs[3:]
+        # the bolt is baked with the body only (it moves, so the knob's shadow would not stay on it)
+        maps = [bake(body, [body, handle], 256), bake(bolt, [body, bolt], 256), bake(handle, [body, handle], 256)]
+        kinds = [(kind, "body"), (kind, "carrier"), (kind, "knob")]
         for st in stocks:
             ctx = [st, body] if kind == "UZI" and st.name.endswith("FOLDED") else [st]
             maps.append(bake(st, ctx, 256))
@@ -653,6 +712,8 @@ def main():
             for o in objs:
                 o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
         bounds = {o.name: kit.bounds_of(o) for o in objs}
+        bounds[kind + "_BOLT_fired"] = kit.bounds_of(bolt, (0, -carrier_travel(kind) * K, 0))
+        bounds[kind + "_HANDLE_back"] = kit.bounds_of(handle, (0, -SPEC[kind]["travel"] * K, 0))
         pts = points(kind, bounds)
         if handgun:
             bounds[kind + "_STOCK_folded"] = kit.bounds_at(stocks[0], pts["stock_folded"])

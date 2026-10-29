@@ -119,7 +119,7 @@ def main():
     sc.camera = cam
 
     objs = load(FIRE, os.path.join(TEX, "UMP9.png"))
-    body, bolt = objs["UMP_BODY"], objs["UMP_BOLT"]
+    body, bolt, handle = objs["UMP_BODY"], objs["UMP_BOLT"], objs["UMP_HANDLE"]
     stock = load(PARTS, os.path.join(TEX, "UMP_STOCK.png"), keep="UMP_STOCK")["UMP_STOCK"]
     mags = {n: load(MAGS, os.path.join(TEX, n + ".png"), keep=n)[n] for n in MAG_NAMES}
     g_parts = {}
@@ -139,10 +139,12 @@ def main():
     def state(gun, mag, folded=False, extra=()):
         retexture(body, os.path.join(TEX, gun + ".png"))
         retexture(bolt, os.path.join(TEX, gun + ".png"))
+        retexture(handle, os.path.join(TEX, gun + ".png"))
         place(body)
         place(bolt)
+        place(handle)
         place(stock, p["stock_folded"] if folded else p["stock"])
-        shown = [body, bolt, stock]
+        shown = [body, bolt, handle, stock]
         if mag:
             place(mags[mag], p["magazine"])
             shown.append(mags[mag])

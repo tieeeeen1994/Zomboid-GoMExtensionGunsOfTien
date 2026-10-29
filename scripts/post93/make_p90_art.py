@@ -37,7 +37,7 @@ OUTLINE = json.load(open(os.path.join(HERE, "p90_reference_outline.json")))
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx")
-NAMES = {FBX_GUN: ("P90TR_BODY", "P90TR_BOLT"), FBX_MAGS: ("57x28Magazine50_P90",),
+NAMES = {FBX_GUN: ("P90TR_BODY", "P90TR_BOLT", "P90TR_HANDLE"), FBX_MAGS: ("57x28Magazine50_P90",),
          FBX_PARTS: ("P90_Suppressor", "P90_Muzzle_Mount_Device")}
 STAND_UP = {"offset": [0.0, 0.0, 0.0], "rotate": [90.0, 0.0, 0.0]}     # magazine length from -Y to -Z
 # The P90 is held like a pistol and so modelled upside down; icons and sheets show it upright.
@@ -55,6 +55,7 @@ def our_scenes():
     mag_tex = A.img(os.path.join(TEX, "57x28Magazine50_P90.png"))
     mag = A.load_game(FBX_MAGS, "57x28Magazine50_P90")
     gun = [(A.load_game(FBX_GUN, "P90TR_BODY"), 0), (A.load_game(FBX_GUN, "P90TR_BOLT"), 0),
+           (A.load_game(FBX_GUN, "P90TR_HANDLE"), 0),
            (A.attach(mag, POINTS["magazine"]), 1)]
     out = {"P90TR": ("gun", [(A.attach(t, UPRIGHT), i) for t, i in gun], [gun_tex, mag_tex]),
            "57x28Magazine50_P90": ("magazine", [(A.attach(mag, STAND_UP), 0)], [mag_tex])}

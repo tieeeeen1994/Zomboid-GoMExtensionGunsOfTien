@@ -55,12 +55,13 @@ def gun_objs(gun):
     pts = json.load(open(os.path.join(HERE, gun.lower() + "_points.json")))
     texes = [A.img(os.path.join(TEX, gun + ".png"))]
     objs = [(A.load_game(fbx(gun), gun + "_BODY"), 0)]
+    texes.append(A.img(os.path.join(MAIN_TEX, "AUG.png")))
+    objs.append((A.load_game(A1_FBX, "AUG_BOLT"), 1))              # every AUG draws the A1's bolt carrier
     if gun == "AUGPARA":
-        objs += [(A.load_game(fbx(gun), "AUGPARA_BOLT"), 0),
+        objs += [(A.load_game(fbx(gun), "AUGPARA_HANDLE"), 0),
                  (A.attach(A.load_game(fbx(gun), "AUGPARA_FOREGRIP"), pts["foregrip_folded"]), 0)]
     else:
-        texes.append(A.img(os.path.join(MAIN_TEX, "AUG.png")))
-        objs += [(A.load_game(A1_FBX, "AUG_BOLT"), 1),
+        objs += [(A.load_game(A1_FBX, "AUG_HANDLE"), 1),
                  (A.attach(A.load_game(A1_FBX, "AUG_FOREGRIP"), pts["foregrip_folded"]), 1)]
     if gun == "AUGHBAR":
         objs.append((A.load_game(fbx(gun), "AUGHBAR_BIPOD_FOLDED"), 0))

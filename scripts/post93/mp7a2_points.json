@@ -110,6 +110,18 @@
   "bolt_fired": {
     "offset": [
       0.0,
+      -0.0148,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
       -0.0301,
       0.0
     ],
@@ -207,6 +219,19 @@
     },
     "MP7A1_BOLT": {
       "min": [
+        0.0091,
+        0.0411,
+        -0.0362
+      ],
+      "max": [
+        0.0096,
+        0.0558,
+        -0.0289
+      ],
+      "tris": 44
+    },
+    "MP7A1_HANDLE": {
+      "min": [
         -0.0131,
         -0.0633,
         -0.0446
@@ -238,9 +263,10 @@
     "turned": "parts modelled upright (magazines, GoM optics / lights / lasers) get rotate -180 0 -180, as on GoM's MP5K; render_mp7.py / make_mp7_art.py turn everything back for display",
     "magazine": "magazine meshes hang straight down from the feed lips inside the grip and curve toward the muzzle below it (30 / 40 rounds), modelled upright",
     "canon": "the nose plate's face where the barrel leaves it; MP7_Muzzle_Mount_Device and MP7_Suppressor have their origin there and extend along +Y over the flash hider",
-    "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
+    "bolt_fired": "MP7A1_BOLT (the bolt carrier in the ejection port) back 24.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+    "handle_back": "MP7A1_HANDLE (the T charging handle) pulled back 50 mm real, only while racked (GunsOfTien.ChargingHandle_Back); the real MP7 handle does not reciprocate",
     "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)",
-    "a2": "MP7A2: the A1's points with the side rails on the handguard; rail_down / foregrip under it for GoM's foregrips (upright parts, turned with the gun); bolt and stock are the A1's nodes (MP7A1_BOLT / MP7A1_STOCK)"
+    "a2": "MP7A2: the A1's points with the side rails on the handguard; rail_down / foregrip under it for GoM's foregrips (upright parts, turned with the gun); bolt carrier, handle and stock are the A1's nodes (MP7A1_BOLT / MP7A1_HANDLE / MP7A1_STOCK)"
   },
   "_extras": {
     "handgun_hold": true,

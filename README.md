@@ -53,6 +53,8 @@ Maker they can be made.
   faster; with both cuts it fits a holster. The stock, barrel and forend are kept as offcuts
 - A sawn-off gun is named and drawn for what was cut ("Mosin-Nagant Obrez", "Sawn-Off Double Barrel Pistol"), with its
   own icon
+- Guns held like a pistol (Post-93's MP7s and P90) hang the right way up on attachment slots other mods add, such as
+  Plysken Attachments Reborn's backpack slots, and sawn-off shotguns in modded holsters (sandbox option)
 
 ## M249 Light Machine Gun and belt links
 

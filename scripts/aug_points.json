@@ -26,6 +26,18 @@
   "bolt_fired": {
     "offset": [
       0.0,
+      -0.0103,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
       -0.0555,
       0.0
     ],
@@ -74,7 +86,8 @@
   "_notes": {
     "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 455, H 100)",
     "magazine": "556x45Magazine30/42_AUG, origin at their feed lips, inside the well (its mouth L 545-610)",
-    "bolt_fired": "the charging handle back 92 mm real (it rides with the bolt carrier on the A1)",
+    "bolt_fired": "AUG_BOLT (the bolt carrier in the ejection port) back 17.0 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+    "handle_back": "AUG_HANDLE (the charging handle) back 92 mm real, only while racked (GunsOfTien.ChargingHandle_Back); the AUG's handle does not reciprocate",
     "foregrip": "AUG_FOREGRIP is modelled down with its origin at the hinge pin (photo L 249, H 115); folded = the same node turned 90 degrees forward about X, lying under the barrel",
     "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / rail points (nothing fits the A1)"
   },
@@ -103,6 +116,19 @@
     },
     "AUG_BOLT": {
       "min": [
+        -0.0165,
+        -0.0424,
+        0.0087
+      ],
+      "max": [
+        -0.016,
+        -0.0323,
+        0.0157
+      ],
+      "tris": 44
+    },
+    "AUG_HANDLE": {
+      "min": [
         0.0109,
         0.0995,
         0.0241
@@ -126,6 +152,32 @@
         0.0044
       ],
       "tris": 260
+    },
+    "AUG_BOLT_fired": {
+      "min": [
+        -0.0165,
+        -0.0526,
+        0.0087
+      ],
+      "max": [
+        -0.016,
+        -0.0425,
+        0.0157
+      ],
+      "tris": 44
+    },
+    "AUG_HANDLE_back": {
+      "min": [
+        0.0109,
+        0.044,
+        0.0241
+      ],
+      "max": [
+        0.0175,
+        0.0651,
+        0.0434
+      ],
+      "tris": 136
     },
     "556x45Magazine30_AUG": {
       "min": [

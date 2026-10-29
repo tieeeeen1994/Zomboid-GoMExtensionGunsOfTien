@@ -25,8 +25,11 @@ GoM's conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z top, 
 rear-top of the pistol grip, drawn at 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, like GoM's MP5 family); held as a rifle like
 GoM's MP5 (two hands, back slot). The stock is one node modelled deployed with its origin at the hinge (its front face
 on the bore axis); `stock_folded` swings it 180 degrees about the hinge pin on the right, as H&K's folds along the
-receiver's right side. The charging handle sits at the front of its slot high on the left; `bolt_fired` is it pulled
-back HANDLE_TRAVEL along the slot, drawn by Guns of Marz's bolt swap as on its guns (2026-10-29).
+receiver's right side. The charging handle (UMP_HANDLE) sits at the front of its slot high on the left and does not
+reciprocate (user, 2026-10-30): `handle_back` pulls it back HANDLE_TRAVEL along the slot only while racked. What moves
+on each shot, and stays back when the bolt locks open after the last round, is the bolt seen through the ejection port
+on the right (UMP_BOLT, Guns of Marz's bolt swap, `bolt_fired`): a plate over the port's front half, which is painted
+as the open chamber, sliding back over its rear half, painted as the bolt's side (build_mp7.py's port, 2026-10-30).
 
 Magazines hang from `magazine` (the feed lips) with their rake built in: the UMP9's 30-round curves forward from about
 16 degrees under the receiver to 36 at its base (fitted to the photo's edges within 1 mm); the .45 magazines are straight at 18 degrees, the
@@ -144,6 +147,9 @@ SELECTOR = [(343.0, 184.0), (343.0, 188.0), (352.0, 192.5), (361.5, 190.0), (362
 SELECTOR_PIVOT = (352.0, 186.0)
 HANDLE = (65.0, 85.0, 236.5, 247.5)            # charging handle knob, L / H
 HANDLE_TRAVEL = 70.0                           # its pull, to the back of the slot (L 84-160; ~100 mm on the photo)
+PORT = (200.0, 258.0, 231.5, 246.0)            # the ejection port on the right of the upper receiver, L / H
+PORT_SPLIT = (PORT[0] + PORT[1]) / 2.0         # front half: the open chamber; rear half: the bolt's side
+CARRIER_TRAVEL = PORT_SPLIT - PORT[0] - 0.5
 
 # The folding stock, as photographed (deployed); its own frame is shifted to the hinge in build_stock().
 STOCK = [(HINGE_L, 186.4), (HINGE_L, 251.4), (442.2, 251.4), (450.5, 249.2), (477.0, 233.8), (496.2, 228.3),
@@ -206,13 +212,23 @@ def build_body():
     return b.to_object("UMP_BODY")
 
 
-def build_bolt():
-    """The charging handle on the left of the upper receiver's front, forward (it does not reciprocate)."""
+def build_carrier():
+    """The bolt's side in the ejection port's front half (bolt_lock); bolt_fired slides it back over the port's rear
+    half. A plate 0.35 mm proud of the receiver's right face (-X), reaching 0.4 mm into it."""
+    b = kit.Builder()
+    box(b, PORT[0] + 0.5, PORT_SPLIT - 0.2, PORT[2] + 0.5, PORT[3] - 0.5, -(W_UPPER + 0.35), -(W_UPPER - 0.4),
+        mat="metal", bevel=0.1)
+    return b.to_object("UMP_BOLT")
+
+
+def build_handle():
+    """The charging handle on the left of the upper receiver's front, forward (it does not reciprocate); handle_back
+    pulls it back while racked."""
     b = kit.Builder()
     La, Lb, Ha, Hb = HANDLE
     box(b, La + 3.0, Lb - 3.0, Ha + 2.5, Hb - 2.5, W_UPPER - 3.0, W_UPPER + 2.0, mat="dark", bevel=0.8)
     box(b, La, Lb, Ha, Hb, W_UPPER + 2.0, W_UPPER + 9.0, mat="dark", bevel=2.0)
-    return b.to_object("UMP_BOLT")
+    return b.to_object("UMP_HANDLE")
 
 
 def build_stock():
@@ -379,10 +395,15 @@ def paint_gun(maps, kind, col):
     col[upper & left & rounded_rect(L, H, 84.0, 160.0, 238.5, 245.5, 3.0)] = 10
     for La, Lb in ((60.0, 100.0), (120.0, 155.0)):
         col[lower & rounded_rect(L, H, La, Lb, 217.5, 223.0, 2.5)] = 9
-    # ejection port on the right of the upper receiver, over the magazine well, the bolt behind it
-    port = upper & right & rounded_rect(L, H, 200.0, 258.0, 231.5, 246.0, 2.5)
-    col[port] = col[port] * 0.2 + 10
-    col[port & (H < 240) & (L > 214) & (L < 250)] += 34                       # the bolt face
+    # ejection port on the right of the upper receiver, over the magazine well: the open chamber in its front half
+    # (UMP_BOLT covers it while the bolt is forward), the bolt's grooved steel side in the rear half
+    port = upper & right & rounded_rect(L, H, *PORT, 2.5)
+    chamber = port & (L < PORT_SPLIT)
+    col[chamber] = col[chamber] * 0.2 + 10
+    carrier = port & ~chamber
+    col[carrier] = np.array(BASE["metal"]) * 1.45
+    col[carrier & ((np.abs(H - 236.5) < 0.5) | (np.abs(H - 241.0) < 0.5))] *= 0.6
+    col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5
     col[upper & right & rounded_rect(L, H, 198.0, 260.0, 229.5, 248.0, 3.5) & ~port] *= 0.7
     # pins and screws through the receiver (the photo's), the side rails' two screws
     for cL, cH in ((193.0, 198.0), (258.0, 199.5), (271.0, 181.0), (325.0, 182.0), (345.0, 169.0), (415.0, 189.0),
@@ -437,6 +458,12 @@ def paint(maps, kind):
     left, right = n[..., 0] > 0.7, n[..., 0] < -0.7
     if kind in ("UMP9", "UMP45"):
         paint_gun(maps, kind, col)
+    elif kind == "carrier":
+        # the bolt's side in the port: its front edge and the port's two grooves
+        L, H = L0 - y, z + H0
+        face = right & (np.abs(x) > W_UPPER + 0.2)
+        col[face & ((np.abs(H - 236.5) < 0.5) | (np.abs(H - 241.0) < 0.5))] *= 0.6
+        col[face & (L < PORT[0] + 2.0)] *= 0.55
     elif kind == "stock":
         L, H = HINGE_L - y, z + BORE
         poly = (mat == MATS.index("polymer")) & side
@@ -542,7 +569,8 @@ def points(bounds):
         "rail_down": {"offset": [0.0, round(P(sum(BOTTOM_RAIL) / 2, 0)[0] * K, 4), round(bottom + 0.0055, 4)],
                       "rotate": ZERO},
         "foregrip": {"offset": [0.0, round(P(FOREGRIP_L, 0)[0] * K, 4), round(bottom + 0.003, 4)], "rotate": ZERO},
-        "bolt_fired": {"offset": [0.0, round(-HANDLE_TRAVEL * K, 4), 0.0], "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-CARRIER_TRAVEL * K, 4), 0.0], "rotate": ZERO},
+        "handle_back": {"offset": [0.0, round(-HANDLE_TRAVEL * K, 4), 0.0], "rotate": ZERO},
         "stock": {"offset": stock, "rotate": ZERO},
         # turned 180 degrees about the hinge pin: offset = stock + 2 x the pin's x
         "stock_folded": {"offset": [round(stock[0] + 2.0 * hinge_x * K, 4), stock[1], stock[2]],
@@ -556,7 +584,10 @@ def points(bounds):
         "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the "
                  "hinge: its front face on the bore axis",
         "stock_folded": "the same node turned 180 degrees about the hinge pin at x %.1f mm (the right side)" % hinge_x,
-        "bolt_fired": "the charging handle pulled back %.0f mm real along its slot" % HANDLE_TRAVEL,
+        "bolt_fired": "UMP_BOLT (the bolt in the ejection port) back %.1f mm real: each shot and locked open after "
+                      "the last round (GoM's Bolt_Fired)" % CARRIER_TRAVEL,
+        "handle_back": "UMP_HANDLE (the charging handle) pulled back %.0f mm real along its slot, only while racked; "
+                       "H&K's handle does not reciprocate" % HANDLE_TRAVEL,
         "canon": "the barrel collar's front face, %.1f mm behind the muzzle: GoM's .45 mount device and P45 suppressor "
                  "(UMP45 only)" % CANON_L,
     }
@@ -577,22 +608,25 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, bolt = build_body(), build_bolt()
+    body, bolt, handle = build_body(), build_carrier(), build_handle()
     stock = build_stock()
     mags = [build_magazine(name) for name in MAGS]
-    kit.unwrap([body, bolt], 0.005)
+    kit.unwrap([body, bolt, handle], 0.005)
     for o in [stock] + mags:
         kit.unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
-    gun_maps = [bake(body, [body, bolt], 256), bake(bolt, [body, bolt], 256)]
+    # the bolt is baked with the body only (it moves, so the handle's shadow would not stay on it)
+    gun_maps = [bake(body, [body, handle], 256), bake(bolt, [body, bolt], 256), bake(handle, [body, handle], 256)]
     for gun in ("UMP9", "UMP45"):
-        texture(gun_maps, [gun, gun], 256, os.path.join(TEX_DIR, gun + ".png"))
+        texture(gun_maps, [gun, "carrier", gun], 256, os.path.join(TEX_DIR, gun + ".png"))
     texture([bake(stock, [stock], 128)], ["stock"], 128, os.path.join(TEX_DIR, "UMP_STOCK.png"))
     for m in mags:
         texture([bake(m, [m], 128)], [m.name], 128, os.path.join(TEX_DIR, m.name + ".png"))
 
-    bounds = {o.name: kit.bounds_of(o) for o in [body, bolt, stock] + mags}
+    bounds = {o.name: kit.bounds_of(o) for o in [body, bolt, handle, stock] + mags}
+    bounds["UMP_BOLT_fired"] = kit.bounds_of(bolt, (0, -CARRIER_TRAVEL * K, 0))
+    bounds["UMP_HANDLE_back"] = kit.bounds_of(handle, (0, -HANDLE_TRAVEL * K, 0))
     pts = points(bounds)
     bounds["UMP_STOCK_deployed"] = kit.bounds_at(stock, pts["stock"])
     bounds["UMP_STOCK_folded"] = kit.bounds_at(stock, pts["stock_folded"])
@@ -601,7 +635,7 @@ def main():
         fh.write("\n")
     for name, b in bounds.items():
         print("UMP %-28s tris %5d  min %s  max %s" % (name, b["tris"], b["min"], b["max"]))
-    kit.export([body, bolt], FBX["gun"])
+    kit.export([body, bolt, handle], FBX["gun"])
     kit.export(mags, FBX["mags"])
     kit.export([stock], FBX["parts"])
 

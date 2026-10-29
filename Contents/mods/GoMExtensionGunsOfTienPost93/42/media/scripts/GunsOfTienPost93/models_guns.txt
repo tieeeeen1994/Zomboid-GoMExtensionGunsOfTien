@@ -14,7 +14,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = 0.0166 0.1085 -0.0164, rotate = -180.0000 0.0000 -180.0000, }
         attachment light_left { offset = -0.0155 0.1085 -0.0172, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1455 -0.0172, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0148 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.1345 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1174 0.1216, rotate = -90.0000 0.0000 0.0000, }
         attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
@@ -35,7 +36,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = 0.0166 0.1085 -0.0164, rotate = -180.0000 0.0000 -180.0000, }
         attachment light_left { offset = -0.0155 0.1085 -0.0172, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1455 -0.0172, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0148 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.1345 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1174 0.1216, rotate = -90.0000 0.0000 0.0000, }
         attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
@@ -56,7 +58,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = 0.0163 0.0998 -0.0152, rotate = -180.0000 0.0000 -180.0000, }
         attachment light_left { offset = -0.0152 0.0998 -0.0160, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1455 -0.0172, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0148 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.1345 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_down { offset = 0.0000 0.0962 -0.0043, rotate = -180.0000 0.0000 -180.0000, }
         attachment foregrip { offset = 0.0000 0.1031 -0.0018, rotate = -180.0000 0.0000 -180.0000, }
@@ -78,7 +81,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = 0.0163 0.0998 -0.0152, rotate = -180.0000 0.0000 -180.0000, }
         attachment light_left { offset = -0.0152 0.0998 -0.0160, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1455 -0.0172, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0148 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0301 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.1345 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_down { offset = 0.0000 0.0962 -0.0043, rotate = -180.0000 0.0000 -180.0000, }
         attachment foregrip { offset = 0.0000 0.1031 -0.0018, rotate = -180.0000 0.0000 -180.0000, }
@@ -100,7 +104,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = 0.0187 0.0929 -0.0486, rotate = -180.0000 0.0000 -180.0000, }
         attachment light_left { offset = -0.0176 0.0929 -0.0494, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1170 -0.0119, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0362 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0099 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0362 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
         attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
     }
@@ -201,7 +206,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = -0.0172 0.1740 0.0233, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0161 0.1740 0.0241, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.2240 0.0234, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0172 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0000 -0.0283 0.0234, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = -0.0259 -0.0283 0.0234, rotate = 0.0000 0.0000 180.0000, }
         attachment rail_down { offset = 0.0000 0.1722 0.0108, rotate = 0.0000 0.0000 0.0000, }
@@ -222,7 +228,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = -0.0172 0.1740 0.0233, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0161 0.1740 0.0241, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.2240 0.0234, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0172 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0000 -0.0283 0.0234, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = -0.0259 -0.0283 0.0234, rotate = 0.0000 0.0000 180.0000, }
         attachment rail_down { offset = 0.0000 0.1722 0.0108, rotate = 0.0000 0.0000 0.0000, }
@@ -260,6 +267,12 @@ module GunsOfTienPost93 {
         cullFace = None,
     }
 
+    model UMP_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_UMP|UMP_HANDLE,
+        texture  = weapons/GunsOfTienPost93/UMP9,
+        cullFace = None,
+    }
+
     model UMP_STOCK {
         mesh     = weapons/parts/GunsOfTienPost93_UMP_parts|UMP_STOCK,
         texture  = weapons/GunsOfTienPost93/UMP_STOCK,
@@ -268,6 +281,12 @@ module GunsOfTienPost93 {
 
     model MP7A1_BOLT {
         mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_BOLT,
+        texture  = weapons/GunsOfTienPost93/MP7A1,
+        cullFace = None,
+    }
+
+    model MP7A1_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_MP7A1|MP7A1_HANDLE,
         texture  = weapons/GunsOfTienPost93/MP7A1,
         cullFace = None,
     }
@@ -286,6 +305,12 @@ module GunsOfTienPost93 {
 
     model P90TR_BOLT {
         mesh     = weapons/firearms/GunsOfTienPost93_P90TR|P90TR_BOLT,
+        texture  = weapons/GunsOfTienPost93/P90TR,
+        cullFace = None,
+    }
+
+    model P90TR_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_P90TR|P90TR_HANDLE,
         texture  = weapons/GunsOfTienPost93/P90TR,
         cullFace = None,
     }

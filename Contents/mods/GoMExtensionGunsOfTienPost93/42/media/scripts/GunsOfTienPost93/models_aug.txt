@@ -14,7 +14,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.2557 0.0262, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0103 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
     }
@@ -33,7 +34,8 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.1857 0.0262, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0103 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
     }
@@ -51,7 +53,8 @@ module GunsOfTienPost93 {
         attachment rail_right { offset = -0.0093 0.0745 0.0259, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0103 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
         attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
@@ -63,8 +66,8 @@ module GunsOfTienPost93 {
         cullFace = None,
     }
 
-    model AUGPARA_BOLT {
-        mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_BOLT,
+    model AUGPARA_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_HANDLE,
         texture  = weapons/GunsOfTienPost93/AUGPARA,
         cullFace = None,
     }

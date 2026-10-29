@@ -134,6 +134,18 @@
   "bolt_fired": {
     "offset": [
       0.0,
+      -0.0172,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
       -0.0422,
       0.0
     ],
@@ -184,7 +196,8 @@
     "magazine": "the UMP9's and UMP45's magazines hang from here (their feed lips), their rake built in",
     "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the hinge: its front face on the bore axis",
     "stock_folded": "the same node turned 180 degrees about the hinge pin at x -21.5 mm (the right side)",
-    "bolt_fired": "the charging handle pulled back 70 mm real along its slot",
+    "bolt_fired": "UMP_BOLT (the bolt in the ejection port) back 28.5 mm real: each shot and locked open after the last round (GoM's Bolt_Fired)",
+    "handle_back": "UMP_HANDLE (the charging handle) pulled back 70 mm real along its slot, only while racked; H&K's handle does not reciprocate",
     "canon": "the barrel collar's front face, 21.5 mm behind the muzzle: GoM's .45 mount device and P45 suppressor (UMP45 only)"
   },
   "_extras": {
@@ -212,6 +225,19 @@
       "tris": 2458
     },
     "UMP_BOLT": {
+      "min": [
+        -0.0129,
+        0.099,
+        0.0368
+      ],
+      "max": [
+        -0.0124,
+        0.1161,
+        0.0449
+      ],
+      "tris": 44
+    },
+    "UMP_HANDLE": {
       "min": [
         0.0109,
         0.1857,
@@ -288,6 +314,32 @@
         0.0035
       ],
       "tris": 326
+    },
+    "UMP_BOLT_fired": {
+      "min": [
+        -0.0129,
+        0.0818,
+        0.0368
+      ],
+      "max": [
+        -0.0124,
+        0.0989,
+        0.0449
+      ],
+      "tris": 44
+    },
+    "UMP_HANDLE_back": {
+      "min": [
+        0.0109,
+        0.1435,
+        0.0395
+      ],
+      "max": [
+        0.0181,
+        0.1556,
+        0.0461
+      ],
+      "tris": 88
     },
     "UMP_STOCK_deployed": {
       "min": [

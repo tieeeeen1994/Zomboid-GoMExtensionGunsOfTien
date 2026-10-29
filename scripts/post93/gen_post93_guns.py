@@ -74,7 +74,7 @@ def gun_model(model, file, node_body, points, extra_points):
     out += attachment('muzzle', points['muzzle'], rot(points['muzzle']) or [-90, 0, -180])
     out += attachment('world', points.get('world', [0.02, 0.13, 0]), rot(points.get('world', {})) or [180, 0, 180])
     for name in ['magazine', 'scope', 'rail_up', 'rail_left', 'rail_right', 'laser_right', 'light_left', 'canon',
-                 'bolt_fired'] + extra_points:
+                 'bolt_fired', 'handle_back'] + extra_points:
         if name in points:
             out += attachment(name, points[name])
     return out + "    }\n"
@@ -108,7 +108,8 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag'])
                .replace('    model MP7A1 {', '    model MP7A1_1H {', 1))
-    # the MP7A2's body and texture are its own; bolt and stock are the A1's models (MP7A1_BOLT / MP7A1_STOCK)
+    # the MP7A2's body and texture are its own; bolt carrier, handle and stock are the A1's models (MP7A1_BOLT /
+    # MP7A1_HANDLE / MP7A1_STOCK)
     out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
                          ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
     out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
@@ -140,11 +141,15 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
             ('SCAR_STOCK', 'parts/GunsOfTienPost93_SCAR_parts', 'SCAR_STOCK', 'SCAR_STOCK'),
             # the charging handle's texels are the same in both UMP textures
             ('UMP_BOLT', 'firearms/GunsOfTienPost93_UMP', 'UMP_BOLT', 'UMP9'),
+            ('UMP_HANDLE', 'firearms/GunsOfTienPost93_UMP', 'UMP_HANDLE', 'UMP9'),
             ('UMP_STOCK', 'parts/GunsOfTienPost93_UMP_parts', 'UMP_STOCK', 'UMP_STOCK'),
+            # the MP7's bolt carrier in its ejection port, and its T charging handle (moved only while racked)
             ('MP7A1_BOLT', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_BOLT', 'MP7A1'),
+            ('MP7A1_HANDLE', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_HANDLE', 'MP7A1'),
             ('MP7A1_STOCK', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_STOCK', 'MP7A1'),
             ('MP7A1_FOREGRIP', 'firearms/GunsOfTienPost93_MP7A1', 'MP7A1_FOREGRIP', 'MP7A1'),
-            ('P90TR_BOLT', 'firearms/GunsOfTienPost93_P90TR', 'P90TR_BOLT', 'P90TR')]:
+            ('P90TR_BOLT', 'firearms/GunsOfTienPost93_P90TR', 'P90TR_BOLT', 'P90TR'),
+            ('P90TR_HANDLE', 'firearms/GunsOfTienPost93_P90TR', 'P90TR_HANDLE', 'P90TR')]:
         out.append(f"""
     model {model} {{
         mesh     = weapons/{file}|{node},
@@ -177,9 +182,23 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     write(f'scripts/{M}/models_guns.txt', ''.join(out))
 
 
+# Guns whose charging handle does not reciprocate (user, 2026-10-30; all of ours but the SCARs): GoM's Bolt part
+# draws the bolt carrier, and the main mod's ChargingHandle part (shared/GunsOfTien/ChargingHandle.lua) the handle,
+# back only while racked. The UMPs and AUGs add theirs in ump_parts() / aug3_parts().
+HANDLE_GUNS = {'MP7A1', 'P90TR'}
+
+
+def handle_lines(model):
+    w = "        ModelWeaponPart              = "
+    return [f"{w}GunsOfTien.ChargingHandle_Forward {model} handle handle,",
+            f"{w}GunsOfTien.ChargingHandle_Back {model} handle_back handle_back,"]
+
+
 def model_parts(gun, mags, rails, suppressor, mount, stock, foregrip=False):
     lines = [f"        ModelWeaponPart              = MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
              f"        ModelWeaponPart              = MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
+    if gun in HANDLE_GUNS:
+        lines += handle_lines(f"{M}.{gun}_HANDLE")
     if stock:
         lines += [f"        ModelWeaponPart              = {M}.{gun}_Integrated_Stock_Folded {M}.{gun}_STOCK stock_folded stock_folded,",
                   f"        ModelWeaponPart              = {M}.{gun}_Integrated_Stock_Deployed {M}.{gun}_STOCK stock stock,"]
@@ -905,6 +924,8 @@ def ump_parts(gun):
     w = "        ModelWeaponPart              = "
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.UMP_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {M}.UMP_BOLT bolt_fired bolt_fired,",
+             f"{w}GunsOfTien.ChargingHandle_Forward {M}.UMP_HANDLE handle handle,",
+             f"{w}GunsOfTien.ChargingHandle_Back {M}.UMP_HANDLE handle_back handle_back,",
              f"{w}{M}.UMP_Integrated_Stock_Folded {M}.UMP_STOCK stock_folded stock_folded,",
              f"{w}{M}.UMP_Integrated_Stock_Deployed {M}.UMP_STOCK stock stock,"]
     lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m in UMP_GUN_MAGS[gun]]
@@ -1117,17 +1138,19 @@ AUG3_STATS = {
 
 
 def aug3_parts(gun):
-    """Every A3-receiver AUG: the charging handle, the A1's folding grip parts (the Para draws its own sand copies),
-    its magazines, GoM's optics on the integral top rail, lasers on the integral right rail, lights on GoM's optional
-    left rail drawn as our short AUG_RAIL_LEFT; the A3 GoM's AR muzzle family, the Para the main mod's 9x19mm SMG
-    mount and Mk9 (their `_GoT` models), the HBAR its integrated bipod and no muzzle parts."""
+    """Every A3-receiver AUG: the A1's bolt carrier, the charging handle (moved only while racked), the A1's folding
+    grip parts (the Para draws its own sand handle and grip), its magazines, GoM's optics on the integral top rail,
+    lasers on the integral right rail, lights on GoM's optional left rail drawn as our short AUG_RAIL_LEFT; the A3
+    GoM's AR muzzle family, the Para the main mod's 9x19mm SMG mount and Mk9 (their `_GoT` models), the HBAR its
+    integrated bipod and no muzzle parts."""
     w = "        ModelWeaponPart              = "
-    bolt = f'{M}.AUGPARA_BOLT' if gun == 'AUGPARA' else 'GunsOfTien.AUG_BOLT'
+    handle = f'{M}.AUGPARA_HANDLE' if gun == 'AUGPARA' else 'GunsOfTien.AUG_HANDLE'
     grip = f'{M}.AUGPARA_FOREGRIP' if gun == 'AUGPARA' else 'GunsOfTien.AUG_FOREGRIP'
-    lines = [f"{w}MarzGuns.Bolt_Lock {bolt} bolt_lock bolt_lock,",
-             f"{w}MarzGuns.Bolt_Fired {bolt} bolt_fired bolt_fired,",
-             f"{w}GunsOfTien.AUG_Integrated_Foregrip_Folded {grip} foregrip_folded foregrip_folded,",
-             f"{w}GunsOfTien.AUG_Integrated_Foregrip_Deployed {grip} foregrip_deployed foregrip_deployed,"]
+    lines = [f"{w}MarzGuns.Bolt_Lock GunsOfTien.AUG_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired GunsOfTien.AUG_BOLT bolt_fired bolt_fired,"]
+    lines += handle_lines(handle)
+    lines += [f"{w}GunsOfTien.AUG_Integrated_Foregrip_Folded {grip} foregrip_folded foregrip_folded,",
+              f"{w}GunsOfTien.AUG_Integrated_Foregrip_Deployed {grip} foregrip_deployed foregrip_deployed,"]
     lines += [f"{w}{m} {m} magazine magazine," for m in AUG3_MAGS[gun]]
     if gun == 'AUGA3':
         lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
@@ -1247,7 +1270,7 @@ def augs():
         extra = ['foregrip_deployed', 'foregrip_folded'] + (['integrated_bipod'] if gun == 'AUGHBAR' else [])
         out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun], extra))
     for model, file, tex in [('AUG_RAIL_LEFT', 'GunsOfTienPost93_AUGA3', 'AUGA3'),
-                             ('AUGPARA_BOLT', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
+                             ('AUGPARA_HANDLE', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
                              ('AUGPARA_FOREGRIP', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
                              ('AUGHBAR_BIPOD_FOLDED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR'),
                              ('AUGHBAR_BIPOD_DEPLOYED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR')]:

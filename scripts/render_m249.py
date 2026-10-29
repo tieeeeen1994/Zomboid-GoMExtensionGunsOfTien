@@ -108,7 +108,9 @@ def main():
                         keep="556x45Magazine30_STANAG").get("556x45Magazine30_STANAG")
 
     def state(feed="box", cover_open=False, deployed=False, rounds=9):
-        objs = [gun["M249_BODY"], gun["M249_COVER"]]
+        objs = [gun["M249_BODY"], gun["M249_COVER"], gun["M249_BOLT"], gun["M249_HANDLE"]]
+        place(gun["M249_BOLT"])
+        place(gun["M249_HANDLE"])
         place(gun["M249_BODY"])
         place(gun["M249_COVER"], PTS["cover_open" if cover_open else "cover"])
         bip = gun["M249_BIPOD_DEPLOYED" if deployed else "M249_BIPOD_FOLDED"]

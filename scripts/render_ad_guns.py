@@ -88,6 +88,7 @@ MAIN_AUG_MAGS = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_
 POST_FIRE = os.path.join(MEDIA, "models_X/weapons/firearms")
 POST_AUG_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_AUG_magazines.fbx")
 A1_BOLT_GRIP = [(MAIN_AUG, "AUG_BOLT", os.path.join(MAIN_TEX, "AUG.png"), None),
+                (MAIN_AUG, "AUG_HANDLE", os.path.join(MAIN_TEX, "AUG.png"), None),
                 (MAIN_AUG, "AUG_FOREGRIP", os.path.join(MAIN_TEX, "AUG.png"), "foregrip_folded")]
 
 # preview13, the Obrez: GoM's Mosin-Nagant whole and sawn off (our MOSIN_BODY_OBREZ), GoM's bolt at its origin,
@@ -135,7 +136,7 @@ GUNS = {
     "ump45": {
         "rifle": True, "points": "post93/ump_points.json",
         "fbx": "GunsOfTienPost93_UMP", "tex": "UMP45",
-        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None), ("UMP_HANDLE", None),
                   ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
         "mag": ("GunsOfTienPost93_UMP_magazines", "45Magazine25_UMP", "magazine"),
         "parts": [],
@@ -146,7 +147,7 @@ GUNS = {
     "ump9": {
         "rifle": True, "points": "post93/ump_points.json",
         "fbx": "GunsOfTienPost93_UMP", "tex": "UMP9",
-        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None), ("UMP_HANDLE", None),
                   ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
         "mag": ("GunsOfTienPost93_UMP_magazines", "9x19Magazine30_UMP", "magazine"),
         "parts": [],
@@ -159,7 +160,7 @@ GUNS = {
     "ump9_mk9": {
         "rifle": True, "points": "post93/ump_points.json",
         "fbx": "GunsOfTienPost93_UMP", "tex": "UMP9",
-        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None), ("UMP_HANDLE", None),
                   ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
         "mag": ("GunsOfTienPost93_UMP_magazines", "9x19Magazine30_UMP", "magazine"),
         "parts": [], "gom": [], "main_parts": ["SMG9_Muzzle_Mount_Device", "Mk9_Suppressor"],
@@ -168,7 +169,7 @@ GUNS = {
     "ump45_p45": {
         "rifle": True, "points": "post93/ump_points.json",
         "fbx": "GunsOfTienPost93_UMP", "tex": "UMP45",
-        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None),
+        "nodes": [("UMP_BODY", None), ("UMP_BOLT", None), ("UMP_HANDLE", None),
                   ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
         "mag": ("GunsOfTienPost93_UMP_magazines", "45Magazine25_UMP", "magazine"),
         "parts": [], "gom": [("muzzles", "Muzzle_Mount_Device", "canon"), ("suppressors", "P45_Suppressor", "canon")],
@@ -201,8 +202,9 @@ GUNS = {
     "augpara": {
         "points": "post93/augpara_points.json",
         "assembled": [(os.path.join(POST_FIRE, "GunsOfTienPost93_AUGPARA.fbx"), node, os.path.join(TEX, "AUGPARA.png"),
-                       point) for node, point in (("AUGPARA_BODY", None), ("AUGPARA_BOLT", None),
+                       point) for node, point in (("AUGPARA_BODY", None), ("AUGPARA_HANDLE", None),
                                                   ("AUGPARA_FOREGRIP", "foregrip_folded"))] + [
+            (MAIN_AUG, "AUG_BOLT", os.path.join(MAIN_TEX, "AUG.png"), None)] + [
             (POST_AUG_MAGS, "9x19Magazine32_AUG", os.path.join(TEX, "9x19Magazine32_AUG.png"), "magazine")],
         "view": AUG_VIEW, "scale": AUG_SCALE, "size": AUG_SIZE,
     },
@@ -227,7 +229,7 @@ GUNS = {
     "mp7": {
         "points": "post93/mp7_points.json",
         "fbx": "GunsOfTienPost93_MP7A1", "tex": "MP7A1",
-        "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_STOCK", "stock_folded"),
+        "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_HANDLE", None), ("MP7A1_STOCK", "stock_folded"),
                   ("MP7A1_FOREGRIP", None)],
         "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine30_MP7", "magazine"),
         "parts": [("GunsOfTienPost93_MP7_parts", "MP7_Muzzle_Mount_Device"),
@@ -240,6 +242,7 @@ GUNS = {
         "points": "post93/mp7a2_points.json",
         "fbx": "GunsOfTienPost93_MP7A2", "tex": "MP7A2",
         "nodes": [("MP7A2_BODY", None), ("MP7A1_BOLT", None, "GunsOfTienPost93_MP7A1", "MP7A1"),
+                  ("MP7A1_HANDLE", None, "GunsOfTienPost93_MP7A1", "MP7A1"),
                   ("MP7A1_STOCK", None, "GunsOfTienPost93_MP7A1", "MP7A1")],
         "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine40_MP7", "magazine"),
         "parts": [("GunsOfTienPost93_MP7_parts", "MP7_Muzzle_Mount_Device"),
@@ -251,7 +254,7 @@ GUNS = {
     "p90": {
         "points": "post93/p90_points.json",
         "fbx": "GunsOfTienPost93_P90TR", "tex": "P90TR",
-        "nodes": [("P90TR_BODY", None), ("P90TR_BOLT", None)],
+        "nodes": [("P90TR_BODY", None), ("P90TR_BOLT", None), ("P90TR_HANDLE", None)],
         "mag": ("GunsOfTienPost93_P90_magazines", "57x28Magazine50_P90", "magazine"),
         "parts": [("GunsOfTienPost93_P90_parts", "P90_Muzzle_Mount_Device"),
                   ("GunsOfTienPost93_P90_parts", "P90_Suppressor")],
@@ -374,7 +377,7 @@ def uzi(gun, folded, mag):
     else:
         stock = (gun + "_STOCK", "stock_folded" if folded else "stock")
     objs = []
-    for node, point in ((gun + "_BODY", None), (gun + "_BOLT", None), stock):
+    for node, point in ((gun + "_BODY", None), (gun + "_BOLT", None), (gun + "_HANDLE", None), stock):
         o = load(fbx, tex, node)
         place(o, pts[point] if point else None, up)
         objs.append(o)

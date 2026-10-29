@@ -4,8 +4,10 @@ shared geometry, bake, paint-helper and FBX code build_p90.py imports.
     blender -b --factory-startup -P scripts/post93/build_mp7.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx        MP7A1_BODY, MP7A1_BOLT, MP7A1_STOCK, MP7A1_FOREGRIP
-    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx        MP7A2_BODY (bolt and stock: the A1's nodes)
+    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A1.fbx        MP7A1_BODY, MP7A1_BOLT (the bolt carrier in the
+                                                                  ejection port), MP7A1_HANDLE (the T charging
+                                                                  handle), MP7A1_STOCK, MP7A1_FOREGRIP
+    P/models_X/weapons/firearms/GunsOfTienPost93_MP7A2.fbx        MP7A2_BODY (carrier, handle, stock: the A1's nodes)
     P/models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx  46x30Magazine20/30/40/60_MP7
     P/models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx       MP7_Suppressor, MP7_Muzzle_Mount_Device
     P/textures/weapons/GunsOfTienPost93/<name>.png                MP7A1 (256, shared by the four gun nodes), MP7A2,
@@ -74,7 +76,14 @@ RAIL_BASE_H, RAIL_TOP_H = 166.0, 169.6   # top rail mounting face, crossbar tops
 SIDE_RAIL_L, SIDE_RAIL_H = (78.0, 140.0), 120.0
 SIDE_RAIL_X = W_SIDE = 24.5       # side rail crossbar faces
 MAG_L, MAG_H = 257.0, 104.0       # magazine top (feed lips), centred in the grip
-CH_TRAVEL = 50.0                  # charging handle pull
+CH_TRAVEL = 50.0                  # charging handle pull (only when racked: the real handle does not reciprocate)
+# The ejection port on the right of the upper receiver and the bolt carrier seen through it (user, 2026-10-30: the
+# handle and the bolt are not the same part). The port's front half is painted as the open chamber, its rear half as
+# the carrier's side; MP7A1_BOLT is a thin plate over the front half, flush with the receiver. Fired or held open it
+# slides back over the rear half, so the chamber shows in front of it and nothing stands outside the port.
+PORT_L, PORT_H = (196.0, 246.0), (139.0, 152.0)
+PORT_SPLIT = (PORT_L[0] + PORT_L[1]) / 2.0
+CARRIER_TRAVEL = PORT_SPLIT - PORT_L[0] - 0.5
 W_LOWER, W_UPPER, W_NOSE, W_GRIP, W_FGRIP, W_GUARD, W_BUTT = 19.0, 15.5, 17.0, 16.5, 13.0, 6.0, 22.0   # half widths
 
 MATS = ["polymer", "grip", "metal", "rail", "dark", "brass", "copper", "magpoly", "suppressor"]
@@ -425,8 +434,17 @@ def handguard(b):
     picatinny(b, ya, yb, lambda u, h, y: Vector((u, y, A2_BOTTOM_H - H0 - h)), base_h=0.8, tooth_h=2.5)
 
 
-def build_bolt():
-    """The T charging handle at the rear top of the receiver, forward (bolt_lock); bolt_fired pulls it back.
+def build_carrier():
+    """The bolt carrier's side in the ejection port's front half (bolt_lock); bolt_fired slides it back over the
+    port's rear half. A plate 0.35 mm proud of the receiver's right face (upright: -X), reaching 0.4 mm into it."""
+    b = Builder()
+    box(b, PORT_L[0] + 0.5, PORT_SPLIT - 0.2, PORT_H[0] + 0.5, PORT_H[1] - 0.5, -(W_UPPER + 0.35), -(W_UPPER - 0.4),
+        mat="metal", bevel=0.1)
+    return b.to_object("MP7A1_BOLT")
+
+
+def build_handle():
+    """The T charging handle at the rear top of the receiver, forward (handle); handle_back pulls it back while racked.
     As H&K's (2026-10-29, from Commons photos of the left and right sides): a flat stem in the channel under the rail's
     rear end, flush with the receiver's top, and at its back a crossbar whose two wings stand a few mm out of either
     side, each ending in a tab with vertical grip ribs that hangs a little lower (until then one 40 mm wide block, 17
@@ -440,7 +458,7 @@ def build_bolt():
         for k in range(3):                                                    # the tab's grip ribs
             Lr = Lb - 8.5 + k * 3.0
             box(b, Lr, Lr + 1.4, 152.0, 164.5, s * (W_UPPER + 5.0), s * (W_UPPER + 6.3), mat="rail", bevel=0.3)
-    return b.to_object("MP7A1_BOLT")
+    return b.to_object("MP7A1_HANDLE")
 
 
 def build_foregrip():
@@ -844,10 +862,17 @@ def paint(maps, kind):
         # (the A2's handguard covers the A1's spot: its calibre sits just behind it, as on the user's render)
         col[lower & left & text_mask(L, H, "4.6X30", 178.5 if a2 else 166.8, 120.5, 4.0)] += 30
         col[upper & right & text_mask(-L, H, "MP7A2" if a2 else "MP7A1", -170.0, 141.5, 5.0)] += 26
-        # Ejection port on the right of the upper receiver.
-        port = upper & right & (L > 196) & (L < 246) & (H > 139) & (H < 152)
-        rim = upper & right & (L > 194.5) & (L < 247.5) & (H > 137.5) & (H < 153.5) & ~port
-        col[port] = col[port] * 0.25 + np.array([4, 4, 5])
+        # Ejection port on the right of the upper receiver: the open chamber in its front half (MP7A1_BOLT covers it
+        # while the bolt is closed), the bolt carrier's steel side with its lengthwise grooves in the rear half.
+        port = upper & right & (L > PORT_L[0]) & (L < PORT_L[1]) & (H > PORT_H[0]) & (H < PORT_H[1])
+        rim = (upper & right & (L > PORT_L[0] - 1.5) & (L < PORT_L[1] + 1.5) & (H > PORT_H[0] - 1.5)
+               & (H < PORT_H[1] + 1.5) & ~port)
+        chamber = port & (L < PORT_SPLIT)
+        col[chamber] = col[chamber] * 0.25 + np.array([4, 4, 5])
+        carrier = port & ~chamber
+        col[carrier] = np.array(BASE["metal"]) * 1.45          # lit like the plate's face (the port's AO darkens it)
+        col[carrier & ((np.abs(H - 143.5) < 0.5) | (np.abs(H - 147.5) < 0.5))] *= 0.6
+        col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5                     # the shadow of the plate's rear edge
         col[rim] += 16
         # Folded front grip: grooves, the release button, the serrated catch at its rear.
         for hh in (80.0, 85.0, 90.0):
@@ -876,6 +901,12 @@ def paint(maps, kind):
             for cH in (46.5, 55.5):
                 col[side & (np.hypot(L - 397.0, H - cH) < 2.6)] = 9
             col[L > 410.5] *= 0.85
+    elif kind == "carrier":
+        # the bolt carrier's side in the port: steel, the bolt head's front edge and the same two grooves as the
+        # port's painted rear half
+        face = right & (np.abs(x) > W_UPPER + 0.2)
+        col[face & ((np.abs(H - 143.5) < 0.5) | (np.abs(H - 147.5) < 0.5))] *= 0.6
+        col[face & (L < PORT_L[0] + 2.0)] *= 0.55
     elif kind == "drum":
         dx, dz = x, z - DRUM_Z
         r = np.hypot(dx, dz)
@@ -1146,8 +1177,9 @@ def points(bounds, a2=False):
         "light_left": {"offset": [round(side - 0.0055 + 0.0062, 4), ry, rz]},
         "laser_right": {"offset": [round(-(side - 0.0055 + 0.0073), 4), ry, round(rz - 0.0008, 4)]},
         "canon": {"offset": [0.0, round(cy * K, 4), round(cz * K, 4)], "rotate": [0.0, 0.0, 0.0]},  # round: GoM 0
-        # the bolt and the stock are nodes of the gun's own file, turned with it
-        "bolt_fired": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
+        # the bolt carrier, the handle and the stock are nodes of the gun's own file, turned with it
+        "bolt_fired": {"offset": [0.0, round(-CARRIER_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
+        "handle_back": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
         "stock_folded": {"offset": [0.0, round(STOCK_TRAVEL * K, 4), 0.0], "rotate": [0.0, 0.0, 0.0]},
     }
     # Front grip unfolded: a turn about X through the hinge, offset = hinge - R . hinge (the engine draws a part at
@@ -1178,13 +1210,16 @@ def points(bounds, a2=False):
                     "muzzle below it (30 / 40 rounds), modelled upright",
         "canon": "the nose plate's face where the barrel leaves it; MP7_Muzzle_Mount_Device and MP7_Suppressor have "
                  "their origin there and extend along +Y over the flash hider",
-        "bolt_fired": "charging handle pulled back 50 mm real; the real MP7 handle does not reciprocate",
+        "bolt_fired": "MP7A1_BOLT (the bolt carrier in the ejection port) back %.1f mm real: each shot and held open "
+                      "when empty (GoM's Bolt_Fired)" % CARRIER_TRAVEL,
+        "handle_back": "MP7A1_HANDLE (the T charging handle) pulled back %.0f mm real, only while racked "
+                       "(GunsOfTien.ChargingHandle_Back); the real MP7 handle does not reciprocate" % CH_TRAVEL,
         "stock_folded": "MP7A1_STOCK is modelled extended; this offset slides it in (223 mm real)",
     }
     if a2:
         pts["_notes"]["a2"] = ("MP7A2: the A1's points with the side rails on the handguard; rail_down / foregrip "
-                               "under it for GoM's foregrips (upright parts, turned with the gun); bolt and stock are "
-                               "the A1's nodes (MP7A1_BOLT / MP7A1_STOCK)")
+                               "under it for GoM's foregrips (upright parts, turned with the gun); bolt carrier, handle "
+                               "and stock are the A1's nodes (MP7A1_BOLT / MP7A1_HANDLE / MP7A1_STOCK)")
     else:
         pts["_notes"]["foregrip_deployed"] = ("MP7A1_FOREGRIP is modelled folded (drawn folded at the gun's origin); "
                                               "this turns it %.0f degrees down about its hinge pin (photo L %.1f, "
@@ -1222,45 +1257,49 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, bolt, stock, fgrip = build_body(), build_bolt(), build_stock(), build_foregrip()
+    body, bolt, handle = build_body(), build_carrier(), build_handle()
+    stock, fgrip = build_stock(), build_foregrip()
     mags = [build_magazine(r) for r in (20, 30, 40)] + [build_drum()]
     supp, mount = build_suppressor(), build_mount()
 
-    unwrap([body, bolt, stock, fgrip], 0.006)
+    unwrap([body, bolt, handle, stock, fgrip], 0.006)
     for o in mags + [supp, mount]:
         unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
     # The front grip is baked on its own and the body without it: either face of the grip and the recess it folds
-    # into are seen once it is unfolded, so neither may carry the other's shadow.
-    texture([body, bolt, stock, fgrip], [[body, bolt], [body, bolt], [stock], [fgrip]], ["gun", "gun", "stock", "gun"],
-            256, os.path.join(TEX_DIR, "MP7A1.png"))
+    # into are seen once it is unfolded, so neither may carry the other's shadow. The carrier is baked with the body
+    # only (it moves, so the handle's shadow would not stay on it).
+    texture([body, bolt, handle, stock, fgrip], [[body, handle], [body, bolt], [body, handle], [stock], [fgrip]],
+            ["gun", "carrier", "gun", "stock", "gun"], 256, os.path.join(TEX_DIR, "MP7A1.png"))
     for r, m in zip((20, 30, 40, 60), mags):
         texture([m], [[m]], ["drum" if r == 60 else "mag%d" % r], 128,
                 os.path.join(TEX_DIR, "46x30Magazine%d_MP7.png" % r))
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "MP7_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "MP7_Muzzle_Mount_Device.png"))
 
-    # MP7A2: its own body and texture; bolt, stock, magazines and muzzle parts are the A1's.
+    # MP7A2: its own body and texture; bolt carrier, handle, stock, magazines and muzzle parts are the A1's.
     body2 = build_body(a2=True)
     unwrap([body2], 0.006)
-    texture([body2], [[body2, bolt]], ["gun_a2"], 256, os.path.join(TEX_DIR, "MP7A2.png"))
+    texture([body2], [[body2, handle]], ["gun_a2"], 256, os.path.join(TEX_DIR, "MP7A2.png"))
 
-    for o in (body, bolt, stock, fgrip, body2):                # held like a pistol: turned 180 degrees about the bore axis
+    for o in (body, bolt, handle, stock, fgrip, body2):     # held like a pistol: turned 180 degrees about the bore axis
         o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
-    bounds = {o.name: bounds_of(o) for o in [body, bolt, stock, fgrip] + mags + [supp, mount]}
+    bounds = {o.name: bounds_of(o) for o in [body, bolt, handle, stock, fgrip] + mags + [supp, mount]}
     bounds["MP7A1_STOCK_folded"] = bounds_of(stock, (0, STOCK_TRAVEL * K, 0))
+    bounds["MP7A1_BOLT_fired"] = bounds_of(bolt, (0, -CARRIER_TRAVEL * K, 0))
+    bounds["MP7A1_HANDLE_back"] = bounds_of(handle, (0, -CH_TRAVEL * K, 0))
     pts = points(bounds)
     bounds["MP7A1_FOREGRIP_deployed"] = bounds_at(fgrip, pts["foregrip_deployed"])
     with open(POINTS_JSON, "w") as fh:
         json.dump(pts, fh, indent=2)
         fh.write("\n")
-    bounds2 = {o.name: bounds_of(o) for o in [body2, bolt, stock]}
+    bounds2 = {o.name: bounds_of(o) for o in [body2, bolt, handle, stock]}
     with open(POINTS_JSON_A2, "w") as fh:
         json.dump(points(bounds2, a2=True), fh, indent=2)
         fh.write("\n")
 
-    export([body, bolt, stock, fgrip], FBX_GUN)
+    export([body, bolt, handle, stock, fgrip], FBX_GUN)
     export([body2], FBX_GUN_A2)
     export(mags, FBX_MAGS)
     export([supp, mount], FBX_PARTS)
