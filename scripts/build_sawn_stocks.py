@@ -154,6 +154,11 @@ def bounds(obj):
 
 
 def main():
+    # GunsOfTien_SawnStocks.fbx also holds the Mosin-Nagant's Obrez nodes (MOSIN_BODY_SAWNSTOCK / _SAWNBARREL / _OBREZ
+    # and its three offcuts, published in 3.5.0), whose build code was lost (gen_scripts.py, MOSIN_*): this script would
+    # export the file without them. Rebuild only once it builds the Mosin again, or with --drop-mosin on purpose.
+    if "--drop-mosin" not in sys.argv:
+        sys.exit("refusing to rebuild GunsOfTien_SawnStocks.fbx: it would drop the Obrez's Mosin nodes (see main())")
     if GOM is None:
         sys.exit("Guns of Marz not found")
     bpy.ops.wm.read_factory_settings(use_empty=True)

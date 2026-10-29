@@ -47,6 +47,12 @@ Maker they can be made.
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept
   as offcuts: wood to burn or make charcoal, steel to smelt. The Stevens 555's and TOZ-34's sawn-off barrels handle
   like the Double Barrel's (GoM gave only those any stats)
+- Mosin-Nagant Obrez: Guns of Marz's Mosin-Nagant can have its stock sawn off (Saw Off Rifle Stock, any saw) and its
+  barrel and forend sawn off ahead of the rear sight (Saw Off Rifle Barrel, a metal saw), each on its own. The short
+  barrel hits less hard, reaches half as far, is louder with a bigger flash and loses the bayonet lug, but aims in
+  faster; with both cuts it fits a holster. The stock, barrel and forend are kept as offcuts
+- A sawn-off gun is named and drawn for what was cut ("Mosin-Nagant Obrez", "Sawn-Off Double Barrel Pistol"), with its
+  own icon
 
 ## M249 Light Machine Gun and belt links
 

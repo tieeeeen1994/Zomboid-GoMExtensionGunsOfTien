@@ -644,6 +644,104 @@ STOCK_OFFCUT_WEIGHT = -SAWN_STOCK_WEIGHT
 BARREL_OFFCUTS_WEIGHT = 2.0
 OFFCUT_BOUNDS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sawn_offcuts.json')
 
+# GoM's Mosin-Nagant sawn into an Obrez (3.5.0, 2026-10-29; shared/GunsOfTien/SawnStock.lua): two integrated parts,
+# the stock (sawn off behind the grip, any saw) and the barrel (sawn off ahead of the rear sight with the forend, the
+# front sight moved back; GoM's barrel recipe's metal saws), each a recipe of its own. Gunworks' ConditionalModel shows
+# MOSIN_SAWNSTOCK, MOSIN_SAWNBARREL or MOSIN_OBREZ (both: fits a holster, the three holster points turning it as on the
+# shotguns). Meshes in GunsOfTien_SawnStocks.fbx, texture GoM's MOSIN. The values below are those of the published
+# 3.5.0 scripts: the generator changes and the Mosin part of build_sawn_stocks.py made on the Mac were lost, so the
+# points and the offcuts' floor points are kept here as written then (not measured from sawn_offcuts.json, which has
+# no Mosin entry), and the FBX / icons must not be rebuilt by build_sawn_stocks.py / make_offcut_art.py until they
+# know the Mosin again (they would drop its nodes and icons).
+MOSIN_TEX = 'weapons/firearms/bolt_rifles/MOSIN'
+MOSIN_MUZZLE_Z = 0.0223
+MOSIN_MUZZLE_Y = {'SAWNSTOCK': 0.6076, 'SAWNBARREL': 0.3250, 'OBREZ': 0.3250}   # GoM's full barrel, the sawn-off one
+MOSIN_POINTS = [                          # name, offset, rotate (every model; bayonet only with the full barrel)
+    ('bolt_fired', (-0.0207, -0.0458, 0.0199), (180.0, 89.6841, 180.0)),
+    ('world', (0.0200, 0.1300, 0.0000), (180.0, 0.0, 180.0)),
+    ('scope', (0.0000, 0.1611, 0.0521), (0.0, 0.0, 0.0)),
+    ('rail_up', (0.0000, 0.1262, 0.0286), (0.0, 0.0, 0.0)),
+]
+MOSIN_BAYONET = (0.0000, 0.5270, 0.0006)
+# offcut: (item, node, weight, floor point, tooltip, tags, display category)
+MOSIN_OFFCUTS = [
+    ('StockOffcut', 'STOCK_OFFCUT', 0.5, (-0.0100, -0.0879, -0.0352), 'Tooltip_GunsOfTien_StockOffcut',
+     'base:isfirefuel;base:makewoodcharcoalsmall', 'Junk'),
+    ('BarrelOffcut', 'BARREL_OFFCUT', 0.6, (-0.0039, 0.4661, 0.0170), 'Tooltip_GunsOfTien_BarrelOffcut',
+     'base:hasmetal;base:smeltablesteelsmall', 'Material'),
+    ('ForendOffcut', 'FOREND_OFFCUT', 0.3, (-0.0081, 0.4210, 0.0177), 'Tooltip_GunsOfTien_StockOffcut',
+     'base:isfirefuel;base:makewoodcharcoalsmall', 'Junk'),
+]
+# integrated parts: (suffix, part type, weight modifier)
+MOSIN_PARTS = [('Stock', 'StockIntegrated', 0.0), ('Stock_Sawnoff', 'StockIntegrated', SAWN_STOCK_WEIGHT),
+               ('Barrel', 'BarrelIntegrated', 0.0), ('Barrel_Sawnoff', 'BarrelIntegrated', -0.9)]
+
+
+def mosin_point(name, offset, rotate):
+    return f"""
+        attachment {name} {{
+            offset = {offset[0]:.4f} {offset[1]:.4f} {offset[2]:.4f},
+            rotate = {rotate[0]:.4f} {rotate[1]:.4f} {rotate[2]:.4f},
+        }}
+"""
+
+
+def mosin_scripts(holsters):
+    """The Obrez's model and item blocks (appended after the shotguns', as published)."""
+    models, items = [], []
+    for kind in ('SAWNSTOCK', 'SAWNBARREL', 'OBREZ'):
+        body = mosin_point('muzzle', (0.0, MOSIN_MUZZLE_Y[kind], MOSIN_MUZZLE_Z), (-90.0, 0.0, -180.0))
+        body += ''.join(mosin_point(*pt) for pt in MOSIN_POINTS)
+        if kind == 'SAWNSTOCK':
+            body += mosin_point('bayonet', MOSIN_BAYONET, (0.0, 0.0, 0.0))
+        if kind == 'OBREZ':
+            body += holsters
+        models.append(f"""
+    model MOSIN_{kind} {{
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_BODY_{kind},
+        texture  = {MOSIN_TEX},
+        cullFace = None,
+{body}    }}
+""")
+    for item, node, weight, floor, tip, tags, category in MOSIN_OFFCUTS:
+        models.append(f"""
+    model MOSIN_{item} {{
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_{node},
+        texture  = {MOSIN_TEX},
+        cullFace = None,
+
+        attachment world {{
+            offset = {floor[0]:.4f} {floor[1]:.4f} {floor[2]:.4f},
+            rotate = 90.0000 0.0000 -90.0000,
+        }}
+    }}
+""")
+        items.append(f"""
+    item MOSIN_{item} {{
+        DisplayCategory  = {category},
+        ItemType         = base:normal,
+        Weight           = {weight:.1f},
+        Icon             = GunsOfTien_MOSIN_{item},
+        WorldStaticModel = {MODULE}.MOSIN_{item},
+        Tooltip          = {tip},
+        Tags             = {tags},
+    }}
+""")
+    for suffix, part, weight in MOSIN_PARTS:
+        items.append(f"""
+    item MOSIN_{suffix} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {part},
+        Weight          = 0.0,
+        WeightModifier  = {weight:.1f},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    return models, items
+
 
 def floor_point(bounds):
     """The `world` point of an offcut: GoM's floor rotation for parts (90 0 -90, which the engine inverts: the model
@@ -729,12 +827,16 @@ def sawn_stocks():
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }}
 """)
+    mosin_models, mosin_items = mosin_scripts(holsters)
+    models += mosin_models
+    items += mosin_items
     models.append("}\n")
     items.append("}\n")
     guns = ';'.join(f"MarzGuns.{gun}" for gun in SAWN_STOCK_GUNS)
-    recipe = f"""/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip (shared/GunsOfTien/SawnStock.lua).
-   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate, which also hands over the gun's own
-   <GUN>_StockOffcut (one recipe for three guns, so no outputs block, as vanilla's gas mask filter recipes). */
+    recipe = f"""/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip, and the stock and barrel off
+   GoM's Mosin-Nagant (the Obrez) (shared/GunsOfTien/SawnStock.lua). Any saw cuts wood, the barrel takes GoM's barrel
+   recipe's metal saws; the gun is kept and gets its sawn-off part in OnCreate, which also hands over the offcuts (no
+   outputs block, as vanilla's gas mask filter recipes). */
 
 module Base {{
 
@@ -751,6 +853,38 @@ module Base {{
 		{{
 			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
 			item 1 [{guns}] mode:keep flags[Prop2],
+		}}
+	}}
+
+	craftRecipe GunsOfTien_SawOffRifleStock
+	{{
+		timedAction = SawOffShotgun,
+		time = 150,
+		OnTest = GunsOfTien_SawnStock.OnTest,
+		OnCreate = GunsOfTien_SawnStock.OnCreate,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffRifleStock,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{{
+			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [MarzGuns.MOSIN] mode:keep flags[Prop2],
+		}}
+	}}
+
+	craftRecipe GunsOfTien_SawOffRifleBarrel
+	{{
+		timedAction = GunsOfTien_SawOffShotgunBarrels,
+		time = 200,
+		OnTest = GunsOfTien_SawnStock.OnTestBarrel,
+		OnCreate = GunsOfTien_SawnStock.OnCreateBarrel,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffRifleBarrel,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{{
+			item 1 tags[base:metalsaw;base:smallsaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [MarzGuns.MOSIN] mode:keep flags[Prop2],
 		}}
 	}}
 }}
@@ -788,10 +922,16 @@ module Base {
         names[f'{MODULE}.{gun}_StockOffcut'] = f'{name} Stock Offcut'
         # GoM calls the Double Barrel's barrels "Double Barrel" and the others' "<gun> Barrel"
         names[f'{MODULE}.{gun}_BarrelOffcuts'] = f'{name} Offcuts' if gun == 'DOUBLEBARREL' else f'{name} Barrel Offcuts'
+    for suffix, label in (('Stock', 'Stock'), ('Stock_Sawnoff', 'Stock Sawnoff'), ('Barrel', 'Barrel'),
+                          ('Barrel_Sawnoff', 'Barrel Sawnoff'), ('StockOffcut', 'Stock Offcut'),
+                          ('BarrelOffcut', 'Barrel Offcut'), ('ForendOffcut', 'Forend Offcut')):
+        names[f'{MODULE}.MOSIN_{suffix}'] = f'Mosin-Nagant {label}'
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
     rec = json.load(open(rec_path))
     rec['GunsOfTien_SawOffShotgunStock'] = 'Saw Off Shotgun Stock'
+    rec['GunsOfTien_SawOffRifleStock'] = 'Saw Off Rifle Stock'
+    rec['GunsOfTien_SawOffRifleBarrel'] = 'Saw Off Rifle Barrel'
     write('lua/shared/Translate/EN/Recipes.json', json.dumps(rec, indent=2) + '\n')
     tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
     tips = json.load(open(tip_path))
@@ -801,6 +941,11 @@ module Base {
         "As good as scrap wood.")
     tips['Tooltip_GunsOfTien_BarrelOffcuts'] = (
         "As good as a steel bar.")
+    tips['Tooltip_GunsOfTien_BarrelOffcut'] = "As good as steel scrap."
+    tips['Tooltip_Recipe_GunsOfTien_SawOffRifleStock'] = "Saws the buttstock off, leaving a pistol grip."
+    tips['Tooltip_Recipe_GunsOfTien_SawOffRifleBarrel'] = (
+        "Saws the barrel and forend off ahead of the rear sight and moves the front sight back.")
+    tips['Tooltip_weapon_BarrelIntegrated'] = "Barrel (Integrated)"     # the tooltip row of the Mosin's barrel part
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 

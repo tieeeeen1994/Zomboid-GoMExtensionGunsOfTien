@@ -1452,6 +1452,23 @@ other error, and no beam. Its export held two zero-area triangles; the earlier f
 in Java (Assimp import with JOIN_IDENTICAL_VERTICES etc., see ZomboidFixesB42's CLAUDE.md), but the rule is: never
 export degenerate faces; the beam is now one real triangle per plane.
 
+## Mosin-Nagant Obrez (published in 3.5.0, 2026-10-29; recovered here)
+
+Built on the Mac and uploaded in 3.5.0, then lost there before it was committed: the Windows repo got it back by
+copying the Workshop item's `mods/` over `main` (`be5745f`), merged into gom-anims (`c724fb5`). What the feature does
+is in `shared/GunsOfTien/SawnStock.lua`'s header (stock and barrel cuts as two recipes, MOSIN_SAWNSTOCK /
+_SAWNBARREL / _OBREZ models, three offcuts, the barrel's stats, the bayonet taken off, holster with both cuts, names
+and icons per cut state for every sawn gun). What was lost with it, and stands in for it now:
+- `gen_scripts.py`: the Obrez's items, models, recipes and names are written from constants (MOSIN_* beside
+  SAWN_STOCK_GUNS) holding the published values; its output matched the published files byte for byte (2026-10-29).
+- `build_sawn_stocks.py` has no Mosin code, so `GunsOfTien_SawnStocks.fbx` (the Mosin nodes and the shotguns') is a
+  kept asset: the script refuses to run without `--drop-mosin`. `sawn_offcuts.json` has no Mosin entry.
+- `make_offcut_art.py` has no code for the Mosin's offcut icons or the per-state gun icons
+  (`item_GunsOfTien_<GUN>_SawnBarrel / SawnStock / SawnBoth`, `item_GunsOfTien_MOSIN_*Offcut`); it only rewrites the
+  shotguns' offcut icons, so the others are kept files too.
+- Hand-written and recovered as published: `SawnStock.lua`, client `Tooltips.lua` (the Mosin's barrel lines),
+  `IG_UI.json` (the per-state names).
+
 ## Sawn-off stocks (2026-10-19)
 
 User: "the barrel can be sawn off. i want it also to be able to saw off the stock so that it's more compact and can
