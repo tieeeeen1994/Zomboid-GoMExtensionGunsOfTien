@@ -125,4 +125,78 @@ module GunsOfTien {
         CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }
+
+    item MOSIN_StockOffcut {
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = 0.5,
+        Icon             = GunsOfTien_MOSIN_StockOffcut,
+        WorldStaticModel = GunsOfTien.MOSIN_StockOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }
+
+    item MOSIN_BarrelOffcut {
+        DisplayCategory  = Material,
+        ItemType         = base:normal,
+        Weight           = 0.6,
+        Icon             = GunsOfTien_MOSIN_BarrelOffcut,
+        WorldStaticModel = GunsOfTien.MOSIN_BarrelOffcut,
+        Tooltip          = Tooltip_GunsOfTien_BarrelOffcut,
+        Tags             = base:hasmetal;base:smeltablesteelsmall,
+    }
+
+    item MOSIN_ForendOffcut {
+        DisplayCategory  = Junk,
+        ItemType         = base:normal,
+        Weight           = 0.3,
+        Icon             = GunsOfTien_MOSIN_ForendOffcut,
+        WorldStaticModel = GunsOfTien.MOSIN_ForendOffcut,
+        Tooltip          = Tooltip_GunsOfTien_StockOffcut,
+        Tags             = base:isfirefuel;base:makewoodcharcoalsmall,
+    }
+
+    item MOSIN_Stock {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = StockIntegrated,
+        Weight          = 0.0,
+        WeightModifier  = 0.0,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item MOSIN_Stock_Sawnoff {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = StockIntegrated,
+        Weight          = 0.0,
+        WeightModifier  = -0.5,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item MOSIN_Barrel {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = BarrelIntegrated,
+        Weight          = 0.0,
+        WeightModifier  = 0.0,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
+
+    item MOSIN_Barrel_Sawnoff {
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = BarrelIntegrated,
+        Weight          = 0.0,
+        WeightModifier  = -0.9,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }
 }
