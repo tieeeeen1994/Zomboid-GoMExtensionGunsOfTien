@@ -104,8 +104,7 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     out = [f"module {M} {{\n"]
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
-    # held in one hand (OneHand.lua): the same model, which CompactStance.lua does not turn upright, so vanilla's
-    # pistol clips draw it the right way up (they expect pistol-held models upside down, as the MP7's is built)
+    # MP7A1_1H / MP7A2_1H: the same model, kept for guns saved with it (a one-hand swap until 2026-10-28)
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag'])
                .replace('    model MP7A1 {', '    model MP7A1_1H {', 1))
@@ -270,15 +269,8 @@ GUN_HANDGUN = (GUN_COMMON
                .replace("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
                         "MuzzleFlashModelKey          = muzzle_flash_handgun,"))
 assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
-# The MP7s are two-handed by default (equipping from the hotbar or Equip puts them in both hands: the compact SMG
-# stance) but can be held in one hand too (Equip Primary: vanilla's pistol hold; user, 2026-10-26: "they can be held
-# in one hand, but they can also be held with 2 hands"). Shared OneHand.lua swaps the model the hand draws (`_1H`,
-# not turned upright) and the reload. The P90 stays one-handed.
-GUN_HANDGUN_TWO_HANDS = GUN_HANDGUN.replace(
-    "        WeaponReloadType             = handgun,\n",
-    "        WeaponReloadType             = handgun,\n"
-    "        TwoHandWeapon                = true,\n")
-assert GUN_HANDGUN_TWO_HANDS.count("TwoHandWeapon") == 1
+# The MP7s and the P90 are one-handed, held like GoM's MP5K (GoM's animations only since 2026-10-29: the MP7s were
+# two-handed for our short SMG stance from 2026-10-26 to then).
 
 
 # GoM's pistol parts the Five-seveN takes (the ModelWeaponPart lines of GoM's Glock 17 / M92FS)
@@ -478,7 +470,7 @@ def mp7_item(name):
         StopPower                    = 2.0,
         Weight                       = 1.5,
         MetalValue                   = 25.0,
-{GUN_HANDGUN_TWO_HANDS}        AmmoType                     = gunsoftienpost93:bullet_46x30,
+{GUN_HANDGUN}        AmmoType                     = gunsoftienpost93:bullet_46x30,
         AmmoBox                      = {M}.46x30_Box,
         MagazineType                 = {M}.46x30Magazine20_MP7,
         MaxAmmo                      = 20,

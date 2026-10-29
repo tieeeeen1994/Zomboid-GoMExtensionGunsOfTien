@@ -28,176 +28,56 @@ the vision of GoM. Before building a feature, check
 `~/Zomboid/Workshop/*` for one of the user's own mods that already does it (e.g. `RakeFeathersToo` already rakes
 feathers and eggs; a duplicate was built into Zomboid Fixes by mistake and removed).
 
-## Animations are generic, never per gun (rule, user, 2026-10-28)
+## GoM's animations only (rule, user, 2026-10-29; branch gom-anims)
 
-Per-gun sets (the short SMG stance as Uzi / UziT / MP5K / MP7: 255 nodes and ~29 MB each) took 2-3 days of fixes
-and multiply the work for every other mod that modifies animations. So:
+User: "drop all animations that we have for this branch and then let's use EXISTING GOM ANIMATIONS please for our
+guns". Neither mod ships an AnimSet node or a clip (`media/AnimSets` and `media/anims_X` deleted in both): every gun is
+held with vanilla's rifle or pistol clips, as GoM's guns are, and reloads with one of GoM's reload animIds through
+Gunworks' registry (`shared/GunsOfTien/GoMReloads.lua`: `profile(animId)`, Gunworks' "none" style, GoM's durations
+copied from the local table in its `Registries/ReloadAnims.lua`). No grip registrations (`GunworksGripAnim`) either.
 
-- **No animation is made for one gun.** Before adding a stance, reload or rack animation, justify it with other real
-  guns that move and handle nearly the same; otherwise fit the gun to an existing animation (model placement,
-  orientation), not the animation to the gun. Small imperfections are accepted: some clipping, a hand a little off
-  its place. No per-gun hold sets, no per-gun hand places.
-- **Three kinds, chosen separately per gun:** a stance (the hold: idle, movement and everything else that is not
-  aiming, reloading or racking), a magazine family and a rack family. A gun may take its magazine change from one
-  family and its rack from another (the MP7: the pistol magazine change, the rear T-handle rack). Reload nodes are
-  XML, so mixing families needs no new clips.
-- Stances: vanilla's rifle; **short SMG** (one set: Uzi, Mini Uzi, MP7A1 / A2; its aim is the approved
-  aim with one shared left-hand place, the Uzi's); the H&K rifle-hand hold (UMP45, UMP9, GoM's MP5A3 / A2 / SD, and
-  GoM's MP5K in both hands);
-  **bullpup** (AUG, FAMAS; built 2026-10-28 as a tucked carry, section "Bullpup stance (built)": vanilla's rifle
-  hold with the palm moved back "looked weird", the gun hanging back past the hip). Short SMG = held by the grip, no stock to the
-  shoulder, about half a metre or less as carried; the MP5A3 / A2 / SD (550-680 mm, stocks shouldered) stay with
-  the UMPs. The MP5K was in until the user chose the MP5A3's hold for it (2026-10-28, from a render of both: "i like
-  the sheet with mp5k the same as other mp5a3 stance better"), knowing the set's palm (0.183 ahead of the grip idle,
-  0.171 aimed) lands at its front end, past its short foregrip, the fingertips at the muzzle (0.1835): the rule's
-  accepted imperfection, not a reason for a hand place of its own.
-- **The MP5K in both hands** (built 2026-10-28; approved in game the same day with the resized MP5 family): `CompactStance.lua` registers its grip as a Gunworks
-  matcher that holds only in both hands (`OneHand.heldInBothHands`; the rifle-hand set's nodes do not test the weapon
-  class, unlike the short SMG's `Weapon == firearm`, so a full-type entry would play them in one hand too), its
-  two-hand reload is the UMPs' (`GunsOfTienCompactUMP`, OneHand's `handgun2` matcher still wins in one hand), and
-  `OneHand.setTwoHandModel` swaps the sprite to `GunsOfTien.MP5K_2H` on every client while it is in both hands (back
-  on leaving them and `OnSave`; `MarzGuns.MP5K` and the old `GunsOfTien.MP5K_1H` count as its own model, any other
-  sprite is left alone). MP5K_2H = node `MP5K_BODY_2H` in GunsOfTien_MP5.fbx, the body turned half a turn about the
-  barrel at the grip in the mesh (a Bip01_Prop1 turn would put the tracers 7.4 cm off the drawn barrel), every point
-  turned with it (`TURN_Y` x point: magazine 8.2076 0 0, rail_up / scope 0 0 0) plus a turned `bolt_lock` (GoM's
-  MP5K lacks it, so its bolt part is drawn at the origin); build_mp5.py "two_hand", gen_scripts.py `one_hand()` →
-  models_onehand.txt, hold_preview.py `mp5k_2h` (with `HOLD_SET=UMP`). Its parts are GoM's models by name
-  (`MarzGuns.MP5K_BOLT`, the MP5 magazines), so they are our resized ones only while models_mp5.txt loads after GoM's
-  (see "GoM's MP5 family at the Uzis' proportion"). The rebuilt FBX's other nodes are identical
-  (vertices, faces, UVs). The short SMG's `GunsOfTienCompactShortSMGHK` reload (nodes, clips in Pack7) has no gun now;
-  it stays until a repack (for a short H&K-type gun).
+- Per gun, the closest GoM gun: Uzi (rifle, two-handed) "MP5"; Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR (one-handed,
+  pistol clips) "handgun2" (GoM's MP5K / TEC-9); Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
+  "famas_rifle"; SCAR-L "fnc_rifle" (rifle magazine change, side charging handle; GoM's M4A1 has "ar15_rifle", the
+  rear T-handle); SCAR-H "fal_rifle"; UMP45 / UMP9 "MP5"; M249 "m60_lmg" (its feed cover stays shut; `partState.ensure`
+  shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own registrations again.
+- Model orientation decides the hold: a gun modelled for the pistol clips (GoM's MP5K / MAC-10 way: the Mini and Micro
+  Uzi, MP7s, P90, pistols) must be one-handed (no `TwoHandWeapon`: `WeaponType.getWeaponType` gives "firearm", the rifle
+  clips, to a two-handed gun in both hands, which would draw it upside down); a rifle-held one must be modelled upright.
+  So the Mini Uzi and MP7s lost `TwoHandWeapon` (gen_scripts.py, gen_post93_guns.py), and the full Uzi went back to its
+  upright model of before 2026-10-28 (`GunsOfTien_UZI.fbx`, `UZI.png`, `scripts/uzi_points.json`,
+  `scripts/build_uzi.py` restored from 75b3d8c^; models_uzi.txt regenerates byte for byte as it was then).
+- Gone with the animations: CompactStance.lua (both mods), Bullpup.lua, OneHand.lua (one- / two-hand swaps, the
+  MP5K's both-hands model), and the reload wrappers keyed on our animIds (magazine in the left hand, part spec pointed
+  at the magazine, the M249's cover steps and STANAG hand models). `SavedModels.lua` copies GoM's live MP5K model over
+  `GunsOfTien.MP5K_1H` / `MP5K_2H` for guns saved with them; the `MINIUZI_1H` / `MP7A*_1H` models stay (the guns' own).
+  Items only those reloads used stay defined for old saves (the M249's part way open covers, the STANAG `_Hand` items).
+- **Charging handles move as GoM's do** (user, 2026-10-29: "I want us to use GoM's way"): GoM registers every one
+  of its guns with `Animations.RegisterWeaponWithAnimatedParts` (`Bolt` = Bolt_Fired / Bolt_Lock, cycleTicks 3), the
+  MP5s and MAC-10 too, whose real handles stay put when firing. Gunworks then draws the gun's `*_BOLT` model at
+  `bolt_fired` for a moment after each shot, while the gun is empty (no round chambered) and during the rack, and
+  attaches the part on every such call (so a gun saved without one gets it then). Ours now all are: Uzis, MP7s, P90,
+  UMPs, M249, as the AUGs and SCARs already were. Travels (builders, real mm): Uzi 80, Mini 65, Micro 50 along a slot
+  painted on the top cover; MP7 50 (out of the receiver's rear above the stock); P90 60 along new raised steel tracks
+  (L 101-184); UMP 70 along its slot; M249 110 along its slot, the handle split off the body into `M249_BOLT` (an
+  equip hook fits Bolt_Lock to M249s saved before). Reworked from Commons photos (left / right sides) and renders of
+  ours from six angles: the MP7's T-handle (stem under the rail end, crossbar, ribbed wing tabs; was one 40 mm
+  block), the P90's tab behind its ring and the tracks. The Uzi knobs were already where IMI's are (measured: 75 /
+  66 / 81 % from rear to front sight), the UMP's at the front of its slot high on the left.
+- Kept for reference only, nothing of them ships on this branch: the sections below on the short SMG / compact SMG
+  stance, the bullpup set and stance, "No clipping", the P90 and MP7A1 reloads. The build tooling they name
+  (`scripts/anim/`, `scripts/post93/anim/`) and the `tmp/` build output were deleted from this branch (2026-10-29);
+  the scripts are on `main` and in git history.
+- Reference photos and traced outlines live in `references/` (was `tmp/ref`; git-ignored, kept out of the repo as
+  before): `make_aug_art.py`, `aug_photo_grid.py` and `make_uzi_art.py` read them.
 - Remote players' hand items (42.21 `EquipPacket.parse` on a client): rebuilt from the item bytes on every Equip
   packet (a new object each time) with `setContainer(remote player's inventory)`, so `gun:getContainer():getCharacter()`
   finds the holder there too; the bytes are the server's copy, so a client-side `setWeaponSprite` never travels
   (`SyncHandWeaponFields` carries no sprite either).
-- A family has one clip set per stance it is used in: the pistol family is the Uzi's old stance reload on the short
-  SMG stance (magazine into the grip, knob racked overhand, played from the stance, so no blend from a pistol pose)
-  and `UziGrip` (vanilla's pistol clips) on the pistol stance (Micro Uzi; Mini Uzi and MP7s in one hand).
-- Families decided: pistol magazine + pistol rack (Uzi, Mini Uzi: the top knob is racked like a slide; later the
-  Micro Uzi and MAC-10 type guns); pistol magazine + rear T-handle rack (MP7; real kin: Steyr TMP 1992, B&T MP9
-  2004, every AR's rack); H&K (MP5s, MP5K, UMPs); bullpup (AUG and FAMAS, one family); belt-fed (M249; M60, PKM, MG3
-  handle alike). The P90's top-magazine reload is the one kept as is ("one of the weird guns"); a future M4 with
-  that kind of magazine (an AR-57 type upper) would use it. The SCAR-H plays GoM's FAL reload (GoM's own clips and
-  durations through our copy of GoM's current FAL nodes, animId `GunsOfTienSCARH`, kept only because an old copy of
-  GoM's node files can replace them by mod order): no animation of its own, so it meets the rule (user, 2026-10-29).
-- **Built 2026-10-28 (not loaded in game yet): the short SMG stance holds its gun in the pistol orientation.** The
-  stance's gun bone is the rifle relation turned half a turn about the gun's Y at its origin (`compact_pack.py`
-  `turn_gun_bone` for `compact_animsets.PISTOL_SETS`), so a gun modelled for the pistol clips is drawn upright with
-  its grip in the hand and no model point, the muzzle the game shoots from is the drawn muzzle, whatever its muzzle
-  height, and one model serves both hands. This is exactly what the old upright turn plus per-set gun shift drew
-  (checked: 2e-6 against UziT), with no per-gun numbers. Gone: `TURNED_SETS`, `turnUpright`, the UziT / MP5K / MP7
-  sets (1,020 nodes, 28 packs), OneHand.lua's one-hand model swap (the `*_1H` model scripts stay for guns saved with
-  them, identical now; the MP5K's both-hands swap above is new), Post-93's `MP7A1` one-hand reload (the MP7 uses the Micro's identical `UziGrip`).
-  - Packs: `GunsOfTien_CompactShortSMG_Pack1-7.x` (main mod, 277 clips, 28.5 MB), made once by
-    `scripts/anim/shortsmg_from_packs.py` from the 2026-10-27 packs (the per-gun builds lived in tmp/ on the Mac):
-    the Uzi set's clips, and the reloads taken out under family names, each set's gun-bone move measured against
-    vanilla's Bob_IdleAimRifle (MP5K 0.0890, MP7 0.0344) and undone first. Nodes: `compact_animsets.py ...
-    ShortSMG` (255, reproduced the shipped Uzi nodes byte for byte before the rename) and `write_reload_nodes`
-    (24: ids `ShortSMGPistol`, `ShortSMGHK`, `ShortSMGPistolRearT` with `clip_sets`). Grip animId
-    `GunsOfTien_CompactShortSMG`; reload ids `GunsOfTienCompactShortSMG<Pistol|HK|PistolRearT>`.
-  - **Squared 2026-10-29** (user: "SMG Short stance suffers from the same thing [as the AUG's tilt] ... facing
-    directly to the player direction"; approved from GIFs: "they look great now"): the Uzi set rebuilt with no chest
-    turn and no head turn (`compact_build.py` `SHORTSMG_TWIST = 0`, the Uzi hold's `look` 0), the gun's place and
-    hand relation unchanged. The twist alone was not enough: with the hold's `look` 0.15 the chest was vanilla's but
-    the head turned 7-8 degrees to the gun ("it's now tilted the other way"); the turned chest had hidden it. Measure
-    stances absolutely (yaw / roll of pelvis, spines, neck, head against the facing): pelvis to head now within 1.5
-    degrees of vanilla in idle, walk, run, sprint, sneak run and strafe, as the bullpup's. Rebuild: the scratch
-    runner's steps (compact_build.py `Uzi --clips <list> --no-pack` per chunk into tmp/anim/square), the reloads
-    (`SMG_COMPACT_DIR=tmp/anim/square` smg_reload.py `short_pistol` / `short_hk` / `short_reart`), a manifest in the
-    packs' AnimationSet order, `compact_pack.py tmp/anim/square/Uzi tmp/anim/square/reload <anims_X/Bob> ShortSMG`
-    (277 clips, names and order as before, gun bone and hand-to-gun relation identical to the old packs). Arms past
-    contact (clearance.Body, 0.022): 29 clips, was 42 (TODO lists the deepest and the four that got deeper).
-    Review GIFs: tmp/anim/square/cmp3 (vanilla | bullpup | short SMG), reloads tmp/anim/square/reload_gif.
-  - **Emote copies: judge them as the game shows them, never from the file** (2026-10-29). A generic copy plays in a
-    masked node (weights per bone, `includeDescendants` false, resolved through `x_extends` by position: Sneeze2Rifle
-    plays the right arm at 0.2), so `unmask` stores that arm's swing five times over; rendered or measured raw it
-    looked 4-6 cm through the chest ("holy crap that looks terrible"), shown it was clear. `shown_compare.py` renders
-    `compact_build.masked(underlying frame 0, clip frame, masks)`. Shown, 7 of 149 copies were past max(vanilla's
-    own shown, contact) by more than 3 mm, all left arms where the hand leaves the gun for the gesture (sitting on the
-    ground: arm wipe 6.3, sneeze 5.0; chair / ground pain and wipes 0.4-0.8 past). `generic_declip` (compact_build.py,
-    on every generic copy): per frame of the shown pose the least outward elbow swing to contact (Declip.arms' pole,
-    0.025 a step, at most 16), held 5 frames either side and eased; a left arm still in then eased toward vanilla's own
-    (`generic_release`, bisection; 12 % at most, the ground arm wipe). All seven now at contact (0.021-0.022). Not
-    reached: the sneaking stomach-pain pair's right arm (2.8 / 2.4, the upper arm on the curled chest).
-  - **Arms at vanilla's level** (2026-10-29; user: "in idle, the left arm clips into the body ... very close but
-    doesn't clip", approved from top / game-angle GIFs): CONTACT 0.022 is the forearm's centre on the skin; vanilla's
-    idle reads 0.011. The set's `arm_target` 0.011 is what the elbow swings (Declip.arms, the filter's redeclip,
-    generic_declip) aim for, while moving the gun and easing toward vanilla's arm still start past CONTACT (one limit
-    for both pushed the gun up to 10 cm in 71 clips). The idle: elbow 2.5 cm out, gun and hands unchanged. Built into
-    tmp/anim/square12; 12 clips where the gun still moved or the jerk grew kept the previous build
-    (tmp/anim/square_final = the packed set, kept_old.txt). Own clips: median deepest arm 1.9 -> 1.1, past 1.5 cm
-    65 -> 43. Reloads (`smg_reload.py` SHORT_ARMS, every short family and clip): `declip_left` with `move_gun`
-    False (elbows only) to 0.011, and `elbows_to_ends` instead of match_ends: the ends get the idle's arms exactly and
-    the elbows are steered toward them over 8 frames with the hands re-solved where they are (match_ends' whole-arm
-    blend held the hand still and then moved it 4.5 cm in a frame). Reload arms 1.1-1.5 (were 2.3-3.6), hands and
-    gun unchanged. The aimed racks start 2-5 cm off the stance's aim arms (as shipped; not changed).
-    Previews: `stance_compare.py` views `top` / `iso_l` / `iso_r` (straight down, and from above at the game camera's
-    slope) with STANCE_Z=chest; tmp/anim/square_final/gif.
-  - **The 12 kept clips swivelled in the packs** (2026-10-29, `scripts/anim/arm_swivel.py`, Blender; user: "we
-    cannot absolutely ignore this"): IdleRifleExt02 / Ext03, IdleSneak_Rifle_HBreathing (the low one was already
-    clean), EmoteShiverRifle, Emote_Shiver_Sat_Rifle, FallLanding_Heavy_Rifle, WalkHeavyLimpR_Rifle,
-    Seated_SitDown(_R)_Rifle, Seated_StandUp_R_Rifle, RunRifle_BumpR, WalkTrees_Rifle. The square / tmp builds live on
-    the other machine, so they were edited in place from the shipped packs (every other clip byte for byte; the
-    xanim read / write_clip round trip is exact). Each arm turns about its shoulder-to-hand line (shoulder, hand and
-    gun exactly where they were), one way per clip, the least turn to 0.011 per frame, then held 2 x SPREAD (3)
-    frames either side and averaged twice over SPREAD: never below a frame's own need, no plateau corners (a max hold
-    plus a smoothstep ramp tripled the idles' jitter). **Forearms stay pure hinges** (zero twist about their own
-    length, as in every vanilla clip and every clip of the stance; the hand takes the twist, rig._place): the first
-    version rolled the forearm to spare the wrist, 7-49 degrees of forearm twist jumping up to 13 a frame, which flicked
-    back on every blend into a neighbouring clip (user: "there's some twitching across all your reworks"; frame-level
-    jerk and skin measures did not show it, a forearm-twist check does). No wrist ends past max(1.2, vanilla's + 0.2,
-    the shipped clip's worst) (Scorer's ratio; the cap bisected per frame so it moves smoothly). Left arms 1.9-2.7 ->
-    1.0-1.2 in eight, held by the wrist: FallLanding_Heavy 1.4, RunRifle_BumpR 1.6, Emote_Shiver_Sat 1.7,
-    WalkTrees 1.8. The idle fidgets, standing shiver, landing and stand-up now meet IdleRifle exactly at their ends
-    (elbow 0.0 cm, forearm 0-1 degrees; the shipped ones were 2.5 cm and 15 degrees off, a jump on every blend).
-    RunRifle_BumpR's start is 1.4 cm / 14 degrees off RunRifle (was 0.3 / 8). GIFs (before | after, every frame,
-    fixed camera, game angle and front): tmp/anim/swivel/gif.
-  - **Snaps and hands in the belly, the whole set** (2026-10-29; user: "FallLanding_Heavy_Rifle has an insta move on
-    the left arm ... smoothen this", "Emote_Shiver_Sat_Rifle ... by the near end, the wrists go inside the body...
-    why?", "check for other animations that has a similar effect and fix them"). `stance_audit.py` compares every
-    pack clip with its vanilla clip (generic copies as shown, compact_build.masked over the context's idle): a hand or
-    the gun stepping relative to the chest past max(1.5 x vanilla's step, vanilla's + 1) + 1 cm in a frame is a snap,
-    unless the hand stays on the gun (< 1 cm a frame against it: a raise turns the gun fast and our support hand
-    sits further out on it than vanilla's, which flagged IdleToAim / AimToIdle / SprintToAim falsely). 39 clips had
-    snaps: the left hand switching between vanilla's free arm and the gun in 2-3 frames (compact_build left_on:
-    FallLanding 5.6 + 5.2 cm where vanilla's hand moved 1; emote wipes, sneezes, pains, scrambles, vaults,
-    RunStumble 25 cm in a frame) and three gun jumps (IdleToSprint, IdleSeatedExt01, FallIdle04).
-    `smooth_snaps.py` takes each cluster's jump out of the motion (each step less the step blended from the ones
-    round it) and puts it back spread over a window by a smootherstep (about 1.5 cm a frame, at least 8 frames,
-    widened on later passes, the pass that leaves least kept), relative to the chest; the arm is solved onto it with
-    rig._place keeping each frame's own roll (`arm_deltas`: an unmoved frame is exactly the clip's), fingers and the
-    elbow direction layered the same way; gun jumps move the gun and keep both hands' relation to it. Every other
-    step is kept: an earlier version blending between the window's end attachments froze a wipe emote's whole arm.
-    Left over: ValultOver_Sprint_Rifle's last frame (3.5 cm, vanilla 1.1; no frame after it to spread into).
-    FallIdle04_Rifle was put back as shipped (the gun fix doubled its arms' acceleration in a fall whose own gun
-    moves 4.7 cm a frame). Forearm twist stays 0 in every changed clip.
-    Hands in the belly: the build's arm audit measures the chest only (clearance.BODY), never chest + belly + pelvis.
-    The stance holds the gun rigid with the chest, low in front of the belly, so where vanilla's body bends or
-    straightens at the waist under it the gun and the hands on it swing into the belly or lap (the sitting shiver's
-    left wrist 1.9 cm deep most of the clip, 3.4 at frames 81-87 as the chest comes upright). `clear_hands.py` moves
-    the gun out (one direction per clip, the mean way out in the chest's frame, the least distance per frame,
-    spread as arm_swivel.spread) where a hand on the gun sinks past max(clip median + 1, 2.5) cm, the right hand
-    always following, the left by a smoothed on-the-gun weight (a per-frame flag made arms jump), each frame keeping
-    its own roll. 17 clips, gun moved 0.7-3.9 cm (sitting shiver 3.4 -> 2.4, Seated_StandUp 3.9 -> 2.2,
-    Emote_Bent_Double_Sat 4.1 -> 2.6). By design of the stance the left wrist rests on the belly everywhere
-    (IdleRifle 2.3, the no-aim walks 4-5 cm with the pelvis counted, SatChair_rifle 3.3-3.9); not changed.
-    Review GIFs (before | after, every frame, front and side, generic copies as shown): tmp/anim/review/gif.
-  - The full Uzi re-exported in pistol orientation (`UZI_ONLY=1 blender ... build_uzi.py`: Uzi alone, a new UV
-    layout and texture from this machine's bake; points turned, its rifle floor pose turned, MP7-style `rifle_back`
-    / `rifle_back_bag` points turning it back upright on the back). Other mods' rifle locations (Plysken's) have no
-    such point and would draw it upside down. smg_reload's `uzi_spec` keeps upright places and draws the mesh with
-    `model_turn`; hold_preview turns it for rifle clips.
-  - Outside the stance's nodes (climbing, hit reactions, actions...) vanilla's generic clips hold the gun in a third
-    relation, matching neither rifles nor pistols (Bob_ClimbWindowStart, Bob_FallIdle): the short SMGs now look
-    there as GoM's MP5K / MAC-10 do.
-  "Compact SMG stance" below describes the per-gun build this replaced.
-- Entering a reload: reload nodes live in `AnimSets/player/actions` (a sub-state layer over idle / aim, blended in
-  over the node's `m_BlendTime`, ours 0.20 s), so there is no hard snap, but hands and gun cross-fade separately
-  (the gun bone hangs from Bip01) and can part for a moment when the reload's first pose is far from the stance.
-  A transition clip (`m_Transitions` with `m_AnimName`) cannot cover it: the engine (42.21
-  `AdvancedAnimator.FindTransitionsFromProxy`) only plays one from a node going out to a node coming in, and the root
-  idle node stays active under the reload layer. If the cross-fade looks bad, the fix is a lead-in and lead-out
-  built into the clips of that (stance, family) pair, generic for every gun using them.
+- Reload nodes live in `AnimSets/player/actions` (a sub-state layer over idle / aim, blended in over the node's
+  `m_BlendTime`), so hands and gun cross-fade separately (the gun bone hangs from Bip01). A transition clip cannot
+  cover it: the engine (42.21 `AdvancedAnimator.FindTransitionsFromProxy`) only plays one from a node going out to a
+  node coming in, and the root idle node stays active under the reload layer.
 
 ## Decisions taken with the user (main mod)
 
@@ -273,8 +153,8 @@ and multiply the work for every other mod that modifies animations. So:
 - **Steyr AUG A1** (user, 2026-10-27; built): main mod (1977; the AUG/SA was imported to the US until 1989). Steyr
   green, held as a rifle like GoM's FAMAS, its own 30 / 42 magazines (no STANAG), the integral 1.5x scope as a hidden
   required part, the folding front grip as Post-93's MP7A1's (the fold code moved to the main mod for both), no
-  muzzle parts, rails or bayonet (user's choice), the bullpup animation set it shares with GoM's FAMAS (hold and
-  reloads, section "Bullpup set"), loot in GoM's import rifle spawner.
+  muzzle parts, rails or bayonet (user's choice), GoM's FAMAS reload on vanilla's rifle hold (its own bullpup set until
+  2026-10-29, section "Bullpup set"), loot in GoM's import rifle spawner.
   Design: docs/design.md 4g; build notes: "Steyr AUG A1" below.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
@@ -370,9 +250,8 @@ and multiply the work for every other mod that modifies animations. So:
   mount device (GoM has no 7.62x51 can). Design: docs/post93_design.md; build notes: "FN SCAR-L and SCAR-H" below.
 - **H&K UMP45 and UMP9** (user, 2026-10-22; built): two guns on one shared model, no calibre conversion recipe and no
   UMP40 (no .40 S&W round in GoM / Gunworks, and the user chose not to add one); the .45 hits harder than GoM's MP5,
-  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, GoM's MP5 reload clips (replaced 2026-10-26 by
-  their own, after the resize: smg_reload.py `ump`, packed with rifle_hand.py's UMP set, nodes
-  *GunsOfTienCompactUMP_GoT.xml, "attachments" style with the magazine in the hand), the UMP45 GoM's .45 mount device
+  UMP45 magazines 10 / 20 / 25, Auto / two-round Burst / Single, GoM's MP5 reload (their own clips from 2026-10-26 to
+  2026-10-29, "GoM's animations only"), the UMP45 GoM's .45 mount device
   + P45 suppressor as its MAC-10 (user, same day, replacing "no suppressor"), the UMP9 the main mod's 9x19mm SMG mount
   device + AWC Mk9 (GoM's 9mm cans fit its pistols only),
   loot the MP7 / P90 route, magazines on found guns by GoM's MP5 rule. Design: docs/post93_design.md; build notes:
@@ -386,7 +265,7 @@ and multiply the work for every other mod that modifies animations. So:
   SMG mount + Mk9. HBAR: Steyr's own AK-curved 7.62x39 AUG magazine (GoM's AK magazines do not fit), no muzzle parts,
   folding grip + folding bipod. All: integral short top rail + right rail, GoM's `Picatinny_Rail_Left` as an optional
   upgrade (no factory left rail: the charging handle's slot), no bottom rail, the A1's folding grip, the bullpup stance
-  and AUG reload. Design: docs/post93_design.md; references in tmp/ref/aug_variants.
+  and AUG reload. Design: docs/post93_design.md; references in references/aug_variants.
 - **GoM's rail sides** (traced 2026-10-28 in its `AttachmentsRequiredParts.lua` / `rails.txt`): each side takes one
   kind of part: Up optics (also `AK_Mount`, `Sniper_Mount`, G36C rail), Down foregrips and bipods (both at once, e.g.
   M16A2, M4A1, G36), Left lights (BrightPoint-5, SR7), Right lasers (AimRight, LRX-7). `Picatinny_Rail_Up / _Down /
@@ -398,17 +277,16 @@ and multiply the work for every other mod that modifies animations. So:
 ## File map
 
 - **No `x_extends` in AnimSets** (2026-10-24, Linux report): the game lower-cases an `x_extends` path and fails to
-  open it on a case-sensitive file system (ZomboidFixesB42 CLAUDE.md, "Item and recipe scripts"). Every node that
-  extended another (Uzi grip unload / rack, M249 aim rack; Post-93 MP7A1 / P90TR unload / rack, P90TR aim rack) is
-  written out in full, merged as `PZXmlUtil.resolve` does (an empty `<m_Conditions />` keeps the parent's n-th, an
-  extra one is appended after the parent's children), with a header comment saying so; `compact_animsets.py`
-  already flattens the same way. Write new nodes in full. "Marz Mods Animsets for Linux" (workshop 3774316897,
+  open it on a case-sensitive file system (ZomboidFixesB42 CLAUDE.md, "Item and recipe scripts"). Nodes of our own
+  (none ship since 2026-10-29) were written out in full, merged as `PZXmlUtil.resolve` does (an empty
+  `<m_Conditions />` keeps the parent's n-th, an extra one is appended after the parent's children). "Marz Mods Animsets for Linux" (workshop 3774316897,
   id `Linux_Animsets_Marz_Mods`, no `loadModAfter`) covers only GoM's own `_HB` files, as lowercase copies dated
   2026-08-17, i.e. from before GoM's 2026-10-23 id renames (its `loadfal_hb.xml` answers `"FAL"`, plays
   `Bob_Reload_Rifle_Load`, no InsertMag). The game keys AnimSet files by lowercased path (`resolveFileOrGUID` →
   `activeFileMap`, last mod loaded wins, logged `mod "X" overrides media/animsets/...`), so on a server listing it
-  after GunsOfMarz it replaces GoM's current nodes, GoM's own guns included. So never borrow GoM's animId for a gun
-  of ours: copy its nodes under an id of our own (the SCAR-H, 2026-10-27).
+  after GunsOfMarz it replaces GoM's current nodes, GoM's own guns included. The SCAR-H had copies of GoM's FAL
+  nodes under an id of its own for that (2026-10-27); since 2026-10-29 it uses GoM's "fal_rifle" itself, so with that
+  mod after GunsOfMarz it gets the old FAL reload as GoM's FAL does.
 - Descriptions (2026-10-24, as in ZomboidFixesB42): `README.md`, `forum.txt` (the pinned Discussions thread, one
   post: every feature and the sandbox options) and the `mod.info` descriptions list the features; keep them in
   step. `workshop.txt` only has the requirements, a short intro and a pointer to that thread (Steam caps the
@@ -1081,7 +959,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   `server/GunsOfTien/Loot.lua`, Hot Brass in `server/GunsOfTien/HotBrass.lua`, AnimSets
   `AnimSets/player(-vehicle)/actions/*UziGrip_GoT.xml` and `anims_X/Bob/Bob_GunsOfTien_Uzi_Unload.x`. Rebuild: build,
   render, art, then `gen_scripts.py` and `check_refs.py`.
-- **References** (none in the repo; kept in `tmp/ref/uzi`, gitignored): the Uzi from the Commons photo "Uzi of the
+- **References** (none in the repo; kept in `references/uzi`, gitignored): the Uzi from the Commons photo "Uzi of the
   israeli armed forces" (Uziel Galishto, CC BY-SA 3.0; left side, stock folded, Action Arms markings), scaled to IMI's
   470 mm folded; the user's two angled Uzi photos cannot be traced. The Mini from the user's side photo (stock
   deployed) at the published 600 mm (its folded length then comes out at the published 360; scaling it by the
@@ -1122,7 +1000,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   (registries), `client/GunsOfTien/AUGTooltips.lua`, loot in `server/GunsOfTien/Loot.lua`, Hot Brass in
   `server/GunsOfTien/HotBrass.lua`, the fold in `shared/GunsOfTien/Foregrip.lua` + `client/GunsOfTien/ForegripMenu.lua`.
   Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
-- **Reference** (not in the repo; tmp/ref/aug): Commons "Steyr AUG 5,56 mm" (MoserB, public domain, 4475 px) and its
+- **Reference** (not in the repo; references/aug): Commons "Steyr AUG 5,56 mm" (MoserB, public domain, 4475 px) and its
   background-removed copy "Steyr AUG 5,56 mm noBG.png" (CC BY-SA 4.0, 5000 px, used for the edges): an Austrian StG 77,
   left side, muzzle left, front grip down, magazine out and lying beside it, a sling over the butt (so the outline was
   read by hand on a millimetre grid, `scripts/aug_photo_grid.py`, not traced: the sling joins the gun). Scaled to Steyr's

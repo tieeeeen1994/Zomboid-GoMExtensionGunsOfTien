@@ -10,8 +10,7 @@
     - rate of fire by each gun's real one (A3 700, the A1's; Para 685 from 650-720; HBAR 680, the HBAR's), spread
       balanced on it (docs/post93_design.md, "Stats");
     - the charging handle rides with the bolt (GoM's Bolt_Fired / Bolt_Lock swap), as on the A1;
-    - hold and reload: the main mod's bullpup stance and its AUG reload (animIds "GunsOfTien_CompactBullpup" and
-      "GunsOfTienCompactBullpup", CLAUDE.md "Animations are generic"), as Bullpup.lua registers the A1 and GoM's FAMAS;
+    - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as the A1 (the main mod's GoMReloads.lua);
     - the folding grip: the A1's two parts and their stats (the main mod's AUG.lua), folded through the main mod's
       Foregrip.lua (the Para draws them with its own sand model);
     - rails: integral top (GoM's optics) and right (GoM's lasers), hidden parts as on the SCARs and UMPs; no factory
@@ -35,6 +34,7 @@ local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local UniversalAttachment = require("WeaponSystems/Utils/UniversalAttachment")
 local Foregrip = require("GunsOfTien/Foregrip")
+local GoMReloads = require("GunsOfTien/GoMReloads")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments", "UniversalAttachments" }) do
@@ -76,19 +76,14 @@ RateOfFire.RegisterWeapon(HBAR, { rpm = 680, enableSpread = true, sustainedSprea
 RateOfFire.RegisterSpreadPartModifier(BIPOD_DEPLOYED, { sustainedSpreadMult = 0.65, maxSpreadMult = 0.65 })
 
 -------------------------------------------------
--- The charging handle, the bullpup hold and reload, the folding grip
+-- The charging handle, GoM's FAMAS reload, the folding grip
 -------------------------------------------------
 for _, gun in ipairs(GUNS) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
         SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
         cycleTicks = 3,
     })
-    -- the AUG's bullpup reload (Bullpup.lua's lengths: unload 1.2, load 1.5, racks 1.2); each its own table
-    ReloadAnim.RegisterWeapon(gun, {
-        animId = "GunsOfTienCompactBullpup",
-        style = "none",
-        durations = { unload = 1.2, load = 1.5, rack = 1.2, rackAim = 1.2 },
-    })
+    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("famas_rifle"))
     Foregrip.Register(gun, {
         folded = GRIP_FOLDED,
         deployed = GRIP_DEPLOYED,
@@ -96,17 +91,6 @@ for _, gun in ipairs(GUNS) do
         unfoldDesc = "IGUI_GunsOfTien_AUGUnfoldForegripDesc",
     })
 end
-
-local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
-local function registerGrip()
-    if not okGW or type(Gunworks) ~= "table" or not Gunworks.RegisterWeapon then
-        return
-    end
-    for _, gun in ipairs(GUNS) do
-        Gunworks.RegisterWeapon(gun, { grip = { animId = "GunsOfTien_CompactBullpup" } })
-    end
-end
-Events.OnGameBoot.Add(registerGrip)
 
 -------------------------------------------------
 -- The HBAR's integrated bipod: GoM's rail bipod stats (a 4.9 kg rifle, not the M60's or M249's weight)

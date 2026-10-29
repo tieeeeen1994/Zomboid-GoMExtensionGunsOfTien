@@ -4,21 +4,20 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished and b
 are taken as working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings:
 `CLAUDE.md`. Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
-## Generic animations (release 3.4.0 held for these; CLAUDE.md "Animations are generic")
+## GoM's animations (2026-10-29; CLAUDE.md "GoM's animations only")
 
-Done 2026-10-28 (built; the MP5 family, the MP5K on the MP5A3's hold and their H&K reload approved in game the same
-day, the rest not played; see "Check in game"): one short SMG stance in the pistol orientation, reloads
-by family (short SMG: pistol, H&K, pistol + rear T-handle; GoM's MP5s on the UMPs' H&K reload; one bullpup family),
-the full Uzi re-exported in pistol orientation, the bullpup stance (draft B, a tucked carry) with its reloads rebuilt
-on it. Still to do:
-
-- [ ] **Short SMG arms, what is left** (2026-10-29, CLAUDE.md "The 12 kept clips swivelled" and "Snaps and hands in
-      the belly"): the 12 old-level clips swivelled (eight at 1.0-1.2, the landing 1.4, run bump 1.6, sitting shiver
-      1.7, tree walk 1.8), snaps smoothed in 30 clips, the gun moved out of the belly in 17; 50 clips changed in all.
-      To do: approve from tmp/anim/review/gif, then play them in game (watch the blends in and out). Left: the
-      no-aim walks' left wrist on the belly (4-5 cm against chest + pelvis, the stance's design), the sprint vault's
-      last frame, 58 of 118 own clips past 1.1 against the chest. The vaults and the left bite reaction are
-      vanilla's own depth. The sneaking stomach-pain emotes' right arm 2.8 / 2.4 shown.
+- [ ] **Play every gun on Guns of Marz's animations** (branch gom-anims): no "animation not found" in the log, no gun
+      drawn upside down, each reload ends and swaps the magazine. Uzi held as a rifle (its model back to the upright
+      one of before 2026-10-28; on the back too) on GoM's MP5 reload; Mini and Micro Uzi, MP7A1 / A2, P90 one-handed on
+      its MP5K's ("handgun2"); Five-seveN, UCP on its pistol reload; AUG A1 / A3 / Para / HBAR on its FAMAS's; SCAR-L
+      on its FNC's, SCAR-H on its FAL's (GoM's own nodes now: an old copy of them, Marz Mods Animsets for Linux, would
+      play instead, as for GoM's FAL); UMPs on its MP5's; M249 on its M60's (cover shut throughout); GoM's MP5s, MP5K
+      and FAMAS back on GoM's own. Also a gun saved held in both hands (Mini Uzi, MP7s) and an MP5K saved with its
+      old two-hand model.
+- [ ] **Charging handles** (2026-10-29, CLAUDE.md "Charging handles move as GoM's do"): on every Uzi, MP7, P90, UMP
+      and the M249 the handle flicks back on each shot, stays back when empty, moves with the rack, in the hands of the
+      shooter and of other players; the Uzis' top slot, the P90's steel tracks, the MP7's new T-handle look right; an
+      M249 from an older save shows its handle once equipped.
 
 ## Audit
 
@@ -35,31 +34,18 @@ on it. Still to do:
 
 - [ ] **No firing animation in one hand with the left hand full** (user, 2026-10-26: "Our guns in GoT that can be
       held with one hand has no shooting animation when the left hand is holding something else like an
-      umbrella"). Not traced yet. To find out: which guns (the Mini Uzi, MP7s and MP5K only, or the P90 / Micro Uzi /
+      umbrella"). Not traced yet; the Mini Uzi, MP7s and MP5K were two-handed then and are one-handed again since
+      2026-10-29 (GoM's animations), so first see whether it still happens. To find out: which guns (the Mini Uzi, MP7s and MP5K only, or the P90 / Micro Uzi /
       pistols too, and whether GoM's own one-handed guns do the same); whether vanilla's pistol with an umbrella
       animates (engine) or only with Gunworks (its `RealSingle` / `RealAuto` / `RealBurst` nodes and their
       conditions); what `WeaponType.getWeaponType` gives for a two-handed gun in the primary hand with another item
       in the secondary.
 
-## Decide
-
-- [ ] One-hand penalty: the Mini Uzi, MP5K and MP7A1 / A2 held in one hand get the engine's rule for a two-handed
-      weapon in one hand (half damage, 0.77 combat speed). Keep it, or not?
-
 ## Check in game
 
 - [ ] **Steyr AUG A3, AUG Para, AUG HBAR** (Post-93, built 2026-10-28, docs/aug3_preview.png): held and reloaded on
-      the bullpup stance (no "animation not found"), each magazine in the well (the Para's 9mm through its adapter, the
+      GoM's FAMAS reload (no "animation not found"), each magazine in the well (the Para's 9mm through its adapter, the
       HBAR's 50), the charging handle cycling, Fold / Unfold Foregrip, the HBAR's bipod toggle and its stats; GoM's
       optics on the top rail, lasers on the right, Picatinny Rail (Left) installed (drawn as our short rail, the
       universal rail offering only Left) with a light on it; the A3's AR muzzle parts, the Para's Mk9; found guns'
       parts, spawns, Hot Brass ejection from the port behind the grip.
-
-- [ ] **FAMAS on the bullpup stance** (the AUG approved in game 2026-10-28, chest square): GoM's FAMAS carried, aimed
-      and reloaded like the AUG (its carry handle and STANAG in the same places), no "animation not found".
-- [ ] **Short SMG stance** (2026-10-28, CLAUDE.md "Animations are generic"): Uzi, Mini Uzi, MP7A1 / A2 in both
-      hands: right way up, grip in the hand, the left hand at the one shared place (MP7 ~1-2 cm off it, accepted), tracers and muzzle flash at the barrel's end; no "animation not found" in the log (the old
-      `GunsOfTien_CompactUzi` / `UziT` / `MP5K` / `MP7` names are gone). Reloads: Uzi / Mini Uzi (pistol family), MP7s
-      (pistol magazine + rear T-handle rack); in one hand: Mini Uzi and MP7s on `UziGrip`, MP5K on GoM's
-      `handgun2`, all upright with the same model. The full Uzi's new model (re-exported, new texture bake) in the hand,
-      on the back (upright: its `rifle_back` points), on the floor. FAMAS on the one bullpup reload (the AUG's approved).

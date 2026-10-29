@@ -8,7 +8,7 @@
     - 700 rpm (Steyr gives 680-750), steadier than GoM's FAMAS (1000) and FNC (750) between them, select fire Auto /
       Single (the A1's two-stage trigger);
     - the charging handle on the left rides with the bolt carrier: GoM's Bolt_Lock / Bolt_Fired swap moves it;
-    - hold and reload: the bullpup set shared with GoM's FAMAS (Bullpup.lua; docs/design.md 4h);
+    - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as its FAMAS (GoMReloads.lua);
     - the integral 1.5x scope, a hidden part with no model, below GoM's 2x Elcan: Aiming Time x1.05, Hit and Crit
       Chance x1.05, sight range x1.15;
     - the folding front grip (shared/GunsOfTien/Foregrip.lua swaps its two parts), unfolded with GoM's Stub Foregrip
@@ -58,7 +58,11 @@ Animations.RegisterWeaponWithAnimatedParts(AUG, {
     cycleTicks = 3,
 })
 
--- Hold and reload: the bullpup set, shared with GoM's FAMAS (Bullpup.lua)
+-------------------------------------------------
+-- Reload: GoM's FAMAS reload
+-------------------------------------------------
+require("WeaponSystems/ReloadAnim/HandlerFactory").RegisterWeapon(AUG,
+    require("GunsOfTien/GoMReloads").profile("famas_rifle"))
 
 -------------------------------------------------
 -- Integrated parts: the 1.5x scope, the folding grip (GoM's Stub Foregrip numbers unfolded)

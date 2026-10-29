@@ -3,7 +3,7 @@
     py scripts/aug_photo_grid.py L_FROM L_TO H_FROM H_TO ZOOM OUT.png [STEP_MM]
 
 L back from the muzzle tip, H up from the heel, real mm; red lines every STEP mm along L, blue along H. Needs the
-photo at tmp/ref/aug/aug_nobg.png (Commons "Steyr AUG 5,56 mm noBG.png", not in the repo).
+photo at references/aug/aug_nobg.png (Commons "Steyr AUG 5,56 mm noBG.png", not in the repo).
 """
 
 import os
@@ -11,7 +11,7 @@ import sys
 
 from PIL import Image, ImageDraw
 
-PHOTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tmp", "ref", "aug", "aug_nobg.png")
+PHOTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "aug", "aug_nobg.png")
 X0, Y0, S = 270.0, 2190.0, 5.62911          # muzzle tip x, heel y, px per mm (build_aug.py's frame)
 
 

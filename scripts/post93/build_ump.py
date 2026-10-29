@@ -25,7 +25,8 @@ GoM's conventions (CLAUDE.md, "Gun assets in GoM"): upright, +Y muzzle, +Z top, 
 rear-top of the pistol grip, drawn at 0.603 of real size, the M16A2's proportion (0.72 before 2026-10-26, like GoM's MP5 family); held as a rifle like
 GoM's MP5 (two hands, back slot). The stock is one node modelled deployed with its origin at the hinge (its front face
 on the bore axis); `stock_folded` swings it 180 degrees about the hinge pin on the right, as H&K's folds along the
-receiver's right side. The charging handle does not reciprocate (as the MP5's): `bolt_fired` = `bolt_lock`.
+receiver's right side. The charging handle sits at the front of its slot high on the left; `bolt_fired` is it pulled
+back HANDLE_TRAVEL along the slot, drawn by Guns of Marz's bolt swap as on its guns (2026-10-29).
 
 Magazines hang from `magazine` (the feed lips) with their rake built in: the UMP9's 30-round curves forward from about
 16 degrees under the receiver to 36 at its base (fitted to the photo's edges within 1 mm); the .45 magazines are straight at 18 degrees, the
@@ -106,7 +107,7 @@ def both(fn):
 
 
 # ==================================================================================================
-# Profiles (photo L, H mm), from the traced outline (tmp/ref/ump/ump9_outline.json) and the photo's details
+# Profiles (photo L, H mm), from the traced outline (references/ump/ump9_outline.json) and the photo's details
 # ==================================================================================================
 
 UPPER = [(36.4, SEAM - 0.5), (36.4, 229.4), (38.0, 232.1), (40.0, TOP), (HINGE_L - 7.0, TOP),
@@ -142,6 +143,7 @@ CATCH = [(186.0, 181.0), (186.0, 191.5), (191.0, 195.5), (204.0, 195.5), (204.0,
 SELECTOR = [(343.0, 184.0), (343.0, 188.0), (352.0, 192.5), (361.5, 190.0), (362.0, 186.5), (352.0, 180.5)]
 SELECTOR_PIVOT = (352.0, 186.0)
 HANDLE = (65.0, 85.0, 236.5, 247.5)            # charging handle knob, L / H
+HANDLE_TRAVEL = 70.0                           # its pull, to the back of the slot (L 84-160; ~100 mm on the photo)
 
 # The folding stock, as photographed (deployed); its own frame is shifted to the hinge in build_stock().
 STOCK = [(HINGE_L, 186.4), (HINGE_L, 251.4), (442.2, 251.4), (450.5, 249.2), (477.0, 233.8), (496.2, 228.3),
@@ -540,7 +542,7 @@ def points(bounds):
         "rail_down": {"offset": [0.0, round(P(sum(BOTTOM_RAIL) / 2, 0)[0] * K, 4), round(bottom + 0.0055, 4)],
                       "rotate": ZERO},
         "foregrip": {"offset": [0.0, round(P(FOREGRIP_L, 0)[0] * K, 4), round(bottom + 0.003, 4)], "rotate": ZERO},
-        "bolt_fired": {"offset": ZERO, "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-HANDLE_TRAVEL * K, 4), 0.0], "rotate": ZERO},
         "stock": {"offset": stock, "rotate": ZERO},
         # turned 180 degrees about the hinge pin: offset = stock + 2 x the pin's x
         "stock_folded": {"offset": [round(stock[0] + 2.0 * hinge_x * K, 4), stock[1], stock[2]],
@@ -554,7 +556,7 @@ def points(bounds):
         "stock": "UMP_STOCK (shared, in GunsOfTienPost93_UMP_parts.fbx) is modelled deployed with its origin at the "
                  "hinge: its front face on the bore axis",
         "stock_folded": "the same node turned 180 degrees about the hinge pin at x %.1f mm (the right side)" % hinge_x,
-        "bolt_fired": "the charging handle does not reciprocate: the same place as bolt_lock",
+        "bolt_fired": "the charging handle pulled back %.0f mm real along its slot" % HANDLE_TRAVEL,
         "canon": "the barrel collar's front face, %.1f mm behind the muzzle: GoM's .45 mount device and P45 suppressor "
                  "(UMP45 only)" % CANON_L,
     }

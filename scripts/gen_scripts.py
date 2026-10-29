@@ -837,12 +837,12 @@ def m249():
         texture  = {tex}/M249,
         cullFace = None,
 """]
-    for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod'):
+    for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod', 'bolt_fired'):
         out.append(m249_attachment(name, pts[name]))
     for d in M249_COVER_STEPS:
         out.append(m249_attachment('cover_%d' % d, dict(offset=pts['cover']['offset'], rotate=[-float(d), 0.0, 0.0])))
     out.append("    }\n")
-    for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED'):
+    for node in ('M249_COVER', 'M249_BIPOD_FOLDED', 'M249_BIPOD_DEPLOYED', 'M249_BOLT'):
         out.append(f"""
     model {node} {{
         mesh     = weapons/firearms/GunsOfTien_M249|{node},
@@ -881,6 +881,9 @@ def m249():
               f"{w}{MODULE}.{M249_BOX} {MODULE}.{M249_BOX} box box,"]
     parts += [f"{w}MarzGuns.{m} {MODULE}.{m}_GoT magazine magazine," for m in M249_STANAGS]   # at our size
     parts += [f"{w}MarzGuns.Bullet_{i} {MODULE}.556x45_M249_{i} belt belt," for i in range(1, 10)]
+    # the cocking handle, GoM's bolt swap (bolt_lock = the origin, as GoM's)
+    parts += [f"{w}MarzGuns.Bolt_Lock {MODULE}.M249_BOLT bolt_lock bolt_lock,",
+              f"{w}MarzGuns.Bolt_Fired {MODULE}.M249_BOLT bolt_fired bolt_fired,"]
     items = [f"module {MODULE} {{\n", f"""
     item M249 {{
         MinDamage                    = 1.0,
@@ -1220,14 +1223,9 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
-    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster).
-    # The Mini Uzi is two-handed too, for the compact SMG stance (user: "let's require them to be 2-handed"; CLAUDE.md
-    # "One-handed after equipping"); the Micro Uzi stays one-handed.
+    # rifle-held as GoM's MP5 (M16 handling sounds, two hands, back slot); pistol-held as its MP5K (M9 sounds, holster,
+    # one-handed: GoM's animations only since 2026-10-29, CLAUDE.md "GoM's animations only")
     snd = 'M16' if rifle else 'M9'
-    # (2026-10-26, user: "they can be held in one hand, but they can also be held with 2 hands": no longer
-    # RequiresEquippedBothHands; two hands by default, Equip Primary for one, shared OneHand.lua swaps model and reload)
-    both_hands = """        TwoHandWeapon                = true,
-""" if gun == 'MINIUZI' else ''
     hold = (f"""        AttachmentType               = Rifle,
         WeaponReloadType             = boltaction,
         TwoHandWeapon                = true,
@@ -1237,7 +1235,7 @@ def uzi_item(gun):
         MuzzleFlashModelKey          = muzzle_flash_shotgun,
 """ if rifle else f"""        AttachmentType               = {'HolsterSmall' if gun == 'MICROUZI' else 'Holster'},
         WeaponReloadType             = handgun,
-{both_hands}        SwingAnim                    = Handgun,
+        SwingAnim                    = Handgun,
         MuzzleFlashModelKey          = muzzle_flash_handgun,
 """)
     return f"""
@@ -1667,10 +1665,9 @@ def mp5_family():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
-# GoM's MP5K in our module (OneHand.lua): MP5K_2H, drawn while the gun is in both hands (the UMPs' rifle-hand set, like
-# the MP5A3), its body turned upright for the rifle clips with every point (build_mp5.py "two_hand"); MP5K_1H, our MP5K
-# model unturned, left from the per-gun stance's one-hand swap (until 2026-10-28) for guns saved with it: OneHand.lua
-# copies the live MarzGuns.MP5K mesh, texture and points over it at game start, so its block only has to load.
+# GoM's MP5K in our module, models only guns saved by older versions still name: MP5K_1H (a one-hand swap until
+# 2026-10-28) and MP5K_2H (a both-hands swap for our own hold, until 2026-10-29). SavedModels.lua copies the live
+# MarzGuns.MP5K mesh, texture and points over both at game start, so their blocks only have to load.
 def one_hand():
     data = json.load(open(MP5_POINTS))
     blocks = [model_block('MP5K_1H', data['models']['MP5K'])]

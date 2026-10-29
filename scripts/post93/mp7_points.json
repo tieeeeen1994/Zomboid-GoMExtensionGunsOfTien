@@ -195,16 +195,16 @@
     },
     "MP7A1_BOLT": {
       "min": [
-        -0.0121,
-        -0.0636,
-        -0.044
+        -0.0131,
+        -0.0633,
+        -0.0446
       ],
       "max": [
-        0.0121,
-        -0.0523,
-        -0.0341
+        0.0131,
+        -0.0525,
+        -0.0359
       ],
-      "tris": 52
+      "tris": 440
     },
     "MP7A1_STOCK": {
       "min": [
@@ -338,7 +338,7 @@
     }
   },
   "_notes": {
-    "units": "game units (0.72 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of grip (photo L 289, H 91.5)",
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of grip (photo L 289, H 91.5)",
     "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model upright when it hangs in the back slot",
     "turned": "parts modelled upright (magazines, GoM optics / lights / lasers) get rotate -180 0 -180, as on GoM's MP5K; render_mp7.py / make_mp7_art.py turn everything back for display",
     "magazine": "magazine meshes hang straight down from the feed lips inside the grip and curve toward the muzzle below it (30 / 40 rounds), modelled upright",

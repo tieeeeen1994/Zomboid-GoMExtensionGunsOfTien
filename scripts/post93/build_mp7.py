@@ -355,8 +355,7 @@ REAR_SIGHT = [(320.0, 166.0), (320.0, 179.9), (328.0, 179.9), (331.0, 183.2), (3
 BUTT = [(385.0, 148.0), (385.0, 91.6), (389.3, 57.0), (390.7, 53.7), (393.0, 41.1), (395.8, 38.3), (400.5, 36.0),
         (409.9, 36.0), (412.2, 38.3), (412.2, 83.2), (413.1, 86.9), (413.1, 113.6), (414.1, 115.0), (414.1, 144.4),
         (412.2, 146.7), (400.0, 147.2)]
-HANDLE = [(375.7, 160.8), (383.7, 160.3), (384.6, 164.5), (394.0, 164.0), (394.4, 148.6), (385.1, 148.1),
-          (376.0, 150.0)]
+HANDLE_L = (376.0, 394.0)            # the T charging handle, L (build_bolt)
 
 # MP7A2 (user, 2026-10-18; measured on their left-side render of one, scaled 6.81 px/mm by the muzzle tip and the
 # receiver's rear face; its hand stop, bore and grip land within 2-3 mm of the A1 photo's): the folding grip and its
@@ -427,9 +426,20 @@ def handguard(b):
 
 
 def build_bolt():
-    """The T charging handle at the rear of the receiver, forward (bolt_lock); bolt_fired pulls it back."""
+    """The T charging handle at the rear top of the receiver, forward (bolt_lock); bolt_fired pulls it back.
+    As H&K's (2026-10-29, from Commons photos of the left and right sides): a flat stem in the channel under the rail's
+    rear end, flush with the receiver's top, and at its back a crossbar whose two wings stand a few mm out of either
+    side, each ending in a tab with vertical grip ribs that hangs a little lower (until then one 40 mm wide block, 17
+    mm tall, across the whole rear end)."""
     b = Builder()
-    slab(b, PL(HANDLE), half=20.0, bevel=1.2, res=0)
+    La, Lb = HANDLE_L
+    box(b, La, Lb, 158.0, 165.0, -(W_UPPER - 1.5), W_UPPER - 1.5, mat="rail", bevel=0.8)       # the stem
+    box(b, Lb - 9.0, Lb, 156.0, 165.0, -(W_UPPER + 3.0), W_UPPER + 3.0, mat="rail", bevel=0.8)  # the crossbar
+    for s in (1, -1):
+        box(b, Lb - 10.0, Lb, 151.0, 165.5, s * (W_UPPER + 2.0), s * (W_UPPER + 5.5), mat="rail", bevel=1.0)
+        for k in range(3):                                                    # the tab's grip ribs
+            Lr = Lb - 8.5 + k * 3.0
+            box(b, Lr, Lr + 1.4, 152.0, 164.5, s * (W_UPPER + 5.0), s * (W_UPPER + 6.3), mat="rail", bevel=0.3)
     return b.to_object("MP7A1_BOLT")
 
 

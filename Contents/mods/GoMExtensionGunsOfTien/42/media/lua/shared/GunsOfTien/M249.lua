@@ -11,16 +11,16 @@
       whatever is in the Clip slot, so for the M249 they are taken off while a STANAG is fitted.
     - rate of fire: two Auto rates, 750 and 1000 rpm (user, 2026-10-22: the original gun's gas regulator, normal and
       adverse; Gunworks lists one Auto entry per rate, as for GoM's BAR).
-    - the integrated bipod with GoM's M60 bipod stats; the feed cover a hidden part (closed, or open while reloading:
-      the reload clips swap it with Gunworks' gwSetPart events, and swing it a 10-degree step a frame in between
-      with our gotFeedCover events, see the reload section).
-    - no bolt part: the cocking handle does not move when firing. The chambered round is kept (no HaveChamber =
-      false, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
+    - the integrated bipod with GoM's M60 bipod stats; the feed cover a hidden part, always shut (the open and part
+      way open covers only remain for guns saved while an older version's reload clips swung it).
+    - the cocking handle a part of its own (M249_BOLT), animated as GoM animates its M60 (Bolt_Lock / Bolt_Fired:
+      back along its slot on each shot, on an empty gun and with the rack). The chambered round is kept (no
+      HaveChamber = false, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
     - STANAG feed: jam chance x2 (user, 2026-10-22: FM 23-14 warns magazine feed "will increase the chance of
       stoppages"), a stat layer for the M249 alone (the same STANAGs keep their stats on an M16). Gunworks re-applies
       stats on equip, attach and round changes but not on a magazine swap, so the attack hook's per-shot call notices
       a change of feed (as Ammunition.lua does for the PBS-1).
-    - reload: our animId "M249", Gunworks' attachments style (the box and magazine leave the gun with the hand).
+    - reload: GoM's M60 reload (GoMReloads.lua).
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -42,7 +42,7 @@ local M249 = "GunsOfTien.M249"
 local BOX = "GunsOfTien.556x45Box200_M249"
 local COVER_CLOSED = "GunsOfTien.M249_Feed_Cover_Closed"
 local COVER_OPEN = "GunsOfTien.M249_Feed_Cover_Open"
--- the cover part way open (gen_scripts.py M249_COVER_STEPS): the reload clips' gotFeedCover events
+-- the cover part way open (gen_scripts.py M249_COVER_STEPS), from an older version's reload clips
 local COVER_STEPS = {}
 for _, d in ipairs({ 10, 20, 30, 40, 50, 60 }) do
     COVER_STEPS["GunsOfTien.M249_Feed_Cover_" .. d] = true
@@ -91,6 +91,19 @@ for i = 1, 9 do
     belt[i] = { threshold = i, part = "MarzGuns.Bullet_" .. i, slot = "Animated" .. i }
 end
 Animations.RegisterWeaponsWithCustomStates(M249, belt)
+Animations.RegisterWeaponWithAnimatedParts(M249, {
+    SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
+    cycleTicks = 3,
+})
+-- An M249 from before 2026-10-29 has the handle in its body mesh and no Bolt part, so nothing would draw it until
+-- its first shot or rack (Gunworks attaches the part then): the owner's game fits the closed one when it is equipped,
+-- the way Gunworks does (Animations.CallAnimate: attach, sync, re-equip).
+Events.OnEquipPrimary.Add(function(character, item)
+    if not (item and character and character:isLocalPlayer() and isM249(item)) or item:getWeaponPart("Bolt") then
+        return
+    end
+    Animations.CallAnimate(character, item, false)
+end)
 if not Animations.GunsOfTienM249Wrapped then
     Animations.GunsOfTienM249Wrapped = true
     local checkStates = Animations.CheckStates
@@ -159,118 +172,12 @@ if not Ammo.GunsOfTienM249Wrapped then
 end
 
 -------------------------------------------------
--- Reload: animId "M249" (AnimSets *M249_GoT.xml), the box or magazine leaving the gun with the hand. The part spec
--- names one item type and Gunworks only takes off / puts on that type, so before each swap it is pointed at the feed
--- involved (as Post-93's MP7, whose four magazines need the same). The clips open and close the feed cover with
--- Gunworks' gwSetPart marker ("FeedCover=GunsOfTien.M249_Feed_Cover_Open"), which only its "none" style reads, so
--- the M249's markers are passed to it from the attachments style's part event; partState.ensure puts the closed
--- cover back once a reload ends or is cut short.
--- In between, the cover swings a 10-degree step a frame with the hand on it (user, 2026-10-29: the hand floated over
--- the gun while the cover was still drawn shut): our gotFeedCover events ("GunsOfTien.M249_Feed_Cover_30"), drawn on
--- the reloading game only. Sent through the server like gwSetPart, each step would come back a round trip late and
--- could overtake another (client commands are unordered), so an MP client sets them on its own copy for looks, as
--- Gunworks' observers do with relayed swaps, and also sets open and shut there at once before sending them on; other
--- players still see the cover jump open and shut. A reload cut short between steps leaves the server's cover shut and
--- nothing to sync back, so the reload's end shuts a part way open cover here too.
+-- Reload: GoM's M60 reload (GoMReloads.lua), the box or magazine swapped as the action ends. The feed cover stays
+-- shut (GoM's M60 clips open none); partState.ensure shuts a cover an older version's reload left open or part way
+-- open.
 -------------------------------------------------
-ReloadAnim.RegisterWeapon(M249, {
-    animId = "M249",
-    style = "attachments",
-    magItem = BOX,
-    attachments = { magPart = { itemType = BOX, partType = "Clip" } },
-    durations = { unload = 2.4, load = 3.2, rack = 1.5 },
-    partState = { ensure = { COVER_CLOSED } },
-})
-if not ReloadAnim.GunsOfTienM249Wrapped then
-    ReloadAnim.GunsOfTienM249Wrapped = true
-    pcall(require, "WeaponSystems/ReloadAnim/Visuals")
-    pcall(require, "WeaponSystems/ReloadAnim/PartSwap")
-    local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
-    local function pointMagPart(action, handler)
-        if not (resolveReloadMagItem and action and handler and handler.animId == "M249" and handler.parts) then
-            return
-        end
-        local spec = handler.parts.mag
-        local magType = resolveReloadMagItem(action, handler)
-        if spec and magType and magType ~= "" then
-            spec.itemType = magType
-        end
-    end
-    -- The STANAG in the left hand at our size: the M249 draws GoM's STANAGs through our scaled models (<mag>_GoT, the
-    -- M16A2's proportion), but Gunworks shows an item of the magazine's own type in the hand, drawn with GoM's model;
-    -- for the M249 it gets our hidden <mag>_Hand item instead (gen_scripts.py stanag_got).
-    local attachReloadMagazine = ReloadAnim.attachReloadMagazine
-    if attachReloadMagazine then
-        local hand = {}
-        for _, mag in ipairs(STANAGS) do
-            hand[mag] = "GunsOfTien." .. mag:match("[^.]+$") .. "_Hand"
-        end
-        ReloadAnim.attachReloadMagazine = function(action, handler)
-            local resolve = ReloadAnim.resolveReloadMagItem
-            if not (handler and handler.animId == "M249" and resolve) then
-                return attachReloadMagazine(action, handler)
-            end
-            ReloadAnim.resolveReloadMagItem = function(a, h)
-                local magType = resolve(a, h)
-                return hand[magType] or magType
-            end
-            local ok, err = pcall(attachReloadMagazine, action, handler)
-            ReloadAnim.resolveReloadMagItem = resolve
-            if not ok then error(err) end
-        end
-    end
-    -- the cover on this game's copy of the gun only (no sync)
-    local function coverHere(action, handler, fullType)
-        if not (COVER_STEPS[fullType] or fullType == COVER_OPEN or fullType == COVER_CLOSED) then
-            return
-        end
-        local character = action and action.character
-        local gun = character and ReloadAnim.resolveActionGun and ReloadAnim.resolveActionGun(action, handler, true)
-        if isM249(gun) and ReloadAnim.applyRemotePartSwapEvent then
-            ReloadAnim.applyRemotePartSwapEvent(character, gun, "FeedCover", fullType)
-        end
-    end
-    for _, name in ipairs({ "handleWeaponPartAnimEvent", "setWeaponAttachmentState" }) do
-        local original = ReloadAnim[name]
-        if original then
-            ReloadAnim[name] = function(action, handler, event, ...)
-                if name == "handleWeaponPartAnimEvent" and handler and handler.animId == "M249" then
-                    if event == "gotFeedCover" then
-                        coverHere(action, handler, ...)
-                        return true
-                    end
-                    if event == "gwSetPart" and ReloadAnim.handleGwSetPartAnimEvent then
-                        if isClient() and ReloadAnim.parsePartSwapValue then
-                            local partType, fullType = ReloadAnim.parsePartSwapValue(...)
-                            if partType == "FeedCover" then
-                                coverHere(action, handler, fullType)
-                            end
-                        end
-                        return ReloadAnim.handleGwSetPartAnimEvent(action, handler, event, ...)
-                    end
-                end
-                pointMagPart(action, handler)
-                return original(action, handler, event, ...)
-            end
-        end
-    end
-    -- every end of the attachments style's unload and load (stop and perform) detaches the hand's box
-    local detachReloadMagazine = ReloadAnim.detachReloadMagazine
-    if detachReloadMagazine then
-        ReloadAnim.detachReloadMagazine = function(action, ...)
-            local result = detachReloadMagazine(action, ...)
-            local handler = action and ReloadAnim.getHandlerForAction and ReloadAnim.getHandlerForAction(action)
-            if handler and handler.animId == "M249" and ReloadAnim.resolveActionGun then
-                local gun = ReloadAnim.resolveActionGun(action, handler, true)
-                local cover = isM249(gun) and gun:getWeaponPart("FeedCover")
-                if cover and COVER_STEPS[cover:getFullType()] then
-                    coverHere(action, handler, COVER_CLOSED)
-                end
-            end
-            return result
-        end
-    end
-end
+ReloadAnim.RegisterWeapon(M249, require("GunsOfTien/GoMReloads").profile("m60_lmg",
+    { partState = { ensure = { COVER_CLOSED } } }))
 
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu (the box goes with the reload, as GoM's M60 box)
@@ -282,13 +189,13 @@ end
 PreventRemoval.Register(permanent)
 
 -------------------------------------------------
--- A found gun: the cover closed, the bipod folded, the box at GoM's M60 chance
+-- A found gun: the cocking handle, the cover closed, the bipod folded, the box at GoM's M60 chance
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
     spawnTable[M249] = {
-        required = { COVER_CLOSED, BIPOD_FOLDED },
+        required = { "MarzGuns.Bolt_Lock", COVER_CLOSED, BIPOD_FOLDED },
         optionals = { BOX .. ":50" },
     }
 end

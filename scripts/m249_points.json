@@ -47,6 +47,18 @@
       0.0
     ]
   },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0663,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
   "cover": {
     "offset": [
       0.0,
@@ -101,6 +113,7 @@
     "box": "556x45Box200_M249, origin at the middle of its top",
     "belt": "556x45_M249_1..9 are modelled in the gun's space (GoM's M60 way)",
     "cover": "M249_COVER, origin at its hinge; cover_open swings it up 70 degrees",
+    "bolt_fired": "M249_BOLT (the cocking handle, modelled forward) pulled back 110 mm real to its slot's rear",
     "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space"
   },
   "_extras": {
@@ -156,7 +169,7 @@
   "_bounds": {
     "M249_BODY": {
       "min": [
-        -0.0283,
+        -0.0186,
         -0.1954,
         -0.0651
       ],
@@ -165,7 +178,7 @@
         0.4263,
         0.1118
       ],
-      "tris": 2808
+      "tris": 2692
     },
     "M249_COVER": {
       "min": [
@@ -205,6 +218,19 @@
         0.0118
       ],
       "tris": 336
+    },
+    "M249_BOLT": {
+      "min": [
+        -0.0283,
+        0.1103,
+        0.0314
+      ],
+      "max": [
+        -0.0157,
+        0.1284,
+        0.0404
+      ],
+      "tris": 116
     },
     "556x45Box200_M249": {
       "min": [

@@ -14,7 +14,7 @@ exported, with Post-93's make_mp7_art.py renderer:
                (user, 2026-10-28: "fix the mag icon")
 
 --renders DIR (render_aug.py's output) also writes docs/aug_preview.png: the left side with the outline of the
-reference photo laid over it (the Commons photo, tmp/ref/aug, not in the repo; its dark pixels, the sling included,
+reference photo laid over it (the Commons photo, references/aug, not in the repo; its dark pixels, the sling included,
 so the overlap is a lower bound), other views, both magazines, GoM's FAMAS at the same scale, and the icons beside
 GoM's FAMAS and STANAG icons.
 """
@@ -42,8 +42,8 @@ FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_AUG.fbx")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTien_AUG_magazines.fbx")
 MAGS = ["556x45Magazine30_AUG", "556x45Magazine42_AUG"]
 RIFLE_CAMERAS = os.path.join(HERE, "post93/scar_icon_cameras.json")
-# the reference photo (tmp/ref/aug/aug_nobg.png): muzzle tip x, heel y, px per mm (build_aug.py's frame)
-PHOTO = os.path.join(ROOT, "tmp/ref/aug/aug_nobg.png")
+# the reference photo (references/aug/aug_nobg.png): muzzle tip x, heel y, px per mm (build_aug.py's frame)
+PHOTO = os.path.join(ROOT, "references/aug/aug_nobg.png")
 PHOTO_X0, PHOTO_Y0, PHOTO_S = 270.0, 2190.0, 5.62911
 
 

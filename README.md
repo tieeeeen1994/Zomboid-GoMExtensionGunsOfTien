@@ -4,9 +4,9 @@ Project Zomboid Build 42 mod.
 
 **Requires:** Gunworks Gang Framework, Guns of Marz
 **Optional:** Ammo Maker (making the new rounds), Hot Brass (spent casings)
-**Not compatible with:** mods that change the character's animations, unless support for them is added
 
-Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2.
+Every gun this mod and Post-93 add is drawn true to the character's size, in the proportion of Guns of Marz's M16A2,
+and is held and reloaded with Guns of Marz's own animations (the closest Guns of Marz gun's).
 
 ## New ammunition
 
@@ -36,9 +36,8 @@ Maker they can be made.
 - AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
-  proportion, so the Mk9 sits on them as it does on the Uzis; all four are held like rifles with the support hand on the
-  handguard (the MP5K under its front end) and share the H&K reload; Guns of Marz's MP5 is named for what it is, the
-  MP5A3 (retractable stock)
+  proportion, so the Mk9 sits on them as it does on the Uzis; Guns of Marz's MP5 is named for what it is, the MP5A3
+  (retractable stock)
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
   (they started a little ahead of it or inside it)
@@ -63,10 +62,9 @@ Maker they can be made.
 
 ## Uzi, Mini Uzi and Micro Uzi
 
-- Uzi (its metal stock folding under the receiver) and Mini Uzi (fitting a holster), both held two-handed in the short
-  SMG stance below, and Micro Uzi (held one-handed and fitting a holster like the MAC-10, also an ankle holster);
-  the Mini's and Micro's stocks fold along the right side: automatic at 600, 950 and 1200 rounds a minute, or single
-  shots
+- Uzi (held like a rifle, as the MP5, its metal stock folding under the receiver), Mini Uzi and Micro Uzi (held
+  one-handed and fitting a holster like the MP5K and MAC-10, the Micro also an ankle holster); the Mini's and Micro's
+  stocks fold along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
 - The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
@@ -81,22 +79,6 @@ Maker they can be made.
 - Its own translucent 30 and 42-round magazines
 - Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
   .223 boxes; the 42-round magazine with its high-capacity magazines
-- Bullpup animations for the AUG and Guns of Marz's FAMAS: the left hand under the handguard or on the AUG's grip
-  instead of on the bare barrel, the gun held a little further from the face when aiming, and one bullpup reload for
-  both (the magazine changed behind the grip, the handle racked from the left)
-
-## Short SMG stance (beta)
-
-- The Uzi, Mini Uzi and Post-93's MP7s share one stance of their own: carried with both hands
-  down across the body, magazine hanging clear of the belly; aimed like a rifle with the support hand closer in on the
-  shorter gun, at one place for all of them (under the front of the gun)
-- Every animation of the rifle stance is remade for it: idle, sneaking, walking, running, sprinting, aiming at every
-  angle and while moving, shooting, shoving, vaulting, falling, getting up, sitting, idle fidgets and emotes
-- Reloads shared by how the guns work: the magazine drawn out of the grip and carried in the hand, then the knob racked
-  overhand (Uzi, Mini Uzi); the same magazine change and the rear T-handle pulled back (MP7s)
-- The Mini Uzi, the MP5K and Post-93's MP7s go into both hands by default; "Equip Primary" still holds them in one
-  hand, like a pistol, with the pistol reload (the Mini Uzi still fits a holster); the Micro Uzi stays a one-handed
-  machine pistol
 
 ## Ammo Maker (optional)
 
@@ -116,14 +98,14 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 
 - H&K MP7A1 and MP7A2: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor; the A1 with its folding front grip, the A2 with a rail handguard that takes Guns of Marz's foregrips
 - FN P90: 50-round magazine, suppressor
-- The MP7s held in the main mod's short SMG stance, the P90 like a pistol; both carried on the back, take Guns of
-  Marz optics, lights and lasers
+- The MP7s and the P90 held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
+  lights and lasers
 - FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
   suppressor and Guns of Marz's pistol sights and pistol lights
 - FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor
 - H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers; the UMP45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the UMP9 the AWC Mk9
-- Steyr AUG A3, AUG Para and AUG HBAR on the A3 receiver: a short top rail and a right-side rail for Guns of Marz optics and lasers, Guns of Marz's Picatinny Rail on the left for its lights, the AUG's folding front grip and bullpup animations; the A3 (green) takes the AUG A1's 30 and 42-round magazines and Guns of Marz's AR muzzle parts, the 9mm Para (sand) Steyr's 25 and 32-round magazines and the AWC Mk9, the 7.62x39mm HBAR (green) a heavy barrel, a folding bipod, Steyr's 30-round magazine and a 50-round one
+- Steyr AUG A3, AUG Para and AUG HBAR on the A3 receiver: a short top rail and a right-side rail for Guns of Marz optics and lasers, Guns of Marz's Picatinny Rail on the left for its lights, the AUG's folding front grip; the A3 (green) takes the AUG A1's 30 and 42-round magazines and Guns of Marz's AR muzzle parts, the 9mm Para (sand) Steyr's 25 and 32-round magazines and the AWC Mk9, the 7.62x39mm HBAR (green) a heavy barrel, a folding bipod, Steyr's 30-round magazine and a 50-round one
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

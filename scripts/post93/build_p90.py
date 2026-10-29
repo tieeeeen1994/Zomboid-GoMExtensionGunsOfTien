@@ -130,6 +130,11 @@ TOP_SLOT = [(164.4, 164.4), (165.6, 163.3), (193.7, 163.3), (196.9, 164.4), (196
             (167.1, 170.9), (164.4, 169.4)]
 HANDLE = [(69.0, 99.0), (70.5, 96.0), (75.0, 94.5), (84.0, 95.0), (86.5, 98.0), (86.5, 106.0), (84.0, 110.5),
           (77.0, 112.0), (71.5, 110.5), (69.0, 106.5)]
+# the handle's tab behind its ring (FN's: the ring hooks forward, the tab runs back to the track) and the track it slides
+# back along, measured on Commons' left and right side photos of a P90 (2026-10-29, 1.66 px/mm): handle L 73-101, track
+# L 101-184, both about H 98-109
+HANDLE_TAB = [(84.0, 97.5), (98.5, 97.5), (101.0, 100.0), (101.0, 107.0), (98.5, 109.5), (84.0, 109.5)]
+TRACK = (101.0, 184.0, 99.0, 108.5)
 RAIL_TEETH = [60.3 + i * 9.92 for i in range(14)]     # front edge of each tooth, 5.3 mm long
 
 
@@ -153,6 +158,9 @@ def build_body():
         box(b, 77.0, 89.0, 149.5, 172.0, s * (W_METAL - 1.0), s * BOSS_X, mat="metal", bevel=0.6)
         box(b, 71.0, 95.0, 156.5, 167.5, s * (W_METAL - 1.0), s * BOSS_X, mat="metal", bevel=0.6)
     both(boss)
+    # the charging handles' steel tracks, a raised bar on either side behind the handles (TRACK)
+    both(lambda s: box(b, TRACK[0], TRACK[1], TRACK[2], TRACK[3], s * (W_METAL - 0.5), s * (W_METAL + 1.5),
+                       mat="metal", bevel=0.6))
     # trigger at the bottom rear of the trigger loop
     box(b, 148.0, 169.0, 46.5, 53.0, -8.0, 8.0, mat="dark", bevel=0.8)
     # barrel collar, knurled ring and the flash hider with its open bore (lathe t = game y)
@@ -168,8 +176,10 @@ def build_bolt():
     """The two charging handles, forward (bolt_lock); bolt_fired slides them back along the side tracks."""
     b = kit.Builder()
     hole = circle(77.5, 103.5, 4.2, 8, 0.5)
-    both(lambda s: slab(b, HANDLE, [hole], half=2.5, bevel=0.8, res=0, mat="metal", x0=s * (W_METAL + 2.0)))
-    both(lambda s: box(b, 72.0, 84.0, 101.0, 106.0, s * (W_METAL - 1.5), s * (W_METAL + 0.5), mat="metal"))
+    # out past the tracks (they end W_METAL + 1.5), which the handles slide back over
+    both(lambda s: slab(b, HANDLE, [hole], half=2.5, bevel=0.8, res=0, mat="metal", x0=s * (W_METAL + 4.0)))
+    both(lambda s: slab(b, HANDLE_TAB, half=2.0, bevel=0.8, res=0, mat="metal", x0=s * (W_METAL + 4.0)))
+    both(lambda s: box(b, 72.0, 99.0, 101.0, 106.0, s * (W_METAL - 1.5), s * (W_METAL + 2.0), mat="metal"))
     return b.to_object("P90TR_BOLT")
 
 
@@ -320,8 +330,10 @@ def paint(maps, kind):
         stad = up & rounded_rect(L, H, 99.0, 145.0, 160.0, 171.0, 5.5)
         col[stad & ~rounded_rect(L, H, 100.5, 143.5, 161.5, 169.5, 4.0)] *= 0.4
         col[up & (np.hypot(L - 140.0, H - 156.0) < 2.4)] *= 0.35
-        track = up & (L > 88) & (L < 205) & (H > 105.5) & (H < 110.5)
+        track = up & (np.abs(x) < W_METAL + 0.6) & (L > 88) & (L < 205) & (H > 105.5) & (H < 110.5)
         col[track] = col[track] * 0.3 + 3
+        bar = up & (np.abs(x) > W_METAL + 1.0) & (L > TRACK[0] - 1) & (L < TRACK[1] + 1)
+        col[bar] = col[bar] * 0.4 + 52                                        # bare steel
         col[up & (np.abs(H - 93.6) < 0.5)] *= 0.5
         # Screws: frame and butt (both sides), the boss's hex screw, the cross-head screw ahead of the handle.
         sides_far = side & (np.abs(x) > W_FRAME - 0.6)

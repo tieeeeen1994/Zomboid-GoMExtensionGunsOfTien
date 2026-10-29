@@ -14,22 +14,24 @@
 
     The SCAR-L and SCAR-H (user, 2026-10-20) are registered as GoM's M4A1 and FAL are: the SCAR-L in GoM's STANAG
     magazine profile, the SCAR-H with its own magazines, both at about 600 rpm, the charging handle animated (it rides
-    with the bolt carrier), GoM's default rifle reload (SCAR-L, as the M4A1) and its FAL clips (SCAR-H), the shared
-    side-folding stock with GoM's G36 stock stats, four integral rails as parents of GoM's optics, foregrips,
+    with the bolt carrier), GoM's FNC reload (SCAR-L) and its FAL reload (SCAR-H), the shared side-folding stock with GoM's G36 stock stats, four integral rails as parents of GoM's optics, foregrips,
     bipods, lights and lasers, GoM's AR muzzle parts on the SCAR-L and the SCAR-H's own mount device and suppressor.
 
     The UMP45 and UMP9 (user, 2026-10-22) are registered as GoM's MP5 is: each with its own magazines (in GoM's .45 ACP
-    and 9x19mm families, Ammunition.lua), select fire with H&K's two-round burst, GoM's MP5 reload clips, the shared
+    and 9x19mm families, Ammunition.lua), select fire with H&K's two-round burst, GoM's MP5 reload, the shared
     side-folding stock with GoM's G36C stock stats, four integral rails as parents of GoM's MP5 accessories (optics,
     foregrips, lights, lasers). The UMP45 takes GoM's .45 mount device and P45 suppressor, as its MAC-10 does, the
-    UMP9 the main mod's 9x19mm SMG mount device and AWC Mk9 (GoM's 9mm cans fit its pistols only). No animated
-    charging handle (it does not reciprocate, as the MP5's).
+    UMP9 the main mod's 9x19mm SMG mount device and AWC Mk9 (GoM's 9mm cans fit its pistols only). The charging
+    handle animated as GoM animates its MP5's.
 
     The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
     and M92FS: magazine profile, the animated slide, permanent magazines, spawn parts, GoM's pistol parts allowed on
-    it. Like GoM's pistols it has no reload animation entry (Gunworks' default handgun reload) and no rate of fire
-    (semi-automatic only). The UCP Prototype (GunsOfTienPost93.UCP, H&K's 4.6x30mm pistol) is registered the same way
-    and takes the MP7's mount device and Rotex-II suppressor.
+    it. Like GoM's pistols it takes GoM's pistol reload and has no rate of fire (semi-automatic only). The UCP
+    Prototype (GunsOfTienPost93.UCP, H&K's 4.6x30mm pistol) is registered the same way and takes the MP7's mount
+    device and Rotex-II suppressor.
+
+    Every gun reloads with one of GoM's own animations and is held with vanilla's clips (2026-10-29, the main mod's
+    GoMReloads.lua): the MP7s and the P90 one-handed, like GoM's MP5K.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -137,138 +139,31 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
     { sustainedSpreadMult = 0.85, maxSpreadMult = 0.85 })
 
 -------------------------------------------------
--- No animated bolt: on both the MP7 and the P90 the charging handle does not move when firing (the bolt inside
--- does), so neither is registered with Animations (GoM swaps Bolt_Fired / Bolt_Lock on each shot for guns whose
--- handle reciprocates). The handle model is drawn through the Bolt_Lock part (required at spawn).
+-- The MP7s', the P90's and the UMPs' charging handles: GoM's bolt swap, as GoM animates every one of its guns (its
+-- MP5s and MAC-10 too; user, 2026-10-29: "I want us to use GoM's way"). The real handles stay put when firing; they
+-- flick back on each shot, stay back on an empty gun and move with the rack, drawn at bolt_lock / bolt_fired
+-- (the builders' handle travel).
 -------------------------------------------------
+for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
+    Animations.RegisterWeaponWithAnimatedParts(gun, {
+        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
+        cycleTicks = 3,
+    })
+end
 
 -------------------------------------------------
--- Reload animations. Both guns are held like a pistol. The MP7's magazine goes up into the pistol grip, so it uses
--- vanilla's pistol clips (AnimSets MP7A1_*: Bob_Reload_Handgun_Load, its reverse baked into
--- anims_X/Bob/Bob_GunsOfTien_MP7_Unload, Bob_Reload_Handgun_Rack with GoM's rack events); the P90 its own
--- top-loading clips (AnimSets P90TR_*, clips anims_X/Bob/Bob_GunsOfTien_P90_*). A reload ends on its clip's events
--- (loadFinished...): without the clips the magazine insert waits forever (seen in game, 2026-10-15). Both use
--- Gunworks' "attachments" style so the magazine leaves the gun with the hand: the AnimSets' changeWeaponPart "mag"
--- events detach the magazine part (looks only) as the left hand leaves the gun in the unload, and put it back as the
--- new one is pressed home; the real unload / insert still happen at the clips' ends. Durations = the clips' lengths.
+-- Reload animations: GoM's own (the main mod's GoMReloads.lua). Held like a pistol, the MP7s and the P90 take its
+-- MP5K's ("handgun2"), the Five-seveN and the UCP its pistols'; the SCAR-L its FNC's (rifle magazine, side charging
+-- handle), the SCAR-H its FAL's, the UMPs its MP5's.
 -------------------------------------------------
--- both MP7s on the main mod's short SMG stance, by family (CLAUDE.md "Animations are generic"): the pistol magazine
--- change (the magazine into the grip, carried in the left hand) and the rear T-handle rack (the muzzle turned up and
--- right, built as the MP7's by scripts/anim/smg_reload.py's compact_mp7; the Steyr TMP, B&T MP9 and the ARs rack the
--- same way): animId "GunsOfTienCompactShortSMGPistolRearT", clips in the main mod's stance packs. Each gets its own
--- table, as pointMagPart rewrites its spec. Held in one hand (the main mod's OneHand.lua) they play the pistol family
--- on the pistol stance (the Micro Uzi's "UziGrip": vanilla's pistol clips, no magazine in the left hand).
-local OneHand = require("GunsOfTien/OneHand")
-ReloadAnim.GunsOfTienPointMag = ReloadAnim.GunsOfTienPointMag or {}
-ReloadAnim.GunsOfTienPointMag.GunsOfTienCompactShortSMGPistolRearT = true
-for _, gun in ipairs(MP7S) do
-    ReloadAnim.RegisterWeapon(gun, {
-        animId = "GunsOfTienCompactShortSMGPistolRearT",
-        style = "attachments",
-        magItem = MP7_MAGS[1],
-        attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
-        durations = { unload = 1.2, load = 1.5, rack = 1.2 },
-    })
-    OneHand.register(gun, {
-        animId = "UziGrip",
-        style = "attachments",
-        magItem = MP7_MAGS[1],
-        attachments = { magPart = { itemType = MP7_MAGS[1], partType = "Clip" } },
-        durations = { unload = 1.5, load = 1.5, rack = 1.33 },
-    })
-end
-ReloadAnim.RegisterWeapon(P90, {
-    animId = "P90TR",
-    style = "attachments",
-    magItem = M .. "57x28Magazine50_P90",
-    attachments = { magPart = { itemType = M .. "57x28Magazine50_P90", partType = "Clip" } },
-    durations = { unload = 1.4, load = 1.8, rack = 1.2 },
-})
--- SCAR-H: GoM's FAL clips and durations (its magazineProfile("fal_rifle")) through nodes of its own (AnimSets
--- GunsOfTienSCARH_*, GoM's current FAL nodes written out in full). Not GoM's own FAL id: its node files
--- (LoadFAL_HB.xml...) are one path per file for the game, and the last mod loaded that has it wins, so an old copy
--- answering "FAL" (GoM before its 2026-10-23 update; Marz Mods Animsets for Linux, 3774316897, still ships one)
--- replaced GoM's fal_rifle node depending on the server's mod order, and the insert played a hand raise and never
--- seated the magazine. The clips are GoM's (Ithaca_Reload_FAL_Load...). The SCAR-L has no entry, as GoM's M4A1
--- (Gunworks' default)
-ReloadAnim.RegisterWeapon(SCARH, {
-    animId = "GunsOfTienSCARH",
-    style = "none",
-    durations = { unload = 2.7, load = 2.7, rack = 1.2, rackAim = 1.666667 },
-})
--- the UMPs: their own clips since they were resized (2026-10-26; GoM's MP5 clips, which they used before, reached
--- ~2 cm ahead of the smaller well and handle): scripts/anim/smg_reload.py `ump`, starting and ending in the UMPs' own
--- rifle idle and aim (rifle_hand.py), packed with them (GunsOfTien_CompactUMP_Pack*.x), nodes
--- *GunsOfTienCompactUMP_GoT.xml; Gunworks' "attachments" style, the magazine leaving the gun with the hand as on the
--- compact stance (user, 2026-10-26: "i like what we did for UMP. let's do it"). Each gets its own table, as
--- pointMagPart rewrites its spec.
-for gun, mags in pairs({ [UMP45] = UMP45_MAGS, [UMP9] = UMP9_MAGS }) do
-    ReloadAnim.RegisterWeapon(gun, {
-        animId = "GunsOfTienCompactUMP",
-        style = "attachments",
-        magItem = mags[1],
-        attachments = { magPart = { itemType = mags[1], partType = "Clip" } },
-        durations = { unload = 1.2, load = 1.5, rack = 1.2 },
-    })
-end
--- The UMPs' left hand: vanilla's rifle clips hold the palm ~0.22 ahead of the grip, an M16's handguard, which the
--- UMPs (resized to the M16A2's proportion, 2026-10-26) no longer reach. scripts/anim/rifle_hand.py builds every rifle
--- clip in which the left hand holds the gun with the palm moved back along the gun to the handguard (anims_X/Bob
--- GunsOfTien_CompactUMP_Pack*.x, AnimSets *_GoTCompactUMP.xml), played through Gunworks' grip registry as the compact
--- stance is; the rest of the rifle hold is vanilla's. Those files ship in the main mod since 2026-10-27 (GoM's
--- full-size MP5s use the set too), and its reload nodes (*GunsOfTienCompactUMP_GoT.xml) since 2026-10-28 (the H&K
--- family: the MP5s reload with it too, CompactStance.lua).
-local okGW, Gunworks = pcall(require, "WeaponSystems/Gunworks")
-local function registerUmpGrip()
-    if not okGW or type(Gunworks) ~= "table" or not Gunworks.RegisterWeapon then
-        return
-    end
-    for _, gun in ipairs(UMPS) do
-        Gunworks.RegisterWeapon(gun, { grip = { animId = "GunsOfTien_CompactUMP" } })
-    end
-end
-Events.OnGameBoot.Add(registerUmpGrip)
--- (the MP7 held in one hand plays the main mod's "UziGrip", which Uzi.lua keeps the same way)
-local NO_HAND_MAGAZINE = { P90TR = true }
--- The magazine only leaves the gun / comes back at those events: no magazine shown in the left hand (user,
--- 2026-10-15). The attachments style shows Gunworks' reload magazine there (the eject's changeWeaponPart and the
--- insert's start, both through ReloadAnim.attachReloadMagazine, looked up on the shared table at call time), so that
--- one call is skipped for our guns; detachReloadMagazine then has nothing to remove.
-pcall(require, "WeaponSystems/ReloadAnim/Visuals")
-local attachReloadMagazine = ReloadAnim.attachReloadMagazine
-if attachReloadMagazine then
-    ReloadAnim.attachReloadMagazine = function(action, handler)
-        if handler and NO_HAND_MAGAZINE[handler.animId] then
-            return
-        end
-        return attachReloadMagazine(action, handler)
-    end
-end
--- The magazine part spec names one item type, and Gunworks only detaches a part of that type and attaches that type
--- (Visuals.detachWeaponPartSpec / attachWeaponPartSpec). The UMPs take several, so before each swap the spec is
--- pointed at the magazine involved (the MP7's ids are in the main mod's ReloadAnim.GunsOfTienPointMag, Uzi.lua):
--- ReloadAnim.resolveReloadMagItem = the one being inserted, the one on the gun when the eject started
--- (_actualMagType), or the gun's saved MagazineType.
-local resolveReloadMagItem = ReloadAnim.resolveReloadMagItem
-local function pointMagPart(action, handler)
-    if not (resolveReloadMagItem and action and handler and handler.parts
-            and handler.animId == "GunsOfTienCompactUMP") then
-        return
-    end
-    local spec = handler.parts.mag
-    local magType = resolveReloadMagItem(action, handler)
-    if spec and magType and magType ~= "" then
-        spec.itemType = magType
-    end
-end
-for _, name in ipairs({ "handleWeaponPartAnimEvent", "setWeaponAttachmentState" }) do
-    local original = ReloadAnim[name]
-    if original then
-        ReloadAnim[name] = function(action, handler, ...)
-            pointMagPart(action, handler)
-            return original(action, handler, ...)
-        end
-    end
+local GoMReloads = require("GunsOfTien/GoMReloads")
+for gun, animId in pairs({
+    [MP7] = "handgun2", [MP7A2] = "handgun2", [P90] = "handgun2",
+    [FIVESEVEN] = "pistol_reload", [UCP] = "pistol_reload",
+    [SCARL] = "fnc_rifle", [SCARH] = "fal_rifle",
+    [UMP45] = "MP5", [UMP9] = "MP5",
+}) do
+    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(animId))
 end
 
 -------------------------------------------------

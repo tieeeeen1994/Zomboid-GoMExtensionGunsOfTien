@@ -4,7 +4,7 @@
       "offset": [
         0.0,
         0.199,
-        -0.0187
+        0.0187
       ],
       "rotate": [
         -90.0,
@@ -16,7 +16,7 @@
       "offset": [
         0.0,
         0.1604,
-        -0.0187
+        0.0187
       ],
       "rotate": [
         0.0,
@@ -28,18 +28,18 @@
       "offset": [
         0.0,
         0.0241,
-        -0.0015
+        0.0015
       ],
       "rotate": [
-        -180.0,
         0.0,
-        -180.0
+        0.0,
+        0.0
       ]
     },
     "bolt_fired": {
       "offset": [
         0.0,
-        0.0,
+        -0.0482,
         0.0
       ],
       "rotate": [
@@ -50,49 +50,25 @@
     },
     "world": {
       "offset": [
-        -0.0168,
+        0.0168,
         0.1089,
         0.0
       ],
       "rotate": [
+        180.0,
         0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "rifle_back": {
-      "offset": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "rotate": [
-        -180.0,
-        0.0,
-        -180.0
-      ]
-    },
-    "rifle_back_bag": {
-      "offset": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "rotate": [
-        -180.0,
-        0.0,
-        -180.0
+        180.0
       ]
     },
     "_notes": {
       "canon": "the barrel nut's front face (64 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
-      "bolt_fired": "the cocking knob on top does not reciprocate",
-      "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin (turned with the gun)",
-      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 330, H 140)"
+      "bolt_fired": "the cocking knob pulled back 80 mm real along its top cover slot",
+      "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin",
+      "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; +Z top, +X the gun's left; origin = rear-top of the grip (photo L 330, H 140)"
     },
     "_extras": {
-      "handgun_hold": true,
+      "handgun_hold": false,
       "photo_origin_mm": [
         330.0,
         140.0
@@ -105,12 +81,12 @@
         "min": [
           -0.0145,
           -0.0796,
-          -0.0523
+          -0.0564
         ],
         "max": [
           0.0145,
           0.199,
-          0.0564
+          0.0523
         ],
         "tris": 1672
       },
@@ -118,12 +94,12 @@
         "min": [
           -0.0057,
           0.0802,
-          -0.0485
+          0.038
         ],
         "max": [
           0.0057,
           0.0917,
-          -0.038
+          0.0485
         ],
         "tris": 240
       },
@@ -131,12 +107,12 @@
         "min": [
           -0.0124,
           -0.0842,
-          -0.0121
+          -0.0567
         ],
         "max": [
           0.0124,
           -0.0115,
-          0.0567
+          0.0121
         ],
         "tris": 468
       },
@@ -144,12 +120,12 @@
         "min": [
           -0.0124,
           -0.1869,
-          -0.0217
+          -0.0507
         ],
         "max": [
           0.0124,
           -0.0736,
-          0.0507
+          0.0217
         ],
         "tris": 248
       }
@@ -195,7 +171,7 @@
     "bolt_fired": {
       "offset": [
         0.0,
-        0.0,
+        -0.0392,
         0.0
       ],
       "rotate": [
@@ -243,7 +219,7 @@
     "_notes": {
       "canon": "the barrel nut's front face (40 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
-      "bolt_fired": "the cocking knob on top does not reciprocate",
+      "bolt_fired": "the cocking knob pulled back 65 mm real along its top cover slot",
       "stock": "MINIUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 350, H 150, 23 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
       "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 258, H 112)"
     },
@@ -351,7 +327,7 @@
     "bolt_fired": {
       "offset": [
         0.0,
-        0.0,
+        -0.0301,
         0.0
       ],
       "rotate": [
@@ -399,7 +375,7 @@
     "_notes": {
       "canon": "the barrel nut's front face (38 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
       "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
-      "bolt_fired": "the cocking knob on top does not reciprocate",
+      "bolt_fired": "the cocking knob pulled back 50 mm real along its top cover slot",
       "stock": "MICROUZI_STOCK is modelled deployed with its origin at the hinge pin (photo L 250, H 142, 22 mm right of centre); stock_folded turns it half a turn about Z through the pin, forward along the right side",
       "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 186, H 110)"
     },

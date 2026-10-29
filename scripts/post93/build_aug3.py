@@ -25,7 +25,7 @@ and carrying handle with a raised upper carrying a Picatinny rail, and adds the 
 
 A3: the A1's barrel; the charging handle (GunsOfTien.AUG_BOLT), the folding grip (GunsOfTien.AUG_FOREGRIP) and the
 magazines are the A1's own models, drawn at this gun's points (the same Steyr green). Measured on Commons "Interpolitex
-2011 (405-9)" (Vitaly V. Kuzmin, CC BY-SA 4.0; two A3s, right side, kept out of the repo in tmp/ref/aug_variants),
+2011 (405-9)" (Vitaly V. Kuzmin, CC BY-SA 4.0; two A3s, right side, kept out of the repo in references/aug_variants),
 scaled by the receiver (the A1's L 249-402, 153 mm: 2.575 px/mm) and anchored at the receiver's front face and the
 bore: the rail's crossbars reach H ~186 from L ~264 back to L ~494 over the stock's top; the right-side rail (the black
 gun) lies on the receiver at L 282-381, centred H 143. The receiver has no left rail (the charging handle runs along

@@ -12,6 +12,7 @@ module GunsOfTien {
         attachment cover { offset = 0.0000 0.1369 0.0609, rotate = 0.0000 0.0000 0.0000, }
         attachment cover_open { offset = 0.0000 0.1369 0.0609, rotate = -70.0000 0.0000 0.0000, }
         attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment cover_10 { offset = 0.0000 0.1369 0.0609, rotate = -10.0000 0.0000 0.0000, }
         attachment cover_20 { offset = 0.0000 0.1369 0.0609, rotate = -20.0000 0.0000 0.0000, }
         attachment cover_30 { offset = 0.0000 0.1369 0.0609, rotate = -30.0000 0.0000 0.0000, }
@@ -34,6 +35,12 @@ module GunsOfTien {
 
     model M249_BIPOD_DEPLOYED {
         mesh     = weapons/firearms/GunsOfTien_M249|M249_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTien/M249,
+        cullFace = None,
+    }
+
+    model M249_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_M249|M249_BOLT,
         texture  = weapons/GunsOfTien/M249,
         cullFace = None,
     }

@@ -13,7 +13,7 @@ GoM's own icons):
     magazine   item_9x19Magazine30_MP5.png  every Uzi magazine
 
 --renders DIR (render_uzi.py's output) also writes docs/uzi_preview.png: each gun's left side with the outline traced
-from its reference photo laid over it (tmp/ref/uzi/*_outline.json; the photos are not in the repo), other views,
+from its reference photo laid over it (references/uzi/*_outline.json; the photos are not in the repo), other views,
 the long magazines, the Mk9, GoM's MP5 / MP5K / MAC-10 at the same scale, and the icons beside GoM's.
 """
 
@@ -90,7 +90,7 @@ def outline_panel(renders, gun):
     cam = json.load(open(os.path.join(renders, "cameras.json")))[gun]
     (W, Hh), s = cam["size"], cam["px_per_mm"]
     Lc, Hc = cam["photo_centre_mm"]
-    out = json.load(open(os.path.join(ROOT, "tmp/ref/uzi/%s_outline.json" % OUTLINES[gun])))["outline"]
+    out = json.load(open(os.path.join(ROOT, "references/uzi/%s_outline.json" % OUTLINES[gun])))["outline"]
     pts = [(W / 2 - (L - Lc) * s, Hh / 2 - (H - Hc) * s) for L, H in out]
     im = render(renders, gun + "_left")
     bg = Image.new("RGBA", im.size, (250, 250, 248, 255))

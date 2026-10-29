@@ -281,7 +281,7 @@ All three:
   (docs/aug3_preview.png) make_aug3_art.py, scripts gen_post93_guns.py `augs()`, registries
   shared/GunsOfTienPost93/AUG.lua (CLAUDE.md "Steyr AUG A3, Para and HBAR").
 
-References (kept out of the repo in `tmp/ref/aug_variants`): Commons "Interpolitex 2011 (405-9)" (Vitaly V. Kuzmin,
+References (kept out of the repo in `references/aug_variants`): Commons "Interpolitex 2011 (405-9)" (Vitaly V. Kuzmin,
 CC BY-SA 4.0, 2250 px: two A3s, right side, one green with the short top rail, one black with the right-side rail);
 Commons "Steyr-AUG-A3-SF" (CC BY-SA 4.0, 650 px, left side, muzzle left); Commons "AUG 9mm 03" (Steyr Mannlicher,
 CC BY 2.0, 550 px: the 1988 Para, left side: barrel, straight magazine, magazine-well adapter, grip); TFB's video

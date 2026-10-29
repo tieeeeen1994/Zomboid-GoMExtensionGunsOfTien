@@ -11,7 +11,7 @@ Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
 
 The AUG A1 (Austrian Army StG 77; user, 2026-10-27: Steyr green, no muzzle parts) is traced from the Wikimedia Commons
 photo "Steyr AUG 5,56 mm" (MoserB, public domain; its background-removed copy "... noBG.png", CC BY-SA 4.0, was used
-for the edges; neither is kept in the repo: tmp/ref/aug): the left side, muzzle left, the folding front grip down,
+for the edges; neither is kept in the repo: references/aug): the left side, muzzle left, the folding front grip down,
 the magazine out and lying beside the gun, a sling over the butt. Scaled to Steyr's 790 mm with the 508 mm barrel
 (5.629 px/mm); the bore is level in the photo (barrel centre within 1 px over 1000 px). Profiles are written in that
 photo's coordinates, real millimetres: L back from the muzzle tip, H up from the lowest point (the butt's heel).

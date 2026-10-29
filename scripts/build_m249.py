@@ -75,6 +75,7 @@ MAG_TILT = -45.0                   # its well slants down to the left, 45 degree
 COVER_OPEN = -70.0                 # the feed cover swung up about its hinge (rotate about X)
 PIVOT = (255.0, 266.0, 11.0)       # bipod leg pivots: L, H, |x|
 W_RECV, W_COVER, W_TRIG, W_GRIP, W_STOCK, W_HG, W_SHIELD = 27.0, 28.0, 15.0, 15.0, 20.0, 30.0, 22.0
+COCKING_TRAVEL = 110.0             # the cocking handle's pull: from the slot's front (L 494) to its rear (L 640)
 
 # the belt: centre (x, H) of each round on its way from the tray (1, inside the receiver, seen with the cover open) to
 # the box's mouth (9); the rounds lie along the bore, case heads at L 545
@@ -190,10 +191,6 @@ def build_body():
         b.box(xa, xb, ya, yb, z0, z1, mat="steel", bevel=0.6, xf=tilt)
     for y0, y1 in ((ya, ya + 4.0), (yb - 4.0, yb)):
         b.box(lips.x - 17.0, lips.x + 17.0, y0, y1, z0, z1, mat="steel", bevel=0.6, xf=tilt)
-    # cocking handle on the right, at the front of its slot (it does not move when firing)
-    box(b, 494.0, 524.0, 303.0, 318.0, -W_RECV + 1.0, -W_RECV - 9.0, mat="steel", bevel=1.0)
-    b.lathe("x", (-W_RECV - 9.0, *P(506.0, 311.0)), [(0.0, 0.0), (0.0, 7.0), (-10.0, 7.0), (-11.0, 5.5),
-                                                     (-11.0, 0.0)], seg=12, mat="dark")
     # forward: PIP handguard and its front cap, the heat shield over the barrel
     slab(b, HANDGUARD, half=W_HG, bevel=3.0, res=1, mat="polymer")
     slab(b, HG_CAP, half=W_HG + 0.8, bevel=1.5, mat="metal")
@@ -218,6 +215,17 @@ def build_body():
     b.lathe("y", tuple(centre), [(-47.0, 0.0), (-47.0, 9.5), (45.0, 9.5), (47.0, 8.0), (47.0, 0.0)], seg=14,
             mat="rubber", xf=rot)
     return b.to_object("M249_BODY")
+
+
+def build_bolt():
+    """The cocking handle on the right, at the front of its slot (bolt_lock); bolt_fired is it pulled back
+    COCKING_TRAVEL, to the slot's rear (GoM's bolt swap, as on its M60; 2026-10-29: a node of its own, it was part of
+    the body)."""
+    b = kit.Builder()
+    box(b, 494.0, 524.0, 303.0, 318.0, -W_RECV + 1.0, -W_RECV - 9.0, mat="steel", bevel=1.0)
+    b.lathe("x", (-W_RECV - 9.0, *P(506.0, 311.0)), [(0.0, 0.0), (0.0, 7.0), (-10.0, 7.0), (-11.0, 5.5),
+                                                     (-11.0, 0.0)], seg=12, mat="dark")
+    return b.to_object("M249_BOLT")
 
 
 def build_cover():
@@ -432,6 +440,7 @@ def points(bounds):
         "magazine": {"offset": gp(MAG_LIPS[0], MAG_LIPS[1], MAG_LIPS[2]), "rotate": [0.0, MAG_TILT, 0.0]},
         "box": {"offset": gp(BOX_TOP[0], BOX_TOP[1], BOX_TOP[2]), "rotate": ZERO},
         "belt": {"offset": ZERO, "rotate": ZERO},
+        "bolt_fired": {"offset": [0.0, round(-COCKING_TRAVEL * K, 4), 0.0], "rotate": ZERO},
         "cover": {"offset": hinge, "rotate": ZERO},
         "cover_open": {"offset": hinge, "rotate": [COVER_OPEN, 0.0, 0.0]},
         "integrated_bipod": {"offset": ZERO, "rotate": ZERO},
@@ -444,6 +453,8 @@ def points(bounds):
         "box": "556x45Box200_M249, origin at the middle of its top",
         "belt": "556x45_M249_1..9 are modelled in the gun's space (GoM's M60 way)",
         "cover": "M249_COVER, origin at its hinge; cover_open swings it up %g degrees" % -COVER_OPEN,
+        "bolt_fired": "M249_BOLT (the cocking handle, modelled forward) pulled back %.0f mm real to its slot's rear"
+                      % COCKING_TRAVEL,
         "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space",
     }
     # hand targets for the reload clips (game units, gun space)
@@ -471,16 +482,16 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    body, cover = build_body(), build_cover()
+    body, cover, bolt = build_body(), build_cover(), build_bolt()
     bip_f, bip_d = build_bipod(False), build_bipod(True)
     bx = build_box()
     rounds = [build_round(i + 1, x, H) for i, (x, H) in enumerate(BELT)]
-    gun = [body, cover, bip_f, bip_d]
+    gun = [body, cover, bip_f, bip_d, bolt]
     kit.unwrap(gun, 0.004)
     kit.unwrap([bx] + rounds, 0.008)
 
     os.makedirs(TEX_DIR, exist_ok=True)
-    texture(gun, [[o] for o in gun], ["body", "cover", "bipod", "bipod"], 256, os.path.join(TEX_DIR, "M249.png"))
+    texture(gun, [[o] for o in gun], ["body", "cover", "bipod", "bipod", "bolt"], 256, os.path.join(TEX_DIR, "M249.png"))
     texture([bx] + rounds, [[o] for o in [bx] + rounds], ["box"] + ["round"] * len(rounds), 128,
             os.path.join(TEX_DIR, "556x45Box200_M249.png"))
 

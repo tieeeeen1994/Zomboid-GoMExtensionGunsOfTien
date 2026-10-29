@@ -215,7 +215,7 @@ folded, an angled Mini Uzi (compensator cuts), a side-on Mini Uzi (left side, st
 (left side, stock folded forward, its butt plate a front grip) and a side-on IMI Uzi **Pistol** (right side; the
 1984 semi-automatic, no stock), which the user chose to use for the Micro Uzi's receiver only. The full Uzi is
 traced from the Commons photo "Uzi of the israeli armed forces" (Uziel Galishto, CC BY-SA 3.0; left side, side-on,
-stock folded, Action Arms markings). No photo is kept in the repo (tmp/ref/uzi).
+stock folded, Action Arms markings). No photo is kept in the repo (references/uzi).
 
 | | `GunsOfTien.UZI` "Uzi Submachine Gun" | `GunsOfTien.MINIUZI` "Mini Uzi Submachine Gun" | `GunsOfTien.MICROUZI` "Micro Uzi Submachine Gun" |
 |---|---|---|---|
@@ -261,7 +261,7 @@ Steyr's bullpup, adopted by the Austrian Army in 1977 as the StG 77; Gun South i
 into the US from the 1980s until the 1989 import ban, so a Kentucky gun owner could have one in July 1993 (user,
 2026-10-27: "Implement gun AUG A1"; finish Steyr green, a Commons photo as reference, no muzzle parts). Main mod,
 module `GunsOfTien`. Reference: the Commons photo "Steyr AUG 5,56 mm" (MoserB, public domain; an Austrian StG 77, left
-side, front grip down, magazine out), kept out of the repo in tmp/ref/aug, traced at Steyr's 790 mm.
+side, front grip down, magazine out), kept out of the repo in references/aug, traced at Steyr's 790 mm.
 
 | | `GunsOfTien.AUG` "Steyr AUG A1 Assault Rifle" (GoM's "FN FNC Assault Rifle" naming) |
 |---|---|

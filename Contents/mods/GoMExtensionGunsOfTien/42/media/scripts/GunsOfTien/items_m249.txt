@@ -110,6 +110,8 @@ module GunsOfTien {
         ModelWeaponPart              = MarzGuns.Bullet_7 GunsOfTien.556x45_M249_7 belt belt,
         ModelWeaponPart              = MarzGuns.Bullet_8 GunsOfTien.556x45_M249_8 belt belt,
         ModelWeaponPart              = MarzGuns.Bullet_9 GunsOfTien.556x45_M249_9 belt belt,
+        ModelWeaponPart              = MarzGuns.Bolt_Lock GunsOfTien.M249_BOLT bolt_lock bolt_lock,
+        ModelWeaponPart              = MarzGuns.Bolt_Fired GunsOfTien.M249_BOLT bolt_fired bolt_fired,
         KnockBackOnNoDeath           = true,
         MultipleHitConditionAffected = false,
         ToHitModifier                = 1.5,
