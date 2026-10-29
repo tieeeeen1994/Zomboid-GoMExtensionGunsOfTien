@@ -4,12 +4,15 @@
 
     GoM draws `tooltipsPergun[fullType]` under an item's tooltip (MarzWeapons/CustomItemTooltips.lua), and so does
     ZomboidFixesB42's GoM tooltip fix, both reading it when the tooltip renders. The table is per gun type, but a
-    stock may be deployed or folded, a selector on pump or semi, a Double Barrel's stock sawn off or not. So the lines
+    stock may be deployed or folded, a selector on pump or semi, a Double Barrel's stock or a Mosin's barrel sawn off or
+    not. So the lines
     of each integrated part's state are kept in GunsOfTien_TooltipStates (part full type -> lines, in GoM's
-    attachment style: a heading, then one effect per line): HandlingTooltips.lua fills it for GoM's stocks, bipods
-    and selectors, Post-93's Tooltips.lua for the MP7's stock and grip, this file for the sawn-off stocks. For each
-    render of a gun its type's lines are set to GoM's own plus those of the parts fitted on that gun, and for a
-    sawn-off stock whether the gun fits a holster now. A state without effects shows nothing.
+    attachment style: a heading, then one effect per line; or a function of the gun returning them):
+    HandlingTooltips.lua fills it for GoM's stocks, bipods and selectors, Post-93's Tooltips.lua for the MP7's stock
+    and grip, this file for the sawn-off stocks and the Mosin's sawn-off barrel. For each render of a gun its type's
+    lines are set to GoM's own plus those of the parts fitted on that gun, and for a sawn-off stock whether the gun
+    fits a holster now; a Mosin with its barrel sawn off loses GoM's bayonet line. A state without effects shows
+    nothing.
 
     The wrappers go on the first tick after the game starts, on top of every mod's tooltip render (theirs are
     installed at file load or OnGameStart), so the lines are set before any of them reads the table. Vanilla hands a
@@ -32,8 +35,22 @@ local SAWN = {
     "Hit Chance reduced by 13%",
     "Recoil Delay increased by 30%",
 }
-for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
+for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34", "MOSIN" }) do
     STATES["GunsOfTien." .. gun .. "_Stock_Sawnoff"] = SAWN
+end
+-- the Mosin's sawn-off barrel (SawnStock.BARREL_HANDLING, BARREL_SIGHTS / OBREZ_SIGHTS against GoM's 20-28)
+STATES["GunsOfTien.MOSIN_Barrel_Sawnoff"] = function(item)
+    return {
+        "Sawn-off barrel:",
+        "Damage reduced by 15%",
+        "Hit Chance reduced by 17%",
+        "Aiming Time reduced by 36%",
+        "Recoil Delay increased by 20%",
+        SawnStock and SawnStock.IsSawn(item) and "Sight Range reduced to 2-9 tiles" or "Sight Range reduced to 4-12 tiles",
+        "Range reduced by 50%",
+        "Sound Radius and Volume increased by 35%",
+        "Larger Muzzle Flash",
+    }
 end
 -- the sawn-off barrels, in GoM's attachment style (user, 2026-10-19). GoM's stats on the Double Barrel's,
 -- SawnStock.lua's copy on the other two: Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the guns'
@@ -72,6 +89,7 @@ for _, gun in ipairs({ "MarzGuns.MP5", "MarzGuns.MP5A2" }) do
 end
 local FITS_HOLSTER = "Fits a holster."
 local NEEDS_BARRELS = "Fits a holster if barrels are sawed off."
+local NEEDS_BARREL = "Fits a holster if the barrel is sawed off."
 
 local base = {}        -- gun type -> GoM's own lines, taken the first time a gun of that type has state lines
 
@@ -90,19 +108,28 @@ local function setLines(item)
         for i = 0, parts:size() - 1 do
             local part = parts:get(i)
             local state = part and STATES[part:getFullType()]
+            if type(state) == "function" then state = state(item) end
             if state then
                 for _, line in ipairs(state) do add[#add + 1] = line end
             end
         end
     end
+    local noBayonet = false
     if SawnStock and SawnStock.IsSawn(item) then
-        add[#add + 1] = SawnStock.FitsHolster(item) and FITS_HOLSTER or NEEDS_BARRELS
+        local entry = SawnStock.Entry(item)
+        add[#add + 1] = SawnStock.FitsHolster(item) and FITS_HOLSTER or (entry.sawnBarrel and NEEDS_BARREL or NEEDS_BARRELS)
+    end
+    if SawnStock and SawnStock.Entry(item) and SawnStock.Entry(item).sawnBarrel and SawnStock.IsBarrelSawn(item) then
+        noBayonet = true
     end
 
     local fullType = item:getFullType()
     if #add == 0 and not base[fullType] then return end
     if not base[fullType] then base[fullType] = copy(lines[fullType]) end
-    local list = copy(base[fullType])
+    local list = {}
+    for _, line in ipairs(base[fullType]) do
+        if not (noBayonet and type(line) == "string" and line:lower():find("bayonet")) then list[#list + 1] = line end
+    end
     for _, line in ipairs(add) do list[#list + 1] = line end
     lines[fullType] = #list > 0 and list or nil
 end

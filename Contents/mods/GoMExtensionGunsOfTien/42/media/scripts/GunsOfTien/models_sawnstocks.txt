@@ -251,4 +251,150 @@ module GunsOfTien {
             rotate = 90.0000 0.0000 -90.0000,
         }
     }
+
+    model MOSIN_SAWNSTOCK {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_BODY_SAWNSTOCK,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.6076 0.0223,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment bolt_fired {
+            offset = -0.0207 -0.0458 0.0199,
+            rotate = 180.0000 89.6841 180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment scope {
+            offset = 0.0000 0.1611 0.0521,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+
+        attachment rail_up {
+            offset = 0.0000 0.1262 0.0286,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+
+        attachment bayonet {
+            offset = 0.0000 0.5270 0.0006,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MOSIN_SAWNBARREL {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_BODY_SAWNBARREL,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.3250 0.0223,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment bolt_fired {
+            offset = -0.0207 -0.0458 0.0199,
+            rotate = 180.0000 89.6841 180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment scope {
+            offset = 0.0000 0.1611 0.0521,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+
+        attachment rail_up {
+            offset = 0.0000 0.1262 0.0286,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+    }
+
+    model MOSIN_OBREZ {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_BODY_OBREZ,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment muzzle {
+            offset = 0.0000 0.3250 0.0223,
+            rotate = -90.0000 0.0000 -180.0000,
+        }
+
+        attachment bolt_fired {
+            offset = -0.0207 -0.0458 0.0199,
+            rotate = 180.0000 89.6841 180.0000,
+        }
+
+        attachment world {
+            offset = 0.0200 0.1300 0.0000,
+            rotate = 180.0000 0.0000 180.0000,
+        }
+
+        attachment scope {
+            offset = 0.0000 0.1611 0.0521,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+
+        attachment rail_up {
+            offset = 0.0000 0.1262 0.0286,
+            rotate = 0.0000 0.0000 0.0000,
+        }
+
+        attachment holster_right {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment holster_left {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+
+        attachment ShoulderHolster {
+            offset = 0.0000 0.0000 0.0000,
+            rotate = -180.0000 0.0000 -180.0000,
+        }
+    }
+
+    model MOSIN_StockOffcut {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_STOCK_OFFCUT,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment world {
+            offset = -0.0100 -0.0879 -0.0352,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model MOSIN_BarrelOffcut {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_BARREL_OFFCUT,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment world {
+            offset = -0.0039 0.4661 0.0170,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
+
+    model MOSIN_ForendOffcut {
+        mesh     = weapons/firearms/GunsOfTien_SawnStocks|MOSIN_FOREND_OFFCUT,
+        texture  = weapons/firearms/bolt_rifles/MOSIN,
+        cullFace = None,
+
+        attachment world {
+            offset = -0.0081 0.4210 0.0177,
+            rotate = 90.0000 0.0000 -90.0000,
+        }
+    }
 }

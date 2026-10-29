@@ -11,5 +11,17 @@
   "IGUI_GunsOfTien_FoldForegrip": "Fold Foregrip",
   "IGUI_GunsOfTien_UnfoldForegrip": "Unfold Foregrip",
   "IGUI_GunsOfTien_AUGFoldForegripDesc": "Fold the front grip forward under the barrel.",
-  "IGUI_GunsOfTien_AUGUnfoldForegripDesc": "Swing the front grip down for a steadier hold."
+  "IGUI_GunsOfTien_AUGUnfoldForegripDesc": "Swing the front grip down for a steadier hold.",
+  "IGUI_GunsOfTien_DOUBLEBARREL_SawnBarrel": "Sawn-Off Double Barrel Shotgun",
+  "IGUI_GunsOfTien_DOUBLEBARREL_SawnStock": "Double Barrel Shotgun (Sawn-Off Stock)",
+  "IGUI_GunsOfTien_DOUBLEBARREL_SawnBoth": "Sawn-Off Double Barrel Pistol",
+  "IGUI_GunsOfTien_STEVENS_555_SawnBarrel": "Sawn-Off Stevens 555 Shotgun",
+  "IGUI_GunsOfTien_STEVENS_555_SawnStock": "Stevens 555 Double Barrel Shotgun (Sawn-Off Stock)",
+  "IGUI_GunsOfTien_STEVENS_555_SawnBoth": "Sawn-Off Stevens 555 Pistol",
+  "IGUI_GunsOfTien_TOZ34_SawnBarrel": "Sawn-Off TOZ-34 Shotgun",
+  "IGUI_GunsOfTien_TOZ34_SawnStock": "TOZ-34 Double Barrel Shotgun (Sawn-Off Stock)",
+  "IGUI_GunsOfTien_TOZ34_SawnBoth": "Sawn-Off TOZ-34 Pistol",
+  "IGUI_GunsOfTien_MOSIN_SawnBarrel": "Mosin-Nagant Bolt Rifle (Sawn-Off Barrel)",
+  "IGUI_GunsOfTien_MOSIN_SawnStock": "Mosin-Nagant Bolt Rifle (Sawn-Off Stock)",
+  "IGUI_GunsOfTien_MOSIN_SawnBoth": "Mosin-Nagant Obrez"
 }

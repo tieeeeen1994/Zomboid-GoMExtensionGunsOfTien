@@ -1,6 +1,7 @@
-/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip (shared/GunsOfTien/SawnStock.lua).
-   Any saw cuts wood; the gun is kept and gets its sawn-off stock part in OnCreate, which also hands over the gun's own
-   <GUN>_StockOffcut (one recipe for three guns, so no outputs block, as vanilla's gas mask filter recipes). */
+/* Sawing the walnut buttstock off GoM's break-action shotguns behind the pistol grip, and the stock and barrel off
+   GoM's Mosin-Nagant (the Obrez) (shared/GunsOfTien/SawnStock.lua). Any saw cuts wood, the barrel takes GoM's barrel
+   recipe's metal saws; the gun is kept and gets its sawn-off part in OnCreate, which also hands over the offcuts (no
+   outputs block, as vanilla's gas mask filter recipes). */
 
 module Base {
 
@@ -17,6 +18,38 @@ module Base {
 		{
 			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
 			item 1 [MarzGuns.DOUBLEBARREL;MarzGuns.STEVENS_555;MarzGuns.TOZ34] mode:keep flags[Prop2],
+		}
+	}
+
+	craftRecipe GunsOfTien_SawOffRifleStock
+	{
+		timedAction = SawOffShotgun,
+		time = 150,
+		OnTest = GunsOfTien_SawnStock.OnTest,
+		OnCreate = GunsOfTien_SawnStock.OnCreate,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffRifleStock,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{
+			item 1 tags[base:saw;base:smallsaw;base:metalsaw;base:crudesaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [MarzGuns.MOSIN] mode:keep flags[Prop2],
+		}
+	}
+
+	craftRecipe GunsOfTien_SawOffRifleBarrel
+	{
+		timedAction = GunsOfTien_SawOffShotgunBarrels,
+		time = 200,
+		OnTest = GunsOfTien_SawnStock.OnTestBarrel,
+		OnCreate = GunsOfTien_SawnStock.OnCreateBarrel,
+		ToolTip = Tooltip_Recipe_GunsOfTien_SawOffRifleBarrel,
+		Tags = InHandCraft,
+		category = Weaponry,
+		inputs
+		{
+			item 1 tags[base:metalsaw;base:smallsaw] mode:keep flags[Prop1;MayDegrade],
+			item 1 [MarzGuns.MOSIN] mode:keep flags[Prop2],
 		}
 	}
 }
