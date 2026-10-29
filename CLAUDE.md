@@ -345,6 +345,16 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   of fire, then a slot row (the three guns, the five magazines) and one line (the Mk9 fits all three). Rebuild:
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute path>/tmp/ad uzi miniuzi microuzi` (a
   relative OUT_DIR lands under C:\ on Windows), then `py scripts/make_workshop_art.py preview10`. Not yet on the Steam page.
+  preview12 (2026-10-29, remade after the Mac's copy was lost) is the main mod's AUG A1 alone, preview14 Post-93's
+  A3, Para and HBAR at one scale (user: one preview per mod, the add-on's with "OPTIONAL ADD-ON FOR GUNS OF MARZ
+  EXTENSION" under the title): render_ad_guns.py `aug` / `auga3` / `augpara` / `aughbar` (spec `assembled`: nodes at
+  their points as the item scripts draw them, A3 and HBAR with the A1's bolt and grip), slot rows of the guns and
+  their magazines, two lines each.
+  preview13 (same day) is the Mosin-Nagant Obrez, laid out like preview5: `mosin_full` / `mosin_obrez` (`centre_on`:
+  the Obrez rendered from the whole rifle's camera, so the two line up on the receiver), what the cuts do, a slot row
+  of the three cut states and three offcuts. Rebuild both: `blender -b --factory-startup -P scripts/render_ad_guns.py
+  -- <absolute dir> aug auga3 augpara aughbar mosin_full mosin_obrez`, then `py scripts/make_workshop_art.py
+  --renders <dir> preview12 preview13 preview14`. preview11 (the short SMG stance) shows what this branch removed.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`

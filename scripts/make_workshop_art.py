@@ -6,9 +6,11 @@
 Writes preview.png (exactly 256x256, what the game's Workshop uploader accepts: the title and the ammunition),
 preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, added on the Steam page by hand),
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
-preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same), preview11.png (1024x1024, the short SMG stance, the same)
+preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same), preview11.png (1024x1024, the short SMG stance, the same), preview12.png (1024x1024, the AUG A1, the same),
+preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024x1024, Post-93's AUG A3, Para and HBAR,
+the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2 ... preview11, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview2 ... preview14, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -706,6 +708,129 @@ def poster_post93(path, W=512):
     save_under(page.convert("RGB"), path)
 
 
+def preview12(path, W=1024):
+    """The main mod's AUG A1 (2026-10-29), alone and large (render_ad_guns.py "aug", from its right, mirrored back to
+    the game's view), what sets it apart under it, then it and its two magazines in a slot row and two lines. Post-93's
+    AUGs have their own page, preview14 (user: one preview per mod)."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "STEYR AUG A1", 40, "GUNS OF MARZ EXTENSION")
+    im = Image.open(os.path.join(RENDERS, "ad_aug.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    im = im.crop(im.getchannel("A").getbbox())
+    s = min(u(440) / im.width, u(200) / im.height)
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    paste_with_shadow(page, placed(size, im, ((W - im.width) // 2, u(92))), (0, u(6)), u(6), 160)
+    y = u(92) + im.height + u(14)
+    page.alpha_composite(text_layer(size, (W // 2, y), "5.56MM  ·  1.5X SCOPE", font(BOLD, u(13), b"Bold"),
+                                    (28, 30, 34, 255), anchor="ma", spacing=u(1)))
+    # a few short lines (user, 2026-10-29: the A1's page has room for words)
+    for n, line in enumerate(("700 RPM  ·  AUTO OR SINGLE", "FOLDING FRONT GRIP")):
+        page.alpha_composite(text_layer(size, (W // 2, y + u(22 + n * 15)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main("556x45Magazine30_AUG"), main("556x45Magazine42_AUG")], 256, 380, "MAGAZINES")
+    save_under(page.convert("RGB"), path)
+
+
+def preview14(path, W=1024):
+    """Post-93's AUG A3, Para and HBAR (2026-10-29), at one scale (render_ad_guns.py "auga3" / "augpara" / "aughbar",
+    mirrored back to the game's view), so they keep their real sizes: two on top, the long HBAR under them, each under
+    its name and what sets it apart; then the three and the magazines they take in a slot row, and what they share."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "AUG A3  ·  PARA  ·  HBAR", 36, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+    guns = (("auga3", "AUG A3", "5.56MM", 134, 84),
+            ("augpara", "AUG PARA", "9MM", 390, 84),
+            ("aughbar", "AUG HBAR", "7.62X39MM", 256, 210))
+    ims = {}
+    for name, *_ in guns:
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    # one scale for all three: the longest 240 wide, each within 100 tall
+    s = min(u(240) / max(im.width for im in ims.values()), u(100) / max(im.height for im in ims.values()))
+    big, small = font(BOLD, u(15), b"Bold"), font(BOLD, u(9), b"Bold")
+    for name, label, sub, cx, y in guns:
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = u(cx) - im.width // 2
+        page.alpha_composite(text_layer(size, (x0 + u(4), u(y)), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4), u(y) + u(17)), sub, small, (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, u(y) + u(30))), (0, u(5)), u(5), 160)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("556x45Magazine30_AUG"), main("556x45Magazine42_AUG"),
+                    post("9x19Magazine25_AUG"), post("9x19Magazine32_AUG"),
+                    post("762x39Magazine30_AUG"), post("762x39Magazine50_AUG")], 256, 354, "MAGAZINES")
+    # the A3 takes GoM's AR family (mount device, suppressors, compensator, flash hider, brake), the Para the main
+    # mod's 9x19mm SMG mount device and Mk9 (Post-93 AUG.lua; the HBAR takes none)
+    slot_row(page, [gom(n) for n in ("Muzzle_Mount_Device", "MKI_Suppressor", "NDR_Suppressor", "LR2_Compensator",
+                                     "LX_Flashhider", "Trix42_Muzzlebreak")] +
+             [main("SMG9_Muzzle_Mount_Device"), main("Mk9_Suppressor")], 256, 420, "MUZZLE PARTS")
+    save_under(page.convert("RGB"), path)
+
+
+def preview13(path, W=1024):
+    """The Mosin-Nagant Obrez (2026-10-29), laid out like preview5: GoM's Mosin-Nagant whole and, under it at the same
+    scale and from the same camera, so they line up on the receiver, sawn into an Obrez (render_ad_guns.py "mosin_full"
+    / "mosin_obrez", mirrored back to the game's view), what the cuts do beside it, then one row of slots: the gun after
+    each cut and the three offcuts."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "MOSIN-NAGANT OBREZ", 36, "GUNS OF MARZ EXTENSION")
+
+    full = Image.open(os.path.join(RENDERS, "ad_mosin_full.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    obrez = Image.open(os.path.join(RENDERS, "ad_mosin_obrez.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    box = full.getchannel("A").getbbox()
+    s = u(460) / (box[2] - box[0])          # one scale for both, so the Obrez shows its true size
+    full = full.resize((round(full.width * s), round(full.height * s)), Image.LANCZOS)
+    obrez = obrez.resize((round(obrez.width * s), round(obrez.height * s)), Image.LANCZOS)
+    x0 = (W - round((box[2] - box[0]) * s)) // 2 - round(box[0] * s)
+    y_full = u(88) - round(box[1] * s)
+    obox = obrez.getchannel("A").getbbox()
+    y_obrez = u(214) - obox[1]
+    paste_with_shadow(page, placed(size, full, (x0, y_full)), (0, u(6)), u(6), 160)
+    paste_with_shadow(page, placed(size, obrez, (x0, y_obrez)), (0, u(6)), u(6), 160)
+
+    # what the cuts do, beside the Obrez
+    bx = x0 + obox[2] + u(16)
+    by = y_obrez + obox[1] + u(4)
+    page.alpha_composite(text_layer(size, (bx, by), "OBREZ", font(BOLD, u(17), b"Bold"), (28, 30, 34, 255)))
+    # the Mac's 3.5.0 preview13's wording (user, 2026-10-29)
+    for n, line in enumerate(("FITS A HOLSTER", "IRON SIGHTS KEPT", "QUICKER TO AIM IN", "LESS ACCURATE, LOUDER")):
+        page.alpha_composite(text_layer(size, (bx, by + u(24 + n * 15)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), spacing=u(1)))
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_MOSIN_%s.png" % n)
+    slot_row(page, [main(n) for n in ("SawnStock", "SawnBarrel", "SawnBoth", "StockOffcut", "BarrelOffcut",
+                                      "ForendOffcut")],
+             256, 370, "SAW OFF THE BARREL, THE STOCK, OR BOTH")
+    # what saws it takes (user, 2026-10-29: "specify you need to saw the parts"; the barrel recipe takes base:metalsaw /
+    # base:smallsaw, vanilla's Hacksaw and Small Hacksaw)
+    for n, line in enumerate(("STOCK: ANY SAW  ·  BARREL: A HACKSAW",
+                              "EVERY SAWN-OFF GUN NAMED AND DRAWN FOR ITS CUTS")):
+        page.alpha_composite(text_layer(size, (W // 2, u(436 + n * 16)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
 def mod_icon(path, item, W=128):
     """128 px in-game mod list icon: one inventory icon scaled up crisp on the poster's background."""
     page = background((W, W)).convert("RGBA")
@@ -741,6 +866,12 @@ if __name__ == "__main__":
         preview10(os.path.join(ROOT, "preview10.png"))   # the Uzis, added the same way
     if want("preview11"):
         preview11(os.path.join(ROOT, "preview11.png"))   # the short SMG stance, added the same way
+    if want("preview12"):
+        preview12(os.path.join(ROOT, "preview12.png"))   # the AUG A1, added the same way
+    if want("preview13"):
+        preview13(os.path.join(ROOT, "preview13.png"))   # the Mosin-Nagant Obrez, added the same way
+    if want("preview14"):
+        preview14(os.path.join(ROOT, "preview14.png"))   # Post-93's AUGs, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

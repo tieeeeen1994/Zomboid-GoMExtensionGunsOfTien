@@ -76,6 +76,26 @@ M249_SCALE, M249_SIZE = 0.86, (2400, 1300)
 M249_VIEW = (-0.92, 0.3, -0.2)
 UZI_VIEW, UZI_SCALE, UZI_SIZE = (-0.92, 0.3, -0.2), 0.62, (2400, 1400)
 
+# preview12, the AUGs: the main mod's A1 and Post-93's A3, Para and HBAR, drawn as the game draws them: body, bolt at
+# its origin (bolt_lock), the front grip folded, a magazine, the HBAR's bipod folded (`assembled`: fbx, node,
+# texture, point name or None in that gun's points file). A3 and HBAR use the A1's bolt and grip (main mod's AUG
+# texture), as their item scripts do.
+AUG_VIEW, AUG_SCALE, AUG_SIZE = (0.92, 0.3, -0.16), 0.62, (2400, 1200)
+MAIN_FIRE = os.path.join(MAIN_MEDIA, "models_X/weapons/firearms")
+MAIN_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTien")
+MAIN_AUG = os.path.join(MAIN_FIRE, "GunsOfTien_AUG.fbx")
+MAIN_AUG_MAGS = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_AUG_magazines.fbx")
+POST_FIRE = os.path.join(MEDIA, "models_X/weapons/firearms")
+POST_AUG_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_AUG_magazines.fbx")
+A1_BOLT_GRIP = [(MAIN_AUG, "AUG_BOLT", os.path.join(MAIN_TEX, "AUG.png"), None),
+                (MAIN_AUG, "AUG_FOREGRIP", os.path.join(MAIN_TEX, "AUG.png"), "foregrip_folded")]
+
+# preview13, the Obrez: GoM's Mosin-Nagant whole and sawn off (our MOSIN_BODY_OBREZ), GoM's bolt at its origin,
+# viewed like the sawn-off shotguns (DB_VIEW), one scale for both so the Obrez shows its true length
+GOM_MOSIN = (os.path.join(GOM, "models_X/weapons/firearms/MOSIN.fbx"),
+             os.path.join(GOM, "textures/weapons/firearms/bolt_rifles/MOSIN.png"))
+MOSIN_SCALE, MOSIN_SIZE = 1.02, (2400, 900)
+
 GUNS = {
     # the main mod's Uzis (preview10): (gun, stock folded, magazine)
     "uzi": {"uzi": ("UZI", True, "9x19Magazine32_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE, "size": UZI_SIZE},
@@ -164,6 +184,45 @@ GUNS = {
         "files": [(SAWN, "DOUBLEBARREL_BODY_SAWNSTOCK", GOM_DB[1]),
                   (GOM_DB[0], "DOUBLEBARREL_BARREL_SAWNOFF_CLOSE", GOM_DB[1])],
         "view": DB_VIEW, "scale": DB_SCALE, "size": DB_SIZE,
+    },
+    "aug": {
+        "points": "aug_points.json",
+        "assembled": [(MAIN_AUG, "AUG_BODY", os.path.join(MAIN_TEX, "AUG.png"), None)] + A1_BOLT_GRIP + [
+            (MAIN_AUG_MAGS, "556x45Magazine30_AUG", os.path.join(MAIN_TEX, "556x45Magazine30_AUG.png"), "magazine")],
+        "view": AUG_VIEW, "scale": AUG_SCALE, "size": AUG_SIZE,
+    },
+    "auga3": {
+        "points": "post93/auga3_points.json",
+        "assembled": [(os.path.join(POST_FIRE, "GunsOfTienPost93_AUGA3.fbx"), "AUGA3_BODY", os.path.join(TEX, "AUGA3.png"),
+                       None)] + A1_BOLT_GRIP + [
+            (MAIN_AUG_MAGS, "556x45Magazine30_AUG", os.path.join(MAIN_TEX, "556x45Magazine30_AUG.png"), "magazine")],
+        "view": AUG_VIEW, "scale": AUG_SCALE, "size": AUG_SIZE,
+    },
+    "augpara": {
+        "points": "post93/augpara_points.json",
+        "assembled": [(os.path.join(POST_FIRE, "GunsOfTienPost93_AUGPARA.fbx"), node, os.path.join(TEX, "AUGPARA.png"),
+                       point) for node, point in (("AUGPARA_BODY", None), ("AUGPARA_BOLT", None),
+                                                  ("AUGPARA_FOREGRIP", "foregrip_folded"))] + [
+            (POST_AUG_MAGS, "9x19Magazine32_AUG", os.path.join(TEX, "9x19Magazine32_AUG.png"), "magazine")],
+        "view": AUG_VIEW, "scale": AUG_SCALE, "size": AUG_SIZE,
+    },
+    "aughbar": {
+        "points": "post93/aughbar_points.json",
+        "assembled": [(os.path.join(POST_FIRE, "GunsOfTienPost93_AUGHBAR.fbx"), node, os.path.join(TEX, "AUGHBAR.png"),
+                       point) for node, point in (("AUGHBAR_BODY", None),
+                                                  ("AUGHBAR_BIPOD_FOLDED", "integrated_bipod"))] + A1_BOLT_GRIP + [
+            (POST_AUG_MAGS, "762x39Magazine30_AUG", os.path.join(TEX, "762x39Magazine30_AUG.png"), "magazine")],
+        "view": AUG_VIEW, "scale": AUG_SCALE, "size": AUG_SIZE,
+    },
+    "mosin_full": {
+        "files": [(GOM_MOSIN[0], "MOSIN_BODY", GOM_MOSIN[1]), (GOM_MOSIN[0], "MOSIN_BOLT", GOM_MOSIN[1])],
+        "view": DB_VIEW, "scale": MOSIN_SCALE, "size": MOSIN_SIZE,
+    },
+    "mosin_obrez": {
+        "files": [(SAWN, "MOSIN_BODY_OBREZ", GOM_MOSIN[1]), (GOM_MOSIN[0], "MOSIN_BOLT", GOM_MOSIN[1])],
+        # the camera of the whole rifle's render, so the two line up on the receiver in make_workshop_art.py
+        "centre_on": [(GOM_MOSIN[0], "MOSIN_BODY", GOM_MOSIN[1]), (GOM_MOSIN[0], "MOSIN_BOLT", GOM_MOSIN[1])],
+        "view": DB_VIEW, "scale": MOSIN_SCALE, "size": MOSIN_SIZE,
     },
     "mp7": {
         "points": "post93/mp7_points.json",
@@ -333,6 +392,14 @@ def build(spec):
         return m249()
     if "gom_smg" in spec:
         return gom_smg(spec["gom_smg"])
+    if "assembled" in spec:
+        points = json.load(open(os.path.join(HERE, spec["points"])))
+        objs = []
+        for fbx, node, tex, point in spec["assembled"]:
+            o = load(fbx, tex, node)
+            place(o, points[point] if point else None, upright=False)
+            objs.append(o)
+        return objs
     if "files" in spec:
         objs = []
         for fbx, node, tex in spec["files"]:
@@ -404,10 +471,11 @@ def main():
         cam.data.ortho_scale = spec.get("scale", SCALE)
         d = Vector(spec.get("view", VIEW)).normalized()
         objs = build(spec)
+        centre = centre_of(build({"files": spec["centre_on"]}) if "centre_on" in spec else objs)
         for o in bpy.data.objects:
             if o.type == 'MESH':
                 o.hide_render = o not in objs
-        cam.location = Vector(centre_of(objs)) - d * 2.0
+        cam.location = Vector(centre) - d * 2.0
         cam.rotation_euler = d.to_track_quat('-Z', 'Y').to_euler()
         sc.render.filepath = os.path.join(OUT, "ad_%s.png" % name)
         bpy.ops.render.render(write_still=True)
