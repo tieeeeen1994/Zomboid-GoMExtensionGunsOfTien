@@ -37,6 +37,9 @@ only while the gun is racked (`handle_back`): IMI's knob does not reciprocate (u
 shot, and stays back on an empty gun, is the bolt seen through the ejection port on the right (`<GUN>_BOLT`, Guns of
 Marz's bolt swap, `bolt_fired`): a plate over the port's front half, which is painted as the open chamber, sliding
 back over its rear half, painted as the bolt's side (build_mp7.py's port, 2026-10-30).
+Rails (user, 2026-10-30): the Uzi and Mini Uzi take GoM's optional Picatinny rails on top, under and left of the
+handguard, drawn with our short models from build_rails.py (`RAILS` below says where); the Micro takes none.
+
 Stocks: the Uzi's twin-strut metal stock folds down under the receiver with its butt plate standing behind the grip,
 so it is two nodes modelled in the gun's own space (UZI_STOCK_FOLDED / _DEPLOYED, drawn at the gun's origin, GoM's
 MAC-10 way). The Mini's and Micro's single-strut stock folds forward along the right side about a vertical hinge pin
@@ -460,6 +463,44 @@ SPEC = {
                      sel=((172, 120), (178, 120), (184, 120)), ribs_hg=False),
 }
 
+# GoM's optional Picatinny rails on the Uzi and Mini Uzi (user, 2026-10-30; none on the Micro, as GoM's MAC-10), drawn
+# with our short models (build_rails.py, which reads this table), each modelled upright with its origin at its point:
+# - up: a clamp-on rail over the top cover (Vector Arms / BWE on the Uzi, a drilled-on one on the Mini): a saddle
+#   (`mount` = its top, the rail's mounting face) with jaws down the receiver's sides to `cover_lo`, `half` wide;
+#   the Uzi's behind the cocking knob's travel (its rear edge L 277 when racked) and ahead of the rear sight (L 395),
+#   the Mini's between the front sight (L 103) and the knob (its front edge L 152);
+# - down: under the handguard's flat underside `H` (barrelxchange's / GG&G's handguard rails);
+# - left: on the handguard's left face `x`, centred at `H` (GG&G's light mount).
+# GoM's parts sit by our guns' relations (CLAUDE.md "Fit audit"): optics 0.0032 under the top rail's crossbar tops,
+# foregrips 0.003 above the bottom rail's crossbar faces, lights 0.0007 out from the side rail's.
+RAIL_TEETH = (4.0, 6.0)            # top and bottom rails: kit.picatinny() base and crossbars (faces 9 mm off the mount)
+SIDE_RAIL_TEETH = (1.5, 3.0)       # the side rail, low as the AUG's (faces 3.5 mm off the handguard)
+RAILS = {
+    "UZI": dict(up=dict(L=(282.0, 382.0), mount=206.0, cover_lo=200.5, half=23.0),
+                down=dict(L=(110.0, 200.0), H=141.0),
+                left=dict(L=(125.0, 185.0), x=UZI_W_HG, H=165.0)),
+    "MINIUZI": dict(up=dict(L=(104.0, 149.0), mount=179.5, cover_lo=172.0, half=22.0),
+                    down=dict(L=(80.0, 140.0), H=112.0),
+                    left=dict(L=(88.0, 133.0), x=MINI_W_HG, H=141.0)),
+}
+
+
+def rail_points(kind):
+    """Upright points of the gun's rails and of GoM's parts on them (turned with the gun in points())."""
+    f, r = SPEC[kind]["frame"], RAILS[kind]
+    up, down, left = r["up"], r["down"], r["left"]
+    face = sum(RAIL_TEETH) - 1.0
+    side = sum(SIDE_RAIL_TEETH) - 1.0
+    uy, dy, ly = (round(f.y(sum(s["L"]) / 2.0) * K, 4) for s in (up, down, left))
+    return {
+        "rail_up": {"offset": [0.0, uy, round(f.z(up["mount"]) * K, 4)]},
+        "scope": {"offset": [0.0, uy, round(f.z(up["mount"] + face) * K - 0.0032, 4)]},
+        "rail_down": {"offset": [0.0, dy, round(f.z(down["H"]) * K, 4)]},
+        "foregrip": {"offset": [0.0, dy, round(f.z(down["H"] - face) * K + 0.003, 4)]},
+        "rail_left": {"offset": [round(left["x"] * K, 4), ly, round(f.z(left["H"]) * K, 4)]},
+        "light_left": {"offset": [round((left["x"] + side) * K + 0.0007, 4), ly, round(f.z(left["H"]) * K, 4)]},
+    }
+
 
 def paint_gun(maps, kind, col):
     s = SPEC[kind]
@@ -652,10 +693,19 @@ def points(kind, bounds):
         notes["stock"] = ("%s_STOCK is modelled deployed with its origin at the hinge pin (photo L %.0f, H %.0f, %.0f "
                           "mm right of centre); stock_folded turns it half a turn about Z through the pin, forward "
                           "along the right side" % (kind, hl, hh, -hx))
-    # held like a pistol: everything turned with the gun (build_mp7.py's turned()); the magazine (upright) gets
-    # TURN; muzzle and canon keep GoM's MP5K values; the stock is a node of the gun's own file, turned with it,
-    # and a half turn about Z commutes with the turn about Y, so its rotates stay
-    pts = {k: kit.turned(v, part=(k == "magazine")) for k, v in pts.items()}
+    if kind in RAILS:
+        pts.update(rail_points(kind))
+        r = RAILS[kind]
+        notes["rails"] = ("GoM's optional Picatinny_Rail_Up / _Down / _Left drawn as %s_RAIL_UP (L %.0f-%.0f on the "
+                          "top cover), _DOWN (L %.0f-%.0f under the handguard), _LEFT (L %.0f-%.0f on its left), "
+                          "origins at rail_up / rail_down / rail_left (build_rails.py); GoM's red dots at scope, "
+                          "foregrips at foregrip, lights at light_left" % (
+                              (kind,) + r["up"]["L"] + r["down"]["L"] + r["left"]["L"]))
+    # held like a pistol: everything turned with the gun (build_mp7.py's turned()); the magazine, the rails and GoM's
+    # parts on them (upright parts: their points have no rotate of their own) get TURN; muzzle and canon keep GoM's
+    # MP5K values; the stock is a node of the gun's own file, turned with it, and a half turn about Z commutes with
+    # the turn about Y, so its rotates stay
+    pts = {k: kit.turned(v) for k, v in pts.items()}
     pts["magazine"]["rotate"] = list(kit.TURN)
     pts["world"] = {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO}  # GoM's MP5K / MAC-10, scaled
     handgun = True

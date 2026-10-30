@@ -1,0 +1,2 @@
+Picatinny rails
+- Guns of Marz's Picatinny rails now fit the M249 (all four sides: on the feed cover and round the handguard), the Uzi and Mini Uzi (top, bottom and left, as short clamp-on rails) and the Steyr AUG A1 (left and right, short rails beside the receiver): optics on top, foregrips underneath, lights on the left, lasers on the right. The Uzi takes red dots only, the Mini Uzi the Reflex S2 only, the M249 every optic but the four longest scopes. Guns found in the world sometimes come with them fitted, at Guns of Marz's own chances

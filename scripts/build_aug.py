@@ -26,7 +26,10 @@ on each shot and while the gun is empty); AUG_HANDLE = the charging handle on th
 the real gun: drawn back by `handle_back` only while racked (GunsOfTien.ChargingHandle_Back); AUG_FOREGRIP = the folding front grip, modelled down (as photographed) with its origin at its hinge
 pin, drawn at `foregrip_deployed` and, turned 90 degrees forward about the pin, at `foregrip_folded`, where it lies
 under the barrel as on the real A1. The scope is part of the body (the A1's optic is cast into the receiver); its
-stats come from a hidden part item with no model. The magazines (translucent smoke polymer, painted with the rounds
+stats come from a hidden part item with no model. GoM's optional side rails (Picatinny_Rail_Left / _Right, user
+2026-10-30) are drawn at `rail_left` / `rail_right` with our short AUG_RAIL_LEFT / _RIGHT (build_rails.py, which reads
+their place from the constants here); no top rail, as an optic over the integral scope would add its stats to the
+scope's. The magazines (translucent smoke polymer, painted with the rounds
 inside since GoM's textures carry no alpha) hang from `magazine`, their feed lips.
 """
 
@@ -153,6 +156,17 @@ CARRIER_TRAVEL = PORT_SPLIT - PORT[0] - 0.5
 BUTT_PLATE_L = 774.0                                        # the butt plate's seam (behind it: the plate)
 # The aluminium receiver (the scope and carrying handle are cast into it on the A1)
 RECEIVER = (249.0, 402.0, 120.0, 161.0)
+# GoM's optional side rails (user, 2026-10-30), drawn with our short models (build_rails.py) on every AUG: the left one
+# (AUG_RAIL_LEFT, 4 crossbars, like Corvus Defensio's A3 receiver rail) on the receiver's front-left, under the
+# charging handle's path (its lowest edge H 140, resting at L 255-290 and running back to L 382) and ahead of the
+# stock's shell and the trigger frame (both from L 298), where GoM's own 125 mm rail has no room; the right one
+# (AUG_RAIL_RIGHT) where the A3 SF has its factory side rail (post93/build_aug3.py SIDE_RAIL), clear of the ejection
+# port (L 508-543) and under the carrying handle's base (H 158).
+LEFT_RAIL = (256.0, 297.0)
+LEFT_RAIL_H = 129.5                # its centre line: the crossbars' upper edge 10.6 mm above, under H 140
+RIGHT_RAIL = (282.0, 381.0)
+RIGHT_RAIL_H = 143.0
+SIDE_RAIL_BASE, SIDE_RAIL_TEETH = 1.5, 3.0      # kit.picatinny(): crossbar faces base + teeth - 1 off the receiver
 HANDLE_BASE = [(278.0, 158.0), (278.0, 166.0), (300.0, 167.5), (406.0, 167.5), (406.0, 158.0)]
 FRONT_LEG = [(318.0, 205.0), (347.0, 205.0), (305.0, 166.0), (280.0, 163.0), (278.0, 167.0)]
 REAR_LEG = [(392.0, 205.0), (458.0, 206.0), (440.0, 201.5), (425.0, 193.0), (412.0, 180.0), (406.0, 166.0),
@@ -470,6 +484,22 @@ def texture(maps_list, kinds, size, path):
 # Attachment points
 # ==================================================================================================
 
+def side_rail_points():
+    """The side rails' points, the same on every AUG (the A3 receivers' left one too): AUG_RAIL_LEFT / _RIGHT have
+    their origins on the receiver's faces; GoM's lights sit 0.0007 out from a rail's crossbar faces and its lasers
+    0.0018 out and 0.0008 lower (the SCAR's relations: rail_left + 0.0062, rail_right - 0.0073, with GoM's rail
+    standing 0.0055 out from its point)."""
+    face = (W_RCV + SIDE_RAIL_BASE + SIDE_RAIL_TEETH - 1.0) * K
+    ly, lz = round(y(sum(LEFT_RAIL) / 2.0) * K, 4), round(z(LEFT_RAIL_H) * K, 4)
+    ry, rz = round(y(sum(RIGHT_RAIL) / 2.0) * K, 4), round(z(RIGHT_RAIL_H) * K, 4)
+    return {
+        "rail_left": {"offset": [round(W_RCV * K, 4), ly, lz], "rotate": ZERO},
+        "light_left": {"offset": [round(face + 0.0007, 4), ly, lz], "rotate": ZERO},
+        "rail_right": {"offset": [round(-W_RCV * K, 4), ry, rz], "rotate": ZERO},
+        "laser_right": {"offset": [round(-(face + 0.0018), 4), ry, round(rz - 0.0008, 4)], "rotate": ZERO},
+    }
+
+
 def points(bounds):
     hinge = gp(*FG_HINGE)
     pts = {
@@ -483,6 +513,7 @@ def points(bounds):
         "world": {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0],
                   "rotate": [180.0, 0.0, 180.0]},                               # every GoM rifle's, scaled
     }
+    pts.update(side_rail_points())
     pts["_notes"] = {
         "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; "
                  "origin = the rear-top of the pistol grip (photo L %.0f, H %.0f)" % (L0, H0),
@@ -493,7 +524,11 @@ def points(bounds):
                        "(GunsOfTien.ChargingHandle_Back); the AUG's handle does not reciprocate" % TRAVEL,
         "foregrip": "AUG_FOREGRIP is modelled down with its origin at the hinge pin (photo L %.0f, H %.0f); folded = "
                     "the same node turned 90 degrees forward about X, lying under the barrel" % FG_HINGE,
-        "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / rail points (nothing fits the A1)",
+        "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / top rail points (an optic over it would "
+                 "add its stats to the scope's; user, 2026-10-30)",
+        "rails": "GoM's optional Picatinny_Rail_Left / _Right, drawn as AUG_RAIL_LEFT (L %.0f-%.0f, H %.1f) and "
+                 "AUG_RAIL_RIGHT (L %.0f-%.0f, H %.0f), origins on the receiver's faces (build_rails.py)" % (
+                     LEFT_RAIL + (LEFT_RAIL_H,) + RIGHT_RAIL + (RIGHT_RAIL_H,)),
     }
     pts["_extras"] = {"handgun_hold": False, "photo_origin_mm": [L0, H0], "bore_mm": BORE, "k": K}
     pts["_bounds"] = bounds

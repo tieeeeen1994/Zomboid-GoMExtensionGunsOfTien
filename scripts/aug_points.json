@@ -83,13 +83,62 @@
       180.0
     ]
   },
+  "rail_left": {
+    "offset": [
+      0.0127,
+      0.1076,
+      0.0178
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0155,
+      0.1076,
+      0.0178
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0127,
+      0.0745,
+      0.0259
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0166,
+      0.0745,
+      0.0251
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
   "_notes": {
     "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 455, H 100)",
     "magazine": "556x45Magazine30/42_AUG, origin at their feed lips, inside the well (its mouth L 545-610)",
     "bolt_fired": "AUG_BOLT (the bolt carrier in the ejection port) back 17.0 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
     "handle_back": "AUG_HANDLE (the charging handle) back 92 mm real, only while racked (GunsOfTien.ChargingHandle_Back); the AUG's handle does not reciprocate",
     "foregrip": "AUG_FOREGRIP is modelled down with its origin at the hinge pin (photo L 249, H 115); folded = the same node turned 90 degrees forward about X, lying under the barrel",
-    "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / rail points (nothing fits the A1)"
+    "scope": "the integral 1.5x scope is part of AUG_BODY: no scope / top rail points (an optic over it would add its stats to the scope's; user, 2026-10-30)",
+    "rails": "GoM's optional Picatinny_Rail_Left / _Right, drawn as AUG_RAIL_LEFT (L 256-297, H 129.5) and AUG_RAIL_RIGHT (L 282-381, H 143), origins on the receiver's faces (build_rails.py)"
   },
   "_extras": {
     "handgun_hold": false,

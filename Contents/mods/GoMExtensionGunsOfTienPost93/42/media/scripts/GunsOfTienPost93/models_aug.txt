@@ -60,12 +60,6 @@ module GunsOfTienPost93 {
         attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
     }
 
-    model AUG_RAIL_LEFT {
-        mesh     = weapons/firearms/GunsOfTienPost93_AUGA3|AUG_RAIL_LEFT,
-        texture  = weapons/GunsOfTienPost93/AUGA3,
-        cullFace = None,
-    }
-
     model AUGPARA_HANDLE {
         mesh     = weapons/firearms/GunsOfTienPost93_AUGPARA|AUGPARA_HANDLE,
         texture  = weapons/GunsOfTienPost93/AUGPARA,

@@ -14,6 +14,14 @@ module GunsOfTien {
         attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0118 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment handle_back { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0763 0.0659, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_down { offset = 0.0000 0.1800 -0.0069, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0192 0.1800 0.0211, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0192 0.1800 0.0211, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0763 0.0682, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.1800 -0.0094, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0254 0.1800 0.0211, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0265 0.1800 0.0203, rotate = 0.0000 0.0000 0.0000, }
         attachment cover_10 { offset = 0.0000 0.1369 0.0609, rotate = -10.0000 0.0000 0.0000, }
         attachment cover_20 { offset = 0.0000 0.1369 0.0609, rotate = -20.0000 0.0000 0.0000, }
         attachment cover_30 { offset = 0.0000 0.1369 0.0609, rotate = -30.0000 0.0000 0.0000, }

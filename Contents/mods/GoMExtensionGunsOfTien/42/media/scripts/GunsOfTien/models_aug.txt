@@ -11,6 +11,10 @@ module GunsOfTien {
         attachment handle_back { offset = 0.0000 -0.0555 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_deployed { offset = 0.0000 0.1242 0.0090, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip_folded { offset = 0.0000 0.1242 0.0090, rotate = 90.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0127 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0155 0.1076 0.0178, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0127 0.0745 0.0259, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0166 0.0745 0.0251, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model AUG_BOLT {
@@ -28,6 +32,18 @@ module GunsOfTien {
     model AUG_FOREGRIP {
         mesh     = weapons/firearms/GunsOfTien_AUG|AUG_FOREGRIP,
         texture  = weapons/GunsOfTien/AUG,
+        cullFace = None,
+    }
+
+    model AUG_RAIL_LEFT {
+        mesh     = weapons/parts/GunsOfTien_rails|AUG_RAIL_LEFT,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model AUG_RAIL_RIGHT {
+        mesh     = weapons/parts/GunsOfTien_rails|AUG_RAIL_RIGHT,
+        texture  = weapons/GunsOfTien/Rails,
         cullFace = None,
     }
 

@@ -14,6 +14,7 @@ local M = "GunsOfTien."
 lines[M .. "AUG"] = {
     "Uses .223/5.56x45mm NATO rounds.",
     "Integrated Scope: 1.5x",
+    "Available Picatinny Slots: Left, Right.",
 }
 for _, n in ipairs({ 30, 42 }) do
     lines[M .. "556x45Magazine" .. n .. "_AUG"] = { "Uses .223/5.56x45mm NATO rounds." }

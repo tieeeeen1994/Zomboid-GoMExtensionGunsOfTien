@@ -15,7 +15,10 @@
       Chance x1.05, sight range x1.15;
     - the folding front grip (shared/GunsOfTien/Foregrip.lua swaps its two parts), unfolded with GoM's Stub Foregrip
       stats and spread, as Post-93's MP7A1;
-    - no rails, optics, lights, lasers, bayonet or muzzle parts (user, 2026-10-27: none fit a 1993 A1).
+    - no optics, bayonet or muzzle parts (user, 2026-10-27: none fit a 1993 A1); GoM's optional left and right
+      Picatinny rails (user, 2026-10-30; Rails.lua) for its lights and lasers, drawn as our short AUG_RAIL_LEFT /
+      _RIGHT (the left one Post-93's A3s draw too). No top rail: an optic over the integral scope would add its stats
+      to the scope's (Gunworks multiplies every part's).
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -27,6 +30,7 @@ local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Foregrip = require("GunsOfTien/Foregrip")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
+local Rails = require("GunsOfTien/Rails")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "AnimationsFiring", "AttachmentCustomStats",
     "PermanentAttachments" }) do
@@ -99,15 +103,23 @@ Foregrip.Register(AUG, {
 PreventRemoval.Register(MAGS)
 
 -------------------------------------------------
+-- GoM's optional side rails: lights on the left, lasers on the right
+-------------------------------------------------
+Rails.Register(AUG, { sides = { "Left", "Right" }, lights = true, lasers = true })
+
+-------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the bolt, the scope, the grip folded, its 30 at
--- GoM's FAMAS chance for a 30, the 42 rarely (it comes loose in GoM's high-capacity AR spawner, Loot.lua).
+-- GoM's FAMAS chance for a 30, the 42 rarely (it comes loose in GoM's high-capacity AR spawner, Loot.lua); a light or
+-- laser with its rail (":PRL" / ":PRR") at GoM's M16A2 chances.
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
     spawnTable[AUG] = {
         required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, SCOPE, FOLDED },
-        optionals = { MAGS[1] .. ":30", MAGS[2] .. ":5" },
+        optionals = { MAGS[1] .. ":30", MAGS[2] .. ":5",
+            "MarzGuns.AimRight_Laser:2:PRR", "MarzGuns.LRX-7_Laser:2:PRR",
+            "MarzGuns.BrightPoint-5_Light:2:PRL", "MarzGuns.SR7_Light:2:PRL" },
     }
 end
 

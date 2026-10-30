@@ -13,7 +13,8 @@ Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
     scripts/m249_points.json                                attachment points (game space)
 
 The PIP M249 (user, 2026-10-22: "M249E2", the informal name of a gun with the Product Improvement kit): M240-style
-polymer stock, heat shield over the barrel, folding carrying handle, PIP handguard, no rails. Traced from the US Air
+polymer stock, heat shield over the barrel, folding carrying handle, PIP handguard, no rails of its own (GoM's
+optional Picatinny rails go on the feed cover and round the handguard: points `rail_up` ... below). Traced from the US Air
 Force's public-domain side photo "M249 Automatic Rifle" (Wikimedia Commons File:M249_Automatic_Rifle.jpg, the right
 side (cocking handle, ejection side; muzzle right), bipod down, no box), turned 13.0 degrees clockwise so the bore is level and scaled to the field manual's
 1038 mm overall (FM 23-14, 1994, Table 1-2): 3.817 px/mm. Profiles are written in that photo's (L, H) mm: L back from
@@ -76,6 +77,15 @@ COVER_OPEN = -70.0                 # the feed cover swung up about its hinge (ro
 PIVOT = (255.0, 266.0, 11.0)       # bipod leg pivots: L, H, |x|
 W_RECV, W_COVER, W_TRIG, W_GRIP, W_STOCK, W_HG, W_SHIELD = 27.0, 28.0, 15.0, 15.0, 20.0, 30.0, 22.0
 COCKING_TRAVEL = 110.0             # the cocking handle's pull: from the slot's front (L 494) to its rear (L 640)
+# GoM's optional Picatinny rails, its own 125 mm models (user, 2026-10-30): on top the feed cover with a rail (US issue
+# from the late 1990s) between the hinge and the rear sight (L 646), its base 2 mm over the cover's flat top (H 356.5)
+# so that the cover's raised strip at L 538-566 (H 361) stays inside the rail's base and clear of the optics' clamps
+# (it reached 1.6 mm into them, 2026-10-30 overlap check); under and on both sides of the handguard (L 345-472,
+# H 241-331) as Cadex's C9/M249 tri-rail. GoM's rail spans 0.0011 into its mount face and 0.0055 out of it (Up / Down
+# along Z, Left / Right along X); its parts sit by our guns' relations (scope 0.0023 above rail_up, foregrip 0.0025
+# under rail_down, light 0.0062 out, laser 0.0073 out and 0.0008 lower).
+RAIL_UP = (518.0, 643.0, 358.5)    # L front, L rear, the rail's base
+RAIL_HG = (346.0, 471.0, 241.3, 286.0)   # under / beside the handguard: L front, L rear, its underside, side rails' H
 # The ejection port under the receiver's right side and the bolt seen through it (user, 2026-10-30: FN's cocking
 # handle does not reciprocate, only the bolt moves): on the receiver's flat underside (H 274.5, L 482-582), its front
 # half painted as the open chamber, its rear half as the bolt's underside; M249_BOLT is a thin plate over the front
@@ -478,6 +488,22 @@ def points(bounds):
         "integrated_bipod": {"offset": ZERO, "rotate": ZERO},
         "world": {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0], "rotate": [180.0, 0.0, 180.0]},  # every GoM rifle's, scaled with the gun
     }
+    uy = round((L0 - (RAIL_UP[0] + RAIL_UP[1]) / 2.0) * K, 4)
+    up = round((RAIL_UP[2] - H0) * K + 0.0011, 4)
+    hy = round((L0 - (RAIL_HG[0] + RAIL_HG[1]) / 2.0) * K, 4)
+    down = round((RAIL_HG[2] - H0) * K - 0.0011, 4)
+    sz = round((RAIL_HG[3] - H0) * K, 4)
+    sx = round(W_HG * K + 0.0011, 4)
+    pts.update({
+        "rail_up": {"offset": [0.0, uy, up], "rotate": ZERO},
+        "scope": {"offset": [0.0, uy, round(up + 0.0023, 4)], "rotate": ZERO},
+        "rail_down": {"offset": [0.0, hy, down], "rotate": ZERO},
+        "foregrip": {"offset": [0.0, hy, round(down - 0.0025, 4)], "rotate": ZERO},
+        "rail_left": {"offset": [sx, hy, sz], "rotate": ZERO},
+        "light_left": {"offset": [round(sx + 0.0062, 4), hy, sz], "rotate": ZERO},
+        "rail_right": {"offset": [-sx, hy, sz], "rotate": ZERO},
+        "laser_right": {"offset": [round(-sx - 0.0073, 4), hy, round(sz - 0.0008, 4)], "rotate": ZERO},
+    })
     pts["_notes"] = {
         "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the "
                  "rear-top of the pistol grip (photo L %.0f, H %.0f)" % (L0, H0),
@@ -490,6 +516,8 @@ def points(bounds):
         "handle_back": "M249_HANDLE (the cocking handle, modelled forward) pulled back %.0f mm real to its slot's "
                        "rear, only while racked; FN's handle does not reciprocate" % COCKING_TRAVEL,
         "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space",
+        "rails": "GoM's optional Picatinny_Rail_Up on the feed cover (L %.0f-%.0f) and _Down / _Left / _Right on the "
+                 "handguard (L %.0f-%.0f), GoM's own models at its relations" % (RAIL_UP[:2] + RAIL_HG[:2]),
     }
     # hand targets for the reload clips (game units, gun space)
     pts["_extras"] = {

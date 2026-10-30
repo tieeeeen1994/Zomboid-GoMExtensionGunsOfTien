@@ -61,6 +61,8 @@ Maker they can be made.
 - M249 Light Machine Gun (the 1993 PIP gun): full auto at 750 or 1000 rounds a minute (its gas regulator), fed from
   its own 200-round box or, in an emergency, any of Guns of Marz's STANAG magazines (which jam twice as often),
   integrated bipod; found where Guns of Marz's M60 is (army zombies, army storage, heavy army trucks), with its boxes
+- Guns of Marz's Picatinny rails fit all four sides, on the feed cover and round the handguard: its optics (all but
+  the four longest scopes, which would reach the carrying handle), foregrips, lights and lasers
 - Belt links: filling the M249's 200-round box or Guns of Marz's M60 100-round box now takes one belt link per round
   (M27 links for the M249, M13 for the M60). Unloading a round, firing it or racking it out gives its link back: fired
   and racked links are thrown out of the gun (with Hot Brass they fly and land like casings, without it they drop at
@@ -76,6 +78,9 @@ Maker they can be made.
   stocks folding along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
 - The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
+- Guns of Marz's Picatinny rails fit the Uzi and Mini Uzi as short clamp-on rails: on the top cover for red dots (the
+  Mini Uzi only the Reflex S2, the others reach its cocking knob), under the handguard for foregrips and on its left
+  for lights; none on the Micro Uzi
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
   SMGs and on SWAT zombies, and with its criminals' guns (criminal zombies, bandit bags, pawn shops, stashes); the long
   magazines with its high-capacity magazines
@@ -86,6 +91,8 @@ Maker they can be made.
   or single shots, its integral 1.5x scope, and a front grip that folds forward under the barrel (Fold / Unfold
   Foregrip in the gun's menu and the firearm radial; unfolded, it steadies aim and automatic fire)
 - Its own translucent 30 and 42-round magazines
+- Guns of Marz's Picatinny Rail fits as a short rail on either side of the receiver: lights on the left, lasers on the
+  right (no top rail: the integral scope is the optic)
 - Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
   .223 boxes; the 42-round magazine with its high-capacity magazines
 

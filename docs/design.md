@@ -175,7 +175,12 @@ until FN's M249S in 2015): military loot only.
 | Casings | Down and to the right (Hot Brass). No links (user, 2026-10-22). |
 | Repair | RepairPack, Aiming 6 (GoM's LMGs) |
 
-No rails, optics, lights, lasers, muzzle devices or bayonet: a 1993 M249 had none. Chambered round kept (no
+No muzzle devices or bayonet: a 1993 M249 had none. GoM's optional Picatinny rails (user, 2026-10-30; it sells them
+for its M16A1, MP5K, FAL and lever actions too), its own 125 mm models: on the feed cover (the railed cover of US issue
+from the late 1990s), its base 2 mm over the cover so the cover's raised strip stays inside it, and under and on both
+sides of the handguard (Cadex's C9/M249 tri-rail): GoM's red dots and its LR4X / TA28 / Elcan (the TR06X, LR10X,
+LRX-12X and PSO-1 reach the carrying handle), foregrips (no rail bipod), lights, lasers; on found guns at GoM's M16A2
+chances (shared/GunsOfTien/Rails.lua, M249.lua; points in build_m249.py). Chambered round kept (no
 `HaveChamber = false`, as GoM's M60): a box changed mid-belt fires on, a gun run dry is cocked again.
 Loot (user, 2026-10-22: where GoM's M60 spawns): one alternative each in GoM's `Zombie_Army_Rifle_Spawner` (army
 zombies' backs) and `World_Army_Heavy_Spawner` (army storage, heavy truck beds), packed as the M60's (gun, up to 2
@@ -233,7 +238,13 @@ magazines): **20, 25 and 32 rounds, plus 40 and 50** (user, 2026-10-23), "Uzi 32
 "... Extended Magazine" (GoM's MAC-10 40); weights 0.08 / 0.12 / 0.15 / 0.2 / 0.22. The magazine goes up the pistol
 grip. The **AWC Mk9** fits all three (user, 2026-10-23) on the main mod's 9x19mm SMG mount device (the real Mk9 took
 the Uzi barrel nut's place; the mount device stands in for that adapter), at a `canon` point on the barrel nut's
-front face. No rails, optics, lights, lasers, other muzzle devices or bayonet (none on a 1993 Uzi). Ejection to the
+front face. No other muzzle devices or bayonet (none on a 1993 Uzi). GoM's optional Picatinny rails on the Uzi and
+Mini Uzi (user, 2026-10-30), our short models (scripts/build_rails.py, places in build_uzi.py `RAILS`): a clamp-on rail
+over the top cover (Vector Arms / BWE; the Uzi's 100 mm behind the cocking knob's travel, the Mini's 45 mm between the
+front sight and the knob), under the handguard (barrelxchange / GG&G) and on its left (GG&G's light mount); no right
+rail (none made), none on the Micro (as GoM's MAC-10). GoM's red dots only on the Uzi (its magnified scopes overhang),
+only the Reflex S2 on the Mini (the other red dots reach its knob or front sight: mesh overlap check), foregrips,
+lights; on found guns at GoM's MP5 chances (shared/GunsOfTien/Rails.lua, Uzi.lua). Ejection to the
 right (Hot Brass: GoM's MP5 for the Uzi, its MP5K for the Mini / Micro). Repair: RepairPack, Aiming 3 (GoM's SMGs).
 Family `9x19mm` (GoM's 9mm, the main mod's 147gr / Hollow Point / [+P+]). Models built in Blender by script at 0.72
 (GoM's SMGs), the Uzi's top cocking knob does not reciprocate (bolt_fired = bolt_lock), the Uzi's grip safety and
@@ -270,15 +281,18 @@ side, front grip down, magazine out), kept out of the repo in references/aug, tr
 | Fire | Auto / Single (the A1's two-stage trigger), 700 rpm, spread 0.12 / 2.5 (GoM's FAMAS 0.1 / 2.0 at 1000, FNC 0.15 / 3.0 at 750) |
 | Stats | damage 1.0-1.8 (GoM's M16A1: the same round from the same 20" barrel), HitChance 45 (FAMAS / FNC 40, M16A1 50), Aimingtime 45, RecoilDelay 15, range 50, crit 25, jam 0.8 (FNC), wear 1 in 200, weight 3.6 (GoM gives its FAMAS its real weight) |
 | Sound | 175 / 50 (sound_model.py's model gives the M16's 20" figure), M16 events |
-| Optic | the integral 1.5x Swarovski in the carrying handle, cast with the receiver: part of the body mesh, its stats a hidden required part `AUG_Integrated_Scope` (part type Scope, cannot be removed), below GoM's 2x Elcan: Aiming Time ×1.05, Hit and Crit ×1.05, sight range ×1.15. No rail, so none of GoM's sights, lights or lasers fit |
+| Optic | the integral 1.5x Swarovski in the carrying handle, cast with the receiver: part of the body mesh, its stats a hidden required part `AUG_Integrated_Scope` (part type Scope, cannot be removed), below GoM's 2x Elcan: Aiming Time ×1.05, Hit and Crit ×1.05, sight range ×1.15. No top rail, so none of GoM's sights fit (user, 2026-10-30: Clawgear's rail shell over the scope was turned down, a GoM optic's stats would multiply with the scope's) |
 | Foregrip | the A1's folding front grip, folding forward under the barrel: parts `AUG_Integrated_Foregrip_Folded / _Deployed` (one mesh drawn at two points), "Fold / Unfold Foregrip" in the gun's menu and the radial as Post-93's MP7A1 (the fold code moved to the main mod for both, shared/GunsOfTien/Foregrip.lua); unfolded GoM's Stub Foregrip stats (Aiming Time ×0.8, Hit and Crit ×1.15, auto spread ×0.85); folded on a found gun |
 | Magazines | Steyr's translucent polymer 30 and 42 ("AUG 30Rds 5.56x45mm Magazine", "AUG 42Rds 5.56x45mm Extended Magazine"; 0.2 / 0.25), profile "5.56x45mm AUG", GoM's 5.56x45mm family (its 5.56 loads, .223, the main mod's none). No STANAG: the A1 takes none |
 | Hold, reload | the bullpup set shared with GoM's FAMAS (4h): its own hold and reload clips (first GoM's FAMAS reload on vanilla's rifle hold) |
-| Bolt | the charging handle on the left rides with the bolt carrier (GoM's Bolt_Lock / Bolt_Fired swap, 92 mm) |
+| Bolt | the charging handle on the left is non-reciprocating: it stays forward when firing and moves back 92 mm only with the rack (`GunsOfTien.ChargingHandle_Forward / _Back`); the bolt carrier in the ejection port takes GoM's Bolt_Lock / Bolt_Fired swap (17 mm) on each shot and when empty |
 | Casings | right side, GoM's FAMAS Hot Brass values |
 | Repair | RepairPack, Aiming 3 (GoM's FAMAS) |
 
-No bayonet, rails or muzzle parts (user: none fit a 1993 A1). Loot (GoM's routes): one more kit in GoM's
+No bayonet or muzzle parts (user: none fit a 1993 A1). GoM's optional left and right Picatinny rails (user,
+2026-10-30), both upgrades as the A3's left one: our short `AUG_RAIL_LEFT` (the A3s' rail, moved into the main mod) and
+`AUG_RAIL_RIGHT` (where the A3 SF has its factory side rail), GoM's lights on the left and lasers on the right, found
+guns with them at GoM's M16A2 chances (shared/GunsOfTien/Rails.lua). Loot (GoM's routes): one more kit in GoM's
 `World_Import_Rifle_Spawner` beside its FNC, FAL, G3, PSG-1, FAMAS and M93R (gun stores, pawn shops' special guns,
 police evidence, survivalist trucks, RifleCase4, late gun finds), packed as GoM's civilian FNC kit there (the gun, up
 to 6 thirties, up to 6 .223 boxes); the 42 loose only, one more choice in `World_HighCap_AR_Magazine_Spawner`'s

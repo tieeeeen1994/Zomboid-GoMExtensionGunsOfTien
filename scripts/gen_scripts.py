@@ -460,6 +460,51 @@ module Base {
 # textures (the coloured aperture; AimRight's upper of its two, LRX-7's red one) and the mesh's front face.
 # The beam models use shader gunsoftien_laser: vanilla's basicEffect without the lighting multiply, so the beam is
 # always bright (scripts/make_laser_shader.py writes it into media/shaders).
+# GoM's optional Picatinny rails on the main mod's guns (user, 2026-10-30), and the parts each side takes as GoM ties
+# them (its AttachmentsRequiredParts.lua: Up optics, Down foregrips (and bipods), Left lights, Right lasers). The Uzi
+# takes only GoM's red dots, the seven its MP5 and MP5K spawn with (its magnified scopes, 150 mm and longer at our
+# scale, overhang the short top rail); the Mini Uzi only the Reflex S2, the one red dot that clears its cocking knob and
+# front sight on its 45 mm rail (2026-10-30 overlap check); the M249 every optic but the four longest (they reach its
+# carrying handle, modelled up), and none of GoM's bipods (it has its own). Registries and loot: AUG.lua, M249.lua,
+# Uzi.lua.
+RED_DOTS = ['ReflexS2_Sight', 'Kobra_Sight', 'OKP3_Sight', 'JS14_Sight', 'EXPS3_Sight', 'EXPS1_Sight', 'Aimpoint_Sight']
+MINIUZI_OPTICS = ['ReflexS2_Sight']
+M249_OPTICS = RED_DOTS + ['LR4X_Scope', 'TA28_Scope', 'ElcanX2_Scope']
+FOREGRIPS = ['Stub_Foregrip', 'MKC_Foregrip', 'MK2_Foregrip']
+RAIL_LASERS = ['AimRight_Laser', 'LRX-7_Laser']
+RAIL_LIGHTS = ['BrightPoint-5_Light', 'SR7_Light']
+RAIL_POINTS = {'Up': 'rail_up', 'Down': 'rail_down', 'Left': 'rail_left', 'Right': 'rail_right'}
+
+
+def rail_parts(rails, optics=(), foregrips=False, lights=False, lasers=False):
+    """ModelWeaponPart lines of GoM's rails and the parts on them: rails = {side: the model drawn for GoM's
+    Picatinny_Rail_<side> (our short one, or GoM's own)}; each laser with its beam (Lasers.lua: the main mod's guns
+    list their beams here, as Post-93's do)."""
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Picatinny_Rail_{s} {m} {RAIL_POINTS[s]} {RAIL_POINTS[s]}," for s, m in rails.items()]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in optics]
+    if foregrips:
+        lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    if lasers:
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in RAIL_LASERS]
+        lines += [f"{w}{MODULE}.LaserBeam_{o.replace('-', '')} {MODULE}.LaserBeam_{o.replace('-', '')} "
+                  f"laser_right laser_right," for o in RAIL_LASERS]
+    if lights:
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in RAIL_LIGHTS]
+    return lines
+
+
+def rail_model(name):
+    """One of our short rails (scripts/build_rails.py), drawn at the gun's point for it."""
+    return f"""
+    model {name} {{
+        mesh     = weapons/parts/GunsOfTien_rails|{name},
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }}
+"""
+
+
 LASER_LENS = {
     'AimRight_Laser': ('laser_right', (-0.0075, 0.0357, 0.0125)),
     'LRX-7_Laser': ('laser_right', (-0.0049, 0.0375, 0.0077)),
@@ -987,7 +1032,7 @@ def m249():
         cullFace = None,
 """]
     for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod', 'bolt_fired',
-                 'handle_back'):
+                 'handle_back') + tuple(RAIL_POINTS.values()) + ('scope', 'foregrip', 'light_left', 'laser_right'):
         out.append(m249_attachment(name, pts[name]))
     for d in M249_COVER_STEPS:
         out.append(m249_attachment('cover_%d' % d, dict(offset=pts['cover']['offset'], rotate=[-float(d), 0.0, 0.0])))
@@ -1036,6 +1081,9 @@ def m249():
               f"{w}MarzGuns.Bolt_Fired {MODULE}.M249_BOLT bolt_fired bolt_fired,",
               f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.M249_HANDLE handle handle,",
               f"{w}{MODULE}.ChargingHandle_Back {MODULE}.M249_HANDLE handle_back handle_back,"]
+    # GoM's optional rails, its own models, on the feed cover and round the handguard (build_m249.py RAIL_UP / RAIL_HG)
+    parts += rail_parts({s: f'MarzGuns.Picatinny_Rail_{s}' for s in RAIL_POINTS}, M249_OPTICS, foregrips=True,
+                        lights=True, lasers=True)
     items = [f"module {MODULE} {{\n", f"""
     item M249 {{
         MinDamage                    = 1.0,
@@ -1334,6 +1382,7 @@ def belt_links():
 # MAC-10 lines name a `stock` point its model lacks), the Mini's / Micro's one node at `stock` / `stock_folded`.
 UZI_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uzi_points.json')
 UZIS = ['UZI', 'MINIUZI', 'MICROUZI']
+UZI_RAILS = {'UZI': ('Up', 'Down', 'Left'), 'MINIUZI': ('Up', 'Down', 'Left')}   # none on the Micro (user, 2026-10-30)
 UZI_MAGS = [(20, 0.08), (25, 0.12), (32, 0.15), (40, 0.2), (50, 0.22)]   # GoM's MP5 20 / 30 / 60: 0.08 / 0.18 / 0.22
 UZI_NAMES = {'UZI': 'Uzi Submachine Gun', 'MINIUZI': 'Mini Uzi Submachine Gun',
              'MICROUZI': 'Micro Uzi Submachine Gun'}
@@ -1378,6 +1427,10 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    if gun in UZI_RAILS:
+        # GoM's optional rails drawn as our short ones (build_rails.py): its red dots, foregrips and lights on them
+        parts += rail_parts({s: f'{MODULE}.{gun}_RAIL_{s.upper()}' for s in UZI_RAILS[gun]},
+                            MINIUZI_OPTICS if gun == 'MINIUZI' else RED_DOTS, foregrips=True, lights=True)
     # all pistol-held as GoM's MP5K (one-handed, Handgun swing: GoM's animations only since 2026-10-29, CLAUDE.md
     # "GoM's animations only"); the Uzi keeps the back slot and the M16 handling sounds, the Mini and Micro M9 sounds
     # and a holster
@@ -1487,7 +1540,8 @@ def uzi():
         cullFace = None,
 """)
         names = ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back', 'stock', 'stock_folded',
-                 'rifle_back', 'rifle_back_bag')
+                 'rifle_back', 'rifle_back_bag', 'rail_up', 'scope', 'rail_down', 'foregrip', 'rail_left',
+                 'light_left')
         for name in names:
             if name in p:
                 models.append(m249_attachment(name, p[name]))
@@ -1507,6 +1561,8 @@ def uzi():
         cullFace = None,
     }}
 """)
+        for side in UZI_RAILS.get(gun, ()):
+            models.append(rail_model(f'{gun}_RAIL_{side.upper()}'))
     for r, _ in UZI_MAGS:
         models.append(f"""
     model {uzi_mag(r)} {{
@@ -1576,7 +1632,9 @@ def uzi():
 # scripts/build_aug.py, icons: scripts/make_aug_art.py, registries: shared/GunsOfTien/AUG.lua). A bullpup held as a
 # rifle, as GoM's FAMAS (its handling sounds and swing); its own 30 / 42 magazines; the integral 1.5x scope a hidden
 # part with no model (the optic is in the body's mesh), the folding front grip two hidden parts drawn with one node at
-# two points (shared/GunsOfTien/Foregrip.lua swaps them). No rails, bayonet or muzzle parts: none fit a 1993 A1.
+# two points (shared/GunsOfTien/Foregrip.lua swaps them). No bayonet or muzzle parts: none fit a 1993 A1. GoM's
+# optional left and right rails (user, 2026-10-30) drawn as our short AUG_RAIL_LEFT / _RIGHT (build_rails.py), its
+# lights and lasers on them; no top rail (an optic over the integral scope would add its stats to the scope's).
 AUG_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'aug_points.json')
 AUG_MAGS = [(30, 0.2), (42, 0.25)]       # GoM's STANAG 30 weighs 0.2; Steyr's polymer 42 is a little heavier
 AUG_PARTS = [  # hidden integrated parts: (item, part type, English name)
@@ -1622,7 +1680,7 @@ def aug():
         cullFace = None,
 """]
     for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'handle_back', 'foregrip_deployed',
-                 'foregrip_folded'):
+                 'foregrip_folded', 'rail_left', 'light_left', 'rail_right', 'laser_right'):
         models.append(m249_attachment(name, pts[name]))
     models.append("    }\n")
     # AUG_BOLT = the bolt carrier in the ejection port, AUG_HANDLE = the charging handle (moved only while racked)
@@ -1634,6 +1692,9 @@ def aug():
         cullFace = None,
     }}
 """)
+    # GoM's optional side rails, every AUG's (Post-93's A3s draw the left one too)
+    for side in ('LEFT', 'RIGHT'):
+        models.append(rail_model(f'AUG_RAIL_{side}'))
     for r, _ in AUG_MAGS:
         models.append(f"""
     model {aug_mag(r)} {{
@@ -1653,6 +1714,8 @@ def aug():
              f"{w}{MODULE}.AUG_Integrated_Foregrip_Folded {MODULE}.AUG_FOREGRIP foregrip_folded foregrip_folded,",
              f"{w}{MODULE}.AUG_Integrated_Foregrip_Deployed {MODULE}.AUG_FOREGRIP foregrip_deployed foregrip_deployed,"]
     parts += [f"{w}{MODULE}.{aug_mag(r)} {MODULE}.{aug_mag(r)} magazine magazine," for r, _ in AUG_MAGS]
+    parts += rail_parts({'Left': f'{MODULE}.AUG_RAIL_LEFT', 'Right': f'{MODULE}.AUG_RAIL_RIGHT'}, lights=True,
+                        lasers=True)
     # Stats (docs/design.md 4g): GoM's M16A1 damage (the same round from the same 20" barrel), between its FAMAS and
     # M16A1 in handling, GoM's FNC's reliability; 3.6 kg as GoM gives its FAMAS its real weight; sound 175 / 50 from
     # sound_model.py's model (5.56 from 20", the M16's own figure; the main mod's SoundTable is for GoM's guns only).

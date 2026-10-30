@@ -22,6 +22,10 @@
       stats on equip, attach and round changes but not on a magazine swap, so the attack hook's per-shot call notices
       a change of feed (as Ammunition.lua does for the PBS-1).
     - reload: GoM's M60 reload (GoMReloads.lua).
+    - GoM's optional Picatinny rails (user, 2026-10-30; Rails.lua), its own models: on top the feed cover with a
+      rail (US issue from the late 1990s), under and on both sides of the handguard as Cadex's tri-rail; GoM's red
+      dots and its three shorter magnified scopes (the four longest reach the carrying handle), foregrips (no rail
+      bipod: it has its own), lights and lasers.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -34,6 +38,7 @@ local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
+local Rails = require("GunsOfTien/Rails")
 
 for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats", "PermanentAttachments",
     "AnimationsFiring", "Ammunition" }) do
@@ -194,14 +199,28 @@ end
 PreventRemoval.Register(permanent)
 
 -------------------------------------------------
--- A found gun: the cocking handle, the cover closed, the bipod folded, the box at GoM's M60 chance
+-- GoM's optional rails on all four sides
+-------------------------------------------------
+Rails.Register(M249, { sides = { "Up", "Down", "Left", "Right" }, optics = Rails.M249_OPTICS, foregrips = true,
+    lights = true, lasers = true })
+
+-------------------------------------------------
+-- A found gun: the cocking handle, the cover closed, the bipod folded, the box at GoM's M60 chance; GoM's rail
+-- accessories with their rails (":PR*") at its M16A2 chances, no rail bipod
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
     spawnTable[M249] = {
         required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, COVER_CLOSED, BIPOD_FOLDED },
-        optionals = { BOX .. ":50" },
+        optionals = { BOX .. ":50",
+            "MarzGuns.ReflexS2_Sight:5:PRU", "MarzGuns.Kobra_Sight:5:PRU", "MarzGuns.OKP3_Sight:5:PRU",
+            "MarzGuns.JS14_Sight:5:PRU", "MarzGuns.EXPS3_Sight:5:PRU", "MarzGuns.EXPS1_Sight:5:PRU",
+            "MarzGuns.Aimpoint_Sight:5:PRU",
+            "MarzGuns.LR4X_Scope:3:PRU", "MarzGuns.TA28_Scope:3:PRU", "MarzGuns.ElcanX2_Scope:3:PRU",
+            "MarzGuns.Stub_Foregrip:2:PRD", "MarzGuns.MKC_Foregrip:2:PRD", "MarzGuns.MK2_Foregrip:2:PRD",
+            "MarzGuns.AimRight_Laser:2:PRR", "MarzGuns.LRX-7_Laser:2:PRR",
+            "MarzGuns.BrightPoint-5_Light:2:PRL", "MarzGuns.SR7_Light:2:PRL" },
     }
 end
 

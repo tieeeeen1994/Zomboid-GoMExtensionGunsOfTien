@@ -119,6 +119,18 @@
       0.0
     ]
   },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
   "rail_left": {
     "offset": [
       0.0127,
@@ -143,18 +155,6 @@
       0.0
     ]
   },
-  "world": {
-    "offset": [
-      0.0186,
-      0.1206,
-      0.0
-    ],
-    "rotate": [
-      180.0,
-      0.0,
-      180.0
-    ]
-  },
   "canon": {
     "offset": [
       0.0,
@@ -173,7 +173,7 @@
     "bolt_fired": "GunsOfTien.AUG_BOLT (the A1's bolt carrier in the ejection port) back 17.0 mm real: each shot and held open when empty",
     "handle_back": "GunsOfTien.AUG_HANDLE (the A1's charging handle) back 92 mm real, only while racked",
     "foregrip": "GunsOfTien.AUG_FOREGRIP (the A1's grip) at its hinge pin; folded = turned 90 degrees forward",
-    "rails": "integral top (L 264-494, crossbars H 186) and right (L 282-381, H 143); left = GoM's optional Picatinny_Rail_Left, drawn as AUG_RAIL_LEFT (L 256-297, H 129.5)",
+    "rails": "integral top (L 264-494, crossbars H 186) and right (L 282-381, H 143); left = GoM's optional Picatinny_Rail_Left, drawn as the main mod's AUG_RAIL_LEFT (L 256-297, H 129.5)",
     "canon": "GoM's AR mount device and its muzzle parts, 0.0187 behind the muzzle (its M4A1)"
   },
   "_extras": {
@@ -198,19 +198,6 @@
         0.0519
       ],
       "tris": 2404
-    },
-    "AUG_RAIL_LEFT": {
-      "min": [
-        -0.0003,
-        -0.0124,
-        -0.0064
-      ],
-      "max": [
-        0.0021,
-        0.0124,
-        0.0064
-      ],
-      "tris": 188
     }
   }
 }

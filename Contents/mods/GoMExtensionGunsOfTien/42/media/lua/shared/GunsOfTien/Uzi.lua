@@ -17,7 +17,12 @@
     - reload: GoM's own animations (GoMReloads.lua), its MP5K's ("handgun2") for all three;
     - AWC's Mk9 on its 9x19mm SMG mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
       can's stats and rule, the parts' MountOn and the guns' ModelWeaponPart lines are in their scripts);
-    - no rails, optics, lights, lasers or bayonet (none on a 1993 Uzi).
+    - no bayonet; GoM's optional Picatinny rails on the Uzi and Mini Uzi (user, 2026-10-30; Rails.lua), drawn as our
+      short UZI_ / MINIUZI_RAIL_UP / _DOWN / _LEFT: a clamp-on rail over the top cover (behind the Uzi's cocking knob,
+      ahead of the Mini's) for GoM's red dots only (its magnified scopes overhang them; on the Mini only the Reflex S2,
+      the others reach its knob or front sight), under the handguard for its
+      foregrips, on the handguard's left for its lights; no right rail (none is made), none on the Micro (as GoM's
+      MAC-10).
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -30,6 +35,7 @@ local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
+local Rails = require("GunsOfTien/Rails")
 
 for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
     "PermanentAttachments" }) do
@@ -120,25 +126,44 @@ CSA.RegisterMultipleParts({
 PreventRemoval.Register(MAGS)
 
 -------------------------------------------------
+-- GoM's optional rails on the Uzi and Mini Uzi: red dots on top, foregrips under, lights on the left
+-------------------------------------------------
+for gun, optics in pairs({ [UZI] = Rails.RED_DOTS, [MINIUZI] = Rails.MINIUZI_OPTICS }) do
+    Rails.Register(gun, { sides = { "Up", "Down", "Left" }, optics = optics, foregrips = true, lights = true })
+end
+
+-------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the cocking knob, the stock folded, one
 -- magazine by GoM's MP5 rule (shortest likeliest), each gun's standard magazine first: the Uzi's 32, the Mini's and
 -- Micro's 20. The long 40 / 50 come loose only (server/GunsOfTien/Loot.lua); a mount device sometimes, as GoM's MP5 /
--- MAC-10 come with theirs.
+-- MAC-10 come with theirs. The Uzi and Mini Uzi: GoM's MP5 accessories with their rails (":PR*") at its chances
+-- (no laser: no right rail).
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
-    local function entry(gun, mags)
+    local function railParts(optics)
+        local list = {}
+        for _, optic in ipairs(optics) do list[#list + 1] = optic .. ":5:PRU" end
+        for _, e in ipairs({ "MarzGuns.Stub_Foregrip:10:PRD", "MarzGuns.MKC_Foregrip:10:PRD",
+            "MarzGuns.MK2_Foregrip:5:PRD", "MarzGuns.BrightPoint-5_Light:10:PRL", "MarzGuns.SR7_Light:10:PRL" }) do
+            list[#list + 1] = e
+        end
+        return list
+    end
+    local function entry(gun, mags, rails)
         local optionals = {}
         for _, e in ipairs(mags) do optionals[#optionals + 1] = e end
         optionals[#optionals + 1] = M .. "SMG9_Muzzle_Mount_Device:5"
+        for _, e in ipairs(rails or {}) do optionals[#optionals + 1] = e end
         return {
             required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, gun .. "_Integrated_Stock_Folded" },
             optionals = optionals,
         }
     end
-    spawnTable[UZI] = entry(UZI, { MAGS[3] .. ":30", MAGS[2] .. ":20", MAGS[1] .. ":5" })
-    spawnTable[MINIUZI] = entry(MINIUZI, { MAGS[1] .. ":30", MAGS[2] .. ":20", MAGS[3] .. ":5" })
+    spawnTable[UZI] = entry(UZI, { MAGS[3] .. ":30", MAGS[2] .. ":20", MAGS[1] .. ":5" }, railParts(Rails.RED_DOTS))
+    spawnTable[MINIUZI] = entry(MINIUZI, { MAGS[1] .. ":30", MAGS[2] .. ":20", MAGS[3] .. ":5" },
+        railParts(Rails.MINIUZI_OPTICS))
     spawnTable[MICROUZI] = entry(MICROUZI, { MAGS[1] .. ":30", MAGS[2] .. ":20", MAGS[3] .. ":5" })
 end
 

@@ -143,13 +143,14 @@ local function patchScripts()
             -- 0 uses whose script does not keep it (42.21 ItemUser.UseItem: !isKeepOnDeplete -> RemoveItem; read from
             -- the script each time). Without it the laser vanished with its battery (user, 2026-10-18).
             script:DoParam("DisappearOnUse = false")
-            -- the guns this laser mounts on; Post-93's own guns list their beams in their item scripts
+            -- the guns this laser mounts on; our own guns (GunsOfTien.* and GunsOfTienPost93.*) list their beams in
+            -- their item scripts, as their lasers' MountOn is appended by files that may run after this one
             local item = instanceItem(fullType)
             local guns = item and item.getMountOn and item:getMountOn()
             if guns then
                 for i = 0, guns:size() - 1 do
                     local gunType = tostring(guns:get(i))
-                    local gun = gunType:find("^GunsOfTienPost93%.") == nil and ScriptManager.instance:getItem(gunType)
+                    local gun = gunType:find("^GunsOfTien") == nil and ScriptManager.instance:getItem(gunType)
                     if gun then
                         patched[gun] = patched[gun] or {}
                         if not patched[gun][entry.beam] then

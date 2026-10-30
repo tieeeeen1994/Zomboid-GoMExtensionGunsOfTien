@@ -6,7 +6,7 @@ Imports what build_aug3.py wrote, with the main mod's A1 charging handle, foldin
 at <gun>_points.json the way the engine does (offset, then rotateXYZ in degrees, game space) and renders orthographic
 Workbench views into OUT_DIR: the right side at the reference photo's scale (2.575 px/mm, for the overlay in
 make_aug3_sheet.py), the left side, 3/4 views, top and front, the grip folded with the handle back, and the gun dressed
-with GoM's parts at their points (ElcanX2 on the rail, the optional left rail (our AUG_RAIL_LEFT) with an SR7 light, the AimRight
+with GoM's parts at their points (ElcanX2 on the rail, the optional left rail (the main mod's AUG_RAIL_LEFT) with an SR7 light, the AimRight
 laser on the right rail, the AR mount device with the MKI suppressor). Game space is Blender world space, the mirror
 image of what the game shows; the sheet flips every render left-right.
 """
@@ -117,9 +117,9 @@ def main():
     own = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx" % NAME),
                os.path.join(TEX, NAME + ".png"))
     body = own[NAME + "_BODY"]
-    # every A3-receiver gun draws the A3's short left rail
-    rail = own.get("AUG_RAIL_LEFT") or load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_AUGA3.fbx"),
-                                            os.path.join(TEX, "AUGA3.png"), keep=["AUG_RAIL_LEFT"])["AUG_RAIL_LEFT"]
+    # every AUG draws the main mod's short left rail (scripts/build_rails.py)
+    rail = load(os.path.join(MAIN, "models_X/weapons/parts/GunsOfTien_rails.fbx"), os.path.join(MAIN_TEX, "Rails.png"),
+                keep=["AUG_RAIL_LEFT"])["AUG_RAIL_LEFT"]
     # every AUG draws the A1's bolt carrier; the Para its own sand handle and grip, the others the A1's
     a1 = load(os.path.join(MAIN, "models_X/weapons/firearms/GunsOfTien_AUG.fbx"),
               os.path.join(MAIN_TEX, "AUG.png"), keep=["AUG_BOLT", "AUG_HANDLE", "AUG_FOREGRIP"])

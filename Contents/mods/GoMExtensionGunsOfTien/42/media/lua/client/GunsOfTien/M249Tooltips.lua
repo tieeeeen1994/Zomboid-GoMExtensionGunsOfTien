@@ -14,6 +14,7 @@ lines["GunsOfTien.M249"] = {
     "Uses .223/5.56x45mm NATO rounds.",
     "Compatible Magazines: M249 200Rds Box, STANAG",
     "Jam Chance doubled with STANAG magazines",
+    "Available Picatinny Slots: Up, Down, Left, Right.",
 }
 lines["GunsOfTien.556x45Box200_M249"] = { "Uses .223/5.56x45mm NATO rounds.", "Takes one M27 Belt Link per round" }
 -- GoM's M60 box is a belt too (shared/GunsOfTien/BeltLinks.lua): its own lines, then ours

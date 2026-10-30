@@ -16,6 +16,11 @@ for _, gun in ipairs({ "UZI", "MINIUZI", "MICROUZI" }) do
         "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
     }
 end
+-- GoM's optional rails (shared/GunsOfTien/Rails.lua), GoM's wording; red dots only on top, the Mini's Reflex S2 only
+for gun, optics in pairs({ UZI = "red dots only", MINIUZI = "Reflex S2 Sight only" }) do
+    table.insert(lines["GunsOfTien." .. gun], "Available Picatinny Slots: Up, Down, Left.")
+    table.insert(lines["GunsOfTien." .. gun], "Compatible Optics: " .. optics)
+end
 for _, n in ipairs({ 20, 25, 32, 40, 50 }) do
     lines["GunsOfTien.9x19Magazine" .. n .. "_UZI"] = { "Uses 9x19mm rounds." }
 end

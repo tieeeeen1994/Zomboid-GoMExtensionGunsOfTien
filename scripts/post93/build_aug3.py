@@ -3,7 +3,7 @@
     blender -b --factory-startup -P scripts/post93/build_aug3.py -- --gun a3|para|hbar|mags [--size 1024]
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    --gun a3    M/models_X/weapons/firearms/GunsOfTienPost93_AUGA3.fbx     AUGA3_BODY, AUG_RAIL_LEFT
+    --gun a3    M/models_X/weapons/firearms/GunsOfTienPost93_AUGA3.fbx     AUGA3_BODY
                 M/textures/weapons/GunsOfTienPost93/AUGA3.png              256 atlas (body, the short left rail)
                 scripts/post93/auga3_points.json
     --gun para  M/models_X/weapons/firearms/GunsOfTienPost93_AUGPARA.fbx   AUGPARA_BODY, AUGPARA_HANDLE,
@@ -30,9 +30,9 @@ and the magazines are the A1's own models, drawn at this gun's points (the same 
 scaled by the receiver (the A1's L 249-402, 153 mm: 2.575 px/mm) and anchored at the receiver's front face and the
 bore: the rail's crossbars reach H ~186 from L ~264 back to L ~494 over the stock's top; the right-side rail (the black
 gun) lies on the receiver at L 282-381, centred H 143. The receiver has no left rail (the charging handle runs along
-that side and leaves no room for GoM's 125 mm rail): GoM's Picatinny_Rail_Left is an optional upgrade, drawn as this
-mod's short AUG_RAIL_LEFT at `rail_left` on the receiver's front-left, under the handle's path. Every A3-receiver gun
-uses that one model (the A3's texture).
+that side and leaves no room for GoM's 125 mm rail): GoM's Picatinny_Rail_Left is an optional upgrade, drawn as the
+main mod's short GunsOfTien.AUG_RAIL_LEFT (scripts/build_rails.py; the A1 takes it too since 2026-10-30) at
+`rail_left` on the receiver's front-left, under the handle's path, placed by the A1's constants and points.
 
 Para: Steyr's 9x19mm AUG (user, 2026-10-28: on the A3 receiver, sand). Blowback: a 420 mm barrel with no gas cylinder
 and no flash hider, its muzzle 125 mm behind the A1's (Steyr: 665 mm long against 790; 88 mm shorter barrel, the A1's
@@ -85,12 +85,8 @@ UPPER = [(262.0, 161.0), (262.0, RAIL_FLOOR), (RAIL[1], RAIL_FLOOR), (RAIL[1] + 
 NOSE = [(262.0, RAIL_FLOOR), (262.0, 158.0), (249.0, 150.0), (246.0, 156.0), (252.0, 168.0)]
 SIDE_RAIL = (282.0, 381.0)                   # the right-side rail's ends
 SIDE_RAIL_H = 143.0                          # its centre line
-# The optional left rail: GoM's Picatinny_Rail_Left item drawn with this short model (AUG_RAIL_LEFT, 4 crossbars,
-# like Corvus Defensio's A3 receiver rail) on the receiver's front-left, under the charging handle's path (its lowest
-# edge H 140, resting at L 255-290 and running back to L 382) and ahead of the stock's shell and the trigger frame
-# (both from L 298). GoM's own model (125 mm long, 25 mm across) has no room on that side.
-LEFT_RAIL = (256.0, 297.0)
-LEFT_RAIL_H = 129.5                          # its centre line: the crossbars' upper edge 10.6 mm above, under H 140
+# The optional left rail: GoM's Picatinny_Rail_Left item drawn with the main mod's short AUG_RAIL_LEFT, placed by the
+# A1's a1.LEFT_RAIL / a1.LEFT_RAIL_H and a1.side_rail_points() (scripts/build_aug.py, build_rails.py)
 OPTIC_L = 400.0                              # where GoM's optics sit on the rail (the A1's scope centre is L 420)
 W_UPPER = 18.0                               # the upper's half width over the receiver
 
@@ -179,16 +175,6 @@ def build_body():
         La, Lb, Ha, Hb = a1.GAS_VALVE
         box(b, La, Lb, Ha, Hb, -6.0, 6.0, mat="dark", bevel=0.8)
     return b.to_object(NAME + "_BODY")
-
-
-def build_left_rail():
-    """Origin = the rail's centre on the receiver's left face (rail_left); it stands out along +X."""
-    b = kit.Builder()
-    half = (LEFT_RAIL[1] - LEFT_RAIL[0]) / 2.0
-    kit.picatinny(b, -half, half, lambda u, h, yy: Vector((h, yy, u)), base_h=1.5, tooth_h=3.0, mat="dark")
-    for yy in (-half + 3.0, half - 3.0):                   # the two screws through the end pads
-        b.lathe("x", (0, yy, 0), [(0.0, 0), (0.0, 2.2), (2.8, 2.2), (3.2, 1.6), (3.2, 0)], seg=8, mat="metal")
-    return b.to_object("AUG_RAIL_LEFT")
 
 
 def leg(b, p0, p1):
@@ -341,7 +327,6 @@ def points(bounds):
     oy = round(a1.y(OPTIC_L) * K, 4)
     sy = round(a1.y(sum(SIDE_RAIL) / 2.0) * K, 4)
     sz = round(a1.z(SIDE_RAIL_H) * K, 4)
-    ly, lz = round(a1.y(sum(LEFT_RAIL) / 2.0) * K, 4), round(a1.z(LEFT_RAIL_H) * K, 4)
     side = (a1.W_RCV + 1.5 + 3.0 - 1.0) * K           # the right rail's crossbar faces (base 1.5, crossbars 3.0)
     hinge = gp(*a1.FG_HINGE)
     muzzle = gp({"para": PARA_MUZZLE, "hbar": HBAR_MUZZLE}.get(GUN, 0.0), a1.BORE)
@@ -359,13 +344,12 @@ def points(bounds):
         # the integral right rail: the SCAR's relations to its crossbar face
         "rail_right": {"offset": [round(-(side - 0.0055), 4), sy, sz], "rotate": ZERO},
         "laser_right": {"offset": [round(-(side - 0.0055 + 0.0073), 4), sy, round(sz - 0.0008, 4)], "rotate": ZERO},
-        # the optional left rail: AUG_RAIL_LEFT's origin on the receiver's left face; GoM's lights sit 0.0007 out
-        # from a rail's crossbar faces (the SCAR's rail_left + 0.0062 with rail_left 0.0055 inside them)
-        "rail_left": {"offset": [round(a1.W_RCV * K, 4), ly, lz], "rotate": ZERO},
-        "light_left": {"offset": [round((a1.W_RCV + 3.5) * K + 0.0007, 4), ly, lz], "rotate": ZERO},
         "world": {"offset": [round(0.02 * K / a1.K_OLD, 4), round(0.13 * K / a1.K_OLD, 4), 0.0],
                   "rotate": [180.0, 0.0, 180.0]},
     }
+    # the optional left rail as on the A1: AUG_RAIL_LEFT's origin on the receiver's left face, the light beside it
+    side_pts = a1.side_rail_points()
+    pts.update({k: side_pts[k] for k in ("rail_left", "light_left")})
     if GUN == "para":
         # the main mod's 9x19mm SMG mount device (and its Mk9) start at the collar's front face (the UMP9's relation)
         pts["canon"] = {"offset": gp(PARA_CANON, a1.BORE), "rotate": ZERO}
@@ -389,8 +373,8 @@ def points(bounds):
         "foregrip": "%s (the A1's grip) at its hinge pin; folded = turned 90 degrees forward" % (
             NAME + "_FOREGRIP" if own else "GunsOfTien.AUG_FOREGRIP"),
         "rails": "integral top (L %.0f-%.0f, crossbars H %.0f) and right (L %.0f-%.0f, H %.0f); left = GoM's "
-                 "optional Picatinny_Rail_Left, drawn as AUG_RAIL_LEFT (L %.0f-%.0f, H %.1f)" % (
-                     RAIL + (RAIL_TOP,) + SIDE_RAIL + (SIDE_RAIL_H,) + LEFT_RAIL + (LEFT_RAIL_H,)),
+                 "optional Picatinny_Rail_Left, drawn as the main mod's AUG_RAIL_LEFT (L %.0f-%.0f, H %.1f)" % (
+                     RAIL + (RAIL_TOP,) + SIDE_RAIL + (SIDE_RAIL_H,) + a1.LEFT_RAIL + (a1.LEFT_RAIL_H,)),
     }
     if GUN == "para":
         pts["_notes"]["canon"] = ("the barrel collar's front face, %.0f mm behind the muzzle: the 9x19mm SMG mount "
@@ -424,8 +408,8 @@ def main():
         extra = [build_bipod(False), build_bipod(True)]
         kinds = ["bolt", "bolt"]
     elif GUN == "a3":
-        extra = [build_left_rail()]
-        kinds = ["bolt"]
+        extra = []
+        kinds = []
     else:
         a1.BASE.update(PARA_COLOURS)
         handle, fg = a1.build_handle(), a1.build_foregrip()
@@ -434,7 +418,7 @@ def main():
         extra = [handle, fg]
         kinds = ["bolt", "foregrip"]
     kit.unwrap([body] + extra, 0.005)
-    # parts with their own origin (the rail at its point, the grip at its pin) are baked alone; the handle and the
+    # parts with their own origin (the Para's grip at its pin) are baked alone; the handle and the
     # bipod (in the gun's space) with the body
     near = extra[:1] if GUN in ("para", "hbar") else []
     maps = [a1.bake(body, [body] + near, 256)]

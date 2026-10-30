@@ -90,6 +90,14 @@ module GunsOfTien {
         ModelWeaponPart              = GunsOfTien.AUG_Integrated_Foregrip_Deployed GunsOfTien.AUG_FOREGRIP foregrip_deployed foregrip_deployed,
         ModelWeaponPart              = GunsOfTien.556x45Magazine30_AUG GunsOfTien.556x45Magazine30_AUG magazine magazine,
         ModelWeaponPart              = GunsOfTien.556x45Magazine42_AUG GunsOfTien.556x45Magazine42_AUG magazine magazine,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Left GunsOfTien.AUG_RAIL_LEFT rail_left rail_left,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Right GunsOfTien.AUG_RAIL_RIGHT rail_right rail_right,
+        ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
+        ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
+        ModelWeaponPart              = GunsOfTien.LaserBeam_LRX7_Laser GunsOfTien.LaserBeam_LRX7_Laser laser_right laser_right,
+        ModelWeaponPart              = MarzGuns.BrightPoint-5_Light MarzGuns.BrightPoint-5_Light light_left light_left,
+        ModelWeaponPart              = MarzGuns.SR7_Light MarzGuns.SR7_Light light_left light_left,
         KnockBackOnNoDeath           = true,
     }
 

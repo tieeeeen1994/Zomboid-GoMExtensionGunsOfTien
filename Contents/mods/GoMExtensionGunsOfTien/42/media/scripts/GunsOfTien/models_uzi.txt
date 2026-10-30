@@ -12,6 +12,12 @@ module GunsOfTien {
         attachment handle_back { offset = 0.0000 -0.0482 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
         attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_up { offset = 0.0000 -0.0012 -0.0398, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 -0.0012 -0.0420, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_down { offset = 0.0000 0.1055 -0.0006, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1055 0.0018, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0145 0.1055 -0.0151, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0173 0.1055 -0.0151, rotate = -180.0000 0.0000 -180.0000, }
     }
 
     model UZI_BOLT {
@@ -38,6 +44,24 @@ module GunsOfTien {
         cullFace = None,
     }
 
+    model UZI_RAIL_UP {
+        mesh     = weapons/parts/GunsOfTien_rails|UZI_RAIL_UP,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model UZI_RAIL_DOWN {
+        mesh     = weapons/parts/GunsOfTien_rails|UZI_RAIL_DOWN,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model UZI_RAIL_LEFT {
+        mesh     = weapons/parts/GunsOfTien_rails|UZI_RAIL_LEFT,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
     model MINIUZI {
         mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_BODY,
         texture  = weapons/GunsOfTien/MINIUZI,
@@ -50,6 +74,12 @@ module GunsOfTien {
         attachment handle_back { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0793 -0.0407, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0793 -0.0429, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_down { offset = 0.0000 0.0892 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.0892 0.0024, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0139 0.0889 -0.0175, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0167 0.0889 -0.0175, rotate = -180.0000 0.0000 -180.0000, }
     }
 
     model MINIUZI_1H {
@@ -64,6 +94,12 @@ module GunsOfTien {
         attachment handle_back { offset = 0.0000 -0.0392 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment stock { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0139 -0.0555 -0.0229, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0793 -0.0407, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0793 -0.0429, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_down { offset = 0.0000 0.0892 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.0892 0.0024, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0139 0.0889 -0.0175, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0167 0.0889 -0.0175, rotate = -180.0000 0.0000 -180.0000, }
     }
 
     model MINIUZI_BOLT {
@@ -81,6 +117,24 @@ module GunsOfTien {
     model MINIUZI_STOCK {
         mesh     = weapons/firearms/GunsOfTien_MINIUZI|MINIUZI_STOCK,
         texture  = weapons/GunsOfTien/MINIUZI,
+        cullFace = None,
+    }
+
+    model MINIUZI_RAIL_UP {
+        mesh     = weapons/parts/GunsOfTien_rails|MINIUZI_RAIL_UP,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model MINIUZI_RAIL_DOWN {
+        mesh     = weapons/parts/GunsOfTien_rails|MINIUZI_RAIL_DOWN,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model MINIUZI_RAIL_LEFT {
+        mesh     = weapons/parts/GunsOfTien_rails|MINIUZI_RAIL_LEFT,
+        texture  = weapons/GunsOfTien/Rails,
         cullFace = None,
     }
 

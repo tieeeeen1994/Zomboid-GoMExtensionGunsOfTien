@@ -1140,7 +1140,8 @@ AUG3_STATS = {
 def aug3_parts(gun):
     """Every A3-receiver AUG: the A1's bolt carrier, the charging handle (moved only while racked), the A1's folding
     grip parts (the Para draws its own sand handle and grip), its magazines, GoM's optics on the integral top rail,
-    lasers on the integral right rail, lights on GoM's optional left rail drawn as our short AUG_RAIL_LEFT; the A3
+    lasers on the integral right rail, lights on GoM's optional left rail drawn as the main mod's short AUG_RAIL_LEFT
+    (scripts/build_rails.py, the A1's too); the A3
     GoM's AR muzzle family, the Para the main mod's 9x19mm SMG mount and Mk9 (their `_GoT` models), the HBAR its
     integrated bipod and no muzzle parts."""
     w = "        ModelWeaponPart              = "
@@ -1166,7 +1167,7 @@ def aug3_parts(gun):
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
     lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
               f"laser_right laser_right," for o in LASERS]
-    lines += [f"{w}MarzGuns.Picatinny_Rail_Left {M}.AUG_RAIL_LEFT rail_left rail_left,"]
+    lines += [f"{w}MarzGuns.Picatinny_Rail_Left GunsOfTien.AUG_RAIL_LEFT rail_left rail_left,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
     return '\n'.join(lines) + '\n'
 
@@ -1269,8 +1270,7 @@ def augs():
     for gun in AUG3:
         extra = ['foregrip_deployed', 'foregrip_folded'] + (['integrated_bipod'] if gun == 'AUGHBAR' else [])
         out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun], extra))
-    for model, file, tex in [('AUG_RAIL_LEFT', 'GunsOfTienPost93_AUGA3', 'AUGA3'),
-                             ('AUGPARA_HANDLE', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
+    for model, file, tex in [('AUGPARA_HANDLE', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
                              ('AUGPARA_FOREGRIP', 'GunsOfTienPost93_AUGPARA', 'AUGPARA'),
                              ('AUGHBAR_BIPOD_FOLDED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR'),
                              ('AUGHBAR_BIPOD_DEPLOYED', 'GunsOfTienPost93_AUGHBAR', 'AUGHBAR')]:

@@ -58,7 +58,9 @@ Guns `MP7A1`, `MP7A2` (user, 2026-10-18: its own body `MP7A2_BODY` and texture, 
 `57x28_Bullet` (SS190), `57x28_Bullet_SB193`, `57x28_Bullet_SS197SR`. Files (one set per gun): models_X/weapons/firearms/
 GunsOfTienPost93_MP7A1.fbx and _P90TR.fbx, models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx and
 _P90_magazines.fbx, models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx and _P90_parts.fbx; textures under
-textures/weapons/GunsOfTienPost93/. The charging handles do not reciprocate on either gun, so no animated bolt.
+textures/weapons/GunsOfTienPost93/. The charging handles do not reciprocate on either gun: they move only with the rack, while the bolt in the
+ejection port takes GoM's Bolt_Lock / Bolt_Fired swap (built 2026-10-30, CLAUDE.md "The charging handle and the bolt
+are not always the same part").
 
 ## FN Five-seveN (user, 2026-10-16)
 
@@ -236,7 +238,8 @@ All three:
   optics) and `AUG_Integrated_Rail_Right` (GoM's lasers), one pair shared by the three guns. **No left rail from the
   factory** (the charging handle runs in a slot along the receiver's left), so the left side takes **GoM's own
   `MarzGuns.Picatinny_Rail_Left` as a removable upgrade** (GoM's lights; Corvus Defensio sells such a rail for either
-  side), the guns appended to its MountOn and drawn with **our own short model** `AUG_RAIL_LEFT` (the item's
+  side), the guns appended to its MountOn and drawn with **our own short model** `GunsOfTien.AUG_RAIL_LEFT` (in the main
+  mod since 2026-10-30, scripts/build_rails.py, when the A1 took it with a right one; the item's
   `ModelWeaponPart` names the model, as the UCP draws the MP7's mount device): 4 crossbars, 41 mm, on the receiver's
   front-left at L 256-297, centred H 129.5, under the charging handle's path (H 140 up, L 255-382) and ahead of the
   stock's shell and the trigger frame (L 298). GoM's own model (125 mm long, 25 mm across) ran into the handle there
@@ -249,7 +252,8 @@ All three:
 - **Held and reloaded** as the A1: the bullpup stance (grip animId `GunsOfTien_CompactBullpup`) and the AUG's bullpup
   reload (`GunsOfTienCompactBullpupAUG`), no new animation (CLAUDE.md "Animations are generic"); each gun's magazine
   point at the A1's lips, so the Para's straight 9mm and the HBAR's curved 7.62 sit in the same place. Charging handle
-  on the left riding with the bolt (GoM's Bolt_Lock / Bolt_Fired swap, as the A1). Back slot, Auto / Single.
+  on the left, non-reciprocating as the A1's: forward when firing, back only with the rack; the bolt carrier in the
+  ejection port takes GoM's Bolt_Lock / Bolt_Fired swap (every AUG draws the A1's `AUG_BOLT`). Back slot, Auto / Single.
 - **HBAR bipod**: integrated, folded on a found gun, through Gunworks' `FoldingBipod` registry as GoM's M60 / BAR / M24
   and the main mod's M249 (`AUGHBAR_Integrated_Bipod_Folded / _Deployed`), beside the grip's own fold.
 - **Finish**: the A3 Steyr green with the black receiver and rail (the Interpolitex photo's green gun, the A3 SF), the

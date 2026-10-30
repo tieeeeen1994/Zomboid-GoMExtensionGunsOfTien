@@ -17,7 +17,8 @@
       Foregrip.lua (the Para draws them with its own sand model);
     - rails: integral top (GoM's optics) and right (GoM's lasers), hidden parts as on the SCARs and UMPs; no factory
       left rail: GoM's own Picatinny_Rail_Left (and its universal Picatinny Rail on the left side only) as an optional
-      upgrade for GoM's lights, drawn on these guns with our short AUG_RAIL_LEFT; no bottom rail (the folding grip);
+      upgrade for GoM's lights, drawn on these guns with the main mod's short AUG_RAIL_LEFT (the A1 takes it too, with
+      a right one, since 2026-10-30); no bottom rail (the folding grip);
     - muzzle: the A3 GoM's AR family (as the SCAR-L), the Para the main mod's 9x19mm SMG mount device and Mk9 (as the
       UMP9), the HBAR none;
     - the HBAR's integrated folding bipod (Gunworks' FoldingBipod, as the main mod's M249 and GoM's BAR / M60 / M24)

@@ -323,7 +323,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   kind of part: Up optics (also `AK_Mount`, `Sniper_Mount`, G36C rail), Down foregrips and bipods (both at once, e.g.
   M16A2, M4A1, G36), Left lights (BrightPoint-5, SR7), Right lasers (AimRight, LRX-7). `Picatinny_Rail_Up / _Down /
   _Left / _Right` are removable upgrades drawn at `rail_up` / ... points; a gun with only an integral right rail takes
-  lasers but no light. Which of our guns should take them is an open audit (TODO.md, user 2026-10-28).
+  lasers but no light. Audit done 2026-10-30 (section "Picatinny rail upgrades"): Post-93 has nothing left to add; the
+  main mod's AUG A1 (left, right), M249 (all four), Uzi and Mini Uzi (top, bottom, left) take them, the Micro none.
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -434,7 +435,9 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family"); `scripts/build_aug.py`, `render_aug.py`,
   `make_aug_art.py` (the AUG A1, section "Steyr AUG A1"); Post-93's `scripts/post93/build_aug3.py`, `render_aug3.py`,
   `make_aug3_art.py` (the AUG A3, Para and HBAR, section "Steyr AUG A3, Para and HBAR"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
-  Foregrip radial icons, moved from post93/ on 2026-10-27).
+  Foregrip radial icons, moved from post93/ on 2026-10-27); `scripts/build_rails.py` (our short Picatinny rails for
+  the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
+  or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`).
 
 ## Status and how to continue
 
@@ -1114,7 +1117,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   x -0.0011..+0.0055 from its point (base inward). The receiver's left has 14 mm between the stock's shell (H 126)
   and the charging handle's path (H 140+, L 255-382), so GoM's rail ran into the handle; a barrel clamp was tried; the
   answer (user: "can't we shorten the rail?") is our own 41 mm, 4-crossbar AUG_RAIL_LEFT at L 256-297, H 129.5, drawn
-  for GoM's item through the gun's ModelWeaponPart line (the line names the model). Lights sit 0.0007 out from a
+  for GoM's item through the gun's ModelWeaponPart line (the line names the model). Since 2026-10-30 it is the main
+  mod's `GunsOfTien.AUG_RAIL_LEFT` (scripts/build_rails.py; its place in build_aug.py `LEFT_RAIL`), which the A1 draws
+  too, with a right one. Lights sit 0.0007 out from a
   rail's crossbar face (the SCAR's rail_left + 0.0062 with rail_left 0.0055 inside it). The universal Picatinny Rail
   is offered Left only (UniversalAttachment.RegisterWeapons); GoM keeps that item's MountOn at FakeItem.
 - Para: muzzle 125 mm behind the A1's (Steyr: 665 mm), barrel stepped, collar at L 147 = `canon` for the SMG mount
@@ -1133,6 +1138,48 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   C-Mag: 12-sided black drums, sunken end panels, a straight tower: the curved tower was wrong too).
 - GoM's STANAG 75 / 100 / 150 renders: tmp/review/gom_drums (scratch script render_gom_drums.py loads
   magazines/assault_rifles.fbx with each texture).
+
+## Picatinny rail upgrades (2026-10-30)
+
+GoM's optional `Picatinny_Rail_Up / _Down / _Left / _Right` on the main mod's guns (audit and choices with the user,
+2026-10-30; real products found: Clawgear's AUG scope shell and side rails, the M249's railed feed cover and Cadex's
+tri-rail handguard, Vector Arms / BWE top cover rails, barrelxchange / GG&G handguard rails and GG&G's light mount,
+Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every side that has room.
+- AUG A1: left and right (GoM's lights / lasers). No top rail: Clawgear's shell over the 1.5x scope was turned down
+  because Gunworks multiplies every part's CustomStatsAttachments in turn (`getModifiers` gathers every fitted
+  registered part, each `SF.Multiply` multiplies the last result), so a GoM optic over the integral scope would stack
+  (A1 + Elcan: hit x1.176, sight x1.44 against x1.12 / x1.25 on any other gun).
+- M249: all four, GoM's own 125 mm models (no short ones needed), on the feed cover (L 518-643, base H 358.5: 2 mm over
+  the cover so its raised strip at L 538-566, H 361, stays inside the rail; it reached 1.6 mm into every optic's clamp
+  at H 356.5) and round the handguard (L 346-471). The folded bipod lies ahead of the handguard (L 60-255). Optics:
+  the red dots, LR4X, TA28 and Elcan; the TR06X, LR10X, LRX-12X and PSO-1 reach the carrying handle (modelled up,
+  L 370-470 up to H 424). No rail bipod (its own).
+- Uzi and Mini Uzi: top (a saddle clamped over the top cover, jaws down the receiver's sides), bottom and left of the
+  handguard, our short models; no right rail (none is made), none on the Micro. Optics: the Uzi GoM's seven red dots
+  (the ones its MP5 / MP5K spawn with; its magnified scopes are 150 mm and longer at our scale), the Mini only the
+  Reflex S2: from its 45 mm rail between the front sight (L 103) and the cocking knob (L 152) the EXPS3, Aimpoint,
+  EXPS1, JS14 and Kobra run into the knob and the OKP3 into the front sight.
+- Files: `scripts/build_rails.py` (all our short rails: AUG_RAIL_LEFT / _RIGHT, UZI_ / MINIUZI_RAIL_UP / _DOWN / _LEFT
+  in `models_X/weapons/parts/GunsOfTien_rails.fbx`, `Rails.png` 128; modelled upright with their origin at the gun's
+  point; places from build_aug.py `LEFT_RAIL` / `RIGHT_RAIL` and build_uzi.py `RAILS`), points in build_aug.py
+  `side_rail_points()` (the A3s use its left ones), build_uzi.py `rail_points()` (turned with the gun: no rotate of
+  their own, so `kit.turned` gives them TURN), build_m249.py `RAIL_UP` / `RAIL_HG`; gen_scripts.py `rail_parts()` /
+  `rail_model()` (and the optic lists); `shared/GunsOfTien/Rails.lua` (`Rails.Register`: MountOn of the rails and the
+  allowed parts, the universal Picatinny Rail's sides; GoM's own rule already ties each part to its side); spawn
+  entries with GoM's `:PR*` suffixes in AUG.lua / M249.lua / Uzi.lua (GoM's M16A2 chances for the A1 and M249, its MP5
+  chances for the Uzis); tooltip lines in GoM's wording ("Available Picatinny Slots: ...").
+- Laser beams: Lasers.lua's `patchScripts` used to DoParam beam lines into every gun on a laser's MountOn at OnGameBoot /
+  OnInitGlobalModData, but files loading after it (M249.lua) append to that MountOn later in the same event, and
+  scripts are reset when a game is left, so a beam could go missing; now it skips every `GunsOfTien*` gun and ours
+  write their beam lines in their item scripts (gen_scripts.py, as Post-93's gen_post93_guns.py already did).
+- Checks: a mesh overlap test in Blender (`mathutils.bvhtree.BVHTree.overlap` between each GoM part placed at its point
+  and the gun's nodes, in the gun's real exported meshes) finds clipping a render hides; contact hits remain where
+  rails and clamps rest on a surface (rail bases are sunk 0.5 mm, GoM's rails 1.1 mm). Known and left: a light on the
+  AUG's left rail reaches the charging handle at rest (as on the A3s since 2026-10-28).
+- Rebuilding: build_aug.py, build_uzi.py and build_m249.py reproduce their guns byte for byte, but build_m249.py's
+  `556x45Box200_M249.png` and `GunsOfTien_M249_box.fbx` and build_uzi.py's magazine textures (1 level noise in 28
+  pixels) come out different from the committed ones (the box texture heavily): they were restored from git after the
+  rail rebuilds, so the committed box predates a script change not traced here.
 
 ## Bullpup set (2026-10-27)
 

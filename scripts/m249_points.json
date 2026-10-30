@@ -119,6 +119,102 @@
       180.0
     ]
   },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0763,
+      0.0659
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0763,
+      0.0682
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.18,
+      -0.0069
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.18,
+      -0.0094
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0192,
+      0.18,
+      0.0211
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0254,
+      0.18,
+      0.0211
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0192,
+      0.18,
+      0.0211
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0265,
+      0.18,
+      0.0203
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
   "_notes": {
     "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 707, H 251)",
     "magazine": "GoM's STANAG magazines, their feed lips here, slanting 45 degrees down to the left",
@@ -127,7 +223,8 @@
     "cover": "M249_COVER, origin at its hinge; cover_open swings it up 70 degrees",
     "bolt_fired": "M249_BOLT (the bolt in the ejection port under the receiver) back 19.5 mm real: each shot and while the gun is empty (GoM's Bolt_Fired)",
     "handle_back": "M249_HANDLE (the cocking handle, modelled forward) pulled back 110 mm real to its slot's rear, only while racked; FN's handle does not reciprocate",
-    "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space"
+    "integrated_bipod": "M249_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space",
+    "rails": "GoM's optional Picatinny_Rail_Up on the feed cover (L 518-643) and _Down / _Left / _Right on the handguard (L 346-471), GoM's own models at its relations"
   },
   "_extras": {
     "handgun_hold": false,
