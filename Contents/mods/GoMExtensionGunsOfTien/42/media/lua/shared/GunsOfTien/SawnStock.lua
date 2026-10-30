@@ -61,8 +61,11 @@
       mod's sound model, sound_model.py: +3 dB per halving of the 28.7" barrel, 10.5" left) and vanilla's sawn-off
       shotgun flash. The stock cut adds the shotguns' handling layer on top. Sight ranges are the gun's own, so a fitted
       scope keeps its own pair.
-    - Bayonet: the lug goes with the barrel, so the barrel cut takes a fitted bayonet off into the inventory and
-      UpgradeExclusives hides the bayonets' Upgrade options on a sawn-off barrel.
+    - Bayonet: the lug goes with the barrel, so the barrel cut takes a fitted bayonet off into the inventory, and a
+      sawn-off barrel refuses one. Two registries: UpgradeExclusives hides the bayonet parts' Upgrade options, and
+      Gunworks' Bayonet.Exclusives is the one its Attach Bayonet (knife, context and radial menus, ISBayonetAttach)
+      asks through Bayonet.CanAttachBayonet. Until 2026-10-31 only the first was set, so a bayonet went on a sawn
+      barrel and was drawn nowhere (MOSIN_SAWNBARREL / _OBREZ have no bayonet point). Remove Bayonet still works.
     - Holster: with both cuts.
 
     Names (user, 2026-10-29): a gun's name follows its cuts ("Mosin-Nagant Obrez", "Sawn-Off Double Barrel Pistol",
@@ -85,6 +88,7 @@ local CustomStatsAttachments = require("WeaponSystems/Utils/CustomStatsAttachmen
 local ConditionalModel = require("WeaponSystems/Utils/ConditionalModel")
 local FoldingStock = require("WeaponSystems/Utils/FoldingStock")
 local UpgradeExclusives = require("WeaponSystems/Utils/UpgradeExclusives")
+local Bayonet = require("WeaponSystems/Utils/Bayonet")
 local Animations = require("WeaponSystems/Utils/Animations")
 
 local M = "GunsOfTien."
@@ -357,6 +361,7 @@ SawnStock.BAYONETS = { "MarzGuns.K98_Bayonet_Attachment", "MarzGuns.M5_Bayonet_A
 for _, bayonet in ipairs(SawnStock.BAYONETS) do
     UpgradeExclusives.SetExclusives(bayonet, SawnStock.GUNS["MarzGuns.MOSIN"].sawnBarrel)
 end
+Bayonet.SetExclusives(SawnStock.BAYONETS, SawnStock.GUNS["MarzGuns.MOSIN"].sawnBarrel)
 
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
