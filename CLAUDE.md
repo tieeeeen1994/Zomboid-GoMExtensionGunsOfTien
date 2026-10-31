@@ -424,6 +424,19 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   of the three cut states and three offcuts. Rebuild both: `blender -b --factory-startup -P scripts/render_ad_guns.py
   -- <absolute dir> aug auga3 augpara aughbar mosin_full mosin_obrez`, then `py scripts/make_workshop_art.py
   --renders <dir> preview12 preview13 preview14`. preview11 (the short SMG stance) shows what this branch removed.
+  preview15 (2026-11-01) is Post-93's KRISS Vector .45 and 9mm, laid out like preview7: render_ad_guns.py `vector45`
+  (Aimpoint, AimRight laser on GoM's right rail, 30-round) / `vector9` (EXPS3, MKC foregrip, 33-round), the UMPs'
+  view and scale, one scale for both capped at 125 tall (they are taller than the UMPs), then a slot row of each gun
+  and the Glock magazines it takes and two lines (Super V / burst, the long magazines fit the Glocks). Rebuild:
+  `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> vector45 vector9`, then
+  `py scripts/make_workshop_art.py --renders <dir> preview15`. Not yet on the Steam page.
+  preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
+  1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
+  camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
+  the UCP's view (left side, muzzle left after the mirror: the slide's "21 AUSTRIA" reads right), what sets it apart
+  beside the bare gun, a slot row (gun, 13-round magazine, GoM's .45 box and the parts) and a line on Post-93's
+  30-round magazine. Rebuild: render `glock21 glock21_fitted`, then `make_workshop_art.py preview16`. Not yet on the
+  Steam page.
 - Generators (run with python3 from the repo root; never hand-edit their outputs): `scripts/gen_scripts.py` (main mod
   items / models / recipes / names), `scripts/sound_model.py` (→ SoundTable.lua), `scripts/gen_handling_tooltips.py`
   (→ HandlingTooltips.lua: GoM's stock / bipod / selector / part / gun line fixes), `scripts/gen_round_tooltips.py`

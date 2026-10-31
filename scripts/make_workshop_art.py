@@ -8,9 +8,10 @@ preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, ad
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
 preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same), preview11.png (1024x1024, the short SMG stance, the same), preview12.png (1024x1024, the AUG A1, the same),
 preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024x1024, Post-93's AUG A3, Para and HBAR,
-the same)
+the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview16.png (1024x1024, the
+Glock 21, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
-preview2 ... preview14, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
+preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
 """
 
@@ -781,6 +782,103 @@ def preview14(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview15(path, W=1024):
+    """The KRISS Vector .45 and 9mm (2026-11-01), laid out like preview7: both fitted out at one scale
+    (render_ad_guns.py "vector45" / "vector9", mirrored back to the game's view), each under its name, calibre and how
+    it is held; then one row of slots (each gun and the Glock magazines it takes) and what they share."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+
+    ims = {}
+    for name in ("vector45", "vector9"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    # one scale for both (the same gun); taller than the UMPs, so each within 125 tall too, clear of the slot row
+    s = min(u(300) / max(im.width for im in ims.values()), u(125) / max(im.height for im in ims.values()))
+    y = u(58)
+    for name, label, sub, dx in (("vector45", "KRISS VECTOR .45", ".45 ACP  ·  TWO-HANDED", -u(36)),
+                                 ("vector9", "KRISS VECTOR 9MM", "9X19MM  ·  ONE-HANDED", u(36))):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = (W - im.width) // 2 + dx
+        big = font(BOLD, u(17), b"Bold")
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(big.getlength(label)) + u(8), y + u(5)), sub,
+                                        font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(24))), (0, u(6)), u(6), 160)
+        y += u(24) + im.height + u(10)
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("VECTOR45"), main("45Magazine13_GLOCK21"), post("45Magazine30_GLOCK21"),
+                    post("VECTOR9"), gom("9x19Magazine17_GLOCK"), post("9x19Magazine33_GLOCK"),
+                    post("9x19Magazine40_GLOCK")],
+             256, 404, "GLOCK MAGAZINES  ·  .45: 13, 30  ·  9MM: 17, 33, 40")
+    for n, line in enumerate(("SUPER V  ·  1200 RPM  ·  TWO-ROUND BURST  ·  LITTLE RECOIL",
+                              "THE LONG MAGAZINES FIT THE GLOCK 21 AND GLOCK 17 TOO")):
+        page.alpha_composite(text_layer(size, (W // 2, u(462 + n * 16)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
+def preview16(path, W=1024):
+    """The main mod's Glock 21 (2026-11-01), laid out like preview13: bare, as it was in 1993, and under it at the same
+    scale and from the same camera, so they line up, fitted out with Guns of Marz's pistol parts (render_ad_guns.py
+    "glock21" / "glock21_fitted", mirrored back to the game's view: its left side, the slide's markings reading
+    right), what sets it apart beside the bare gun, then its magazines and the parts it takes in a slot row."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "GLOCK 21", 36, "GUNS OF MARZ EXTENSION")
+
+    bare = Image.open(os.path.join(RENDERS, "ad_glock21.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    fitted = Image.open(os.path.join(RENDERS, "ad_glock21_fitted.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    fbox, bbox = fitted.getchannel("A").getbbox(), bare.getchannel("A").getbbox()
+    # one scale for both: the fitted gun up to 440 wide, the two stacked within 260 tall, clear of the slot row
+    s = min(u(440) / (fbox[2] - fbox[0]), u(260) / (fbox[3] - fbox[1] + bbox[3] - bbox[1]))
+    bare = bare.resize((round(bare.width * s), round(bare.height * s)), Image.LANCZOS)
+    fitted = fitted.resize((round(fitted.width * s), round(fitted.height * s)), Image.LANCZOS)
+    fbox = fitted.getchannel("A").getbbox()
+    bbox = bare.getchannel("A").getbbox()
+    x0 = (W - (fbox[2] - fbox[0])) // 2 - fbox[0]
+    y_bare = u(96) - bbox[1]
+    y_fit = y_bare + bbox[3] + u(24) - fbox[1]
+    paste_with_shadow(page, placed(size, bare, (x0, y_bare)), (0, u(6)), u(6), 160)
+    paste_with_shadow(page, placed(size, fitted, (x0, y_fit)), (0, u(6)), u(6), 160)
+
+    # what sets it apart, left of the bare gun (the muzzle points that way)
+    bx = x0 + bbox[0] - u(16)
+    by = y_bare + bbox[1] + u(6)
+    page.alpha_composite(text_layer(size, (bx, by), ".45 ACP  ·  13 ROUNDS", font(BOLD, u(15), b"Bold"),
+                                    (28, 30, 34, 255), anchor="ra"))
+    for n, line in enumerate(("AS IN 1993: NO ACCESSORY RAIL", "NO FINGER GROOVES",
+                              "FOUND WITH GUNS OF MARZ'S GLOCK 17")):
+        page.alpha_composite(text_layer(size, (bx, by + u(22 + n * 15)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ra", spacing=u(1)))
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("GLOCK21"), main("45Magazine13_GLOCK21"), gom("45_Box"), gom("Beretta_Mount"),
+                    gom("PS1_Sight"), gom("TL_Light"), gom("Muzzle_Mount_Device"), gom("P45_Suppressor")],
+             256, 392, "GUNS OF MARZ PISTOL SIGHTS, LIGHTS, LASERS AND P45")
+    page.alpha_composite(text_layer(size, (W // 2, u(458)), "30-ROUND EXTENDED MAGAZINE WITH THE POST-93 ADD-ON",
+                                    font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
 def preview13(path, W=1024):
     """The Mosin-Nagant Obrez (2026-10-29), laid out like preview5: GoM's Mosin-Nagant whole and, under it at the same
     scale and from the same camera, so they line up on the receiver, sawn into an Obrez (render_ad_guns.py "mosin_full"
@@ -872,6 +970,10 @@ if __name__ == "__main__":
         preview13(os.path.join(ROOT, "preview13.png"))   # the Mosin-Nagant Obrez, added the same way
     if want("preview14"):
         preview14(os.path.join(ROOT, "preview14.png"))   # Post-93's AUGs, added the same way
+    if want("preview15"):
+        preview15(os.path.join(ROOT, "preview15.png"))   # Post-93's Vectors, added the same way
+    if want("preview16"):
+        preview16(os.path.join(ROOT, "preview16.png"))   # the Glock 21, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

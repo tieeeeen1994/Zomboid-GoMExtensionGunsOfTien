@@ -31,6 +31,13 @@ The main mod's Uzi, Mini Uzi and Micro Uzi (preview10, `uzi` / `miniuzi` / `micr
 their real sizes against each other, from their left (the markings) after the mirror; the Uzi and Micro with the stock
 folded, the Mini with it deployed (the user's photo), each with its standard magazine (scripts/uzi_points.json; the
 Mini and Micro are modelled upside down and turned upright, the Uzi is rifle-held and upright).
+
+Post-93's KRISS Vector .45 and 9mm (preview15, `vector45` / `vector9`): the UMPs' view and scale, from the upright
+VECTOR_* nodes with each gun's texture (the 9mm's turned nodes match them in outline), stocks deployed.
+
+The main mod's Glock 21 (preview16, `glock21` / `glock21_fitted`): bare and with GoM's pistol parts, both from the bare
+gun's camera so they line up, turned upright (`assembled` + `upright`), seen so the slide's markings read after the
+mirror.
 """
 
 import json
@@ -97,7 +104,34 @@ GOM_MOSIN = (os.path.join(GOM, "models_X/weapons/firearms/MOSIN.fbx"),
              os.path.join(GOM, "textures/weapons/firearms/bolt_rifles/MOSIN.png"))
 MOSIN_SCALE, MOSIN_SIZE = 1.02, (2400, 900)
 
+# preview16, the main mod's Glock 21: bare (as it was in 1993) and fitted out with GoM's Beretta mount and PS1 sight,
+# TL light, .45 mount device and P45, at one scale and from the bare gun's camera, so the two line up (`assembled`
+# with `upright`: modelled upside down like GoM's pistols); the UCP's view, so the slide's left-side markings face
+# the camera after make_workshop_art.py mirrors it back
+G21_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_GLOCK21.fbx")
+G21_BARE = [(G21_FBX, "GLOCK21_BODY", os.path.join(MAIN_TEX, "GLOCK21.png"), None),
+            (G21_FBX, "GLOCK21_SLIDE", os.path.join(MAIN_TEX, "GLOCK21.png"), None),
+            (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_GLOCK21_magazines.fbx"),
+             "45Magazine13_GLOCK21", os.path.join(MAIN_TEX, "45Magazine13_GLOCK21.png"), None)]
+G21_VIEW, G21_SCALE, G21_SIZE = (-0.8, -0.3, -0.35), 0.46, (2400, 1400)
+
+
+def gom_part(cat, name, point):
+    return (os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
+            name, os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, name)), point)
+
+
 GUNS = {
+    "glock21": {"points": "glock21_points.json", "assembled": G21_BARE, "upright": True, "centre_on_assembled": True,
+                "view": G21_VIEW, "scale": G21_SCALE, "size": G21_SIZE},
+    "glock21_fitted": {
+        "points": "glock21_points.json", "upright": True, "centre_on_assembled": True,
+        "assembled": G21_BARE + [gom_part("rails", "Beretta_Mount", "rail_up"), gom_part("scopes", "PS1_Sight", "scope"),
+                                 gom_part("pointers", "TL_Light", "underbarrel"),
+                                 gom_part("muzzles", "Muzzle_Mount_Device", "canon"),
+                                 gom_part("suppressors", "P45_Suppressor", "canon")],
+        "view": G21_VIEW, "scale": G21_SCALE, "size": G21_SIZE,
+    },
     # the main mod's Uzis (preview10): (gun, stock folded, magazine)
     "uzi": {"uzi": ("UZI", True, "9x19Magazine32_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE, "size": UZI_SIZE},
     "miniuzi": {"uzi": ("MINIUZI", False, "9x19Magazine20_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE,
@@ -150,6 +184,30 @@ GUNS = {
         "nodes": [("UMP_BODY", None), ("UMP_BOLT", None), ("UMP_HANDLE", None),
                   ("UMP_STOCK", "stock", "parts/GunsOfTienPost93_UMP_parts", "UMP_STOCK")],
         "mag": ("GunsOfTienPost93_UMP_magazines", "9x19Magazine30_UMP", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip")],
+        "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
+    },
+    # the KRISS Vectors (preview15): laid out like the UMPs, from the upright nodes with each gun's texture (the 9mm's
+    # turned VECTOR9_* nodes match them in outline, render_vector.py), stocks deployed, fitted out with GoM's
+    # accessories; the .45's laser on GoM's right Picatinny Rail (the side the view shows after the mirror)
+    "vector45": {
+        "rifle": True, "points": "post93/vector_points.json",
+        "fbx": "GunsOfTienPost93_VECTOR", "tex": "VECTOR45",
+        "nodes": [("VECTOR_BODY", None), ("VECTOR_BOLT", None), ("VECTOR_HANDLE", None),
+                  ("VECTOR_RAIL_RIGHT", "rail_right"),
+                  ("VECTOR_STOCK", "stock", "parts/GunsOfTienPost93_VECTOR_parts", "VECTOR45_STOCK")],
+        "mag": ("GunsOfTienPost93_VECTOR_magazines", "45Magazine30_VECTOR", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "Aimpoint_Sight", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
+        "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
+    },
+    "vector9": {
+        "rifle": True, "points": "post93/vector_points.json",
+        "fbx": "GunsOfTienPost93_VECTOR", "tex": "VECTOR9",
+        "nodes": [("VECTOR_BODY", None), ("VECTOR_BOLT", None), ("VECTOR_HANDLE", None),
+                  ("VECTOR_STOCK", "stock", "parts/GunsOfTienPost93_VECTOR_parts", "VECTOR9_STOCK")],
+        "mag": ("GunsOfTienPost93_VECTOR_magazines", "9x19Magazine33_VECTOR", "magazine"),
         "parts": [],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip")],
         "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
@@ -400,7 +458,7 @@ def build(spec):
         objs = []
         for fbx, node, tex, point in spec["assembled"]:
             o = load(fbx, tex, node)
-            place(o, points[point] if point else None, upright=False)
+            place(o, points[point] if point else None, upright=spec.get("upright", False))
             objs.append(o)
         return objs
     if "files" in spec:
@@ -474,7 +532,12 @@ def main():
         cam.data.ortho_scale = spec.get("scale", SCALE)
         d = Vector(spec.get("view", VIEW)).normalized()
         objs = build(spec)
-        centre = centre_of(build({"files": spec["centre_on"]}) if "centre_on" in spec else objs)
+        if "centre_on" in spec:
+            centre = centre_of(build({"files": spec["centre_on"]}))
+        elif spec.get("centre_on_assembled"):         # the bare gun's own parts (the Glock 21's first three)
+            centre = centre_of(objs[:3])
+        else:
+            centre = centre_of(objs)
         for o in bpy.data.objects:
             if o.type == 'MESH':
                 o.hide_render = o not in objs
