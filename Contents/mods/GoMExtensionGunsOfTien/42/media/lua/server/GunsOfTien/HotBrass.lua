@@ -64,6 +64,17 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- the unused two-handed Uzi (UZI_2H): GoM's MP5's, as the Uzi had when it was rifle-held
+    ["GunsOfTien.UZI_2H"] = {
+        forwardOffset = 0.353,
+        sideOffset    = 0.08,
+        heightOffset  = 0.48,
+        shellForce    = 0.65,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
     ["GunsOfTien.MINIUZI"] = {
         forwardOffset = 0.543,
         sideOffset    = 0.06,
@@ -95,5 +106,16 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
+    },
+    -- The Glock 21 throws its .45 cases as GoM's USP does (GoM's HotBrass/CustomParams.lua), its port a little nearer
+    -- the grip at our size: Post-93's Five-seveN's forward offset for GoM's 0.40.
+    ["GunsOfTien.GLOCK21"] = {
+        forwardOffset = 0.383,
+        sideOffset    = 0.0,
+        heightOffset  = 0.50,
+        shellForce    = 0.60,
+        sideSpread    = 45,
+        heightSpread  = 90,
+        spinForce     = { 14, 20 },
     },
 })

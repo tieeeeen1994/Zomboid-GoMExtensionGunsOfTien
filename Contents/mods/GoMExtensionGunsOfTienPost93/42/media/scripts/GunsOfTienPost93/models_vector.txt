@@ -1,0 +1,159 @@
+module GunsOfTienPost93 {
+
+    model VECTOR45 {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR_BODY,
+        texture  = weapons/GunsOfTienPost93/VECTOR45,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2056 -0.0099, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0168 0.1089 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1257 -0.0193, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.1073 0.0206, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.1073 0.0183, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0133 0.1646 -0.0096, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0133 0.1646 -0.0096, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0172 0.1646 -0.0104, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0161 0.1646 -0.0096, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1984 -0.0099, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0124 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0332 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0000 -0.0078 -0.0099, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = -0.0244 -0.0078 -0.0099, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_down { offset = 0.0000 0.1700 -0.0180, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.1688 -0.0205, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model VECTOR9 {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR9_BODY,
+        texture  = weapons/GunsOfTienPost93/VECTOR9,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2056 0.0099, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1257 0.0193, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.1073 -0.0206, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_up { offset = 0.0000 0.1073 -0.0183, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0133 0.1646 0.0096, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = 0.0133 0.1646 0.0096, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = 0.0172 0.1646 0.0104, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0161 0.1646 0.0096, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1984 0.0099, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0124 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0332 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock { offset = 0.0000 -0.0078 0.0099, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0244 -0.0078 0.0099, rotate = 0.0000 0.0000 180.0000, }
+        attachment rail_down { offset = 0.0000 0.1700 0.0180, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1688 0.0205, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model VECTOR_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR_BOLT,
+        texture  = weapons/GunsOfTienPost93/VECTOR45,
+        cullFace = None,
+    }
+
+    model VECTOR_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR_HANDLE,
+        texture  = weapons/GunsOfTienPost93/VECTOR45,
+        cullFace = None,
+    }
+
+    model VECTOR_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR_RAIL_LEFT,
+        texture  = weapons/GunsOfTienPost93/VECTOR45,
+        cullFace = None,
+    }
+
+    model VECTOR_RAIL_RIGHT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR_RAIL_RIGHT,
+        texture  = weapons/GunsOfTienPost93/VECTOR45,
+        cullFace = None,
+    }
+
+    model VECTOR9_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR9_BOLT,
+        texture  = weapons/GunsOfTienPost93/VECTOR9,
+        cullFace = None,
+    }
+
+    model VECTOR9_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR9_HANDLE,
+        texture  = weapons/GunsOfTienPost93/VECTOR9,
+        cullFace = None,
+    }
+
+    model VECTOR9_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR9_RAIL_LEFT,
+        texture  = weapons/GunsOfTienPost93/VECTOR9,
+        cullFace = None,
+    }
+
+    model VECTOR9_RAIL_RIGHT {
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|VECTOR9_RAIL_RIGHT,
+        texture  = weapons/GunsOfTienPost93/VECTOR9,
+        cullFace = None,
+    }
+
+    model VECTOR45_STOCK {
+        mesh     = weapons/parts/GunsOfTienPost93_VECTOR_parts|VECTOR_STOCK,
+        texture  = weapons/GunsOfTienPost93/VECTOR45_STOCK,
+        cullFace = None,
+    }
+
+    model VECTOR9_STOCK {
+        mesh     = weapons/parts/GunsOfTienPost93_VECTOR_parts|VECTOR9_STOCK,
+        texture  = weapons/GunsOfTienPost93/VECTOR9_STOCK,
+        cullFace = None,
+    }
+
+    model 45Magazine13_VECTOR {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|45Magazine13_VECTOR,
+        texture  = weapons/GunsOfTienPost93/45Magazine13_VECTOR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 45Magazine30_VECTOR {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|45Magazine30_VECTOR,
+        texture  = weapons/GunsOfTienPost93/45Magazine30_VECTOR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine17_VECTOR {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|9x19Magazine17_VECTOR,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine17_VECTOR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine33_VECTOR {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|9x19Magazine33_VECTOR,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine33_VECTOR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine40_VECTOR {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|9x19Magazine40_VECTOR,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine40_VECTOR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 45Magazine30_GLOCK21 {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|45Magazine30_GLOCK21,
+        texture  = weapons/GunsOfTien/45Magazine13_GLOCK21,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0148 -0.0029 -0.0516, rotate = 7.4929 -4.9199 -40.7737, }
+    }
+
+    model 9x19Magazine33_GLOCK17 {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|9x19Magazine33_GLOCK17,
+        texture  = weapons/magazines/pistols/9x19Magazine17_Glock,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0107 0.0022 -0.0624, rotate = 7.4929 -4.9199 -40.7737, }
+    }
+
+    model 9x19Magazine40_GLOCK17 {
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|9x19Magazine40_GLOCK17,
+        texture  = weapons/magazines/pistols/9x19Magazine17_Glock,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0107 0.0022 -0.0624, rotate = 7.4929 -4.9199 -40.7737, }
+    }
+}

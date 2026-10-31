@@ -95,7 +95,19 @@
       188.0,
       75.0
     ],
-    "real_mm_per_game_unit": 1658.37
+    "real_mm_per_game_unit": 1658.37,
+    "prop2": {
+      "offset": [
+        -0.0077,
+        0.0054,
+        -0.0574
+      ],
+      "rotate": [
+        7.4929,
+        -4.9199,
+        -40.7737
+      ]
+    }
   },
   "_bounds": {
     "UCP_BODY": {

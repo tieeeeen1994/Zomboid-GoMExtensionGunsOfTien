@@ -1,7 +1,7 @@
 --[[
     Guns of Tien -- belt links (docs/design.md 4e; user, 2026-10-22): the belt-fed guns' boxes are belts, every round
     held by a disintegrating link. Links are a supply of their own: filling a belt box takes one link with each round,
-    unloading a round gives its link back, and a fired round's link is thrown out of the gun.
+    unloading a round gives its link back, and a fired round's link goes where its casing goes.
     - Belt boxes: the M249's 200-round box (M27 links) and Guns of Marz's M60 100-round box (M13 links). STANAG
       magazines in the M249 never need links.
     - Filling: Gunworks' magazine loading (ISLoadBulletsInMagazine, its InsertBullet anim event, run where the action
@@ -9,17 +9,31 @@
       the main inventory (where the rounds come from too), and the load counts as finished once no link is left, so it
       stops cleanly; with none at all it does not start ("Needs ..." over the head).
     - Unloading rounds from a belt box (ISUnloadBulletsFromMagazine, RemoveBullet) gives each round's link back.
-    - Firing (user, 2026-10-22: "follow the realistic rules, treat links like hot brass"): every shot from a fitted
-      belt box (OnWeaponSwingHitPoint, which the shooter's game fires for every shot) throws the round's empty link
-      out of the gun's right side with Hot Brass's physics (it lands as a real item, never despawned, with our own
-      landing sounds: a "Link" family in Hot Brass's impact sounds, scripts/make_link_sounds.py), drops it at the
-      shooter's feet without Hot Brass, or puts it in Ammo Maker's brass catcher as Ammo Maker does casings (the
-      advanced catcher always, the improvised one half the time). In single player at once; an MP client counts the
-      shots and sends the count to the server twice a second (client/GunsOfTien/BeltLinks.lua), which throws them a
-      few a tick (server/GunsOfTien/BeltLinks.lua). The server also fires the event, but only for shots that hit
-      someone, so it does not count there.
-    - Racking a chambered round out of a gun with a belt box fitted throws its link out with it (the round itself is
-      vanilla's / Hot Brass's).
+    - Firing (user, 2026-10-22: "follow the realistic rules, treat links like hot brass"; 2026-10-31: "copy the
+      behaviour of the casings", under the casing mods and their sandbox options): a fired round's empty link is not
+      placed by a rule of ours but rides along with the casing the casing mods place for that shot, where the game
+      is authoritative (the server, or single player), on those mods' own per-shot commands:
+      - Neither Hot Brass nor Ammo Maker: vanilla has no casing items, so the link is gone.
+      - Hot Brass alone: its spawnCasing (one `HBVCEF spawnCasing` command per shot from the shooter's client at
+        OnWeaponSwing, or a direct call in single player) places the casing through addCasing (flight, then an item
+        only with its Persistent Casings option) or addCasingToVehicle (the seat's container, whatever the option);
+        while it runs for a gun with a belt box, the link is placed the same way right after the casing: flying on
+        its own launch values (EJECT) with the casing's ignoreDespawn, or into the same seat. Every condition Hot
+        Brass puts on a casing (a casing for the round in AMMO_TO_CASING, a chambered unjammed round, a gun that
+        neither racks after each shot nor keeps its spent rounds) therefore holds for the link too.
+      - Ammo Maker (Hot Brass then throws no casing on firing): the link is Ammo Maker's extra item for the shot, the
+        mechanism its ammoData `dropExtraData` uses for other mods' belt links (GoM's API file lists Guns-93's
+        M249 / M60 commented out). That table is keyed by the gun's type, which cannot tell a belt box from the M249's
+        STANAG magazines, so ammoMakerGetDropExtraDataItemType is wrapped: an `ammomaker returnCasingsOnAttack`
+        command (one per shot) notes its gun in our OnClientCommand handler, added from the shared folder and so run
+        before Ammo Maker's (server folder), and the wrapper answers that gun's link when it has a belt box. Ammo
+        Maker then keeps the link with its casing: the same capacity check (both weights), the same catcher and roll,
+        else the same throw (Hot Brass's doSpawnCasing, our launch values swapped in) or floor spot, and its
+        clean-up list, which can only remove its own items, so links are listed in server/GunsOfTien/BeltLinks.lua
+        instead and removed on its schedule and DroppedCasingsLifetime.
+      The links' landing sounds are a "Link" family in Hot Brass's impact sounds (scripts/make_link_sounds.py).
+    - Racking a chambered round out of a gun with a belt box fitted: the link goes where the round goes, into the
+      inventory (vanilla's removeBullet) or thrown out by Hot Brass (its rackCasing with racking = true).
     A box fitted to a found gun counts as linked: firing or unloading it gives links.
 --]]
 
@@ -126,7 +140,7 @@ if not BeltLinks.wrapped then
 end
 
 -------------------------------------------------
--- Firing: the spent link thrown out of the gun
+-- Firing and racking out: the link follows its casing (or the racked round)
 -------------------------------------------------
 local okHB, HB = false, nil
 if getActivatedMods():contains("HBVCEFb42") then
@@ -156,79 +170,135 @@ if HB then
     end
 end
 
-local function catcher(inv, weight)
-    if not ammoMakerGetContainerWithSpace then return nil end
-    local advanced = ammoMakerGetContainerWithSpace(inv:FindAll("ammomaker_BrassCatcherAdvanced"), weight)
-    if advanced then return advanced end
-    local improvised = ammoMakerGetContainerWithSpace(inv:FindAll("ammomaker_BrassCatcherImprovised"), weight)
-    if improvised and ZombRand(2) == 0 then return improvised end
-    return nil
+-- Ammo Maker: the gun of the casing command being handled. This handler is added from the shared folder, so it runs
+-- before Ammo Maker's own (server folder), which then asks ammoMakerGetDropExtraDataItemType for the shot's extra item.
+local amWeapon
+
+local function onClientCommand(module, command, player, args)
+    if module ~= "ammomaker" then return end
+    amWeapon = command == "returnCasingsOnAttack" and type(args) == "table" and args.weapon or nil
 end
 
---- Throw one spent link out of the gun (where the game is authoritative: single player or the server).
-function BeltLinks.eject(character, weapon, link)
-    local script = ScriptManager.instance:getItem(link)
-    local bag = catcher(character:getInventory(), script and script:getActualWeight() or 0.002)
-    if bag then
-        local item = instanceItem(link)
-        if ammoMakerAddItemToInventory then
-            ammoMakerAddItemToInventory(bag, item)
-        else
-            bag:AddItem(item)
-            if isServer() then sendAddItemToContainer(bag, item) end
-        end
-        return
-    end
-    if HB and HB.doSpawnCasing and weapon and weapon:getAmmoType() then
-        HB.doSpawnCasing(character, weapon, BeltLinks.EJECT[link], false, link, true)
-        return
-    end
-    local square = character:getCurrentSquare()
-    if square then
-        square:AddWorldInventoryItem(link, ZombRandFloat(0.2, 0.8), ZombRandFloat(0.2, 0.8), 0.0)
-    end
+local follow                          -- Hot Brass: the link of the casing or round it is placing right now
+local wrapped = {}                    -- our wrappers, so a world reload does not wrap them again
+
+local function wrap(fn)
+    wrapped[fn] = true
+    return fn
 end
 
-BeltLinks.pending = BeltLinks.pending or {}        -- MP client: weapon ID -> links not yet reported
+-- Everything wrapped here is defined in the other mods' server folders (after this file) and looked up at each call.
+local function install()
+    if isClient() then return end
 
-local function onShot(character, weapon)
-    if not (character and weapon and weapon.isRanged and weapon:isRanged()) then return end
-    if isServer() then return end                 -- only shots that hit someone reach the server's event
-    if getDebug() and character.isUnlimitedAmmo and character:isUnlimitedAmmo() then return end
-    local link = BeltLinks.linkForGun(weapon)
-    if not link then return end
-    if isClient() then
-        if not (character.isLocalPlayer and character:isLocalPlayer()) then return end
-        local id = weapon:getID()
-        BeltLinks.pending[id] = (BeltLinks.pending[id] or 0) + 1
-    else
-        BeltLinks.eject(character, weapon, link)
+    -- Ammo Maker: the link is the shot's extra item, so it goes with its casing (same catcher and roll, the same
+    -- throw or floor spot, the same clean-up)
+    local extraItem = ammoMakerGetDropExtraDataItemType
+    if extraItem and not wrapped[extraItem] then
+        ammoMakerGetDropExtraDataItemType = wrap(function(dropExtraData, weaponType)
+            local own = extraItem(dropExtraData, weaponType)
+            if own then return own end
+            local gun = amWeapon
+            if gun and gun.getFullType and gun:getFullType() == weaponType then
+                return BeltLinks.linkForGun(gun)
+            end
+            return nil
+        end)
+    end
+
+    -- Ammo Maker's clean-up list matches only its own items, so links get a list of their own
+    -- (server/GunsOfTien/BeltLinks.lua)
+    local addCleanUp = ammoMakerItemCleanUpAddModData
+    if addCleanUp and BeltLinks.noteDropped and not wrapped[addCleanUp] then
+        ammoMakerItemCleanUpAddModData = wrap(function(itemType, x, y, z)
+            local fullType = type(itemType) == "string" and itemType or (itemType and itemType:getFullType())
+            if BeltLinks.EJECT[fullType] then
+                BeltLinks.noteDropped(fullType, x, y, z)
+                return
+            end
+            return addCleanUp(itemType, x, y, z)
+        end)
+    end
+
+    if not HB then return end
+
+    -- Hot Brass alone: each fired casing it places (spawnCasing) and each live round it racks out (rackCasing with
+    -- racking = true) brings the link along, placed the same way
+    local spawnCasing = HB.spawnCasing
+    if spawnCasing and not wrapped[spawnCasing] then
+        HB.spawnCasing = wrap(function(player, weapon)
+            follow = BeltLinks.linkForGun(weapon)
+            spawnCasing(player, weapon)
+            follow = nil
+        end)
+    end
+    local rackCasing = HB.rackCasing
+    if rackCasing and not wrapped[rackCasing] then
+        HB.rackCasing = wrap(function(player, weapon, racking)
+            follow = racking == true and BeltLinks.linkForGun(weapon) or nil
+            rackCasing(player, weapon, racking)
+            follow = nil
+        end)
+    end
+    local addCasing = HB.addCasing
+    if addCasing and not wrapped[addCasing] then
+        HB.addCasing = wrap(function(params)
+            addCasing(params)
+            local link = follow
+            if link and params then
+                follow = nil
+                HB.doSpawnCasing(params.player, params.weapon, BeltLinks.EJECT[link], false, link, params.ignoreDespawn)
+            end
+        end)
+    end
+    local addCasingToVehicle = HB.addCasingToVehicle
+    if addCasingToVehicle and not wrapped[addCasingToVehicle] then
+        HB.addCasingToVehicle = wrap(function(vehicle, player, item)
+            addCasingToVehicle(vehicle, player, item)
+            local link = follow
+            if link then
+                follow = nil
+                addCasingToVehicle(vehicle, player, link)
+            end
+        end)
+    end
+    -- a link thrown by Hot Brass for Ammo Maker flies on its own launch values, not the casing's
+    local doSpawnCasing = HB.doSpawnCasing
+    if doSpawnCasing and not wrapped[doSpawnCasing] then
+        HB.doSpawnCasing = wrap(function(player, weapon, params, racking, optionalItem, ignoreDespawn)
+            if type(optionalItem) == "string" and BeltLinks.EJECT[optionalItem] then
+                params = BeltLinks.EJECT[optionalItem]
+            end
+            return doSpawnCasing(player, weapon, params, racking, optionalItem, ignoreDespawn)
+        end)
     end
 end
 
 -------------------------------------------------
--- Racking: the chambered round leaves the gun with its link
+-- Racking out into the inventory
 -------------------------------------------------
--- Vanilla's rackBullet (run where the action is authoritative) removes a chambered round that is not jammed
--- (removeBullet: into the inventory, or thrown out by Hot Brass at ejectCasing), so its link goes out with it.
--- rackBullet is wrapped rather than removeBullet, which Hot Brass replaces at OnInitGlobalModData on every world load.
+-- Vanilla's removeBullet (Gunworks' wrapper picks the round) is called only when a live round comes out and puts it
+-- in the inventory. Hot Brass (no Ammo Maker) replaces rackBullet with nothing and, at every OnInitGlobalModData,
+-- removeBullet with one that calls the earlier removeBullet (this one, wrapped at file load) only when the round
+-- goes into the inventory: Ammo Maker on, Persistent Casings off, or a gun that keeps its spent rounds. Otherwise it
+-- throws the round itself (rackCasing above; with Persistent Casings off it also flies there, for show, beside the
+-- round put in the inventory, and so does the link).
 require("TimedActions/ISRackFirearm")
 
-if not BeltLinks.rackWrapped then
-    BeltLinks.rackWrapped = true
+if not BeltLinks.removeBulletWrapped then
+    BeltLinks.removeBulletWrapped = true
 
-    local rackBullet = ISRackFirearm.rackBullet
-    function ISRackFirearm:rackBullet()
-        local gun = self.gun
-        local link = not isClient() and gun and gun:haveChamber() and gun:isRoundChambered() and not gun:isJammed()
-            and BeltLinks.linkForGun(gun)
-        rackBullet(self)
+    local removeBullet = ISRackFirearm.removeBullet
+    function ISRackFirearm:removeBullet()
+        removeBullet(self)
+        local link = not isClient() and BeltLinks.linkForGun(self.gun)
         if link then
-            BeltLinks.eject(self.character, gun, link)
+            BeltLinks.give(self.character, link, 1)
         end
     end
 end
 
-if BeltLinks.onShot then Events.OnWeaponSwingHitPoint.Remove(BeltLinks.onShot) end
-BeltLinks.onShot = onShot
-Events.OnWeaponSwingHitPoint.Add(onShot)
+if BeltLinks.onClientCommand then Events.OnClientCommand.Remove(BeltLinks.onClientCommand) end
+BeltLinks.onClientCommand = onClientCommand
+Events.OnClientCommand.Add(onClientCommand)
+Events.OnInitGlobalModData.Add(install)

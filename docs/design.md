@@ -201,12 +201,17 @@ realistic rules, treat links like hot brass").
   from the main inventory with each round, any round of the family (belts mix loads freely, as the real 4 ball : 1
   tracer). Without links the action does not start (a "Needs M27 belt links" halo); running out stops it. STANAG
   magazines never need links. Unloading rounds from a belt box gives each round's link back, and racking a
-  chambered round out (belt box fitted) throws its link out with the round (2026-10-22).
-- Firing from a fitted belt box throws each fired round's empty link out of the gun's right side: with Hot Brass it
-  flies and lands as a real item (never despawned) with its own landing sound per surface (synthesised: a short dry
-  steel tick on hard floors, a muffled tap on dirt and grass, a plip in water); without Hot Brass it drops at the
-  shooter's feet; Ammo Maker's brass catchers catch links as they catch casings. A box fitted to a found gun counts
-  as linked.
+  chambered round out (belt box fitted) takes its link with the round, wherever the round goes (2026-10-22; into the
+  inventory or thrown by Hot Brass, 2026-10-31).
+- Firing from a fitted belt box: each fired round's empty link comes out with its casing and goes wherever the
+  casing goes (user, 2026-10-31: "copy the behaviour of the casings", under Hot Brass, Ammo Maker and their sandbox
+  options): it is placed alongside each casing those mods place, not by rules of our own. With Hot Brass it flies
+  out of the gun's right side (its own launch values) with its own landing sound per surface (synthesised: a short
+  dry steel tick on hard floors, a muffled tap on dirt and grass, a plip in water) and stays as an item only with
+  Hot Brass's Persistent Casings; a seated shooter's goes into the seat. With Ammo Maker it is that shot's extra
+  item beside the casing: the same brass catcher and roll, the same floor spot or throw, removed after Ammo Maker's
+  Dropped Casings Lifetime like the casings. With neither, vanilla makes no casings and the link is gone. A box
+  fitted to a found gun counts as linked.
 - Getting links: boxes of links in army ammunition storage (beside the 200-round boxes) and in the M249 / M60 kits;
   crafted at any surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch
   (Metalworking 2, 50 links a sheet; vanilla's metalworking conventions); recovered by firing or unloading.
@@ -324,6 +329,26 @@ why we now need a bullpup animation set", for the AUG A1 and GoM's FAMAS, reload
   well facing the left hand (the SMGs' upright place put a full-length bullpup's muzzle by the face; flatter and
   further out took the well out of reach; the first draft, lower and closer, had the gun's rear against the chest;
   user, 2026-10-28: further out and higher, option B, one place for both guns).
+
+## 4i. Glock 21 (2026-10-30, designed, built)
+
+User, 2026-10-30: Glock's .45 ACP pistol of 1990 in the main mod (it predates July 1993), built before Post-93's KRISS
+Vector .45, which takes its magazines; the second generation of 1993 (no accessory rail on the dust cover, a straight
+checkered front strap, pebbled sides), taking GoM's pistol parts anyway ("Gen 2, GoM's parts anyway", as GoM's own
+Glock 17 takes them all).
+
+| | |
+|---|---|
+| Item | `GunsOfTien.GLOCK21`, "Glock-21" (GoM's "Glock-17"); magazine `GunsOfTien.45Magazine13_GLOCK21`, "Glock-21 13Rds .45 ACP Magazine", 0.05, profile ".45 ACP Glock 21", GoM's ".45 ACP" family |
+| Stats | GoM's USP (the same round from a 117 mm barrel against its 112): damage 1.0-1.1, HitChance 50, Aimingtime 30, RecoilDelay 15, StopPower 7; weight 0.8 (825 g; GoM's USP 0.74 for 780 g); durability 1 in 230 (GoM's Glock 17); sound 83 / 24 (sound_model.py, .45 from 4.6"); GoM's M1911 handling sounds and muzzle flash, as its USP |
+| Parts | GoM's Beretta mount + PL4 / PM2 / PS1 sights, PJ-3 / PX1 / TR-1 lasers (with our beams) and LP / TL lights under the dust cover (`underbarrel`), GoM's .45 mount device (its `Muzzle_Mount_Device` model) + P45 suppressor at `canon`, as on its USP |
+| Hold, reload | held and reloaded as GoM's pistols (its "pistol_reload", GoMReloads.lua); the slide on GoM's Slide_Lock / Slide_Fired swap, 34 mm |
+| Loot | as GoM's Glock 17: an alternative in `Zombie_Civilian_Handgun_Spawner` and `Zombie_Police_Handgun_Spawner` (up to 4 magazines and 4 boxes of `MarzGuns.45_Box`) and `World_Import_Pistol_Spawner` (6 and 6); found guns as GoM's Glock 17 comes (the magazine 50, sights with the mount at 5, lasers and lights at 5) |
+| Casings | GoM's USP Hot Brass values, forward offset 0.383 (Post-93's Five-seveN at our size) |
+| Repair | RepairPack, Aiming 3 (GoM's pistols) |
+
+Model: scripts/build_glock21.py, traced from Commons "Glock 21 Avriette.jpg" (a Gen 3 in a Hogue grip sleeve, right
+side) with the Gen 2 dust cover and grip drawn over it; CLAUDE.md "Glock 21".
 
 ## 5. Open checks before building
 

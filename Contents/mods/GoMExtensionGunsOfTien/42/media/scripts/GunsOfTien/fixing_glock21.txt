@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix GLOCK21 {
+        Require = GunsOfTien.GLOCK21,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

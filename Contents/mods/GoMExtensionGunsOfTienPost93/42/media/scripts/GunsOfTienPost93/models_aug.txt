@@ -88,23 +88,27 @@ module GunsOfTienPost93 {
         mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|9x19Magazine25_AUG,
         texture  = weapons/GunsOfTienPost93/9x19Magazine25_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 9x19Magazine32_AUG {
         mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|9x19Magazine32_AUG,
         texture  = weapons/GunsOfTienPost93/9x19Magazine32_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 762x39Magazine30_AUG {
         mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|762x39Magazine30_AUG,
         texture  = weapons/GunsOfTienPost93/762x39Magazine30_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 762x39Magazine50_AUG {
         mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|762x39Magazine50_AUG,
         texture  = weapons/GunsOfTienPost93/762x39Magazine50_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 }

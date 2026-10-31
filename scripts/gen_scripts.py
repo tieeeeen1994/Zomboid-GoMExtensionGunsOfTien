@@ -4,6 +4,7 @@ Run from anywhere: python3 scripts/gen_scripts.py. The round table below is the 
 and the Lua profiles use the same full types.
 """
 import json
+import math
 import os
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Contents', 'mods', 'GoMExtensionGunsOfTien',
@@ -564,7 +565,7 @@ def lasers():
 # lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
 # The main mod's Uzis take it too (user, 2026-10-23: the real Mk9 took the Uzi barrel nut's place), listed in their
 # own scripts (uzi() below).
-SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI'
+SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H'
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
 # Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
@@ -1022,6 +1023,44 @@ def m249_attachment(name, point):
             f"rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}\n")
 
 
+# The off hand's magazine (Bip01_Prop2): GoM's load / unload nodes for its FAMAS (the AUGs' "famas_rifle") and M60 (the
+# M249's "m60_lmg") show the magazine in the off hand through Gunworks' attachToHand, placed by the magazine model's
+# own point of that name (CLAUDE.md "The off hand's point on magazines"). GoM's way: one rotate per animation,
+# the magazine placed by hand, longer magazines sharing their short one's point, and a magazine that seats like
+# another taking its point as it is (the FAL's 20 and the G36's 30 take the STANAG's). The AUGs' magazines are built
+# like GoM's rifle magazines (origin at the feed lips, the gun's axes), so they take the STANAG's, the FAMAS's only
+# magazine (post93/gen_post93_guns.py has the same point for the A3s' magazines).
+GOM_STANAG_PROP2 = {'offset': [0.0200, 0.0538, -0.0146], 'rotate': [-94.9600, 23.4300, -89.8200]}
+# GoM's M60 box is modelled in the M60's own space (drawn at its `magazine` point, the gun's origin, unturned), ours
+# about its feed opening (drawn at the M249's `box` point, unturned), so the axes agree and only the origins differ:
+# ours gets the M60 box's rotate with its middle (bounding box, game space) where the M60 box's is. Vertex means are
+# no good here: both lean to the detailed feed opening (ours by 32 mm). Bounds measured from GoM's lmgs.fbx.
+GOM_M60_BOX_PROP2 = {'offset': [-0.0657, 0.0593, -0.0856], 'rotate': [-64.1581, 20.8578, -90.9064]}
+GOM_M60_BOX_BOUNDS = ([0.0354, 0.0406, -0.0201], [0.1242, 0.0878, 0.0689])
+
+
+def rotate_xyz(rotate, v):
+    """The engine's rotateXYZ (degrees, Rx . Ry . Rz) applied to v."""
+    x, y, z = v
+    for axis, deg in reversed(list(zip('xyz', rotate))):
+        c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+        if axis == 'x':
+            y, z = c * y - s * z, s * y + c * z
+        elif axis == 'y':
+            x, z = c * x + s * z, -s * x + c * z
+        else:
+            x, y = c * x - s * y, s * x + c * y
+    return [x, y, z]
+
+
+def prop2_moved(point, bounds_from, bounds_to):
+    """`point` (a magazine's Bip01_Prop2) for a model with bounds_to, so that its bounding-box middle lands where the
+    middle of bounds_from does in the hand (drawn = bone x point x mesh: offset + R (middle_from - middle_to))."""
+    d = [(bounds_from[0][i] + bounds_from[1][i] - bounds_to[0][i] - bounds_to[1][i]) / 2 for i in range(3)]
+    t = rotate_xyz(point['rotate'], d)
+    return {'offset': [round(point['offset'][i] + t[i], 4) for i in range(3)], 'rotate': list(point['rotate'])}
+
+
 def m249():
     pts = json.load(open(M249_POINTS))
     tex = 'weapons/GunsOfTien'
@@ -1053,7 +1092,7 @@ def m249():
         texture  = {tex}/{M249_BOX},
         cullFace = None,
         attachment world {{ offset = {floor_point((b['min'], b['max']))}, rotate = 90.0000 0.0000 -90.0000, }}
-    }}
+{m249_attachment('Bip01_Prop2', prop2_moved(GOM_M60_BOX_PROP2, GOM_M60_BOX_BOUNDS, (b['min'], b['max'])))}    }}
 """)
     for i in range(1, 10):
         out.append(f"""
@@ -1364,8 +1403,8 @@ def belt_links():
         rec[f'GunsOfTien_Pack{box}'] = f'Pack {link_name}s'
         rec[f'GunsOfTien_Make{link}s'] = f'Make {link_name}s'
         tips[f'Tooltip_Item_GunsOfTien_{link}'] = (
-            f"Holds one round in the {gun}'s belt. Filling its belt box takes one link per round. Thrown out of the "
-            f"gun when its round is fired.")
+            f"Holds one round in the {gun}'s belt. Filling its belt box takes one link per round. Comes out of the "
+            f"gun with its round's casing when fired.")
         tips[f'Tooltip_Item_GunsOfTien_{box}'] = f"{per} links, one {gun} belt."
         tips[f'Tooltip_Recipe_GunsOfTien_Make{link}s'] = f"Stamp {made} links out of a small sheet of metal."
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
@@ -1380,12 +1419,15 @@ def belt_links():
 # turns it upright there), the Mini and Micro are holstered; the Micro is HolsterSmall, as GoM's Detective .38, so it also fits vanilla's ankle holster: user, 2026-10-23,
 # and every slot that takes Holster takes HolsterSmall too). One set of IMI magazines for all three. Stocks: the Uzi's two in-place nodes drawn at the origin (GoM's
 # MAC-10 lines name a `stock` point its model lacks), the Mini's / Micro's one node at `stock` / `stock_folded`.
+# UZI_2H: a two-handed Uzi kept unused (user, 2026-11-01: "keep the 2 handed uzi unused but existing ... Marz has a
+# plan"): the Uzi held as a rifle (GoM's MP5), drawn from GunsOfTien_UZI_2H.fbx (the Uzi's nodes upright) on UZI.png,
+# the Uzi's rails and icon, its own name; never in loot (Loot.lua lists only the three).
 UZI_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uzi_points.json')
-UZIS = ['UZI', 'MINIUZI', 'MICROUZI']
+UZIS = ['UZI', 'MINIUZI', 'MICROUZI', 'UZI_2H']
 UZI_RAILS = {'UZI': ('Up', 'Down', 'Left'), 'MINIUZI': ('Up', 'Down', 'Left')}   # none on the Micro (user, 2026-10-30)
 UZI_MAGS = [(20, 0.08), (25, 0.12), (32, 0.15), (40, 0.2), (50, 0.22)]   # GoM's MP5 20 / 30 / 60: 0.08 / 0.18 / 0.22
 UZI_NAMES = {'UZI': 'Uzi Submachine Gun', 'MINIUZI': 'Mini Uzi Submachine Gun',
-             'MICROUZI': 'Micro Uzi Submachine Gun'}
+             'MICROUZI': 'Micro Uzi Submachine Gun', 'UZI_2H': 'Uzi Submachine Gun (Two-Handed)'}
 # Real: 260 / 197 / 117 mm barrels, 3.5 / 2.7 / 1.95 kg, 600 / 950 / 1200 rpm. Damage and handling between GoM's MP5
 # (8.9", 1.0-1.6) and MP5K (4.5", 0.6-1.0) by barrel; weights by GoM's SMG ratio (~0.78 of the kilograms); sound from
 # sound_model.py's model (9mm from a 10.2" / 7.8" / 4.6" barrel; the main mod's SoundTable is for GoM's guns only).
@@ -1397,6 +1439,7 @@ UZI_STATS = {
     'MICROUZI': dict(min=0.6, max=1.0, crit=25.0, hit=45, aim=25, recoil=12, range=25.0, stop=4.0, weight=1.5,
                      radius=113, volume=32, sight=(2, 10.0), angle=(0.95, 0.05), knock=2.0, mag=20),
 }
+UZI_STATS['UZI_2H'] = UZI_STATS['UZI']
 UZI_PARTS = [  # hidden integrated stocks: (item, part type, weight, English name); GoM's MAC-10 stock weighs 0.2
     ('UZI_Integrated_Stock_Folded', 'StockIntegrated', None, 'Uzi Integrated Stock (Folded)'),
     ('UZI_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Uzi Integrated Stock (Deployed)'),
@@ -1413,23 +1456,25 @@ def uzi_mag(rounds):
 
 def uzi_item(gun):
     s = UZI_STATS[gun]
-    rifle = gun == 'UZI'      # the full-size Uzi: back slot, rifle handling sounds; held like a pistol as the others
+    base = 'UZI' if gun == 'UZI_2H' else gun      # the two-handed Uzi shares the Uzi's texture, rails and icon
+    rifle = base == 'UZI'     # the full-size Uzi: back slot, rifle handling sounds; held like a pistol as the others
+    two = gun == 'UZI_2H'     # the unused two-handed one: held as a rifle (GoM's MP5)
     w = "        ModelWeaponPart              = "
     parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.{gun}_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,",
              f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.{gun}_HANDLE handle handle,",
              f"{w}{MODULE}.ChargingHandle_Back {MODULE}.{gun}_HANDLE handle_back handle_back,"]
     if rifle:
-        parts += [f"{w}{MODULE}.UZI_Integrated_Stock_Folded {MODULE}.UZI_STOCK_FOLDED stock stock,",
-                  f"{w}{MODULE}.UZI_Integrated_Stock_Deployed {MODULE}.UZI_STOCK_DEPLOYED stock stock,"]
+        parts += [f"{w}{MODULE}.UZI_Integrated_Stock_Folded {MODULE}.{gun}_STOCK_FOLDED stock stock,",
+                  f"{w}{MODULE}.UZI_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK_DEPLOYED stock stock,"]
     else:
         parts += [f"{w}{MODULE}.{gun}_Integrated_Stock_Folded {MODULE}.{gun}_STOCK stock_folded stock_folded,",
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
-    if gun in UZI_RAILS:
+    if base in UZI_RAILS:
         # GoM's optional rails drawn as our short ones (build_rails.py): its red dots, foregrips and lights on them
-        parts += rail_parts({s: f'{MODULE}.{gun}_RAIL_{s.upper()}' for s in UZI_RAILS[gun]},
+        parts += rail_parts({s: f'{MODULE}.{base}_RAIL_{s.upper()}' for s in UZI_RAILS[base]},
                             MINIUZI_OPTICS if gun == 'MINIUZI' else RED_DOTS, foregrips=True, lights=True)
     # all pistol-held as GoM's MP5K (one-handed, Handgun swing: GoM's animations only since 2026-10-29, CLAUDE.md
     # "GoM's animations only"); the Uzi keeps the back slot and the M16 handling sounds, the Mini and Micro M9 sounds
@@ -1440,6 +1485,15 @@ def uzi_item(gun):
         WeaponReloadType             = handgun,
         SwingAnim                    = Handgun,
         MuzzleFlashModelKey          = muzzle_flash_handgun,
+"""
+    if two:      # rifle-held as GoM's MP5 (the Uzi's hold before 2026-10-30)
+        hold = """        AttachmentType               = Rifle,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        IdleAnim                     = Idle_Weapon2,
+        SwingAnim                    = Rifle,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
 """
     return f"""
     item {gun} {{
@@ -1489,7 +1543,7 @@ def uzi_item(gun):
         MinimumSwingtime             = 0.5,
         Swingtime                    = 0.5,
         SwingAmountBeforeImpact      = 0.0,
-        Icon                         = GunsOfTien_{gun},
+        Icon                         = GunsOfTien_{base},
         RunAnim                      = Run_Weapon2,
         WeaponSprite                 = {MODULE}.{gun},
         AimReleaseSound              = {snd}AimRelease,
@@ -1533,10 +1587,11 @@ def uzi():
     models = [f"module {MODULE} {{\n"]
     for gun in UZIS:
         p = pts[gun]
+        base = 'UZI' if gun == 'UZI_2H' else gun
         models.append(f"""
     model {gun} {{
         mesh     = weapons/firearms/GunsOfTien_{gun}|{gun}_BODY,
-        texture  = {tex}/{gun},
+        texture  = {tex}/{base},
         cullFace = None,
 """)
         names = ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back', 'stock', 'stock_folded',
@@ -1552,12 +1607,12 @@ def uzi():
             body = models[-1 - sum(1 for name in names if name in p) - 1:]
             models.append("".join(body).replace("    model MINIUZI {", "    model MINIUZI_1H {", 1))
         # <GUN>_BOLT = the bolt in the ejection port, <GUN>_HANDLE = the cocking knob (moved only while racked)
-        nodes = ['BOLT', 'HANDLE'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if gun == 'UZI' else ['STOCK'])
+        nodes = ['BOLT', 'HANDLE'] + (['STOCK_FOLDED', 'STOCK_DEPLOYED'] if base == 'UZI' else ['STOCK'])
         for node in nodes:
             models.append(f"""
     model {gun}_{node} {{
         mesh     = weapons/firearms/GunsOfTien_{gun}|{gun}_{node},
-        texture  = {tex}/{gun},
+        texture  = {tex}/{base},
         cullFace = None,
     }}
 """)
@@ -1668,6 +1723,17 @@ def charging_handles():
 """)
     out.append("}\n")
     write('scripts/GunsOfTien/items_handles.txt', ''.join(out))
+    # the gun tooltip's row for the fitted handle part ("Tooltip_weapon_<PartType>: <item name>"), as GoM words its
+    # bolt's ("Bolt: Locked Bolt") and ours the M249's cover; shown as raw keys until 2026-10-31
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.ChargingHandle_Forward'] = 'Charging Handle (Forward)'
+    names[f'{MODULE}.ChargingHandle_Back'] = 'Charging Handle (Back)'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tip_path))
+    tips['Tooltip_weapon_ChargingHandle'] = 'Charging Handle'
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
 def aug():
@@ -1701,7 +1767,7 @@ def aug():
         mesh     = weapons/magazines/GunsOfTien_AUG_magazines|{aug_mag(r)},
         texture  = {tex}/{aug_mag(r)},
         attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
-    }}
+{m249_attachment('Bip01_Prop2', GOM_STANAG_PROP2)}    }}
 """)
     models.append("}\n")
     write('scripts/GunsOfTien/models_aug.txt', ''.join(models))
@@ -1858,6 +1924,188 @@ def aug():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# Glock 21 (user, 2026-10-30: Glock's .45 of 1990, the Gen 2 of 1993 with GoM's pistol parts anyway; meshes and points:
+# scripts/build_glock21.py, icons: scripts/make_glock21_art.py, registries: shared/GunsOfTien/Glock21.lua). GoM's
+# pistol pattern (its Glock 17 for the model and parts, its USP for the .45): body + slide drawn through
+# MarzGuns.Slide_Lock / Slide_Fired, the magazine in the gun's own space, GoM's Beretta mount and pistol sights, its
+# underbarrel lasers (each with its beam, Lasers.lua) and lights, its .45 mount device and P45 suppressor at `canon`.
+GLOCK21_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'glock21_points.json')
+GLOCK21_MAG = '45Magazine13_GLOCK21'
+# The hand's point (Gunworks draws the magazine in the off hand at Bip01_Prop2 through the StaticModel's own point of
+# that name): GoM's Glock 17 magazine's rotate, the offset moved so ours lands where GoM's does
+# (post93/build_mp7.py bip01_prop2(), run by build_vector.py: vector_points.json _extras.pistol_magazines)
+GLOCK21_MAG_PROP2 = ('-0.0148 -0.0029 -0.0516', '7.4929 -4.9199 -40.7737')
+PISTOL_SIGHTS = ['PL4_Sight', 'PM2_Sight', 'PS1_Sight']
+PISTOL_LASERS = ['PJ-3_Laser', 'PX1_Laser', 'TR-1_Laser']
+PISTOL_LIGHTS = ['LP_Light', 'TL_Light']
+
+
+def glock21():
+    pts = json.load(open(GLOCK21_POINTS))
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model GLOCK21 {{
+        mesh     = weapons/firearms/GunsOfTien_GLOCK21|GLOCK21_BODY,
+        texture  = {tex}/GLOCK21,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'slide_fired', 'world', 'rail_up', 'scope', 'underbarrel', 'canon'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append(f"""    }}
+
+    model GLOCK21_SLIDE {{
+        mesh     = weapons/firearms/GunsOfTien_GLOCK21|GLOCK21_SLIDE,
+        texture  = {tex}/GLOCK21,
+        cullFace = None,
+    }}
+
+    model {GLOCK21_MAG} {{
+        mesh     = weapons/magazines/GunsOfTien_GLOCK21_magazines|{GLOCK21_MAG},
+        texture  = {tex}/{GLOCK21_MAG},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = {GLOCK21_MAG_PROP2[0]}, rotate = {GLOCK21_MAG_PROP2[1]}, }}
+    }}
+}}
+""")
+    write('scripts/GunsOfTien/models_glock21.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Slide_Lock {MODULE}.GLOCK21_SLIDE slide_Lock slide_Lock,",
+             f"{w}MarzGuns.Slide_Fired {MODULE}.GLOCK21_SLIDE slide_fired slide_fired,",
+             f"{w}{MODULE}.{GLOCK21_MAG} {MODULE}.{GLOCK21_MAG} magazine magazine,",
+             f"{w}MarzGuns.Beretta_Mount MarzGuns.Beretta_Mount rail_up rail_up,"]
+    parts += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in PISTOL_SIGHTS]
+    parts += [f"{w}MarzGuns.{o} MarzGuns.{o} underbarrel underbarrel," for o in PISTOL_LASERS]
+    parts += [f"{w}{MODULE}.LaserBeam_{o.replace('-', '')} {MODULE}.LaserBeam_{o.replace('-', '')} underbarrel "
+              f"underbarrel," for o in PISTOL_LASERS]
+    parts += [f"{w}MarzGuns.{o} MarzGuns.{o} underbarrel underbarrel," for o in PISTOL_LIGHTS]
+    parts += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+              f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
+    # Stats: GoM's USP (the same round from a 117 mm barrel against its 112), with Glock's 13 rounds, its 825 g
+    # (GoM's USP weighs 0.74 for 780 g), GoM's Glock 17's durability, and the main mod's sound model (.45 from 4.6":
+    # 83 / 24, as SoundTable.lua gives GoM's USP 84 / 24); GoM's .45 handling sounds (its M1911 set, as its USP).
+    item = f"""module {MODULE} {{
+
+    item GLOCK21 {{
+        MinDamage                    = 1.0,
+        MaxDamage                    = 1.1,
+        CriticalChance               = 22.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 50,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 30,
+        RecoilDelay                  = 15,
+        MaxRange                     = 20.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 1,
+        MaxSightRange                = 9.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.05,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 230,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 7.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Holster,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 0.8,
+        MetalValue                   = 30.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_45,
+        AmmoBox                      = MarzGuns.45_Box,
+        ClipSize                     = 13,
+        MagazineType                 = {MODULE}.{GLOCK21_MAG},
+        MaxAmmo                      = 13,
+        Reloadtime                   = 30,
+        WeaponReloadType             = handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_GLOCK21,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Handgun,
+        WeaponSprite                 = {MODULE}.GLOCK21,
+        AimReleaseSound              = M1911AimRelease,
+        BreakSound                   = M1911Break,
+        BringToBearSound             = M1911BringToBear,
+        ClickSound                   = M1911Jam,
+        DropSound                    = M1911Drop,
+        EjectAmmoStartSound          = M1911EjectAmmoStart,
+        EjectAmmoSound               = M1911EjectAmmo,
+        EjectAmmoStopSound           = M1911EjectAmmoStop,
+        EquipSound                   = M1911Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M1911InsertAmmoStart,
+        InsertAmmoSound              = M1911InsertAmmo,
+        InsertAmmoStopSound          = M1911InsertAmmoStop,
+        RackSound                    = M1911Rack,
+        ShellFallSound               = M1911CartridgeFall,
+        SwingSound                   = M1911Shoot,
+        UnequipSound                 = M1911UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = 83,
+        SoundVolume                  = 24,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_handgun02,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = 2.0,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+
+    item {GLOCK21_MAG} {{
+        AmmoType         = swmg:bullet_45,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{GLOCK21_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 13,
+        MountOn          = {MODULE}.GLOCK21,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:pistolmagazine,
+        Weight           = 0.05,
+        WeightModifier   = 0.05,
+        StaticModel      = {MODULE}.{GLOCK21_MAG},
+        WorldStaticModel = {MODULE}.{GLOCK21_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_glock21.txt', item)
+    # GoM repairs its pistols with RepairPack, Aiming 3
+    write('scripts/GunsOfTien/fixing_glock21.txt', f"""module Base {{
+    fixing Fix GLOCK21 {{
+        Require = {MODULE}.GLOCK21,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.GLOCK21'] = 'Glock-21'                                    # GoM's "Glock-17"
+    names[f'{MODULE}.{GLOCK21_MAG}'] = 'Glock-21 13Rds .45 ACP Magazine'       # GoM's "USP 12Rds .45 ACP Magazine"
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # GoM's MP5 family at our size (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must stand in one
 # proportion, the Uzis'). scripts/build_mp5.py scales GoM's meshes and points by one factor for the whole family and its
 # magazines (mp5_points.json, see its header); these blocks declare GoM's own model names again (module MarzGuns), so
@@ -1929,6 +2177,7 @@ if __name__ == '__main__':
     belt_links()
     uzi()
     aug()
+    glock21()
     charging_handles()
     mp5_family()
     one_hand()

@@ -11,4 +11,8 @@ module Base {
         Require = GunsOfTien.MICROUZI,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
+    fixing Fix UZI_2H {
+        Require = GunsOfTien.UZI_2H,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
 }

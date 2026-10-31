@@ -30,7 +30,8 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] RPD
 - [ ] KS-23
 - [ ] PP-9 Klin
-- [ ] Vector 45 and 9mm
+- [✔] Vector 45 and 9mm
+- [✔] Glock 21
 - [ ] Glock 18
 - [ ] MP-43 sawed off
 - [ ] Mk18

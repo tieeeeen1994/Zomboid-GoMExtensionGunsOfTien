@@ -51,11 +51,13 @@ module GunsOfTien {
         mesh     = weapons/magazines/GunsOfTien_AUG_magazines|556x45Magazine30_AUG,
         texture  = weapons/GunsOfTien/556x45Magazine30_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine42_AUG {
         mesh     = weapons/magazines/GunsOfTien_AUG_magazines|556x45Magazine42_AUG,
         texture  = weapons/GunsOfTien/556x45Magazine42_AUG,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 }

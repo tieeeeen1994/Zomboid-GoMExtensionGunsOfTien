@@ -1,0 +1,142 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1137,
+      -0.0196
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0769,
+      -0.0203
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.069,
+      -0.0347
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "underbarrel": {
+    "offset": [
+      0.0,
+      0.0932,
+      -0.0045
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1137,
+      -0.0196
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "slide_fired": {
+    "offset": [
+      0.0,
+      -0.0205,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0075,
+      0.0519,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's BOTTOM, +X its RIGHT; origin = the web of the grip under the beavertail (photo L 188.5, H 86)",
+    "magazine": "no magazine point: 45Magazine13_GLOCK21 is modelled in the gun's space and drawn at its origin",
+    "underbarrel": "GoM's underbarrel lights and lasers on the dust cover's flat underside (the Gen 2 has no rail; GoM's parts fit it anyway, as on GoM's Glock 17)",
+    "canon": "the barrel's crown: GoM's .45 mount device (drawn with its MarzGuns.Muzzle_Mount_Device model) and P45 suppressor, extending along +Y, as on GoM's USP",
+    "slide_fired": "GLOCK21_SLIDE back 34 mm real"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      188.5,
+      86.0
+    ],
+    "real_mm_per_game_unit": 1658.37
+  },
+  "_bounds": {
+    "GLOCK21_BODY": {
+      "min": [
+        -0.0103,
+        -0.0102,
+        -0.0239
+      ],
+      "max": [
+        0.0095,
+        0.1137,
+        0.0481
+      ],
+      "tris": 1540
+    },
+    "GLOCK21_SLIDE": {
+      "min": [
+        -0.0077,
+        -0.0024,
+        -0.0294
+      ],
+      "max": [
+        0.0077,
+        0.1137,
+        -0.0142
+      ],
+      "tris": 216
+    },
+    "45Magazine13_GLOCK21": {
+      "min": [
+        -0.0081,
+        -0.0024,
+        -0.0174
+      ],
+      "max": [
+        0.0081,
+        0.0451,
+        0.0519
+      ],
+      "tris": 320
+    }
+  }
+}

@@ -1,0 +1,487 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2056,
+      -0.0099
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1984,
+      -0.0099
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1257,
+      -0.0193
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.1073,
+      0.0183
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.1073,
+      0.0206
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.17,
+      -0.018
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1688,
+      -0.0205
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0133,
+      0.1646,
+      -0.0096
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0161,
+      0.1646,
+      -0.0096
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0133,
+      0.1646,
+      -0.0096
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0172,
+      0.1646,
+      -0.0104
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0124,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0332,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock": {
+    "offset": [
+      0.0,
+      -0.0078,
+      -0.0099
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "stock_folded": {
+    "offset": [
+      -0.0244,
+      -0.0078,
+      -0.0099
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      180.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0168,
+      0.1089,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (the drawing's L 328, H 132)",
+    "magazine": "45Magazine13_VECTOR / 30 and 9x19Magazine17_VECTOR / 33 / 40 hang from here (the .45's feed lips; the 9mm ones 2.5 mm forward so their front edge meets the well's), their rake built in",
+    "stock": "VECTOR_STOCK (GunsOfTienPost93_VECTOR_parts.fbx) modelled deployed, origin at the hinge: its front face on the bore axis",
+    "stock_folded": "the same node turned 180 degrees about the hinge pin at x -20.2 mm (the right side)",
+    "bolt_fired": "VECTOR_BOLT back 20.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+    "handle_back": "VECTOR_HANDLE (the charging handle, left) back 55 mm real, only while racked; KRISS's handle does not reciprocate",
+    "rails": "integral top (L 4-302) and bottom (L 10-82) rails; GoM's optional Picatinny_Rail_Left / _Right drawn as VECTOR_RAIL_LEFT / _RIGHT (L 24-86, H 116)"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      328.0,
+      132.0
+    ],
+    "bore_mm": 115.5,
+    "real_mm_per_game_unit": 1658.37,
+    "k": 0.000603,
+    "pistol_magazines": {
+      "glock21_45Magazine13_prop2": {
+        "offset": [
+          -0.0148,
+          -0.0029,
+          -0.0516
+        ],
+        "rotate": [
+          7.4929,
+          -4.9199,
+          -40.7737
+        ]
+      },
+      "glock21_45Magazine30_prop2": {
+        "offset": [
+          -0.0148,
+          -0.0029,
+          -0.0516
+        ],
+        "rotate": [
+          7.4929,
+          -4.9199,
+          -40.7737
+        ]
+      },
+      "glock17_prop2": {
+        "offset": [
+          -0.0107,
+          0.0022,
+          -0.0624
+        ],
+        "rotate": [
+          7.4929,
+          -4.9199,
+          -40.7737
+        ]
+      }
+    }
+  },
+  "_bounds": {
+    "VECTOR_BODY": {
+      "min": [
+        -0.0142,
+        -0.0078,
+        -0.0766
+      ],
+      "max": [
+        0.0154,
+        0.2056,
+        0.0277
+      ],
+      "tris": 1684
+    },
+    "VECTOR_BOLT": {
+      "min": [
+        -0.0135,
+        0.1201,
+        0.0021
+      ],
+      "max": [
+        -0.013,
+        0.1324,
+        0.0118
+      ],
+      "tris": 44
+    },
+    "VECTOR_HANDLE": {
+      "min": [
+        0.0121,
+        0.1483,
+        -0.0015
+      ],
+      "max": [
+        0.0187,
+        0.1869,
+        0.0054
+      ],
+      "tris": 88
+    },
+    "VECTOR_STOCK": {
+      "min": [
+        -0.0149,
+        -0.1351,
+        -0.0727
+      ],
+      "max": [
+        0.0096,
+        0.0027,
+        0.028
+      ],
+      "tris": 580
+    },
+    "VECTOR_RAIL_LEFT": {
+      "min": [
+        -0.0003,
+        -0.0187,
+        -0.0064
+      ],
+      "max": [
+        0.0021,
+        0.0187,
+        0.0064
+      ],
+      "tris": 212
+    },
+    "VECTOR_RAIL_RIGHT": {
+      "min": [
+        -0.0021,
+        -0.0187,
+        -0.0064
+      ],
+      "max": [
+        0.0003,
+        0.0187,
+        0.0064
+      ],
+      "tris": 212
+    },
+    "45Magazine13_VECTOR": {
+      "min": [
+        -0.0081,
+        -0.0346,
+        -0.0713
+      ],
+      "max": [
+        0.0081,
+        0.0117,
+        0.0031
+      ],
+      "tris": 378
+    },
+    "45Magazine30_VECTOR": {
+      "min": [
+        -0.0081,
+        -0.0545,
+        -0.1295
+      ],
+      "max": [
+        0.0081,
+        0.0117,
+        0.0031
+      ],
+      "tris": 614
+    },
+    "9x19Magazine17_VECTOR": {
+      "min": [
+        -0.0075,
+        -0.0337,
+        -0.077
+      ],
+      "max": [
+        0.0075,
+        0.0122,
+        0.0021
+      ],
+      "tris": 394
+    },
+    "9x19Magazine33_VECTOR": {
+      "min": [
+        -0.0075,
+        -0.0528,
+        -0.1329
+      ],
+      "max": [
+        0.0075,
+        0.0122,
+        0.0021
+      ],
+      "tris": 586
+    },
+    "9x19Magazine40_VECTOR": {
+      "min": [
+        -0.0075,
+        -0.061,
+        -0.1569
+      ],
+      "max": [
+        0.0075,
+        0.0122,
+        0.0021
+      ],
+      "tris": 710
+    },
+    "45Magazine30_GLOCK21": {
+      "min": [
+        -0.0081,
+        -0.026,
+        -0.0174
+      ],
+      "max": [
+        0.0081,
+        0.0451,
+        0.1086
+      ],
+      "tris": 320
+    },
+    "9x19Magazine33_GLOCK17": {
+      "min": [
+        -0.0077,
+        -0.027,
+        -0.0218
+      ],
+      "max": [
+        0.0077,
+        0.0457,
+        0.1269
+      ],
+      "tris": 144
+    },
+    "9x19Magazine40_GLOCK17": {
+      "min": [
+        -0.0077,
+        -0.037,
+        -0.0218
+      ],
+      "max": [
+        0.0077,
+        0.0457,
+        0.156
+      ],
+      "tris": 144
+    },
+    "VECTOR_BOLT_fired": {
+      "min": [
+        -0.0135,
+        0.1078,
+        0.0021
+      ],
+      "max": [
+        -0.013,
+        0.12,
+        0.0118
+      ],
+      "tris": 44
+    },
+    "VECTOR_HANDLE_back": {
+      "min": [
+        0.0121,
+        0.1152,
+        -0.0015
+      ],
+      "max": [
+        0.0187,
+        0.1538,
+        0.0054
+      ],
+      "tris": 88
+    },
+    "VECTOR_STOCK_deployed": {
+      "min": [
+        -0.0149,
+        -0.1429,
+        -0.0826
+      ],
+      "max": [
+        0.0096,
+        -0.0051,
+        0.0181
+      ],
+      "tris": 580
+    },
+    "VECTOR_STOCK_folded": {
+      "min": [
+        -0.034,
+        -0.0105,
+        -0.0826
+      ],
+      "max": [
+        -0.0095,
+        0.1273,
+        0.0181
+      ],
+      "tris": 580
+    }
+  }
+}

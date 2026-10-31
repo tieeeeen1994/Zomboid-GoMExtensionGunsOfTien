@@ -1,13 +1,14 @@
 """Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
-item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93 (the AUGs' points:
-build_aug3.py's auga3 / augpara / aughbar_points.json).
+/ KRISS Vector .45 and 9mm item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
+(the AUGs' points: build_aug3.py's auga3 / augpara / aughbar_points.json; the Vectors': build_vector.py's
+vector_points.json).
 
 Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py /
 build_ump.py), which write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json,
 ucp_points.json, scarl_points.json, scarh_points.json and ump_points.json next to this script:
 python3 scripts/post93/gen_post93_guns.py
-The Five-seveN is the item MarzGuns.FIVESEVEN: Guns of Marz names it ("5.7x28mm Five-SeveN" in its ItemName.json) but
-ships nothing else, so its item block (items_fiveseven.txt) is in GoM's module and everything it uses is ours.
+The Five-seveN is the item MarzGuns.FIVESEVEN: Guns of Marz names it ("5.7x28mm Five-SeveN" in its ItemName.json; ours
+renames it "Five-SeveN", 2026-11-01) but ships nothing else, so its item block (items_fiveseven.txt) is in GoM's module and everything it uses is ours.
 Icons are item_GunsOfTienPost93_<name>.png (prefixed, so another mod's MP7 or P90 icon cannot replace them).
 """
 import json
@@ -170,12 +171,21 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     parts += [(f'762x51Magazine{n}_SCARH', 'magazines/GunsOfTienPost93_SCARH_magazines') for n in (20, 10, 50)]
     parts += [(p, 'parts/GunsOfTienPost93_SCAR_parts') for p in ('SCARH_Suppressor', 'SCARH_Muzzle_Mount_Device')]
     parts += [(m, 'magazines/GunsOfTienPost93_UMP_magazines') for m in UMP_MAGS]
+    # the pistol magazines in the reload's off hand: Gunworks draws them at Bip01_Prop2 through their own point of that
+    # name (build_mp7.py bip01_prop2(), each points file's _extras.prop2; the long one shares its gun's 20's)
+    prop2 = {f'57x28Magazine{n}_FIVESEVEN': fiveseven['_extras']['prop2'] for n in (20, 30)}
+    prop2.update({f'46x30Magazine{n}_UCP': ucp['_extras']['prop2'] for n in (20, 40)})
     for node, file in parts:
+        hand = ''
+        if node in prop2:
+            o, r = prop2[node]['offset'], prop2[node]['rotate']
+            hand = (f"\n        attachment Bip01_Prop2 {{ offset = {o[0]:.4f} {o[1]:.4f} {o[2]:.4f}, "
+                    f"rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}")
         out.append(f"""
     model {node} {{
         mesh     = weapons/{file}|{node},
         texture  = {TEX}/{node},
-        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}{hand}
     }}
 """)
     out.append("}\n")
@@ -1103,6 +1113,214 @@ def ump_items():
 
 
 # ==================================================================================================
+# KRISS Vector .45 and 9mm, user 2026-10-30 (build_vector.py; docs/post93_design.md)
+# ==================================================================================================
+
+VECTORS = ['VECTOR45', 'VECTOR9']
+# Glock's magazines (KRISS built the Vector's well for them): the .45 the main mod's Glock 21 13 and KRISS's MagEx2 30
+# (ours; it fits the Glock 21 too), the 9mm GoM's Glock 17 17, Glock's 33 and KRISS's MagEx2 40 (ours; they fit GoM's
+# Glock 17 too). (item, the model drawn on the Vector at `magazine`)
+VECTOR_MAGS = {
+    'VECTOR45': [('GunsOfTien.45Magazine13_GLOCK21', '45Magazine13_VECTOR'),
+                 (f'{M}.45Magazine30_GLOCK21', '45Magazine30_VECTOR')],
+    'VECTOR9': [('MarzGuns.9x19Magazine17_GLOCK', '9x19Magazine17_VECTOR'),
+                (f'{M}.9x19Magazine33_GLOCK', '9x19Magazine33_VECTOR'),
+                (f'{M}.9x19Magazine40_GLOCK', '9x19Magazine40_VECTOR')],
+}
+# our magazines: (item, rounds, weight, ammo, the pistol, the Vector, the pistol-space model (its StaticModel and what
+# the pistol draws), that model's texture, its Bip01_Prop2 in vector_points.json). GoM's weights: its pistol
+# magazines 0.05, its Thompson 20 / 30 = 0.1 / 0.15.
+VECTOR_OWN_MAGS = [
+    ('45Magazine30_GLOCK21', 30, 0.15, 'swmg:bullet_45', 'GunsOfTien.GLOCK21', 'VECTOR45', '45Magazine30_GLOCK21',
+     'weapons/GunsOfTien/45Magazine13_GLOCK21', 'glock21_45Magazine30_prop2'),
+    ('9x19Magazine33_GLOCK', 33, 0.1, 'swmg:bullet_9x19', 'MarzGuns.GLOCK17', 'VECTOR9', '9x19Magazine33_GLOCK17',
+     'weapons/magazines/pistols/9x19Magazine17_Glock', 'glock17_prop2'),
+    ('9x19Magazine40_GLOCK', 40, 0.12, 'swmg:bullet_9x19', 'MarzGuns.GLOCK17', 'VECTOR9', '9x19Magazine40_GLOCK17',
+     'weapons/magazines/pistols/9x19Magazine17_Glock', 'glock17_prop2'),
+]
+VECTOR_MAG_MODELS = ['45Magazine13_VECTOR', '45Magazine30_VECTOR', '9x19Magazine17_VECTOR', '9x19Magazine33_VECTOR',
+                     '9x19Magazine40_VECTOR']
+# Stats (docs/post93_design.md): GoM's MAC-10 (its other 1000+ rpm SMG) and our UMPs; a 5.5" barrel, under the UMPs'
+# 7.9": the .45 a little under the UMP45, the 9mm a little under the UMP9; KRISS's Super V recoil system keeps both
+# steadier than any other SMG here (recoil 12 / 11 against the UMPs' 17 / 15; aiming 35 against 40). 2.7 kg x GoM's
+# SMG weight ratio (~0.78). Sounds from sound_model.py (5.5": .45 = 78 / 22, 9mm = 107 / 31).
+VECTOR_STATS = {
+    'VECTOR45': dict(min=1.0, max=1.6, crit=22.0, hit=52, aim=35, recoil=12, range=25.0, stop=2.5, weight=2.1,
+                     clip=13, ammo='swmg:bullet_45', box='MarzGuns.45_Box', shoot='M1911Shoot', radius=78, volume=22),
+    'VECTOR9': dict(min=0.9, max=1.4, crit=20.0, hit=52, aim=35, recoil=11, range=25.0, stop=2.0, weight=2.0,
+                    clip=17, ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', shoot='M9Shoot', radius=107, volume=31),
+}
+
+
+def vector_parts(gun):
+    """GoM's accessories on the Vectors: optics on the integral top rail, foregrips on the integral bottom rail,
+    lights and lasers on GoM's optional Picatinny_Rail_Left / _Right drawn as KRISS's side rails (VECTOR_RAIL_LEFT /
+    _RIGHT); at canon the .45 GoM's .45 mount device and P45, the 9mm the main mod's 9x19mm SMG mount device and Mk9
+    (the UMPs' way); the gun's own stock colour, the bolt in the port, the charging handle; its magazines. The 9mm
+    draws the turned nodes of its pistol-held model (VECTOR9_*)."""
+    w = "        ModelWeaponPart              = "
+    n = 'VECTOR9' if gun == 'VECTOR9' else 'VECTOR'
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.{n}_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.{n}_BOLT bolt_fired bolt_fired,",
+             f"{w}GunsOfTien.ChargingHandle_Forward {M}.{n}_HANDLE handle handle,",
+             f"{w}GunsOfTien.ChargingHandle_Back {M}.{n}_HANDLE handle_back handle_back,",
+             f"{w}{M}.VECTOR_Integrated_Stock_Folded {M}.{gun}_STOCK stock_folded stock_folded,",
+             f"{w}{M}.VECTOR_Integrated_Stock_Deployed {M}.{gun}_STOCK stock stock,"]
+    lines += [f"{w}{item} {M}.{model} magazine magazine," for item, model in VECTOR_MAGS[gun]]
+    if gun == 'VECTOR45':
+        lines += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+                  f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
+    else:
+        lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.Picatinny_Rail_Left {M}.{n}_RAIL_LEFT rail_left rail_left,",
+              f"{w}MarzGuns.Picatinny_Rail_Right {M}.{n}_RAIL_RIGHT rail_right rail_right,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    return '\n'.join(lines) + '\n'
+
+
+def vector_item(gun):
+    """The UMP's item block (ump_item) with the Vector's stats, magazines and parts."""
+    s = VECTOR_STATS[gun]
+    block = ump_item('UMP45')
+    head, tail = block.split("        MinDamage", 1)
+    tail = "        MinDamage" + tail
+    for key, value in (('MinDamage', s['min']), ('MaxDamage', s['max']), ('CriticalChance', s['crit']),
+                       ('HitChance', s['hit']), ('Aimingtime', s['aim']), ('RecoilDelay', s['recoil']),
+                       ('MaxRange', s['range']), ('StopPower', s['stop']), ('Weight', s['weight']),
+                       ('AmmoType', s['ammo']), ('AmmoBox', s['box']), ('ClipSize', s['clip']),
+                       ('MagazineType', VECTOR_MAGS[gun][0][0]), ('MaxAmmo', s['clip']),
+                       ('Icon', f'GunsOfTienPost93_{gun}'), ('WeaponSprite', f'{M}.{gun}'),
+                       ('SwingSound', s['shoot']), ('SoundRadius', s['radius']), ('SoundVolume', s['volume']),
+                       ('ConditionLowerChanceOneIn', 200)):
+        lines = tail.split('\n')
+        hits = [i for i, l in enumerate(lines) if l.split('=')[0].strip() == key]
+        assert len(hits) == 1, key
+        name = lines[hits[0]].split('=')[0]
+        lines[hits[0]] = f"{name}= {value},"
+        tail = '\n'.join(lines)
+    tail = tail.replace(ump_parts('UMP45'), vector_parts(gun))
+    assert vector_parts(gun) in tail
+    if gun == 'VECTOR9':
+        # held like a pistol (user, 2026-11-01), as the MP7s and the P90 (GUN_HANDGUN): one hand when not aiming,
+        # Handgun swing, handgun reload mechanics; still the back slot, never a holster
+        for a, c in (("WeaponReloadType             = boltaction,", "WeaponReloadType             = handgun,"),
+                     ("        TwoHandWeapon                = true,\n", ""),
+                     ("        RequiresEquippedBothHands    = true,\n", ""),
+                     ("        IdleAnim                     = Idle_Weapon2,\n", ""),
+                     ("SwingAnim                    = Rifle,", "SwingAnim                    = Handgun,"),
+                     ("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
+                      "MuzzleFlashModelKey          = muzzle_flash_handgun,")):
+            assert tail.count(a) == 1, a
+            tail = tail.replace(a, c)
+    return head.replace('item UMP45 {', f'item {gun} {{') + tail
+
+
+def vectors():
+    """Models, items and repairs of both Vectors (files of their own: models_vector.txt, items_vector.txt,
+    fixing_vector.txt). One mesh for both, each its own texture (colour and markings); the 9mm is held like a pistol,
+    so it draws the .45's nodes turned (VECTOR9_*, build_vector.py) at its turned points (vector9_points.json)."""
+    pts = load_points('vector_points.json')
+    pts9 = load_points('vector9_points.json')
+    prop2 = pts['_extras']['pistol_magazines']
+    out = [f"module {M} {{\n"]
+    out.append(gun_model('VECTOR45', 'GunsOfTienPost93_VECTOR', 'VECTOR_BODY', pts,
+                         ['stock', 'stock_folded', 'rail_down', 'foregrip']))
+    out.append(gun_model('VECTOR9', 'GunsOfTienPost93_VECTOR', 'VECTOR9_BODY', pts9,
+                         ['stock', 'stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
+    for n, tex in (('VECTOR', 'VECTOR45'), ('VECTOR9', 'VECTOR9')):
+        for part in ('BOLT', 'HANDLE', 'RAIL_LEFT', 'RAIL_RIGHT'):
+            out.append(f"""
+    model {n}_{part} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_VECTOR|{n}_{part},
+        texture  = {TEX}/{tex},
+        cullFace = None,
+    }}
+""")
+    for gun, node in (('VECTOR45', 'VECTOR_STOCK'), ('VECTOR9', 'VECTOR9_STOCK')):
+        out.append(f"""
+    model {gun}_STOCK {{
+        mesh     = weapons/parts/GunsOfTienPost93_VECTOR_parts|{node},
+        texture  = {TEX}/{gun}_STOCK,
+        cullFace = None,
+    }}
+""")
+    # the magazines as they sit in the Vector: origin at the feed lips, raked as the well
+    for mag in VECTOR_MAG_MODELS:
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|{mag},
+        texture  = {TEX}/{mag},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    # our magazines in the pistol's own space (drawn on the Glock 21 / GoM's Glock 17, and the item's model): the
+    # pistol's magazine stretched below its middle, with its texture, GoM's floor pose and the hand's point
+    for item, *_, model, tex, p in VECTOR_OWN_MAGS:
+        o, r = prop2[p]['offset'], prop2[p]['rotate']
+        out.append(f"""
+    model {model} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_VECTOR_magazines|{model},
+        texture  = {tex},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = {o[0]:.4f} {o[1]:.4f} {o[2]:.4f}, rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_vector.txt', ''.join(out))
+
+    items = [f"module {M} {{\n"] + [vector_item(g) for g in VECTORS]
+    for mag, cap, weight, ammo, pistol, gun, model, *_ in VECTOR_OWN_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = {ammo},
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {pistol};{M}.{gun},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:pistolmagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{model},
+        WorldStaticModel = {M}.{model},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in [('VECTOR_Integrated_Stock_Folded', 'StockIntegrated', None),
+                                ('VECTOR_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+                                ('VECTOR_Integrated_Rail_Up', 'RailUp', None),
+                                ('VECTOR_Integrated_Rail_Down', 'RailDown', None)]:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_vector.txt', ''.join(items))
+    write(f'scripts/{M}/fixing_vector.txt', "module Base {\n" + "\n".join(f"""    fixing Fix {g} {{
+        Require = {M}.{g},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for g in VECTORS) + "}\n")
+
+
+# ==================================================================================================
 # Steyr AUG A3, AUG Para and AUG HBAR, user 2026-10-28 (build_aug3.py; docs/post93_design.md)
 # ==================================================================================================
 
@@ -1281,12 +1499,14 @@ def augs():
         cullFace = None,
     }}
 """)
+    # the off hand's magazine during GoM's FAMAS reload: GoM's STANAG point as it is (gen_scripts.py GOM_STANAG_PROP2)
     for mag, *_ in AUG3_OWN_MAGS:
         out.append(f"""
     model {mag} {{
         mesh     = weapons/magazines/GunsOfTienPost93_AUG_magazines|{mag},
         texture  = {TEX}/{mag},
         attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }}
     }}
 """)
     out.append("}\n")
@@ -1413,6 +1633,20 @@ def translations():
         f'{M}.AUG_Integrated_Rail_Right': 'AUG Integrated Rail (Right)',
         f'{M}.AUGHBAR_Integrated_Bipod_Folded': 'AUG HBAR Integrated Bipod (Folded)',
         f'{M}.AUGHBAR_Integrated_Bipod_Deployed': 'AUG HBAR Integrated Bipod (Deployed)',
+        # GoM: "Glock-17 17Rds 9x19mm Magazine"; the main mod's "Glock-21 13Rds .45 ACP Magazine"
+        # no maker in the name (user, 2026-11-01), as GoM's "MP5 Submachine Gun"
+        f'{M}.VECTOR45': 'Vector .45 Submachine Gun',
+        f'{M}.VECTOR9': 'Vector 9mm Submachine Gun',
+        # GoM's own name for the Five-seveN is "5.7x28mm Five-SeveN": the calibre dropped (user, 2026-11-01), GoM's
+        # spelling kept as our magazines have it. Translations merge by key in mod order, so ours wins.
+        'MarzGuns.FIVESEVEN': 'Five-SeveN',
+        f'{M}.45Magazine30_GLOCK21': 'Glock-21 30Rds .45 ACP Extended Magazine',
+        f'{M}.9x19Magazine33_GLOCK': 'Glock-17 33Rds 9x19mm Extended Magazine',
+        f'{M}.9x19Magazine40_GLOCK': 'Glock-17 40Rds 9x19mm Extended Magazine',
+        f'{M}.VECTOR_Integrated_Stock_Folded': 'Vector Integrated Stock (Folded)',
+        f'{M}.VECTOR_Integrated_Stock_Deployed': 'Vector Integrated Stock (Deployed)',
+        f'{M}.VECTOR_Integrated_Rail_Up': 'Vector Integrated Rail (Up)',
+        f'{M}.VECTOR_Integrated_Rail_Down': 'Vector Integrated Rail (Down)',
     })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
@@ -1435,5 +1669,6 @@ if __name__ == '__main__':
     fiveseven_item()                      # before items(): ucp_item() copies its block
     items(mp7, p90)
     augs()
+    vectors()
     translations()
     print('written under', os.path.normpath(ROOT))

@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H,
-    UMP45 and UMP9, Steyr AUG A3, Para and HBAR
+    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -143,6 +143,27 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = 60,
         ejectAngle    = 60,
         spinForce     = { 86, 124 },
+    },
+    -- The Vectors eject to the right: the rifle-held .45 as the UMPs, the pistol-held 9mm as the MP7 (their values).
+    ["GunsOfTienPost93.VECTOR45"] = {
+        forwardOffset = 0.332,
+        sideOffset    = 0.08,
+        heightOffset  = 0.48,
+        shellForce    = 0.65,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
+    ["GunsOfTienPost93.VECTOR9"] = {
+        forwardOffset = 0.544,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.60,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
     },
     ["MarzGuns.FIVESEVEN"] = {
         forwardOffset = 0.383,

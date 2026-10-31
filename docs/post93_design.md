@@ -291,3 +291,45 @@ Commons "Steyr-AUG-A3-SF" (CC BY-SA 4.0, 650 px, left side, muzzle left); Common
 CC BY 2.0, 550 px: the 1988 Para, left side: barrel, straight magazine, magazine-well adapter, grip); TFB's video
 thumbnail of the 7.62x39 AUG (1280 px, right side; rights unclear, a reference only, as the UCP's photo). No usable
 HBAR photo: its barrel and bipod are built from the published numbers on the A3's receiver.
+
+## KRISS Vector .45 and 9mm (user, 2026-10-30; built, not played in game yet)
+
+KRISS's Super V submachine gun, Gen II SMG with the 5.5" barrel: the .45 ACP gun (2006) and the 9mm (2011), two guns on
+one model as the UMPs. Finish (user, 2026-10-30: "Let's not use black ... flat earth and sand. 9mm takes sand"): the
+**.45 flat dark earth, the 9mm sand**; rails, handle, magazines and the butt pad black.
+
+| | `GunsOfTienPost93.VECTOR45` "Vector .45 Submachine Gun" | `GunsOfTienPost93.VECTOR9` "Vector 9mm Submachine Gun" |
+|---|---|---|
+| Magazines | the main mod's Glock 21 13 (standard) and KRISS's MagEx2 30 (`45Magazine30_GLOCK21`, ours, "Glock-21 30Rds .45 ACP Extended Magazine") | GoM's Glock 17 17 (standard), Glock's 33 (`9x19Magazine33_GLOCK`) and KRISS's MagEx2 40 (`9x19Magazine40_GLOCK`), ours, "Glock-17 33Rds / 40Rds 9x19mm Extended Magazine" |
+| Rate of fire (real ~1200) | 1200 rpm, two-round burst, spread 0.10 / 1.3 | 1200 rpm, two-round burst, spread 0.08 / 1.1 |
+| Damage | 1.0-1.6 (a little under the UMP45's 1.1-1.8: 5.5" against 7.9"), crit 22, stop 2.5 | 0.9-1.4 (under the UMP9's 1.0-1.6), crit 20, stop 2.0 |
+| Handling | HitChance 52, Aimingtime 35, RecoilDelay 12 (UMP45 48 / 40 / 17) | 52 / 35 / 11 (UMP9 50 / 40 / 15) |
+| Sound (sound_model.py, 5.5") | 78 / 22, GoM's M1911 shot | 107 / 31, GoM's MP5 9mm shot |
+| Muzzle | GoM's .45 mount device and P45 (the UMP45's) | the main mod's 9x19mm SMG mount device and Mk9 (the UMP9's) |
+
+Names without the maker (user, 2026-11-01: "drop KRISS in the name"), as GoM's "MP5 Submachine Gun". **The .45 is
+held as a rifle** (two hands, GoM's MP5 reload: the well ahead of the trigger and the handle on the front left, as on
+the MP5); **the 9mm like a pistol** (user, 2026-11-01), as the MP7s and the P90: one hand when not aiming, Handgun
+swing, GoM's MP5K reload ("handgun2"), its model turned upside down, still on the back slot (never a holster).
+
+Both: weight 2.1 / 2.0 (2.7 kg x GoM's SMG ratio), the back slot, **Auto / 2-round burst / Single**, the bolt
+in the ejection port (right) through GoM's Bolt_Lock / Bolt_Fired swap and the main mod's non-reciprocating charging
+handle (back only while racked); the side-folding stock (`VECTOR_Integrated_Stock_Folded / _Deployed`, GoM's G36C
+stats and spread modifier as the UMPs'); the integral top rail (`VECTOR_Integrated_Rail_Up`: every GoM optic) and the
+short bottom rail (`_Rail_Down`: GoM's three foregrips); **GoM's optional Picatinny_Rail_Left / _Right** for its lights
+and lasers (KRISS's bolt-on side rail kit; the main mod's `Rails.Register`, drawn as our short `VECTOR_RAIL_LEFT /
+_RIGHT`; found guns carry them with their accessory, ":PRL" / ":PRR"). Hot Brass: the UMPs' values.
+
+**Magazines shared with the pistols** (user, 2026-10-30: the .45 the Glock 21's 13 plus KRISS's extended one, "fits
+the Glock 21 too"; the 9mm "add 33 and 40", fitting GoM's Glock 17 too): the .45 joins the main mod's ".45 ACP Glock
+21" profile with the 30; GoM's Glock 17 had no profile (its item MagazineType only), so Vector.lua makes "9x19mm Glock"
+(GoM's 17 + our 33 and 40) for the Glock 17 and the Vector 9mm. On a Vector every magazine is drawn by a Vector model
+(origin at the feed lips, raked as the well); on the pistols ours are drawn by copies of the pistol's own magazine
+mesh stretched below its middle (the 30 the Glock 21's, the 33 / 40 GoM's), added to the pistols' item scripts at run
+time (`DoParam("ModelWeaponPart = ...")`, once per script object). Those copies are the items' StaticModel, with the
+pistols' textures and a `Bip01_Prop2` point for the reload's off hand.
+
+Loot (the UMPs' route): an alternative each in GoM's `World_Anachronistic_Spawner` (4 boxes) and
+`Zombie_Police_SMG_Spawner` (2), the gun with three standard magazines (Glock 21 13 / GoM's Glock 17 17) and GoM's
+boxes; the 30, 33 and 40 also on their own in GoM's `World_HighCap_Tactical_Magazine_Spawner`. Found guns: the
+standard magazine at 50, the 30 / 33 at 5, the 40 at 2; GoM's MP5 accessories at its chances.

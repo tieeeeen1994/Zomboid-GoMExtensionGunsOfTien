@@ -65,6 +65,7 @@ module GunsOfTien {
         texture  = weapons/GunsOfTien/556x45Box200_M249,
         cullFace = None,
         attachment world { offset = -0.0283 0.0000 -0.0479, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0189 0.0648 0.0068, rotate = -64.1581 20.8578 -90.9064, }
     }
 
     model 556x45_M249_1 {

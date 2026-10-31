@@ -23,6 +23,11 @@
       the others reach its knob or front sight), under the handguard for its
       foregrips, on the handguard's left for its lights; no right rail (none is made), none on the Micro (as GoM's
       MAC-10).
+
+    UZI_2H, a two-handed Uzi kept unused (user, 2026-11-01: "keep the 2 handed uzi unused but existing ... Marz has a
+    plan"): the Uzi held as a rifle, as it was until 2026-10-30, with GoM's MP5 reload; everything else as the Uzi's
+    (its magazines, rate of fire, stock parts, rails, found-gun parts). Never in loot (Loot.lua lists only the three);
+    spawn it with an admin's item list.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -47,6 +52,8 @@ local UZI = M .. "UZI"
 local MINIUZI = M .. "MINIUZI"
 local MICROUZI = M .. "MICROUZI"
 local GUNS = { UZI, MINIUZI, MICROUZI }
+local UZI_2H = M .. "UZI_2H"
+local ALL = { UZI, MINIUZI, MICROUZI, UZI_2H }
 local MAGS = {}
 for _, n in ipairs({ 20, 25, 32, 40, 50 }) do
     MAGS[#MAGS + 1] = M .. "9x19Magazine" .. n .. "_UZI"
@@ -56,7 +63,7 @@ end
 -- Magazines: one profile for the three guns, in GoM's 9x19mm family
 -------------------------------------------------
 Magazine.RegisterMagazineProfile("9x19mm Uzi", MAGS)
-for _, gun in ipairs(GUNS) do
+for _, gun in ipairs(ALL) do
     Magazine.RegisterWeaponWithProfile("9x19mm Uzi", gun)
 end
 Ammo.RegisterMultipleItemsWithFamilies({ ["9x19mm"] = MAGS })
@@ -64,7 +71,9 @@ Ammo.RegisterMultipleItemsWithFamilies({ ["9x19mm"] = MAGS })
 -------------------------------------------------
 -- Rate of fire (required for Gunworks' real auto fire)
 -------------------------------------------------
-RateOfFire.RegisterWeapon(UZI, { rpm = 600, enableSpread = true, sustainedSpread = 0.08, maxSpread = 1.3 })
+for _, gun in ipairs({ UZI, UZI_2H }) do
+    RateOfFire.RegisterWeapon(gun, { rpm = 600, enableSpread = true, sustainedSpread = 0.08, maxSpread = 1.3 })
+end
 RateOfFire.RegisterWeapon(MINIUZI, { rpm = 950, enableSpread = true, sustainedSpread = 0.18, maxSpread = 2.2 })
 RateOfFire.RegisterWeapon(MICROUZI, { rpm = 1200, enableSpread = true, sustainedSpread = 0.25, maxSpread = 2.8 })
 
@@ -72,7 +81,7 @@ RateOfFire.RegisterWeapon(MICROUZI, { rpm = 1200, enableSpread = true, sustained
 -- The bolt in the ejection port: GoM's bolt swap (its AnimationsFiring.lua "Bolt"); the cocking knob, back only while
 -- racked
 -------------------------------------------------
-for _, gun in ipairs(GUNS) do
+for _, gun in ipairs(ALL) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
         SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
         cycleTicks = 3,
@@ -87,12 +96,13 @@ local GoMReloads = require("GunsOfTien/GoMReloads")
 for _, gun in ipairs(GUNS) do
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("handgun2"))
 end
+ReloadAnim.RegisterWeapon(UZI_2H, GoMReloads.profile("MP5"))      -- the unused two-handed Uzi: GoM's MP5's
 
 -------------------------------------------------
 -- Folding stocks: the Uzi's with GoM's MP5 stock stats, the Mini's and Micro's with its MAC-10's
 -------------------------------------------------
-for _, gun in ipairs(GUNS) do
-    local name = gun:sub(#M + 1)
+for _, gun in ipairs(ALL) do
+    local name = gun == UZI_2H and "UZI" or gun:sub(#M + 1)
     FoldingStock.RegisterWeapon(gun, {
         attachments = {
             partType = "StockIntegrated",
@@ -128,7 +138,7 @@ PreventRemoval.Register(MAGS)
 -------------------------------------------------
 -- GoM's optional rails on the Uzi and Mini Uzi: red dots on top, foregrips under, lights on the left
 -------------------------------------------------
-for gun, optics in pairs({ [UZI] = Rails.RED_DOTS, [MINIUZI] = Rails.MINIUZI_OPTICS }) do
+for gun, optics in pairs({ [UZI] = Rails.RED_DOTS, [MINIUZI] = Rails.MINIUZI_OPTICS, [UZI_2H] = Rails.RED_DOTS }) do
     Rails.Register(gun, { sides = { "Up", "Down", "Left" }, optics = optics, foregrips = true, lights = true })
 end
 
@@ -162,9 +172,10 @@ if spawnTable then
         }
     end
     spawnTable[UZI] = entry(UZI, { MAGS[3] .. ":30", MAGS[2] .. ":20", MAGS[1] .. ":5" }, railParts(Rails.RED_DOTS))
+    spawnTable[UZI_2H] = entry(UZI, { MAGS[3] .. ":30", MAGS[2] .. ":20", MAGS[1] .. ":5" }, railParts(Rails.RED_DOTS))
     spawnTable[MINIUZI] = entry(MINIUZI, { MAGS[1] .. ":30", MAGS[2] .. ":20", MAGS[3] .. ":5" },
         railParts(Rails.MINIUZI_OPTICS))
     spawnTable[MICROUZI] = entry(MICROUZI, { MAGS[1] .. ":30", MAGS[2] .. ":20", MAGS[3] .. ":5" })
 end
 
-GunsOfTien_Uzi = { UZI = UZI, MINIUZI = MINIUZI, MICROUZI = MICROUZI, GUNS = GUNS, MAGS = MAGS }
+GunsOfTien_Uzi = { UZI = UZI, MINIUZI = MINIUZI, MICROUZI = MICROUZI, UZI_2H = UZI_2H, GUNS = GUNS, MAGS = MAGS }

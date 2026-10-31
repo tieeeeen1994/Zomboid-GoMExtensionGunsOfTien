@@ -36,11 +36,11 @@ held with vanilla's rifle or pistol clips, as GoM's guns are, and reloads with o
 Gunworks' registry (`shared/GunsOfTien/GoMReloads.lua`: `profile(animId)`, Gunworks' "none" style, GoM's durations
 copied from the local table in its `Registries/ReloadAnims.lua`). No grip registrations (`GunworksGripAnim`) either.
 
-- Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR (one-handed, pistol clips) "handgun2"
-  (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance doesn't look
-  good on it"); Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
+- Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR, Vector 9mm (one-handed, pistol clips)
+  "handgun2" (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance
+  doesn't look good on it"; the unused two-handed UZI_2H keeps "MP5"); Glock 21, Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
   "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
-  left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 "MP5"; M249 "m60_lmg" (its feed cover stays
+  left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 / Vector .45 "MP5"; M249 "m60_lmg" (its feed cover stays
   shut; `partState.ensure` shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own
   registrations again.
 - **Which side GoM's racks reach** (measured 2026-10-30: the left hand's knuckles in the Prop1 bone's frame, imported
@@ -61,7 +61,15 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   build_uzi.py turns it at export like the Mini (its texture is baked upright, so `UZI.png` is unchanged), no
   `TwoHandWeapon` / `RequiresEquippedBothHands` (both read from the script, so saved Uzis follow), Handgun swing and
   reload type, but AttachmentType Rifle with `rifle_back` / `rifle_back_bag` turns (the MP7's way: GoM's SWAT zombies
-  and the police SMG loot hang it on the back); Hot Brass took the Mini's numbers.
+  and the police SMG loot hang it on the back); Hot Brass took the Mini's numbers. On 2026-11-01 the user first had
+  it made two-handed again, then kept it pistol-held and asked for the two-handed one to stay "unused but existing"
+  ("Marz has a plan"): the hidden item `GunsOfTien.UZI_2H` "Uzi Submachine Gun (Two-Handed)". build_uzi.py exports
+  the Uzi's nodes upright as `GunsOfTien_UZI_2H.fbx` (UZI_2H_BODY / _BOLT / _HANDLE / _STOCK_FOLDED / _DEPLOYED, on
+  UZI.png) and writes `uzi_points.json` "UZI_2H" (points(upright=True): rotates 0, GoM's rifle `world`, no
+  `rifle_back`); gen_scripts.py makes it a fourth Uzi in `UZIS` (two-handed, Rifle swing, boltaction, the Uzi's
+  rails, stock parts, icon and stats; in the magazines' and Mk9 parts' MountOn); Uzi.lua registers it as the Uzi
+  but with GoM's MP5 reload; UziTooltips.lua and Hot Brass (the MP5's numbers) list it. Loot.lua never names it, so
+  it only comes from an admin's item list. fit_audit.py: every part on it as on the rifle-held Uzi of before.
 - Gone with the animations: CompactStance.lua (both mods), Bullpup.lua, OneHand.lua (one- / two-hand swaps, the
   MP5K's both-hands model), and the reload wrappers keyed on our animIds (magazine in the left hand, part spec pointed
   at the magazine, the M249's cover steps and STANAG hand models). `SavedModels.lua` copies GoM's live MP5K model over
@@ -325,6 +333,11 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   _Left / _Right` are removable upgrades drawn at `rail_up` / ... points; a gun with only an integral right rail takes
   lasers but no light. Audit done 2026-10-30 (section "Picatinny rail upgrades"): Post-93 has nothing left to add; the
   main mod's AUG A1 (left, right), M249 (all four), Uzi and Mini Uzi (top, bottom, left) take them, the Micro none.
+- **KRISS Vector .45 and 9mm** (user, 2026-10-30, from the Community Wishlist): Gen II SMG, two guns on one model
+  as the UMPs, the .45 flat dark earth and the 9mm sand ("Let's not use black"), Glock magazines (the .45 the Glock
+  21's 13 + KRISS's 30, the 9mm GoM's Glock 17 17 + Glock's 33 + KRISS's 40; ours fit the pistols too), 1200 rpm with
+  a two-round burst, the UMPs' muzzle parts, reload, stock stats and loot route, GoM's optional side rails for lights
+  and lasers. Design: docs/post93_design.md; build notes: section "KRISS Vector .45 and 9mm".
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -437,7 +450,10 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   `make_aug3_art.py` (the AUG A3, Para and HBAR, section "Steyr AUG A3, Para and HBAR"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
   Foregrip radial icons, moved from post93/ on 2026-10-27); `scripts/build_rails.py` (our short Picatinny rails for
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
-  or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`).
+  or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
+  `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); Post-93's
+  `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
+  and 9mm").
 
 ## Status and how to continue
 
@@ -988,13 +1004,23 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 ## Belt links (2026-10-22)
 
 - Design: docs/design.md 4e (user's choices: none lost, found and crafted, M249 and GoM's M60, fired links thrown
-  out like Hot Brass casings). Files: `shared/GunsOfTien/BeltLinks.lua` (fill / unload wrappers, per-shot handler,
-  `BeltLinks.eject`: Ammo Maker's brass catcher, else Hot Brass's `doSpawnCasing` with the link as its
-  `optionalItem` and `ignoreDespawn` true (always a real item, outside Ammo Maker's casing clean-up), else
-  `AddWorldInventoryItem` at the feet; a "Link" family added to Hot Brass's `CasingImpactSoundParams` +
-  `RegisterItemSound`), `client/GunsOfTien/BeltLinks.lua` (MP: shots counted per gun, sent twice a second as
-  `GunsOfTien` / `beltLinks`), `server/GunsOfTien/BeltLinks.lua` (checks the gun in hand has a belt box, caps the
-  count at 1000 rpm since the last report, 40 a message, throws two a tick), `scripts/make_link_sounds.py` (Blender's
+  out like Hot Brass casings; 2026-10-31: "copy the behaviour of the casings", so a fired link rides along with each
+  casing the casing mods place, no rules of our own). Files: `shared/GunsOfTien/BeltLinks.lua` (fill / unload
+  wrappers; at OnInitGlobalModData, server / single player only, wrappers on the casing mods' server-folder
+  functions, each looked up at call time and guarded against a second world load: Hot Brass alone = `spawnCasing`
+  (fired) and `rackCasing(.., true)` (live round racked out) note the gun's link, and the `addCasing` /
+  `addCasingToVehicle` they reach place it right after the casing (own launch values, the casing's `ignoreDespawn`,
+  the same seat); Ammo Maker = the link is the shot's `dropExtraData` extra item: our OnClientCommand handler (shared
+  folder, so before Ammo Maker's server-folder one) notes the gun of `ammomaker returnCasingsOnAttack`, and the
+  wrapped `ammoMakerGetDropExtraDataItemType` answers its link when a belt box is fitted (the table itself is keyed
+  by gun type, which would also give links from the M249's STANAGs); `doSpawnCasing` swaps in our launch values for
+  a link Ammo Maker throws through Hot Brass; `ammoMakerItemCleanUpAddModData` sends links to our list; a "Link"
+  family added to Hot Brass's `CasingImpactSoundParams` + `RegisterItemSound`), `server/GunsOfTien/BeltLinks.lua`
+  (Ammo Maker's clean-up for links: its own removal builds `"ammomaker." .. getType()`, so it never removes anything
+  else and keeps such entries for good when the square holds other items; ours removes one link of the type after
+  `DroppedCasingsLifetime` hours, every ten in-game minutes, and notes nothing while it is 0). The old client shot
+  counter and server batch thrower (`GunsOfTien` / `beltLinks`) are gone: both casing mods already send one command
+  per shot, so a cheating client can farm links exactly as it can farm their casings. `scripts/make_link_sounds.py` (Blender's
   numpy + `aud` write Ogg Vorbis; 36 synthesised landing sounds (six a surface, noise-driven resonant modes: pure sines stacked in a burst sounded like a chime, user 2026-10-22), events in sounds_links.txt; each link 3 dB under Hot
   Brass's casing on the same surface, user 2026-10-22). Hot Brass 42.15 flies every casing on every nearby client
   (the server's `spawnCasingVisual` goes to all) but plays its landing sound only on the shooter's game, on the
@@ -1009,8 +1035,9 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   loot in `server/GunsOfTien/Loot.lua` (a link box group added to GoM's own M60 kits, taken out again on reload).
 - Engine facts (42.21): `OnWeaponSwingHitPoint` fires on the shooter's game for every shot (vanilla's `onShoot`),
   but on a dedicated server only from the hit packet (`zombie/network/fields/hit/Player`, once per shot ID and only
-  for `hitCount` > 0), so a missed shot never reaches the server's event: links from firing are counted by the
-  client. Gunworks' magazine loading (`ISLoadBulletsInMagazine:animEvent` InsertBullet) and unloading
+  for `hitCount` > 0), so a missed shot never reaches the server's event (hence links ride on the casing mods' own
+  per-shot commands: Hot Brass's client sends `spawnCasing` at OnWeaponSwing, Ammo Maker's at
+  OnPlayerAttackFinished). Gunworks' magazine loading (`ISLoadBulletsInMagazine:animEvent` InsertBullet) and unloading
   (`ISUnloadBulletsFromMagazine:animEvent` RemoveBullet) change the magazine where `not isClient()`; the wrappers
   compare the count before and after there. `isLoadFinished` returning true ends the load cleanly (Gunworks checks it
   before every round), so "no link left" is put there. `ItemContainer.getFirstType` takes a full type (compareType).
@@ -1018,8 +1045,18 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   `ISRackFirearm:removeBullet` (no round into the inventory, `emptyRack = false`) and throws the live round at the
   rack's `ejectCasing` only when `not emptyRack` (an MP client falls back to `hadRoundChambered`), so `rackBullet`
   must come before `ejectCasing` in the rack AnimSet: Hot Brass's own XMLs list it first; RackM249_GoT.xml had them
-  at the same time the other way round, so in single player the round vanished. The link comes from a
-  `rackBullet` wrapper (Hot Brass re-wraps `removeBullet` at every OnInitGlobalModData, so not there).
+  at the same time the other way round, so in single player the round vanished. The link follows the round
+  (2026-10-31): Hot Brass (no Ammo Maker) replaces `rackBullet` with a no-op at OnInitGlobalModData, so the old
+  `rackBullet` wrapper never ran with Hot Brass alone. Now a `removeBullet` wrapper made at file load (outside
+  Gunworks' own, which picks the round from AmmoList) gives the link to the inventory: vanilla calls `removeBullet`
+  only for a live round, and Hot Brass's replacement (re-made at every OnInitGlobalModData) calls the earlier one
+  only when the round goes to the inventory (Ammo Maker on, Persistent Casings off, `isManuallyRemoveSpentRounds`).
+  When Hot Brass throws the round instead, it is `rackCasing(player, gun, true)` from its
+  `removeRoundFromChamber`, and the link follows it like a fired casing (also with Persistent Casings off, where the
+  round flies for show beside the one put in the inventory: the link does both too). Hot Brass gives
+  `ignoreDespawn` priority over Persistent Casings and puts a seated shooter's casing in the seat whatever the
+  option. Checked with lupa against mocks with the casing mods' call structure for every mod combination, both
+  options, a seated shooter and STANAG magazines (2026-10-31), not yet in game.
   Our shared files load after Gunworks' (mod order), so the wrappers sit on top of its own.
 
 ## Uzi family (2026-10-23)
@@ -1180,6 +1217,120 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `556x45Box200_M249.png` and `GunsOfTien_M249_box.fbx` and build_uzi.py's magazine textures (1 level noise in 28
   pixels) come out different from the committed ones (the box texture heavily): they were restored from git after the
   rail rebuilds, so the committed box predates a script change not traced here.
+
+## Glock 21 (2026-10-30)
+
+- Files: `scripts/build_glock21.py` (Blender, ~1 min: `GunsOfTien_GLOCK21.fbx` GLOCK21_BODY / _SLIDE,
+  `GunsOfTien_GLOCK21_magazines.fbx` 45Magazine13_GLOCK21, GLOCK21.png 256, the magazine 128, `scripts/glock21_points.json`),
+  `scripts/render_glock21.py -- DIR` (review renders, GoM's parts at their points, GoM's Glock 17 and USP at the same
+  scale), `scripts/make_glock21_art.py [--renders DIR [--photo references/glock21/Glock_21_Avriette.jpg]]` (icons with
+  Post-93's Five-seveN cameras fitted on GoM's Glock 17, sheet `docs/glock21_preview.png`), `gen_scripts.py glock21()`
+  (models_glock21.txt, items_glock21.txt, fixing_glock21.txt, names), `shared/GunsOfTien/Glock21.lua` (registries,
+  spawn parts, GoM's pistol parts' MountOn), `client/GunsOfTien/Glock21Tooltips.lua`, loot in `server/GunsOfTien/Loot.lua`,
+  Hot Brass in `server/GunsOfTien/HotBrass.lua`. Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
+- **Reference**: Commons "Glock 21 Avriette.jpg" (Avriette, CC BY-SA 3.0, 1428 px; not in the repo, references/glock21),
+  the gun's **right** side (muzzle right: the ejection port and the US import marking "MADE IN AUSTRIA / GLOCK INC.
+  SMYRNA, GA" show), the loose magazine and an AA battery beside it. Traced with post93/trace_outline.py (threshold
+  200) into `scripts/glock21_reference_outline.json` at Glock's 209 mm (6.19 px/mm; the battery then reads 48.5 mm
+  against 50.5, the height 134 against Glock's 139); the trigger opening is build_glock21.py's OPENING (the trace ran
+  round the trigger). Silhouette IoU 95.3% with the photo's outline, which runs outside our grip on purpose.
+- The photo is a **Gen 3** (rail on the dust cover) in a Hogue rubber grip sleeve (finger grooves, thicker): the profiles
+  keep its slide (levelled: its top falls 3 mm over the length), frame top and trigger guard, and draw the Gen 2's flat
+  dust cover underside (H 93.5) and a straight front strap with the back edge 1.5 mm inside the sleeve's; no Gen 2 side
+  photo was found on Commons (user, 2026-10-30: "work around from the pics"). The loose magazine gave its size: 118 mm
+  from the feed lips to the base, 37 mm front to back.
+- GoM's pistol conventions as on the Five-seveN and UCP: modelled upright, turned upside down at export, origin 11 mm
+  behind the deepest point under the beavertail (L 188.5, H 86), bore 32.5 mm above it; points muzzle, slide_fired
+  (34 mm), world, rail_up (61 mm behind the muzzle, 11.4 under the slide top), scope, underbarrel (the dust cover's
+  underside: GoM's lights and lasers sit there with no rail, as GoM's own Glock 17 takes them), canon (the crown: GoM's
+  .45 mount device drawn with its `MarzGuns.Muzzle_Mount_Device` model, as its USP). No magazine point. Drawn at 0.603,
+  so it looks smaller than GoM's Glock 17 (0.72), although a real Glock 21 is a little bigger.
+- The pistol lasers' beams are ModelWeaponPart lines in its item script (gen_scripts.py), as every gun of ours has
+  them since 2026-10-30 (Lasers.lua skips `GunsOfTien*` guns).
+
+## KRISS Vector .45 and 9mm (Post-93, 2026-10-30)
+
+- Files: `scripts/post93/build_vector.py` (Blender, ~1.5 min: `GunsOfTienPost93_VECTOR.fbx` VECTOR_BODY / _BOLT /
+  _HANDLE / _RAIL_LEFT / _RAIL_RIGHT, `_VECTOR_parts.fbx` VECTOR_STOCK, `_VECTOR_magazines.fbx` (five Vector magazines
+  + three pistol copies), VECTOR45.png / VECTOR9.png 256, VECTOR45_STOCK / VECTOR9_STOCK 128, one 128 per Vector
+  magazine, `vector_points.json`), `render_vector.py -- DIR`, `make_vector_art.py [--renders DIR]` (icons, sheet
+  `docs/post93_vector_preview.png`), `gen_post93_guns.py vectors()` (models_vector.txt, items_vector.txt,
+  fixing_vector.txt, names), `shared/GunsOfTienPost93/Vector.lua` (registries, spawn parts, MountOn, the pistols'
+  ModelWeaponPart lines), its tooltips in `client/GunsOfTienPost93/Tooltips.lua`, loot in `Loot.lua`, Hot Brass in
+  `HotBrass.lua`. Rebuild: build, render, art, then `gen_post93_guns.py` and `check_refs.py`; `fit_audit.py` lists both
+  guns. The main mod's `gen_scripts.py` writes the Glock 21 magazine's `Bip01_Prop2` (`GLOCK21_MAG_PROP2`), which
+  build_vector.py works out (`_extras.pistol_magazines`).
+- **Reference**: Commons "Kriss Vector SMG Realistic.png" (Gasteiz, CC BY-SA 3.0; references/vector, not in the
+  repo), a straight left-side drawing on a transparent background of a Vector SMG with a suppressor, an EOTech, a
+  vertical grip and the 30-round .45 magazine. Scale from its top rail: 1.95 px per mm (10 mm crossbar pitch), giving
+  566 mm from the receiver's front face to the butt with the stock out (KRISS: 610 with the threaded barrel and a
+  longer stock setting). Frame: L back from the receiver's front face (drawing x 597 px), H up from the frame's lowest
+  point (y 440); origin (the rear-top of the grip) L 328, H 132; bore H 115.5. Profiles were read on a millimetre grid
+  laid over crops of the drawing (crop the drawing at 4-5x with 5 mm lines: much faster than reading the whole image),
+  then checked with a diff of the render against the drawing's alpha (the drawing's drop shadow shows as a 4 mm band
+  down-right of every edge). `vector_reference_outline.json` is the drawing's dark pixels (luminance < 150, so no
+  shadow) with the suppressor, EOTech / raised sights and vertical grip masked out, traced with trace_outline.py's
+  functions: overlap 83.4%, 3.5% of the render outside it (the drawing's raised sights against our folded ones). Second
+  photo for checking only: "Kriss Vector left.JPG" (Michael E. Cumpston, CC BY-SA 4.0, a real Gen II CRB).
+- First reading errors fixed against the diff: the hand's opening behind the housing is bounded by the housing's
+  slanted rear (226.5, 93)-(245, 35), a V-shaped floor down to (271, 20) and the grip's straight front (273, 95)-(299,
+  37); the bar under the trigger window sits at H 93-104 (slanted), not 98-104.5; the grip's back has a deep hollow
+  for the thumb's web (L 315.5 at H 118); the stock's "window" is really the open gap in front of the butt plate
+  (frame members at H 92-119 and 0-44, the plate at L 529.5-565 on two posts).
+- **The 9mm is held like a pistol** (user, 2026-11-01; the .45 stays rifle-held): GoM's MP5K way, as the MP7s and the
+  P90. build_vector.py exports turned copies of the .45's nodes (`VECTOR9_BODY / _BOLT / _HANDLE / _RAIL_LEFT /
+  _RIGHT`, `VECTOR9_STOCK` in the parts file; `turned_copy`: data x and z negated, UVs kept, so `VECTOR9.png` paints
+  them) and writes `vector9_points.json` (`handgun_points`: offsets x and z negated, rotates kept for our own nodes
+  (the folded stock's half turn about Z commutes with the turn), `TURN` for upright parts: the magazines and GoM's
+  optics / foregrips / lights / lasers; GoM's MP5K `world`; `rifle_back` / `rifle_back_bag` turns for the back slot).
+  The item drops `TwoHandWeapon` / `RequiresEquippedBothHands` / `IdleAnim`, Handgun swing, handgun reload type,
+  `muzzle_flash_handgun` (gen_post93_guns.py `vector_item`); Vector.lua registers GoM's "handgun2" reload for it;
+  Hot Brass the MP7's numbers. render_vector.py `V9_pistol_*` assembles it from its own nodes and points, turned back
+  upright: the bare gun and the folded stock matched `V9_left` / `V9_folded_top` to the pixel, and fit_audit.py gives
+  the same numbers as the upright gun. Icons and the preview still show the upright meshes (the same look).
+- **One mesh, two textures** (the UMPs' way): the bake is painted twice (`COLOURS`: FDE (116, 97, 70), sand (192, 176,
+  134), polymer and grip), markings differ (".45 ACP" / "9MM" on the right). Bolt, handle and side rails use
+  VECTOR45.png (the same texels in both); the stock is one node drawn by `VECTOR45_STOCK` / `VECTOR9_STOCK` models
+  with each colour's texture, picked by the gun's own stock part lines.
+- **Points**: GoM's rifle set at the UMPs' relations. `magazine` = the .45 magazines' feed lips (L 119.5, H 100; the
+  well's front edge runs L = 132 + 0.342 (8 - H), so the magazines are raked 18.9 degrees); the 9mm magazines (32 mm
+  deep against 37) are built 2.5 mm forward so their front edge meets the well's. `rail_left` / `rail_right` = the
+  front block's faces (VECTOR_RAIL_* origins), lights 0.0007 out from the crossbar faces, lasers 0.0018 out and 0.0008
+  lower (the UMP's relations). `stock_folded` = 180 degrees about the hinge pin at x = -(W_HOUSING + 1 + W_STOCK_FRONT)
+  / 2: the folded stock lies 1 mm off the housing's right side (the first build, pin at -(W_UPPER + 3), left a 12 mm
+  gap). `canon` = the receiver's front face (L -1; the threaded barrel ends at L -13).
+- **Pistol copies** (`stretch_copy`): the pistol's magazine mesh (FBX data space, the pistols modelled upside down, so
+  data z is real up) split at the middle of its long axis (PCA), the lower half moved down that axis by 17 x 6.0 mm x K
+  (the 30, from the Glock 21's 13) or (n - 17) x 6.1 mm x 0.72 (GoM's 17 to 33 / 40); UVs kept, so the texture stretches.
+  Their `Bip01_Prop2` is GoM's Glock 17 magazine's (the top half is unchanged). The Glock 21 13's own point
+  (`bip01_prop2`, now in build_mp7.py with GoM's path and `import_mesh`): GoM's rotate, offset a + R (c_GoM - c_ours)
+  with the mesh centres in game space, so ours sits where GoM's does in the hand (render_vector.py `prop2_*` draws
+  both). Before this the Glock 21's magazine had no Bip01_Prop2, so a Glock 21 reload probably drew it off the hand.
+- **The off hand's point on magazines** (2026-11-01). Gunworks' `style = "none"` (every GoMReloads profile)
+  does not hide the hand's magazine: it only skips the gun-side magazine swap. The hand prop comes from anim events
+  in the node (`Props.lua`: `attachToHand` = `gwSetProp` with the magazine being inserted / ejected,
+  `detachFromHand`), and GoM's LoadPistol / UnloadPistol (pistol_reload: 0.03 / 0.80), LoadFAMAS / UnloadFAMAS and
+  LoadM60 / UnloadM60 fire them; its MP5, handgun2 and left_handle_load nodes do not. Drawn = bone x body point x the magazine's own point x
+  mesh (42.21 `ModelInstanceRenderData.invertAttachmentSelfTransform` is false, never inverted). GoM gives all 16 of
+  its pistol magazines one point, which puts the Bip01_Prop2 bone on its Glock 17 magazine's base plate (mesh data
+  (0.008, 0.015, -0.061)); they are modelled in their own gun's frame, so their tops sit within a few mm of each other
+  and the long ones (M92FS 50, M93R 60 drums) run past the base plate through the hand. The Five-seveN's and UCP's
+  20s got theirs the Glock 21's way (build_fiveseven.py / build_ucp.py write `_extras.prop2`, gen_post93_guns.py the
+  attachment line), the 30 and the drum share it (same top): Five-seveN -0.0108 0.0022 -0.0640 (GoM's own within
+  1.6 mm), UCP -0.0077 0.0054 -0.0574. Rebuilding those two on Windows gave the same geometry but different FBX and
+  texture bytes, so only the points files were kept.
+  Rifle magazines (user, 2026-11-01: "we follow GoM's way"): GoM's are modelled about their feed lips on the gun's
+  axes, one rotate per animation, the bone on the magazine's side face 55-65% down (STANAG 30 at data (0.0099,
+  0.0034, 0.0583)); it placed them by hand (neither centres nor tops reproduce its AK-family offsets: 4 / 3.4 mm for
+  the 7.62x39, 24 / 13 mm for the 9x39), longer ones share their short one's point, and a magazine that seats like
+  another takes its point as it is (FAL 20, G36 30 = STANAG). So every AUG magazine (A1's 30 / 42, Post-93's
+  9mm 25 / 32 and 7.62x39 30 / 50) has the STANAG's point, the FAMAS's only magazine (gen_scripts.py
+  GOM_STANAG_PROP2). GoM's M60 box is modelled in the M60's space (drawn at its origin), ours about its feed opening
+  at the M249's `box` point, both unturned: the M60 box's rotate with our box's bounding-box middle where its is
+  (`prop2_moved`; vertex means lean to the feed openings, ours by 32 mm): 0.0189 0.0648 0.0068.
+- **fit_audit.py**: every GoM optic, foregrip, light and laser on both Vectors sits 0.6-1.6 into the rail (GoM's own
+  guns 0.2-1.6), nothing floats; the magazines 14.2 into the well (the UMPs' 13.3). A plain BVH overlap count says
+  nothing here (every clamp grips its rail).
 
 ## Bullpup set (2026-10-27)
 

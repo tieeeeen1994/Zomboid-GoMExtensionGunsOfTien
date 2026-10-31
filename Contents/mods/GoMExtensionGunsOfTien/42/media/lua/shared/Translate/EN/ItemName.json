@@ -131,6 +131,7 @@
   "GunsOfTien.UZI": "Uzi Submachine Gun",
   "GunsOfTien.MINIUZI": "Mini Uzi Submachine Gun",
   "GunsOfTien.MICROUZI": "Micro Uzi Submachine Gun",
+  "GunsOfTien.UZI_2H": "Uzi Submachine Gun (Two-Handed)",
   "GunsOfTien.9x19Magazine20_UZI": "Uzi 20Rds 9x19mm Magazine",
   "GunsOfTien.9x19Magazine25_UZI": "Uzi 25Rds 9x19mm Magazine",
   "GunsOfTien.9x19Magazine32_UZI": "Uzi 32Rds 9x19mm Magazine",
@@ -148,5 +149,9 @@
   "GunsOfTien.AUG_Integrated_Foregrip_Folded": "AUG Integrated Foregrip (Folded)",
   "GunsOfTien.AUG_Integrated_Foregrip_Deployed": "AUG Integrated Foregrip (Deployed)",
   "GunsOfTien.AUG_Integrated_Scope": "AUG A1 Integrated 1.5x Scope",
+  "GunsOfTien.GLOCK21": "Glock-21",
+  "GunsOfTien.45Magazine13_GLOCK21": "Glock-21 13Rds .45 ACP Magazine",
+  "GunsOfTien.ChargingHandle_Forward": "Charging Handle (Forward)",
+  "GunsOfTien.ChargingHandle_Back": "Charging Handle (Back)",
   "MarzGuns.MP5": "MP5A3 Submachine Gun"
 }

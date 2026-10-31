@@ -1,0 +1,28 @@
+module GunsOfTien {
+
+    model GLOCK21 {
+        mesh     = weapons/firearms/GunsOfTien_GLOCK21|GLOCK21_BODY,
+        texture  = weapons/GunsOfTien/GLOCK21,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1137 -0.0196, rotate = -90.0000 0.0000 -180.0000, }
+        attachment slide_fired { offset = 0.0000 -0.0205 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = -0.0075 0.0519 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0769 -0.0203, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0690 -0.0347, rotate = 0.0000 0.0000 0.0000, }
+        attachment underbarrel { offset = 0.0000 0.0932 -0.0045, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1137 -0.0196, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model GLOCK21_SLIDE {
+        mesh     = weapons/firearms/GunsOfTien_GLOCK21|GLOCK21_SLIDE,
+        texture  = weapons/GunsOfTien/GLOCK21,
+        cullFace = None,
+    }
+
+    model 45Magazine13_GLOCK21 {
+        mesh     = weapons/magazines/GunsOfTien_GLOCK21_magazines|45Magazine13_GLOCK21,
+        texture  = weapons/GunsOfTien/45Magazine13_GLOCK21,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0148 -0.0029 -0.0516, rotate = 7.4929 -4.9199 -40.7737, }
+    }
+}

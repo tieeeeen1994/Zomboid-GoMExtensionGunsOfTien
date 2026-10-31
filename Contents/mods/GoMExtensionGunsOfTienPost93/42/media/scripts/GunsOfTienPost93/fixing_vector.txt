@@ -1,0 +1,11 @@
+module Base {
+    fixing Fix VECTOR45 {
+        Require = GunsOfTienPost93.VECTOR45,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix VECTOR9 {
+        Require = GunsOfTienPost93.VECTOR9,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

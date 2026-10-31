@@ -569,8 +569,12 @@ def main():
     for o in [body, slide] + mags:                      # upside down, as GoM's pistols: 180 degrees about the bore
         o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
     bounds = {o.name: kit.bounds_of(o) for o in [body, slide] + mags + [supp, mount]}
+    pts = points(bounds)
+    gom = kit.gom_glock17_magazine()
+    pts["_extras"]["prop2"] = kit.bip01_prop2(mags[0], gom)       # both magazines (the 30 shares the 20's top)
+    bpy.data.objects.remove(gom)
     with open(POINTS_JSON, "w") as fh:
-        json.dump(points(bounds), fh, indent=2)
+        json.dump(pts, fh, indent=2)
         fh.write("\n")
 
     kit.export([body, slide], FBX_GUN)

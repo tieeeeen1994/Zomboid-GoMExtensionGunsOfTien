@@ -66,10 +66,11 @@
   "Tooltip_Recipe_GunsOfTien_SawOffRifleBarrel": "Saws the barrel and forend off ahead of the rear sight and moves the front sight back.",
   "Tooltip_weapon_BarrelIntegrated": "Barrel (Integrated)",
   "Tooltip_weapon_FeedCover": "Feed Cover",
-  "Tooltip_Item_GunsOfTien_M27_Link": "Holds one round in the M249's belt. Filling its belt box takes one link per round. Thrown out of the gun when its round is fired.",
+  "Tooltip_Item_GunsOfTien_M27_Link": "Holds one round in the M249's belt. Filling its belt box takes one link per round. Comes out of the gun with its round's casing when fired.",
   "Tooltip_Item_GunsOfTien_LinkBox_M27": "200 links, one M249 belt.",
   "Tooltip_Recipe_GunsOfTien_MakeM27_Links": "Stamp 50 links out of a small sheet of metal.",
-  "Tooltip_Item_GunsOfTien_M13_Link": "Holds one round in the M60's belt. Filling its belt box takes one link per round. Thrown out of the gun when its round is fired.",
+  "Tooltip_Item_GunsOfTien_M13_Link": "Holds one round in the M60's belt. Filling its belt box takes one link per round. Comes out of the gun with its round's casing when fired.",
   "Tooltip_Item_GunsOfTien_LinkBox_M13": "100 links, one M60 belt.",
-  "Tooltip_Recipe_GunsOfTien_MakeM13_Links": "Stamp 40 links out of a small sheet of metal."
+  "Tooltip_Recipe_GunsOfTien_MakeM13_Links": "Stamp 40 links out of a small sheet of metal.",
+  "Tooltip_weapon_ChargingHandle": "Charging Handle"
 }

@@ -349,24 +349,28 @@ module GunsOfTienPost93 {
         mesh     = weapons/magazines/GunsOfTienPost93_FIVESEVEN_magazines|57x28Magazine20_FIVESEVEN,
         texture  = weapons/GunsOfTienPost93/57x28Magazine20_FIVESEVEN,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0108 0.0022 -0.0640, rotate = 7.4929 -4.9199 -40.7737, }
     }
 
     model 57x28Magazine30_FIVESEVEN {
         mesh     = weapons/magazines/GunsOfTienPost93_FIVESEVEN_magazines|57x28Magazine30_FIVESEVEN,
         texture  = weapons/GunsOfTienPost93/57x28Magazine30_FIVESEVEN,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0108 0.0022 -0.0640, rotate = 7.4929 -4.9199 -40.7737, }
     }
 
     model 46x30Magazine20_UCP {
         mesh     = weapons/magazines/GunsOfTienPost93_UCP_magazines|46x30Magazine20_UCP,
         texture  = weapons/GunsOfTienPost93/46x30Magazine20_UCP,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0077 0.0054 -0.0574, rotate = 7.4929 -4.9199 -40.7737, }
     }
 
     model 46x30Magazine40_UCP {
         mesh     = weapons/magazines/GunsOfTienPost93_UCP_magazines|46x30Magazine40_UCP,
         texture  = weapons/GunsOfTienPost93/46x30Magazine40_UCP,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0077 0.0054 -0.0574, rotate = 7.4929 -4.9199 -40.7737, }
     }
 
     model MP7_Suppressor {

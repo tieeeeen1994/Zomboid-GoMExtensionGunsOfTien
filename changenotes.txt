@@ -1,2 +1,14 @@
 Picatinny rails
 - Guns of Marz's Picatinny rails now fit the M249 (all four sides: on the feed cover and round the handguard), the Uzi and Mini Uzi (top, bottom and left, as short clamp-on rails) and the Steyr AUG A1 (left and right, short rails beside the receiver): optics on top, foregrips underneath, lights on the left, lasers on the right. The Uzi takes red dots only, the Mini Uzi the Reflex S2 only, the M249 every optic but the four longest scopes. Guns found in the world sometimes come with them fitted, at Guns of Marz's own chances
+
+Glock 21
+- New: the Glock 21, Glock's .45 of 1990 as it was in 1993 (no accessory rail, no finger grooves), with its 13-round magazine. It takes Guns of Marz's pistol sights on the Beretta mount, its pistol lasers and lights, and its .45 muzzle mount and P45 suppressor, and is found where Guns of Marz's Glock 17 is and with its imported pistols in gun stores
+
+Post-93: KRISS Vector
+- New: the KRISS Vector .45 (flat dark earth) and 9mm (sand), named "Vector .45" and "Vector 9mm" in game, with KRISS's Super V: about 1200 rounds a minute, two-round burst and little recoil. They take Glock magazines: the .45 the Glock 21's 13 and a new 30-round extended magazine, the 9mm Guns of Marz's Glock 17 17 and new 33 and 40-round extended magazines, and the new magazines fit the Glock 21 and the Glock 17 too. Side-folding stock, top and bottom rails for Guns of Marz's optics and foregrips, and Guns of Marz's Picatinny Rails on both sides for its lights and lasers; the .45 takes the .45 muzzle mount and P45 suppressor, the 9mm the AWC Mk9. The .45 is held two-handed and reloads like Guns of Marz's MP5; the 9mm is held one-handed like its MP5K (and reloads like it), still carried on the back. Found where the UMPs are; the long magazines also turn up on their own with Guns of Marz's high-capacity magazines
+
+Post-93: Five-seveN
+- Guns of Marz's Five-seveN is now named just "Five-SeveN" (it was "5.7x28mm Five-SeveN")
+
+Reloads
+- The magazine shown in the off hand during a reload now sits in the hand, as Guns of Marz's do: the AUG's magazines and the M249's 200-round box, and in Post-93 the AUG A3, Para and HBAR magazines and the Five-seveN's and UCP Prototype's

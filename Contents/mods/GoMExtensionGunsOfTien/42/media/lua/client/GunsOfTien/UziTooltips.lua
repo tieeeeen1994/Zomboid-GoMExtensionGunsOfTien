@@ -10,14 +10,14 @@ if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "tabl
 
 local lines = tooltips.tooltipsPergun
 
-for _, gun in ipairs({ "UZI", "MINIUZI", "MICROUZI" }) do
+for _, gun in ipairs({ "UZI", "MINIUZI", "MICROUZI", "UZI_2H" }) do
     lines["GunsOfTien." .. gun] = {
         "Uses 9x19mm rounds.",
         "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
     }
 end
 -- GoM's optional rails (shared/GunsOfTien/Rails.lua), GoM's wording; red dots only on top, the Mini's Reflex S2 only
-for gun, optics in pairs({ UZI = "red dots only", MINIUZI = "Reflex S2 Sight only" }) do
+for gun, optics in pairs({ UZI = "red dots only", MINIUZI = "Reflex S2 Sight only", UZI_2H = "red dots only" }) do
     table.insert(lines["GunsOfTien." .. gun], "Available Picatinny Slots: Up, Down, Left.")
     table.insert(lines["GunsOfTien." .. gun], "Compatible Optics: " .. optics)
 end

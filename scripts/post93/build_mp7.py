@@ -1246,6 +1246,54 @@ def bounds_at(ob, point):
             "tris": sum(len(p.vertices) - 2 for p in ob.data.polygons)}
 
 
+# ==================================================================================================
+# The off hand's point on a pistol magazine (Bip01_Prop2)
+# ==================================================================================================
+# Gunworks draws the magazine in the reload's off hand at the character's Bip01_Prop2 through the magazine model's own
+# point of that name (drawn = bone x point x mesh: ModelInstanceRenderData.invertAttachmentSelfTransform is false).
+# GoM gives every pistol magazine one point, GOM_GLOCK_PROP2, which puts its Glock 17 magazine's base plate on the
+# bone. Ours get GoM's rotate with the offset moved so their mesh centre lands where GoM's Glock 17 magazine's does;
+# a longer magazine with the same top (Glock 21 30, Five-seveN 30, UCP drum) takes its short one's point, as GoM's
+# extended ones take GoM's.
+
+GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
+                                           "3722134990/mods/GunsOfMarz/42.16/media"),
+                        "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
+                        "42.16/media") if os.path.isdir(p)), None)
+GOM_GLOCK_PROP2 = ([-0.0107, 0.0022, -0.0624], [7.4929, -4.9199, -40.7737])     # GoM's 9x19Magazine17_GLOCK
+
+
+def import_mesh(path, node):
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.fbx(filepath=path)
+    found = None
+    for o in set(bpy.data.objects) - before:
+        if o.type == 'MESH' and o.name.lower() == node.lower():
+            found = o
+        else:
+            bpy.data.objects.remove(o)
+    return found
+
+
+def gom_glock17_magazine():
+    path = os.path.join(GOM, "models_X/weapons/magazines/pistols.fbx")
+    return import_mesh(path, "9x19Magazine17_GLOCK17") or import_mesh(path, "9x19Magazine17_GLOCK17")
+
+
+def bip01_prop2(src_obj, gom_obj, gom_point=GOM_GLOCK_PROP2):
+    """The hand's point for a pistol-space magazine mesh of ours, from GoM's on its Glock 17 magazine: the same rotate,
+    the offset moved so our magazine's centre lands where GoM's does (drawn = bone x point x mesh)."""
+    a, r = gom_point
+    rx, ry, rz = [math.radians(v) for v in r]
+    rot = Matrix.Rotation(rx, 3, 'X') @ Matrix.Rotation(ry, 3, 'Y') @ Matrix.Rotation(rz, 3, 'Z')
+    cg = np.array([v.co[:] for v in gom_obj.data.vertices]).mean(axis=0)
+    co = np.array([v.co[:] for v in src_obj.data.vertices]).mean(axis=0)
+    # mesh data z is game -z
+    t = Vector((cg[0] - co[0], cg[1] - co[1], -(cg[2] - co[2])))
+    off = Vector(a) + rot @ t
+    return {"offset": [round(off.x, 4), round(off.y, 4), round(off.z, 4)], "rotate": list(r)}
+
+
 def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene

@@ -83,5 +83,15 @@
   "GunsOfTienPost93.AUG_Integrated_Rail_Up": "AUG Integrated Rail (Up)",
   "GunsOfTienPost93.AUG_Integrated_Rail_Right": "AUG Integrated Rail (Right)",
   "GunsOfTienPost93.AUGHBAR_Integrated_Bipod_Folded": "AUG HBAR Integrated Bipod (Folded)",
-  "GunsOfTienPost93.AUGHBAR_Integrated_Bipod_Deployed": "AUG HBAR Integrated Bipod (Deployed)"
+  "GunsOfTienPost93.AUGHBAR_Integrated_Bipod_Deployed": "AUG HBAR Integrated Bipod (Deployed)",
+  "GunsOfTienPost93.VECTOR45": "Vector .45 Submachine Gun",
+  "GunsOfTienPost93.VECTOR9": "Vector 9mm Submachine Gun",
+  "GunsOfTienPost93.45Magazine30_GLOCK21": "Glock-21 30Rds .45 ACP Extended Magazine",
+  "GunsOfTienPost93.9x19Magazine33_GLOCK": "Glock-17 33Rds 9x19mm Extended Magazine",
+  "GunsOfTienPost93.9x19Magazine40_GLOCK": "Glock-17 40Rds 9x19mm Extended Magazine",
+  "GunsOfTienPost93.VECTOR_Integrated_Stock_Folded": "Vector Integrated Stock (Folded)",
+  "GunsOfTienPost93.VECTOR_Integrated_Stock_Deployed": "Vector Integrated Stock (Deployed)",
+  "GunsOfTienPost93.VECTOR_Integrated_Rail_Up": "Vector Integrated Rail (Up)",
+  "GunsOfTienPost93.VECTOR_Integrated_Rail_Down": "Vector Integrated Rail (Down)",
+  "MarzGuns.FIVESEVEN": "Five-SeveN"
 }

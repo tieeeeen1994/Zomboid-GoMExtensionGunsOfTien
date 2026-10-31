@@ -1,6 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
-    Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
+    .45 and 9mm, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -55,6 +56,29 @@ for _, mag in ipairs({ "45Magazine25_UMP", "45Magazine20_UMP", "45Magazine10_UMP
     lines[M .. mag] = { "Uses .45 rounds." }
 end
 lines[M .. "9x19Magazine30_UMP"] = { "Uses 9x19mm rounds." }
+
+-- The KRISS Vectors (shared/GunsOfTienPost93/Vector.lua): integral top and bottom rails, GoM's Picatinny Rail upgrades
+-- on both sides (KRISS's side rails), the side-folding stock with the UMPs' stats; Glock's magazines, ours fitting
+-- the Glock 21 / GoM's Glock 17 too
+GunsOfTien_TooltipStates[M .. "VECTOR_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
+lines[M .. "VECTOR45"] = {
+    "Uses .45 rounds.",
+    "Takes Glock 21 magazines.",
+    "Integrated Picatinny rails: Up, Down",
+    "Available Picatinny Slots: Left, Right",
+    "Compatible Muzzle Device: .45 Muzzle Mount",
+}
+lines[M .. "VECTOR9"] = {
+    "Uses 9x19mm rounds.",
+    "Takes Glock 17 magazines.",
+    "Integrated Picatinny rails: Up, Down",
+    "Available Picatinny Slots: Left, Right",
+    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
+}
+lines[M .. "45Magazine30_GLOCK21"] = { "Uses .45 rounds.", "Fits the Glock-21 and the Vector .45." }
+for _, mag in ipairs({ "9x19Magazine33_GLOCK", "9x19Magazine40_GLOCK" }) do
+    lines[M .. mag] = { "Uses 9x19mm rounds.", "Fits the Glock-17 and the Vector 9mm." }
+end
 
 -- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): integral top and right rails, GoM's Picatinny Rail upgrade on the
 -- left ("Available Picatinny Slots", GoM's wording for its rail upgrades); the folding grip's state lines are the main

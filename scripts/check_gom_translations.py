@@ -4,7 +4,7 @@ GoM, Gunworks, Ammo Maker or this repo's two mods.
 
     python3 scripts/check_gom_translations.py
 
-Keys come from their Lua (getText / getTextOrNull with a literal; keys built from a variable are listed for a look by
+Also the same keys for this repo's two mods' own Lua, items, recipes and sandbox options. Keys come from their Lua (getText / getTextOrNull with a literal; keys built from a variable are listed for a look by
 hand), their item scripts (an ItemName per item without DisplayName, Tooltip = ..., IGUI_ItemCat_<DisplayCategory>,
 Tooltip_weapon_<PartType> for the gun tooltip's part rows), their craftRecipe names and ToolTips, and their sandbox
 options. Missing English goes in this mod's Translate/EN files (gen_scripts.py writes ItemName / Tooltip; IG_UI.json
@@ -28,7 +28,9 @@ TIEN = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 # GoM's ReloadAllMagazines_Compac.lua only looks these up to remove another mod's menu options by their text; English
 # from us would not match that mod's and must not be added.
 IGNORE = {"ContextMenu_ReloadAllMagazines_LoadAllMagazines", "ContextMenu_ReloadAllMagazines_UnloadAllMagazines"}
-SOURCES = {"GoM": GOM, "Gunworks": GW}
+# whose keys are checked: GoM's and Gunworks', and this repo's two mods' own (their item names and gun tooltip rows
+# went unchecked until 2026-10-31, when the charging handle's row showed raw keys)
+SOURCES = {"GoM": GOM, "Gunworks": GW, "Tien": TIEN}
 
 
 def files(root, pattern):

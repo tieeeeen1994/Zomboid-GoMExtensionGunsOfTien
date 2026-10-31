@@ -1,4 +1,235 @@
 {
+  "UZI_2H": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.199,
+        0.0187
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.1604,
+        0.0187
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        0.0241,
+        0.0015
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "bolt_fired": {
+      "offset": [
+        0.0,
+        -0.0154,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "handle_back": {
+      "offset": [
+        0.0,
+        -0.0482,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_up": {
+      "offset": [
+        0.0,
+        -0.0012,
+        0.0398
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "scope": {
+      "offset": [
+        0.0,
+        -0.0012,
+        0.042
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_down": {
+      "offset": [
+        0.0,
+        0.1055,
+        0.0006
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "foregrip": {
+      "offset": [
+        0.0,
+        0.1055,
+        -0.0018
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_left": {
+      "offset": [
+        0.0145,
+        0.1055,
+        0.0151
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "light_left": {
+      "offset": [
+        0.0173,
+        0.1055,
+        0.0151
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "world": {
+      "offset": [
+        0.0168,
+        0.1089,
+        0.0
+      ],
+      "rotate": [
+        180.0,
+        0.0,
+        180.0
+      ]
+    },
+    "_notes": {
+      "canon": "the barrel nut's front face (64 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here",
+      "magazine": "the shared 9x19Magazine*_UZI meshes hang straight down from here (their feed lips); the 20-round's base 22 mm under the grip",
+      "bolt_fired": "UZI_BOLT (the bolt in the ejection port) back 25.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+      "handle_back": "UZI_HANDLE (the cocking knob) pulled back 80 mm real along its top cover slot, only while racked; IMI's knob does not reciprocate",
+      "stock": "UZI_STOCK_FOLDED / _DEPLOYED are modelled in place in the gun's space (GoM's MAC-10 way): no point, drawn at the origin",
+      "rails": "GoM's optional Picatinny_Rail_Up / _Down / _Left drawn as UZI_RAIL_UP (L 282-382 on the top cover), _DOWN (L 110-200 under the handguard), _LEFT (L 125-185 on its left), origins at rail_up / rail_down / rail_left (build_rails.py); GoM's red dots at scope, foregrips at foregrip, lights at light_left",
+      "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; held as a rifle (UZI_2H_* nodes, upright); origin = rear-top of the grip (photo L 330, H 140)"
+    },
+    "_extras": {
+      "handgun_hold": false,
+      "photo_origin_mm": [
+        330.0,
+        140.0
+      ],
+      "bore_mm": 171.0,
+      "k": 0.000603
+    },
+    "_bounds": {
+      "UZI_2H_BODY": {
+        "min": [
+          -0.0145,
+          -0.0796,
+          -0.0564
+        ],
+        "max": [
+          0.0145,
+          0.199,
+          0.0523
+        ],
+        "tris": 1672
+      },
+      "UZI_2H_BOLT": {
+        "min": [
+          -0.0129,
+          0.0206,
+          0.0244
+        ],
+        "max": [
+          -0.0124,
+          0.0359,
+          0.0347
+        ],
+        "tris": 44
+      },
+      "UZI_2H_HANDLE": {
+        "min": [
+          -0.0057,
+          0.0802,
+          0.038
+        ],
+        "max": [
+          0.0057,
+          0.0917,
+          0.0485
+        ],
+        "tris": 240
+      },
+      "UZI_2H_STOCK_FOLDED": {
+        "min": [
+          -0.0124,
+          -0.0842,
+          -0.0567
+        ],
+        "max": [
+          0.0124,
+          -0.0115,
+          0.0121
+        ],
+        "tris": 468
+      },
+      "UZI_2H_STOCK_DEPLOYED": {
+        "min": [
+          -0.0124,
+          -0.1869,
+          -0.0507
+        ],
+        "max": [
+          0.0124,
+          -0.0736,
+          0.0217
+        ],
+        "tris": 248
+      }
+    }
+  },
   "UZI": {
     "muzzle": {
       "offset": [

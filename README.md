@@ -64,9 +64,12 @@ Maker they can be made.
 - Guns of Marz's Picatinny rails fit all four sides, on the feed cover and round the handguard: its optics (all but
   the four longest scopes, which would reach the carrying handle), foregrips, lights and lasers
 - Belt links: filling the M249's 200-round box or Guns of Marz's M60 100-round box now takes one belt link per round
-  (M27 links for the M249, M13 for the M60). Unloading a round, firing it or racking it out gives its link back: fired
-  and racked links are thrown out of the gun (with Hot Brass they fly and land like casings, without it they drop at
-  your feet; Ammo Maker's brass catchers catch them). A belt box found loaded counts as linked
+  (M27 links for the M249, M13 for the M60). Unloading a round gives its link back; a fired round's link comes out with
+  its casing and goes wherever the casing goes: with Hot Brass it flies out of the gun and lands like the casing
+  (gone after landing if Hot Brass's Persistent Casings is off, in the seat if you shoot from a vehicle), with Ammo
+  Maker it ends up with its casing (your brass catcher, the floor, or Hot Brass's throw) and is cleaned up after
+  Ammo Maker's Dropped Casings Lifetime like the casings, and with neither (no casings in vanilla) it is gone. A round racked out takes its link with it, into your inventory or
+  out of the gun with Hot Brass. A belt box found loaded counts as linked
 - Links come in boxes (200 M27, 100 M13) in the M249 and M60 kits and in army ammunition storage, or are made at any
   surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch (Make M27 5.56mm or
   M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
@@ -96,6 +99,14 @@ Maker they can be made.
 - Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
   .223 boxes; the 42-round magazine with its high-capacity magazines
 
+## Glock 21
+
+- Glock 21, Glock's .45 of 1990 as it was in 1993 (second generation: no accessory rail, no finger grooves): its own
+  13-round magazine, Guns of Marz's pistol sights on its Beretta mount, its pistol lasers and lights under the frame,
+  its .45 muzzle mount and P45 suppressor
+- Found where Guns of Marz's Glock 17 is (civilian and police handguns) and with its imported pistols in gun stores,
+  with .45 boxes
+
 ## Ammo Maker (optional)
 
 Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.
@@ -116,12 +127,13 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - FN P90: 50-round magazine, suppressor
 - The MP7s and the P90 held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
   lights and lasers
-- FN Five-seveN pistol (Guns of Marz's own name for it): 20 and 30-round magazines, its own SFN-57 suppressor,
+- FN Five-seveN pistol (Guns of Marz's own gun, now named just "Five-SeveN"): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
   suppressor and Guns of Marz's pistol sights and pistol lights
 - FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor
 - H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers; the UMP45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the UMP9 the AWC Mk9
 - Steyr AUG A3, AUG Para and AUG HBAR on the A3 receiver: a short top rail and a right-side rail for Guns of Marz optics and lasers, Guns of Marz's Picatinny Rail on the left for its lights, the AUG's folding front grip; the A3 (green) takes the AUG A1's 30 and 42-round magazines and Guns of Marz's AR muzzle parts, the 9mm Para (sand) Steyr's 25 and 32-round magazines and the AWC Mk9, the 7.62x39mm HBAR (green) a heavy barrel, a folding bipod, Steyr's 30-round magazine and a 50-round one
+- KRISS Vector .45 (flat dark earth, held two-handed) and 9mm (sand, held one-handed like Guns of Marz's MP5K), the Super V submachine guns: Glock magazines (the .45 the Glock 21's 13 and KRISS's 30-round extended magazine, the 9mm Guns of Marz's Glock 17 17, Glock's 33 and KRISS's 40-round extended magazine; the long ones fit the Glock 21 and Guns of Marz's Glock 17 too), side-folding stock, two-round burst at about 1200 rounds a minute with little recoil, top and bottom rails for Guns of Marz optics and foregrips, Guns of Marz's Picatinny Rails on both sides for its lights and lasers; the .45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the 9mm the AWC Mk9
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

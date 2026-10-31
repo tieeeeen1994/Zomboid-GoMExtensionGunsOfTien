@@ -5,6 +5,7 @@
 Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
     M/models_X/weapons/firearms/GunsOfTien_UZI.fbx        UZI_BODY, UZI_BOLT, UZI_HANDLE, UZI_STOCK_FOLDED,
                                                           UZI_STOCK_DEPLOYED
+    M/models_X/weapons/firearms/GunsOfTien_UZI_2H.fbx     the same nodes upright, UZI_2H_* (the unused two-handed Uzi)
     M/models_X/weapons/firearms/GunsOfTien_MINIUZI.fbx    MINIUZI_BODY, MINIUZI_BOLT, MINIUZI_HANDLE, MINIUZI_STOCK
     M/models_X/weapons/firearms/GunsOfTien_MICROUZI.fbx   MICROUZI_BODY, MICROUZI_BOLT, MICROUZI_HANDLE, MICROUZI_STOCK
     M/models_X/weapons/magazines/GunsOfTien_UZI_magazines.fbx  9x19Magazine20/25/32/40/50_UZI (all three guns)
@@ -32,7 +33,10 @@ the pistol grip, 0.603 of real size, the M16A2's proportion (0.72 before 2026-10
 2026-10-23, GoM's MP5K / MAC-10 way; the Uzi too since 2026-10-30, user: "the rifle stance doesn't look good on it"),
 so they are modelled and baked upright and their gun nodes are turned 180 degrees about the bore axis at export, with
 their points (build_mp7.py's TURN / turned()); magazines stay upright. The Uzi still hangs on the back like a rifle,
-so its `rifle_back` / `rifle_back_bag` turn it upright there (build_mp7.py's handgun_points, the MP7's way). The cocking knob on top (`<GUN>_HANDLE`) slides back in a slot in the top cover
+so its `rifle_back` / `rifle_back_bag` turn it upright there (build_mp7.py's handgun_points, the MP7's way). A
+two-handed Uzi is kept, unused (user, 2026-11-01: "keep the 2 handed uzi unused but existing ... Marz has a plan"):
+the item GunsOfTien.UZI_2H, never in loot, drawn from `GunsOfTien_UZI_2H.fbx` (the Uzi's nodes upright, renamed
+UZI_2H_*, on UZI.png) at upright points (`uzi_points.json` "UZI_2H"). The cocking knob on top (`<GUN>_HANDLE`) slides back in a slot in the top cover
 only while the gun is racked (`handle_back`): IMI's knob does not reciprocate (user, 2026-10-30). What moves on each
 shot, and stays back on an empty gun, is the bolt seen through the ejection port on the right (`<GUN>_BOLT`, Guns of
 Marz's bolt swap, `bolt_fired`): a plate over the port's front half, which is painted as the open chamber, sliding
@@ -657,7 +661,7 @@ def texture(maps_list, kinds, size, path):
 # Attachment points
 # ==================================================================================================
 
-def points(kind, bounds):
+def points(kind, bounds, upright=False):
     f = SPEC[kind]["frame"]
     canon_L = {"UZI": UZI_CANON_L, "MINIUZI": MINI_CANON_L, "MICROUZI": MICRO_CANON_L}[kind]
     mag = {"UZI": UZI_MAG, "MINIUZI": MINI_MAG, "MICROUZI": MICRO_MAG}[kind]
@@ -701,6 +705,17 @@ def points(kind, bounds):
                           "origins at rail_up / rail_down / rail_left (build_rails.py); GoM's red dots at scope, "
                           "foregrips at foregrip, lights at light_left" % (
                               (kind,) + r["up"]["L"] + r["down"]["L"] + r["left"]["L"]))
+    if upright:
+        # the unused two-handed Uzi (UZI_2H): held as a rifle, every point as built, GoM's rifle floor pose, scaled
+        pts = {k: {"offset": v["offset"], "rotate": v.get("rotate", list(ZERO))} for k, v in pts.items()}
+        pts["world"] = {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0],
+                        "rotate": [180.0, 0.0, 180.0]}
+        pts["_notes"] = dict(notes, units="game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; held "
+                             "as a rifle (UZI_2H_* nodes, upright); origin = rear-top of the grip (photo L %.0f, H %.0f)"
+                             % (f.L0, f.H0))
+        pts["_extras"] = {"handgun_hold": False, "photo_origin_mm": [f.L0, f.H0], "bore_mm": f.bore, "k": K}
+        pts["_bounds"] = bounds
+        return pts
     # held like a pistol: everything turned with the gun (build_mp7.py's turned()); the magazine, the rails and GoM's
     # parts on them (upright parts: their points have no rotate of their own) get TURN; muzzle and canon keep GoM's
     # MP5K values; the stock is a node of the gun's own file, turned with it, and a half turn about Z commutes with
@@ -763,6 +778,18 @@ def main():
             maps.append(bake(st, ctx, 256))
             kinds.append((kind, "stock"))
         texture(maps, kinds, 256, os.path.join(TEX_DIR, kind + ".png"))
+        if kind == "UZI":
+            # the unused two-handed Uzi: the nodes upright, renamed, in a file of their own (UZI_2H, on UZI.png)
+            upright = []
+            for o in objs:
+                me = o.data.copy()
+                me.name = o.name.replace("UZI_", "UZI_2H_", 1)
+                copy = bpy.data.objects.new(me.name, me)
+                bpy.context.scene.collection.objects.link(copy)
+                upright.append(copy)
+            b2 = {o.name: kit.bounds_of(o) for o in upright}
+            all_points["UZI_2H"] = points("UZI", b2, upright=True)
+            kit.export(upright, os.path.join(FBX_DIR, "GunsOfTien_UZI_2H.fbx"))
         for o in objs:                                     # held like a pistol: turned 180 degrees about the bore
             o.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
         bounds = {o.name: kit.bounds_of(o) for o in objs}

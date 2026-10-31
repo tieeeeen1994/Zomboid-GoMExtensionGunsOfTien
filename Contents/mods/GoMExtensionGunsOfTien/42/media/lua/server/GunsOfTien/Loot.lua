@@ -40,6 +40,10 @@
     (the gun, up to 6 of its 30-round magazines, up to 6 boxes of .223: the AUG/SA was a civilian import). Its 42-round
     magazine comes loose only, one more choice in MarzGuns.World_HighCap_AR_Magazine_Spawner's list beside GoM's long
     STANAGs (placed while GoM's SpawnHighCapMags is on).
+    The Glock 21 (shared/GunsOfTien/Glock21.lua; user, 2026-10-30) goes where GoM's Glock 17 does: one more
+    alternative in MarzGuns.Zombie_Civilian_Handgun_Spawner and MarzGuns.Zombie_Police_Handgun_Spawner (the gun, up
+    to 4 of its magazines and 4 boxes of GoM's .45, as its Glock 17 kits there) and in
+    MarzGuns.World_Import_Pistol_Spawner (gun stores, beside its USP; up to 6 and 6).
 --]]
 
 require("Items/ProceduralDistributions")
@@ -101,6 +105,16 @@ UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner
     { items = { "GunsOfTien.556x45Magazine30_AUG" }, amountChance = 6 },
     { items = { "MarzGuns.223_Box" }, amountChance = 6 },
 } }
+
+-- Glock 21 kits, as GoM's Glock 17 kits in the same spawners: { spawner, magazines and boxes }
+for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "MarzGuns.Zombie_Police_Handgun_Spawner", 4 },
+    { "MarzGuns.World_Import_Pistol_Spawner", 6 } }) do
+    UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { entry[1], {
+        { items = { "GunsOfTien.GLOCK21" }, amountChance = 1 },
+        { items = { "GunsOfTien.45Magazine13_GLOCK21" }, amountChance = entry[2] },
+        { items = { "MarzGuns.45_Box" }, amountChance = entry[2] },
+    } }
+end
 
 -- GoM's M60 kits get a group of M13 link boxes: { spawner, link boxes } (as many as the kit's belt boxes)
 local M60_KITS = {
