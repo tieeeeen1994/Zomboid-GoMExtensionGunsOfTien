@@ -10,5 +10,13 @@ Post-93: KRISS Vector
 Post-93: Five-seveN
 - Guns of Marz's Five-seveN is now named just "Five-SeveN" (it was "5.7x28mm Five-SeveN")
 
+Belt links
+- A fired round's link now goes wherever its casing goes, under the casing mods' own sandbox options. With Hot Brass it flies out of the gun and lands like the casing (and is gone after landing if Persistent Casings is off, or goes into the seat when you shoot from a vehicle). With Ammo Maker it goes with its casing (into your brass catcher, onto the floor, or thrown by Hot Brass) and is cleaned up after Dropped Casings Lifetime like the casings. With neither mod the link is gone, as vanilla has no casings. Before this, every link was thrown out or dropped at your feet and never cleaned up
+- Racking a round out of a belt-fed gun now sends its link where the round goes: into your inventory, or out of the gun with Hot Brass
+
 Reloads
 - The magazine shown in the off hand during a reload now sits in the hand, as Guns of Marz's do: the AUG's magazines and the M249's 200-round box, and in Post-93 the AUG A3, Para and HBAR magazines and the Five-seveN's and UCP Prototype's
+
+Fixes
+- A bayonet can no longer be fitted to a Mosin-Nagant with a sawn-off barrel through Gunworks' Attach Bayonet (knife, context and radial menus). It used to go on and was drawn nowhere. Remove Bayonet still takes off one fitted that way
+- The charging handle now has a name in gun tooltips and the item list ("Charging Handle (Forward)" / "(Back)") instead of a raw item key
