@@ -1,0 +1,5 @@
+Belt links
+- New sandbox option "Belt-Fed Guns Need Links" (on by default, so nothing changes unless you turn it off). Off: the M249's 200-round box and Guns of Marz's M60 box load like any magazine, no link boxes are found, and the link recipes are hidden. Links already in the world stay. A change takes effect the next time the game is loaded
+
+Fixes
+- The M249's and Guns of Marz's M60's tooltips no longer list nine "Belt Round" rows for the rounds shown on the belt

@@ -8,5 +8,7 @@
   "Sandbox_GunsOfTien_SubsonicRackRule_tooltip": "The Soviet US subsonic round burns too little powder to work an AK's gas system, so the gun has to be racked by hand after every shot. A PBS-1 suppressor traps gas and raises the pressure in the barrel, which pushes enough gas into the gas port to cycle the gun. The round and the suppressor were made as a pair.",
   "Sandbox_GunsOfTien_SubsonicRackRule_option1": "Always rack after every shot",
   "Sandbox_GunsOfTien_SubsonicRackRule_option2": "Rack unless a PBS-1 is fitted",
-  "Sandbox_GunsOfTien_SubsonicRackRule_option3": "Never rack"
+  "Sandbox_GunsOfTien_SubsonicRackRule_option3": "Never rack",
+  "Sandbox_GunsOfTien_BeltLinks": "Belt-Fed Guns Need Links",
+  "Sandbox_GunsOfTien_BeltLinks_tooltip": "Filling the M249's 200-round box or Guns of Marz's M60 100-round box takes one belt link per round. Unloading a round gives its link back, and a fired round's link comes out with its casing. Link boxes are found in the M249 and M60 kits and in army ammunition storage, and links can be made from sheet metal. Off = the belt boxes load like any magazine, no link boxes are found and the link recipes are hidden. Links already in the world stay. A change takes effect the next time the game is loaded."
 }

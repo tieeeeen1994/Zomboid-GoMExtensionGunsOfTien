@@ -20,7 +20,8 @@
     GoM's LootMultiplier as GoM scales its own. No civilian had one in 1993.
     Belt links (shared/GunsOfTien/BeltLinks.lua): a box of M27 links in each M249 kit and of M13 links in each of
     GoM's M60 kits (up to as many as the kit's belt boxes, a group added to GoM's own alternative), and loose boxes of
-    both beside the belt boxes in army ammunition storage, at the belt boxes' weights.
+    both beside the belt boxes in army ammunition storage, at the belt boxes' weights. None of the link boxes while
+    the sandbox option BeltLinks is off.
     The Uzis (shared/GunsOfTien/Uzi.lua; docs/design.md 4f) go where GoM's own SMGs of their kind do, one alternative
     per spawner whose gun slot picks one Uzi at random (GoM's MP5 family, Post-93's MP7s), so GoM's guns keep most of
     their share: MarzGuns.World_Short_SMG_Spawner (gun stores, pawn shops, survivalist glove boxes, bandit bags; beside
@@ -66,13 +67,20 @@ local M249_SPAWNERS = {
     { "MarzGuns.World_Army_Heavy_Spawner", 3 },
 }
 
+local function beltLinks()
+    return GunsOfTien_BeltLinks ~= nil and GunsOfTien_BeltLinks.isEnabled()
+end
+
 local function m249Alternative(boxes)
-    return {
+    local alternative = {
         { items = { "GunsOfTien.M249" }, amountChance = 1 },
         { items = { "GunsOfTien.556x45Box200_M249" }, amountChance = boxes },
         { items = { "MarzGuns.556x45_Box" }, amountChance = 4 },
-        { items = { "GunsOfTien.LinkBox_M27" }, amountChance = boxes },
     }
+    if beltLinks() then
+        alternative[#alternative + 1] = { items = { "GunsOfTien.LinkBox_M27" }, amountChance = boxes }
+    end
+    return alternative
 end
 
 -- Uzi kits: { spawner, guns, magazines, magazines and boxes }; high-capacity magazines: { spawner, magazine }
@@ -212,7 +220,7 @@ local function addLoot()
                 .. " will not spawn there")
         end
     end
-    for _, entry in ipairs(M60_KITS) do
+    for _, entry in ipairs(beltLinks() and M60_KITS or {}) do
         local list = type(map) == "table" and map[entry[1]]
         local alternative = type(list) == "table" and alternativeWith(list, "MarzGuns.M60")
         if alternative then
@@ -240,7 +248,12 @@ end
 local function addBoxes()
     local multiplier = lootMultiplier()
     if multiplier <= 0 then return end
-    for _, item in ipairs({ "GunsOfTien.556x45Box200_M249", "GunsOfTien.LinkBox_M27", "GunsOfTien.LinkBox_M13" }) do
+    local items = { "GunsOfTien.556x45Box200_M249" }
+    if beltLinks() then
+        items[#items + 1] = "GunsOfTien.LinkBox_M27"
+        items[#items + 1] = "GunsOfTien.LinkBox_M13"
+    end
+    for _, item in ipairs(items) do
         if ScriptManager.instance:getItem(item) then
             for name, weight in pairs({ ArmyStorageAmmunition = 3, ArmySurplusAmmoBoxes = 2 }) do
                 local list = ProceduralDistributions.list[name]

@@ -35,6 +35,11 @@
     - Racking a chambered round out of a gun with a belt box fitted: the link goes where the round goes, into the
       inventory (vanilla's removeBullet) or thrown out by Hot Brass (its rackCasing with racking = true).
     A box fitted to a found gun counts as linked: firing or unloading it gives links.
+    Sandbox BeltLinks (default on; requested by a player, 2026-11-02): off, both belt boxes are plain magazines again
+    (linkForBox answers nil, so none of the above happens), the six link recipes are hidden, the tooltips drop their
+    link line (client/GunsOfTien/M249Tooltips.lua) and no link boxes are added to the loot
+    (server/GunsOfTien/Loot.lua). Read once per world load, at OnInitGlobalModData (loot and recipes cannot change
+    later), so a change takes effect the next time the game is loaded. Link items already in the world stay.
 --]]
 
 GunsOfTien_BeltLinks = GunsOfTien_BeltLinks or {}
@@ -46,8 +51,23 @@ BeltLinks.BOXES = {
     ["MarzGuns.762x51Box100_M60"] = "GunsOfTien.M13_Link",
 }
 
---- The link a belt box takes, or nil for any other magazine.
+BeltLinks.RECIPES = {
+    "GunsOfTien_OpenLinkBox_M27", "GunsOfTien_PackLinkBox_M27", "GunsOfTien_MakeM27_Links",
+    "GunsOfTien_OpenLinkBox_M13", "GunsOfTien_PackLinkBox_M13", "GunsOfTien_MakeM13_Links",
+}
+
+--- The sandbox option as read at this world's load.
+function BeltLinks.isEnabled()
+    local vars = SandboxVars and SandboxVars.GunsOfTien
+    return vars ~= nil and vars.BeltLinks == true
+end
+
+-- set at each world load (readOption, below); nil before the first one
+BeltLinks.enabled = nil
+
+--- The link a belt box takes, or nil for any other magazine (and for every box while links are off).
 function BeltLinks.linkForBox(box)
+    if not BeltLinks.enabled then return nil end
     return box and box.getFullType and BeltLinks.BOXES[box:getFullType()] or nil
 end
 
@@ -298,7 +318,23 @@ if not BeltLinks.removeBulletWrapped then
     end
 end
 
+-------------------------------------------------
+-- The sandbox option, once per world load
+-------------------------------------------------
+-- Recipe scripts are reset and reloaded on leaving a game, so hiding them again at each load is enough. Hidden as
+-- AmmoMaker.lua hides the Ammo Maker recipes (OnAddToMenu = False: the crafting lists skip it).
+local function readOption()
+    BeltLinks.enabled = BeltLinks.isEnabled()
+    if BeltLinks.enabled then return end
+    local scripts = ScriptManager.instance
+    for _, name in ipairs(BeltLinks.RECIPES) do
+        local recipe = scripts:getCraftRecipe(name)
+        if recipe then recipe:Load(name, "{ OnAddToMenu = False, NeedToBeLearn = True, }") end
+    end
+end
+
 if BeltLinks.onClientCommand then Events.OnClientCommand.Remove(BeltLinks.onClientCommand) end
 BeltLinks.onClientCommand = onClientCommand
 Events.OnClientCommand.Add(onClientCommand)
+Events.OnInitGlobalModData.Add(readOption)
 Events.OnInitGlobalModData.Add(install)

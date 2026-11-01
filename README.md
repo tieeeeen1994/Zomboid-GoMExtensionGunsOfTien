@@ -73,6 +73,7 @@ Maker they can be made.
 - Links come in boxes (200 M27, 100 M13) in the M249 and M60 kits and in army ammunition storage, or are made at any
   surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch (Make M27 5.56mm or
   M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
+- Links can be switched off (sandbox option): the belt boxes then load like any magazine, and no link boxes are found
 
 ## Uzi, Mini Uzi and Micro Uzi
 

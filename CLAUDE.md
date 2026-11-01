@@ -233,7 +233,7 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
   `RealisticPiercing`, `ModdedSlotsUpright` (default on, `client/GunsOfTien/SlotTurns.lua`, applies from the next
   world load),
-  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never). `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `BeltLinks` (default on, see "Belt links"). `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
@@ -1016,6 +1016,11 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
 
 ## Belt links (2026-10-22)
 
+- Sandbox `BeltLinks` ("Belt-Fed Guns Need Links", default on; a player asked for an off switch, 2026-11-02): read
+  once per world load at OnInitGlobalModData into `BeltLinks.enabled`; off, `linkForBox` answers nil (so filling,
+  unloading, firing and racking all act as with any magazine), the six link recipes get `OnAddToMenu = False`, Loot.lua
+  adds no link boxes (kits, M60 kits, army storage) and M249Tooltips.lua drops the "Takes one ... Link" lines (set at
+  OnGameStart). The link items stay defined, so links in old saves load.
 - Design: docs/design.md 4e (user's choices: none lost, found and crafted, M249 and GoM's M60, fired links thrown
   out like Hot Brass casings; 2026-10-31: "copy the behaviour of the casings", so a fired link rides along with each
   casing the casing mods place, no rules of our own). Files: `shared/GunsOfTien/BeltLinks.lua` (fill / unload
@@ -1566,7 +1571,9 @@ labelled `Tooltip_weapon_<PartType>`, then `WeaponPart.DoBatteryTooltip`: for a 
 weapon lights) a "Remaining:" row with a charge bar (`IGUI_invpanel_Remaining`, vanilla's): that row is the light's
 battery, not a bug. GoM translates most part types; nobody translated `LaserRifle`, `LightRifle`,
 `BayonetIntegrated`, `BayonetKnife`, `BoosterScope`, `Shellholder`, `UnderbarrelChamber`, `Animated1-9` (the M60's
-visible belt rounds), so `gen_scripts.py` writes them into the main mod's Tooltip.json, and `gen_post93_guns.py`
+visible belt rounds; since 2026-11-02 `client/GunsOfTien/BeltRoundRows.lua` takes those nine parts out of
+`getAllWeaponParts()` (the live list) for each `DoTooltip` / `DoTooltipEmbedded` call and puts them back, so they no
+longer show; their labels stay as a fallback), so `gen_scripts.py` writes them into the main mod's Tooltip.json, and `gen_post93_guns.py`
 writes `ForegripIntegrated` into Post-93's. GoM's own gun lines said only "Has Integrated Stock" / "Has Integrated
 Bipod" (eight guns) and nothing for other guns with one; `scripts/gen_handling_tooltips.py` reads GoM's Stocks.lua,
 Bipods.lua and AttachmentCustomStats.lua and writes `client/GunsOfTien/HandlingTooltips.lua`, the lines of each gun in

@@ -21,3 +21,10 @@ option GunsOfTien.SubsonicRackRule {
     page        = GunsOfTien,
     translation = GunsOfTien_SubsonicRackRule,
 }
+
+option GunsOfTien.BeltLinks {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_BeltLinks,
+}

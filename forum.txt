@@ -44,6 +44,7 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*]Guns of Marz's Picatinny rails fit all four sides, on the feed cover and round the handguard: its optics (all but the four longest scopes, which would reach the carrying handle), foregrips, lights and lasers
 [*]Belt links: filling the M249's 200-round box or Guns of Marz's M60 100-round box now takes one belt link per round (M27 links for the M249, M13 for the M60). Unloading a round gives its link back; a fired round's link comes out with its casing and goes wherever the casing goes: with Hot Brass it flies out of the gun and lands like the casing (gone after landing if Hot Brass's Persistent Casings is off, in the seat if you shoot from a vehicle), with Ammo Maker it ends up with its casing (your brass catcher, the floor, or Hot Brass's throw) and is cleaned up after Ammo Maker's Dropped Casings Lifetime like the casings, and with neither (no casings in vanilla) it is gone. A round racked out takes its link with it, into your inventory or out of the gun with Hot Brass. A belt box found loaded counts as linked
 [*]Links come in boxes (200 M27, 100 M13) in the M249 and M60 kits and in army ammunition storage, or are made at any surface from a small sheet of metal with sheet metal snips, a hammer and a metalworking punch (Make M27 5.56mm or M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
+[*]Links can be switched off (sandbox option): the belt boxes then load like any magazine, and no link boxes are found
 [/list]
 
 [h2]Uzi, Mini Uzi and Micro Uzi[/h2]
@@ -100,4 +101,5 @@ On the [b]Guns of Tien[/b] page of the sandbox settings.
 [*][i]Adjusted Piercing[/i] (on by default): plain (full metal jacket) .30-06, 7.62x51mm and .308 rounds pierce in every gun that fires them, and plain .30-30 rounds (flat-nosed soft points in reality) no longer do. Off = Guns of Marz's own piercing
 [*][i]Upright Guns in Modded Attachment Slots[/i] (on by default): guns held like a pistol hang upright on other mods' rifle slots, sawn-off shotguns in their holster slots. Takes effect the next time the game is loaded
 [*][i]7.62x39mm US Subsonic Cycling[/i]: always rack after every shot, rack unless a PBS-1 is fitted (default), or never rack
+[*][i]Belt-Fed Guns Need Links[/i] (on by default): the M249's and M60's belt boxes take one link per round. Off = they load like any magazine, no link boxes are found and the link recipes are hidden. Takes effect the next time the game is loaded
 [/list]

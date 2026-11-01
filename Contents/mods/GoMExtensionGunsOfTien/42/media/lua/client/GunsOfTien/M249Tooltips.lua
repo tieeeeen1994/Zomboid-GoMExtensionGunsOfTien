@@ -16,15 +16,30 @@ lines["GunsOfTien.M249"] = {
     "Jam Chance doubled with STANAG magazines",
     "Available Picatinny Slots: Up, Down, Left, Right.",
 }
-lines["GunsOfTien.556x45Box200_M249"] = { "Uses .223/5.56x45mm NATO rounds.", "Takes one M27 Belt Link per round" }
--- GoM's M60 box is a belt too (shared/GunsOfTien/BeltLinks.lua): its own lines, then ours
-local m60 = lines["MarzGuns.762x51Box100_M60"] or {}
-local listed = false
-for _, line in ipairs(m60) do
-    if line == "Takes one M13 Belt Link per round" then listed = true end
+lines["GunsOfTien.556x45Box200_M249"] = { "Uses .223/5.56x45mm NATO rounds." }
+
+-- The link line of each belt box (GoM's M60 box is a belt too: its own lines, then ours), only while the sandbox
+-- option BeltLinks is on (shared/GunsOfTien/BeltLinks.lua). Known from the world load on, so set at OnGameStart, taken
+-- out first so that another world loaded in the same session starts clean.
+local LINK_LINES = {
+    ["GunsOfTien.556x45Box200_M249"] = "Takes one M27 Belt Link per round",
+    ["MarzGuns.762x51Box100_M60"] = "Takes one M13 Belt Link per round",
+}
+
+local function setLinkLines()
+    local BeltLinks = GunsOfTien_BeltLinks
+    local enabled = BeltLinks ~= nil and BeltLinks.isEnabled()
+    for box, text in pairs(LINK_LINES) do
+        local list = lines[box] or {}
+        for i = #list, 1, -1 do
+            if list[i] == text then table.remove(list, i) end
+        end
+        if enabled then list[#list + 1] = text end
+        lines[box] = list
+    end
 end
-if not listed then m60[#m60 + 1] = "Takes one M13 Belt Link per round" end
-lines["MarzGuns.762x51Box100_M60"] = m60
+
+Events.OnGameStart.Add(setLinkLines)
 
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 GunsOfTien_TooltipStates["GunsOfTien.M249_Integrated_Bipod_Deployed"] = {
