@@ -108,6 +108,18 @@ Maker they can be made.
 - Found where Guns of Marz's Glock 17 is (civilian and police handguns) and with its imported pistols in gun stores,
   with .45 boxes
 
+## RPK and RPK-74
+
+- RPK (7.62x39mm, 1961) and RPK-74 (5.45x39mm, 1974), Kalashnikov's squad machine guns built on Guns of Marz's AK-47
+  and AK-74: the long heavy barrel, the club-foot stock and a folding bipod (deployed, it steadies aim and automatic
+  fire as Guns of Marz's bipod does), automatic at 600 rounds a minute or single shots
+- The RPK takes its own 40-round magazine and 75-round drum (both fit Guns of Marz's AK-47 too) and Guns of Marz's
+  AK-47 magazines; the RPK-74 takes Guns of Marz's AK-74 magazines (its Bakelite 45 is the RPK-74's own)
+- Guns of Marz's AK mount and its optics, its AK muzzle mount and the PBS-1 suppressor (with it, the US Subsonic round
+  cycles the RPK as it does the AKs)
+- Found where Guns of Marz's AK-47 and AK-74 are in the world (drug labs, police evidence, survivalists, bandits,
+  late gun finds), with their magazines and boxes; the 40 and the drum also with its high-capacity AK magazines
+
 ## Ammo Maker (optional)
 
 Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.

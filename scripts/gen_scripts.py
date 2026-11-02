@@ -579,8 +579,9 @@ GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
 # of real size, as its rifles, and draws them so in its own ARs; our SCAR-L (Post-93) and M249, drawn at the M16A2's
 # 0.603, draw them through `<magazine>_GoT`: GoM's mesh and texture with `scale` = 0.603 / 0.65 (a part model's own
 # scale, about its origin: the feed lips at the gun's `magazine` point). `<magazine>_Hand` is a hidden item with that
-# model, which M249.lua shows in the left hand during the M249's reload in place of GoM's (Gunworks puts an item of
-# the magazine's type on the reload location, drawn with its own model). GoM's guns keep GoM's models.
+# model, which shared/GunsOfTien/HandMagazines.lua puts in the off hand during those guns' reloads in place of GoM's
+# (Gunworks puts an item of the magazine's type there, drawn with its own model, placed by the model's own
+# `Bip01_Prop2`: GoM's, kept unscaled, so the feed lips sit where GoM's do). GoM's guns keep GoM's models.
 STANAG_GOT_SCALE = round(0.000603 / 0.00065, 4)
 STANAG_TEXTURE = {25: 20}           # GoM's 25-round magazine uses the 20-round's texture
 STANAG_SIZES = (20, 25, 30, 50, 60, 75, 100, 150)
@@ -604,7 +605,7 @@ def stanag_got():
         texture  = weapons/magazines/assault_rifles/{tex},
         cullFace = None,
         scale    = {STANAG_GOT_SCALE:.4f},
-    }}
+{m249_attachment('Bip01_Prop2', GOM_STANAG_PROP2)}    }}
 """)
         items.append(f"""
     item {mag}_Hand {{
@@ -1924,6 +1925,285 @@ def aug():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# RPK and RPK-74 (user, 2026-11-02; docs/design.md 4j; meshes and points: scripts/build_rpk.py, icons:
+# scripts/make_rpk_art.py, registries: shared/GunsOfTien/RPK.lua). GoM's AK-47 and AK-74 made into Kalashnikov's
+# squad machine guns: GoM's AK pattern (bolt swap, AK mount and its optics, AK muzzle device and PBS-1, the "ak_rifle"
+# reload) with the longer barrel, club-foot stock and folding bipod (GoM's M60 way: two hidden parts, each drawn
+# with the gun's own bipod model). GoM's AK magazines are drawn on them through `<magazine>_GoT` (GoM's mesh at
+# build_rpk.py's SCALE, as the STANAGs on the SCAR-L and M249); the RPK's 40 and 75-round drum are ours and fit GoM's
+# AK-47 too (the real ones fit any AK), which draws them through `<magazine>_GoM` (our mesh scaled back to GoM's size;
+# RPK.lua adds those model lines to GoM's AK-47 with DoParam).
+RPK_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpk_points.json')
+RPK_MAG40 = '762x39Magazine40_RPK'
+RPK_DRUM75 = '762x39Drum75_RPK'
+# The RPK's own magazines, both also on GoM's AK-47: (item, rounds, weight, texture, English name). The 40 is GoM's 30
+# bent on, on GoM's 30's texture; the drum (build_rpk.py drum75) has its own texture, GoM's 30's in one corner.
+# Weights as GoM's: its 30 0.2, its 75 box and AK-74 drum 0.6.
+RPK_OWN_MAGS = [
+    (RPK_MAG40, 40, 0.3, 'weapons/magazines/assault_rifles/762x39Magazine30', 'RPK 40Rds 7.62x39mm Extended Magazine'),
+    (RPK_DRUM75, 75, 0.6, 'weapons/GunsOfTien/762x39Drum75_RPK', 'RPK 75Rds Drum 7.62x39mm Magazine'),
+]
+GOM_AK_OPTICS = ['EXPS1_Sight', 'EXPS3_Sight', 'ElcanX2_Scope', 'LR10X_Scope', 'Aimpoint_Sight', 'TA28_Scope',
+                 'LR4X_Scope', 'OKP3_Sight', 'ReflexS2_Sight', 'JS14_Sight', 'Kobra_Sight', 'TR06X_Scope', 'PSO1_Scope',
+                 'LRX12X_Scope']
+# GoM's magazines each gun takes: (GoM item, GoM mesh node, GoM texture)
+RPK_GOM_MAGS = {
+    'RPK': [('762x39Magazine30', '762x39Magazine30', '762x39Magazine30'),
+            ('762x39Magazine75', '762x39Magazine75', '762x39Magazine75')],
+    'RPK74': [(f'545x39Magazine{n}', f'545x39Magazine{n}'.replace('_Bakelite', '').replace('_Drum', ''),
+               f'545x39Magazine{n}'.replace('_Bakelite', '').replace('_Drum', ''))
+              for n in ('30_Bakelite', '45_Bakelite', '60_Bakelite', '100_Drum')],
+}
+GOM_AK_MAG_PROP2 = {'offset': [0.0299, 0.0802, -0.0023], 'rotate': [-86.2737, 31.4012, -93.4148]}   # GoM's 7.62x39 30
+GOM_545_MAG_PROP2 = {'offset': [0.0328, 0.0820, -0.0021], 'rotate': [-86.2737, 31.4012, -93.4148]}  # GoM's 5.45 ones
+GOM_AK_MAG_NAMES = {   # GoM's English names, for the hidden _Hand items (shown only in a debug item list)
+    '762x39Magazine30': '7.62x39mm 30Rds Magazine', '762x39Magazine75': '7.62x39mm 75Rds Extended Magazine',
+    '545x39Magazine30_Bakelite': 'Bakelite 30Rds 5.45x39mm Magazine',
+    '545x39Magazine45_Bakelite': 'Bakelite 45Rds Extended 5.45x39mm Magazine',
+    '545x39Magazine60_Bakelite': 'Bakelite 60Rds Extended 5.45x39mm Magazine',
+    '545x39Magazine100_Drum': 'Drum 100Rds 5.45x39mm Magazine',
+}
+RPK_PARTS = [  # hidden integrated parts, shared by both guns (each draws its own bipod model): (item, English name)
+    ('RPK_Integrated_Bipod_Folded', 'RPK Integrated Bipod (Folded)'),
+    ('RPK_Integrated_Bipod_Deployed', 'RPK Integrated Bipod (Deployed)'),
+]
+# Stats against GoM's AK-47 / AK-74 (docs/design.md 4j): the 590 mm barrel (+30 m/s, +8 % energy) a little more
+# damage and range, the heavier barrel and longer sight line steadier (Hit +5) but slower to bring up (Aiming Time
+# +10, higher is slower), the real weights, a little more wear life; GoM's AK jam rate. Sound from sound_model.py's
+# model for 23.2" barrels: 7.62x39 157 / 45, 5.45x39 149 / 43 (GoM's AKs 175 / 50, 166 / 47).
+RPK_GUNS = {
+    'RPK': {'name': 'RPK Light Machine Gun', 'round': 'swmg:bullet_762x39', 'box': 'MarzGuns.762x39_Box',
+            'mag': RPK_MAG40, 'min': 1.55, 'max': 1.9, 'crit': 25.0, 'critmul': 6.0, 'hit': 55, 'aim': 70,
+            'range': 55.0, 'weight': 4.8, 'sound': (157, 45), 'swing': 'JS14Shoot', 'icon': 'GunsOfTien_RPK'},
+    'RPK74': {'name': 'RPK-74 Light Machine Gun', 'round': 'swmg:bullet_545x39', 'box': 'MarzGuns.545x39_Box',
+              'mag': 'MarzGuns.545x39Magazine45_Bakelite', 'min': 1.35, 'max': 1.95, 'crit': 30.0, 'critmul': 6.0,
+              'hit': 50, 'aim': 65, 'range': 55.0, 'weight': 4.7, 'sound': (149, 43), 'swing': 'M16Shoot',
+              'icon': 'GunsOfTien_RPK74'},
+}
+
+
+def rpk():
+    pts = json.load(open(RPK_POINTS))
+    scale = pts['_extras']['scale']
+    models = [f"module {MODULE} {{\n"]
+    for gun, gom_tex in (('RPK', 'AK47'), ('RPK74', 'AK74')):
+        tex = f'weapons/firearms/assault_rifles/{gom_tex}'
+        models.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTien_RPK|{gun}_BODY,
+        texture  = {tex},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'bolt_fired', 'magazine', 'world', 'rail_up', 'scope', 'canon'):
+            models.append(m249_attachment(name, pts[gun][name]))
+        models.append("    }\n")
+        for node in ('BOLT', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
+            models.append(f"""
+    model {gun}_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_RPK|{gun}_{node},
+        texture  = {tex},
+        cullFace = None,
+    }}
+""")
+        prop2 = GOM_AK_MAG_PROP2 if gun == 'RPK' else GOM_545_MAG_PROP2
+        for item, node, mtex in RPK_GOM_MAGS[gun]:
+            models.append(f"""
+    model {item}_GoT {{
+        mesh     = weapons/magazines/assault_rifles|{node},
+        texture  = weapons/magazines/assault_rifles/{mtex},
+        cullFace = None,
+        scale    = {scale:.4f},
+{m249_attachment('Bip01_Prop2', prop2)}    }}
+""")
+    for mag, _, _, mtex, _ in RPK_OWN_MAGS:
+        models.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|{mag},
+        texture  = {mtex},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{m249_attachment('Bip01_Prop2', GOM_AK_MAG_PROP2)}    }}
+
+    model {mag}_GoM {{
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|{mag},
+        texture  = {mtex},
+        cullFace = None,
+        scale    = {1.0 / scale:.4f},
+    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_rpk.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    items = [f"module {MODULE} {{\n"]
+    for gun, s in RPK_GUNS.items():
+        parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.{gun}_BOLT bolt_lock bolt_lock,",
+                 f"{w}MarzGuns.Bolt_Fired {MODULE}.{gun}_BOLT bolt_fired bolt_fired,",
+                 f"{w}{MODULE}.RPK_Integrated_Bipod_Folded {MODULE}.{gun}_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+                 f"{w}{MODULE}.RPK_Integrated_Bipod_Deployed {MODULE}.{gun}_BIPOD_DEPLOYED integrated_bipod integrated_bipod,"]
+        if gun == 'RPK':
+            parts += [f"{w}{MODULE}.{mag} {MODULE}.{mag} magazine magazine," for mag, *_ in RPK_OWN_MAGS]
+        parts += [f"{w}MarzGuns.{item} {MODULE}.{item}_GoT magazine magazine," for item, _, _ in RPK_GOM_MAGS[gun]]
+        parts.append(f"{w}MarzGuns.AK_Mount MarzGuns.AK_Mount rail_up rail_up,")
+        parts += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in GOM_AK_OPTICS]
+        parts += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+                  f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
+        mag = s['mag'] if '.' in s['mag'] else f"{MODULE}.{s['mag']}"
+        maxammo = 40 if gun == 'RPK' else 45
+        items.append(f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 4,
+        CritDmgMultiplier            = {s['critmul']},
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 3,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = 15,
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 8,
+        MaxSightRange                = 16.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 0.5,
+        ConditionLowerChanceOneIn    = 350,
+        ConditionMax                 = 15,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 6,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 60.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {s['round']},
+        AmmoBox                      = {s['box']},
+        MagazineType                 = {mag},
+        MaxAmmo                      = {maxammo},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = {s['icon']},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = {s['swing']},
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.0,
+        SoundRadius                  = {s['sound'][0]},
+        SoundVolume                  = {s['sound'][1]},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+    }}
+""")
+    for mag, rounds, weight, _, _ in RPK_OWN_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = swmg:bullet_762x39,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {rounds},
+        MountOn          = {MODULE}.RPK;MarzGuns.AK47,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{mag},
+        WorldStaticModel = {MODULE}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    # GoM's magazines in the off hand at our size during the RPKs' reloads (HandMagazines.lua), as the STANAGs' _Hand
+    for gun in RPK_GUNS:
+        for item, _, _ in RPK_GOM_MAGS[gun]:
+            items.append(f"""
+    item {item}_Hand {{
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = {item.replace('_Bakelite', '').replace('_Drum', '') if gun == 'RPK74' else item},
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = {MODULE}.{item}_GoT,
+        WorldStaticModel = {MODULE}.{item}_GoT,
+    }}
+""")
+    for part, _ in RPK_PARTS:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = BipodIntegrated,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_rpk.txt', ''.join(items))
+    # GoM repairs its AKs with Aiming=3
+    write('scripts/GunsOfTien/fixing_rpk.txt', "module Base {\n" + ''.join(f"""    fixing Fix {gun} {{
+        Require = {MODULE}.{gun},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for gun in RPK_GUNS) + "}\n")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for gun, s in RPK_GUNS.items():
+        names[f'{MODULE}.{gun}'] = s['name']                  # GoM's "M60 Machine Gun", ours "M249 Light Machine Gun"
+    for mag, _, _, _, name in RPK_OWN_MAGS:       # GoM's "7.62x39mm 30Rds Magazine", ours "UCP 40Rds Drum ..."
+        names[f'{MODULE}.{mag}'] = name
+    for part, name in RPK_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    for item, name in GOM_AK_MAG_NAMES.items():
+        names[f'{MODULE}.{item}_Hand'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # Glock 21 (user, 2026-10-30: Glock's .45 of 1990, the Gen 2 of 1993 with GoM's pistol parts anyway; meshes and points:
 # scripts/build_glock21.py, icons: scripts/make_glock21_art.py, registries: shared/GunsOfTien/Glock21.lua). GoM's
 # pistol pattern (its Glock 17 for the model and parts, its USP for the .45): body + slide drawn through
@@ -2178,6 +2458,7 @@ if __name__ == '__main__':
     uzi()
     aug()
     glock21()
+    rpk()
     charging_handles()
     mp5_family()
     one_hand()

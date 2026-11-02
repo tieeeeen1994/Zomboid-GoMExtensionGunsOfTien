@@ -1,0 +1,142 @@
+module GunsOfTien {
+
+    model RPK {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK_BODY,
+        texture  = weapons/firearms/assault_rifles/AK47,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.4916 0.0156, rotate = -90.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0439 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1143 0.0123, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0187 0.1215 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0780 0.0202, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.1304 0.0449, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.4827 0.0148, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model RPK_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK_BOLT,
+        texture  = weapons/firearms/assault_rifles/AK47,
+        cullFace = None,
+    }
+
+    model RPK_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK_BIPOD_FOLDED,
+        texture  = weapons/firearms/assault_rifles/AK47,
+        cullFace = None,
+    }
+
+    model RPK_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK_BIPOD_DEPLOYED,
+        texture  = weapons/firearms/assault_rifles/AK47,
+        cullFace = None,
+    }
+
+    model 762x39Magazine30_GoT {
+        mesh     = weapons/magazines/assault_rifles|762x39Magazine30,
+        texture  = weapons/magazines/assault_rifles/762x39Magazine30,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0299 0.0802 -0.0023, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x39Magazine75_GoT {
+        mesh     = weapons/magazines/assault_rifles|762x39Magazine75,
+        texture  = weapons/magazines/assault_rifles/762x39Magazine75,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0299 0.0802 -0.0023, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model RPK74 {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK74_BODY,
+        texture  = weapons/firearms/assault_rifles/AK74,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.5026 0.0144, rotate = -90.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0439 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1157 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0187 0.1215 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0714 0.0210, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0845 0.0440, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.4791 0.0143, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model RPK74_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK74_BOLT,
+        texture  = weapons/firearms/assault_rifles/AK74,
+        cullFace = None,
+    }
+
+    model RPK74_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK74_BIPOD_FOLDED,
+        texture  = weapons/firearms/assault_rifles/AK74,
+        cullFace = None,
+    }
+
+    model RPK74_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_RPK|RPK74_BIPOD_DEPLOYED,
+        texture  = weapons/firearms/assault_rifles/AK74,
+        cullFace = None,
+    }
+
+    model 545x39Magazine30_Bakelite_GoT {
+        mesh     = weapons/magazines/assault_rifles|545x39Magazine30,
+        texture  = weapons/magazines/assault_rifles/545x39Magazine30,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0328 0.0820 -0.0021, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 545x39Magazine45_Bakelite_GoT {
+        mesh     = weapons/magazines/assault_rifles|545x39Magazine45,
+        texture  = weapons/magazines/assault_rifles/545x39Magazine45,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0328 0.0820 -0.0021, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 545x39Magazine60_Bakelite_GoT {
+        mesh     = weapons/magazines/assault_rifles|545x39Magazine60,
+        texture  = weapons/magazines/assault_rifles/545x39Magazine60,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0328 0.0820 -0.0021, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 545x39Magazine100_Drum_GoT {
+        mesh     = weapons/magazines/assault_rifles|545x39Magazine100,
+        texture  = weapons/magazines/assault_rifles/545x39Magazine100,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0328 0.0820 -0.0021, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x39Magazine40_RPK {
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|762x39Magazine40_RPK,
+        texture  = weapons/magazines/assault_rifles/762x39Magazine30,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0299 0.0802 -0.0023, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x39Magazine40_RPK_GoM {
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|762x39Magazine40_RPK,
+        texture  = weapons/magazines/assault_rifles/762x39Magazine30,
+        cullFace = None,
+        scale    = 1.0696,
+    }
+
+    model 762x39Drum75_RPK {
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|762x39Drum75_RPK,
+        texture  = weapons/GunsOfTien/762x39Drum75_RPK,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0299 0.0802 -0.0023, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x39Drum75_RPK_GoM {
+        mesh     = weapons/magazines/GunsOfTien_RPK_magazines|762x39Drum75_RPK,
+        texture  = weapons/GunsOfTien/762x39Drum75_RPK,
+        cullFace = None,
+        scale    = 1.0696,
+    }
+}

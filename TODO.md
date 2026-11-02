@@ -48,8 +48,7 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] KSVK 12.7
 - [ ] VSSK Vykhlop
 - [✔] AUG Family
-- [ ] RPK
-- [ ] PPSH-41
+- [✔] RPK (and RPK-74)
 - [ ] rp-46(dp-28 variant)
 - [ ] tt-33
 - [ ] SV-98

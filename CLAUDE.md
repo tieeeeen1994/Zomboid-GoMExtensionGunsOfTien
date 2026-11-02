@@ -74,7 +74,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   MP5K's both-hands model), and the reload wrappers keyed on our animIds (magazine in the left hand, part spec pointed
   at the magazine, the M249's cover steps and STANAG hand models). `SavedModels.lua` copies GoM's live MP5K model over
   `GunsOfTien.MP5K_1H` / `MP5K_2H` for guns saved with them; the `MINIUZI_1H` / `MP7A*_1H` models stay (the guns' own).
-  Items only those reloads used stay defined for old saves (the M249's part way open covers, the STANAG `_Hand` items).
+  Items only those reloads used stay defined for old saves (the M249's part way open covers). The STANAG `_Hand`
+  items are in use again since 2026-11-02 (HandMagazines.lua, section "RPK and RPK-74").
 - **Charging handles move as GoM's do** (user, 2026-10-29: "I want us to use GoM's way"): GoM registers every one
   of its guns with `Animations.RegisterWeaponWithAnimatedParts` (`Bolt` = Bolt_Fired / Bolt_Lock, cycleTicks 3), the
   MP5s and MAC-10 too, whose real handles stay put when firing. Gunworks then draws the gun's `*_BOLT` model at
@@ -216,6 +217,17 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   muzzle parts, rails or bayonet (user's choice), GoM's FAMAS reload on vanilla's rifle hold (its own bullpup set until
   2026-10-29, section "Bullpup set"), loot in GoM's import rifle spawner.
   Design: docs/design.md 4g; build notes: "Steyr AUG A1" below.
+- **RPK, RPK-74 and RPD** (user, 2026-11-02; the RPKs built the same day, "Yes do it" for both; the RPD planned):
+  main mod. RPK-74: 5.45x39, GoM's AK-74 with its magazines. RPK and RPD: 7.62x39 (GoM's calibre, Hot Brass
+  casing, our US / Soft Point / Steel Core loads). RPK: GoM's AK-47 styling, its 30 box and GoM's
+  `762x39Magazine75` (a long curved **box**, not the RPK's drum: rendered 2026-11-02; GoM mounts it on the AK-47
+  only) plus the RPK's real 40 box and 75-round drum (both built, both fit GoM's AK-47 too), "ak_rifle" reload; add
+  it to the PBS-1's MountOn (the RPK has the AK's threaded muzzle), so the subsonic rule works as on the AKs.
+  RPD (long-stroke piston, flap locking, open bolt, belt moved by the carrier, three-position gas regulator): GoM's
+  "m60_lmg" reload as the M249, its 100-round belt container still to model from photos, no link rule (its belt does
+  not disintegrate). **US Subsonic racks after every shot in the RPD** (user: "let just RPD rack every shot"): the
+  rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
+  not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre).
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -464,7 +476,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   Foregrip radial icons, moved from post93/ on 2026-10-27); `scripts/build_rails.py` (our short Picatinny rails for
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
   or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
-  `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); Post-93's
+  `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
+  (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
   and 9mm").
 
@@ -1265,6 +1278,56 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   so it looks smaller than GoM's Glock 17 (0.72), although a real Glock 21 is a little bigger.
 - The pistol lasers' beams are ModelWeaponPart lines in its item script (gen_scripts.py), as every gun of ours has
   them since 2026-10-30 (Lasers.lua skips `GunsOfTien*` guns).
+
+## RPK and RPK-74 (2026-11-02)
+
+- Files: `scripts/build_rpk.py` (Blender, seconds: `GunsOfTien_RPK.fbx` RPK_BODY / _BOLT / _BIPOD_FOLDED /
+  _BIPOD_DEPLOYED and the same four RPK74_, `GunsOfTien_RPK_magazines.fbx` 762x39Magazine40_RPK, `scripts/rpk_points.json`),
+  `scripts/render_rpk.py -- DIR` (review renders with GoM's textures, GoM's AKs at the same drawn scale),
+  `scripts/make_rpk_art.py [--renders DIR]` (icons with the AUG's cameras, sheet `docs/rpk_preview.png` beside the
+  photos), `gen_scripts.py rpk()` (models_rpk.txt, items_rpk.txt, fixing_rpk.txt, names), `shared/GunsOfTien/RPK.lua`
+  (registries, GoM's parts' MountOn, spawn parts), `client/GunsOfTien/RPKTooltips.lua`, loot in
+  `server/GunsOfTien/Loot.lua`, Hot Brass in `server/GunsOfTien/HotBrass.lua`, "ak_rifle" durations in
+  `GoMReloads.lua`. Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
+- **Reference** (not in the repo; references/rpk): Commons "7.62mm light machine gun RPK.png" (right side, CC BY-SA
+  3.0, 1200 px, tilted: `rpk_level.png` is it turned 10.4 degrees so the barrel is level, 1.116 px/mm at 1040 mm) and
+  "Soviet RPK-74.JPEG" (left side, public domain, its butt at the frame's edge). The stock outline (build_rpk.py
+  STOCK_TOP / STOCK_BOTTOM, mm against the bore over the stock's 217 mm) and the bipod (325 mm legs) were read off
+  the levelled photo on a grid.
+- **Built from GoM's meshes, not modelled**: GoM's AK bodies are made of separate pieces (barrel from the receiver
+  to the muzzle in one, cleaning rod, gas block, front sight block, stock...), so every vertex ahead of 565 mm
+  (GoM's mm at its 0.645) moves 175 mm forward and the barrel and rod stretch over the gap; the stock is bisected
+  every 4 mm and each slice's heights mapped from GoM's outline onto the club foot, keeping GoM's UVs (GoM's AK-47
+  butt is slanted, so slices behind its bottom corner take the outline at that corner). GoM draws both AKs at 0.645
+  of real length; everything is scaled by 0.603 / 0.645 = 0.9349.
+- The bipod is new geometry in the gun's space (GoM's M60 way, drawn at the missing point `integrated_bipod`, i.e.
+  the origin), painted from bare steel patches of GoM's textures (AK-47 u 1-15 px, v rows 4-136 of its barrel strip;
+  AK-74 its barrel band, u 95-250, rows 25-42). The clamp sits behind the front sight block (the photo's), the hinge
+  under it; folded, the legs lie back under the barrel to the gas block with the feet flat.
+- The 40: GoM's 30 is a slab bent in four straight segments round one centre ahead of it (its rear edge on a circle
+  of r 0.164 within 0.2 mm); every vertex past -160 degrees about that centre is turned on by 1.42 ((40 - 6) / (30 - 6)
+  rounds), so it curls forward like the real RPK 40. GoM's 5.45 magazine geometries in assault_rifles.fbx are named
+  after GoM's source files ("mag 545 45 new.smd"), not the nodes.
+- The 75-round drum (`drum75`, references in docs/design.md 4j): GoM's 30's header (faces with a vertex below 46 mm
+  dropped) on a box feed tower, DRUM_PROFILE revolved about the drum's own axis, which runs along the barrel and
+  leans DRUM_TILT 30 degrees (front face up, as GoM's AK-74 drum: **drums face forward**, the SCAR-H's too; three-quarter
+  photos show the front face, not a side face), stepped down towards the front face, a loading lever on it. Texture `textures/weapons/GunsOfTien/762x39Drum75_RPK.png` (256, written by
+  `drum_texture()` in Blender with numpy): GoM's 30's texture in the top-left quarter for the header's own UVs, the
+  face art top right (planar), rim and step walls bottom left, plain steel bottom right.
+- **The 40 and the drum on GoM's AK-47**: `Item.DoParam("ModelWeaponPart = A B c d")` (42.21) adds to the script's
+  `modelWeaponPart` list, replacing in place an entry of the same part type but appending it again, and
+  `HandWeapon.setModelWeaponPart` hands every instance that same list, so AK-47s already in the world draw them too.
+  RPK.lua does it once per script object (scripts are rebuilt on leaving a game), with `<magazine>_GoM` models (our
+  mesh, `scale` 1 / 0.9349).
+- **Magazines in the off hand** (`shared/GunsOfTien/HandMagazines.lua`, user 2026-11-02): Gunworks 42.13 resolves
+  the off-hand item of an `attachToHand` event in `ReloadAnim.handlePropAnimEvent` (Props.lua) through
+  `ReloadAnim.resolveReloadMagItem`, on the reloading client, and the server creates it only if
+  `isAllowedPropValue` passes (the gun's magazines, or the profile's `partState.props`). HandMagazines swaps the
+  resolver for the call on registered guns (RPK, RPK-74, M249, Post-93's SCAR-L) to answer `<magazine>_Hand` (hidden,
+  the `_GoT` model, which carries GoM's `Bip01_Prop2` point), and each gun's profile lists those items in
+  `partState.props`. GoM's nodes that fire `attachToHand`: its AK, M60, FAMAS and pistol loads and unloads; not
+  "left_handle_load" (the SCARs: no magazine in the hand today, so the SCAR-L's registration waits for GoM). The
+  M249's own version (keyed on its old animId "M249") went with the animations on 2026-10-29.
 
 ## KRISS Vector .45 and 9mm (Post-93, 2026-10-30)
 

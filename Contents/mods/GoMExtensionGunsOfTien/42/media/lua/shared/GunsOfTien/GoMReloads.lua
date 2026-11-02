@@ -20,7 +20,9 @@
     - "left_handle_load" (GoM's BAR / AA-12: rifle magazine pushed straight in, charging handle on the left): the
       SCAR-L and SCAR-H, whose handles are on the left (GoM's FNC reload, "fnc_rifle", racks with the left hand
       reaching over to the right side; its FAL's, "fal_rifle", racks on the left but rocks the magazine in);
-    - "m60_lmg" (GoM's M60): the M249.
+    - "m60_lmg" (GoM's M60): the M249;
+    - "ak_rifle" (GoM's AKs and SVD: the handle on the right, racked with the left hand over the top): the RPK and
+      RPK-74.
 --]]
 
 local GoMReloads = {}
@@ -33,6 +35,7 @@ local DURATIONS = {
     famas_rifle = { unload = 1.533333, load = 1.533333, rack = 2.2, rackAim = 1.5 },
     left_handle_load = { unload = 1.733333, load = 1.733333, rack = 1.966667, rackAim = 1.966667 },
     m60_lmg = { unload = 7.533333, load = 8.7, rack = 2.766667 },
+    ak_rifle = { unload = 1.866667, load = 1.866667, rack = 2.066667, rackAim = 1.666667 },
 }
 
 --- A Gunworks reload profile playing GoM's animation `animId`.

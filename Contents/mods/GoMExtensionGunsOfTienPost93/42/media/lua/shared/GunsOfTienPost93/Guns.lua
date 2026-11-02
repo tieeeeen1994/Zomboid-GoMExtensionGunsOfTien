@@ -162,14 +162,21 @@ end
 -- magazine pushed straight in, racked on the left, where the SCAR's handle is; the FNC's racks reach over to the
 -- right, the FAL's rocks its magazine in), the UMPs its MP5's.
 -------------------------------------------------
+-- The SCAR-L draws GoM's STANAGs at its own size, so a STANAG in the off hand is the main mod's scaled _Hand item
+-- (HandMagazines.lua; user, 2026-11-02). GoM's "left_handle_load" shows no magazine in the hand today, so this only
+-- matters if GoM's node ever fires attachToHand.
 local GoMReloads = require("GunsOfTien/GoMReloads")
+local HandMagazines = require("GunsOfTien/HandMagazines")
+local SCARL_HAND = HandMagazines.mapOf(STANAGS)
+HandMagazines.register(SCARL, SCARL_HAND)
 for gun, animId in pairs({
     [MP7] = "handgun2", [MP7A2] = "handgun2", [P90] = "handgun2",
     [FIVESEVEN] = "pistol_reload", [UCP] = "pistol_reload",
     [SCARL] = "left_handle_load", [SCARH] = "left_handle_load",
     [UMP45] = "MP5", [UMP9] = "MP5",
 }) do
-    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(animId))
+    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(animId,
+        gun == SCARL and { partState = { props = HandMagazines.props(SCARL_HAND) } } or nil))
 end
 
 -------------------------------------------------

@@ -85,6 +85,27 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- The RPKs eject as GoM's AKs (the same receiver and port, the grip where it is on the AKs).
+    ["GunsOfTien.RPK"] = {
+        forwardOffset = 0.35,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 164, 164 },
+    },
+    ["GunsOfTien.RPK74"] = {
+        forwardOffset = 0.35,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 164, 164 },
+    },
     -- The AUG A1 throws its cases out of the right side behind the grip, as GoM's FAMAS (a bullpup as well; the
     -- AUG's port is a little further back, but both sit at about the shooter's cheek, so GoM's numbers are kept).
     ["GunsOfTien.AUG"] = {

@@ -45,6 +45,13 @@
     alternative in MarzGuns.Zombie_Civilian_Handgun_Spawner and MarzGuns.Zombie_Police_Handgun_Spawner (the gun, up
     to 4 of its magazines and 4 boxes of GoM's .45, as its Glock 17 kits there) and in
     MarzGuns.World_Import_Pistol_Spawner (gun stores, beside its USP; up to 6 and 6).
+    The RPK and RPK-74 (shared/GunsOfTien/RPK.lua; user, 2026-11-02) go where GoM's AK-47 and AK-74 do in the world:
+    one alternative each in MarzGuns.World_Russian_Rifle_Spawner (drug labs and shacks, police evidence, survivalist
+    and bandit vehicles, late safehouse bins and gun finds, plank stashes), packed as GoM's AK kits there (the gun, up
+    to 6 of its own magazines, the RPK's 40 or the Bakelite 45, up to 6 boxes). Not on survivalist zombies' backs.
+    The RPK's 40 and 75-round drum also come loose in MarzGuns.World_HighCap_Russian_Magazine_Spawner (drug labs and
+    shacks, survivalist glove boxes and truck beds; placed while GoM's SpawnHighCapMags is on), beside GoM's 75 box
+    and AK-74 drum, each with up to two boxes.
 --]]
 
 require("Items/ProceduralDistributions")
@@ -113,6 +120,25 @@ UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner
     { items = { "GunsOfTien.556x45Magazine30_AUG" }, amountChance = 6 },
     { items = { "MarzGuns.223_Box" }, amountChance = 6 },
 } }
+
+-- the RPK and RPK-74 kits, as GoM's AK-47 and AK-74 kits in its Russian rifle spawner (6 and 6)
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
+    { items = { "GunsOfTien.RPK" }, amountChance = 1 },
+    { items = { "GunsOfTien.762x39Magazine40_RPK" }, amountChance = 6 },
+    { items = { "MarzGuns.762x39_Box" }, amountChance = 6 },
+} }
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
+    { items = { "GunsOfTien.RPK74" }, amountChance = 1 },
+    { items = { "MarzGuns.545x39Magazine45_Bakelite" }, amountChance = 6 },
+    { items = { "MarzGuns.545x39_Box" }, amountChance = 6 },
+} }
+-- the RPK's 40 and drum loose, beside GoM's 75 box and AK-74 drum in its Russian high-capacity spawner (2 boxes each)
+for _, mag in ipairs({ "GunsOfTien.762x39Magazine40_RPK", "GunsOfTien.762x39Drum75_RPK" }) do
+    UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_HighCap_Russian_Magazine_Spawner", {
+        { items = { mag }, amountChance = 1 },
+        { items = { "MarzGuns.762x39_Box" }, amountChance = 2 },
+    } }
+end
 
 -- Glock 21 kits, as GoM's Glock 17 kits in the same spawners: { spawner, magazines and boxes }
 for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "MarzGuns.Zombie_Police_Handgun_Spawner", 4 },

@@ -186,8 +186,12 @@ end
 -- shut (GoM's M60 clips open none); partState.ensure shuts a cover an older version's reload left open or part way
 -- open.
 -------------------------------------------------
+-- GoM's STANAGs go into the off hand as our scaled _Hand items (HandMagazines.lua); the box is ours already.
+local HandMagazines = require("GunsOfTien/HandMagazines")
+local HAND = HandMagazines.mapOf(STANAGS)
+HandMagazines.register(M249, HAND)
 ReloadAnim.RegisterWeapon(M249, require("GunsOfTien/GoMReloads").profile("m60_lmg",
-    { partState = { ensure = { COVER_CLOSED } } }))
+    { partState = { ensure = { COVER_CLOSED }, props = HandMagazines.props(HAND) } }))
 
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu (the box goes with the reload, as GoM's M60 box)

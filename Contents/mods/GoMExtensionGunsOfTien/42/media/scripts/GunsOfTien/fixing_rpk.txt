@@ -1,0 +1,10 @@
+module Base {
+    fixing Fix RPK {
+        Require = GunsOfTien.RPK,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix RPK74 {
+        Require = GunsOfTien.RPK74,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

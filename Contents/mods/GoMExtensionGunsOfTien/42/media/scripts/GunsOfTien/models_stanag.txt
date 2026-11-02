@@ -5,6 +5,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine25_STANAG_GoT {
@@ -12,6 +13,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine30_STANAG_GoT {
@@ -19,6 +21,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine30_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine50_STANAG_GoT {
@@ -26,6 +29,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine50_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine60_STANAG_GoT {
@@ -33,6 +37,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine60_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine75_STANAG_GoT {
@@ -40,6 +45,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine75_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine100_STANAG_GoT {
@@ -47,6 +53,7 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine100_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 
     model 556x45Magazine150_STANAG_GoT {
@@ -54,5 +61,6 @@ module GunsOfTien {
         texture  = weapons/magazines/assault_rifles/556x45Magazine150_STANAG,
         cullFace = None,
         scale    = 0.9277,
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
     }
 }

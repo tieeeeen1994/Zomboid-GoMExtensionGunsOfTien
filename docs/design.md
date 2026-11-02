@@ -350,6 +350,48 @@ Glock 17 takes them all).
 Model: scripts/build_glock21.py, traced from Commons "Glock 21 Avriette.jpg" (a Gen 3 in a Hogue grip sleeve, right
 side) with the Gen 2 dust cover and grip drawn over it; CLAUDE.md "Glock 21".
 
+## 4j. RPK and RPK-74 (2026-11-02, designed, built)
+
+User, 2026-11-02 ("how about RPD and RPK?", then "Yes do it" for both RPKs): Kalashnikov's squad machine guns, both
+from before July 1993 (RPK 1961, RPK-74 1974), so main mod; the RPD comes later (its US Subsonic racks every shot:
+"let just RPD rack every shot"). The PPSh-41 and PP-19 Bizon were dropped the same day (each needed a new calibre).
+Built on GoM's own AK-47 and AK-74 so they look like GoM's guns and take GoM's magazines (scripts/build_rpk.py):
+the barrel 175 mm longer (590 against 415 mm), the club-foot stock, a folding bipod, at Guns of Tien's 0.603.
+
+| | `GunsOfTien.RPK` "RPK Light Machine Gun" | `GunsOfTien.RPK74` "RPK-74 Light Machine Gun" |
+|---|---|---|
+| Real | 7.62x39, 590 mm barrel, 1040 mm, 4.8 kg, 600 rpm | 5.45x39, 590 mm barrel, 1060 mm, 4.7 kg, 600 rpm |
+| Drawn | 1044 mm (GoM's AK-47 at 0.935) | 1073 mm (GoM's AK-74 at 0.935, its brake squeezed to the RPK-74's short device) |
+| Fire | Auto / Single, 600 rpm, spread 0.2 / 3.0 (GoM's AK-47 0.3 / 3.5 at 650) | Auto / Single, 600 rpm, 0.15 / 2.5 (AK-74 0.2 / 3.0) |
+| Stats | damage 1.55-1.9 (AK-47 1.5-1.8: +30 m/s), HitChance 55, Aimingtime 70 | 1.35-1.95 (AK-74 1.3-1.9), HitChance 50, Aimingtime 65 |
+| Both | range 55 (AKs 50), wear 1 in 350 (AKs 300), GoM's AK jam 0.5, crit as its AK, the real weights, sound from sound_model.py (23.2" barrels): 157 / 45 and 149 / 43 | |
+| Magazines | its own 40 (`762x39Magazine40_RPK`, "RPK 40Rds 7.62x39mm Extended Magazine", 0.3: GoM's 30 bent on along its own arc, GoM's 30's texture) and 75-round drum (`762x39Drum75_RPK`, "RPK 75Rds Drum 7.62x39mm Magazine", 0.6 as GoM's drums), GoM's 30 and 75 (a long box, not the RPK's drum), profile "7.62x39mm RPK", the 40 and drum in GoM's 7.62x39mm family and on GoM's AK-47 too | GoM's whole "545x39" profile: Bakelite 30, 45 (the real RPK-74 magazine), 60, 100 drum |
+| Bipod | folded back under the barrel or deployed; hidden parts `RPK_Integrated_Bipod_Folded / _Deployed` (each gun draws its own model), GoM's rail bipod stats deployed (Aiming Time x1.1, Hit and Crit x1.15, auto spread x0.65), nothing folded | the same |
+| Parts | GoM's AK mount and its 14 AK-47 optics, AK muzzle mount device, PBS-1 (so US Subsonic cycles it, as on the AKs) | the same |
+| Hold, reload | rifle clips, GoM's "ak_rifle" (GoMReloads.lua); GoM's AK bolt swap, the handle reciprocates with the carrier (no ChargingHandle part) | the same |
+| Loot | one kit each in GoM's `World_Russian_Rifle_Spawner` (drug labs and shacks, police evidence, survivalist and bandit vehicles, late safehouse bins and gun finds, plank stashes), packed as GoM's AK kits (gun, up to 6 of the 40 / Bakelite 45, up to 6 boxes); found guns: bipod folded, own magazine 30 %, GoM's other magazines rarer, GoM's AK optics with the mount at its chances | |
+| Casings | GoM's AK Hot Brass values | |
+| Repair | RepairPack, Aiming 3 (GoM's AKs) | |
+
+The 40 and the drum fit GoM's AK-47 too (user, 2026-11-02: references first; the RPK takes standard AKM magazines and
+40-round AK magazines are sold as fitting the AK-47 / AKM, so they share one magazine well): they join GoM's "762x39"
+profile and GoM's AK-47 gets their model lines from Lua (DoParam), drawn at GoM's size. In the off hand during the
+reload GoM's magazines are drawn at the gun's size (`_Hand` items, shared/GunsOfTien/HandMagazines.lua; the same for
+the M249's and SCAR-L's STANAGs). Found RPKs: the 40 at 30 %, the drum at 5 %; both also loose in GoM's
+`World_HighCap_Russian_Magazine_Spawner` beside its 75 box and AK-74 drum.
+
+The drum (user, 2026-11-02: "Did you search from the Internet?"; it had not been): references/rpk, Commons "Izhmash
+museum 1.jpg" (CC BY-SA 4.0, an RPK with the drum from its right side) and "Operation Charkh Restoration
+110405-A-CA126-060.jpg" (public domain, from its left), and Small Arms Review's "AK-74 Drum Magazines": the Soviet drum
+is spot-welded steel and tapered, its feed tower is set at an angle so the drum hangs forward on the rifle, a loading
+lever on its front; KCI's copy is listed at about 7 x 3 in and 2.1 lb. It faces forward, as GoM's Thompson and AK-74
+drums do: its round faces look along the barrel and from the side it shows its ribbed band. Both photos are
+three-quarter views, so the round face they show is the front face at an angle (a first build read them as faces to
+the gun's sides; the user: "that's the wrong orientation", as on the SCAR-H drum before). Model: build_rpk.py `drum75`,
+175 mm across, 81 mm deep with its hub, stepped down towards the front face (tapered), its axis leaning 30 degrees
+(front face up, the body's bottom forward) with its middle 32 mm ahead of and 120 below the feed lips, as GoM's AK-74
+drum (measured: 30 degrees, 32 / 117 mm); GoM's 30's header on top, the loading lever on the front face.
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?
