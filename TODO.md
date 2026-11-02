@@ -15,6 +15,19 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       conditions); what `WeaponType.getWeaponType` gives for a two-handed gun in the primary hand with another item
       in the secondary.
 
+## Planned
+
+- [ ] **P90 Carbine** (Post-93, item `P90C`, user 2026-11-03): a separate gun, not a conversion of the P90 TR (an
+      installable handguard was dropped: `isTwoHandWeapon` / `getSwingAnim` read the item script, so one item cannot
+      turn two-handed). The P90 TR's body with a metal rail handguard bolted to its nose and a longer barrel; the
+      look the user wants is `docs/p90c_render.png` (a stylised render, resembling K&M Arms' "The Handler" for the
+      P90 / PS90). **Two-handed**, rifle hold, so modelled upright (the `UZI_2H` way), not turned like the P90 TR.
+      Rails: top (moved forward onto the handguard), left, right, and a bottom one for GoM's foregrips
+      (parts "P90 Carbine Integrated Rail (Up / Down / Left / Right)"); the P90's magazines and muzzle mount device;
+      longer-barrel stats. Open before building: model from the render or a real handguard photo; the reload needs
+      new two-handed top-loading clips (the P90's are made for the pistol hold), shown as GIFs before packing;
+      spawns.
+
 ## Community Wishlist
 
 - [✔] Mosin Nagant (Obrez; Sawn off barrel and stock)
