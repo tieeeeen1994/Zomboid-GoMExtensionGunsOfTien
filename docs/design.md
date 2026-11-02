@@ -364,7 +364,7 @@ the barrel 175 mm longer (590 against 415 mm), the club-foot stock, a folding bi
 | Drawn | 1044 mm (GoM's AK-47 at 0.935) | 1073 mm (GoM's AK-74 at 0.935, its brake squeezed to the RPK-74's short device) |
 | Fire | Auto / Single, 600 rpm, spread 0.2 / 3.0 (GoM's AK-47 0.3 / 3.5 at 650) | Auto / Single, 600 rpm, 0.15 / 2.5 (AK-74 0.2 / 3.0) |
 | Stats | damage 1.55-1.9 (AK-47 1.5-1.8: +30 m/s), HitChance 55, Aimingtime 70 | 1.35-1.95 (AK-74 1.3-1.9), HitChance 50, Aimingtime 65 |
-| Both | range 55 (AKs 50), wear 1 in 350 (AKs 300), GoM's AK jam 0.5, crit as its AK, the real weights, sound from sound_model.py (23.2" barrels): 157 / 45 and 149 / 43 | |
+| Both | range 55 (AKs 50), wear 1 in 350 (AKs 300), GoM's AK jam 0.5, crit as its AK, the real weights, sound from sound_model.py (23.2" barrels): 157 / 45 and 149 / 43; the shot GoM's AKs' (JS14Shoot, gain 2.0, the PBS-1's CapGunRevolverShoot when fitted) for both rounds (user, 2026-11-02, after playing: "the same sounds as what round they shoot"; the RPK-74 fired M16Shoot before) | |
 | Magazines | its own 40 (`762x39Magazine40_RPK`, "RPK 40Rds 7.62x39mm Extended Magazine", 0.3: GoM's 30 bent on along its own arc, GoM's 30's texture) and 75-round drum (`762x39Drum75_RPK`, "RPK 75Rds Drum 7.62x39mm Magazine", 0.6 as GoM's drums), GoM's 30 and 75 (a long box, not the RPK's drum), profile "7.62x39mm RPK", the 40 and drum in GoM's 7.62x39mm family and on GoM's AK-47 too | GoM's whole "545x39" profile: Bakelite 30, 45 (the real RPK-74 magazine), 60, 100 drum |
 | Bipod | folded back under the barrel or deployed; hidden parts `RPK_Integrated_Bipod_Folded / _Deployed` (each gun draws its own model), GoM's rail bipod stats deployed (Aiming Time x1.1, Hit and Crit x1.15, auto spread x0.65), nothing folded | the same |
 | Parts | GoM's AK mount and its 14 AK-47 optics, AK muzzle mount device, PBS-1 (so US Subsonic cycles it, as on the AKs) | the same |
@@ -419,7 +419,7 @@ Tula museum's (the bipod deployed).
 | Real | 7.62x39, 520 mm barrel, 1037 mm, 7.4 kg, 650-750 rpm |
 | Drawn | 1041 mm, modelled from the photo (scripts/build_rpd.py), GoM's style |
 | Fire | Auto only, 700 rpm, spread 0.2 / 3.5 (GoM's M60, as the M249) |
-| Stats | beside the M249 (GoM's M60 pattern): damage 1.55-1.9 (the RPK's), HitChance 40 (M249 35), Aimingtime 65, range 55, jam 1.0 (the drum's dirt trouble; M249 0.9), wear 1 in 230, weight 5.2 (drawn as the M249: 5.3 for 7.5 kg), sound 163 / 47 (sound_model.py, 7.62x39 from 20.5") |
+| Stats | beside the M249 (GoM's M60 pattern): damage 1.55-1.9 (the RPK's), HitChance 40 (M249 35), Aimingtime 65, range 55, jam 1.0 (the drum's dirt trouble; M249 0.9), wear 1 in 230, weight 5.2 (drawn as the M249: 5.3 for 7.5 kg), sound 163 / 47 (sound_model.py, 7.62x39 from 20.5"), the shot GoM's 7.62x39 guns' (JS14Shoot, gain 2.0; was the M249's 2.5 before the user's test) |
 | Drum | `762x39Drum100_RPD` "RPD 100Rds 7.62x39mm Belt Drum", 0.8 (the M249's box), 162 mm across and 70 deep, facing forward, slid onto the dovetail under the receiver; its own profile, in GoM's 7.62x39mm family; no belt shows outside it; no belt-link rule |
 | Bolt | the first model's straight operating handle on the slide (right side, low, 100 mm travel) moves with it on every shot: the gun's Bolt part on GoM's swap, no ChargingHandle part; open bolt: Gunworks' states (back after each shot and while empty), as the M249 and Uzis |
 | Bipod | folds back under the barrel, the feet hanging at the handguard; GoM's M60 bipod stats (as the M249) |

@@ -73,7 +73,7 @@ module GunsOfTien {
         ShellFallSound               = M16CartridgeFall,
         SwingSound                   = JS14Shoot,
         UnequipSound                 = M16UnEquip,
-        SoundGain                    = 2.5,
+        SoundGain                    = 2.0,
         SoundRadius                  = 163,
         SoundVolume                  = 47,
         NPCSoundBoost                = 1.5,

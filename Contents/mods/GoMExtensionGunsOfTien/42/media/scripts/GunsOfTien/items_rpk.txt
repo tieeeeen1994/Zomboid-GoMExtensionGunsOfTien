@@ -181,7 +181,7 @@ module GunsOfTien {
         InsertAmmoStopSound          = M16InsertAmmoStop,
         RackSound                    = M16Rack,
         ShellFallSound               = M16CartridgeFall,
-        SwingSound                   = M16Shoot,
+        SwingSound                   = JS14Shoot,
         UnequipSound                 = M16UnEquip,
         SoundGain                    = 2.0,
         SoundRadius                  = 149,

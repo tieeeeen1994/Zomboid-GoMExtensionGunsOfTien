@@ -1970,14 +1970,16 @@ RPK_PARTS = [  # hidden integrated parts, shared by both guns (each draws its ow
 # Stats against GoM's AK-47 / AK-74 (docs/design.md 4j): the 590 mm barrel (+30 m/s, +8 % energy) a little more
 # damage and range, the heavier barrel and longer sight line steadier (Hit +5) but slower to bring up (Aiming Time
 # +10, higher is slower), the real weights, a little more wear life; GoM's AK jam rate. Sound from sound_model.py's
-# model for 23.2" barrels: 7.62x39 157 / 45, 5.45x39 149 / 43 (GoM's AKs 175 / 50, 166 / 47).
+# model for 23.2" barrels: 7.62x39 157 / 45, 5.45x39 149 / 43 (GoM's AKs 175 / 50, 166 / 47). The shot and its gain are
+# GoM's for both rounds (user, 2026-11-02: "the same sounds as what round they shoot"): its AK-47, AK-74 and AKS-74U
+# all fire JS14Shoot at SoundGain 2.0 (its PBS-1 swaps in CapGunRevolverShoot, a part stat, so on the RPKs too).
 RPK_GUNS = {
     'RPK': {'name': 'RPK Light Machine Gun', 'round': 'swmg:bullet_762x39', 'box': 'MarzGuns.762x39_Box',
             'mag': RPK_MAG40, 'min': 1.55, 'max': 1.9, 'crit': 25.0, 'critmul': 6.0, 'hit': 55, 'aim': 70,
             'range': 55.0, 'weight': 4.8, 'sound': (157, 45), 'swing': 'JS14Shoot', 'icon': 'GunsOfTien_RPK'},
     'RPK74': {'name': 'RPK-74 Light Machine Gun', 'round': 'swmg:bullet_545x39', 'box': 'MarzGuns.545x39_Box',
               'mag': 'MarzGuns.545x39Magazine45_Bakelite', 'min': 1.35, 'max': 1.95, 'crit': 30.0, 'critmul': 6.0,
-              'hit': 50, 'aim': 65, 'range': 55.0, 'weight': 4.7, 'sound': (149, 43), 'swing': 'M16Shoot',
+              'hit': 50, 'aim': 65, 'range': 55.0, 'weight': 4.7, 'sound': (149, 43), 'swing': 'JS14Shoot',
               'icon': 'GunsOfTien_RPK74'},
 }
 
@@ -2257,7 +2259,8 @@ def rpd():
     # Stats (docs/design.md 4k): beside our M249 (GoM's M60 pattern): the RPK's 7.62x39 damage from its 520 mm barrel,
     # a little steadier than the M249 (lighter recoil, Hit 40), GoM's M60 handling and wear; 7.4 kg real drawn as the
     # M249 is (5.3 for 7.5 kg): 5.2; jams a little more than an M249 on a box (the drum's dirt trouble); full auto only.
-    # Sound from sound_model.py's model: 7.62x39 from 20.5": 163 / 47.
+    # Sound from sound_model.py's model: 7.62x39 from 20.5": 163 / 47; the shot and gain GoM's 7.62x39 guns' (JS14Shoot,
+    # 2.0), not the M249's 5.56 (user, 2026-11-02).
     items = [f"module {MODULE} {{\n", f"""
     item RPD {{
         MinDamage                    = 1.55,
@@ -2332,7 +2335,7 @@ def rpd():
         ShellFallSound               = M16CartridgeFall,
         SwingSound                   = JS14Shoot,
         UnequipSound                 = M16UnEquip,
-        SoundGain                    = 2.5,
+        SoundGain                    = 2.0,
         SoundRadius                  = 163,
         SoundVolume                  = 47,
         NPCSoundBoost                = 1.5,
