@@ -120,6 +120,14 @@ Maker they can be made.
 - Found where Guns of Marz's AK-47 and AK-74 are in the world (drug labs, police evidence, survivalists, bandits,
   late gun finds), with their magazines and boxes; the 40 and the drum also with its high-capacity AK magazines
 
+## RPD
+
+- RPD (7.62x39mm), Degtyaryov's belt-fed squad machine gun as first made: its 100-round belt drum under the gun,
+  automatic only at 700 rounds a minute, a folding bipod (deployed, it steadies aim; folded, firing tires you), and the
+  first model's operating handle, which moves back and forth with every shot
+- The US Subsonic round needs racking after every shot in it (no PBS-1 fits)
+- Found with the RPKs, with its drums and boxes
+
 ## Ammo Maker (optional)
 
 Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.

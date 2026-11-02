@@ -27,7 +27,7 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] G28
 - [ ] SR-25
 - [ ] M32A1
-- [ ] RPD
+- [✔] RPD
 - [ ] KS-23
 - [ ] PP-9 Klin
 - [✔] Vector 45 and 9mm

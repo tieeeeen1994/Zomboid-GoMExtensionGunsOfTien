@@ -85,6 +85,19 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- The RPD throws its cases down through the port in the bottom of its receiver (Small Arms Review): Post-93's P90
+    -- values (a short fall from under the gun), from where an AK's cases leave.
+    ["GunsOfTien.RPD"] = {
+        forwardOffset = 0.40,
+        sideOffset    = 0.0,
+        heightOffset  = 0.45,
+        shellForce    = 0.15,
+        sideSpread    = 10,
+        heightSpread  = { 0, 10 },
+        ejectAngle    = 0,
+        verticalForce = -0.05,
+        spinForce     = { 24, 34 },
+    },
     -- The RPKs eject as GoM's AKs (the same receiver and port, the grip where it is on the AKs).
     ["GunsOfTien.RPK"] = {
         forwardOffset = 0.35,

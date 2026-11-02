@@ -2204,6 +2204,197 @@ def rpk():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# RPD (user, 2026-11-02: "Older RPD pls."; docs/design.md 4k; meshes and points: scripts/build_rpd.py, icons:
+# scripts/make_rpd_art.py, registries: shared/GunsOfTien/RPD.lua). Degtyaryov's first-model squad machine gun on GoM's
+# M60 pattern, as our M249: the body, the operating handle on the slide (reciprocating, so it is the gun's Bolt part on
+# GoM's swap), two bipod parts drawn in the gun's space, and its 100-round belt drum as the Clip.
+RPD_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpd_points.json')
+RPD_DRUM = '762x39Drum100_RPD'
+RPD_PARTS = [  # hidden integrated parts: (item, part type, weight, English name); GoM's M60 bipod weighs 0.7 deployed
+    ('RPD_Integrated_Bipod_Folded', 'BipodIntegrated', None, 'RPD Integrated Bipod (Folded)'),
+    ('RPD_Integrated_Bipod_Deployed', 'BipodIntegrated', None, 'RPD Integrated Bipod (Deployed)'),
+]
+
+
+def rpd():
+    pts = json.load(open(RPD_POINTS))
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model RPD {{
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_BODY,
+        texture  = {tex}/RPD,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'magazine', 'bolt_fired', 'world'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append("    }\n")
+    for node in ('BOLT', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
+        models.append(f"""
+    model RPD_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_{node},
+        texture  = {tex}/RPD,
+        cullFace = None,
+    }}
+""")
+    bd = pts['_bounds'][RPD_DRUM]
+    models.append(f"""
+    model {RPD_DRUM} {{
+        mesh     = weapons/magazines/GunsOfTien_RPD_drum|{RPD_DRUM},
+        texture  = {tex}/{RPD_DRUM},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{m249_attachment('Bip01_Prop2', prop2_moved(GOM_M60_BOX_PROP2, GOM_M60_BOX_BOUNDS, (bd['min'], bd['max'])))}    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_rpd.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.RPD_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.RPD_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.RPD_Integrated_Bipod_Folded {MODULE}.RPD_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+             f"{w}{MODULE}.RPD_Integrated_Bipod_Deployed {MODULE}.RPD_BIPOD_DEPLOYED integrated_bipod integrated_bipod,",
+             f"{w}{MODULE}.{RPD_DRUM} {MODULE}.{RPD_DRUM} magazine magazine,"]
+    # Stats (docs/design.md 4k): beside our M249 (GoM's M60 pattern): the RPK's 7.62x39 damage from its 520 mm barrel,
+    # a little steadier than the M249 (lighter recoil, Hit 40), GoM's M60 handling and wear; 7.4 kg real drawn as the
+    # M249 is (5.3 for 7.5 kg): 5.2; jams a little more than an M249 on a box (the drum's dirt trouble); full auto only.
+    # Sound from sound_model.py's model: 7.62x39 from 20.5": 163 / 47.
+    items = [f"module {MODULE} {{\n", f"""
+    item RPD {{
+        MinDamage                    = 1.55,
+        MaxDamage                    = 1.9,
+        CriticalChance               = 25.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 5.0,
+        HitChance                    = 40,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 65,
+        RecoilDelay                  = 15,
+        MaxRange                     = 55.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 10,
+        MaxSightRange                = 18.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1.0,
+        ConditionLowerChanceOneIn    = 230,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 5.2,
+        MetalValue                   = 70.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x39,
+        AmmoBox                      = MarzGuns.762x39_Box,
+        MagazineType                 = {MODULE}.{RPD_DRUM},
+        MaxAmmo                      = 100,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_RPD,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.RPD,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = JS14Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.5,
+        SoundRadius                  = 163,
+        SoundVolume                  = 47,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+    }}
+
+    item {RPD_DRUM} {{
+        AmmoType         = swmg:bullet_762x39,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{RPD_DRUM},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 100,
+        MountOn          = {MODULE}.RPD,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = 0.8,
+        WeightModifier   = 0.8,
+        StaticModel      = {MODULE}.{RPD_DRUM},
+        WorldStaticModel = {MODULE}.{RPD_DRUM},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+"""]
+    for part, ptype, weight, _ in RPD_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_rpd.txt', ''.join(items))
+    # GoM repairs both its machine guns with Aiming=6
+    write('scripts/GunsOfTien/fixing_rpd.txt', f"""module Base {{
+    fixing Fix RPD {{
+        Require = {MODULE}.RPD,
+        Fixer   = MarzGuns.RepairPack; Aiming=6,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.RPD'] = 'RPD Light Machine Gun'
+    names[f'{MODULE}.{RPD_DRUM}'] = 'RPD 100Rds 7.62x39mm Belt Drum'
+    for part, _, _, name in RPD_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # Glock 21 (user, 2026-10-30: Glock's .45 of 1990, the Gen 2 of 1993 with GoM's pistol parts anyway; meshes and points:
 # scripts/build_glock21.py, icons: scripts/make_glock21_art.py, registries: shared/GunsOfTien/Glock21.lua). GoM's
 # pistol pattern (its Glock 17 for the model and parts, its USP for the .45): body + slide drawn through
@@ -2459,6 +2650,7 @@ if __name__ == '__main__':
     aug()
     glock21()
     rpk()
+    rpd()
     charging_handles()
     mp5_family()
     one_hand()

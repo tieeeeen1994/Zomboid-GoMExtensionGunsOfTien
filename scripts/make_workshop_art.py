@@ -8,7 +8,8 @@ preview2.png (1024x1024, an ad for both mods, under Steam's 1 MB image limit, ad
 preview3.png (1024x1024, the Post-93 pistols, added the same way), preview4.png (1024x1024, the MP7A2, the same),
 preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x1024, the SCAR-L and SCAR-H, the same), preview7.png (1024x1024, the UMP45 and UMP9, the same), preview8.png (1024x1024, the suppressors added 2026-10-22, the same), preview9.png (1024x1024, the M249 and belt links, the same), preview10.png (1024x1024, the Uzi, Mini Uzi and Micro Uzi, the same), preview11.png (1024x1024, the short SMG stance, the same), preview12.png (1024x1024, the AUG A1, the same),
 preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024x1024, Post-93's AUG A3, Para and HBAR,
-the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview16.png (1024x1024, the
+the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview17.png (1024x1024, the RPK
+and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.png (1024x1024, the
 Glock 21, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
@@ -879,6 +880,80 @@ def preview16(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview17(path, W=1024):
+    """The main mod's RPK and RPK-74 (2026-11-02), laid out like preview15: both at one scale from the front quarter
+    (render_ad_guns.py "rpk" / "rpk74", mirrored back to the game's view), the RPK with its 75-round drum and its bipod
+    deployed, the RPK-74 with Guns of Marz's Bakelite 45 and its bipod folded, each under its name and calibre; then
+    one row of slots (both guns, their own magazines, Guns of Marz's AK magazines and boxes) and what sets them apart."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "RPK  ·  RPK-74", 34, "GUNS OF MARZ EXTENSION")
+
+    ims = {}
+    for name in ("rpk", "rpk74"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    # one scale for both (the same length): up to 440 wide, the two with their labels within 300 tall
+    s = min(u(440) / max(im.width for im in ims.values()), u(250) / sum(im.height for im in ims.values()))
+    y = u(80)
+    for name, label, sub, dx in (("rpk", "RPK", "7.62X39MM", -u(10)), ("rpk74", "RPK-74", "5.45X39MM", u(10))):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = (W - im.width) // 2 + dx
+        big = font(BOLD, u(17), b"Bold")
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(big.getlength(label)) + u(8), y + u(5)), sub,
+                                        font(BOLD, u(11), b"Bold"), (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(24))), (0, u(6)), u(6), 160)
+        y += u(24) + im.height + u(8)
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("RPK"), main("762x39Magazine40_RPK"), main("762x39Drum75_RPK"), gom("762x39Magazine30"),
+                    gom("762x39_Box"), main("RPK74"), gom("545x39Magazine45"), gom("545x39_Box")],
+             256, 404, "AK MAGAZINES  ·  RPK 40 AND 75 DRUM")
+    for n, line in enumerate(("600 RPM  ·  FOLDING BIPOD", "THE 40 AND DRUM FIT THE AK-47 TOO")):
+        page.alpha_composite(text_layer(size, (W // 2, u(462 + n * 16)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
+def preview18(path, W=1024):
+    """The main mod's RPD (2026-11-02), one gun on its own page as preview12: its drum fitted and its bipod deployed
+    from the front quarter (render_ad_guns.py "rpd", mirrored back to the game's view, as preview17), what it is under
+    the title, then a row of slots (the gun, its belt drum, Guns of Marz's 7.62x39 box) and what sets it apart."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "RPD", 34, "GUNS OF MARZ EXTENSION")
+    page.alpha_composite(text_layer(size, (W // 2, u(92)), "7.62X39MM",
+                                    font(BOLD, u(13), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(1)))
+    im = Image.open(os.path.join(RENDERS, "ad_rpd.png")).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    im = im.crop(im.getchannel("A").getbbox())
+    s = min(u(470) / im.width, u(260) / im.height)
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    paste_with_shadow(page, placed(size, im, ((W - im.width) // 2, u(112))), (0, u(6)), u(6), 160)
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("RPD"), main("762x39Drum100_RPD"), gom("762x39_Box")], 256, 404,
+             "100-ROUND BELT DRUM")
+    for n, line in enumerate(("700 RPM  ·  AUTOMATIC ONLY  ·  FOLDING BIPOD",)):
+        page.alpha_composite(text_layer(size, (W // 2, u(462 + n * 16)), line, font(BOLD, u(11), b"Bold"),
+                                        (60, 64, 70, 255), anchor="ma", spacing=u(1)))
+    save_under(page.convert("RGB"), path)
+
+
 def preview13(path, W=1024):
     """The Mosin-Nagant Obrez (2026-10-29), laid out like preview5: GoM's Mosin-Nagant whole and, under it at the same
     scale and from the same camera, so they line up on the receiver, sawn into an Obrez (render_ad_guns.py "mosin_full"
@@ -974,6 +1049,10 @@ if __name__ == "__main__":
         preview15(os.path.join(ROOT, "preview15.png"))   # Post-93's Vectors, added the same way
     if want("preview16"):
         preview16(os.path.join(ROOT, "preview16.png"))   # the Glock 21, added the same way
+    if want("preview17"):
+        preview17(os.path.join(ROOT, "preview17.png"))   # the RPK and RPK-74, added the same way
+    if want("preview18"):
+        preview18(os.path.join(ROOT, "preview18.png"))   # the RPD, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

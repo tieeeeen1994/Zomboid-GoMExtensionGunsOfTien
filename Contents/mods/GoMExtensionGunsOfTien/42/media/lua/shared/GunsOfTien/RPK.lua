@@ -89,6 +89,25 @@ local HAND = {
     [RPK] = HandMagazines.mapOf({ RPK_MAGS[3], RPK_MAGS[4] }),
     [RPK74] = HandMagazines.mapOf(RPK74_MAGS),
 }
+-- The AK's charging handle is part of the bolt carrier, so GoM's AK bolt model (carrier and handle in one) moving on
+-- each shot and with the rack is right, as on the SCARs. But an AK has no bolt hold-open: the carrier closes on the
+-- empty chamber after the last round. Gunworks (42.13 Animations.lockActionOpen) shows the bolt back for a cycle after
+-- each shot and then lets releaseActionLock close it only while a round is chambered, i.e. holds it open on an empty
+-- gun (right for the AUGs and UMPs). For the RPKs it closes always (releaseActionLockForce). lockActionOpen looks the
+-- release up on the table at each shot, so the wrapper takes effect for the next one. GoM's own AKs are left as GoM
+-- registers them.
+local CLOSES_ON_EMPTY = { [RPK] = true, [RPK74] = true }
+if not Animations.GunsOfTienRPKWrapped and Animations.releaseActionLock and Animations.releaseActionLockForce then
+    Animations.GunsOfTienRPKWrapped = true
+    local release = Animations.releaseActionLock
+    function Animations.releaseActionLock(player, weapon)
+        if weapon and weapon.getFullType and CLOSES_ON_EMPTY[weapon:getFullType()] then
+            return Animations.releaseActionLockForce(player, weapon)
+        end
+        return release(player, weapon)
+    end
+end
+
 for _, gun in ipairs(GUNS) do
     Animations.RegisterWeaponWithAnimatedParts(gun, {
         SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },

@@ -1,0 +1,179 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.4721,
+      0.0223
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1266,
+      0.0012
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0603,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "integrated_bipod": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 783, H 100)",
+    "magazine": "762x39Drum100_RPD, origin at the middle of its dovetail lug's top, slid onto the gun's dovetail",
+    "bolt_fired": "RPD_BOLT (the first model's straight operating handle on the slide, modelled forward) back 100 mm real: each shot, cocked (an open bolt rests back) and while empty (GoM's Bolt_Fired)",
+    "integrated_bipod": "RPD_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space"
+  },
+  "_extras": {
+    "photo_origin_mm": [
+      783.0,
+      100.0
+    ],
+    "bore_mm": 137.0,
+    "k": 0.000603,
+    "drum_top": [
+      0.0,
+      0.1266,
+      0.0012
+    ],
+    "handle": [
+      -0.0235,
+      0.1079,
+      0.0106
+    ]
+  },
+  "_bounds": {
+    "RPD_BODY": {
+      "min": [
+        -0.0157,
+        -0.1556,
+        -0.0603
+      ],
+      "max": [
+        0.0157,
+        0.4721,
+        0.0573
+      ],
+      "tris": 2048
+    },
+    "RPD_BOLT": {
+      "min": [
+        -0.0305,
+        0.1034,
+        0.006
+      ],
+      "max": [
+        -0.009,
+        0.1125,
+        0.0151
+      ],
+      "tris": 116
+    },
+    "RPD_BIPOD_FOLDED": {
+      "min": [
+        -0.0109,
+        0.2297,
+        -0.0302
+      ],
+      "max": [
+        0.0109,
+        0.4397,
+        0.0064
+      ],
+      "tris": 254
+    },
+    "RPD_BIPOD_DEPLOYED": {
+      "min": [
+        -0.0663,
+        0.4337,
+        -0.2022
+      ],
+      "max": [
+        0.0663,
+        0.4658,
+        0.0049
+      ],
+      "tris": 256
+    },
+    "762x39Drum100_RPD": {
+      "min": [
+        -0.0498,
+        -0.0211,
+        -0.1025
+      ],
+      "max": [
+        0.0498,
+        0.0241,
+        0.0
+      ],
+      "tris": 1200
+    },
+    "RPD_BOLT_fired": {
+      "min": [
+        -0.0305,
+        0.0431,
+        0.006
+      ],
+      "max": [
+        -0.009,
+        0.0522,
+        0.0151
+      ],
+      "tris": 116
+    },
+    "762x39Drum100_RPD_fitted": {
+      "min": [
+        -0.0498,
+        0.1055,
+        -0.1013
+      ],
+      "max": [
+        0.0498,
+        0.1507,
+        0.0012
+      ],
+      "tris": 1200
+    }
+  }
+}

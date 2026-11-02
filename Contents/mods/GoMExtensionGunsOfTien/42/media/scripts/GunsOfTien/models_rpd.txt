@@ -1,0 +1,38 @@
+module GunsOfTien {
+
+    model RPD {
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_BODY,
+        texture  = weapons/GunsOfTien/RPD,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.4721 0.0223, rotate = -90.0000 0.0000 -180.0000, }
+        attachment magazine { offset = 0.0000 0.1266 0.0012, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model RPD_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_BOLT,
+        texture  = weapons/GunsOfTien/RPD,
+        cullFace = None,
+    }
+
+    model RPD_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_BIPOD_FOLDED,
+        texture  = weapons/GunsOfTien/RPD,
+        cullFace = None,
+    }
+
+    model RPD_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_RPD|RPD_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTien/RPD,
+        cullFace = None,
+    }
+
+    model 762x39Drum100_RPD {
+        mesh     = weapons/magazines/GunsOfTien_RPD_drum|762x39Drum100_RPD,
+        texture  = weapons/GunsOfTien/762x39Drum100_RPD,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0186 0.0680 0.0084, rotate = -64.1581 20.8578 -90.9064, }
+    }
+}

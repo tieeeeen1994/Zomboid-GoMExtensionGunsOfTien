@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix RPD {
+        Require = GunsOfTien.RPD,
+        Fixer   = MarzGuns.RepairPack; Aiming=6,
+    }
+}

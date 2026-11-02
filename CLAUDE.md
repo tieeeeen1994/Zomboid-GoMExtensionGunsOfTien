@@ -223,9 +223,9 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   `762x39Magazine75` (a long curved **box**, not the RPK's drum: rendered 2026-11-02; GoM mounts it on the AK-47
   only) plus the RPK's real 40 box and 75-round drum (both built, both fit GoM's AK-47 too), "ak_rifle" reload; add
   it to the PBS-1's MountOn (the RPK has the AK's threaded muzzle), so the subsonic rule works as on the AKs.
-  RPD (long-stroke piston, flap locking, open bolt, belt moved by the carrier, three-position gas regulator): GoM's
-  "m60_lmg" reload as the M249, its 100-round belt container still to model from photos, no link rule (its belt does
-  not disintegrate). **US Subsonic racks after every shot in the RPD** (user: "let just RPD rack every shot"): the
+  RPD (long-stroke piston, flap locking, open bolt, belt moved by the carrier, three-position gas regulator; built
+  2026-11-02 as the first model, user: "Older RPD pls."): GoM's "m60_lmg" reload as the M249, its 100-round belt
+  drum facing forward, no link rule (its belt does not disintegrate); section "RPD". **US Subsonic racks after every shot in the RPD** (user: "let just RPD rack every shot"): the
   rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
   not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre).
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
@@ -442,6 +442,14 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   and the Glock magazines it takes and two lines (Super V / burst, the long magazines fit the Glocks). Rebuild:
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> vector45 vector9`, then
   `py scripts/make_workshop_art.py --renders <dir> preview15`. Not yet on the Steam page.
+  preview17 (2026-11-02) is the main mod's RPK and RPK-74, laid out like preview15: render_ad_guns.py `rpk` (its
+  75-round drum, bipod deployed) / `rpk74` (GoM's Bakelite 45 at our scale, bipod folded), both from the front quarter
+  (RPK_VIEW, so the drum shows its round front face, as in the museum photo), one scale, then a slot row (both guns,
+  the RPK's 40 and drum, GoM's 30 and 45, the boxes) and two lines. Rebuild: render `rpk rpk74`, then
+  `make_workshop_art.py preview17`. Not yet on the Steam page.
+  preview18 (2026-11-02) is the main mod's RPD alone, as preview12: render_ad_guns.py `rpd` (its drum, bipod deployed,
+  the RPKs' front quarter), what it is under the title, a slot row (gun, belt drum, GoM's 7.62x39 box) and two lines.
+  Rebuild: render `rpd`, then `make_workshop_art.py preview18`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -477,7 +485,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
   or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
   `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
-  (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); Post-93's
+  (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
+  `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
   and 9mm").
 
@@ -1319,6 +1328,11 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `HandWeapon.setModelWeaponPart` hands every instance that same list, so AK-47s already in the world draw them too.
   RPK.lua does it once per script object (scripts are rebuilt on leaving a game), with `<magazine>_GoM` models (our
   mesh, `scale` 1 / 0.9349).
+- **Bolt and handle**: the AK's handle is part of the carrier (reciprocating, right side), so GoM's AK bolt node and
+  swap stay; but AKs have no bolt hold-open, and Gunworks 42.13 holds an empty gun's bolt back (`lockActionOpen` shows
+  it back for `cycleTicks`, then `releaseActionLock` closes it only while a round is chambered; the release is looked
+  up on the table at each shot). RPK.lua wraps `Animations.releaseActionLock` to call `releaseActionLockForce` for the
+  RPKs, so the carrier closes on the empty chamber. GoM's own AKs keep GoM's behaviour. References: docs/design.md 4j.
 - **Magazines in the off hand** (`shared/GunsOfTien/HandMagazines.lua`, user 2026-11-02): Gunworks 42.13 resolves
   the off-hand item of an `attachToHand` event in `ReloadAnim.handlePropAnimEvent` (Props.lua) through
   `ReloadAnim.resolveReloadMagItem`, on the reloading client, and the server creates it only if
@@ -1328,6 +1342,28 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `partState.props`. GoM's nodes that fire `attachToHand`: its AK, M60, FAMAS and pistol loads and unloads; not
   "left_handle_load" (the SCARs: no magazine in the hand today, so the SCAR-L's registration waits for GoM). The
   M249's own version (keyed on its old animId "M249") went with the animations on 2026-10-29.
+
+## RPD (2026-11-02)
+
+- Files: `scripts/build_rpd.py` (Blender, ~2 min, the M249's kit: `GunsOfTien_RPD.fbx` RPD_BODY / RPD_BOLT /
+  RPD_BIPOD_FOLDED / _DEPLOYED, `GunsOfTien_RPD_drum.fbx` 762x39Drum100_RPD, RPD.png 256, the drum's 128,
+  `scripts/rpd_points.json`), `scripts/render_rpd.py -- DIR` (review renders, the handle close up forward / back),
+  `scripts/make_rpd_art.py [--renders DIR]` (icons: the M249's lmg camera; the drum a three-quarter view of its front
+  face; sheet `docs/rpd_preview.png` over the photo), `gen_scripts.py rpd()`, `shared/GunsOfTien/RPD.lua`,
+  `client/GunsOfTien/RPDTooltips.lua`, loot and Hot Brass beside the RPKs'. Rebuild: build, render, art, gen_scripts,
+  check_refs.
+- **Reference**: the Finnish army museum's "7,62 mm RPD light machine gun.JPG" (Commons, public domain, 5184 px; the
+  left side, level within 1 px): green felt turned white and the loose drum and label blanked
+  (references/rpd/rpd_finnish_white.png), traced with post93/trace_outline.py (threshold 200, eps 2) at 1037 mm
+  (4.420 px/mm) into `scripts/rpd_reference_outline.json`; profiles read off 5 mm gridded crops of it (H 0 = the butt's
+  toe, bore H 137, origin L 783 / H 100). That gun is a later model (a dust cover under the feed, the windage knob on
+  the left); the first model is drawn (no cover, the knob on the right, the straight handle).
+- The drum faces forward (as every drum: the RPD-44 and Nicaraguan side views show a slab; the Batey ha-Osef and Tula
+  photos are three-quarter views of its face), hung by its lug on the dovetail at `magazine`; its Bip01_Prop2 is GoM's
+  M60 box point moved onto its middle (gen_scripts.py prop2_moved), as the M249's box. No belt rounds are drawn: the
+  belt runs inside, straight up from the drum's mouth into the feed.
+- The operating handle: no source gives its place along the receiver; drawn in a slot low on the right (L 596-712,
+  H 114-121), forward at L 604, `bolt_fired` 100 mm back.
 
 ## KRISS Vector .45 and 9mm (Post-93, 2026-10-30)
 

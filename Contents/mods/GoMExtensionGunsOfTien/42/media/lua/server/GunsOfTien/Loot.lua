@@ -52,6 +52,8 @@
     The RPK's 40 and 75-round drum also come loose in MarzGuns.World_HighCap_Russian_Magazine_Spawner (drug labs and
     shacks, survivalist glove boxes and truck beds; placed while GoM's SpawnHighCapMags is on), beside GoM's 75 box
     and AK-74 drum, each with up to two boxes.
+    The RPD (shared/GunsOfTien/RPD.lua; user, 2026-11-02) is a third kit there beside the RPKs: the gun, up to 3 of its
+    belt drums, up to 6 boxes of GoM's 7.62x39. Its drum does not come loose.
 --]]
 
 require("Items/ProceduralDistributions")
@@ -131,6 +133,12 @@ UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawne
     { items = { "GunsOfTien.RPK74" }, amountChance = 1 },
     { items = { "MarzGuns.545x39Magazine45_Bakelite" }, amountChance = 6 },
     { items = { "MarzGuns.545x39_Box" }, amountChance = 6 },
+} }
+-- the RPD kit beside them (the gun, up to 3 drums, up to 6 boxes: the M249's kit has 2 / 3 belt boxes)
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
+    { items = { "GunsOfTien.RPD" }, amountChance = 1 },
+    { items = { "GunsOfTien.762x39Drum100_RPD" }, amountChance = 3 },
+    { items = { "MarzGuns.762x39_Box" }, amountChance = 6 },
 } }
 -- the RPK's 40 and drum loose, beside GoM's 75 box and AK-74 drum in its Russian high-capacity spawner (2 boxes each)
 for _, mag in ipairs({ "GunsOfTien.762x39Magazine40_RPK", "GunsOfTien.762x39Drum75_RPK" }) do

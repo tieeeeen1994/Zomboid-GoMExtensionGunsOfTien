@@ -368,10 +368,17 @@ the barrel 175 mm longer (590 against 415 mm), the club-foot stock, a folding bi
 | Magazines | its own 40 (`762x39Magazine40_RPK`, "RPK 40Rds 7.62x39mm Extended Magazine", 0.3: GoM's 30 bent on along its own arc, GoM's 30's texture) and 75-round drum (`762x39Drum75_RPK`, "RPK 75Rds Drum 7.62x39mm Magazine", 0.6 as GoM's drums), GoM's 30 and 75 (a long box, not the RPK's drum), profile "7.62x39mm RPK", the 40 and drum in GoM's 7.62x39mm family and on GoM's AK-47 too | GoM's whole "545x39" profile: Bakelite 30, 45 (the real RPK-74 magazine), 60, 100 drum |
 | Bipod | folded back under the barrel or deployed; hidden parts `RPK_Integrated_Bipod_Folded / _Deployed` (each gun draws its own model), GoM's rail bipod stats deployed (Aiming Time x1.1, Hit and Crit x1.15, auto spread x0.65), nothing folded | the same |
 | Parts | GoM's AK mount and its 14 AK-47 optics, AK muzzle mount device, PBS-1 (so US Subsonic cycles it, as on the AKs) | the same |
-| Hold, reload | rifle clips, GoM's "ak_rifle" (GoMReloads.lua); GoM's AK bolt swap, the handle reciprocates with the carrier (no ChargingHandle part) | the same |
+| Hold, reload | rifle clips, GoM's "ak_rifle" (GoMReloads.lua); GoM's AK bolt (carrier and handle in one, on the right) on GoM's swap: the handle is part of the carrier and reciprocates with it (no ChargingHandle part); no bolt hold-open, so the carrier closes on the empty chamber after the last round (Gunworks would hold it back; RPK.lua) | the same |
 | Loot | one kit each in GoM's `World_Russian_Rifle_Spawner` (drug labs and shacks, police evidence, survivalist and bandit vehicles, late safehouse bins and gun finds, plank stashes), packed as GoM's AK kits (gun, up to 6 of the 40 / Bakelite 45, up to 6 boxes); found guns: bipod folded, own magazine 30 %, GoM's other magazines rarer, GoM's AK optics with the mount at its chances | |
 | Casings | GoM's AK Hot Brass values | |
 | Repair | RepairPack, Aiming 3 (GoM's AKs) | |
+
+Bolt and handle (user, 2026-11-02: "research how these guns handle them like in real life"): Wikipedia's RPK article
+says it "functions identically to the AK-47" (gas-operated, rotating bolt, closed bolt), and the AK-47 article that
+its "bolt handle was attached to the bolt carrier" (the AK-46 prototype's non-reciprocating left handle was dropped);
+AK handle write-ups describe it as a projection of the carrier on the right that moves with it, and patents on AK
+hold-open devices state the standard AK has no last-round bolt hold-open (only some Yugoslav magazine followers hold
+the bolt; an apparent hold-open is the carrier resting on the hammer and closes at a jar).
 
 The 40 and the drum fit GoM's AK-47 too (user, 2026-11-02: references first; the RPK takes standard AKM magazines and
 40-round AK magazines are sold as fitting the AK-47 / AKM, so they share one magazine well): they join GoM's "762x39"
@@ -391,6 +398,38 @@ the gun's sides; the user: "that's the wrong orientation", as on the SCAR-H drum
 175 mm across, 81 mm deep with its hub, stepped down towards the front face (tapered), its axis leaning 30 degrees
 (front face up, the body's bottom forward) with its middle 32 mm ahead of and 120 below the feed lips, as GoM's AK-74
 drum (measured: 30 degrees, 32 / 117 mm); GoM's 30's header on top, the loading lever on the front face.
+
+## 4k. RPD (2026-11-02, designed, built)
+
+User, 2026-11-02: "Older RPD pls." Degtyaryov's squad machine gun as first made (adopted 1948, mass-produced from
+1953), main mod; a Vietnam bring-back fits 1993 Kentucky as the RPKs do. Its US Subsonic racks after every shot ("let
+just RPD rack every shot": the PBS-1 never fits it, so Ammunition.lua's rule does it). Research: Wikipedia "RPD
+machine gun" (1037 mm, 520 mm barrel, 7.4 kg, 650-750 rpm, open bolt, full auto only, a 100-round non-disintegrating
+belt fed from the left out of a drum under the gun, a three-position gas regulator, a folding bipod; later models got
+a non-reciprocating folding handle), Small Arms Review "RPD: The Last Degtyarev" (the first model: "a straight
+reciprocating operating handle (which oscillated somewhat irritatingly back and forth during firing)", no dust covers,
+a right-hand windage knob; the ejection port in the bottom of the receiver; the drum slides onto a dovetail beneath
+the receiver; the regulator's nut on the left). Photos (references/rpd): the Finnish army museum's RPD (Commons,
+public domain, the left side, traced), Batey ha-Osef's (CC BY 3.0, the right side with the drum, from the front), the
+Nicaraguan army's and the RPD-44 photo (the drum from the side: a slab, so it faces forward), the belt drum alone, the
+Tula museum's (the bipod deployed).
+
+| | `GunsOfTien.RPD` "RPD Light Machine Gun" |
+|---|---|
+| Real | 7.62x39, 520 mm barrel, 1037 mm, 7.4 kg, 650-750 rpm |
+| Drawn | 1041 mm, modelled from the photo (scripts/build_rpd.py), GoM's style |
+| Fire | Auto only, 700 rpm, spread 0.2 / 3.5 (GoM's M60, as the M249) |
+| Stats | beside the M249 (GoM's M60 pattern): damage 1.55-1.9 (the RPK's), HitChance 40 (M249 35), Aimingtime 65, range 55, jam 1.0 (the drum's dirt trouble; M249 0.9), wear 1 in 230, weight 5.2 (drawn as the M249: 5.3 for 7.5 kg), sound 163 / 47 (sound_model.py, 7.62x39 from 20.5") |
+| Drum | `762x39Drum100_RPD` "RPD 100Rds 7.62x39mm Belt Drum", 0.8 (the M249's box), 162 mm across and 70 deep, facing forward, slid onto the dovetail under the receiver; its own profile, in GoM's 7.62x39mm family; no belt shows outside it; no belt-link rule |
+| Bolt | the first model's straight operating handle on the slide (right side, low, 100 mm travel) moves with it on every shot: the gun's Bolt part on GoM's swap, no ChargingHandle part; open bolt: Gunworks' states (back after each shot and while empty), as the M249 and Uzis |
+| Bipod | folds back under the barrel, the feet hanging at the handguard; GoM's M60 bipod stats (as the M249) |
+| Reload | GoM's M60 reload ("m60_lmg"), the drum in the off hand |
+| Loot | a kit in GoM's `World_Russian_Rifle_Spawner` beside the RPKs (gun, up to 3 drums, up to 6 boxes); found guns: bipod folded, the drum at 50 % |
+| Casings | down through the bottom of the receiver: Post-93's P90 values |
+| Repair | RepairPack, Aiming 6 (GoM's machine guns) |
+
+The exact place of the first model's handle along the receiver was not found in any source; it is drawn low on the
+right, running from over the drum to the grip (the feed-system photo shows the later folding handle there).
 
 ## 5. Open checks before building
 

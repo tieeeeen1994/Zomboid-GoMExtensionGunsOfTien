@@ -116,6 +116,22 @@ G21_BARE = [(G21_FBX, "GLOCK21_BODY", os.path.join(MAIN_TEX, "GLOCK21.png"), Non
 G21_VIEW, G21_SCALE, G21_SIZE = (-0.8, -0.3, -0.35), 0.46, (2400, 1400)
 
 
+# preview17, the main mod's RPK and RPK-74 (2026-11-02): GoM's AK textures on our meshes; the RPK with its 75-round
+# drum and its bipod deployed, the RPK-74 with GoM's Bakelite 45 (drawn at our scale, as its `_GoT` model) and its
+# bipod folded (`assembled` tuples may carry a fifth item, the part model's scale; `points_key` picks the gun's own
+# points in rpk_points.json)
+RPK_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_RPK.fbx")
+RPK_MAGS = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_RPK_magazines.fbx")
+GOM_AK_TEX = os.path.join(GOM, "textures/weapons/firearms/assault_rifles")
+GOM_AK_MAGS = os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx")
+RPK_SCALE = round(0.603 / 0.645, 4)
+RPK_VIEW, RPK_ORTHO, RPK_SIZE = (0.88, -0.4, -0.2), 0.78, (2400, 1500)
+# preview18, the main mod's RPD (2026-11-02): its drum fitted and its bipod deployed, from the RPKs' front quarter (the
+# drum's round front face in view)
+RPD_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_RPD.fbx")
+RPD_DRUM = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_RPD_drum.fbx")
+
+
 def gom_part(cat, name, point):
     return (os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
             name, os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, name)), point)
@@ -243,6 +259,28 @@ GUNS = {
         "files": [(SAWN, "DOUBLEBARREL_BODY_SAWNSTOCK", GOM_DB[1]),
                   (GOM_DB[0], "DOUBLEBARREL_BARREL_SAWNOFF_CLOSE", GOM_DB[1])],
         "view": DB_VIEW, "scale": DB_SCALE, "size": DB_SIZE,
+    },
+    "rpk": {
+        "points": "rpk_points.json", "points_key": "RPK",
+        "assembled": [(RPK_FBX, n, os.path.join(GOM_AK_TEX, "AK47.png"), None)
+                      for n in ("RPK_BODY", "RPK_BOLT", "RPK_BIPOD_DEPLOYED")] + [
+            (RPK_MAGS, "762x39Drum75_RPK", os.path.join(MAIN_TEX, "762x39Drum75_RPK.png"), "magazine")],
+        "view": RPK_VIEW, "scale": RPK_ORTHO, "size": RPK_SIZE,
+    },
+    "rpk74": {
+        "points": "rpk_points.json", "points_key": "RPK74",
+        "assembled": [(RPK_FBX, n, os.path.join(GOM_AK_TEX, "AK74.png"), None)
+                      for n in ("RPK74_BODY", "RPK74_BOLT", "RPK74_BIPOD_FOLDED")] + [
+            (GOM_AK_MAGS, "545x39Magazine45", os.path.join(GOM, "textures/weapons/magazines/assault_rifles/"
+                                                                "545x39Magazine45.png"), "magazine", RPK_SCALE)],
+        "view": RPK_VIEW, "scale": RPK_ORTHO, "size": RPK_SIZE,
+    },
+    "rpd": {
+        "points": "rpd_points.json",
+        "assembled": [(RPD_FBX, n, os.path.join(MAIN_TEX, "RPD.png"), None)
+                      for n in ("RPD_BODY", "RPD_BOLT", "RPD_BIPOD_DEPLOYED")] + [
+            (RPD_DRUM, "762x39Drum100_RPD", os.path.join(MAIN_TEX, "762x39Drum100_RPD.png"), "magazine")],
+        "view": RPK_VIEW, "scale": RPK_ORTHO, "size": (2400, 1800),
     },
     "aug": {
         "points": "aug_points.json",
@@ -455,10 +493,13 @@ def build(spec):
         return gom_smg(spec["gom_smg"])
     if "assembled" in spec:
         points = json.load(open(os.path.join(HERE, spec["points"])))
+        if "points_key" in spec:
+            points = points[spec["points_key"]]
         objs = []
-        for fbx, node, tex, point in spec["assembled"]:
+        for fbx, node, tex, point, *scale in spec["assembled"]:
             o = load(fbx, tex, node)
-            place(o, points[point] if point else None, upright=spec.get("upright", False))
+            place(o, points[point] if point else None, upright=spec.get("upright", False),
+                  scale=scale[0] if scale else 1.0)
             objs.append(o)
         return objs
     if "files" in spec:
