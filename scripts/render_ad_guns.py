@@ -35,6 +35,9 @@ Mini and Micro are modelled upside down and turned upright, the Uzi is rifle-hel
 Post-93's KRISS Vector .45 and 9mm (preview15, `vector45` / `vector9`): the UMPs' view and scale, from the upright
 VECTOR_* nodes with each gun's texture (the 9mm's turned nodes match them in outline), stocks deployed.
 
+Post-93's Vector .45 Carbine and Vector 9mm Pistol (preview21, `vectorcrb` / `vectorsdp`): one view and scale, the
+CRB from its upright nodes, the SDP from its turned ones turned back upright, both fitted out.
+
 The main mod's Glock 21 (preview16, `glock21` / `glock21_fitted`): bare and with GoM's pistol parts, both from the bare
 gun's camera so they line up, turned upright (`assembled` + `upright`), seen so the slide's markings read after the
 mirror.
@@ -80,6 +83,7 @@ DB_VIEW, DB_SCALE, DB_SIZE = (0.8, 0.45, -0.25), 0.78, (2400, 1000)
 
 RIFLE_VIEW, RIFLE_SCALE, RIFLE_SIZE = (0.92, 0.3, -0.16), 0.98, (2400, 1000)
 UMP_SCALE, UMP_SIZE = 0.62, (2400, 1400)
+VECTOR_VARIANT_SCALE, VECTOR_VARIANT_SIZE = 0.8, (2400, 1400)     # preview21: the CRB is 0.54 long
 SMG9_PARTS = os.path.join(MAIN_MEDIA, "models_X/weapons/parts/GunsOfTien_SMG9_parts.fbx")
 SMG9_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTien")
 MK9_SCALE, MK9_SIZE = 0.82, (2400, 1000)
@@ -272,6 +276,33 @@ GUNS = {
         "parts": [],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip")],
         "view": RIFLE_VIEW, "scale": UMP_SCALE, "size": UMP_SIZE,
+    },
+    # the Vector .45 Carbine (CRB Enhanced, rifle-held, upright: its own body and stock, the .45's other nodes) and the
+    # Vector 9mm Pistol (SDP, held like a pistol: its turned body and the 9mm's turned nodes at vectorsdp_points.json,
+    # turned back upright) for preview21, one view and scale so their sizes compare; GoM's laser on the right rail
+    "vectorcrb": {
+        "rifle": True, "points": "post93/vectorcrb_points.json",
+        "fbx": "GunsOfTienPost93_VECTORCRB", "tex": "VECTORCRB",
+        "nodes": [("VECTORCRB_BODY", None), ("VECTOR_BOLT", None, "GunsOfTienPost93_VECTOR", "VECTOR45"),
+                  ("VECTOR_HANDLE", None, "GunsOfTienPost93_VECTOR", "VECTOR45"),
+                  ("VECTOR_RAIL_RIGHT", "rail_right", "GunsOfTienPost93_VECTOR", "VECTOR45"),
+                  ("VECTORCRB_STOCK", "stock", "GunsOfTienPost93_VECTORCRB", "VECTORCRB_STOCK")],
+        "mag": ("GunsOfTienPost93_VECTOR_magazines", "45Magazine30_VECTOR", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "Aimpoint_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip"),
+                ("pointers", "AimRight_Laser", "laser_right")],
+        "view": RIFLE_VIEW, "scale": VECTOR_VARIANT_SCALE, "size": VECTOR_VARIANT_SIZE,
+    },
+    "vectorsdp": {
+        "points": "post93/vectorsdp_points.json",
+        "fbx": "GunsOfTienPost93_VECTORSDP", "tex": "VECTORSDP",
+        "nodes": [("VECTORSDP_BODY", None), ("VECTOR9_BOLT", None, "GunsOfTienPost93_VECTOR", "VECTOR9"),
+                  ("VECTOR9_HANDLE", None, "GunsOfTienPost93_VECTOR", "VECTOR9"),
+                  ("VECTOR9_RAIL_RIGHT", "rail_right", "GunsOfTienPost93_VECTOR", "VECTOR9")],
+        "mag": ("GunsOfTienPost93_VECTOR_magazines", "9x19Magazine33_VECTOR", "magazine"),
+        "parts": [],
+        "gom": [("scopes", "EXPS3_Sight", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
+        "view": RIFLE_VIEW, "scale": VECTOR_VARIANT_SCALE, "size": VECTOR_VARIANT_SIZE,
     },
     # GoM's MP5 and MP5A2 with the main mod's mount device and AWC Mk9 (preview8), stocks deployed, nothing else fitted
     "mp5_mk9": {"gom_smg": "MP5", "view": RIFLE_VIEW, "scale": MK9_SCALE, "size": MK9_SIZE},

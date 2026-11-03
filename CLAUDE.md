@@ -357,6 +357,12 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   and cheek riser and the M-LOK handguard of the user's photo, rifle-held, GoM's FAMAS reload, the P90's magazine and
   muzzle parts, GoM's lights / lasers / foregrips on the handguard, loot shared with the TR. Build notes: section
   "PS90 Carbine".
+- **Vector CRB and Vector SDP** (user, 2026-11-03): "2 guns. .45 ACP gets the longer barrel. 9x19 gets the
+  shorter one": the CRB in .45 only (`GunsOfTienPost93.VECTORCRB`, "Vector .45 Carbine", built as KRISS's CRB Enhanced
+  in flat dark earth, not played), the SDP
+  in 9mm only (`GunsOfTienPost93.VECTORSDP`, "Vector 9mm Pistol", built from the user's photo, not played); both
+  select fire as the SMGs (the user chose Auto / burst / single over the real
+  guns' semi-automatic); the SDP held like a pistol, back slot, never a holster. Build notes: sections "Vector CRB" and "Vector SDP".
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -461,9 +467,17 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   (user: "separate previews for post93 and main mod"), laid out like preview16 / preview18: the facts in one line under
   the title, the bare gun over it fitted out at one scale from one camera (render_ad_guns.py `p90std` / `p90std_fitted`:
   side rails, SR7, AimRight, SP90; `ps90` / `ps90_fitted`: Aimpoint, MKC grip, SR7, AimRight, SP90; seen from the gun's
-  left, mirrored back), a slot row (the P90 family's parts from the main mod's textures) and two lines. Rebuild:
+  left, mirrored back), a slot row (the P90 family's parts from the main mod's textures) and two lines (preview20:
+  one; user, 2026-11-03: text on preview20 / 21 only for what plays, no barrel lengths, M-LOK or stock notes). Rebuild:
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> p90std p90std_fitted ps90 ps90_fitted`,
   then `make_workshop_art.py --renders <dir> preview19 preview20`. Not yet on the Steam page.
+  preview21 (2026-11-03) is Post-93's Vector .45 Carbine (CRB Enhanced) and Vector 9mm Pistol (SDP), laid out like
+  preview15: render_ad_guns.py `vectorcrb` (Aimpoint, MKC under the handguard, AimRight on the right rail, KRISS's 30)
+  / `vectorsdp` (its turned nodes turned back upright: EXPS3, AimRight, Glock's 33), one camera scale for both
+  (`VECTOR_VARIANT_SCALE`), the CRB across the top, the SDP right-aligned and tucked under the CRB's shroud as close
+  as the CRB's lowest pixel over its columns allows, its name to its left; a slot row of both guns and their Glock
+  magazines and one line (rate and burst). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir>
+  vectorcrb vectorsdp`, then `make_workshop_art.py --renders <dir> preview21`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -502,7 +516,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
   `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
-  and 9mm"); `scripts/post93/build_ps90.py`, `render_ps90.py`, `make_ps90_art.py` (section "PS90 Carbine"); `scripts/build_p90std.py`,
+  and 9mm"), `scripts/post93/build_vectorcrb.py` / `build_vectorsdp.py` (the Vector CRB and SDP, sections "Vector CRB" and
+  "Vector SDP"); `scripts/post93/build_ps90.py`, `render_ps90.py`, `make_ps90_art.py` (section "PS90 Carbine"); `scripts/build_p90std.py`,
   `render_p90std.py`, `make_p90std_art.py` (the main mod's P90, section "P90 with its ring sight").
 
 ## Status and how to continue
@@ -1477,6 +1492,77 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 - **fit_audit.py**: every GoM optic, foregrip, light and laser on both Vectors sits 0.6-1.6 into the rail (GoM's own
   guns 0.2-1.6), nothing floats; the magazines 14.2 into the well (the UMPs' 13.3). A plain BVH overlap count says
   nothing here (every clamp grips its rail).
+
+## Vector CRB (Post-93, 2026-11-03)
+
+- **What** (user, 2026-11-03): `GunsOfTienPost93.VECTORCRB`, "Vector .45 Carbine": the .45 only (the 9mm gets the
+  short-barrelled SDP). First built the same day as the plain Gen II CRB (a 38 mm shroud on the SMG, from "Kriss
+  Vector left.JPG"), then rebuilt as the user's photo of KRISS's **CRB Enhanced** ("Can we use this version of CRB?
+  keep the same color that we have": an OD gun, ours stays flat dark earth): an M-LOK handguard ahead of the receiver,
+  the 16" barrel in a fat shroud, an M4-type collapsible stock on KRISS's folding adapter. The Vector .45's magazines
+  (Glock 21 13, KRISS's 30, whose MountOn lists both), bolt, handle, side rails (VECTOR45.png), GoM's MP5 reload,
+  rails, muzzle parts (GoM's .45 mount device and P45, at `canon` on the shroud's face), Hot Brass, found-gun table.
+  Rifle-held.
+- **Reference**: `references/vector/crb_enhanced_left.png` (the user's, 474 x 150, from the left, muzzle left, butt
+  cut off; git-ignored), squashed vertically, so two scales from parts shared with our model: the front block's pins
+  (L 20 / 68, H 113, 27 px apart) give 0.5625 px per mm across (the adapter then starts at L 345, our receiver ends at
+  341), pins and housing bottom 0.52 up: L = (x - 177.75) / 0.5625, H = 113 - (y - 66) / 0.52.
+- **Shape** (`scripts/post93/build_vectorcrb.py`, imports build_vector.py, whose `build_body(name, muzzle)` takes
+  the front-end builder; the SMG's output is unchanged): the handguard L 0.5 to -120.5, H 86 to 166 (flush with the
+  receiver's top, the top front chamfered), half width 23 over the front block's 22: two 2.5 mm walls with eight
+  M-LOK slots in three rows round a solid core painted dark where the slots show it (the PS90's way), a slashed band
+  at H 86-101 and screws painted, the top rail carried on to the receiver's (L -104 to 4), a bottom rail L -118 to
+  -35 (crossbar faces H 79.5) where GoM's foregrips go (`foregrip` L -76; the receiver's own bottom rail stays bare);
+  the shroud 48 mm across from inside the handguard to L -300 (photo -296, the plain CRB's -300 to -313), top
+  grooves and "KRISS VECTOR" on its left painted, dark grey; the stock (`VECTORCRB_STOCK`, this FBX, origin at the
+  hinge as VECTOR_STOCK's): the black adapter L 341-366 and tube, the beam flush with the rail line (underside H 120,
+  a window at its front, the lever below to H 100), the butt from a slanted front edge (L 461 / 479) down to H 42,
+  its slot, strut, long slot and sling cup painted, the pad at L 525-535 (the rear is just past the photo's frame):
+  835 mm overall. Its own materials `shroud` and `hg` (appended to both lists, the PS90's way). The stock is wider
+  (half 20, pad 20.8), so its hinge pin is at x -22.65 (the SMG's -20.25): folded, it lies 1 mm off the housing.
+- **Stats** (gen_post93_guns.py `VECTOR_STATS`, `VECTOR_BASE`): the .45 SMG stepped as the PS90 from the TR: damage
+  1.1-1.8, hit 57, aim 40, recoil 11, range 32, sight 5-16, weight 2.7 (7.8 lb), sound 57 / 16 (sound_model.py, .45
+  from 16"); Gunworks spread 0.08 / 1.1 (the SMG 0.10 / 1.3). Loot: one of the two guns in the Vector .45's
+  alternative (Loot.lua), as the PS90 shares the TR's.
+- **Files**: `build_vectorcrb.py` (Blender, ~30 s: `GunsOfTienPost93_VECTORCRB.fbx` VECTORCRB_BODY / _STOCK,
+  `VECTORCRB.png` 256, `VECTORCRB_STOCK.png` 128, `vectorcrb_points.json`), `render_vector.py` (`CRB_*` views, GoM's
+  mount device and P45 fitted), `make_vector_art.py` (icon with the SCARs' rifle camera, rows on
+  `docs/post93_vector_preview.png`), `gen_post93_guns.py vectors()`, `Vector.lua`, Tooltips, Loot, Hot Brass. Rebuild:
+  build_vectorcrb.py, render_vector.py, make_vector_art.py, gen_post93_guns.py, check_refs.py, fit_audit.py
+  (2026-11-03: foregrips 0.5-1.5 deep, GoM's 1.3-1.5; the rest as on the Vector .45; muzzle +0.0 from the shroud).
+
+## Vector SDP (Post-93, 2026-11-03)
+
+- **What** (user, 2026-11-03: "9x19 gets the shorter one"): `GunsOfTienPost93.VECTORSDP`, "Vector 9mm Pistol":
+  KRISS's stockless Gen II SDP, the Vector 9mm SMG without its stock, sand, select fire as the SMGs (the user's
+  choice; the real one is semi-automatic), held like a pistol on the back slot, never a holster (the Vector 9mm's
+  way: turned model, Handgun swing, GoM's MP5K reload "handgun2"). The Vector 9mm's magazines (GoM's Glock 17 17,
+  Glock's 33, KRISS's 40, whose MountOn list it), turned bolt, handle and side rails (VECTOR9_* on VECTOR9.png), the
+  Mk9 and its mount device, rails, Hot Brass; no stock parts, no FoldingStock registration, a found-gun entry
+  without the stock.
+- **Reference**: `references/vector/sdp_right.png` (the user's, 2048 x 1717, a tan Gen II SDP from the right,
+  muzzle right, Glock's 33 and KRISS's side rail fitted; GunsInternational's photo, git-ignored). The receiver's face
+  at x 1894, the rail top (H 171.5) at y 285 and the housing bottom (H 5) at y 1081 give 4.78 px per mm both ways;
+  the grip's lower rear corner then lands on ours (L 341). L = (1894 - x) / 4.78, H = 5 + (1081 - y) / 4.78.
+  render_vector.py `SDP_photo` renders the right side at the photo's scale and framing: laid over the photo
+  (scratch only, never in the repo), rail line, rear cap, swivel, protector, grip and housing sit on it; only the
+  photo's ejection port is larger than the SMG model's.
+- **Shape** (`scripts/post93/build_vectorsdp.py`, imports build_vector.py through `build_body(name, muzzle)`): where
+  the SMG's stock hinges, the upper runs on to L 361 (down to H 139, into the grip's web) with the top rail over it
+  (to L 360), a black faceted end cap (8 sides, L 360-372.4, about H 155), a QD swivel (knurled button L 372-385,
+  r 6.3; its ring a torus round the Y axis, R 12, wire 1.7, built in the bmesh: the lathe would cap a closed profile
+  with a disc); the barrel r 7 to L -11 and a knurled thread protector r 8.9 to L -26.5 (`muzzle`); `canon` stays at
+  the receiver's face (L -1), where the Mk9's mount device (30 mm, r 11.6) covers the protector. Built upright,
+  painted (paint_gun with its thread stripes moved out of the way: vb.MUZZLE_L = 0.5 while painting), exported as
+  turned_copy (`VECTORSDP_BODY`), points through handgun_points with `stock` / `stock_folded` dropped. 411 mm long
+  (KRISS 16.75" = 425).
+- **Stats**: the Vector 9mm's barrel (damage 0.9-1.4, crit 20, sound 107 / 31) without a stock: hit 50, aim 33,
+  recoil 12, range 22, weight 1.9; Gunworks spread 0.10 / 1.4 (the SMG 0.08 / 1.1, x 0.75 / 0.85 with its stock out).
+  Loot: one of the two guns in the Vector 9mm's alternative.
+- **Files**: `build_vectorsdp.py` (Blender, ~30 s: `GunsOfTienPost93_VECTORSDP.fbx`, `VECTORSDP.png` 256,
+  `vectorsdp_points.json`), `render_vector.py` (`SDP_*`), `make_vector_art.py` (icon: the MP5 camera, its body turned
+  back upright), `gen_post93_guns.py` (`VECTOR_BASE`, `VECTOR_NO_STOCK`), `Vector.lua`, Tooltips, Loot, Hot Brass.
+  Rebuild: build, render, art, generator, check_refs.py, fit_audit.py (2026-11-03: every part as on the Vector 9mm).
 
 ## P90 with its ring sight (main mod, 2026-11-03) and 5.7x28mm in the main mod
 

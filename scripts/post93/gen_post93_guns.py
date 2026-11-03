@@ -1,7 +1,8 @@
 """Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
-/ KRISS Vector .45 and 9mm / PS90 Carbine item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
+/ KRISS Vector .45, 9mm, CRB and SDP / PS90 Carbine item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
 (the AUGs' points: build_aug3.py's auga3 / augpara / aughbar_points.json; the Vectors': build_vector.py's
-vector_points.json).
+vector_points.json / vector9_points.json, build_vectorcrb.py's vectorcrb_points.json, build_vectorsdp.py's
+vectorsdp_points.json).
 
 Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py /
 build_ump.py), which write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json,
@@ -1117,7 +1118,14 @@ def ump_items():
 # KRISS Vector .45 and 9mm, user 2026-10-30 (build_vector.py; docs/post93_design.md)
 # ==================================================================================================
 
-VECTORS = ['VECTOR45', 'VECTOR9']
+VECTORS = ['VECTOR45', 'VECTOR9', 'VECTORCRB', 'VECTORSDP']
+# the Vector CRB (user, 2026-11-03: ".45 ACP gets the longer barrel"; build_vectorcrb.py) is the Vector .45 as KRISS's
+# CRB Enhanced: its own body (M-LOK handguard, the 16" barrel's shroud) and M4-type stock, the .45's magazines, muzzle
+# parts, bolt, handle and side rails
+# the Vector SDP ("9x19 gets the shorter one"; build_vectorsdp.py) is the Vector 9mm without its stock, held like a
+# pistol as it is: its own turned body, the 9mm's magazines, muzzle parts and turned bolt, handle and side rails
+VECTOR_BASE = {'VECTORCRB': 'VECTOR45', 'VECTORSDP': 'VECTOR9'}
+VECTOR_NO_STOCK = {'VECTORSDP'}
 # Glock's magazines (KRISS built the Vector's well for them): the .45 the main mod's Glock 21 13 and KRISS's MagEx2 30
 # (ours; it fits the Glock 21 too), the 9mm GoM's Glock 17 17, Glock's 33 and KRISS's MagEx2 40 (ours; they fit GoM's
 # Glock 17 too). (item, the model drawn on the Vector at `magazine`)
@@ -1128,6 +1136,8 @@ VECTOR_MAGS = {
                 (f'{M}.9x19Magazine33_GLOCK', '9x19Magazine33_VECTOR'),
                 (f'{M}.9x19Magazine40_GLOCK', '9x19Magazine40_VECTOR')],
 }
+VECTOR_MAGS['VECTORCRB'] = VECTOR_MAGS['VECTOR45']
+VECTOR_MAGS['VECTORSDP'] = VECTOR_MAGS['VECTOR9']
 # our magazines: (item, rounds, weight, ammo, the pistol, the Vector, the pistol-space model (its StaticModel and what
 # the pistol draws), that model's texture, its Bip01_Prop2 in vector_points.json). GoM's weights: its pistol
 # magazines 0.05, its Thompson 20 / 30 = 0.1 / 0.15.
@@ -1150,6 +1160,19 @@ VECTOR_STATS = {
                      clip=13, ammo='swmg:bullet_45', box='MarzGuns.45_Box', shoot='M1911Shoot', radius=78, volume=22),
     'VECTOR9': dict(min=0.9, max=1.4, crit=20.0, hit=52, aim=35, recoil=11, range=25.0, stop=2.0, weight=2.0,
                     clip=17, ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', shoot='M9Shoot', radius=107, volume=31),
+    # The CRB: the Vector .45 with a 16" barrel against 5.5" (230gr .45 ACP at about 1000 ft/s against 850, ~35% more
+    # energy, still subsonic), as the PS90 against the P90 TR: more damage and range, steadier and more accurate from
+    # two hands and 3.5 kg (7.8 lb x GoM's SMG weight ratio ~0.78 = 2.7), slower to bring up; GoM's .45 Camp Carbine
+    # (16.5", 1.0-1.3, hit 55, range 30) is semi-automatic. Sound: sound_model.py's .45 from 16" = 57 / 16.
+    'VECTORCRB': dict(min=1.1, max=1.8, crit=22.0, hit=57, aim=40, recoil=11, range=32.0, stop=2.5, weight=2.7,
+                      clip=13, ammo='swmg:bullet_45', box='MarzGuns.45_Box', shoot='M1911Shoot', radius=57, volume=16,
+                      minsight=5, maxsight=16.0),
+    # The SDP: the Vector 9mm's 5.5" barrel (its damage and sound) without a stock: the SMG with its stock folded
+    # (hit 52, aim 35) a little less steady, lighter and quicker to bring up, shorter-ranged; 5.9 lb (2.7 kg, the
+    # SMG's weight less its 0.2 stock part).
+    'VECTORSDP': dict(min=0.9, max=1.4, crit=20.0, hit=50, aim=33, recoil=12, range=22.0, stop=2.0, weight=1.9,
+                      clip=17, ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', shoot='M9Shoot', radius=107,
+                      volume=31),
 }
 
 
@@ -1160,15 +1183,17 @@ def vector_parts(gun):
     (the UMPs' way); the gun's own stock colour, the bolt in the port, the charging handle; its magazines. The 9mm
     draws the turned nodes of its pistol-held model (VECTOR9_*)."""
     w = "        ModelWeaponPart              = "
-    n = 'VECTOR9' if gun == 'VECTOR9' else 'VECTOR'
+    tex = VECTOR_BASE.get(gun, gun)
+    n = 'VECTOR9' if tex == 'VECTOR9' else 'VECTOR'
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.{n}_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {M}.{n}_BOLT bolt_fired bolt_fired,",
              f"{w}GunsOfTien.ChargingHandle_Forward {M}.{n}_HANDLE handle handle,",
-             f"{w}GunsOfTien.ChargingHandle_Back {M}.{n}_HANDLE handle_back handle_back,",
-             f"{w}{M}.VECTOR_Integrated_Stock_Folded {M}.{gun}_STOCK stock_folded stock_folded,",
-             f"{w}{M}.VECTOR_Integrated_Stock_Deployed {M}.{gun}_STOCK stock stock,"]
+             f"{w}GunsOfTien.ChargingHandle_Back {M}.{n}_HANDLE handle_back handle_back,"]
+    if gun not in VECTOR_NO_STOCK:
+        lines += [f"{w}{M}.VECTOR_Integrated_Stock_Folded {M}.{gun}_STOCK stock_folded stock_folded,",
+                  f"{w}{M}.VECTOR_Integrated_Stock_Deployed {M}.{gun}_STOCK stock stock,"]
     lines += [f"{w}{item} {M}.{model} magazine magazine," for item, model in VECTOR_MAGS[gun]]
-    if gun == 'VECTOR45':
+    if tex == 'VECTOR45':
         lines += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                   f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
     else:
@@ -1198,7 +1223,8 @@ def vector_item(gun):
                        ('MagazineType', VECTOR_MAGS[gun][0][0]), ('MaxAmmo', s['clip']),
                        ('Icon', f'GunsOfTienPost93_{gun}'), ('WeaponSprite', f'{M}.{gun}'),
                        ('SwingSound', s['shoot']), ('SoundRadius', s['radius']), ('SoundVolume', s['volume']),
-                       ('ConditionLowerChanceOneIn', 200)):
+                       ('ConditionLowerChanceOneIn', 200), ('MinSightRange', s.get('minsight', 4)),
+                       ('MaxSightRange', s.get('maxsight', 12.0))):
         lines = tail.split('\n')
         hits = [i for i, l in enumerate(lines) if l.split('=')[0].strip() == key]
         assert len(hits) == 1, key
@@ -1207,7 +1233,7 @@ def vector_item(gun):
         tail = '\n'.join(lines)
     tail = tail.replace(ump_parts('UMP45'), vector_parts(gun))
     assert vector_parts(gun) in tail
-    if gun == 'VECTOR9':
+    if VECTOR_BASE.get(gun, gun) == 'VECTOR9':
         # held like a pistol (user, 2026-11-01), as the MP7s and the P90 (GUN_HANDGUN): one hand when not aiming,
         # Handgun swing, handgun reload mechanics; still the back slot, never a holster
         for a, c in (("WeaponReloadType             = boltaction,", "WeaponReloadType             = handgun,"),
@@ -1223,9 +1249,11 @@ def vector_item(gun):
 
 
 def vectors():
-    """Models, items and repairs of both Vectors (files of their own: models_vector.txt, items_vector.txt,
-    fixing_vector.txt). One mesh for both, each its own texture (colour and markings); the 9mm is held like a pistol,
-    so it draws the .45's nodes turned (VECTOR9_*, build_vector.py) at its turned points (vector9_points.json)."""
+    """Models, items and repairs of the Vectors (files of their own: models_vector.txt, items_vector.txt,
+    fixing_vector.txt). One mesh for the SMGs, each its own texture (colour and markings); the 9mm is held like a
+    pistol, so it draws the .45's nodes turned (VECTOR9_*, build_vector.py) at its turned points (vector9_points.json).
+    The CRB has a body and stock of its own (build_vectorcrb.py) and draws the .45's other nodes; the SDP a turned
+    body of its own and no stock (build_vectorsdp.py), the 9mm's other turned nodes."""
     pts = load_points('vector_points.json')
     pts9 = load_points('vector9_points.json')
     prop2 = pts['_extras']['pistol_magazines']
@@ -1234,6 +1262,11 @@ def vectors():
                          ['stock', 'stock_folded', 'rail_down', 'foregrip']))
     out.append(gun_model('VECTOR9', 'GunsOfTienPost93_VECTOR', 'VECTOR9_BODY', pts9,
                          ['stock', 'stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
+    out.append(gun_model('VECTORCRB', 'GunsOfTienPost93_VECTORCRB', 'VECTORCRB_BODY',
+                         load_points('vectorcrb_points.json'), ['stock', 'stock_folded', 'rail_down', 'foregrip']))
+    out.append(gun_model('VECTORSDP', 'GunsOfTienPost93_VECTORSDP', 'VECTORSDP_BODY',
+                         load_points('vectorsdp_points.json'), ['rail_down', 'foregrip', 'rifle_back',
+                                                                'rifle_back_bag']))
     for n, tex in (('VECTOR', 'VECTOR45'), ('VECTOR9', 'VECTOR9')):
         for part in ('BOLT', 'HANDLE', 'RAIL_LEFT', 'RAIL_RIGHT'):
             out.append(f"""
@@ -1243,10 +1276,12 @@ def vectors():
         cullFace = None,
     }}
 """)
-    for gun, node in (('VECTOR45', 'VECTOR_STOCK'), ('VECTOR9', 'VECTOR9_STOCK')):
+    for gun, node, fbx in (('VECTOR45', 'VECTOR_STOCK', 'parts/GunsOfTienPost93_VECTOR_parts'),
+                           ('VECTOR9', 'VECTOR9_STOCK', 'parts/GunsOfTienPost93_VECTOR_parts'),
+                           ('VECTORCRB', 'VECTORCRB_STOCK', 'firearms/GunsOfTienPost93_VECTORCRB')):
         out.append(f"""
     model {gun}_STOCK {{
-        mesh     = weapons/parts/GunsOfTienPost93_VECTOR_parts|{node},
+        mesh     = weapons/{fbx}|{node},
         texture  = {TEX}/{gun}_STOCK,
         cullFace = None,
     }}
@@ -1285,7 +1320,7 @@ def vectors():
         Icon             = GunsOfTienPost93_{mag},
         ItemType         = base:weaponpart,
         MaxAmmo          = {cap},
-        MountOn          = {pistol};{M}.{gun},
+        MountOn          = {pistol};{';'.join(f'{M}.{g}' for g in VECTORS if VECTOR_BASE.get(g, g) == gun)},
         PartType         = Clip,
         Tags             = base:hasmetal;base:pistolmagazine,
         Weight           = {weight},
@@ -1728,6 +1763,10 @@ def translations():
         # no maker in the name (user, 2026-11-01), as GoM's "MP5 Submachine Gun"
         f'{M}.VECTOR45': 'Vector .45 Submachine Gun',
         f'{M}.VECTOR9': 'Vector 9mm Submachine Gun',
+        # KRISS's 16" Vector CRB; GoM names carbines "<model> Carbine" (SKS Carbine, Camp Carbine), as the PS90
+        f'{M}.VECTORCRB': 'Vector .45 Carbine',
+        # KRISS's stockless SDP, a pistol (as the CRB is the carbine)
+        f'{M}.VECTORSDP': 'Vector 9mm Pistol',
         # GoM's own name for the Five-seveN is "5.7x28mm Five-SeveN": the calibre dropped (user, 2026-11-01), GoM's
         # spelling kept as our magazines have it. Translations merge by key in mod order, so ours wins.
         'MarzGuns.FIVESEVEN': 'Five-SeveN',

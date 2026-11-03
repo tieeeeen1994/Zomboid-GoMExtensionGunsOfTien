@@ -10,7 +10,7 @@ preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x10
 preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024x1024, Post-93's AUG A3, Para and HBAR,
 the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview17.png (1024x1024, the RPK
 and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.png (1024x1024, the
-Glock 21, the same)
+Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1067,20 +1067,81 @@ def preview19(path, W=1024):
 def preview20(path, W=1024):
     """Post-93's PS90 Carbine (2026-11-03), laid out like preview19: bare over fitted out with Guns of Marz's Aimpoint,
     MKC foregrip, SR7 light and AimRight laser on its M-LOK handguard and the SP90 on its mount (render_ad_guns.py
-    "ps90" / "ps90_fitted"); then a slot row and two lines."""
+    "ps90" / "ps90_fitted"); then a slot row and one line. Text only for what plays (user, 2026-11-03: no barrel
+    lengths or M-LOK)."""
     page = background((W, W)).convert("RGBA")
     title(page, "FN PS90 CARBINE", 36, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
-    caption(page, 86, "5.7X28MM  ·  16-INCH BARREL  ·  HELD AS A RIFLE", big=True)
+    caption(page, 86, "5.7X28MM  ·  HELD AS A RIFLE", big=True)
     bare_and_fitted(page, "ps90", "ps90_fitted", 112, max_w=430, max_h=262)
     post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
     p93 = lambda n: os.path.join(MAIN, "item_GunsOfTienPost93_%s.png" % n)     # the P90 family's parts: main mod
     gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
     slot_row(page, [post("PS90"), p93("57x28Magazine50_P90"), p93("57x28_Box_SS190"), post("P90_Suppressor"),
                     gom("MKC_Foregrip"), gom("SR7_Light"), gom("AimRight_Laser")],
-             256, 398, "THE P90'S MAGAZINE AND SP90")
-    caption(page, 458, "M-LOK HANDGUARD: FOREGRIPS, LIGHTS AND LASERS")
-    caption(page, 474, "GUNS OF MARZ OPTICS ON THE TOP RAIL")
+             256, 398, "TAKES THE P90'S MAGAZINE AND SP90")
+    caption(page, 462, "OPTICS, FOREGRIPS, LIGHTS AND LASERS")
     save_under(page.convert("RGB"), path)
+
+def preview21(path, W=1024):
+    """Post-93's Vector .45 Carbine (CRB Enhanced) and Vector 9mm Pistol (SDP) (2026-11-03), laid out like preview15:
+    both fitted out at one scale (render_ad_guns.py "vectorcrb" / "vectorsdp", mirrored back to the game's view), the
+    CRB across the top under its name, the SDP tucked under the CRB's shroud with its name to its left; then a slot
+    row (each gun and the Glock magazines it takes) and one line. Text only for what plays (user, 2026-11-03: no
+    barrel length, stock or handguard notes)."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+    ims = {}
+    for name in ("vectorcrb", "vectorsdp"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    # one scale for both (one camera in render_ad_guns.py), so the carbine's length against the pistol's shows
+    s = u(380) / ims["vectorcrb"].width
+    crb, sdp = [ims[n].resize((round(ims[n].width * s), round(ims[n].height * s)), Image.LANCZOS)
+                for n in ("vectorcrb", "vectorsdp")]
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+
+    def label(x, y, name, sub, anchor_right=False):
+        if anchor_right:
+            page.alpha_composite(text_layer(size, (x, y), name, big, (28, 30, 34, 255), anchor="ra"))
+            page.alpha_composite(text_layer(size, (x, y + u(22)), sub, small, (60, 64, 70, 255), anchor="ra",
+                                            spacing=u(1)))
+        else:
+            page.alpha_composite(text_layer(size, (x, y), name, big, (28, 30, 34, 255)))
+            page.alpha_composite(text_layer(size, (x + round(big.getlength(name)) + u(8), y + u(5)), sub, small,
+                                            (60, 64, 70, 255), spacing=u(1)))
+
+    x_crb, y_crb = (W - crb.width) // 2 - u(16), u(76)
+    label(x_crb + u(4), u(52), "KRISS VECTOR .45 CARBINE", ".45 ACP")
+    paste_with_shadow(page, placed(size, crb, (x_crb, y_crb)), (0, u(6)), u(6), 160)
+    # the SDP right-aligned with the CRB's muzzle end, just under whatever of the CRB hangs over its columns
+    x_sdp = x_crb + crb.width - sdp.width + u(24)
+    alpha = crb.getchannel("A").load()
+    lowest = max((y for x in range(max(0, x_sdp - x_crb), crb.width) for y in range(crb.height - 1, -1, -1)
+                  if alpha[x, y] > 40 and (y == crb.height - 1 or alpha[x, y + 1] <= 40)), default=0)
+    y_sdp = y_crb + lowest + u(8)
+    paste_with_shadow(page, placed(size, sdp, (x_sdp, y_sdp)), (0, u(6)), u(6), 160)
+    label(x_sdp - u(6), y_sdp + sdp.height // 2 - u(16), "KRISS VECTOR 9MM PISTOL", "9X19MM  ·  ONE-HANDED",
+          anchor_right=True)
+
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("VECTORCRB"), main("45Magazine13_GLOCK21"), post("45Magazine30_GLOCK21"),
+                    post("VECTORSDP"), gom("9x19Magazine17_GLOCK"), post("9x19Magazine33_GLOCK"),
+                    post("9x19Magazine40_GLOCK")],
+             256, 404, "TAKES GLOCK MAGAZINES  ·  .45: 13, 30  ·  9MM: 17, 33, 40")
+    page.alpha_composite(text_layer(size, (W // 2, u(466)), "1200 RPM  ·  TWO-ROUND BURST", small, (60, 64, 70, 255),
+                                    anchor="ma", spacing=u(1)))
+    return save_under(page.convert("RGB"), path)
+
 
 def mod_icon(path, item, W=128):
     """128 px in-game mod list icon: one inventory icon scaled up crisp on the poster's background."""
@@ -1135,6 +1196,8 @@ if __name__ == "__main__":
         preview19(os.path.join(ROOT, "preview19.png"))   # the main mod's P90, added the same way
     if want("preview20"):
         preview20(os.path.join(ROOT, "preview20.png"))   # Post-93's PS90 Carbine, added the same way
+    if want("preview21"):
+        preview21(os.path.join(ROOT, "preview21.png"))   # Post-93's Vector CRB and SDP, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

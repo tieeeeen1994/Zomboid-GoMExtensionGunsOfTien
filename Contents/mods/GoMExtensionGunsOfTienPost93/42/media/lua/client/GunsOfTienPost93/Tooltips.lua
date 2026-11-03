@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
     Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
-    .45 and 9mm, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    .45, 9mm, CRB and SDP, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -68,6 +68,14 @@ lines[M .. "VECTOR45"] = {
     "Available Picatinny Slots: Left, Right",
     "Compatible Muzzle Device: .45 Muzzle Mount",
 }
+lines[M .. "VECTORCRB"] = {
+    "Uses .45 rounds.",
+    "16-inch barrel",
+    "Takes Glock 21 magazines.",
+    "Integrated Picatinny rails: Up, Down",
+    "Available Picatinny Slots: Left, Right",
+    "Compatible Muzzle Device: .45 Muzzle Mount",
+}
 lines[M .. "VECTOR9"] = {
     "Uses 9x19mm rounds.",
     "Takes Glock 17 magazines.",
@@ -75,9 +83,17 @@ lines[M .. "VECTOR9"] = {
     "Available Picatinny Slots: Left, Right",
     "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
 }
-lines[M .. "45Magazine30_GLOCK21"] = { "Uses .45 rounds.", "Fits the Glock-21 and the Vector .45." }
+lines[M .. "VECTORSDP"] = {
+    "Uses 9x19mm rounds.",
+    "No stock",
+    "Takes Glock 17 magazines.",
+    "Integrated Picatinny rails: Up, Down",
+    "Available Picatinny Slots: Left, Right",
+    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
+}
+lines[M .. "45Magazine30_GLOCK21"] = { "Uses .45 rounds.", "Fits the Glock-21 and the .45 Vectors." }
 for _, mag in ipairs({ "9x19Magazine33_GLOCK", "9x19Magazine40_GLOCK" }) do
-    lines[M .. mag] = { "Uses 9x19mm rounds.", "Fits the Glock-17 and the Vector 9mm." }
+    lines[M .. mag] = { "Uses 9x19mm rounds.", "Fits the Glock-17 and the 9mm Vectors." }
 end
 
 -- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): integral top and right rails, GoM's Picatinny Rail upgrade on the

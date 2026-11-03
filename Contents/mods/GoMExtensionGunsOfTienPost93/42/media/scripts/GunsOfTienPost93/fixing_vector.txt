@@ -8,4 +8,14 @@ module Base {
         Require = GunsOfTienPost93.VECTOR9,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
+
+    fixing Fix VECTORCRB {
+        Require = GunsOfTienPost93.VECTORCRB,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix VECTORSDP {
+        Require = GunsOfTienPost93.VECTORSDP,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
 }

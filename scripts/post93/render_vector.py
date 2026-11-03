@@ -33,6 +33,10 @@ GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/
 OUT = sys.argv[sys.argv.index("--") + 1]
 PTS = json.load(open(os.path.join(HERE, "vector_points.json")))
 FIRE = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_VECTOR.fbx")
+FIRE_CRB = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_VECTORCRB.fbx")
+PTS_CRB = json.load(open(os.path.join(HERE, "vectorcrb_points.json")))
+FIRE_SDP = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_VECTORSDP.fbx")
+PTS_SDP = json.load(open(os.path.join(HERE, "vectorsdp_points.json")))
 PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_VECTOR_parts.fbx")
 MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_VECTOR_magazines.fbx")
 MAG_NAMES = ["45Magazine13_VECTOR", "45Magazine30_VECTOR", "9x19Magazine17_VECTOR", "9x19Magazine33_VECTOR",
@@ -133,23 +137,35 @@ def main():
                                ("parts/scopes", "EXPS3_Sight", "parts/scopes"),
                                ("parts/foregrips", "MKC_Foregrip", "parts/foregrips"),
                                ("parts/pointers", "SR7_Light", "parts/pointers"),
-                               ("parts/pointers", "AimRight_Laser", "parts/pointers")):
+                               ("parts/pointers", "AimRight_Laser", "parts/pointers"),
+                               ("parts/muzzles", "Muzzle_Mount_Device", "parts/muzzles"),
+                               ("parts/suppressors", "P45_Suppressor", "parts/suppressors")):
             try:
                 g_parts[name] = gom(cat, name, tex)
             except Exception as e:
                 print("skip", name, e)
+    crb = load(FIRE_CRB, os.path.join(TEX, "VECTORCRB.png"), keep="VECTORCRB_BODY")["VECTORCRB_BODY"]
+    crb_stock = load(FIRE_CRB, os.path.join(TEX, "VECTORCRB_STOCK.png"), keep="VECTORCRB_STOCK")["VECTORCRB_STOCK"]
 
     p = PTS
 
     def state(gun, mag, folded=False, extra=(), rails=False):
-        for o in (body, bolt, handle, rail_l, rail_r):
-            retexture(o, os.path.join(TEX, gun + ".png"))
-        retexture(stock, os.path.join(TEX, gun + "_STOCK.png"))
-        place(body)
+        nonlocal p
+        # the CRB: its own body, stock and points, the .45's other nodes and texture
+        is_crb = gun == "VECTORCRB"
+        b, st = (crb, crb_stock) if is_crb else (body, stock)
+        p = PTS_CRB if is_crb else PTS
+        tex = "VECTOR45" if is_crb else gun
+        for o in (bolt, handle, rail_l, rail_r):
+            retexture(o, os.path.join(TEX, tex + ".png"))
+        if not is_crb:
+            retexture(body, os.path.join(TEX, gun + ".png"))
+            retexture(stock, os.path.join(TEX, gun + "_STOCK.png"))
+        place(b)
         place(bolt)
         place(handle)
-        place(stock, p["stock_folded"] if folded else p["stock"])
-        shown = [body, bolt, handle, stock]
+        place(st, p["stock_folded"] if folded else p["stock"])
+        shown = [b, bolt, handle, st]
         if rails:
             place(rail_l, p["rail_left"])
             place(rail_r, p["rail_right"])
@@ -204,6 +220,25 @@ def main():
     render("V45_fitted_qr", q_right, centre, (length + 100) * k, w, 900)
     render("V45_fitted_front", (0, -1, 0), Vector((0.0, 0.0, zc)), 0.2, 700, 700)
 
+    # the Vector CRB: the 16" barrel's shroud on the .45 (vectorcrb_points.json), longer, so a wider frame
+    clen = 1080.0
+    cmid = (PTS_CRB["_bounds"]["VECTORCRB_BODY"]["max"][1]
+            + PTS_CRB["_bounds"]["VECTORCRB_STOCK_deployed"]["min"][1]) / 2.0
+    cc = Vector((0.0, cmid, zc))
+    state("VECTORCRB", "45Magazine13_VECTOR")
+    render("CRB_left", left, cc, clen * k, w, 640)
+    render("CRB_right", right, cc, clen * k, w, 640)
+    render("CRB_q_left", q_left, cc, clen * k, w, 760)
+    render("CRB_top", (0, 0, -1), cc, clen * k, w, 300)
+    render("CRB_front", (0, -1, 0), Vector((0.0, 0.0, zc)), 0.2, 700, 700)
+    state("VECTORCRB", "45Magazine30_VECTOR", folded=True)
+    render("CRB_folded_q", q_right, cc, clen * k, w, 760)
+    state("VECTORCRB", "45Magazine30_VECTOR", extra=extra + [("Muzzle_Mount_Device", "canon"),
+                                                             ("P45_Suppressor", "canon")], rails=True)
+    render("CRB_fitted_q", q_left, cc, (clen + 200) * k, w, 800)
+    render("CRB_fitted_left", left, Vector((0.0, cmid + 0.03, zc)), (clen + 200) * k, w, 600)
+    p = PTS
+
     # The Vector 9mm as the game assembles it: held like a pistol, its turned nodes (VECTOR9_*) and the upright parts at
     # vector9_points.json, the whole turned back upright here (a half turn about Y): these must match V9_left,
     # V45_fitted_q and V9_folded_top pixel for pixel in outline.
@@ -236,6 +271,34 @@ def main():
     render("V9_pistol_folded_top", (0, 0, -1), centre, length * k, w, 360)
     pistol("9x19Magazine17_VECTOR", extra=extra, rails=True)
     render("V9_pistol_fitted_q", q_left, centre, (length + 100) * k, w, 900)
+
+    # The Vector SDP the same way: its own turned body, the 9mm's turned bolt, handle and side rails, at
+    # vectorsdp_points.json, turned back upright; SDP_photo is the right side at the photo's scale and framing
+    # (references/vector/sdp_right.png: 4.78 px per mm, 2048 x 1717, centre at L 182, H 51.7) for the overlay check.
+    sdp = load(FIRE_SDP, os.path.join(TEX, "VECTORSDP.png"))["VECTORSDP_BODY"]
+
+    def sdp_state(mag, extra=(), rails=False):
+        placed = [(sdp, None), (t9["VECTOR9_BOLT"], None), (t9["VECTOR9_HANDLE"], None)]
+        if rails:
+            placed += [(t9["VECTOR9_RAIL_LEFT"], PTS_SDP["rail_left"]), (t9["VECTOR9_RAIL_RIGHT"], PTS_SDP["rail_right"])]
+        if mag:
+            placed.append((mags[mag], PTS_SDP["magazine"]))
+        placed += [(g_parts[n], PTS_SDP[pt]) for n, pt in extra if n in g_parts]
+        for o, point in placed:
+            place(o, point)
+            o.matrix_world = up @ o.matrix_world
+        show_only([o for o, _ in placed])
+
+    sdp_state("9x19Magazine33_VECTOR", rails=True)
+    L0p, H0p = PTS["_extras"]["photo_origin_mm"]
+    render("SDP_photo", right, Vector((0.0, (L0p - 182.0) * k, (51.7 - H0p) * k)), 2048 / 4.78 * k, 2048, 1717)
+    sdp_state("9x19Magazine17_VECTOR")
+    render("SDP_left", left, centre, length * k, w, 800)
+    render("SDP_right", right, centre, length * k, w, 800)
+    render("SDP_q_left", q_left, centre, length * k, w, 900)
+    render("SDP_q_right", q_right, centre, length * k, w, 900)
+    sdp_state("9x19Magazine40_VECTOR", extra=extra, rails=True)
+    render("SDP_fitted_q", q_left, centre, (length + 100) * k, w, 900)
     for n, m in mags.items():
         place(m)
         show_only([m])

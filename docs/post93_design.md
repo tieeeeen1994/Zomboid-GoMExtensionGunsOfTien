@@ -333,3 +333,19 @@ Loot (the UMPs' route): an alternative each in GoM's `World_Anachronistic_Spawne
 `Zombie_Police_SMG_Spawner` (2), the gun with three standard magazines (Glock 21 13 / GoM's Glock 17 17) and GoM's
 boxes; the 30, 33 and 40 also on their own in GoM's `World_HighCap_Tactical_Magazine_Spawner`. Found guns: the
 standard magazine at 50, the 30 / 33 at 5, the 40 at 2; GoM's MP5 accessories at its chances.
+
+### Vector CRB and Vector SDP (user, 2026-11-03)
+
+KRISS's civilian Vectors: "2 guns. .45 ACP gets the longer barrel. 9x19 gets the shorter one", select fire as the
+SMGs (Auto / two-round burst / Single, the user's choice; the real ones are semi-automatic only).
+
+| | `GunsOfTienPost93.VECTORCRB` "Vector .45 Carbine" (built) | `GunsOfTienPost93.VECTORSDP` "Vector 9mm Pistol" (built) |
+|---|---|---|
+| What | KRISS's CRB Enhanced in the Vector .45's flat dark earth (user, 2026-11-03: "use this version of CRB. keep the same color"): an M-LOK handguard to L -120.5 (top rail carried on, a bottom rail for GoM's foregrips), the 16" barrel in a 48 mm shroud to L -300, an M4-type stock on KRISS's folding adapter | the Vector 9mm without its stock (the user's photo of a Gen II SDP): the upper and top rail run on to L 361, a black end cap with a QD sling swivel, the SMG's 5.5" barrel with a knurled thread protector to L -26.5; sand |
+| Held | as a rifle, two hands, back slot, GoM's MP5 reload (the .45's) | like a pistol (one hand), back slot, never a holster, GoM's MP5K reload |
+| Magazines, muzzle | the .45's: Glock 21 13, KRISS's 30, GoM's .45 mount device and P45 on the shroud's face; foregrips under the handguard, lights / lasers on KRISS's side rails as the SMG | the 9mm's: GoM's Glock 17 17, Glock's 33, KRISS's 40; the Mk9's mount device and can at the receiver's face (the mount covers the protector) |
+| Damage | 1.1-1.8 (the .45 SMG 1.0-1.6; .45 ACP ~1000 ft/s from 16" against ~850), crit 22, stop 2.5 | 0.9-1.4 (the Vector 9mm's barrel), crit 20, stop 2.0 |
+| Handling | HitChance 57, Aimingtime 40, RecoilDelay 11, range 32, sight 5-16 (the PS90's step from the TR) | HitChance 50, Aimingtime 33, RecoilDelay 12, range 22, sight 4-12 (the SMG with its stock folded: 52 / 35 / 11 / 25) |
+| Spread | 0.08 / 1.1 (the .45 SMG 0.10 / 1.3) | 0.10 / 1.4 (the 9mm SMG 0.08 / 1.1, its stock x 0.75 / 0.85) |
+| Weight, sound | 2.7 (7.8 lb x GoM's SMG ratio); 57 / 16 (sound_model.py, .45 from 16") | 1.9 (5.9 lb); 107 / 31 (the Vector 9mm's) |
+| Loot | shares the Vector .45's alternative: one of the two guns, as the PS90 shares the P90 TR's | shares the Vector 9mm's alternative the same way |

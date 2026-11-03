@@ -173,7 +173,15 @@ def picatinny(b, La, Lb, frame, **kw):
     kit.picatinny(b, ya, yb, frame, **kw)
 
 
-def build_body():
+def threaded_barrel(b):
+    """The barrel's threaded end out of the front face (the SMG's; the CRB has its shroud there instead)."""
+    b.lathe("y", (0, 0, BORE - H0), [(P(6.0, 0)[0], 0), (P(6.0, 0)[0], 8.2), (P(0.0, 0)[0], 8.2),
+                                     (P(0.0, 0)[0], 7.2), (P(MUZZLE_L + 0.8, 0)[0], 7.2),
+                                     (P(MUZZLE_L, 0)[0], 6.4), (P(MUZZLE_L, 0)[0], 0)], seg=16, mat="metal",
+            phase=0.5)
+
+
+def build_body(name="VECTOR_BODY", muzzle=threaded_barrel):
     b = kit.Builder()
     slab(b, UPPER, half=W_UPPER, bevel=1.8, res=1)
     slab(b, FRONT, half=W_FRONT, bevel=1.8, res=1)
@@ -195,12 +203,8 @@ def build_body():
               base_h=RAIL_BASE, tooth_h=RAIL_TEETH, mat="rail")
     picatinny(b, BOTTOM_RAIL[1], BOTTOM_RAIL[0], lambda u, h, yy: Vector((u, yy, FRONT_BOTTOM - H0 - h)),
               base_h=3.0, tooth_h=FRONT_BOTTOM - BOTTOM_TEETH - 3.0 + 1.0, mat="rail")
-    # the barrel's threaded end out of the front face
-    b.lathe("y", (0, 0, BORE - H0), [(P(6.0, 0)[0], 0), (P(6.0, 0)[0], 8.2), (P(0.0, 0)[0], 8.2),
-                                     (P(0.0, 0)[0], 7.2), (P(MUZZLE_L + 0.8, 0)[0], 7.2),
-                                     (P(MUZZLE_L, 0)[0], 6.4), (P(MUZZLE_L, 0)[0], 0)], seg=16, mat="metal",
-            phase=0.5)
-    return b.to_object("VECTOR_BODY")
+    muzzle(b)
+    return b.to_object(name)
 
 
 def build_carrier():

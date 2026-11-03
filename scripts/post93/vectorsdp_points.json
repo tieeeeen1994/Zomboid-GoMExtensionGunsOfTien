@@ -1,0 +1,226 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2138,
+      0.0099
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1984,
+      0.0099
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1257,
+      0.0193
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.1073,
+      -0.0183
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.1073,
+      -0.0206
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.17,
+      0.018
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1688,
+      0.0205
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      -0.0133,
+      0.1646,
+      0.0096
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      -0.0161,
+      0.1646,
+      0.0096
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      0.0133,
+      0.1646,
+      0.0096
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      0.0172,
+      0.1646,
+      0.0104
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0124,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0332,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0209,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rifle_back": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rifle_back_bag": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); held like a pistol, so modelled upside down as GoM's MP5K: +Y muzzle, +Z the gun's BOTTOM, +X its RIGHT; origin = the rear-top of the pistol grip (the drawing's L 328, H 132)",
+    "nodes": "VECTORSDP_BODY (GunsOfTienPost93_VECTORSDP.fbx, turned: held like a pistol); bolt, handle and side rails are the Vector 9mm's turned nodes (VECTOR9_*) at these points",
+    "turned": "parts modelled upright (magazines, GoM's optics / foregrips / lights / lasers) get rotate -180 0 -180",
+    "rifle_back": "rifle_back / rifle_back_bag (vanilla's Rifle On Back locations) turn the upside-down model upright when it hangs in the back slot",
+    "muzzle": "the thread protector's end (L -26.5); canon at the receiver's face, where the Mk9's mount device covers the protector"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      328.0,
+      132.0
+    ],
+    "bore_mm": 115.5,
+    "real_mm_per_game_unit": 1658.37,
+    "k": 0.000603
+  },
+  "_bounds": {
+    "VECTORSDP_BODY": {
+      "min": [
+        -0.0154,
+        -0.0344,
+        -0.0277
+      ],
+      "max": [
+        0.0142,
+        0.2138,
+        0.0766
+      ],
+      "tris": 2510
+    }
+  }
+}

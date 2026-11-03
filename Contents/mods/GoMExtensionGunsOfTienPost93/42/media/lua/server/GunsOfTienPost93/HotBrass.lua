@@ -167,7 +167,29 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- The CRB: the .45's receiver, port and hold
+    ["GunsOfTienPost93.VECTORCRB"] = {
+        forwardOffset = 0.332,
+        sideOffset    = 0.08,
+        heightOffset  = 0.48,
+        shellForce    = 0.65,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
     ["GunsOfTienPost93.VECTOR9"] = {
+        forwardOffset = 0.544,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.60,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
+    -- The SDP: the 9mm's receiver, port and hold
+    ["GunsOfTienPost93.VECTORSDP"] = {
         forwardOffset = 0.544,
         sideOffset    = 0.06,
         heightOffset  = 0.53,

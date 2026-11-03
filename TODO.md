@@ -28,13 +28,14 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       played (CLAUDE.md, "Trigger and grips"): the round loop with its notch, the trigger blade in its recess behind
       it, the selector paddle, stippled grip panels; the P90 TR, PS90 and P90 rebuilt, previews and icons redone. To
       check in game: the trigger and stippling read at play distance, and the hand still sits right on the grip.
-- [ ] **Vector CRB** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's civilian carbine, a variant of our Vectors
-      (build_vector.py): the 16" barrel in a long shroud, otherwise the Vector. Release policy (user, 2026-11-03):
-      always two or more guns per release; meant to go out with the PS90. Open: one item per calibre as the Vectors
-      are, or only the .45; held as a rifle (the Vector 9mm is pistol-held); stats and loot.
-- [ ] **Vector SDP** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's pistol, the Vector without a stock and with
-      a short barrel. Open: how it is held (one hand like GoM's MP5K and our Vector 9mm, or two) and which slot it
-      takes (holster or back), one item per calibre or not, stats and loot.
+- [ ] **Vector .45 Carbine** (the Vector CRB, Post-93, `VECTORCRB`): built 2026-11-03, not played (CLAUDE.md,
+      "Vector CRB"), as KRISS's CRB Enhanced (M-LOK handguard, fat shroud, M4-type stock). To check in game: the long
+      gun in the hands and on the back, the stock folded and deployed, GoM's foregrips under the handguard, the
+      .45 mount device and P45 on the shroud's face, the shared Vector .45 loot (one of the two guns). Release policy (user, 2026-11-03): two
+      or more guns per release; meant to go out with the PS90.
+- [ ] **Vector 9mm Pistol** (the Vector SDP, Post-93, `VECTORSDP`): built 2026-11-03, not played (CLAUDE.md,
+      "Vector SDP"). To check in game: the one-handed hold and GoM's MP5K reload with the turned model, on the back,
+      the Mk9's mount device over the thread protector, the shared Vector 9mm loot (one of the two guns).
 - [ ] **Cheek risers** (main mod; user, 2026-11-03: "no cheek pads in GoM. Guns that are bullpups and with long stocks
       and long rifles can possibly take advantage of this"): strap-on / lace-on cheek pads as weapon parts for ours and
       GoM's guns (leather lace-on pads date from WWII, so not Post-93). Traced, nothing built: a new part type

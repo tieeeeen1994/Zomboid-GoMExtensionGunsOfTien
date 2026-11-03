@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR and PS90, the Five-seveN, the UCP Prototype, the SCAR-L and
-    SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45 and 9mm, and their ammunition
+    SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45, 9mm, CRB and SDP, and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -27,7 +27,8 @@
     - The KRISS Vectors (user, 2026-10-30) the UMPs' route: an alternative each in the Anachronistic spawner and the
       police SMG spawner, the gun with its standard magazine (the Glock 21's 13, GoM's Glock 17 17) and GoM's boxes;
       the long magazines (the 30 .45, the 33 and 40 9mm) on their own in GoM's high-capacity tactical magazine
-      spawner, as the MP7's 40.
+      spawner, as the MP7's 40. The Vector CRB (user, 2026-11-03) shares the .45's alternative: one of the two guns
+      with the Glock 21's magazines and GoM's boxes, as the PS90 shares the P90 TR's; the SDP the 9mm's the same way.
     - The PS90 Carbine (user, 2026-11-03: "like the P90 TR") shares the TR's alternative: one of the two guns with the
       P90's magazines and boxes, as GoM's MP5 alternative picks one of its MP5s.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
@@ -143,7 +144,7 @@ end
 -- The Vectors, packed as the UMPs: Glock's standard magazines (the main mod's Glock 21 13, GoM's Glock 17 17)
 local function vector45Alternative(boxes)
     return {
-        { items = { M .. "VECTOR45" }, amountChance = 1 },
+        { items = { M .. "VECTOR45", M .. "VECTORCRB" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
         { items = { "GunsOfTien.45Magazine13_GLOCK21" }, amountChance = 3 },
         { items = { "MarzGuns.45_Box" }, amountChance = boxes },
     }
@@ -151,7 +152,7 @@ end
 
 local function vector9Alternative(boxes)
     return {
-        { items = { M .. "VECTOR9" }, amountChance = 1 },
+        { items = { M .. "VECTOR9", M .. "VECTORSDP" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
         { items = { "MarzGuns.9x19Magazine17_GLOCK" }, amountChance = 3 },
         { items = { "MarzGuns.9x19_Box" }, amountChance = boxes },
     }

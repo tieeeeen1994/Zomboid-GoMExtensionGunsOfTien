@@ -15,6 +15,12 @@
     - GoM's optics on the integral top rail, its foregrips on the integral bottom rail, its optional left and right
       Picatinny rails (drawn as KRISS's side rails) for its lights and lasers (the main mod's Rails.Register);
     - at canon the .45 GoM's .45 mount device and P45, the 9mm the main mod's 9x19mm SMG mount device and Mk9.
+    The Vector CRB (user, 2026-11-03: ".45 ACP gets the longer barrel"; build_vectorcrb.py) is the Vector .45 with
+    KRISS's 16" barrel in its long shroud: registered as the .45 is (its magazines, reload, stock, rails, muzzle parts
+    on the shroud's face, select fire as the SMGs by the user's choice), steadier in automatic fire.
+    The Vector SDP (user, 2026-11-03: "9x19 gets the shorter one"; build_vectorsdp.py) is the Vector 9mm without its
+    stock: registered as the 9mm is (held like a pistol, its MP5K reload, magazines, rails, Mk9), no folding stock,
+    less steady in automatic fire.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -40,7 +46,11 @@ end
 local M = "GunsOfTienPost93."
 local VECTOR45 = M .. "VECTOR45"
 local VECTOR9 = M .. "VECTOR9"
-local VECTORS = { VECTOR45, VECTOR9 }
+local VECTORCRB = M .. "VECTORCRB"
+local VECTORSDP = M .. "VECTORSDP"
+local VECTORS = { VECTOR45, VECTOR9, VECTORCRB, VECTORSDP }
+local NO_STOCK = { [VECTORSDP] = true }
+local PISTOL_HELD = { [VECTOR9] = true, [VECTORSDP] = true }
 local GLOCK21 = "GunsOfTien.GLOCK21"
 local GLOCK17 = "MarzGuns.GLOCK17"
 local GLOCK21_13 = "GunsOfTien.45Magazine13_GLOCK21"
@@ -59,9 +69,11 @@ local RAIL_DOWN = M .. "VECTOR_Integrated_Rail_Down"
 -------------------------------------------------
 Magazine.RegisterMagazineProfile(".45 ACP Glock 21", { MAG45_30 })        -- appended to the main mod's
 Magazine.RegisterWeaponWithProfile(".45 ACP Glock 21", VECTOR45)
+Magazine.RegisterWeaponWithProfile(".45 ACP Glock 21", VECTORCRB)
 Magazine.RegisterMagazineProfile("9x19mm Glock", { GLOCK17_17, MAG9_33, MAG9_40 })
 Magazine.RegisterWeaponWithProfile("9x19mm Glock", GLOCK17)
 Magazine.RegisterWeaponWithProfile("9x19mm Glock", VECTOR9)
+Magazine.RegisterWeaponWithProfile("9x19mm Glock", VECTORSDP)
 Ammo.RegisterMultipleItemsWithFamilies({ [".45 ACP"] = { MAG45_30 }, ["9x19mm"] = { MAG9_33, MAG9_40 } })
 
 -------------------------------------------------
@@ -72,6 +84,12 @@ RateOfFire.RegisterWeapon(VECTOR45, { rpm = 1200, burstCount = 2, enableSpread =
     maxSpread = 1.3 })
 RateOfFire.RegisterWeapon(VECTOR9, { rpm = 1200, burstCount = 2, enableSpread = true, sustainedSpread = 0.08,
     maxSpread = 1.1 })
+-- the CRB: the .45 from two hands, 3.5 kg and a longer sight radius, as the PS90 against the P90 TR
+RateOfFire.RegisterWeapon(VECTORCRB, { rpm = 1200, burstCount = 2, enableSpread = true, sustainedSpread = 0.08,
+    maxSpread = 1.1 })
+-- the SDP: the 9mm with no stock to steady it (the SMG's stock unfolded multiplies its spread by 0.75 / 0.85)
+RateOfFire.RegisterWeapon(VECTORSDP, { rpm = 1200, burstCount = 2, enableSpread = true, sustainedSpread = 0.10,
+    maxSpread = 1.4 })
 -- the stock unfolded steadies automatic fire as GoM's G36C stock does (its RPM.lua; the UMPs' too)
 RateOfFire.RegisterSpreadPartModifier(STOCK_DEPLOYED, { sustainedSpreadMult = 0.75, maxSpreadMult = 0.85 })
 
@@ -85,11 +103,13 @@ for _, gun in ipairs(VECTORS) do
         cycleTicks = 3,
     })
     ChargingHandle.Register(gun)
-    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(gun == VECTOR9 and "handgun2" or "MP5"))
-    FoldingStock.RegisterWeapon(gun, {
-        attachments = { partType = "StockIntegrated", folded = STOCK_FOLDED, deployed = STOCK_DEPLOYED },
-        initialState = "folded",
-    })
+    ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(PISTOL_HELD[gun] and "handgun2" or "MP5"))
+    if not NO_STOCK[gun] then
+        FoldingStock.RegisterWeapon(gun, {
+            attachments = { partType = "StockIntegrated", folded = STOCK_FOLDED, deployed = STOCK_DEPLOYED },
+            initialState = "folded",
+        })
+    end
 end
 
 -- the stock deployed: GoM's G36C stock (another side-folding polymer stock on a short gun, as the UMPs')
@@ -137,18 +157,19 @@ if spawnTable then
         "MarzGuns.AimRight_Laser:5:PRR", "MarzGuns.LRX-7_Laser:5:PRR",
         "MarzGuns.BrightPoint-5_Light:10:PRL", "MarzGuns.SR7_Light:10:PRL",
     }
-    local function entry(mags)
+    local function entry(mags, noStock)
         local optionals = {}
         for _, list in ipairs({ mags, COMMON }) do
             for _, e in ipairs(list) do optionals[#optionals + 1] = e end
         end
-        return {
-            required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, STOCK_FOLDED, RAIL_UP, RAIL_DOWN },
-            optionals = optionals,
-        }
+        local required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, RAIL_UP, RAIL_DOWN }
+        if not noStock then required[#required + 1] = STOCK_FOLDED end
+        return { required = required, optionals = optionals }
     end
     spawnTable[VECTOR45] = entry({ GLOCK21_13 .. ":50", MAG45_30 .. ":5" })
+    spawnTable[VECTORCRB] = entry({ GLOCK21_13 .. ":50", MAG45_30 .. ":5" })
     spawnTable[VECTOR9] = entry({ GLOCK17_17 .. ":50", MAG9_33 .. ":5", MAG9_40 .. ":2" })
+    spawnTable[VECTORSDP] = entry({ GLOCK17_17 .. ":50", MAG9_33 .. ":5", MAG9_40 .. ":2" }, true)
 end
 
 -------------------------------------------------
@@ -194,10 +215,10 @@ local function appendAll()
         for _, part in ipairs(list) do appendMountOn(part, VECTORS) end
     end
     for _, part in ipairs({ "MarzGuns.45_Muzzle_Mount_Device", "MarzGuns.P45_Suppressor", GLOCK21_13 }) do
-        appendMountOn(part, { VECTOR45 })
+        appendMountOn(part, { VECTOR45, VECTORCRB })
     end
     for _, part in ipairs({ "GunsOfTien.SMG9_Muzzle_Mount_Device", "GunsOfTien.Mk9_Suppressor", GLOCK17_17 }) do
-        appendMountOn(part, { VECTOR9 })
+        appendMountOn(part, { VECTOR9, VECTORSDP })
     end
     for pistol, lines in pairs(PISTOL_PARTS) do
         local script = ScriptManager.instance:getItem(pistol)
@@ -212,4 +233,5 @@ end
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
 
-GunsOfTienPost93_Vector = { VECTOR45 = VECTOR45, VECTOR9 = VECTOR9, MAGS = OWN_MAGS }
+GunsOfTienPost93_Vector = { VECTOR45 = VECTOR45, VECTOR9 = VECTOR9, VECTORCRB = VECTORCRB, VECTORSDP = VECTORSDP,
+    MAGS = OWN_MAGS }
