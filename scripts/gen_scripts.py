@@ -196,7 +196,12 @@ def recipes():
             continue
         opened = [(f"{MODULE}.{round_item(c, v)}", f"{MODULE}.{c}_Box_{v}") for c, v in rows]
         packed = [(f"{MODULE}.{c}_Box_{v}", f"{MODULE}.{round_item(c, v)}") for c, v in rows]
-        inputs = ';'.join(f"{MODULE}.{round_item(c, v)}" for c, v in rows)
+        rounds = [f"{MODULE}.{round_item(c, v)}" for c, v in rows]
+        if per == 50:                       # the 5.7x28mm SS190 kept under Post-93's names (ammo_57x28())
+            opened.append((Q57['round'], Q57['box']))
+            packed.append((Q57['box'], Q57['round']))
+            rounds.append(Q57['round'])
+        inputs = ';'.join(rounds)
         out.append(f"""
     craftRecipe GunsOfTien_OpenBoxOf{per}Bullets {{
         timedAction = {action},
@@ -232,15 +237,20 @@ def recipes():
     }}
 """)
     all_rows = [(cal, var) for cal, var, _, _ in ROUNDS]
+    q57 = Q57
     for name, action, time, tags, tag, count, pairs in (
             ('GunsOfTien_OpenCartonOfBoxesOfAmmo', 'UnPackBox', 50, 'InHandCraft;CanBeDoneInDark',
-             'gunsoftien:ammocarton', 12, [(f"{MODULE}.{c}_Box_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows]),
+             'gunsoftien:ammocarton', 12, [(f"{MODULE}.{c}_Box_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows]
+             + [(q57['box'], q57['carton'])]),
             ('GunsOfTien_PlaceBoxesOfAmmoInCarton', 'PackingBox', 50, 'InHandCraft', 'gunsoftien:ammobox', 12,
-             [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Box_{v}") for c, v in all_rows]),
+             [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Box_{v}") for c, v in all_rows]
+             + [(q57['carton'], q57['box'])]),
             ('GunsOfTien_OpenCrateOfBoxesOfAmmo', 'UnPackBox', 100, 'InHandCraft;CanBeDoneInDark',
-             'gunsoftien:ammocrate', 4, [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Crate_{v}") for c, v in all_rows]),
+             'gunsoftien:ammocrate', 4, [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Crate_{v}") for c, v in all_rows]
+             + [(q57['carton'], q57['crate'])]),
             ('GunsOfTien_PlaceBoxesOfAmmoInCrates', 'PackingBox', 100, 'InHandCraft', 'gunsoftien:ammocarton', 4,
-             [(f"{MODULE}.{c}_Crate_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows])):
+             [(f"{MODULE}.{c}_Crate_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows]
+             + [(q57['crate'], q57['carton'])])):
         opening = name.startswith('GunsOfTien_Open')
         in_count, out_count = (1, count) if opening else (count, 1)
         flags = 'AllowFavorite;InheritFavorite' if opening else 'AllowFavorite;InheritFavorite;IsExclusive'
@@ -2637,11 +2647,308 @@ def one_hand():
     write('scripts/GunsOfTien/models_onehand.txt', "module GunsOfTien {\n\n" + '\n'.join(blocks) + "}\n")
 
 
+# ==================================================================================================
+# 5.7x28mm SS190 and the P90's magazine (moved from Post-93 on 2026-11-03 for the P90 with its ring sight, user: the
+# main mod, keeping the released IDs; SB193 and SS197SR stay in Post-93, and so do the SP90 and its mount device, user:
+# "move mounting device and suppressor to post 93", the SP90 being later than July 1993)
+# ==================================================================================================
+
+M93 = 'GunsOfTienPost93'
+# the moved round's items, under Post-93's module so saves keep them (the script module need not be the mod's)
+Q57 = {k: f"{M93}.57x28_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
+                                          ('crate', 'Crate'))}
+# GoM's packing bonus as Post-93's gen_post93_ammo.py works it out for 5.7x28mm (6.0 g a round, 50 a box)
+W57 = dict(round='0.006', box='0.27', carton='2.592', crate='8.294')
+# the guns the P90's magazine fits
+P90_FAMILY = f"GunsOfTien.P90;{M93}.P90TR;{M93}.PS90"
+# the magazine in the off hand of the PS90's FAMAS reload (Post-93 build_ps90.py magazine_prop2: GoM's STANAG 30
+# point after the magazine is stood on its feed end); the P90 and the TR reload with GoM's MP5K one, which shows none
+P90_MAG_PROP2 = {'offset': [0.0200, 0.0538, -0.0146], 'rotate': [85.4927, 66.5693, -90.4154]}
+
+
+def ammo_57x28():
+    """items_57x28.txt / models_57x28.txt (module GunsOfTienPost93) and their names: the main mod's open / pack
+    recipes and tags; the meshes and textures keep their Post-93 names and paths (moved with them). The SP90 and its
+    mount device are Post-93's: the P90's lines name them, and they fit it when Post-93 is on."""
+    art_round, art_box = f"{M93}_57x28_Round_SS190", f"{M93}_57x28_Box_SS190"
+    items = [f"""module {M93} {{
+    imports {{ Base }}
+
+    item 57x28_Bullet {{
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = {W57['round']},
+        Icon             = {art_round},
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = {M93}.{art_round},
+        Tags             = base:ammo,
+        AmmoType         = gunsoftienpost93:bullet_57x28,
+    }}
+
+    item 57x28_Box {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W57['box']},
+        Icon               = {art_box},
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = {M93}.{art_box},
+        WorldStaticModel   = {M93}.{art_box},
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }}
+
+    item 57x28_Carton {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W57['carton']},
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }}
+
+    item 57x28_Crate {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W57['crate']},
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }}
+
+    item 57x28Magazine50_P90 {{
+        AmmoType         = gunsoftienpost93:bullet_57x28,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = {M93}_57x28Magazine50_P90,
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 50,
+        MountOn          = {P90_FAMILY},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = 0.25,
+        WeightModifier   = 0.25,
+        StaticModel      = {M93}.57x28Magazine50_P90,
+        WorldStaticModel = {M93}.57x28Magazine50_P90,
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+"""]
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_57x28.txt', ''.join(items))
+    o, r = P90_MAG_PROP2['offset'], P90_MAG_PROP2['rotate']
+    models = [f"""module {M93} {{
+
+    model {art_round} {{
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/{M93}/Rounds/{art_round},
+        scale   = 0.015,
+    }}
+
+    model {art_box} {{
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/{M93}/Boxes/{art_box},
+        scale   = 0.4,
+    }}
+
+    model 57x28Magazine50_P90 {{
+        mesh     = weapons/magazines/{M93}_P90_magazines|57x28Magazine50_P90,
+        texture  = weapons/{M93}/57x28Magazine50_P90,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = {o[0]:.4f} {o[1]:.4f} {o[2]:.4f}, rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}
+    }}
+"""]
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_57x28.txt', ''.join(models))
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names.update({
+        Q57['round']: '5.7x28mm SS190 Round',
+        Q57['box']: '5.7x28mm SS190 Box',
+        Q57['carton']: 'Carton of 5.7x28mm SS190 Boxes',
+        Q57['crate']: 'Crate of 5.7x28mm SS190 Boxes',
+        f'{M93}.57x28Magazine50_P90': 'P90 50Rds 5.7x28mm Magazine',
+    })
+    for moved in ('P90_Suppressor', 'P90_Muzzle_Mount_Device'):      # Post-93's (back there 2026-11-03)
+        names.pop(f'{M93}.{moved}', None)
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+
+# ==================================================================================================
+# FN P90 with its ring sight (1990), user 2026-11-03 (scripts/build_p90std.py; shared/GunsOfTien/P90.lua)
+# ==================================================================================================
+
+P90_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'p90std_points.json')
+# GoM's optional side rails only: no top rail (user, 2026-11-03: "there should be no optional top rail for p90"), so
+# no optics; the ring sight is its sight
+P90_RAILS = {s: f"{MODULE}.P90_RAIL_{s.upper()}" for s in ('Left', 'Right')}
+
+
+def p90():
+    """models_p90.txt, items_p90.txt, fixing_p90.txt and its name. The P90 TR's item (Post-93's gen_post93_guns.py,
+    the same gun mechanically: 900 rpm, 50-round magazine on top, held like a pistol, SS190 piercing 2) with the ring
+    sight's upper, GoM's optional side rails drawn as ours (P90_RAIL_LEFT / _RIGHT, no top rail), the P90 family's
+    magazine, mount device and SP90."""
+    pts = json.load(open(P90_POINTS))
+    out = [f"module {MODULE} {{\n", f"""
+    model P90 {{
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_BODY,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'rail_left', 'rail_right', 'laser_right',
+                 'light_left', 'canon', 'bolt_fired', 'handle_back', 'rifle_back', 'rifle_back_bag'):
+        o = pts[name]['offset']
+        r = pts[name].get('rotate')
+        line = f"        attachment {name} {{ offset = {o[0]:.4f} {o[1]:.4f} {o[2]:.4f},"
+        if r is not None:
+            line += f" rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f},"
+        out.append(line + " }\n")
+    out.append("    }\n")
+    for node in ('BOLT', 'HANDLE', 'RAIL_LEFT', 'RAIL_RIGHT'):
+        out.append(f"""
+    model P90_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_{node},
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+    }}
+""")
+    out.append("}\n")
+    write('scripts/GunsOfTien/models_p90.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.P90_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.P90_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.P90_HANDLE handle handle,",
+             f"{w}{MODULE}.ChargingHandle_Back {MODULE}.P90_HANDLE handle_back handle_back,",
+             f"{w}{M93}.57x28Magazine50_P90 {M93}.57x28Magazine50_P90 magazine magazine,",
+             f"{w}{M93}.P90_Muzzle_Mount_Device {M93}.P90_Muzzle_Mount_Device canon canon,",
+             f"{w}{M93}.P90_Suppressor {M93}.P90_Suppressor canon canon,"]
+    parts += rail_parts(P90_RAILS, lights=True, lasers=True)
+    item = f"""module {MODULE} {{
+    imports {{ Base }}
+
+    item P90 {{
+        MinDamage                    = 1.0,
+        MaxDamage                    = 1.5,
+        CriticalChance               = 20.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 55,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 35,
+        RecoilDelay                  = 12,
+        MaxRange                     = 32.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 4,
+        MaxSightRange                = 14.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        ConditionLowerChanceOneIn    = 220,
+        StopPower                    = 2.0,
+        Weight                       = 2.0,
+        MetalValue                   = 25.0,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        WeaponReloadType             = handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Handgun,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M1911Drop,
+        EjectAmmoStartSound          = M1911EjectAmmoStart,
+        EjectAmmoSound               = M1911EjectAmmo,
+        EjectAmmoStopSound           = M1911EjectAmmoStop,
+        EquipSound                   = M1911Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M1911InsertAmmoStart,
+        InsertAmmoSound              = M1911InsertAmmo,
+        InsertAmmoStopSound          = M1911InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M16UnEquip,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = 3.0,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+        JamGunChance                 = 1,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        PiercingBullets              = true,
+        MaxHitcount                  = 2,
+        AmmoType                     = gunsoftienpost93:bullet_57x28,
+        AmmoBox                      = {M93}.57x28_Box,
+        MagazineType                 = {M93}.57x28Magazine50_P90,
+        MaxAmmo                      = 50,
+        Reloadtime                   = 28,
+        Icon                         = GunsOfTien_P90,
+        WeaponSprite                 = {MODULE}.P90,
+        SoundGain                    = 1.7,
+        SoundRadius                  = 118,
+        SoundVolume                  = 34,
+{chr(10).join(parts)}
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_p90.txt', item)
+    write('scripts/GunsOfTien/fixing_p90.txt', f"""module Base {{
+    fixing Fix P90 {{
+        Require = {MODULE}.P90,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{MODULE}.P90'] = 'P90 Submachine Gun'        # the 1990 gun; Post-93's is the P90 TR (user, 2026-11-03)
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
 if __name__ == '__main__':
     items()
     models()
     recipes()
     translations()
+    ammo_57x28()
+    p90()
     ammomaker()
     lasers()
     sawn_stocks()

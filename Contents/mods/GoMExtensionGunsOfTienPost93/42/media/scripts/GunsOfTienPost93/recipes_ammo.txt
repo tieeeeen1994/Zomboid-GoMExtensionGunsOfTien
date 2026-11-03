@@ -16,7 +16,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Bullet          = GunsOfTienPost93.46x30_Box,
             GunsOfTienPost93.46x30_Bullet_Subsonic = GunsOfTienPost93.46x30_Box_Subsonic,
-            GunsOfTienPost93.57x28_Bullet          = GunsOfTienPost93.57x28_Box,
             GunsOfTienPost93.57x28_Bullet_SB193    = GunsOfTienPost93.57x28_Box_SB193,
             GunsOfTienPost93.57x28_Bullet_SS197SR  = GunsOfTienPost93.57x28_Box_SS197SR,
         }
@@ -29,7 +28,7 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft,
         inputs {
-            item 50 [GunsOfTienPost93.46x30_Bullet;GunsOfTienPost93.46x30_Bullet_Subsonic;GunsOfTienPost93.57x28_Bullet;GunsOfTienPost93.57x28_Bullet_SB193;GunsOfTienPost93.57x28_Bullet_SS197SR] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 50 [GunsOfTienPost93.46x30_Bullet;GunsOfTienPost93.46x30_Bullet_Subsonic;GunsOfTienPost93.57x28_Bullet_SB193;GunsOfTienPost93.57x28_Bullet_SS197SR] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
@@ -37,7 +36,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Box          = GunsOfTienPost93.46x30_Bullet,
             GunsOfTienPost93.46x30_Box_Subsonic = GunsOfTienPost93.46x30_Bullet_Subsonic,
-            GunsOfTienPost93.57x28_Box          = GunsOfTienPost93.57x28_Bullet,
             GunsOfTienPost93.57x28_Box_SB193    = GunsOfTienPost93.57x28_Bullet_SB193,
             GunsOfTienPost93.57x28_Box_SS197SR  = GunsOfTienPost93.57x28_Bullet_SS197SR,
         }
@@ -58,7 +56,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Box          = GunsOfTienPost93.46x30_Carton,
             GunsOfTienPost93.46x30_Box_Subsonic = GunsOfTienPost93.46x30_Carton_Subsonic,
-            GunsOfTienPost93.57x28_Box          = GunsOfTienPost93.57x28_Carton,
             GunsOfTienPost93.57x28_Box_SB193    = GunsOfTienPost93.57x28_Carton_SB193,
             GunsOfTienPost93.57x28_Box_SS197SR  = GunsOfTienPost93.57x28_Carton_SS197SR,
         }
@@ -79,7 +76,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Carton          = GunsOfTienPost93.46x30_Box,
             GunsOfTienPost93.46x30_Carton_Subsonic = GunsOfTienPost93.46x30_Box_Subsonic,
-            GunsOfTienPost93.57x28_Carton          = GunsOfTienPost93.57x28_Box,
             GunsOfTienPost93.57x28_Carton_SB193    = GunsOfTienPost93.57x28_Box_SB193,
             GunsOfTienPost93.57x28_Carton_SS197SR  = GunsOfTienPost93.57x28_Box_SS197SR,
         }
@@ -100,7 +96,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Carton          = GunsOfTienPost93.46x30_Crate,
             GunsOfTienPost93.46x30_Carton_Subsonic = GunsOfTienPost93.46x30_Crate_Subsonic,
-            GunsOfTienPost93.57x28_Carton          = GunsOfTienPost93.57x28_Crate,
             GunsOfTienPost93.57x28_Carton_SB193    = GunsOfTienPost93.57x28_Crate_SB193,
             GunsOfTienPost93.57x28_Carton_SS197SR  = GunsOfTienPost93.57x28_Crate_SS197SR,
         }
@@ -121,7 +116,6 @@ module Base {
         itemMapper ammoType {
             GunsOfTienPost93.46x30_Crate          = GunsOfTienPost93.46x30_Carton,
             GunsOfTienPost93.46x30_Crate_Subsonic = GunsOfTienPost93.46x30_Carton_Subsonic,
-            GunsOfTienPost93.57x28_Crate          = GunsOfTienPost93.57x28_Carton,
             GunsOfTienPost93.57x28_Crate_SB193    = GunsOfTienPost93.57x28_Carton_SB193,
             GunsOfTienPost93.57x28_Crate_SS197SR  = GunsOfTienPost93.57x28_Carton_SS197SR,
         }

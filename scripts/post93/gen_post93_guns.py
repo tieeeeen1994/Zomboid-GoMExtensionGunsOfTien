@@ -1,5 +1,5 @@
 """Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
-/ KRISS Vector .45 and 9mm item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
+/ KRISS Vector .45 and 9mm / PS90 Carbine item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
 (the AUGs' points: build_aug3.py's auga3 / augpara / aughbar_points.json; the Vectors': build_vector.py's
 vector_points.json).
 
@@ -159,12 +159,13 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     }}
 """)
     parts = [(f'46x30Magazine{n}_MP7', 'magazines/GunsOfTienPost93_MP7_magazines') for n in (20, 30, 40, 60)]
-    parts += [('57x28Magazine50_P90', 'magazines/GunsOfTienPost93_P90_magazines')]
+    # the P90's magazine is the main mod's since 2026-11-03 (its gen_scripts.py ammo_57x28()); the SP90 and the mount
+    # device stay here (user, 2026-11-03: post-1993), and fit the main mod's P90 too
+    parts += [(p, 'parts/GunsOfTienPost93_P90_parts') for p in ('P90_Suppressor', 'P90_Muzzle_Mount_Device')]
     # GoM's pistol magazines are modelled where they sit in the gun (no `magazine` point) with this floor pose
     parts += [(f'57x28Magazine{n}_FIVESEVEN', 'magazines/GunsOfTienPost93_FIVESEVEN_magazines') for n in (20, 30)]
     parts += [(f'46x30Magazine{n}_UCP', 'magazines/GunsOfTienPost93_UCP_magazines') for n in (20, 40)]
     parts += [(p, 'parts/GunsOfTienPost93_MP7_parts') for p in ('MP7_Suppressor', 'MP7_Muzzle_Mount_Device')]
-    parts += [(p, 'parts/GunsOfTienPost93_P90_parts') for p in ('P90_Suppressor', 'P90_Muzzle_Mount_Device')]
     parts += [(p, 'parts/GunsOfTienPost93_FIVESEVEN_parts') for p in ('FIVESEVEN_Suppressor',
                                                                        'FIVESEVEN_Muzzle_Mount_Device')]
     parts += [('UCP_Muzzle_Mount_Device', 'parts/GunsOfTienPost93_UCP_parts')]
@@ -195,7 +196,7 @@ def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
 # Guns whose charging handle does not reciprocate (user, 2026-10-30; all of ours but the SCARs): GoM's Bolt part
 # draws the bolt carrier, and the main mod's ChargingHandle part (shared/GunsOfTien/ChargingHandle.lua) the handle,
 # back only while racked. The UMPs and AUGs add theirs in ump_parts() / aug3_parts().
-HANDLE_GUNS = {'MP7A1', 'P90TR'}
+HANDLE_GUNS = {'MP7A1', 'P90TR', 'PS90'}
 
 
 def handle_lines(model):
@@ -560,8 +561,7 @@ def items(mp7, p90):
     for mag, cap, weight, ammo, guns in [(mp7_mags[0], 20, 0.08, 'bullet_46x30', mp7s),
                                          (mp7_mags[1], 30, 0.18, 'bullet_46x30', mp7s),
                                          (mp7_mags[2], 40, 0.2, 'bullet_46x30', mp7s),
-                                         (mp7_mags[3], 60, 0.22, 'bullet_46x30', mp7s),    # drum, as the MP5's 60
-                                         (p90_mags[0], 50, 0.25, 'bullet_57x28', 'P90TR')]:
+                                         (mp7_mags[3], 60, 0.22, 'bullet_46x30', mp7s)]:    # drum, as the MP5's 60
         out.append(f"""
     item {mag} {{
         AmmoType         = gunsoftienpost93:{ammo},
@@ -635,9 +635,10 @@ def items(mp7, p90):
     # mm) and the SFN-57 (33 x 170) as its P45 (33 x 181) 0.8, the SP90 (38 x 172) as its NDR 0.9; every mount device 0.5
     for part, ptype, weight, gun in [('MP7_Suppressor', 'Canon', 0.8, f'{M}.MP7A1;{M}.MP7A2;{M}.UCP'),
                                      ('MP7_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.MP7A1;{M}.MP7A2;{M}.UCP'),
-                                     ('P90_Suppressor', 'Canon', 0.9, f'{M}.P90TR'),
+                                     ('P90_Suppressor', 'Canon', 0.9, f'{M}.P90TR;{M}.PS90;GunsOfTien.P90'),
                                      ('FIVESEVEN_Suppressor', 'Canon', 0.8, 'MarzGuns.FIVESEVEN'),
-                                     ('P90_Muzzle_Mount_Device', 'CanonMount', 0.5, f'{M}.P90TR;MarzGuns.FIVESEVEN')]:
+                                     ('P90_Muzzle_Mount_Device', 'CanonMount', 0.5,
+                                      f'{M}.P90TR;MarzGuns.FIVESEVEN;{M}.PS90;GunsOfTien.P90')]:
         out.append(f"""
     item {part} {{
         DisplayCategory  = WeaponPart,
@@ -1557,6 +1558,96 @@ def augs():
 """ for g in AUG3) + "}\n")
 
 
+# ==================================================================================================
+# PS90 Carbine, user 2026-11-03 (build_ps90.py)
+# ==================================================================================================
+
+# The P90 TR's numbers for the PS90's 16" (407 mm) barrel against the TR's 263 mm: SS190 leaves it at about
+# 850 m/s against 715 (~40% more energy), so more damage and range; two hands and 3.3 kg steady it (2.6 = GoM's SMG
+# weight ratio ~0.78), and it comes up slower. Sound: the main mod's model, the 5.7x28mm's barrel 263 -> 407 mm =
+# -1.9 dB (118 / 34 -> 104 / 30).
+PS90_STATS = dict(min=1.1, max=1.7, hit=57, aim=40, recoil=11, range=40.0, minsight=5, maxsight=16.0, weight=2.6,
+                  radius=104, volume=30)
+
+
+def ps90():
+    """The PS90 Carbine (user, 2026-11-03; files of its own: models_ps90.txt, items_ps90.txt, fixing_ps90.txt): the
+    TR's body with the PS90's long barrel and an M-LOK handguard, held as a rifle, so drawn upright at
+    ps90_points.json. Takes the P90's magazine, mount device and SP90 (their MountOn in items()), GoM's optics on the
+    receiver's rail, its foregrips under the handguard and its lights and lasers on its sides (four hidden integral
+    rail parts; the handguard's M-LOK slots carry them, no rails drawn)."""
+    pts = load_points('ps90_points.json')
+    s = PS90_STATS
+    out = [f"module {M} {{\n"]
+    out.append(gun_model('PS90', 'GunsOfTienPost93_PS90', 'PS90_BODY', pts, ['rail_down', 'foregrip']))
+    for part in ('BOLT', 'HANDLE'):
+        out.append(f"""
+    model PS90_{part} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_PS90|PS90_{part},
+        texture  = {TEX}/PS90,
+        cullFace = None,
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_ps90.txt', ''.join(out))
+    parts = model_parts('PS90', ['57x28Magazine50_P90'], None, 'P90_Suppressor', 'P90_Muzzle_Mount_Device', False)
+    parts += ''.join(f"        ModelWeaponPart              = MarzGuns.{g} MarzGuns.{g} foregrip foregrip,\n"
+                     for g in FOREGRIPS)
+    items = [f"module {M} {{\n    imports {{ Base }}\n", f"""
+    item PS90 {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = 20.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['minsight']},
+        MaxSightRange                = {s['maxsight']},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        ConditionLowerChanceOneIn    = 220,
+        StopPower                    = 2.0,
+        Weight                       = {s['weight']},
+        MetalValue                   = 30.0,
+{GUN_COMMON}        AmmoType                     = gunsoftienpost93:bullet_57x28,
+        AmmoBox                      = {M}.57x28_Box,
+        MagazineType                 = {M}.57x28Magazine50_P90,
+        MaxAmmo                      = 50,
+        Reloadtime                   = 28,
+        Icon                         = GunsOfTienPost93_PS90,
+        WeaponSprite                 = {M}.PS90,
+        SoundGain                    = 1.7,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+{parts}    }}
+"""]
+    for side in ('Up', 'Down', 'Left', 'Right'):
+        items.append(f"""
+    item PS90_Integrated_Rail_{side} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = Rail{side},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_ps90.txt', ''.join(items))
+    write(f'scripts/{M}/fixing_ps90.txt', f"""module Base {{
+    fixing Fix PS90 {{
+        Require = {M}.PS90,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -1565,12 +1656,12 @@ def translations():
         f'{M}.MP7A1': 'MP7A1 Submachine Gun',                 # the variant named since the A2 (user, 2026-10-18)
         f'{M}.MP7A2': 'MP7A2 Submachine Gun',
         f'{M}.MP7A2_Integrated_Rail_Down': 'MP7 Integrated Rail (Down)',
-        f'{M}.P90TR': 'P90 Submachine Gun',
+        # the TR, since the main mod's P90 with the ring sight took the plain name (user, 2026-11-03)
+        f'{M}.P90TR': 'P90 TR Submachine Gun',
         f'{M}.46x30Magazine20_MP7': 'MP7 20Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine30_MP7': 'MP7 30Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine40_MP7': 'MP7 40Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine60_MP7': 'MP7 60Rds Drum 4.6x30mm Magazine',
-        f'{M}.57x28Magazine50_P90': 'P90 50Rds 5.7x28mm Magazine',
         # MarzGuns.FIVESEVEN itself is named by GoM ("5.7x28mm Five-SeveN"); its magazines in GoM's style
         f'{M}.57x28Magazine20_FIVESEVEN': 'Five-SeveN 20Rds 5.7x28mm Magazine',
         f'{M}.57x28Magazine30_FIVESEVEN': 'Five-SeveN 30Rds 5.7x28mm Extended Magazine',
@@ -1584,9 +1675,9 @@ def translations():
         f'{M}.MP7A1_Integrated_Rail_Up': 'MP7 Integrated Rail (Up)',
         f'{M}.MP7A1_Integrated_Rail_Left': 'MP7 Integrated Rail (Left)',
         f'{M}.MP7A1_Integrated_Rail_Right': 'MP7 Integrated Rail (Right)',
-        f'{M}.P90TR_Integrated_Rail_Up': 'P90 Integrated Rail (Up)',
-        f'{M}.P90TR_Integrated_Rail_Left': 'P90 Integrated Rail (Left)',
-        f'{M}.P90TR_Integrated_Rail_Right': 'P90 Integrated Rail (Right)',
+        f'{M}.P90TR_Integrated_Rail_Up': 'P90 TR Integrated Rail (Up)',
+        f'{M}.P90TR_Integrated_Rail_Left': 'P90 TR Integrated Rail (Left)',
+        f'{M}.P90TR_Integrated_Rail_Right': 'P90 TR Integrated Rail (Right)',
         f'{M}.MP7_Suppressor': 'Rotex-II Suppressor (4.6x30mm Weapons)',
         f'{M}.MP7_Muzzle_Mount_Device': '4.6x30mm Family Muzzle Mounting Device',
         f'{M}.P90_Suppressor': 'SP90 Suppressor',          # model only, no calibre (user, 2026-10-16)
@@ -1647,7 +1738,16 @@ def translations():
         f'{M}.VECTOR_Integrated_Stock_Deployed': 'Vector Integrated Stock (Deployed)',
         f'{M}.VECTOR_Integrated_Rail_Up': 'Vector Integrated Rail (Up)',
         f'{M}.VECTOR_Integrated_Rail_Down': 'Vector Integrated Rail (Down)',
+        # the TR is "P90 Submachine Gun"; GoM names carbines "<model> Carbine" (its SKS Carbine); the PS90 is
+        # FN's 16" carbine, whose handguard this one is made for (user, 2026-11-03: "call it PS90")
+        f'{M}.PS90': 'PS90 Carbine',
+        f'{M}.PS90_Integrated_Rail_Up': 'PS90 Integrated Rail (Up)',
+        f'{M}.PS90_Integrated_Rail_Down': 'PS90 Integrated Rail (Down)',
+        f'{M}.PS90_Integrated_Rail_Left': 'PS90 Integrated Rail (Left)',
+        f'{M}.PS90_Integrated_Rail_Right': 'PS90 Integrated Rail (Right)',
     })
+    for moved in ('57x28Magazine50_P90',):    # the main mod's now
+        names.pop(f'{M}.{moved}', None)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     # the gun tooltip's row for the MP7A1's folding grip (Tooltip_weapon_<PartType>), named like GoM's "Stock (Integrated)"
     tip_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
@@ -1670,5 +1770,6 @@ if __name__ == '__main__':
     items(mp7, p90)
     augs()
     vectors()
+    ps90()
     translations()
     print('written under', os.path.normpath(ROOT))

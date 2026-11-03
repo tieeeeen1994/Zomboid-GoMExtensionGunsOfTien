@@ -74,7 +74,14 @@ Ammo.RegisterMultipleAmmoFamilies({
     ["12Gauge"] = {
         { type = "GunsOfTien.12Gauge_Shell_Birdshot", enum = T.SHELL_12G_Birdshot, profile = "GunsOfTien_12GaugeBirdshot" },
     },
+    -- 5.7x28mm (moved from Post-93 on 2026-11-03 for the P90, under its released ids): SS190 here, Post-93 appends
+    -- its SB193 and SS197SR to the same family (Gunworks adds to a family, it never replaces one)
+    ["5.7x28mm"] = {
+        { type = "GunsOfTienPost93.57x28_Bullet", enum = T.BULLET_57x28, profile = "GunsOfTienPost93_57x28SS190" },
+    },
 })
+-- the P90's magazine (the P90, Post-93's P90 TR and PS90); Post-93 adds the Five-seveN's
+Ammo.RegisterMultipleItemsWithFamilies({ ["5.7x28mm"] = { "GunsOfTienPost93.57x28Magazine50_P90" } })
 
 -------------------------------------------------
 -- Profiles
@@ -202,6 +209,9 @@ Ammo.RegisterMultipleAmmoStats({
             weapon:setProjectileSpread(math.max(0.3, weapon:getProjectileSpread() * 2.0))
         end
     ),
+    -- 5.7x28mm SS190 (Post-93's profile name kept): the P90s' script round, which Gunworks never profiles on them, so
+    -- this only restores the standard piercing when a gun switches back from SB193 / SS197SR (Post-93)
+    ["GunsOfTienPost93_57x28SS190"] = list(pierce(2)),
 })
 
 -------------------------------------------------

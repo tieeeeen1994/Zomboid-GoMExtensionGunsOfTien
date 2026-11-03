@@ -22,6 +22,10 @@ GunsOfTien_AmmoTypes.BULLET_308_SP = AmmoType.register("gunsoftien:bullet_308_sp
 
 GunsOfTien_AmmoTypes.SHELL_12G_Birdshot = AmmoType.register("gunsoftien:shell_12g_birdshot", "GunsOfTien.12Gauge_Shell_Birdshot")
 
+-- 5.7x28mm SS190, the P90's round (moved from Post-93 on 2026-11-03 with its released id and item; Post-93's
+-- registries.lua points its own table at this one). Registry.register throws on a duplicate: registered here only.
+GunsOfTien_AmmoTypes.BULLET_57x28 = AmmoType.register("gunsoftienpost93:bullet_57x28", "GunsOfTienPost93.57x28_Bullet")
+
 -- Box / carton / crate tags of this mod's own open and pack recipes (GoM's recipes use closed item mappers).
 GunsOfTien_Tags = {}
 GunsOfTien_Tags.AmmoBox20 = ItemTag.register("gunsoftien:ammobox20")

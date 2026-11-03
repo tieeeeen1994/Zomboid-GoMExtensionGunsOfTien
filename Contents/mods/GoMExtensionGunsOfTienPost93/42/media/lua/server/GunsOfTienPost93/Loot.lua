@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR, the Five-seveN, the UCP Prototype, the SCAR-L and
+    Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR and PS90, the Five-seveN, the UCP Prototype, the SCAR-L and
     SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45 and 9mm, and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
@@ -28,6 +28,8 @@
       police SMG spawner, the gun with its standard magazine (the Glock 21's 13, GoM's Glock 17 17) and GoM's boxes;
       the long magazines (the 30 .45, the 33 and 40 9mm) on their own in GoM's high-capacity tactical magazine
       spawner, as the MP7's 40.
+    - The PS90 Carbine (user, 2026-11-03: "like the P90 TR") shares the TR's alternative: one of the two guns with the
+      P90's magazines and boxes, as GoM's MP5 alternative picks one of its MP5s.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -79,7 +81,7 @@ end
 
 local function p90Alternative(boxes)
     return {
-        { items = { M .. "P90TR" }, amountChance = 1 },
+        { items = { M .. "P90TR", M .. "PS90" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
         { items = { M .. "57x28Magazine50_P90" }, amountChance = 3 },
         { items = { M .. "57x28_Box" }, amountChance = boxes },
     }
@@ -330,11 +332,11 @@ Events.OnInitGlobalModData.Add(addSpawners)
 -- Beside vanilla's 9mm box / carton (GoM's own boxes and cartons come in place of or beside vanilla ones), only in
 -- police, SWAT and gun store lists: no civilian homes. Every loot table (procedural rooms, vehicles, bags, the top-level
 -- suburbs lists), as GoM's Distribution.Insert does.
+-- The 5.7x28mm SS190 box and carton are the main mod's loot since 2026-11-03 (its server/GunsOfTien/Loot.lua): they
+-- moved there with the P90.
 local WORLD = {
     { M .. "46x30_Box", "Base.Bullets9mmBox", 0.05 },
-    { M .. "57x28_Box", "Base.Bullets9mmBox", 0.05 },
     { M .. "46x30_Carton", "Base.Bullets9mmCarton", 0.05 },
-    { M .. "57x28_Carton", "Base.Bullets9mmCarton", 0.05 },
 }
 
 local function isWantedList(name)

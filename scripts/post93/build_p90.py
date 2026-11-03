@@ -44,9 +44,11 @@ import build_mp7 as kit  # noqa: E402
 
 MEDIA = kit.MEDIA
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx")
-FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
+# the magazine goes to the main mod (its P90 uses it; moved 2026-11-03, same name); the SP90 and mount stay here
+FBX_MAGS = os.path.join(kit.MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx")
 TEX_DIR = kit.TEX_DIR
+MAIN_TEX_DIR = kit.MAIN_TEX_DIR
 POINTS_JSON = os.path.join(HERE, "p90_points.json")
 
 K = 0.000603                       # game units per real mm: the M16A2's proportion (user, 2026-10-26: our guns resized in their meshes; was 0.00072, GoM's MP5 family)
@@ -536,10 +538,11 @@ def main():
         kit.unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
+    os.makedirs(MAIN_TEX_DIR, exist_ok=True)
     # the bolt is baked with the body only (it moves, so the handles' shadow would not stay on it)
     texture([body, bolt, handle], [[body, handle], [body, bolt], [body, handle]], ["gun", "carrier", "bolt"], 256,
             os.path.join(TEX_DIR, "P90TR.png"))
-    texture([mag], [[mag]], ["mag"], 128, os.path.join(TEX_DIR, "57x28Magazine50_P90.png"))
+    texture([mag], [[mag]], ["mag"], 128, os.path.join(MAIN_TEX_DIR, "57x28Magazine50_P90.png"))
     texture([supp], [[supp]], ["suppressor"], 128, os.path.join(TEX_DIR, "P90_Suppressor.png"))
     texture([mount], [[mount]], ["mount"], 128, os.path.join(TEX_DIR, "P90_Muzzle_Mount_Device.png"))
 

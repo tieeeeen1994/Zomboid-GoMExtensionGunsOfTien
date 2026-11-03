@@ -39,7 +39,7 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
 - Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR, Vector 9mm (one-handed, pistol clips)
   "handgun2" (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance
   doesn't look good on it"; the unused two-handed UZI_2H keeps "MP5"); Glock 21, Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
-  "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
+  and the PS90 Carbine "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
   left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 / Vector .45 "MP5"; M249 "m60_lmg" (its feed cover stays
   shut; `partState.ensure` shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own
   registrations again.
@@ -350,6 +350,13 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   21's 13 + KRISS's 30, the 9mm GoM's Glock 17 17 + Glock's 33 + KRISS's 40; ours fit the pistols too), 1200 rpm with
   a two-round burst, the UMPs' muzzle parts, reload, stock stats and loot route, GoM's optional side rails for lights
   and lasers. Design: docs/post93_design.md; build notes: section "KRISS Vector .45 and 9mm".
+- **P90 TR naming** (user, 2026-11-03): Post-93's P90 is "P90 TR Submachine Gun" since the main mod's ring-sight P90
+  took "P90 Submachine Gun" (section "P90 with its ring sight"); its magazine, mount device, SP90 and SS190 round are
+  the main mod's now, under their old ids.
+- **PS90 Carbine** (user, 2026-11-03; built, not played): the P90 TR's body with the PS90's barrel, flash hider
+  and cheek riser and the M-LOK handguard of the user's photo, rifle-held, GoM's FAMAS reload, the P90's magazine and
+  muzzle parts, GoM's lights / lasers / foregrips on the handguard, loot shared with the TR. Build notes: section
+  "PS90 Carbine".
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -450,6 +457,13 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   preview18 (2026-11-02) is the main mod's RPD alone, as preview12: render_ad_guns.py `rpd` (its drum, bipod deployed,
   the RPKs' front quarter), what it is under the title, a slot row (gun, belt drum, GoM's 7.62x39 box) and two lines.
   Rebuild: render `rpd`, then `make_workshop_art.py preview18`. Not yet on the Steam page.
+  preview19 (2026-11-03) is the main mod's P90 with its ring sight and preview20 Post-93's PS90 Carbine, one per mod
+  (user: "separate previews for post93 and main mod"), laid out like preview16 / preview18: the facts in one line under
+  the title, the bare gun over it fitted out at one scale from one camera (render_ad_guns.py `p90std` / `p90std_fitted`:
+  side rails, SR7, AimRight, SP90; `ps90` / `ps90_fitted`: Aimpoint, MKC grip, SR7, AimRight, SP90; seen from the gun's
+  left, mirrored back), a slot row (the P90 family's parts from the main mod's textures) and two lines. Rebuild:
+  `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> p90std p90std_fitted ps90 ps90_fitted`,
+  then `make_workshop_art.py --renders <dir> preview19 preview20`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -488,7 +502,8 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
   `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
-  and 9mm").
+  and 9mm"); `scripts/post93/build_ps90.py`, `render_ps90.py`, `make_ps90_art.py` (section "PS90 Carbine"); `scripts/build_p90std.py`,
+  `render_p90std.py`, `make_p90std_art.py` (the main mod's P90, section "P90 with its ring sight").
 
 ## Status and how to continue
 
@@ -1448,6 +1463,106 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 - **fit_audit.py**: every GoM optic, foregrip, light and laser on both Vectors sits 0.6-1.6 into the rail (GoM's own
   guns 0.2-1.6), nothing floats; the magazines 14.2 into the well (the UMPs' 13.3). A plain BVH overlap count says
   nothing here (every clamp grips its rail).
+
+## P90 with its ring sight (main mod, 2026-11-03) and 5.7x28mm in the main mod
+
+- **What** (user, 2026-11-03): `GunsOfTien.P90`, "P90 Submachine Gun": the P90 as FN made it from 1990 (IMFDB dates
+  the original 1990-1993; Weapon Systems: one version, a reflex sight, no accessory rails until the mid-2000s "P90
+  Standard"), in the **main mod** because it existed by July 1993. Post-93's gun was renamed "P90 TR Submachine Gun"
+  (its id `P90TR` kept; its parts "P90 TR Integrated Rail (...)"). Mechanically the TR: 900 rpm Auto / Single, held
+  like a pistol (turned model), GoM's MP5K reload ("handgun2"), bolt in the port, handles back only while racked, the
+  TR's stats and sound. Loot: one more kit in GoM's `Zombie_Police_SMG_Spawner` (gun, up to 3 magazines, 2 SS190
+  boxes), the TR's kit there.
+- **Rails** (user: "optional picatinny rails upgrade instead of integrated", then "there should be no optional top
+  rail for p90"): GoM's optional `Picatinny_Rail_Left / _Right` only (`Rails.Register`, the AUG A1's way), drawn as
+  our `P90_RAIL_LEFT / _RIGHT` (housing sides L 82-142, H 166, where FN later put its own side rails), nodes of the
+  P90's own FBX, turned with the gun (points with rotate 0, GoM's parts with TURN); lights left, lasers right. No top
+  rail, so no optics: the ring sight is the gun's sight, without stats as a gun's own sights have none in GoM (a hood
+  rail was built and removed the same day). fit_audit.py: lights 0.3 / 0.6 deep, lasers 0.5 gap / 1.2 (light 0.0001
+  in, laser 0.0003 out of the crossbar faces, as on the PS90).
+- **Shape** (`scripts/build_p90std.py`, imports Post-93's build_p90.py): the TR's lower, butt, magazine, handles, muzzle;
+  the original upper = the TR's METAL outline flat-topped at H 181 (no rail block, no T bosses), the HC-14 ring sight's
+  hood L 67-155, square across (user: "make it squarish so when you look into the scope, you see a square"): 30 x 30
+  mm up to H 211 (the photo's is 17 mm tall, H 198), a 23 mm square window of blue glass at both ends, a knob on each side at (L 66, H 168).
+  Measured on Commons "FN P90 Standard Submachine Gun Right Side.jpg" (FN Herstal / Stéphane Moureaux, CC BY-SA 2.0;
+  references/p90, not in the repo; a P90 Standard, its side rail aside the 1990 shape), mirrored muzzle-left: 500 mm =
+  1857 px, L = (x - 120) / 3.714, H = (970 - y) / 3.714; its trigger loop and belly flats land on the TR's. Silhouette
+  overlap 0.937 with the side rails fitted, 0.920 since the hood was made square (taller than the photo's).
+- **5.7x28mm moved to the main mod** (user: the P90 in the main mod, keep the released ids, SS190 only; GoM itself
+  defines no 5.7x28mm round or box, only names): the ammo type `gunsoftienpost93:bullet_57x28` (registered in the main
+  mod's registries.lua; Post-93's `GunsOfTienPost93_AmmoTypes.BULLET_57x28` points at it), the items
+  `GunsOfTienPost93.57x28_Bullet / _Box / _Carton / _Crate`, `57x28Magazine50_P90` (gen_scripts.py `ammo_57x28()`: items_57x28.txt / models_57x28.txt under `module
+  GunsOfTienPost93`; the main mod's open / pack recipes and `gunsoftien:` tags), their FBX / textures / icons at the
+  same relative paths (build_p90.py, make_p90_art.py, make_ammo_art.py and the renderers now write / read them
+  there), the "5.7x28mm" Gunworks family with SS190 and the magazine (Post-93 appends SB193 / SS197SR: Gunworks adds
+  to a family), the SS190 profile, the "5.7x28mm P90" magazine profile, the SP90's stats and mount rule, Ammo Maker's
+  `57x28` map entry, Hot Brass's casing, the SS190 / magazine / SP90 / mount tooltip lines (client
+  `GunsOfTien/P90Tooltips.lua`), their loot (the SP90 and mount in GoM's part spawners, the SS190 box and carton beside
+  vanilla's 9mm ones in police / SWAT / gun store lists). Post-93 keeps SB193, SS197SR, its recipes and the TR / PS90 /
+  Five-seveN. translations() in both generators merge into ItemName.json, so the moved keys are popped from Post-93's.
+  Known: `make_ammo_art.py` currently fails reading GoM's Rounds.fbx in make_art.py's `load_mesh` (before writing
+  anything; not from this move).
+  The SP90 and its mount device went back to Post-93 the same day (user: "move mounting device and suppressor to
+  post 93": the SP90 is later than July 1993): their items, stats, rule, loot and tooltips are Post-93's again, their
+  MountOn lists `GunsOfTien.P90`, and the P90's script names them, so they fit it whenever Post-93 is on.
+  **Saves keep the moved items** (42.21 `zombie/world/DictionaryData.parseInfoLoadList`, decompiled 2026-11-03): the
+  world dictionary is keyed by full type; an item whose type is found in another mod only logs `ModIDChangedItem` and
+  keeps its registry id; an item is marked removed only when no script defines its full type. Items save no ammo type
+  (the script's), and the ammo type's id string is unchanged. Post-93's registries.lua runs after the main mod's
+  (`loadModAfter`), and its alias line is nil-safe so its own registrations never depend on that.
+- **Files**: `scripts/build_p90std.py` (Blender, ~1 min: `GunsOfTien_P90.fbx` P90_BODY / _BOLT / _HANDLE / _RAIL_LEFT /
+  _RIGHT, `textures/weapons/GunsOfTien/P90.png` 256, `scripts/p90std_points.json`), `render_p90std.py -- DIR`,
+  `make_p90std_art.py [--renders DIR]` (icon `item_GunsOfTien_P90.png` with the TR's MP5 icon camera, sheet
+  `docs/p90_preview.png`), `gen_scripts.py p90()` (models_p90.txt, items_p90.txt, fixing_p90.txt, name),
+  `shared/GunsOfTien/P90.lua`, Loot.lua, HotBrass.lua, `client/GunsOfTien/P90Tooltips.lua`. Rebuild: build, render, art,
+  `gen_scripts.py`, `check_refs.py`, `fit_audit.py`.
+
+## PS90 Carbine (Post-93, 2026-11-03)
+
+- **What** (user, 2026-11-03): `GunsOfTienPost93.PS90`, "PS90 Carbine" (first built the same day as a "P90
+  Carbine", item `P90C`, from the user's stylised render `docs/p90c_render.png`; the user found it "horrible", gave a
+  photo of a PS90 with an M-LOK handguard and had it renamed: "this handguard was made for PS90"). A gun of its own,
+  not a part on the P90 TR (`isTwoHandWeapon` / `getSwingAnim` read the item script, so one item cannot turn
+  two-handed). **Rifle-held** (two-handed, Rifle swing), so modelled upright; Auto / Single at 900 rpm (the user's
+  choice when it was the P90 Carbine; the real PS90 is semi-automatic), spread 0.05 / 0.9 against the TR's 0.06 /
+  1.1; the P90's magazine, mount device and SP90; loot shares the TR's alternative (one of the two, in the
+  Anachronistic and police SMG spawners).
+- **Reference**: the user's photo, `references/ps90/ps90_right.png` (git-ignored, rights unknown: the preview sheet
+  shows only its silhouette): a black PS90 from the right, muzzle left, 1200 px. Scaled into the TR photo's (L, H) by
+  the body they share: the trigger loop's and the belly's flat bottoms (L 152 / 277.5, 210 px apart) give 1.672 px
+  per mm, the butt's back then lands within 2 px of L 500 and the bore within 1 mm. Read on a 1 mm grid over crops
+  (`L = 152 + (x - 570) / 1.672, H = (764 - y) / 1.672`). Silhouette overlap 0.895 (the photo's drop shadow and its
+  different receiver top make most of the rest).
+- **Shape** (build_ps90.py, its tables): the TR's body, black; the PS90's cheek riser on the butt (L 364-487, up to H
+  163.5, its latch slot and screws painted); the long slotted flash hider L -164.9 to the handguard's nose at
+  L -114 (665 mm overall, PS90 667); the handguard: 3 mm slabs on both sides (x 25.6-28.6) from L 49.5 (over the
+  receiver's front column, ahead of the handles at L 69) to the nose, a hand stop hooking down at the front to H 41, a
+  long window with leaning ends (L -98 to -26, H 115.5-129) over three M-LOK slots at the bore (32 x 6.5 mm) in a
+  raised panel, a raised strap with four detents and a lower ledge, two clamp screws at L 45, a top cover (H 133-136),
+  a solid lower part under the barrel. No rails on the handguard (the photo's has none): GoM's optics stay on the
+  receiver's rail (L 100, where the photo's red dot sits), its lights / lasers clamp on the side panels (L -70, H
+  100), its foregrips under the handguard (L -60); four hidden integral rail parts stand in for M-LOK rail sections.
+  `canon` = L -118, 4 mm ahead of the nose, so the P90's mount device and SP90 fit as on the TR.
+- **Reload**: GoM's FAMAS one ("famas_rifle", as the AUGs). The user wanted "just the normal rifle stance" and then
+  turned down GoM's MP5 reload; GoM has no top-loading reload, the FAMAS is its other bullpup. That node fires
+  attachToHand, so the P90 magazine model now has a `Bip01_Prop2` (shared with the TR, whose MP5K reload never
+  shows it): Rz 180 . Rx 90 stands it on its feed end, then GoM's STANAG 30 point (build_ps90.py
+  `magazine_prop2`). Not seen in game.
+- **Stats**: the TR's for the 16" barrel (SS190 ~850 m/s against 715): damage 1.1-1.7, hit 57, aim 40, recoil 11,
+  range 40, sight 5-16, weight 2.6 (3.3 kg x GoM's SMG ratio), sound 104 / 30 (the main mod's model: -1.9 dB for
+  263 -> 407 mm).
+- **Files**: `scripts/post93/build_ps90.py` (Blender, ~1 min; imports build_p90.py for the body profiles and
+  painting, its own `hg` material so the TR's painting leaves the handguard alone; `GunsOfTienPost93_PS90.fbx`
+  PS90_BODY / _BOLT / _HANDLE, `PS90.png` 256, `ps90_points.json`), `render_ps90.py -- DIR` (also `right_photo`:
+  the right side at the photo's scale and centre), `make_ps90_art.py [--renders DIR] [--photo PATH]` (icon with
+  the SCARs' rifle camera, sheet `docs/post93_ps90_preview.png` with the silhouette check), `gen_post93_guns.py
+  ps90()` (models_ps90.txt, items_ps90.txt, fixing_ps90.txt, names; the P90 magazine / mount / SP90 MountOn in
+  items()), `shared/GunsOfTienPost93/PS90.lua` (registries, spawn parts, MountOn), tooltips, loot, Hot Brass.
+  Rebuild: build, render, art, `gen_post93_guns.py`, `check_refs.py`, `fit_audit.py`. translations() merges into the
+  existing ItemName.json, so a renamed item's old keys stay until removed by hand.
+- **Fit** (fit_audit.py): with no rails, the clamps' depth was set by the audit against GoM's own guns
+  (`LIGHT_IN` / `LASER_OUT` / `FOREGRIP_UP`): foregrips 0.6-1.7 deep (GoM 1.3-1.5), lasers 0.2 / 1.3 (0.3 / 1.0),
+  lights 1.1 (0.6-0.7; the TR's 1.6-1.9).
 
 ## Bullpup set (2026-10-27)
 

@@ -33,10 +33,11 @@ for _c in CALIBRES.values():
     _c.update(packed_weights(_c['weight']))
 
 # (calibre, item suffix ('' = the standard round), art suffix, ammo type id, English variant name)
+# 5.7x28mm SS190 (GunsOfTienPost93.57x28_Bullet / _Box / _Carton / _Crate) moved to the main mod on 2026-11-03 for its
+# P90 with the ring sight, under the same IDs (the main mod's gen_scripts.py ammo_57x28()); its two other loads stay.
 ROUNDS = [
     ('46x30', '', 'DM11', 'bullet_46x30', 'DM11'),
     ('46x30', '_Subsonic', 'SS', 'bullet_46x30_subsonic', 'Subsonic'),
-    ('57x28', '', 'SS190', 'bullet_57x28', 'SS190'),
     ('57x28', '_SB193', 'SB193', 'bullet_57x28_sb193', 'SB193'),
     ('57x28', '_SS197SR', 'SS197SR', 'bullet_57x28_ss197sr', 'SS197SR'),
 ]
@@ -226,6 +227,8 @@ def translations():
         item_names[q_full(n['box'])] = f"{c['name']} {label} Box{use}"
         item_names[q_full(n['carton'])] = f"Carton of {c['name']} {label} Boxes{use}"
         item_names[q_full(n['crate'])] = f"Crate of {c['name']} {label} Boxes{use}"
+    for moved in ('57x28_Bullet', '57x28_Box', '57x28_Carton', '57x28_Crate'):      # named by the main mod now
+        item_names.pop(q_full(moved), None)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(item_names, indent=2, ensure_ascii=False) + '\n')
 
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')

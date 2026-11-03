@@ -14,7 +14,7 @@ if not ok or type(SpentCasingPhysics) ~= "table" then return end
 SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTienPost93.46x30_Bullet"] = "HBVCEF.46x30_Casing",
     ["GunsOfTienPost93.46x30_Bullet_Subsonic"] = "HBVCEF.46x30_Casing",
-    ["GunsOfTienPost93.57x28_Bullet"] = "HBVCEF.57x28_Casing",
+    -- SS190 (GunsOfTienPost93.57x28_Bullet) is the main mod's since 2026-11-03 (its HotBrass.lua)
     ["GunsOfTienPost93.57x28_Bullet_SB193"] = "HBVCEF.57x28_Casing",
     ["GunsOfTienPost93.57x28_Bullet_SS197SR"] = "HBVCEF.57x28_Casing",
 })
@@ -51,6 +51,18 @@ SpentCasingPhysics.RegisterWeaponParams({
     -- slight forward drift (about 0.5 s). Hot Brass's own P90 entry (verticalForce -0.6) lands them almost at once.
     ["GunsOfTienPost93.P90TR"] = {
         forwardOffset = 0.50,
+        sideOffset    = 0.0,
+        heightOffset  = 0.45,
+        shellForce    = 0.15,
+        sideSpread    = 10,
+        heightSpread  = { 0, 10 },
+        ejectAngle    = 0,
+        verticalForce = -0.05,
+        spinForce     = { 24, 34 },
+    },
+    -- The PS90 Carbine throws them down the same chute, held as a rifle: the port nearer the shoulder.
+    ["GunsOfTienPost93.PS90"] = {
+        forwardOffset = 0.30,
         sideOffset    = 0.0,
         heightOffset  = 0.45,
         shellForce    = 0.15,

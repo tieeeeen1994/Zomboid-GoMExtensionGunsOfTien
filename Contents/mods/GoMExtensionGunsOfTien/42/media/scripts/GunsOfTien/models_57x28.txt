@@ -1,0 +1,21 @@
+module GunsOfTienPost93 {
+
+    model GunsOfTienPost93_57x28_Round_SS190 {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_57x28_Round_SS190,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_57x28_Box_SS190 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_57x28_Box_SS190,
+        scale   = 0.4,
+    }
+
+    model 57x28Magazine50_P90 {
+        mesh     = weapons/magazines/GunsOfTienPost93_P90_magazines|57x28Magazine50_P90,
+        texture  = weapons/GunsOfTienPost93/57x28Magazine50_P90,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = 85.4927 66.5693 -90.4154, }
+    }
+}

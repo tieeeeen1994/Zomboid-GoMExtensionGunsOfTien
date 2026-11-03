@@ -24,8 +24,8 @@ Ammo.RegisterMultipleItemsWithFamilies({
         M .. "46x30Magazine20_UCP",
         M .. "46x30Magazine40_UCP",
     },
+    -- the P90's magazine is in the family from the main mod (shared/GunsOfTien/Ammunition.lua)
     ["5.7x28mm"] = {
-        M .. "57x28Magazine50_P90",
         M .. "57x28Magazine20_FIVESEVEN",
         M .. "57x28Magazine30_FIVESEVEN",
     },
@@ -51,8 +51,8 @@ Ammo.RegisterMultipleAmmoFamilies({
         { type = M .. "46x30_Bullet", enum = T.BULLET_46x30, profile = "GunsOfTienPost93_46x30DM11" },
         { type = M .. "46x30_Bullet_Subsonic", enum = T.BULLET_46x30_Subsonic, profile = "GunsOfTienPost93_46x30Subsonic" },
     },
+    -- SS190 and its profile are the main mod's (moved 2026-11-03 for its P90); these two are added to its family
     ["5.7x28mm"] = {
-        { type = M .. "57x28_Bullet", enum = T.BULLET_57x28, profile = "GunsOfTienPost93_57x28SS190" },
         { type = M .. "57x28_Bullet_SB193", enum = T.BULLET_57x28_SB193, profile = "GunsOfTienPost93_57x28SB193" },
         { type = M .. "57x28_Bullet_SS197SR", enum = T.BULLET_57x28_SS197SR, profile = "GunsOfTienPost93_57x28SS197SR" },
     },
@@ -82,7 +82,6 @@ end
 
 Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_46x30DM11"] = standard(),
-    ["GunsOfTienPost93_57x28SS190"] = standard(),
     ["GunsOfTienPost93_46x30Subsonic"] = subsonic(0.6),
     ["GunsOfTienPost93_57x28SB193"] = subsonic(0.7),
     ["GunsOfTienPost93_57x28SS197SR"] = (function()

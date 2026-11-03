@@ -1,0 +1,44 @@
+module GunsOfTien {
+
+    model P90 {
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_BODY,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1429 -0.0119, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0950 -0.0232, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0154 0.0754 -0.0519, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = 0.0154 0.0754 -0.0519, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = 0.0193 0.0754 -0.0511, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0189 0.0754 -0.0519, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1170 -0.0119, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0099 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0362 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model P90_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_BOLT,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+    }
+
+    model P90_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_HANDLE,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+    }
+
+    model P90_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_RAIL_LEFT,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+    }
+
+    model P90_RAIL_RIGHT {
+        mesh     = weapons/firearms/GunsOfTien_P90|P90_RAIL_RIGHT,
+        texture  = weapons/GunsOfTien/P90,
+        cullFace = None,
+    }
+}

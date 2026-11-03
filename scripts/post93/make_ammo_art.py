@@ -40,6 +40,12 @@ import make_art as A  # noqa: E402  (GoM paths, FBX reader, rasteriser, paint he
 
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media/textures")
+# SS190's round and box are the main mod's since 2026-11-03 (its P90), under the same names and paths
+MAIN_OUT = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
+
+
+def out_for(name):
+    return MAIN_OUT if name.endswith("_SS190") else OUT
 SHEET = os.path.join(ROOT, "docs/post93_ammo_art_sheet.png")
 PREFIX = "GunsOfTienPost93_"
 
@@ -517,14 +523,15 @@ def build():
     for spec in round_specs():
         icon, world = make_round(spec)
         name = PREFIX + spec["name"]
-        written.append((save(icon, os.path.join(OUT, "item_%s.png" % name)), "render of %s" % spec["geometry"]))
-        written.append((save(world, os.path.join(OUT, "worlditems/GunsOfTienPost93/Rounds", name + ".png")),
+        written.append((save(icon, os.path.join(out_for(name), "item_%s.png" % name)),
+                        "render of %s" % spec["geometry"]))
+        written.append((save(world, os.path.join(out_for(name), "worlditems/GunsOfTienPost93/Rounds", name + ".png")),
                         spec["note"]))
     for spec in box_specs():
         icon, world = make_box(spec)
         name = PREFIX + spec["name"]
-        written.append((save(icon, os.path.join(OUT, "item_%s.png" % name)), BOX_ICON))
-        written.append((save(world, os.path.join(OUT, "worlditems/GunsOfTienPost93/Boxes", name + ".png")),
+        written.append((save(icon, os.path.join(out_for(name), "item_%s.png" % name)), BOX_ICON))
+        written.append((save(world, os.path.join(out_for(name), "worlditems/GunsOfTienPost93/Boxes", name + ".png")),
                         "%s.png, %s" % (BOX_TEX, spec["note"])))
     return written
 
@@ -548,7 +555,7 @@ def contact_sheet(path, scale=4):
     font = ImageFont.truetype(A.FONT, 12)
     big = ImageFont.truetype(A.FONT, 16)
     gom_icon = lambda n: Image.open(os.path.join(A.GOM_TEX, n))
-    ours = lambda n: Image.open(os.path.join(OUT, "item_%s%s.png" % (PREFIX, n)))
+    ours = lambda n: Image.open(os.path.join(out_for(PREFIX + n), "item_%s%s.png" % (PREFIX, n)))
     rows = [
         ("GoM", [("9x19 Round", gom_icon("item_9x19_Round_Base.png"), True)]
          + [("556x45 %s" % v, gom_icon("item_556x45_Round_%s.png" % v), True) for v in ("Base", "SS", "AP", "HP", "OP")]
@@ -585,14 +592,14 @@ def contact_sheet(path, scale=4):
     d.text((pad, y + label_h + 56), "Round\ntextures", font=big, fill=(255, 255, 255, 255))
     x = left
     for n in rounds:
-        put(Image.open(os.path.join(OUT, "worlditems/GunsOfTienPost93/Rounds", PREFIX + n + ".png")),
+        put(Image.open(os.path.join(out_for(PREFIX + n), "worlditems/GunsOfTienPost93/Rounds", PREFIX + n + ".png")),
             x, y, 128, 128, n, False)
         x += 128 + pad
     y += 128 + label_h + pad
     d.text((pad, y + label_h + 120), "Box\ntextures\n(2x) and\non the\nmesh", font=big, fill=(255, 255, 255, 255))
     x = left
     for n in boxes:
-        tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTienPost93/Boxes", PREFIX + n + ".png"))
+        tex = Image.open(os.path.join(out_for(PREFIX + n), "worlditems/GunsOfTienPost93/Boxes", PREFIX + n + ".png"))
         put(tex, x, y, 128, 256, n, False)
         put(box_preview(tex, 4), x + 128, y + 64, 128, 128, "", False)
         x += 256 + pad

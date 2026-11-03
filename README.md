@@ -128,6 +128,16 @@ Maker they can be made.
 - The US Subsonic round needs racking after every shot in it (no PBS-1 fits)
 - Found with the RPKs, with its drums and boxes
 
+## FN P90
+
+- FN P90 as FN made it from 1990: its ring sight on top, the 50-round magazine lying along the top of the gun, held
+  one-handed like the MP5K, automatic at 900 rounds a minute or single shots, 5.7x28mm SS190 rounds that pierce
+- Guns of Marz's Picatinny rails fit it as short rails: on its sides for lights (left) and lasers (right); no top
+  rail, the ring sight is its sight
+- The SP90 suppressor and its 5.7x28mm muzzle mount with the Post-93 add-on
+- Found with Guns of Marz's police SMGs and on SWAT zombies, with its magazines and SS190 boxes; SS190 boxes and
+  cartons also in police, SWAT and gun store storage
+
 ## Ammo Maker (optional)
 
 Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.
@@ -145,8 +155,9 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well. Its guns, magazines, par
 as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier); its special loads only from Ammo Maker.
 
 - H&K MP7A1 and MP7A2: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor; the A1 with its folding front grip, the A2 with a rail handguard that takes Guns of Marz's foregrips
-- FN P90: 50-round magazine, suppressor
-- The MP7s and the P90 held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
+- FN P90 TR: 50-round magazine, suppressor
+- FN PS90 Carbine: the P90 with the PS90's 16-inch barrel, long flash hider and cheek riser and an M-LOK handguard, held two-handed like a rifle; the P90's magazine and suppressor, Guns of Marz optics on the top rail, its lights and lasers on the handguard's sides and its foregrips under it
+- The MP7s and the P90 TR held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
   lights and lasers
 - FN Five-seveN pistol (Guns of Marz's own gun, now named just "Five-SeveN"): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights and pistol lights

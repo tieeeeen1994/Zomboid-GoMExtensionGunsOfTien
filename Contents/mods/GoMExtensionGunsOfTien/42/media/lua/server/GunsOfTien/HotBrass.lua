@@ -25,6 +25,8 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTien.308_Bullet_SP"] = "HBVCEF.308_Casing",
     -- Hot Brass has only red and green hulls; birdshot hulls are green more often than not.
     ["GunsOfTien.12Gauge_Shell_Birdshot"] = "HBVCEF.12Gauge_Hull_Green",
+    -- the P90's SS190 (Post-93's id, moved here with the P90 on 2026-11-03)
+    ["GunsOfTienPost93.57x28_Bullet"] = "HBVCEF.57x28_Casing",
 })
 
 SpentCasingPhysics.RegisterPressureProfiles({
@@ -139,6 +141,19 @@ SpentCasingPhysics.RegisterWeaponParams({
         sideSpread    = 50,
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
+    -- The P90 throws its cases straight down through the port under the grip, as Post-93's P90 TR (its numbers): a
+    -- short fall from under the gun with a slight forward drift.
+    ["GunsOfTien.P90"] = {
+        forwardOffset = 0.50,
+        sideOffset    = 0.0,
+        heightOffset  = 0.45,
+        shellForce    = 0.15,
+        sideSpread    = 10,
+        heightSpread  = { 0, 10 },
+        ejectAngle    = 0,
+        verticalForce = -0.05,
         spinForce     = { 24, 34 },
     },
     -- The Glock 21 throws its .45 cases as GoM's USP does (GoM's HotBrass/CustomParams.lua), its port a little nearer

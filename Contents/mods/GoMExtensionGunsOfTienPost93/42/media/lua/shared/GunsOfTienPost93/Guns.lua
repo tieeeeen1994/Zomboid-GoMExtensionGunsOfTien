@@ -59,7 +59,6 @@ local FOREGRIPS = { "MarzGuns.Stub_Foregrip", "MarzGuns.MKC_Foregrip", "MarzGuns
 local P90 = M .. "P90TR"
 local MP7_MAGS = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7",
     M .. "46x30Magazine60_MP7" }
-local P90_MAGS = { M .. "57x28Magazine50_P90" }
 local FIVESEVEN = "MarzGuns.FIVESEVEN"
 local FIVESEVEN_MAGS = { M .. "57x28Magazine20_FIVESEVEN", M .. "57x28Magazine30_FIVESEVEN" }
 local UCP = M .. "UCP"
@@ -84,7 +83,7 @@ end
 Magazine.RegisterMagazineProfile("4.6x30mm MP7", MP7_MAGS)
 Magazine.RegisterWeaponWithProfile("4.6x30mm MP7", MP7)
 Magazine.RegisterWeaponWithProfile("4.6x30mm MP7", MP7A2)
-Magazine.RegisterMagazineProfile("5.7x28mm P90", P90_MAGS)
+-- the "5.7x28mm P90" profile (the P90's magazine) is the main mod's since 2026-11-03 (shared/GunsOfTien/P90.lua)
 Magazine.RegisterWeaponWithProfile("5.7x28mm P90", P90)
 Magazine.RegisterMagazineProfile("5.7x28mm Five-seveN", FIVESEVEN_MAGS)
 Magazine.RegisterWeaponWithProfile("5.7x28mm Five-seveN", FIVESEVEN)
@@ -237,14 +236,6 @@ CSA.RegisterMultipleParts({
         SF.Set("SwingSound", "CapGunRifleShoot"),
         SF.Set("MuzzleFlashModelKey", nil),
     },
-    [M .. "P90_Suppressor"] = {
-        SF.Multiply("SoundRadius", 0.3),
-        SF.Multiply("SoundVolume", 0.3),
-        SF.Multiply("MaxDamage", 0.9),
-        SF.Multiply("MinDamage", 0.9),
-        SF.Set("SwingSound", "CapGunRifleShoot"),
-        SF.Set("MuzzleFlashModelKey", nil),
-    },
     -- SCAR stock deployed: GoM's G36 stock (another side-folding polymer stock)
     [M .. "SCAR_Integrated_Stock_Folded"] = {},
     [M .. "SCAR_Integrated_Stock_Deployed"] = {
@@ -264,6 +255,14 @@ CSA.RegisterMultipleParts({
         SF.Multiply("MaxDamage", 0.9),
         SF.Multiply("MinDamage", 0.9),
         SF.Set("SwingSound", "CapGunRevolverShoot"),
+        SF.Set("MuzzleFlashModelKey", nil),
+    },
+    [M .. "P90_Suppressor"] = {
+        SF.Multiply("SoundRadius", 0.3),
+        SF.Multiply("SoundVolume", 0.3),
+        SF.Multiply("MaxDamage", 0.9),
+        SF.Multiply("MinDamage", 0.9),
+        SF.Set("SwingSound", "CapGunRifleShoot"),
         SF.Set("MuzzleFlashModelKey", nil),
     },
     [M .. "FIVESEVEN_Suppressor"] = {
@@ -313,7 +312,7 @@ RequiredAttachment.RegisterRequired({ M .. "FIVESEVEN_Suppressor" }, { M .. "P90
 -- Parts that cannot be taken off through the vanilla upgrade menu
 -------------------------------------------------
 local permanent = {}
-for _, list in ipairs({ MP7_MAGS, P90_MAGS, FIVESEVEN_MAGS, UCP_MAGS, SCARH_MAGS, UMP45_MAGS, UMP9_MAGS }) do
+for _, list in ipairs({ MP7_MAGS, FIVESEVEN_MAGS, UCP_MAGS, SCARH_MAGS, UMP45_MAGS, UMP9_MAGS }) do
     for _, part in ipairs(list) do permanent[#permanent + 1] = part end
 end
 for _, part in ipairs({ "MP7A1_Integrated_Rail_Up", "MP7A1_Integrated_Rail_Left", "MP7A1_Integrated_Rail_Right",

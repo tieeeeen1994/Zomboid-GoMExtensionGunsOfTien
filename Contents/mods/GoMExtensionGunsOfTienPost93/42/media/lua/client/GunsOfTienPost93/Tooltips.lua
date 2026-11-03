@@ -137,6 +137,14 @@ lines[M .. "P90TR"] = {
     "50-round magazine on top. Ejects spent cases downward.",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
+lines[M .. "PS90"] = {
+    "Uses 5.7x28mm rounds.",
+    "16-inch barrel",
+    "Integrated Picatinny rail: Up",
+    "M-LOK handguard: Left, Right, Down",
+    "50-round magazine on top. Ejects spent cases downward.",
+    "Standard rounds pierce and can hit up to 2 targets.",
+}
 lines["MarzGuns.FIVESEVEN"] = {
     "Uses 5.7x28mm rounds.",
     "Compatible Mounting Device: Beretta Mount",
@@ -157,7 +165,7 @@ lines[M .. "46x30Magazine40_UCP"] = { "Uses 4.6x30mm rounds." }
 for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7", "46x30Magazine60_MP7" }) do
     lines[M .. mag] = { "Uses 4.6x30mm rounds." }
 end
-lines[M .. "57x28Magazine50_P90"] = { "Uses 5.7x28mm rounds." }
+-- the P90's magazine, mount device and SP90 and the SS190 round: the main mod's client/GunsOfTien/P90Tooltips.lua
 
 for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppressor", "SCARH_Suppressor" }) do
     lines[M .. part] = {
@@ -176,7 +184,6 @@ for _, part in ipairs({ "MP7_Muzzle_Mount_Device", "P90_Muzzle_Mount_Device", "S
 end
 
 lines[M .. "46x30_Bullet"] = { "DM11 solid copper-plated steel bullet", "Piercing targets", "Able to hit up to 2 targets" }
-lines[M .. "57x28_Bullet"] = { "SS190 steel and aluminium penetrator", "Piercing targets", "Able to hit up to 2 targets" }
 for round, damage in pairs({ ["46x30_Bullet_Subsonic"] = "40%", ["57x28_Bullet_SB193"] = "30%" }) do
     lines[M .. round] = {
         "Damage to targets decreased by " .. damage,

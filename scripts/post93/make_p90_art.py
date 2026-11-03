@@ -35,8 +35,11 @@ PREVIEW = os.path.join(ROOT, "docs/post93_p90_preview.png")
 POINTS = json.load(open(os.path.join(HERE, "p90_points.json")))
 OUTLINE = json.load(open(os.path.join(HERE, "p90_reference_outline.json")))
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx")
-FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
-FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx")
+# the magazine, mount device and SP90 are the main mod's (moved 2026-11-03 for its P90, same names and paths)
+FBX_MAGS = os.path.join(A.MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
+FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx")      # Post-93's
+MAIN_TEX, MAIN_ICONS = A.MAIN_TEX, A.MAIN_ICONS
+MOVED = {"57x28Magazine50_P90"}
 NAMES = {FBX_GUN: ("P90TR_BODY", "P90TR_BOLT", "P90TR_HANDLE"), FBX_MAGS: ("57x28Magazine50_P90",),
          FBX_PARTS: ("P90_Suppressor", "P90_Muzzle_Mount_Device")}
 STAND_UP = {"offset": [0.0, 0.0, 0.0], "rotate": [90.0, 0.0, 0.0]}     # magazine length from -Y to -Z
@@ -52,7 +55,7 @@ def upright_offset(o):
 def our_scenes():
     """{icon name: (camera kind, objs, textures)}"""
     gun_tex = A.img(os.path.join(TEX, "P90TR.png"))
-    mag_tex = A.img(os.path.join(TEX, "57x28Magazine50_P90.png"))
+    mag_tex = A.img(os.path.join(MAIN_TEX, "57x28Magazine50_P90.png"))
     mag = A.load_game(FBX_MAGS, "57x28Magazine50_P90")
     gun = [(A.load_game(FBX_GUN, "P90TR_BODY"), 0), (A.load_game(FBX_GUN, "P90TR_BOLT"), 0),
            (A.load_game(FBX_GUN, "P90TR_HANDLE"), 0),
@@ -69,7 +72,7 @@ def make_icons():
     made = {}
     for name, (kind, objs, texes) in our_scenes().items():
         icon = A.shade(objs, texes, dict(fitted[kind]["camera"]), fitted[kind]["light"])
-        icon.save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % name))
+        icon.save(os.path.join(MAIN_ICONS if name in MOVED else ICONS, "item_GunsOfTienPost93_%s.png" % name))
         made[name] = icon
     return made
 
@@ -247,7 +250,8 @@ class Page:
 
 
 def icon(name):
-    return Image.open(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % name)).convert("RGBA")
+    return Image.open(os.path.join(MAIN_ICONS if name in MOVED else ICONS,
+                                   "item_GunsOfTienPost93_%s.png" % name)).convert("RGBA")
 
 
 def magazine_sheet(renders):
@@ -263,7 +267,7 @@ def magazine_sheet(renders):
     p.put("mag_like3", 20, y, 1200, "from the rear left")
     p.put("mag_seated", 1250, 600, 1210, "seated on the receiver, under the rail block and the hoop")
     y = 1390
-    p.texture(os.path.join(TEX, "57x28Magazine50_P90.png"), 20, y, 384, "texture 57x28Magazine50_P90.png (128 px, x3)")
+    p.texture(os.path.join(MAIN_TEX, "57x28Magazine50_P90.png"), 20, y, 384, "texture 57x28Magazine50_P90.png (128 px, x3)")
     p.heading(450, y, "Icon, next to GoM's MP5 magazine whose camera and light it reuses (stood on end)")
     p.icons(450, y + 40, [(Image.open(os.path.join(G, "textures/item_9x19Magazine30_MP5.png")).convert("RGBA"),
                            "9x19Magazine30_MP5 (GoM)"), (icon("57x28Magazine50_P90"), "57x28Magazine50_P90")])

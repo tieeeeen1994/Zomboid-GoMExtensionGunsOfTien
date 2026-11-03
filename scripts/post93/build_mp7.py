@@ -52,6 +52,10 @@ FBX_GUN_A2 = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_MP7
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_MP7_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_MP7_parts.fbx")
 TEX_DIR = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
+# The P90's magazine, mount device and SP90 (and SS190's art) live in the main mod since 2026-11-03, under their
+# Post-93 names and paths: the main mod's P90 uses them.
+MAIN_MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media")
+MAIN_TEX_DIR = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTienPost93")
 POINTS_JSON = os.path.join(HERE, "mp7_points.json")
 POINTS_JSON_A2 = os.path.join(HERE, "mp7a2_points.json")
 

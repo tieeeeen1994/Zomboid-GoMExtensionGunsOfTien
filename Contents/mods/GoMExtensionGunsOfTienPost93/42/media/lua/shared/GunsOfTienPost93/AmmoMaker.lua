@@ -48,7 +48,6 @@ local MOD = "GoMExtensionGunsOfTienPost93"
 local MAP = {
     { modId = MOD, itemType = "GunsOfTienPost93.46x30_Bullet", ammoType = "46x30" },
     { modId = MOD, itemType = "GunsOfTienPost93.46x30_Bullet_Subsonic", ammoType = "46x30SS" },
-    { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet", ammoType = "57x28" },
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SB193", ammoType = "57x28SS" },
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SS197SR", ammoType = "57x28SR" },
 }

@@ -8,7 +8,9 @@ GunsOfTienPost93_AmmoTypes = {}
 GunsOfTienPost93_AmmoTypes.BULLET_46x30 = AmmoType.register("gunsoftienpost93:bullet_46x30", "GunsOfTienPost93.46x30_Bullet")
 GunsOfTienPost93_AmmoTypes.BULLET_46x30_Subsonic = AmmoType.register("gunsoftienpost93:bullet_46x30_subsonic", "GunsOfTienPost93.46x30_Bullet_Subsonic")
 
-GunsOfTienPost93_AmmoTypes.BULLET_57x28 = AmmoType.register("gunsoftienpost93:bullet_57x28", "GunsOfTienPost93.57x28_Bullet")
+-- SS190 is registered by the main mod since 2026-11-03 (its P90): its registries.lua runs first (mod.info loadModAfter),
+-- and this line never throws if it did not, so the registrations below always happen
+GunsOfTienPost93_AmmoTypes.BULLET_57x28 = GunsOfTien_AmmoTypes and GunsOfTien_AmmoTypes.BULLET_57x28 or nil
 GunsOfTienPost93_AmmoTypes.BULLET_57x28_SB193 = AmmoType.register("gunsoftienpost93:bullet_57x28_sb193", "GunsOfTienPost93.57x28_Bullet_SB193")
 GunsOfTienPost93_AmmoTypes.BULLET_57x28_SS197SR = AmmoType.register("gunsoftienpost93:bullet_57x28_ss197sr", "GunsOfTienPost93.57x28_Bullet_SS197SR")
 

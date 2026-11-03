@@ -1,0 +1,231 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1429,
+      -0.0119
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.095,
+      -0.0232
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.117,
+      -0.0119
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      -0.0154,
+      0.0754,
+      -0.0519
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      0.0154,
+      0.0754,
+      -0.0519
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      -0.0189,
+      0.0754,
+      -0.0519
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      0.0193,
+      0.0754,
+      -0.0511
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0099,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0362,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0209,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rifle_back": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "rifle_back_bag": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle; held like a pistol, so modelled upside down as GoM's handgun-held guns are: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip column (the TR photo's L 237, H 80)",
+    "rails": "P90_RAIL_LEFT / _RIGHT on the housing's sides (L 82-142, H 166): drawn for GoM's optional Picatinny_Rail_Left / _Right, turned with the gun; no top rail, so no optics",
+    "magazine": "57x28Magazine50_P90 (the P90 family's magazine, upright) at its front end on top of the receiver",
+    "canon": "the receiver's front face where the barrel collar starts: the P90's mount device and SP90",
+    "bolt_fired": "P90_BOLT (the bolt in the port under the gun) back 16.5 mm real",
+    "handle_back": "P90_HANDLE back 60 mm real, only while racked"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      237.0,
+      80.0
+    ],
+    "real_mm_per_game_unit": 1658.37,
+    "photo_px_per_mm": 3.714,
+    "photo_map": "mirrored Commons photo: L = (x - 120) / 3.714, H = (970 - y) / 3.714"
+  },
+  "_bounds": {
+    "P90_BODY": {
+      "min": [
+        -0.0172,
+        -0.1586,
+        -0.079
+      ],
+      "max": [
+        0.0172,
+        0.1429,
+        0.0481
+      ],
+      "tris": 2264
+    },
+    "P90_BOLT": {
+      "min": [
+        -0.0045,
+        -0.0252,
+        0.0475
+      ],
+      "max": [
+        0.0045,
+        -0.0154,
+        0.0479
+      ],
+      "tris": 44
+    },
+    "P90_HANDLE": {
+      "min": [
+        -0.0193,
+        0.082,
+        -0.0193
+      ],
+      "max": [
+        0.0193,
+        0.1013,
+        -0.0087
+      ],
+      "tris": 400
+    },
+    "P90_RAIL_LEFT": {
+      "min": [
+        -0.0036,
+        -0.0181,
+        -0.0064
+      ],
+      "max": [
+        0.0003,
+        0.0181,
+        0.0064
+      ],
+      "tris": 308
+    },
+    "P90_RAIL_RIGHT": {
+      "min": [
+        -0.0003,
+        -0.0181,
+        -0.0064
+      ],
+      "max": [
+        0.0036,
+        0.0181,
+        0.0064
+      ],
+      "tris": 308
+    }
+  }
+}

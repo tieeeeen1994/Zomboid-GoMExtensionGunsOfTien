@@ -339,9 +339,15 @@ module GunsOfTienPost93 {
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 
-    model 57x28Magazine50_P90 {
-        mesh     = weapons/magazines/GunsOfTienPost93_P90_magazines|57x28Magazine50_P90,
-        texture  = weapons/GunsOfTienPost93/57x28Magazine50_P90,
+    model P90_Suppressor {
+        mesh     = weapons/parts/GunsOfTienPost93_P90_parts|P90_Suppressor,
+        texture  = weapons/GunsOfTienPost93/P90_Suppressor,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model P90_Muzzle_Mount_Device {
+        mesh     = weapons/parts/GunsOfTienPost93_P90_parts|P90_Muzzle_Mount_Device,
+        texture  = weapons/GunsOfTienPost93/P90_Muzzle_Mount_Device,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 
@@ -382,18 +388,6 @@ module GunsOfTienPost93 {
     model MP7_Muzzle_Mount_Device {
         mesh     = weapons/parts/GunsOfTienPost93_MP7_parts|MP7_Muzzle_Mount_Device,
         texture  = weapons/GunsOfTienPost93/MP7_Muzzle_Mount_Device,
-        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
-    }
-
-    model P90_Suppressor {
-        mesh     = weapons/parts/GunsOfTienPost93_P90_parts|P90_Suppressor,
-        texture  = weapons/GunsOfTienPost93/P90_Suppressor,
-        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
-    }
-
-    model P90_Muzzle_Mount_Device {
-        mesh     = weapons/parts/GunsOfTienPost93_P90_parts|P90_Muzzle_Mount_Device,
-        texture  = weapons/GunsOfTienPost93/P90_Muzzle_Mount_Device,
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
     }
 

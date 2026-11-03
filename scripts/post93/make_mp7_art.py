@@ -34,6 +34,11 @@ ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
 ICONS = os.path.join(MEDIA, "textures")
+# The P90's magazine, mount device and SP90 (and SS190's art) live in the main mod since 2026-11-03, under their
+# Post-93 names and paths: the main mod's P90 uses them.
+MAIN_MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media")
+MAIN_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTienPost93")
+MAIN_ICONS = os.path.join(MAIN_MEDIA, "textures")
 PREVIEW = os.path.join(ROOT, "docs/post93_mp7_preview.png")
 G = MA.GOM
 POINTS = json.load(open(os.path.join(HERE, "mp7_points.json")))

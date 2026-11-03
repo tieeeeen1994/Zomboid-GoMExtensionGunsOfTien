@@ -21,6 +21,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
+# the P90's magazine, mount device and SP90 are the main mod's (moved 2026-11-03 for its P90, same names and paths)
+MAIN_MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media")
+MAIN_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTienPost93")
 GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
                                            "3722134990/mods/GunsOfMarz/42.16/media"),
                         "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
@@ -108,8 +111,8 @@ def main():
 
     gun = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_P90TR.fbx"), os.path.join(TEX, "P90TR.png"))
     body, bolt, handle = gun["P90TR_BODY"], gun["P90TR_BOLT"], gun["P90TR_HANDLE"]
-    mag = load(os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"),
-               os.path.join(TEX, "57x28Magazine50_P90.png"))["57x28Magazine50_P90"]
+    mag = load(os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx"),
+               os.path.join(MAIN_TEX, "57x28Magazine50_P90.png"))["57x28Magazine50_P90"]
     parts = {}
     for n in ("P90_Suppressor", "P90_Muzzle_Mount_Device"):
         parts.update(load(os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx"),

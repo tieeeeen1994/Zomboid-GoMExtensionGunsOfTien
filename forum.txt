@@ -85,6 +85,14 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*]Found with the RPKs, with its drums and boxes
 [/list]
 
+[h2]FN P90[/h2]
+[list]
+[*]FN P90 as FN made it from 1990: its ring sight on top, the 50-round magazine lying along the top of the gun, held one-handed like the MP5K, automatic at 900 rounds a minute or single shots, 5.7x28mm SS190 rounds that pierce
+[*]Guns of Marz's Picatinny rails fit it as short rails: on its sides for lights (left) and lasers (right); no top rail, the ring sight is its sight
+[*]The SP90 suppressor and its 5.7x28mm muzzle mount with the Post-93 add-on
+[*]Found with Guns of Marz's police SMGs and on SWAT zombies, with its magazines and SS190 boxes; SS190 boxes and cartons also in police, SWAT and gun store storage
+[/list]
+
 [h2]Ammo Maker (optional)[/h2]
 Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be made.
 [list]
@@ -98,8 +106,9 @@ Removing Ammo Maker from an existing save deletes Ammo Maker's own items (gunpow
 Enable [i]GoM Extension: Guns of Tien - Post-93[/i] as well.
 [list]
 [*]H&K MP7A1 and MP7A2: 20, 30 and 40-round magazines, 60-round drum, collapsible stock, suppressor; the A1 with its folding front grip, the A2 with a rail handguard that takes Guns of Marz's foregrips
-[*]FN P90: 50-round magazine, suppressor
-[*]The MP7s and the P90 held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics, lights and lasers
+[*]FN P90 TR: 50-round magazine, suppressor
+[*]FN PS90 Carbine: the P90 with the PS90's 16-inch barrel, long flash hider and cheek riser and an M-LOK handguard, held two-handed like a rifle; the P90's magazine and suppressor, Guns of Marz optics on the top rail, its lights and lasers on the handguard's sides and its foregrips under it
+[*]The MP7s and the P90 TR held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics, lights and lasers
 [*]FN Five-seveN pistol (Guns of Marz's own gun, now named just "Five-SeveN"): 20 and 30-round magazines, its own SFN-57 suppressor, takes Guns of Marz's pistol sights and pistol lights
 [*]H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's suppressor and Guns of Marz's pistol sights and pistol lights
 [*]FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor

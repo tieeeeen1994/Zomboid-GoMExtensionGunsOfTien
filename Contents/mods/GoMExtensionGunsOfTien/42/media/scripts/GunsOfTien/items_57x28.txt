@@ -1,0 +1,76 @@
+module GunsOfTienPost93 {
+    imports { Base }
+
+    item 57x28_Bullet {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.006,
+        Icon             = GunsOfTienPost93_57x28_Round_SS190,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTienPost93.GunsOfTienPost93_57x28_Round_SS190,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftienpost93:bullet_57x28,
+    }
+
+    item 57x28_Box {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.27,
+        Icon               = GunsOfTienPost93_57x28_Box_SS190,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTienPost93.GunsOfTienPost93_57x28_Box_SS190,
+        WorldStaticModel   = GunsOfTienPost93.GunsOfTienPost93_57x28_Box_SS190,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 57x28_Carton {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 2.592,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 57x28_Crate {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 8.294,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 57x28Magazine50_P90 {
+        AmmoType         = gunsoftienpost93:bullet_57x28,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_57x28Magazine50_P90,
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 50,
+        MountOn          = GunsOfTien.P90;GunsOfTienPost93.P90TR;GunsOfTienPost93.PS90,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = 0.25,
+        WeightModifier   = 0.25,
+        StaticModel      = GunsOfTienPost93.57x28Magazine50_P90,
+        WorldStaticModel = GunsOfTienPost93.57x28Magazine50_P90,
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }
+}

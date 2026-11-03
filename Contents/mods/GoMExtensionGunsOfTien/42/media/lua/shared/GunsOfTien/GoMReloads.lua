@@ -16,7 +16,8 @@
     - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Uzi, Mini Uzi and Micro Uzi, the MP7A1 / A2, the P90 TR,
       the Vector 9mm;
     - "pistol_reload" (GoM's pistols): the Glock 21, the Five-seveN, the UCP Prototype;
-    - "famas_rifle" (GoM's FAMAS): the AUG A1, A3, Para and HBAR;
+    - "famas_rifle" (GoM's FAMAS): the AUG A1, A3, Para and HBAR, the PS90 Carbine (a top-loading bullpup: GoM has no
+      top-loading reload, and the user turned down the MP5's, 2026-11-03);
     - "left_handle_load" (GoM's BAR / AA-12: rifle magazine pushed straight in, charging handle on the left): the
       SCAR-L and SCAR-H, whose handles are on the left (GoM's FNC reload, "fnc_rifle", racks with the left hand
       reaching over to the right side; its FAL's, "fal_rifle", racks on the left but rocks the magazine in);

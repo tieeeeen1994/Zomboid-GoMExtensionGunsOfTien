@@ -17,16 +17,29 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 
 ## Planned
 
-- [ ] **P90 Carbine** (Post-93, item `P90C`, user 2026-11-03): a separate gun, not a conversion of the P90 TR (an
-      installable handguard was dropped: `isTwoHandWeapon` / `getSwingAnim` read the item script, so one item cannot
-      turn two-handed). The P90 TR's body with a metal rail handguard bolted to its nose and a longer barrel; the
-      look the user wants is `docs/p90c_render.png` (a stylised render, resembling K&M Arms' "The Handler" for the
-      P90 / PS90). **Two-handed**, rifle hold, so modelled upright (the `UZI_2H` way), not turned like the P90 TR.
-      Rails: top (moved forward onto the handguard), left, right, and a bottom one for GoM's foregrips
-      (parts "P90 Carbine Integrated Rail (Up / Down / Left / Right)"); the P90's magazines and muzzle mount device;
-      longer-barrel stats. Open before building: model from the render or a real handguard photo; the reload needs
-      new two-handed top-loading clips (the P90's are made for the pistol hold), shown as GIFs before packing;
-      spawns.
+- [ ] **PS90 Carbine** (Post-93, `PS90`): built 2026-11-03, not played (CLAUDE.md, "PS90 Carbine"). To check in game:
+      the hold with vanilla's rifle clips, GoM's FAMAS reload with the P90 magazine in the off hand (its
+      `Bip01_Prop2` was worked out from GoM's STANAG, never seen), the Hot Brass drop from the chute.
+- [ ] **P90 with its ring sight** (main mod, `GunsOfTien.P90`): built 2026-11-03, not played (CLAUDE.md, "P90 with its
+      ring sight"). To check in game: the turned model in the hand and on the back, GoM's optional side rails and what
+      sits on them, and that 5.7x28mm (moved from Post-93 under the same ids) still works in old saves, with
+      Post-93 on and off.
+- [ ] **P90 lower / grip remodel, every P90** (user, 2026-11-03: "they look wrong", with a photo of a real lower):
+      the front opening should be a big rounded loop with the trigger inside it (ours is small and irregular, only
+      a sliver of trigger), and the grip surfaces under both openings are stippled (ours are smooth). One fix in
+      Post-93's build_p90.py (`FRAME`, `TRIGGER_HOLE`, `THUMBHOLE`, the trigger box, painting) covers the P90 TR, the
+      PS90 and the main mod's P90; rebuild all three (restore build_p90.py's magazine / parts outputs from git if
+      only their bytes change). Reference: the Commons P90 Standard photo already used for the P90
+      (references/p90/p90_standard_mirrored.png, L = (x - 120) / 3.714, H = (970 - y) / 3.714); read off a grid
+      there, 2026-11-03: trigger opening a near-circle, about L 116-152, H 47-85, with a notch at its top front; the
+      trigger blade sticking back into it at about L 150-171, H 57-63; the thumbhole about L 230-300, H 41-82.
+- [ ] **Vector CRB** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's civilian carbine, a variant of our Vectors
+      (build_vector.py): the 16" barrel in a long shroud, otherwise the Vector. Release policy (user, 2026-11-03):
+      always two or more guns per release; meant to go out with the PS90. Open: one item per calibre as the Vectors
+      are, or only the .45; held as a rifle (the Vector 9mm is pistol-held); stats and loot.
+- [ ] **Vector SDP** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's pistol, the Vector without a stock and with
+      a short barrel. Open: how it is held (one hand like GoM's MP5K and our Vector 9mm, or two) and which slot it
+      takes (holster or back), one item per calibre or not, stats and loot.
 
 ## Community Wishlist
 

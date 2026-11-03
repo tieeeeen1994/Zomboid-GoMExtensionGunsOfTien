@@ -134,6 +134,10 @@ def gun(name, scale, flip=False):
 
 
 def icon(path, px):
+    if not os.path.exists(path) and path.startswith(POST):
+        # the P90's magazine, mount device, SP90 and the SS190 box keep their Post-93 names in the main mod
+        # (moved 2026-11-03 for its P90)
+        path = MAIN + path[len(POST):]
     return Image.open(path).convert("RGBA").resize((px, px), Image.NEAREST)
 
 
@@ -1004,6 +1008,80 @@ def preview13(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def bare_and_fitted(page, bare_name, fitted_name, top, max_w=440, max_h=270):
+    """preview16's pair: the bare gun over the same gun fitted out, at one scale from one camera so they line up
+    (render_ad_guns.py's `centre_on_assembled` pairs), mirrored back to the game's view, centred. Returns the bottom
+    of the fitted gun (page pixels)."""
+    W = page.size[0]
+    size = page.size
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    bare = Image.open(os.path.join(RENDERS, "ad_%s.png" % bare_name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    fitted = Image.open(os.path.join(RENDERS, "ad_%s.png" % fitted_name)).convert("RGBA").transpose(
+        Image.FLIP_LEFT_RIGHT)
+    fbox, bbox = fitted.getchannel("A").getbbox(), bare.getchannel("A").getbbox()
+    s = min(u(max_w) / (fbox[2] - fbox[0]), u(max_h) / (fbox[3] - fbox[1] + bbox[3] - bbox[1]))
+    bare = bare.resize((round(bare.width * s), round(bare.height * s)), Image.LANCZOS)
+    fitted = fitted.resize((round(fitted.width * s), round(fitted.height * s)), Image.LANCZOS)
+    fbox = fitted.getchannel("A").getbbox()
+    bbox = bare.getchannel("A").getbbox()
+    x0 = (W - (fbox[2] - fbox[0])) // 2 - fbox[0]
+    y_bare = u(top) - bbox[1]
+    y_fit = y_bare + bbox[3] + u(18) - fbox[1]
+    paste_with_shadow(page, placed(size, bare, (x0, y_bare)), (0, u(6)), u(6), 160)
+    paste_with_shadow(page, placed(size, fitted, (x0, y_fit)), (0, u(6)), u(6), 160)
+    return y_fit + fbox[3]
+
+
+def caption(page, y, text, big=False):
+    W = page.size[0]
+    k = W / 512
+    page.alpha_composite(text_layer(page.size, (W // 2, round(y * k)), text,
+                                    font(BOLD, round((13 if big else 11) * k), b"Bold"), (60, 64, 70, 255),
+                                    anchor="ma", spacing=round(k)))
+
+
+def preview19(path, W=1024):
+    """The main mod's P90 with its ring sight (2026-11-03), laid out like preview16 / preview18: what it is under the
+    title, bare as FN made it from 1990 over it fitted out with Guns of Marz's optional side rails, SR7 light and
+    AimRight laser (render_ad_guns.py "p90std" / "p90std_fitted"; no SP90, Post-93's); then a slot row (the gun, its
+    magazine, SS190, Guns of Marz's rail and accessories) and two lines."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "FN P90", 36, "GUNS OF MARZ EXTENSION")
+    caption(page, 86, "5.7X28MM  ·  50 ROUNDS  ·  900 RPM", big=True)
+    bare_and_fitted(page, "p90std", "p90std_fitted", 112, max_w=400, max_h=262)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    p93 = lambda n: os.path.join(MAIN, "item_GunsOfTienPost93_%s.png" % n)     # kept names, main mod files
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("P90"), p93("57x28Magazine50_P90"), p93("57x28_Box_SS190"), gom("Picatinny_Rail"),
+                    gom("SR7_Light"), gom("AimRight_Laser")],
+             256, 398, "OPTIONAL SIDE RAILS FOR LIGHTS AND LASERS")
+    caption(page, 458, "AS FN MADE IT IN 1990, WITH ITS RING SIGHT")
+    caption(page, 474, "THE SP90, P90 TR AND PS90 CARBINE COME WITH THE POST-93 ADD-ON")
+    save_under(page.convert("RGB"), path)
+
+
+def preview20(path, W=1024):
+    """Post-93's PS90 Carbine (2026-11-03), laid out like preview19: bare over fitted out with Guns of Marz's Aimpoint,
+    MKC foregrip, SR7 light and AimRight laser on its M-LOK handguard and the SP90 on its mount (render_ad_guns.py
+    "ps90" / "ps90_fitted"); then a slot row and two lines."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "FN PS90 CARBINE", 36, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+    caption(page, 86, "5.7X28MM  ·  16-INCH BARREL  ·  HELD AS A RIFLE", big=True)
+    bare_and_fitted(page, "ps90", "ps90_fitted", 112, max_w=430, max_h=262)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    p93 = lambda n: os.path.join(MAIN, "item_GunsOfTienPost93_%s.png" % n)     # the P90 family's parts: main mod
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("PS90"), p93("57x28Magazine50_P90"), p93("57x28_Box_SS190"), post("P90_Suppressor"),
+                    gom("MKC_Foregrip"), gom("SR7_Light"), gom("AimRight_Laser")],
+             256, 398, "THE P90'S MAGAZINE AND SP90")
+    caption(page, 458, "M-LOK HANDGUARD: FOREGRIPS, LIGHTS AND LASERS")
+    caption(page, 474, "GUNS OF MARZ OPTICS ON THE TOP RAIL")
+    save_under(page.convert("RGB"), path)
+
 def mod_icon(path, item, W=128):
     """128 px in-game mod list icon: one inventory icon scaled up crisp on the poster's background."""
     page = background((W, W)).convert("RGBA")
@@ -1053,6 +1131,10 @@ if __name__ == "__main__":
         preview17(os.path.join(ROOT, "preview17.png"))   # the RPK and RPK-74, added the same way
     if want("preview18"):
         preview18(os.path.join(ROOT, "preview18.png"))   # the RPD, added the same way
+    if want("preview19"):
+        preview19(os.path.join(ROOT, "preview19.png"))   # the main mod's P90, added the same way
+    if want("preview20"):
+        preview20(os.path.join(ROOT, "preview20.png"))   # Post-93's PS90 Carbine, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

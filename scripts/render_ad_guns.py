@@ -53,6 +53,13 @@ ROOT = os.path.normpath(os.path.join(HERE, ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 MAIN_MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
+
+
+def post93_file(rel):
+    """A Post-93-named asset, wherever it lives: the P90's magazine, mount device and SP90 moved to the main mod on
+    2026-11-03 under their old names and paths."""
+    path = os.path.join(MEDIA, rel)
+    return path if os.path.exists(path) else os.path.join(MAIN_MEDIA, rel)
 GOM = next(p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
                                           "3722134990/mods/GunsOfMarz/42.16/media"),
                        "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
@@ -132,12 +139,50 @@ RPD_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_RPD.fbx")
 RPD_DRUM = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_RPD_drum.fbx")
 
 
+# preview19 / preview20 (2026-11-03): the main mod's P90 with its ring sight (held like a pistol, so modelled upside
+# down: `upright`) and Post-93's PS90 Carbine (rifle-held, upright), each bare and fitted out at one scale from the
+# bare gun's camera (`centre_on_assembled`), seen from the gun's left (lights side) and mirrored back by
+# make_workshop_art.py. The P90 family's magazine, mount and SP90 are the main mod's (moved 2026-11-03).
+P90STD_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_P90.fbx")
+P90_MAGS = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_P90_magazines.fbx")
+P90_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_P90_parts.fbx")     # Post-93's
+P90_PART_TEX = os.path.join(MAIN_MEDIA, "textures/weapons/GunsOfTienPost93")
+P90_MAG = (P90_MAGS, "57x28Magazine50_P90", os.path.join(P90_PART_TEX, "57x28Magazine50_P90.png"), "magazine")
+P90_MUZZLE = [(P90_PARTS, n, os.path.join(TEX, n + ".png"), "canon")
+              for n in ("P90_Muzzle_Mount_Device", "P90_Suppressor")]
+P90STD_BARE = [(P90STD_FBX, n, os.path.join(MAIN_TEX, "P90.png"), None)
+               for n in ("P90_BODY", "P90_BOLT", "P90_HANDLE")] + [P90_MAG]
+PS90_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_PS90.fbx")
+PS90_BARE = [(PS90_FBX, n, os.path.join(TEX, "PS90.png"), None)
+             for n in ("PS90_BODY", "PS90_BOLT", "PS90_HANDLE")] + [P90_MAG]
+P90_VIEW, P90_SCALE, P90_SIZE = (-0.88, 0.32, -0.26), 0.5, (2400, 1500)
+PS90_SCALE = 0.68                    # the PS90 with its SP90 is 0.15 longer
+
+
 def gom_part(cat, name, point):
     return (os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
             name, os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, name)), point)
 
 
 GUNS = {
+    "p90std": {"points": "p90std_points.json", "assembled": P90STD_BARE, "upright": True, "centre_on_assembled": True,
+               "view": P90_VIEW, "scale": P90_SCALE, "size": P90_SIZE},
+    "p90std_fitted": {
+        "points": "p90std_points.json", "upright": True, "centre_on_assembled": True,
+        "assembled": P90STD_BARE + [(P90STD_FBX, "P90_RAIL_" + s, os.path.join(MAIN_TEX, "P90.png"), "rail_" + s.lower())
+                                    for s in ("LEFT", "RIGHT")] + [      # no SP90: Post-93's (the main mod's page)
+            gom_part("pointers", "SR7_Light", "light_left"), gom_part("pointers", "AimRight_Laser", "laser_right")],
+        "view": P90_VIEW, "scale": P90_SCALE, "size": P90_SIZE,
+    },
+    "ps90": {"points": "post93/ps90_points.json", "assembled": PS90_BARE, "centre_on_assembled": True,
+             "view": P90_VIEW, "scale": PS90_SCALE, "size": P90_SIZE},
+    "ps90_fitted": {
+        "points": "post93/ps90_points.json", "centre_on_assembled": True,
+        "assembled": PS90_BARE + P90_MUZZLE + [
+            gom_part("scopes", "Aimpoint_Sight", "scope"), gom_part("pointers", "SR7_Light", "light_left"),
+            gom_part("pointers", "AimRight_Laser", "laser_right"), gom_part("foregrips", "MKC_Foregrip", "foregrip")],
+        "view": P90_VIEW, "scale": PS90_SCALE, "size": P90_SIZE,
+    },
     "glock21": {"points": "glock21_points.json", "assembled": G21_BARE, "upright": True, "centre_on_assembled": True,
                 "view": G21_VIEW, "scale": G21_SCALE, "size": G21_SIZE},
     "glock21_fitted": {
@@ -525,11 +570,13 @@ def build(spec):
         place(o, points[point] if point else None, up, STANAG_GOT_SCALE)
     else:
         f, node, point = spec["mag"]
-        o = load(os.path.join(MEDIA, "models_X/weapons/magazines/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
+        o = load(post93_file("models_X/weapons/magazines/%s.fbx" % f),
+                 post93_file("textures/weapons/GunsOfTienPost93/%s.png" % node), node)
         place(o, points[point] if point else None, up)
     objs.append(o)
     for f, node in spec["parts"]:
-        o = load(os.path.join(MEDIA, "models_X/weapons/parts/%s.fbx" % f), os.path.join(TEX, node + ".png"), node)
+        o = load(post93_file("models_X/weapons/parts/%s.fbx" % f),
+                 post93_file("textures/weapons/GunsOfTienPost93/%s.png" % node), node)
         place(o, points["canon"], up)
         objs.append(o)
     for cat, node, point in spec["gom"]:

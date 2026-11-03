@@ -1,0 +1,245 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2423,
+      0.0119
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.2141,
+      0.0119
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.095,
+      0.0232
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      0.0826,
+      0.0554
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      0.0826,
+      0.0577
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.1791,
+      -0.0087
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1791,
+      -0.012
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0172,
+      0.1851,
+      0.0121
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0181,
+      0.1851,
+      0.0121
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0172,
+      0.1851,
+      0.0121
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0188,
+      0.1851,
+      0.0113
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0099,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0362,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0168,
+      0.1089,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; held as a rifle, so upright (the P90 TR is turned); origin = rear-top of the grip column (the TR photo's L 237, H 80)",
+    "magazine": "57x28Magazine50_P90 (the TR's magazine model, upright) at its front end, on top of the receiver",
+    "canon": "4 mm ahead of the handguard's nose (L -114) on the flash hider: P90_Muzzle_Mount_Device and P90_Suppressor as on the TR",
+    "accessories": "optics on the receiver's rail at L 100; lights / lasers on the handguard's M-LOK panels at L -70, H 100; foregrips under it at L -60 (no rails drawn)",
+    "bolt_fired": "PS90_BOLT (the bolt in the ejection port under the gun) back 16.5 mm real",
+    "handle_back": "PS90_HANDLE (both charging handles) back 60 mm real, only while racked",
+    "prop2": "the P90 magazine's Bip01_Prop2 for GoM's FAMAS reload (attachToHand): stood on its feed end and drawn where GoM's STANAG 30 is"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      237.0,
+      80.0
+    ],
+    "bore_mm": 99.8,
+    "real_mm_per_game_unit": 1658.37,
+    "k": 0.000603,
+    "prop2": {
+      "offset": [
+        0.02,
+        0.0538,
+        -0.0146
+      ],
+      "rotate": [
+        85.4927,
+        66.5693,
+        -90.4154
+      ]
+    },
+    "length_mm": 664.9,
+    "photo_px_per_mm": 1.672,
+    "photo_map": "L = 152 + (x - 570) / 1.672, H = (764 - y) / 1.672"
+  },
+  "_bounds": {
+    "PS90_BODY": {
+      "min": [
+        -0.0182,
+        -0.1586,
+        -0.0481
+      ],
+      "max": [
+        0.0182,
+        0.2423,
+        0.0609
+      ],
+      "tris": 5064
+    },
+    "PS90_BOLT": {
+      "min": [
+        -0.0045,
+        -0.0252,
+        -0.0479
+      ],
+      "max": [
+        0.0045,
+        -0.0154,
+        -0.0475
+      ],
+      "tris": 44
+    },
+    "PS90_HANDLE": {
+      "min": [
+        -0.0193,
+        0.082,
+        0.0087
+      ],
+      "max": [
+        0.0193,
+        0.1013,
+        0.0193
+      ],
+      "tris": 400
+    }
+  }
+}

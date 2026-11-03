@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix P90 {
+        Require = GunsOfTien.P90,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

@@ -428,25 +428,6 @@ module GunsOfTienPost93 {
         CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
     }
 
-    item 57x28Magazine50_P90 {
-        AmmoType         = gunsoftienpost93:bullet_57x28,
-        CanStack         = false,
-        DisplayCategory  = WeaponMagazine,
-        Icon             = GunsOfTienPost93_57x28Magazine50_P90,
-        ItemType         = base:weaponpart,
-        MaxAmmo          = 50,
-        MountOn          = GunsOfTienPost93.P90TR,
-        PartType         = Clip,
-        Tags             = base:hasmetal;base:riflemagazine,
-        Weight           = 0.25,
-        WeightModifier   = 0.25,
-        StaticModel      = GunsOfTienPost93.57x28Magazine50_P90,
-        WorldStaticModel = GunsOfTienPost93.57x28Magazine50_P90,
-        UseDelta         = 1,
-        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
-        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
-    }
-
     item 57x28Magazine20_FIVESEVEN {
         AmmoType         = gunsoftienpost93:bullet_57x28,
         CanStack         = false,
@@ -656,7 +637,7 @@ module GunsOfTienPost93 {
         Icon             = GunsOfTienPost93_P90_Suppressor,
         Weight           = 0.9,
         WeightModifier   = 0.9,
-        MountOn          = GunsOfTienPost93.P90TR,
+        MountOn          = GunsOfTienPost93.P90TR;GunsOfTienPost93.PS90;GunsOfTien.P90,
         PartType         = Canon,
         WorldStaticModel = GunsOfTienPost93.P90_Suppressor,
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
@@ -682,7 +663,7 @@ module GunsOfTienPost93 {
         Icon             = GunsOfTienPost93_P90_Muzzle_Mount_Device,
         Weight           = 0.5,
         WeightModifier   = 0.5,
-        MountOn          = GunsOfTienPost93.P90TR;MarzGuns.FIVESEVEN,
+        MountOn          = GunsOfTienPost93.P90TR;MarzGuns.FIVESEVEN;GunsOfTienPost93.PS90;GunsOfTien.P90,
         PartType         = CanonMount,
         WorldStaticModel = GunsOfTienPost93.P90_Muzzle_Mount_Device,
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
