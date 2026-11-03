@@ -35,6 +35,19 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] **Vector SDP** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's pistol, the Vector without a stock and with
       a short barrel. Open: how it is held (one hand like GoM's MP5K and our Vector 9mm, or two) and which slot it
       takes (holster or back), one item per calibre or not, stats and loot.
+- [ ] **Cheek risers** (main mod; user, 2026-11-03: "no cheek pads in GoM. Guns that are bullpups and with long stocks
+      and long rifles can possibly take advantage of this"): strap-on / lace-on cheek pads as weapon parts for ours and
+      GoM's guns (leather lace-on pads date from WWII, so not Post-93). Traced, nothing built: a new part type
+      `CheekRiser` (free string, as our `ChargingHandle`; label `Tooltip_weapon_CheekRiser`), no rail needed, MountOn
+      lists GoM's guns too. Stats either plain CustomStatsAttachments (Aiming Time down, a little Hit Chance) or only
+      while a magnified optic is fitted, through a Gunworks `StatsFactory.RegisterModifierLayer` layer (proposed).
+      Loot: join GoM's `Base.RecoilPad` replacement list and the attachment spawners. Models are the work: one mesh
+      per stock family (AR, AK, G3 / MP5, FAL, M14, wooden bolt-action stocks...), placed by a run-time `cheek`
+      point added to GoM's model scripts or modelled in place at the gun origin; folding / collapsible stocks need
+      the pad hidden and its stats off while folded, or are left out; bullpups (AUG, FAMAS, P90: cheek on the
+      receiver, sights already high) only with reference photos; skip the SVD and PSG1 (cheek rest built in).
+      Open: which guns (proposed first: fixed-stock long guns: M14, M1 Garand, FAL, G3, bolt rifles, AK-47 / AK-74,
+      M16 family, RPK, Mini-14), always-on stats or optic-only, leather lace-on or modern nylon look.
 
 ## Community Wishlist
 
