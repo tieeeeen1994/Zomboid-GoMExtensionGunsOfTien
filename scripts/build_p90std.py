@@ -97,7 +97,7 @@ def build_body():
     T = p90.TRACK
     both(lambda s: box(b, T[0], T[1], T[2], T[3], s * (p90.W_METAL - 0.5), s * (p90.W_METAL + 1.5),
                        mat="metal", bevel=0.6))
-    box(b, 148.0, 169.0, 46.5, 53.0, -8.0, 8.0, mat="dark", bevel=0.8)
+    p90.build_trigger(b)
     # the original upper and the ring sight
     slab(b, METAL, [p90.MAG_WINDOW, TOP_SLOT], half=p90.W_METAL, bevel=2.0, res=0, mat="metal")
     hood = [(HOOD[0], HOOD[2] - 0.5), (HOOD[1] + 6.0, HOOD[2] - 0.5), (HOOD[1], HOOD[3] - 8.0), (HOOD[1], HOOD[3]),

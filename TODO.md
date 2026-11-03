@@ -24,15 +24,10 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
       ring sight"). To check in game: the turned model in the hand and on the back, GoM's optional side rails and what
       sits on them, and that 5.7x28mm (moved from Post-93 under the same ids) still works in old saves, with
       Post-93 on and off.
-- [ ] **P90 lower / grip remodel, every P90** (user, 2026-11-03: "they look wrong", with a photo of a real lower):
-      the front opening should be a big rounded loop with the trigger inside it (ours is small and irregular, only
-      a sliver of trigger), and the grip surfaces under both openings are stippled (ours are smooth). One fix in
-      Post-93's build_p90.py (`FRAME`, `TRIGGER_HOLE`, `THUMBHOLE`, the trigger box, painting) covers the P90 TR, the
-      PS90 and the main mod's P90; rebuild all three (restore build_p90.py's magazine / parts outputs from git if
-      only their bytes change). Reference: the Commons P90 Standard photo already used for the P90
-      (references/p90/p90_standard_mirrored.png, L = (x - 120) / 3.714, H = (970 - y) / 3.714); read off a grid
-      there, 2026-11-03: trigger opening a near-circle, about L 116-152, H 47-85, with a notch at its top front; the
-      trigger blade sticking back into it at about L 150-171, H 57-63; the thumbhole about L 230-300, H 41-82.
+- [ ] **P90 trigger and stippled grips, every P90** (user, 2026-11-03: "they look wrong"): built 2026-11-03, not
+      played (CLAUDE.md, "Trigger and grips"): the round loop with its notch, the trigger blade in its recess behind
+      it, the selector paddle, stippled grip panels; the P90 TR, PS90 and P90 rebuilt, previews and icons redone. To
+      check in game: the trigger and stippling read at play distance, and the hand still sits right on the grip.
 - [ ] **Vector CRB** (.45 and 9mm, Post-93; user, 2026-11-03): KRISS's civilian carbine, a variant of our Vectors
       (build_vector.py): the 16" barrel in a long shroud, otherwise the Vector. Release policy (user, 2026-11-03):
       always two or more guns per release; meant to go out with the PS90. Open: one item per calibre as the Vectors

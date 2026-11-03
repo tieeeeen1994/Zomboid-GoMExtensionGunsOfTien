@@ -121,7 +121,7 @@ def build_body():
     T = p90.TRACK
     both(lambda s: box(b, T[0], T[1], T[2], T[3], s * (p90.W_METAL - 0.5), s * (p90.W_METAL + 1.5),
                        mat="metal", bevel=0.6))
-    box(b, 148.0, 169.0, 46.5, 53.0, -8.0, 8.0, mat="dark", bevel=0.8)
+    p90.build_trigger(b)
 
     # --- the handguard: two slabs with the window and slots, the raised panel, strap and ledge, a top cover, the
     # solid lower part ---

@@ -732,8 +732,22 @@ estimate said 214). Every profile in `build_p90.py` is written in those (L, H) c
   H 99.8. `canon` = L 43.
 - Lower frame (polymer, one profile with two holes, half width 23.5, rounded edges): front hand stop L 43-63 down to H
   37, trigger loop to the bottom (H 0) with a finger tab at L 165-171, notch under the grip column at H 37 (L 173-188),
-  belly flat at H 1 from L 255 to 300, slanting up to the butt. Trigger opening L 121-162, H 41-80 (trigger bar L
-  148-169, H 46.5-53); thumbhole L 230-298, H 37-82. Seam under the receiver at H 93.
+  belly flat at H 1 from L 255 to 300, slanting up to the butt. Thumbhole L 230-298, H 37-82. Seam under the
+  receiver at H 93.
+- **Trigger and grips** (remodelled 2026-11-03 for every P90 body; user: "they look wrong", with a photo of a real
+  lower: "the left side part has that whole trigger thing. it's the trigger"). Read on a 1 mm grid over the Commons
+  P90 Standard photo (section "P90 with its ring sight"): the opening is a round loop L 120.7-161.7, H 41-80 with a
+  notch at its top front (L 131, H 71); behind it the **trigger**, a wide blade whose rear arc closes the loop and
+  whose side fills a recess to L 181, H 51-82.5 (darker in the photo). Under it the rotary fire selector (FN: a dial
+  under the trigger, S / 1 / A, worked from either side) shows a ribbed paddle on both sides, L 150.3-177.8, H
+  45.6-51.2, ribbed L 153.5-164.5, its front end crossing the loop's lower rear corner. Built in build_p90.py
+  (`LOOP_REAR`, `TRIGGER_HOLE` = loop + recess cut through the frame, `TRIGGER` blade 2 mm under the frame faces,
+  `SELECTOR` 0.8 mm proud, `build_trigger(b)`, which build_ps90.py and build_p90std.py call too; material `grip`,
+  blade painted x 0.66, paddle not). The recess top stays at H 82.5: the frame's 5 mm round-over needs a web over 10
+  mm to the seam at H 93. **Stippled grips** (the user's photo; the Commons one is smooth): `STIPPLE` polygons, about 6
+  mm in from the edges, on the loop under and ahead of the opening and under the thumbhole with the column's foot,
+  both sides, screws keep a smooth 4.6 mm ring (painted: x 0.86 plus 0.9 mm value-noise dots). Workbench's STUDIO
+  specular hides the frame's texture in pure side views; check with `show_specular_highlight = False`.
 - Butt (half 27.5): L 352/369-500, H 22-140, butt plate seam L 489, mid seam H 93; FN monogram panel L 320-359, H 36-74
   on both sides; receiver band (polymer, half 25) L 205-356, H 84-118 with the raised "FN HERSTAL BELGIUM" panel L
   227-303, H 99-108 (right side only); magazine catch housing L 314-342, H 104-118; release tab L 344-360, H 119-134.

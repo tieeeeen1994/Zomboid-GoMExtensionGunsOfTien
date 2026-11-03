@@ -116,10 +116,33 @@ FRAME = [(43.0, 93.0), (43.0, 81.0), (47.4, 37.4), (61.1, 37.7), (62.9, 40.4), (
          (110.6, 11.1), (116.4, 7.0), (124.3, 3.2), (134.3, 0.6), (170.0, 0.3), (170.9, 3.8), (164.7, 29.5),
          (166.5, 33.6), (168.5, 35.7), (172.9, 37.2), (188.1, 37.2), (203.3, 21.9), (218.3, 11.7), (236.7, 4.1),
          (254.8, 0.9), (300.2, 0.9), (304.9, 7.0), (365.7, 26.6), (375.0, 26.6), (375.0, 93.0)]
-TRIGGER_HOLE = [(157.1, 76.7), (160.6, 72.8), (162.4, 68.2), (162.4, 60.9), (161.0, 52.5), (157.5, 46.5),
-                (151.0, 42.6), (145.0, 41.4), (139.8, 41.3), (131.9, 41.8), (127.6, 44.2), (124.3, 47.4),
-                (121.7, 52.7), (121.1, 58.2), (122.0, 62.3), (126.1, 68.5), (132.8, 72.3), (136.0, 74.3),
-                (139.3, 77.2), (143.4, 79.0), (149.8, 79.6)]
+# The trigger opening and the trigger (user, 2026-11-03: "the left side part has that whole trigger thing. it's the
+# trigger"; read on a 1 mm grid over the Commons P90 Standard photo, CLAUDE.md "P90 with its ring sight"): a round
+# loop with a notch at its top front, and behind it the trigger, a wide blade whose rear arc closes the loop and whose
+# side fills a recess back to L 181. One cut through the frame takes the loop and the recess (TRIGGER_HOLE); the blade
+# (TRIGGER) sits 2 mm under the frame's faces. Under it the rotary fire selector shows its ribbed paddle on both
+# sides, proud of the frame, its front end crossing the loop's lower rear corner (SELECTOR, L/H box).
+LOOP_REAR = [(146.0, 80.0), (149.9, 79.7), (155.3, 77.9), (158.9, 74.8), (161.1, 70.3), (161.7, 65.4),
+             (161.1, 60.0), (160.4, 55.5), (160.2, 51.2)]
+TRIGGER_HOLE = [(149.9, 47.4), (147.2, 44.3), (142.7, 41.9), (136.0, 41.0), (130.1, 42.0), (125.2, 45.2),
+                (122.1, 49.7), (120.7, 55.1), (121.0, 60.0), (122.5, 64.0), (125.2, 67.6), (128.3, 69.7),
+                (131.2, 70.9), (132.8, 73.5), (135.5, 76.6), (139.1, 78.8), (143.6, 79.9), (146.0, 80.0),
+                (148.0, 82.0), (152.0, 82.5), (171.0, 82.5), (176.5, 80.2), (179.8, 76.5), (181.0, 71.5),
+                (181.0, 51.2), (153.0, 51.2), (151.5, 49.0)]
+# the blade: the loop's rear arc in front, elsewhere 0.4 mm past the cut so no gap opens at its edges
+TRIGGER = LOOP_REAR + [(160.2, 50.9), (181.4, 50.9), (181.4, 71.6), (180.2, 76.7), (176.8, 80.6), (171.1, 82.9),
+                       (152.0, 82.9), (147.8, 82.4), (145.6, 80.1)]
+SELECTOR = (150.3, 177.8, 45.6, 51.2)          # the paddle; ribbed from L 153.5 to 164.5, smooth behind
+# Stippled grip surfaces (the user's photo of a real lower), both sides, about 6 mm in from every edge: the loop
+# under and ahead of the trigger opening, and the grip under the thumbhole with the column's foot.
+STIPPLE = [
+    [(97.5, 57.0), (98.5, 46.0), (100.0, 37.5), (104.0, 28.0), (108.5, 21.5), (114.5, 15.5), (120.0, 12.0),
+     (127.0, 9.0), (135.0, 7.0), (163.5, 6.5), (158.8, 29.0), (155.5, 34.5), (147.0, 37.0), (136.0, 35.0),
+     (128.0, 36.5), (121.0, 40.5), (117.0, 47.0), (115.0, 55.0), (114.5, 57.0)],
+    [(196.0, 31.0), (210.0, 20.5), (222.0, 14.5), (238.0, 9.5), (255.0, 7.0), (299.0, 7.0), (304.5, 13.0),
+     (304.5, 40.0), (303.5, 46.0), (298.0, 40.0), (291.0, 34.0), (282.0, 30.5), (268.0, 31.0), (242.0, 42.0),
+     (232.0, 49.0), (226.0, 47.0)],
+]
 THUMBHOLE = [(234.3, 76.4), (237.6, 79.3), (242.2, 81.6), (276.8, 81.9), (282.0, 80.2), (289.1, 75.8),
              (295.5, 68.2), (297.8, 60.6), (297.0, 52.4), (292.3, 44.5), (286.1, 39.5), (277.6, 36.6),
              (272.4, 36.6), (267.7, 37.7), (241.7, 48.6), (234.1, 54.4), (231.1, 59.7), (230.5, 67.3),
@@ -170,8 +193,7 @@ def build_body():
     # the charging handles' steel tracks, a raised bar on either side behind the handles (TRACK)
     both(lambda s: box(b, TRACK[0], TRACK[1], TRACK[2], TRACK[3], s * (W_METAL - 0.5), s * (W_METAL + 1.5),
                        mat="metal", bevel=0.6))
-    # trigger at the bottom rear of the trigger loop
-    box(b, 148.0, 169.0, 46.5, 53.0, -8.0, 8.0, mat="dark", bevel=0.8)
+    build_trigger(b)
     # barrel collar, knurled ring and the flash hider with its open bore (lathe t = game y)
     t = lambda L: L0 - L
     b.lathe("y", (0, 0, BORE_Z), [(t(CANON_L + 1.0), 0), (t(CANON_L + 1.0), 9.3), (t(38.5), 9.3), (t(38.5), 11.0),
@@ -179,6 +201,13 @@ def build_body():
                                   (t(1.2), 10.4), (t(0.0), 9.2), (t(0.0), 5.0), (t(12.0), 5.0), (t(12.0), 0)],
             seg=16, mat="metal", phase=0.5)
     return b.to_object("P90TR_BODY")
+
+
+def build_trigger(b):
+    """The trigger blade in its recess behind the loop and the fire selector's paddle under it (every P90 body:
+    the TR here, build_ps90.py, build_p90std.py)."""
+    slab(b, TRIGGER, half=W_FRAME - 2.0, bevel=1.0, res=1, mat="grip")
+    box(b, *SELECTOR, -(W_FRAME + 0.8), W_FRAME + 0.8, mat="grip", bevel=0.8)
 
 
 def build_carrier():
@@ -260,6 +289,17 @@ def rounded_rect(L, H, La, Lb, Ha, Hb, r):
     cl = np.clip(L, La + r, Lb - r)
     ch = np.clip(H, Ha + r, Hb - r)
     return (L >= La) & (L <= Lb) & (H >= Ha) & (H <= Hb) & (np.hypot(L - cl, H - ch) <= r)
+
+
+def inside(L, H, poly):
+    """Inside of a polygon [(L, H)] in photo coordinates (even-odd ray casting)."""
+    out = np.zeros(L.shape, bool)
+    for (La, Ha), (Lb, Hb) in zip(poly, poly[1:] + poly[:1]):
+        cross = (Ha > H) != (Hb > H)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            at = La + (H - Ha) * (Lb - La) / (Hb - Ha)
+        out ^= cross & (L < at)
+    return out
 
 
 def common(maps, col, mat):
@@ -354,6 +394,22 @@ def paint(maps, kind):
         bar = up & (np.abs(x) > W_METAL + 1.0) & (L > TRACK[0] - 1) & (L < TRACK[1] + 1)
         col[bar] = col[bar] * 0.4 + 52                                        # bare steel
         col[up & (np.abs(H - 93.6) < 0.5)] *= 0.5
+        # Stippled grip panels on the frame's faces (the screws keep a smooth ring), matte so a little darker.
+        face = polymer & side & (np.abs(x) > W_FRAME - 1.2)
+        stip = face & (inside(L, H, STIPPLE[0]) | inside(L, H, STIPPLE[1]))
+        for cL, cH in SCREWS:
+            stip &= np.hypot(L - cL, H - cH) > 4.6
+        dots = kit.vnoise(p, 0.9, 11)
+        col[stip] *= 0.86
+        col[stip & (dots > 0.6)] *= 0.68
+        col[stip & (dots < 0.32)] *= 1.14
+        # The trigger blade, a shade darker than the frame; the selector paddle's ribs.
+        grip = mat == MATS.index("grip")
+        sel = grip & (H < SELECTOR[3] + 0.05)
+        col[grip & ~sel] *= 0.66
+        ribs = sel & (L > 153.5) & (L < 164.5) & (np.mod(L - 153.5, 2.2) < 0.8) & (n[..., 1] > -0.7)
+        col[ribs] *= 0.45
+        col[sel & (np.abs(L - 164.8) < 0.4)] *= 0.6
         # Screws: frame and butt (both sides), the boss's hex screw, the cross-head screw ahead of the handle.
         sides_far = side & (np.abs(x) > W_FRAME - 0.6)
         for cL, cH in SCREWS:
@@ -371,9 +427,7 @@ def paint(maps, kind):
         col[carrier] = np.array(BASE["metal"]) * 1.45
         col[carrier & (np.abs(np.abs(x) - 3.0) < 0.5)] *= 0.6
         col[carrier & (L < PORT_SPLIT + 0.8)] *= 0.5
-        # Trigger ribs, flash hider ports, knurled ring, the bore.
-        trig = mat == MATS.index("dark")
-        col[trig & (np.mod(L, 2.0) < 0.8)] += 9
+        # Flash hider ports, knurled ring, the bore.
         r = np.hypot(x, z - BORE_Z)
         ring = metal & (L > 28.8) & (L < 38.2) & (r > 11.2)
         a = np.arctan2(x, z - BORE_Z)
