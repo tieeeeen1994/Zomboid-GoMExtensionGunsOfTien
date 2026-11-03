@@ -85,3 +85,7 @@ are taken as working once played. Design: `docs/design.md` (main mod), `docs/pos
 - [ ] Charter Arms Bulldog
 - [ ] Ruger Sp101
 - [ ] .357 J-frames
+
+## New Mod - EQUAL LOOT DISTRIBUTION
+
+This will modify all loot so that all guns spawn without discrimination. Ammo and mags will still spawn beside the gun.
