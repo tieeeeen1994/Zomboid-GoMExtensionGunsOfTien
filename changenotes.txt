@@ -1,7 +1,0 @@
-3.10.0
-
-Gunworks and Guns of Marz update (November 2026)
-- Fixed: with Guns of Tien on, Guns of Marz's M16s, M4A1, CAR-15, XM177 and AR-15 never moved their charging handle when racked, and its revolvers never swung their cylinder out to reload. Our charging handles now use Gunworks' own way of moving a part only while racked, as Guns of Marz does
-- The M249, RPD, RPK, RPK-74 and the Post-93 AUG HBAR rest on low walls, windows and tables with their bipod deployed, using Gunworks' new bipod stance like Guns of Marz's M60
-- Reload timings follow Guns of Marz's new ones: aimed pistol reloads on the Glock 21, Five-seveN and UCP, the M249's and RPD's load
-- A gun saved before its charging handle was added shows the handle after its first rack, as Guns of Marz's guns do
