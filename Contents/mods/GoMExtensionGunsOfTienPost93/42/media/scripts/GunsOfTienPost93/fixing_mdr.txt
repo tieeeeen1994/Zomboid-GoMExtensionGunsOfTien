@@ -1,0 +1,11 @@
+module Base {
+    fixing Fix MDR223 {
+        Require = GunsOfTienPost93.MDR223,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix MDR308 {
+        Require = GunsOfTienPost93.MDR308,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

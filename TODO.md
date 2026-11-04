@@ -31,6 +31,14 @@ Built, never played. Tick each once seen working in game; details in the CLAUDE.
 - [ ] **Vector 9mm Pistol** (Post-93, "Vector SDP"): the one-handed hold and GoM's MP5K reload with the turned model,
       on the back, the Mk9's mount device over the thread protector, the shared Vector 9mm loot.
 
+## Play-test before releasing 3.11.0
+
+- [ ] **MDRx .223 and .308** (Post-93, "Desert Tech MDRx"): in the hands and on the back; GoM's FAMAS reload with a
+      STANAG (the main mod's `_Hand` item) and with a PMAG in the off hand (its `Bip01_Prop2` is GoM's STANAG's, never
+      seen); the carrier moving in the right side's window and the charging handles only on the rack; GoM's optics,
+      foregrips, bipods, lights and lasers on the handguard; the SCAR-H's mount + SOCOM762-RC on the .308; Hot Brass
+      (the .223 to the right behind the grip, the .308 forward by the handguard); the loot (Anachronistic spawner).
+
 ## Bugs
 
 - [ ] **No firing animation in one hand with the left hand full** (user, 2026-10-26: "Our guns in GoT that can be

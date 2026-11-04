@@ -1,0 +1,8 @@
+3.11.0
+
+Desert Tech MDRx .223 and .308 (Post-93 add-on)
+- New: two semi-automatic bullpup rifles on Desert Tech's MDRx, held two-handed and reloaded with Guns of Marz's FAMAS reload
+- MDRx .223: black, 16-inch barrel, ejects to the right. Takes Guns of Marz's STANAG magazines, its .223 and 5.56x45mm rounds and its AR muzzle parts
+- MDRx .308: flat dark earth, 20-inch barrel, ejects forward. Takes .308 and 7.62x51mm rounds, the SCAR-H's muzzle mount and SOCOM762-RC suppressor, and new Magpul PMAG magazines: 10, 20 and 25 rounds and the 50-round D-50 drum
+- Both: a top rail for Guns of Marz optics, an M-LOK handguard for its lights (left), lasers (right), foregrips and bipods. The charging handles stay forward while firing and move only when racked
+- Found where Guns of Marz's late guns are found, each with its magazines and boxes. The D-50 also turns up on its own with Guns of Marz's high-capacity magazines

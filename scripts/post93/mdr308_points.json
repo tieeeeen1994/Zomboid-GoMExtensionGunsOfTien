@@ -1,0 +1,296 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.2952,
+      0.0298
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.2663,
+      0.0298
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      -0.0615,
+      0.0145
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_up": {
+    "offset": [
+      0.0,
+      -0.0012,
+      0.0506
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "offset": [
+      0.0,
+      -0.0012,
+      0.0529
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.1435,
+      0.0184
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1435,
+      0.0151
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bipod": {
+    "offset": [
+      0.0,
+      0.1628,
+      0.0141
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_left": {
+    "offset": [
+      0.0157,
+      0.1345,
+      0.0323
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "light_left": {
+    "offset": [
+      0.0187,
+      0.1345,
+      0.0323
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "rail_right": {
+    "offset": [
+      -0.0157,
+      0.1345,
+      0.0323
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "laser_right": {
+    "offset": [
+      -0.0195,
+      0.1345,
+      0.0315
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0238,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0663,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 388, H 104)",
+    "magazine": "762x51Magazine10/20/25/50_PMAG, origin at their feed lips",
+    "canon": "the compensator's rear: SCARH_Muzzle_Mount_Device and SCARH_Suppressor",
+    "accessories": "optics on the upper's rail at L 390; lights / lasers on the handguard's M-LOK sides at L 165, H 157.5; foregrips under it at L 150, bipods at L 118 (no rails drawn)",
+    "bolt_fired": "MDR308_BOLT (the carrier in the right side's chute's viewing window) back 39.5 mm real",
+    "handle_back": "MDR308_HANDLE (both knobs) back 110 mm real, only while racked"
+  },
+  "_extras": {
+    "handgun_hold": false,
+    "photo_origin_mm": [
+      388.0,
+      104.0
+    ],
+    "bore_mm": 153.4,
+    "real_mm_per_game_unit": 1658.37,
+    "k": 0.000603,
+    "barrel_in": 20.0,
+    "eject": "forward",
+    "length_mm": 800.1
+  },
+  "_bounds": {
+    "MDR308_BODY": {
+      "min": [
+        -0.0175,
+        -0.1872,
+        -0.0627
+      ],
+      "max": [
+        0.0175,
+        0.2952,
+        0.057
+      ],
+      "tris": 3876
+    },
+    "MDR308_BOLT": {
+      "min": [
+        -0.0157,
+        -0.1037,
+        0.0261
+      ],
+      "max": [
+        -0.0151,
+        -0.0798,
+        0.0312
+      ],
+      "tris": 44
+    },
+    "MDR308_HANDLE": {
+      "min": [
+        -0.0178,
+        0.0579,
+        0.0386
+      ],
+      "max": [
+        0.0178,
+        0.0681,
+        0.0467
+      ],
+      "tris": 176
+    },
+    "762x51Magazine10_PMAG": {
+      "min": [
+        -0.009,
+        -0.0247,
+        -0.0639
+      ],
+      "max": [
+        0.009,
+        0.0244,
+        0.0052
+      ],
+      "tris": 320
+    },
+    "762x51Magazine20_PMAG": {
+      "min": [
+        -0.009,
+        -0.0247,
+        -0.0953
+      ],
+      "max": [
+        0.009,
+        0.0244,
+        0.0052
+      ],
+      "tris": 320
+    },
+    "762x51Magazine25_PMAG": {
+      "min": [
+        -0.009,
+        -0.0247,
+        -0.111
+      ],
+      "max": [
+        0.009,
+        0.0244,
+        0.0052
+      ],
+      "tris": 320
+    },
+    "762x51Magazine50_PMAG": {
+      "min": [
+        -0.0422,
+        -0.0247,
+        -0.1079
+      ],
+      "max": [
+        0.0422,
+        0.0302,
+        0.0052
+      ],
+      "tris": 940
+    }
+  }
+}

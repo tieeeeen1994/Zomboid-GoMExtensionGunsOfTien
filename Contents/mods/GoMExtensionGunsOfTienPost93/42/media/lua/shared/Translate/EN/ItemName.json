@@ -95,5 +95,15 @@
   "GunsOfTienPost93.P90_Suppressor": "SP90 Suppressor",
   "GunsOfTienPost93.P90_Muzzle_Mount_Device": "5.7x28mm Family Muzzle Mounting Device",
   "GunsOfTienPost93.VECTORCRB": "Vector .45 Carbine",
-  "GunsOfTienPost93.VECTORSDP": "Vector 9mm Pistol"
+  "GunsOfTienPost93.VECTORSDP": "Vector 9mm Pistol",
+  "GunsOfTienPost93.MDR223": "MDRx .223 Semi-Automatic Rifle",
+  "GunsOfTienPost93.MDR308": "MDRx .308 Semi-Automatic Rifle",
+  "GunsOfTienPost93.762x51Magazine10_PMAG": "PMAG 10Rds 7.62x51mm Magazine",
+  "GunsOfTienPost93.762x51Magazine20_PMAG": "PMAG 20Rds 7.62x51mm Magazine",
+  "GunsOfTienPost93.762x51Magazine25_PMAG": "PMAG 25Rds 7.62x51mm Magazine",
+  "GunsOfTienPost93.762x51Magazine50_PMAG": "PMAG 50Rds Drum 7.62x51mm Magazine",
+  "GunsOfTienPost93.MDR_Integrated_Rail_Up": "MDRx Integrated Rail (Up)",
+  "GunsOfTienPost93.MDR_Integrated_Rail_Down": "MDRx Integrated Rail (Down)",
+  "GunsOfTienPost93.MDR_Integrated_Rail_Left": "MDRx Integrated Rail (Left)",
+  "GunsOfTienPost93.MDR_Integrated_Rail_Right": "MDRx Integrated Rail (Right)"
 }

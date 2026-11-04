@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H,
-    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm
+    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm, MDRx .223 and .308
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -198,6 +198,29 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
+    },
+    -- The MDRx .223 ejects to the right from its side-eject port behind the grip, as the AUG A3 (its values). The .308
+    -- ejects forward: its chute carries the case along the right side and drops it out by the handguard's rear, ahead
+    -- of the grip, forward and a little right, gently (the chute takes the speed out of it).
+    ["GunsOfTienPost93.MDR223"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 55,
+        spinForce     = { 64, 128 },
+    },
+    ["GunsOfTienPost93.MDR308"] = {
+        forwardOffset = 0.36,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.45,
+        sideSpread    = 20,
+        heightSpread  = { 10, 30 },
+        ejectAngle    = 25,
+        spinForce     = { 24, 48 },
     },
     ["MarzGuns.FIVESEVEN"] = {
         forwardOffset = 0.383,

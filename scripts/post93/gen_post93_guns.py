@@ -1,8 +1,8 @@
 """Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
-/ KRISS Vector .45, 9mm, CRB and SDP / PS90 Carbine item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
+/ KRISS Vector .45, 9mm, CRB and SDP / PS90 Carbine / MDRx .223 and .308 item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
 (the AUGs' points: build_aug3.py's auga3 / augpara / aughbar_points.json; the Vectors': build_vector.py's
 vector_points.json / vector9_points.json, build_vectorcrb.py's vectorcrb_points.json, build_vectorsdp.py's
-vectorsdp_points.json).
+vectorsdp_points.json; the MDRx's: build_mdr.py's mdr223 / mdr308_points.json).
 
 Run after the model builders (build_mp7.py / build_p90.py / build_fiveseven.py / build_ucp.py / build_scar.py /
 build_ump.py), which write the attachment points to mp7_points.json, p90_points.json, fiveseven_points.json,
@@ -900,7 +900,8 @@ def scar_items():
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }}
 """)
-    # GoM's weights: its heaviest suppressors 1.2 for the 7.62 can (38 x 190 mm); every mount device 0.5
+    # GoM's weights: its heaviest suppressors 1.2 for the 7.62 can (38 x 190 mm); every mount device 0.5. The MDRx .308
+    # takes both (5/8x24, as the SCAR-H; user, 2026-11-04).
     for part, ptype, weight in (('SCARH_Suppressor', 'Canon', 1.2), ('SCARH_Muzzle_Mount_Device', 'CanonMount', 0.5)):
         out.append(f"""
     item {part} {{
@@ -909,7 +910,7 @@ def scar_items():
         Icon             = GunsOfTienPost93_{part},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {M}.SCARH,
+        MountOn          = {M}.SCARH;{M}.MDR308,
         PartType         = {ptype},
         WorldStaticModel = {M}.{part},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
@@ -1683,6 +1684,224 @@ def ps90():
 }}
 """)
 
+# ==================================================================================================
+# Desert Tech MDRx .223 and .308, user 2026-11-04 (build_mdr.py; docs/post93_design.md)
+# ==================================================================================================
+
+MDRS = ['MDR223', 'MDR308']
+# Magpul's SR-25-pattern PMAG LR/SR and its D-50 drum: (item, rounds, weight) at GoM's weights (its FAL 20 = 0.2
+# steel, so a polymer 20 0.15; the SCAR-H drum 0.5)
+PMAGS = [('762x51Magazine10_PMAG', 10, 0.1), ('762x51Magazine20_PMAG', 20, 0.15),
+         ('762x51Magazine25_PMAG', 25, 0.18), ('762x51Magazine50_PMAG', 50, 0.5)]
+# Semi-automatic only (user, 2026-11-04), as GoM's AR-15 and M14: FireMode Single, no FireModePossibilities.
+# The .223 from GoM's AR-15 (the same round from a 16" barrel against its 20": its damage), steadier and slower to
+# come up (a 3.7 kg bullpup); the .308 from GoM's M14 (22" against the MDR's 20": a little less top damage), quicker to
+# aim. Sounds from sound_model.py (5.56 from 16" = 187 / 53, 7.62x51 from 20" = 216 / 62, the SCAR-H's); GoM's AR-15
+# (M16 events) and M14 (M14 events, the SCAR-H's MSR788Shoot) handling sounds.
+MDR_STATS = {
+    'MDR223': dict(min=0.8, max=1.6, crit=20.0, critmult=3.5, hit=52, hitmod=4, aim=35, recoil=13, range=50.0,
+                   minsight=8, maxsight=16.0, minangle=0.965, jam=1.0, cond=220, condmax=15, stop=2.0, door=4,
+                   weight=3.7, metal=45.0, ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30,
+                   mag='MarzGuns.556x45Magazine30_STANAG', prefix='M16', shoot='M16Shoot', gain=2.0, radius=187,
+                   volume=53),
+    'MDR308': dict(min=1.2, max=2.1, crit=40.0, critmult=4.5, hit=52, hitmod=5, aim=50, recoil=16, range=60.0,
+                   minsight=10, maxsight=18.0, minangle=0.95, jam=1.0, cond=240, condmax=10, stop=2.0, door=5,
+                   weight=4.1, metal=55.0, ammo='swmg:bullet_762x51', box='MarzGuns.762x51_Box', clip=20,
+                   mag=f'{M}.762x51Magazine20_PMAG', prefix='M14', shoot='MSR788Shoot', gain=2.5, radius=216,
+                   volume=62),
+}
+
+
+def mdr_parts(gun):
+    """The bolt carrier in the right side's window (GoM's Bolt swap), the ambidextrous charging handle (back only while
+    racked), the magazines (GoM's STANAGs at our size on the .223, the PMAGs on the .308), the muzzle parts (GoM's AR
+    family on the .223, the SCAR-H's mount and SOCOM762-RC on the .308), GoM's optics on the top rail, its foregrips and
+    bipods under the handguard, lights left and lasers right on its M-LOK sides (four hidden integral rail parts)."""
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
+    lines += handle_lines(f"{M}.{gun}_HANDLE")
+    if gun == 'MDR223':
+        lines += [f"{w}MarzGuns.{m} GunsOfTien.{m}_GoT magazine magazine," for m in STANAGS]
+        lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+        lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
+    else:
+        lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in PMAGS]
+        lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
+                  f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    return '\n'.join(lines) + '\n'
+
+
+def mdr_item(gun):
+    s = MDR_STATS[gun]
+    p = s['prefix']
+    return f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = {s['critmult']},
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = {s['hitmod']},
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['minsight']},
+        MaxSightRange                = {s['maxsight']},
+        MinRange                     = 0.61,
+        MinAngle                     = {s['minangle']},
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = {s['jam']},
+        ConditionLowerChanceOneIn    = {s['cond']},
+        ConditionMax                 = {s['condmax']},
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = {s['door']},
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = {s['metal']},
+        FireMode                     = Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {s['ammo']},
+        AmmoBox                      = {s['box']},
+        MagazineType                 = {s['mag']},
+        MaxAmmo                      = {s['clip']},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = {p}AimRelease,
+        BreakSound                   = {p}Break,
+        BringToBearSound             = {p}BringToBear,
+        ClickSound                   = {p}Jam,
+        DropSound                    = {p}Drop,
+        EjectAmmoStartSound          = {p}EjectAmmoStart,
+        EjectAmmoSound               = {p}EjectAmmo,
+        EjectAmmoStopSound           = {p}EjectAmmoStop,
+        EquipSound                   = {p}Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = {p}InsertAmmoStart,
+        InsertAmmoSound              = {p}InsertAmmo,
+        InsertAmmoStopSound          = {p}InsertAmmoStop,
+        RackSound                    = {p}Rack,
+        ShellFallSound               = {p}CartridgeFall,
+        SwingSound                   = {s['shoot']},
+        UnequipSound                 = {p}UnEquip,
+        SoundGain                    = {s['gain']},
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{mdr_parts(gun)}        KnockBackOnNoDeath           = true,
+    }}
+"""
+
+
+def mdrs():
+    """Models, items and repairs of the two MDRx rifles and the PMAGs (files of their own: models_mdr.txt,
+    items_mdr.txt, fixing_mdr.txt)."""
+    pts = {g: load_points(g.lower() + '_points.json') for g in MDRS}
+    out = [f"module {M} {{\n"]
+    for gun in MDRS:
+        out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun],
+                             ['rail_down', 'foregrip', 'bipod']))
+        for part in ('BOLT', 'HANDLE'):
+            out.append(f"""
+    model {gun}_{part} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_{gun}|{gun}_{part},
+        texture  = {TEX}/{gun},
+        cullFace = None,
+    }}
+""")
+    # the off hand's magazine during GoM's FAMAS reload: GoM's STANAG point as it is (modelled about the feed lips,
+    # hanging down, as GoM's STANAGs; gen_scripts.py GOM_STANAG_PROP2)
+    for mag, _, _ in PMAGS:
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_PMAG_magazines|{mag},
+        texture  = {TEX}/{mag},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_mdr.txt', ''.join(out))
+
+    items = [f"module {M} {{\n"] + [mdr_item(g) for g in MDRS]
+    for mag, cap, weight in PMAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = swmg:bullet_762x51,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {cap},
+        MountOn          = {M}.MDR308,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for side in ('Up', 'Down', 'Left', 'Right'):
+        items.append(f"""
+    item MDR_Integrated_Rail_{side} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = Rail{side},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_mdr.txt', ''.join(items))
+    # GoM repairs its FAMAS (its other bullpup) with Aiming=3, as the AUGs
+    write(f'scripts/{M}/fixing_mdr.txt', "module Base {\n" + "\n".join(f"""    fixing Fix {g} {{
+        Require = {M}.{g},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for g in MDRS) + "}\n")
+
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -1784,6 +2003,20 @@ def translations():
         f'{M}.PS90_Integrated_Rail_Down': 'PS90 Integrated Rail (Down)',
         f'{M}.PS90_Integrated_Rail_Left': 'PS90 Integrated Rail (Left)',
         f'{M}.PS90_Integrated_Rail_Right': 'PS90 Integrated Rail (Right)',
+        # GoM: "Mini-14 Semi-Automatic Rifle", "PSG-1 Semi-Automatic Rifle"; Desert Tech's model name and calibre
+        # (user, 2026-11-04: "MDR .223 and MDR .308"; the MDRx, the shell these are modelled on)
+        f'{M}.MDR223': 'MDRx .223 Semi-Automatic Rifle',
+        f'{M}.MDR308': 'MDRx .308 Semi-Automatic Rifle',
+        # the SR-25-pattern magazines named like GoM's STANAGs ("STANAG 30Rds 5.56x45mm Magazine"; user, 2026-11-04:
+        # "something like PMAG 20 ROUND"), the drum as the MP7's and SCAR-H's
+        f'{M}.762x51Magazine10_PMAG': 'PMAG 10Rds 7.62x51mm Magazine',
+        f'{M}.762x51Magazine20_PMAG': 'PMAG 20Rds 7.62x51mm Magazine',
+        f'{M}.762x51Magazine25_PMAG': 'PMAG 25Rds 7.62x51mm Magazine',
+        f'{M}.762x51Magazine50_PMAG': 'PMAG 50Rds Drum 7.62x51mm Magazine',
+        f'{M}.MDR_Integrated_Rail_Up': 'MDRx Integrated Rail (Up)',
+        f'{M}.MDR_Integrated_Rail_Down': 'MDRx Integrated Rail (Down)',
+        f'{M}.MDR_Integrated_Rail_Left': 'MDRx Integrated Rail (Left)',
+        f'{M}.MDR_Integrated_Rail_Right': 'MDRx Integrated Rail (Right)',
     })
     for moved in ('57x28Magazine50_P90',):    # the main mod's now
         names.pop(f'{M}.{moved}', None)
@@ -1810,5 +2043,6 @@ if __name__ == '__main__':
     augs()
     vectors()
     ps90()
+    mdrs()
     translations()
     print('written under', os.path.normpath(ROOT))

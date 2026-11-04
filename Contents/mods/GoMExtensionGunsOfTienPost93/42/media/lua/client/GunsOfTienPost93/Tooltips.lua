@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
     Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
-    .45, 9mm, CRB and SDP, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -161,6 +161,30 @@ lines[M .. "PS90"] = {
     "50-round magazine on top. Ejects spent cases downward.",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
+-- The MDRx rifles (shared/GunsOfTienPost93/MDR.lua): the top rail, the M-LOK handguard as the PS90's; the .308's
+-- SR-25-pattern PMAGs
+lines[M .. "MDR223"] = {
+    "Uses .223/5.56x45mm NATO rounds.",
+    "16-inch barrel",
+    "Integrated Picatinny rail: Up",
+    "M-LOK handguard: Left, Right, Down",
+    "Ejects spent cases to the right.",
+    "Compatible Muzzle Device: AR Muzzle Mount",
+}
+lines[M .. "MDR308"] = {
+    "Uses .308/7.62x51mm NATO rounds.",
+    "20-inch barrel",
+    "Takes SR-25 pattern magazines.",
+    "Integrated Picatinny rail: Up",
+    "M-LOK handguard: Left, Right, Down",
+    "Ejects spent cases forward.",
+    "Compatible Muzzle Device: SCAR-H Muzzle Mount",
+}
+for _, mag in ipairs({ "762x51Magazine10_PMAG", "762x51Magazine20_PMAG", "762x51Magazine25_PMAG",
+    "762x51Magazine50_PMAG" }) do
+    lines[M .. mag] = { "Uses .308/7.62x51mm NATO rounds." }
+end
+
 lines["MarzGuns.FIVESEVEN"] = {
     "Uses 5.7x28mm rounds.",
     "Compatible Mounting Device: Beretta Mount",

@@ -349,3 +349,35 @@ SMGs (Auto / two-round burst / Single, the user's choice; the real ones are semi
 | Spread | 0.08 / 1.1 (the .45 SMG 0.10 / 1.3) | 0.10 / 1.4 (the 9mm SMG 0.08 / 1.1, its stock x 0.75 / 0.85) |
 | Weight, sound | 2.7 (7.8 lb x GoM's SMG ratio); 57 / 16 (sound_model.py, .45 from 16") | 1.9 (5.9 lb); 107 / 31 (the Vector 9mm's) |
 | Loot | shares the Vector .45's alternative: one of the two guns, as the PS90 shares the P90 TR's | shares the Vector 9mm's alternative the same way |
+
+## Desert Tech MDRx .223 and .308 (user, 2026-11-04: approved and built, not played in game yet)
+
+Desert Tech's bullpup (MDR shown 2014, sold 2017-2019; MDRx 2020-2024), modelled as the **MDRx**: one chassis, the
+calibre set by a barrel / bolt / magazine-adapter kit. Two guns, both **semi-automatic only** (the production gun;
+the select-fire MDR-A stayed a prototype), each in a configuration Desert Tech sold: the .223 with the **16" barrel
+and side ejection**, the .308 with the **20" barrel and forward ejection** (every .308 Desert Tech lists ejects
+forward; the user, 2026-11-04: "use the correct ones so long as one of them should side eject or forward eject").
+No new rounds. References: `references/mdr/` (git-ignored, SOURCES.txt), see CLAUDE.md "Decisions (Post-93)".
+
+| | `GunsOfTienPost93.MDR223` "MDRx .223 Semi-Automatic Rifle" | `GunsOfTienPost93.MDR308` "MDRx .308 Semi-Automatic Rifle" |
+|---|---|---|
+| Real | .223 Wylde, 16" (406 mm), side eject, 3.72 kg, 698 mm | 7.62 NATO / .308, 20" (508 mm), forward eject, about 4.1 kg, about 800 mm |
+| Family | `5.56x45mm` (GoM's 5.56 and its loads, .223, `Base.556Bullets`) | `7.62x51mm` (GoM's 7.62x51, .308, the main mod's .308 Soft Point, `Base.308Bullets`) |
+| Magazines | GoM's STANAG magazines (20 to 150), its "STANAG" profile (Desert Tech ships a 30-round PMAG) | new SR-25-pattern family, one profile like GoM's STANAG: "PMAG 10Rds / 20Rds / 25Rds 7.62x51mm Magazine" (Magpul PMAG LR/SR) + "PMAG 50Rds Drum 7.62x51mm Magazine" (Magpul D-50); fits nothing else yet (GoM has no SR-25-pattern gun, the SCAR-H's are FN's own) |
+| Muzzle | GoM's AR mount device and its suppressors / brakes, as the SCAR-L | the SCAR-H's mount device + SOCOM762-RC (both 5/8x24) |
+| Stats | GoM's AR-15 (0.8-1.6, crit 20, range 50), HitChance 52, Aimingtime 35, RecoilDelay 13, condition 1 in 220 | GoM's M14 (1.2-2.2 -> 1.2-2.1 for 20" vs 22", crit 40, range 60), HitChance 52, Aimingtime 50, RecoilDelay 16, condition 1 in 240 |
+| Sound (sound_model.py) | 187 / 53 (5.56 from 16") | 216 / 62 (7.62x51 from 20", as the SCAR-H) |
+| Weight | 3.7 | 4.1 |
+| Ejection (Hot Brass) | to the right, from the port behind the grip | forward along the right-side chute, out by the handguard's rear |
+
+Both: held as rifles (two hands, back slot), GoM's FAMAS reload ("famas_rifle", as the AUGs and the PS90), the
+ambidextrous charging handle at the front of the chassis drawn as our non-reciprocating `<gun>_HANDLE` with the bolt
+carrier plate in the port (section "The charging handle and the bolt are not always the same part"); the full-length
+top rail (receiver + handguard, ~14") for GoM's optics, M-LOK slots on the handguard's sides and bottom as hidden
+integral rail parts (the PS90's way) for lights (left), lasers (right), foregrips and bipods (bottom); no bayonet,
+no folding stock. Loot: civilian and post-1993, in GoM's `World_Anachronistic_Spawner`; proposed as one alternative
+giving one of the two guns (the PS90 / P90 TR way), built as one alternative each (the UMPs' rule: GoM rolls each
+group of an alternative on its own, so a shared one could pack the .223 with PMAGs and .308 boxes), each with three
+magazines and GoM's civilian boxes as its AR-15 kit (.223 / .308); the D-50 on 2 % of found .308s and in the
+high-capacity magazine spawner, as the SCAR-H drum. Colours (approved with the design): the .223 black, the .308 flat
+dark earth (the colour of the reference photos). Build notes: CLAUDE.md "Desert Tech MDRx".

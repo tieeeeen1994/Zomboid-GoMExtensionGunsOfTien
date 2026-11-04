@@ -40,7 +40,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
 - Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR, Vector 9mm (one-handed, pistol clips)
   "handgun2" (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance
   doesn't look good on it"; the unused two-handed UZI_2H keeps "MP5"); Glock 21, Five-seveN, UCP "pistol_reload"; AUG A1 / A3 / Para / HBAR
-  and the PS90 Carbine "famas_rifle"; SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
+  and the PS90 Carbine "famas_rifle" (the MDRx .223 / .308 too); SCAR-L and SCAR-H "left_handle_load" (GoM's BAR / AA-12: magazine pushed straight in, racked on the
   left; GoM's M4A1 has "ar15_rifle", the rear T-handle; the FAL's "fal_rifle" rocks its magazine in); UMP45 / UMP9 / Vector .45 "MP5"; M249 "m60_lmg" (its feed cover stays
   shut; `partState.ensure` shuts one an older reload left open). GoM's MP5s, MP5K and FAMAS are left to GoM's own
   registrations again.
@@ -377,6 +377,24 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   in 9mm only (`GunsOfTienPost93.VECTORSDP`, "Vector 9mm Pistol", built from the user's photo, not played); both
   select fire as the SMGs (the user chose Auto / burst / single over the real
   guns' semi-automatic); the SDP held like a pistol, back slot, never a holster. Build notes: sections "Vector CRB" and "Vector SDP".
+- **Desert Tech MDR .223 and MDR .308** (user, 2026-11-04; built the same day, not played; "approved" covered the
+  design in docs/post93_design.md, colours included): bullpup, shown 2014, sold 2017-2019, MDRx
+  2020-2024 (Wikipedia). Barrels: 16" in both calibres, 20" (MDRx, 5.56 confirmed), 11.5" Micron (5.56 only, 2021);
+  the user chose **16" for the .223** (.308 kits are only listed at 16"). Magazines (searched 2026-11-04): Desert
+  Tech's MDRx page says "SR25 and M16 magazines", its 5.56 kits ship a 30-round PMAG (STANAG), and IMFDB / a 2019
+  review / SHOT 2014 coverage say the .308 takes AR-10 / SR-25-pattern ones. So the .223 joins the MountOn of GoM's
+  STANAGs (20-150, profile "STANAG"; GoM lists M16A1 / A2 / A2_M203 / A3, AR15, FNC, FAMAS, CAR15, XM177, M4A1). GoM
+  has **no** SR-25-pattern magazine or gun (its 7.62x51 boxes are FAL / G3 / M14 / PSG1 only, each its own gun) and
+  the SCAR-H's are FN's proprietary ones, so the .308's would be new and shared with nothing yet. Production MDRs
+  are semi only (MDR-A select-fire prototype 625 rpm); the charging handle is non-reciprocating, both sides.
+  User's choices (2026-11-04): **.223 16" side eject, .308 20" forward eject, both semi-automatic only**
+  (first asked the other way round; Desert Tech only lists side eject on 5.56 rifles, every .308 rifle and the 20"
+  .308 kit are forward eject, so the user took "the correct ones so long as one of them should side eject or
+  forward eject"). The .308's SR-25-pattern magazines become a family like GoM's STANAG ("STANAG 30Rds 5.56x45mm
+  Magazine"), named after Magpul's PMAG LR/SR ("PMAG 20Rds 7.62x51mm Magazine"), plus Magpul's D-50 drum (the only
+  PMAG drum for .308; the user first wrote "no D-50, PMAG drum", then confirmed the D-50). Model the **MDRx** (2020
+  shell): reference photos in `references/mdr/` (SOURCES.txt: Desert Tech galleries, CC BY-SA Commons photos of a
+  20" .308, retail sides; no straight top / front / rear view, so width from the specs: 57.4 mm SE, 59.2 mm FE).
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -1677,6 +1695,53 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 - **Fit** (fit_audit.py): with no rails, the clamps' depth was set by the audit against GoM's own guns
   (`LIGHT_IN` / `LASER_OUT` / `FOREGRIP_UP`): foregrips 0.6-1.7 deep (GoM 1.3-1.5), lasers 0.2 / 1.3 (0.3 / 1.0),
   lights 1.1 (0.6-0.7; the TR's 1.6-1.9).
+
+## Desert Tech MDRx .223 and .308 (Post-93, 2026-11-04)
+
+- **What**: `GunsOfTienPost93.MDR223` "MDRx .223 Semi-Automatic Rifle" (black, 16", side eject) and `MDR308` "MDRx .308
+  Semi-Automatic Rifle" (flat dark earth, 20", forward eject), semi-automatic only (FireMode Single, no
+  FireModePossibilities and no RateOfFire registration, as GoM's AR-15 / M14), GoM's FAMAS reload. Magazines: the .223
+  GoM's STANAGs through the main mod's `_GoT` models and its `_Hand` items (HandMagazines, as the SCAR-L); the .308
+  `762x51Magazine10/20/25/50_PMAG` ("PMAG 20Rds 7.62x51mm Magazine", the 50 Magpul's D-50, a drum facing front and back: built first facing the sides as Magpul's real D-60 / D-50 do, and the user corrected it, "again", as for the SCAR-H's drum: **every drum in this mod faces front and back**, its axis along the barrel),
+  profile "7.62x51mm SR-25", in GoM's 7.62x51mm ammo family (Ammunition.lua), modelled about the feed lips with GoM's
+  STANAG `Bip01_Prop2`. Muzzle: the .223 GoM's AR family at `canon` = muzzle + 28.8 (the SCAR-L's), the .308 the
+  SCAR-H's mount + SOCOM762-RC at the compensator's rear (their MountOn in scar_items()). Four hidden
+  `MDR_Integrated_Rail_*` parts (shared) as on the PS90. Lua: `shared/GunsOfTienPost93/MDR.lua`; loot one
+  Anachronistic alternative each with GoM's civilian `223_Box` / `308_Box` (GoM packs its AR-15 with `223_Box`), the
+  D-50 in the high-capacity tactical spawner; Hot Brass (the .223 the AUG A3's values, the .308 gentle, forward and
+  right, forwardOffset 0.36); tooltips.
+- **Reference and scale**: Desert Tech's FDE left-side product photo `references/mdr/deserttech/c196b688...jpg`
+  (labelled "308Win 20"" on their site but a 16": its top rail's crossbars read 22.0 px apart, 2.2 px/mm, and the gun
+  is then 707 mm, the 16" FE's published 698.5), traced with `trace_outline.py --length 698.5 --muzzle right
+  --threshold 225` (2.226 px/mm; height 198.5 mm against the published 200.4). L = (1577 - x) / 2.2262, H = (671 - y) /
+  2.2262. The 20" .308 is the same chassis with the barrel 101.6 mm longer and the Ratchet compensator moved out. Bore
+  H 153.4 (the compensator's axis), origin (L 388, H 104) where the grip's back meets the trigger housing.
+  Silhouette overlap with the traced photo 96.5 % (make_mdr_art.py, from the handguard's nose, the magazine left out).
+- **Magazine point** from Midwest Gun Works' photo of a black 16" .223 with a PMAG 30 (`references/mdr/retail`,
+  2.0845 px/mm, its grip bottom at y 1023): the magazine shows L 458-525 at H 59, its bottom at H -40. GoM's STANAG 30
+  mesh (at our size) has its front at y +32 and rear at -30 at that depth, so the lips are at (L 490, H 128) (31 mm
+  under the bore; GoM's STANAG is 7 % shorter than a real PMAG 30, so its bottom ends at H -34).
+- **Model** (build_mdr.py, slabs on the photo's profiles): the polymer chassis (butt, magazine well, trigger
+  housing), the aluminium upper over it (half widths 25.0 / 25.6, so no coplanar faces), the cheek riser and rubber pad,
+  the handguard with its upper M-LOK row cut through (the photo shows daylight through them; the lower row painted),
+  the grip, the trigger guard and trigger, the black block ahead of the upper's rail, two picatinny runs (upper L
+  242-470, handguard L 117-225). The rear side panels (L 473-624, H 140-162.5, black): the forward-eject chute on both
+  sides of the .308 (both photos show one), Desert Tech's plain cover on the .223's left; the right side's panel has
+  the carrier's window cut through it (the .223's side-eject port L 480-560, the .308's chute viewing window L
+  520-600). `<gun>_BOLT` = a plate over the window's front half, `bolt_fired` = half the window (39.5 mm);
+  `<gun>_HANDLE` = both knobs at L 278-292, `handle_back` 110 mm (the slot L 275-410). The ejection details are
+  Desert Tech's kits (`mdrx-upgrade-kit_*`): the forward-eject chute is a long black assembly with a latch, the
+  side-eject kit a plain cover for the other side and a frame with a long open window.
+- **Fit** (fit_audit.py): starting from the PS90's clamp depths, lights and lasers sank 3.2-3.3 deeper than on GoM's
+  guns into the rounded handguard (LIGHT_IN -0.0030, LASER_OUT 0.0038 now: 0.8-1.3 like GoM's); the bipod at L 95 sat
+  in the hand stop's hook, moved to L 118 and 0.0018 under the underside (0.8, GoM's own). No flag left on the MDRs.
+- **Files**: `scripts/post93/build_mdr.py` (Blender, ~2 min: both FBX, `GunsOfTienPost93_PMAG_magazines.fbx`,
+  textures, `mdr223_points.json` / `mdr308_points.json`), `render_mdr.py -- DIR` (its own copy of render_scar.py's
+  helpers: render_scar runs its main() on import), `make_mdr_art.py [--renders DIR] [--photo PATH]` (icons with the
+  SCARs' cameras, the PMAGs with the MP7 magazine light, the D-50 with the MP7 drum's; `docs/post93_mdr_preview.png`
+  with the photo's silhouette), `gen_post93_guns.py mdrs()` (models_mdr.txt, items_mdr.txt, fixing_mdr.txt, names).
+  Rebuild: build, render, art, gen, `check_refs.py`, `fit_audit.py`. On the Mac the art script needs numpy on
+  PYTHONPATH (not `-I`).
 
 ## Bullpup set (2026-10-27)
 

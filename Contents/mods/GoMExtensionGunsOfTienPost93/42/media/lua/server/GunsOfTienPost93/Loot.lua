@@ -1,6 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR and PS90, the Five-seveN, the UCP Prototype, the SCAR-L and
-    SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45, 9mm, CRB and SDP, and their ammunition
+    SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45, 9mm, CRB and SDP, the MDRx .223
+    and .308, and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -31,6 +32,11 @@
       with the Glock 21's magazines and GoM's boxes, as the PS90 shares the P90 TR's; the SDP the 9mm's the same way.
     - The PS90 Carbine (user, 2026-11-03: "like the P90 TR") shares the TR's alternative: one of the two guns with the
       P90's magazines and boxes, as GoM's MP5 alternative picks one of its MP5s.
+    - The MDRx .223 and .308 (user, 2026-11-04: civilian rifles, sold from 2017) in the Anachronistic spawner, an
+      alternative each (the UMPs' rule: their magazines and rounds differ, and GoM picks each group of an alternative
+      on its own): the .223 with GoM's STANAG 30 and .223 boxes, the .308 with the PMAG 20 and .308 boxes (GoM's AR-15 comes with
+      its civilian .223);
+      the D-50 on its own in GoM's high-capacity tactical magazine spawner, as the SCAR-H's drum.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -45,7 +51,7 @@
       police, SWAT and gun store lists, rarely. The special loads (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR) never
       spawn as loot, as GoM never spawns its own (its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured):
       they come from Ammo Maker (user, 2026-10-17).
-    - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum, SCAR-H 50 drum, Glock 30 / 33 / 40) also on their own, each with boxes, as
+    - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum, SCAR-H 50 drum, Glock 30 / 33 / 40, the MDRx .308's D-50) also on their own, each with boxes, as
       new alternatives of GoM's MarzGuns.World_HighCap_Tactical_Magazine_Spawner (with its M92FS / M93R / MP5 drums).
     Everything that can spawn follows GoM (user, 2026-10-17: "everything needs to be lootable the same as GoM").
     Like GoM's own, the crates (4 cartons) never spawn: they are only packed.
@@ -186,6 +192,24 @@ local function augHbarAlternative(count)
     }
 end
 
+-- The MDRx rifles (shared/GunsOfTienPost93/MDR.lua), civilian rifles packed as GoM packs its AR-15 (civilian boxes):
+-- the .223 with GoM's STANAG 30 and .223 boxes, the .308 with Magpul's PMAG 20 and .308 boxes
+local function mdr223Alternative(boxes)
+    return {
+        { items = { M .. "MDR223" }, amountChance = 1 },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = 3 },
+        { items = { "MarzGuns.223_Box" }, amountChance = boxes },
+    }
+end
+
+local function mdr308Alternative(boxes)
+    return {
+        { items = { M .. "MDR308" }, amountChance = 1 },
+        { items = { M .. "762x51Magazine20_PMAG" }, amountChance = 3 },
+        { items = { "MarzGuns.308_Box" }, amountChance = boxes },
+    }
+end
+
 -- High-capacity magazines on their own, as GoM's in its World_HighCap_Tactical_Magazine_Spawner (its M92FS 50, M93R
 -- 60, MP5 60 / 100 drums: the magazine and up to two boxes; SWAT / police storage and gun stores, no homes; only with
 -- GoM's sandbox SpawnHighCapMags on, which places that spawner).
@@ -232,6 +256,9 @@ local SPAWNERS = {
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "45Magazine30_GLOCK21", "MarzGuns.45_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "9x19Magazine33_GLOCK", "MarzGuns.9x19_Box"), 0 },
     { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "9x19Magazine40_GLOCK", "MarzGuns.9x19_Box"), 0 },
+    { "MarzGuns.World_Anachronistic_Spawner", mdr223Alternative, 4 },
+    { "MarzGuns.World_Anachronistic_Spawner", mdr308Alternative, 4 },
+    { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "762x51Magazine50_PMAG", "MarzGuns.762x51_Box"), 0 },
     -- the HBAR's 50 beside GoM's own 7.62x39 75 (its high-capacity Russian-calibre magazine spawner)
     { "MarzGuns.World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x39Magazine50_AUG", "MarzGuns.762x39_Box"), 0 },
 }
@@ -383,7 +410,7 @@ Events.OnPostDistributionMerge.Add(addWorldLoot)
 -- Direct entries: both pistols in survivor and bandit bags
 -------------------------------------------------
 -- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its guns evenly
--- (GoM's 5 plus ours: 13 with the MP7, the P90, the two UMPs, the AUG A3 and Para, the two Vectors), so each gets 2/n and 1/n there. n is counted at run time,
+-- (GoM's 5 plus ours: 15 with the MP7, the P90, the two UMPs, the AUG A3 and Para, the two Vectors, the two MDRs), so each gets 2/n and 1/n there. n is counted at run time,
 -- so a gun added to SPAWNERS later keeps the pistols in step.
 local ANACHRONISTIC = "MarzGuns.World_Anachronistic_Spawner"
 local SURVIVOR, BANDIT = 2, 1
