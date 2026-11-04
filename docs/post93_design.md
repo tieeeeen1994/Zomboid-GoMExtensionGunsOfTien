@@ -389,4 +389,7 @@ an optional part): FDE aluminium, M-LOK rows on its sides, its own top rail, two
 back flush into its underside. As the AUG HBAR's integrated bipod: `MDR308_Integrated_Bipod_Folded / _Deployed`
 (BipodIntegrated, Gunworks' FoldingBipod, found folded), GoM's rail bipod stats deployed (Aiming Time x1.1, Hit and
 Crit x1.15; no spread modifier, the gun is semi-automatic), Gunworks' bipod stance. The .308 takes no foregrip: the
-folded legs fill the underside (their grooved sides are the real ALX's grip surface).
+folded legs fill the front of the underside (their grooved sides are the real ALX's grip surface), and behind them
+the 20" handguard's underside is closed. The legs are the 16"'s (Desert Tech lists one leg height, 6 1/4" to
+9 1/8", for every length): aluminium housing, carbon inner leg (drawn out 55 mm deployed), rubber foot, splayed
+to a 45 degree V (user: "nearly 45 degrees"), detailed from the user's photos.

@@ -1791,7 +1791,8 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   only the pivot pin and bracket inside the knuckles, the knuckles seated against the nose's inner wall (as the
   photo's hinge block) and the barrel inside the channel. No flag left on the MDRs.
 - **Files**: `scripts/post93/build_mdr.py` (Blender, ~1.5 min: both FBX (bodies, bolts, handles, side rails, the
-  .308's legs), `GunsOfTienPost93_PMAG_magazines.fbx`, textures, `mdr223_points.json` / `mdr308_points.json`),
+  .308's legs), `GunsOfTienPost93_PMAG_magazines.fbx`, textures (the legs on `MDR308_BIPOD.png` 512),
+  `mdr223_points.json` / `mdr308_points.json`),
   `render_mdr.py -- DIR` (its own copy of render_scar.py's helpers: render_scar runs its main() on import; `*_rails_*`
   and `MDR308_alx_*` views), `make_mdr_art.py [--renders DIR] [--photo PATH]` (icons with the
   SCARs' cameras, the PMAGs with the MP7 magazine light, the D-50 with the MP7 drum's; `docs/post93_mdr_preview.png`
