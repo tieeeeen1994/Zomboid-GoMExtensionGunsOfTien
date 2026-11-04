@@ -116,6 +116,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.Stub_Foregrip MarzGuns.Stub_Foregrip foregrip foregrip,
         ModelWeaponPart              = MarzGuns.MKC_Foregrip MarzGuns.MKC_Foregrip foregrip foregrip,
         ModelWeaponPart              = MarzGuns.MK2_Foregrip MarzGuns.MK2_Foregrip foregrip foregrip,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Left GunsOfTienPost93.MDR223_RAIL_LEFT rail_left rail_left,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Right GunsOfTienPost93.MDR223_RAIL_RIGHT rail_right rail_right,
         ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
         ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
@@ -216,6 +218,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = GunsOfTienPost93.762x51Magazine50_PMAG GunsOfTienPost93.762x51Magazine50_PMAG magazine magazine,
         ModelWeaponPart              = GunsOfTienPost93.SCARH_Muzzle_Mount_Device GunsOfTienPost93.SCARH_Muzzle_Mount_Device canon canon,
         ModelWeaponPart              = GunsOfTienPost93.SCARH_Suppressor GunsOfTienPost93.SCARH_Suppressor canon canon,
+        ModelWeaponPart              = GunsOfTienPost93.MDR308_Integrated_Bipod_Folded GunsOfTienPost93.MDR308_BIPOD_FOLDED integrated_bipod integrated_bipod,
+        ModelWeaponPart              = GunsOfTienPost93.MDR308_Integrated_Bipod_Deployed GunsOfTienPost93.MDR308_BIPOD_DEPLOYED integrated_bipod integrated_bipod,
         ModelWeaponPart              = MarzGuns.EXPS1_Sight MarzGuns.EXPS1_Sight scope scope,
         ModelWeaponPart              = MarzGuns.EXPS3_Sight MarzGuns.EXPS3_Sight scope scope,
         ModelWeaponPart              = MarzGuns.ElcanX2_Scope MarzGuns.ElcanX2_Scope scope scope,
@@ -230,9 +234,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.TR06X_Scope MarzGuns.TR06X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.PSO1_Scope MarzGuns.PSO1_Scope scope scope,
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
-        ModelWeaponPart              = MarzGuns.Stub_Foregrip MarzGuns.Stub_Foregrip foregrip foregrip,
-        ModelWeaponPart              = MarzGuns.MKC_Foregrip MarzGuns.MKC_Foregrip foregrip foregrip,
-        ModelWeaponPart              = MarzGuns.MK2_Foregrip MarzGuns.MK2_Foregrip foregrip foregrip,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Left GunsOfTienPost93.MDR308_RAIL_LEFT rail_left rail_left,
+        ModelWeaponPart              = MarzGuns.Picatinny_Rail_Right GunsOfTienPost93.MDR308_RAIL_RIGHT rail_right rail_right,
         ModelWeaponPart              = MarzGuns.AimRight_Laser MarzGuns.AimRight_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.LRX-7_Laser MarzGuns.LRX-7_Laser laser_right laser_right,
         ModelWeaponPart              = GunsOfTien.LaserBeam_AimRight_Laser GunsOfTien.LaserBeam_AimRight_Laser laser_right laser_right,
@@ -336,20 +339,20 @@ module GunsOfTienPost93 {
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }
 
-    item MDR_Integrated_Rail_Left {
+    item MDR308_Integrated_Bipod_Folded {
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
         MountOn         = MarzGuns.FakeItem,
-        PartType        = RailLeft,
+        PartType        = BipodIntegrated,
         CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }
 
-    item MDR_Integrated_Rail_Right {
+    item MDR308_Integrated_Bipod_Deployed {
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
         MountOn         = MarzGuns.FakeItem,
-        PartType        = RailRight,
+        PartType        = BipodIntegrated,
         CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }

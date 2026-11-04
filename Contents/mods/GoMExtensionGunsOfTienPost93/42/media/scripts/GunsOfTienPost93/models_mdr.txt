@@ -9,10 +9,10 @@ module GunsOfTienPost93 {
         attachment magazine { offset = 0.0000 -0.0615 0.0145, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 -0.0012 0.0529, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_up { offset = 0.0000 -0.0012 0.0506, rotate = 0.0000 0.0000 0.0000, }
-        attachment rail_left { offset = 0.0157 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
-        attachment rail_right { offset = -0.0157 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
-        attachment laser_right { offset = -0.0195 0.1345 0.0315, rotate = 0.0000 0.0000 0.0000, }
-        attachment light_left { offset = 0.0187 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0157 0.1535 0.0323, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0157 0.1535 0.0323, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0196 0.1535 0.0315, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0185 0.1535 0.0323, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.2166 0.0298, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0238 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment handle_back { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
@@ -32,6 +32,18 @@ module GunsOfTienPost93 {
         cullFace = None,
     }
 
+    model MDR223_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR223|MDR223_RAIL_LEFT,
+        texture  = weapons/GunsOfTienPost93/MDR223,
+        cullFace = None,
+    }
+
+    model MDR223_RAIL_RIGHT {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR223|MDR223_RAIL_RIGHT,
+        texture  = weapons/GunsOfTienPost93/MDR223,
+        cullFace = None,
+    }
+
     model MDR308 {
         mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_BODY,
         texture  = weapons/GunsOfTienPost93/MDR308,
@@ -41,15 +53,14 @@ module GunsOfTienPost93 {
         attachment magazine { offset = 0.0000 -0.0615 0.0145, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 -0.0012 0.0529, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_up { offset = 0.0000 -0.0012 0.0506, rotate = 0.0000 0.0000 0.0000, }
-        attachment rail_left { offset = 0.0157 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
-        attachment rail_right { offset = -0.0157 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
-        attachment laser_right { offset = -0.0195 0.1345 0.0315, rotate = 0.0000 0.0000 0.0000, }
-        attachment light_left { offset = 0.0187 0.1345 0.0323, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0144 0.1751 0.0412, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0144 0.1751 0.0412, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0183 0.1751 0.0404, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0172 0.1751 0.0412, rotate = 0.0000 0.0000 0.0000, }
         attachment canon { offset = 0.0000 0.2663 0.0298, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0238 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment handle_back { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
-        attachment rail_down { offset = 0.0000 0.1435 0.0184, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.1435 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model MDR308_BOLT {
@@ -61,6 +72,30 @@ module GunsOfTienPost93 {
     model MDR308_HANDLE {
         mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_HANDLE,
         texture  = weapons/GunsOfTienPost93/MDR308,
+        cullFace = None,
+    }
+
+    model MDR308_RAIL_LEFT {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_RAIL_LEFT,
+        texture  = weapons/GunsOfTienPost93/MDR308,
+        cullFace = None,
+    }
+
+    model MDR308_RAIL_RIGHT {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_RAIL_RIGHT,
+        texture  = weapons/GunsOfTienPost93/MDR308,
+        cullFace = None,
+    }
+
+    model MDR308_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_BIPOD_FOLDED,
+        texture  = weapons/GunsOfTienPost93/MDR308_BIPOD,
+        cullFace = None,
+    }
+
+    model MDR308_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTienPost93_MDR308|MDR308_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTienPost93/MDR308_BIPOD,
         cullFace = None,
     }
 

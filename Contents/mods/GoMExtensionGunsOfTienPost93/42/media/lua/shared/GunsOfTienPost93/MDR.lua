@@ -10,10 +10,14 @@
       item scripts).
     Both reload with GoM's FAMAS reload ("famas_rifle", its other bullpup, as the AUGs and the PS90). Their charging
     handle does not reciprocate: GoM's Bolt swap moves the carrier seen in the right side's window, the main mod's
-    ChargingHandle part the handles, only while racked. GoM's optics on the top rail, its foregrips under the
-    handguard, lights left and lasers right on its M-LOK sides: four hidden integral rail parts stand in for M-LOK rail
-    sections (the PS90's way), shared by both guns. No GoM bipod: the MDRx takes its own handguard bipod (user,
-    2026-11-04), so GoM's bipods are left out of the MountOn, the rail rule and the found-gun parts.
+    ChargingHandle part the handles, only while racked. GoM's optics on the top rail (a hidden integral part); its
+    optional Picatinny_Rail_Left / _Right (user, 2026-11-04) drawn as our short M-LOK rail sections, its lights and
+    lasers on them (the main mod's Rails.Register, as the Vectors). No GoM bipod: the MDRx takes its own handguard
+    bipod (user, 2026-11-04), so GoM's bipods are left out of the MountOn, the rail rule and the found-gun parts.
+    - The .223 keeps Desert Tech's polymer handguard, GoM's foregrips under it (a hidden integral bottom rail).
+    - The .308 has BLK LBL's 20" ALX bipod handguard: its two legs fold flush into the handguard's underside, so it
+      takes no foregrip, and fold and deploy as Gunworks' FoldingBipod (the AUG HBAR's way) with GoM's rail bipod
+      stats and Gunworks' bipod stance.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -21,12 +25,17 @@ local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
+local FoldingBipod = require("WeaponSystems/Utils/FoldingBipod")
+local BipodSystem = require("WeaponSystems/Utils/BipodSystem")
+local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
+local SF = require("WeaponSystems/Utils/StatsFactory")
+local Rails = require("GunsOfTien/Rails")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local GoMReloads = require("GunsOfTien/GoMReloads")
 local HandMagazines = require("GunsOfTien/HandMagazines")
 require("GunsOfTienPost93/Guns")             -- the SCAR-H's suppressor rule and stats first
 
-for _, file in ipairs({ "Magazines", "ReloadsAndAnims/ReloadAnims", "AttachmentCustomStats",
+for _, file in ipairs({ "Magazines", "ReloadsAndAnims/ReloadAnims", "Bipods", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -43,8 +52,8 @@ for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
 end
 local RAIL_UP = M .. "MDR_Integrated_Rail_Up"
 local RAIL_DOWN = M .. "MDR_Integrated_Rail_Down"
-local RAIL_LEFT = M .. "MDR_Integrated_Rail_Left"
-local RAIL_RIGHT = M .. "MDR_Integrated_Rail_Right"
+local BIPOD_FOLDED = M .. "MDR308_Integrated_Bipod_Folded"
+local BIPOD_DEPLOYED = M .. "MDR308_Integrated_Bipod_Deployed"
 
 -------------------------------------------------
 -- Magazines
@@ -68,8 +77,29 @@ for _, gun in ipairs(MDRS) do
 end
 
 -------------------------------------------------
--- Rails: the four integral rails as parents of GoM's optics, foregrips, lights and lasers (each side takes
--- one kind, GoM's rule); the SOCOM762-RC already needs the SCAR-H's mount device (Guns.lua)
+-- The .308's ALX legs: GoM's rail bipod stats (as the AUG HBAR's; no spread modifier, the MDRx fires semi-automatic
+-- only), resting on low walls, windows and tables while aiming (Gunworks' bipod stance)
+-------------------------------------------------
+FoldingBipod.RegisterWeapon(MDR308, {
+    attachments = { partType = "BipodIntegrated", folded = BIPOD_FOLDED, deployed = BIPOD_DEPLOYED },
+    initialState = "folded",
+})
+BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
+CSA.RegisterMultipleParts({
+    [BIPOD_DEPLOYED] = {
+        SF.Multiply("AimingTime", 1.1),
+        SF.Multiply("CriticalChance", 1.15),
+        SF.Multiply("HitChance", 1.15),
+    },
+    [BIPOD_FOLDED] = {},
+    [RAIL_UP] = {},
+    [RAIL_DOWN] = {},
+})
+
+-------------------------------------------------
+-- Rails: the integral top and bottom rails as parents of GoM's optics and foregrips (the bottom one on the .223
+-- only); GoM's optional left and right rails for its lights and lasers, GoM's own rule tying them to those sides.
+-- The SOCOM762-RC already needs the SCAR-H's mount device (Guns.lua).
 -------------------------------------------------
 local OPTICS = {
     "MarzGuns.EXPS1_Sight", "MarzGuns.EXPS3_Sight", "MarzGuns.ElcanX2_Scope", "MarzGuns.LR10X_Scope",
@@ -78,23 +108,23 @@ local OPTICS = {
     "MarzGuns.PSO1_Scope", "MarzGuns.LRX12X_Scope",
 }
 local FOREGRIPS = { "MarzGuns.Stub_Foregrip", "MarzGuns.MKC_Foregrip", "MarzGuns.MK2_Foregrip" }
-local LIGHTS = { "MarzGuns.BrightPoint-5_Light", "MarzGuns.SR7_Light" }
-local LASERS = { "MarzGuns.AimRight_Laser", "MarzGuns.LRX-7_Laser" }
 local AR_MUZZLE = { "MarzGuns.AR_Muzzle_Mount_Device", "MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor",
     "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }
 RequiredAttachment.RegisterRequired(OPTICS, { RAIL_UP })
 RequiredAttachment.RegisterRequired(FOREGRIPS, { RAIL_DOWN })
-RequiredAttachment.RegisterRequired(LIGHTS, { RAIL_LEFT })
-RequiredAttachment.RegisterRequired(LASERS, { RAIL_RIGHT })
+for _, gun in ipairs(MDRS) do
+    Rails.Register(gun, { sides = { "Left", "Right" }, lights = true, lasers = true })
+end
 
-local permanent = { RAIL_UP, RAIL_DOWN, RAIL_LEFT, RAIL_RIGHT }
+local permanent = { RAIL_UP, RAIL_DOWN }
 for _, mag in ipairs(PMAGS) do permanent[#permanent + 1] = mag end
 PreventRemoval.Register(permanent)
 
 -------------------------------------------------
--- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the SCARs' accessories at GoM's chances; the
--- .223 GoM's M4A1 magazines (20 / 25 / 30 at 30 / 20 / 50), the .308 Magpul's 20 mostly, the 10 and 25 rarely, the
--- D-50 as rarely as the SCAR-H's drum (2%); no bipod
+-- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the SCARs' accessories at GoM's chances,
+-- lights and lasers with their side rail (":PRL" / ":PRR", drawn as ours), foregrips on the .223 only; the .223
+-- GoM's M4A1 magazines (20 / 25 / 30 at 30 / 20 / 50), the .308 Magpul's 20 mostly, the 10 and 25 rarely, the D-50
+-- as rarely as the SCAR-H's drum (2%), its ALX legs folded
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
@@ -102,26 +132,26 @@ if spawnTable then
     local COMMON = {
         "MarzGuns.ReflexS2_Sight:5", "MarzGuns.EXPS3_Sight:5", "MarzGuns.EXPS1_Sight:5", "MarzGuns.Aimpoint_Sight:5",
         "MarzGuns.LR4X_Scope:3", "MarzGuns.TA28_Scope:3", "MarzGuns.ElcanX2_Scope:3",
-        "MarzGuns.Stub_Foregrip:5", "MarzGuns.MKC_Foregrip:5", "MarzGuns.MK2_Foregrip:3",
-        "MarzGuns.AimRight_Laser:3", "MarzGuns.LRX-7_Laser:3",
-        "MarzGuns.BrightPoint-5_Light:5", "MarzGuns.SR7_Light:5",
+        "MarzGuns.AimRight_Laser:3:PRR", "MarzGuns.LRX-7_Laser:3:PRR",
+        "MarzGuns.BrightPoint-5_Light:5:PRL", "MarzGuns.SR7_Light:5:PRL",
     }
-    local function entry(mags, extra)
+    local function entry(mags, extra, required)
         local optionals = {}
         for _, list in ipairs({ mags, COMMON, extra }) do
             for _, e in ipairs(list) do optionals[#optionals + 1] = e end
         end
-        return {
-            required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, RAIL_UP, RAIL_DOWN, RAIL_LEFT, RAIL_RIGHT },
-            optionals = optionals,
-        }
+        local req = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, RAIL_UP }
+        for _, e in ipairs(required) do req[#req + 1] = e end
+        return { required = req, optionals = optionals }
     end
     spawnTable[MDR223] = entry({ "MarzGuns.556x45Magazine20_STANAG:30", "MarzGuns.556x45Magazine25_STANAG:20",
-        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.AR_Muzzle_Mount_Device:5" })
+        "MarzGuns.556x45Magazine30_STANAG:50" },
+        { "MarzGuns.AR_Muzzle_Mount_Device:5",
+          "MarzGuns.Stub_Foregrip:5", "MarzGuns.MKC_Foregrip:5", "MarzGuns.MK2_Foregrip:3" }, { RAIL_DOWN })
     spawnTable[MDR308] = entry({ M .. "762x51Magazine20_PMAG:60", M .. "762x51Magazine10_PMAG:10",
         M .. "762x51Magazine25_PMAG:10", M .. "762x51Magazine50_PMAG:2" },
         { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1",
-          M .. "SCARH_Muzzle_Mount_Device:5" })
+          M .. "SCARH_Muzzle_Mount_Device:5" }, { BIPOD_FOLDED })
 end
 
 -------------------------------------------------
@@ -154,10 +184,9 @@ local function appendMountOn(partType, guns)
 end
 
 local function appendAll()
-    for _, list in ipairs({ OPTICS, FOREGRIPS, LIGHTS, LASERS }) do
-        for _, part in ipairs(list) do appendMountOn(part, MDRS) end
-    end
-    for _, list in ipairs({ STANAGS, AR_MUZZLE }) do
+    for _, part in ipairs(OPTICS) do appendMountOn(part, MDRS) end
+    -- lights, lasers and the side rails: Rails.Register's own appending
+    for _, list in ipairs({ FOREGRIPS, STANAGS, AR_MUZZLE }) do
         for _, part in ipairs(list) do appendMountOn(part, { MDR223 }) end
     end
 end

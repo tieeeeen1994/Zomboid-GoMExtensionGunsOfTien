@@ -161,13 +161,15 @@ lines[M .. "PS90"] = {
     "50-round magazine on top. Ejects spent cases downward.",
     "Standard rounds pierce and can hit up to 2 targets.",
 }
--- The MDRx rifles (shared/GunsOfTienPost93/MDR.lua): the top rail, the M-LOK handguard as the PS90's; the .308's
--- SR-25-pattern PMAGs
+-- The MDRx rifles (shared/GunsOfTienPost93/MDR.lua): the top rail, GoM's Picatinny Rail upgrades on both sides (our
+-- M-LOK rail sections), the .223's foregrips under its M-LOK handguard; the .308's ALX bipod handguard (its bipod
+-- states worded as the HBAR's, without the automatic fire line) and SR-25-pattern PMAGs
 lines[M .. "MDR223"] = {
     "Uses .223/5.56x45mm NATO rounds.",
     "16-inch barrel",
     "Integrated Picatinny rail: Up",
-    "M-LOK handguard: Left, Right, Down",
+    "M-LOK handguard: Down",
+    "Available Picatinny Slots: Left, Right",
     "Ejects spent cases to the right.",
     "Compatible Muzzle Device: AR Muzzle Mount",
 }
@@ -176,9 +178,15 @@ lines[M .. "MDR308"] = {
     "20-inch barrel",
     "Takes SR-25 pattern magazines.",
     "Integrated Picatinny rail: Up",
-    "M-LOK handguard: Left, Right, Down",
+    "Available Picatinny Slots: Left, Right",
+    "ALX handguard with an integrated folding bipod.",
     "Ejects spent cases forward.",
     "Compatible Muzzle Device: SCAR-H Muzzle Mount",
+}
+GunsOfTien_TooltipStates[M .. "MDR308_Integrated_Bipod_Deployed"] = {
+    "Folding bipod deployed:",
+    "Aiming Time increased by 10%",
+    "Critical and Hit Chance increased by 15%",
 }
 for _, mag in ipairs({ "762x51Magazine10_PMAG", "762x51Magazine20_PMAG", "762x51Magazine25_PMAG",
     "762x51Magazine50_PMAG" }) do

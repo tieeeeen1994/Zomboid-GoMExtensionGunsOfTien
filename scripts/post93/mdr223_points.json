@@ -59,34 +59,10 @@
       0.0
     ]
   },
-  "rail_down": {
-    "offset": [
-      0.0,
-      0.1435,
-      0.0184
-    ],
-    "rotate": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  "foregrip": {
-    "offset": [
-      0.0,
-      0.1435,
-      0.0151
-    ],
-    "rotate": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
   "rail_left": {
     "offset": [
       0.0157,
-      0.1345,
+      0.1535,
       0.0323
     ],
     "rotate": [
@@ -97,8 +73,8 @@
   },
   "light_left": {
     "offset": [
-      0.0187,
-      0.1345,
+      0.0185,
+      0.1535,
       0.0323
     ],
     "rotate": [
@@ -110,7 +86,7 @@
   "rail_right": {
     "offset": [
       -0.0157,
-      0.1345,
+      0.1535,
       0.0323
     ],
     "rotate": [
@@ -121,8 +97,8 @@
   },
   "laser_right": {
     "offset": [
-      -0.0195,
-      0.1345,
+      -0.0196,
+      0.1535,
       0.0315
     ],
     "rotate": [
@@ -171,9 +147,33 @@
     "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 388, H 104)",
     "magazine": "GoM's STANAG magazines (the main mod's _GoT models) hang from here, their feed lips",
     "canon": "as GoM's M4A1, 28.8 mm (0.0187) behind the muzzle: GoM's AR mount device and its muzzle parts",
-    "accessories": "optics on the upper's rail at L 390; lights / lasers on the handguard's M-LOK sides at L 165, H 157.5; foregrips under it at L 150 (no rails drawn; GoM's bipods do not fit)",
+    "accessories": "optics on the upper's rail at L 390; GoM's optional Picatinny_Rail_Left / _Right drawn as MDR223_RAIL_LEFT / _RIGHT (our M-LOK sections, origin on the side face at L 133.5, H 157.5), lights / lasers on them; foregrips under the handguard at L 150 (GoM's bipods do not fit)",
     "bolt_fired": "MDR223_BOLT (the carrier in the right side's side-eject port) back 39.5 mm real",
     "handle_back": "MDR223_HANDLE (both knobs) back 110 mm real, only while racked"
+  },
+  "rail_down": {
+    "offset": [
+      0.0,
+      0.1435,
+      0.0184
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "foregrip": {
+    "offset": [
+      0.0,
+      0.1435,
+      0.0151
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
   },
   "_extras": {
     "handgun_hold": false,
@@ -227,6 +227,32 @@
         0.0467
       ],
       "tris": 176
+    },
+    "MDR223_RAIL_LEFT": {
+      "min": [
+        -0.0003,
+        -0.0147,
+        -0.0064
+      ],
+      "max": [
+        0.0021,
+        0.0147,
+        0.0064
+      ],
+      "tris": 200
+    },
+    "MDR223_RAIL_RIGHT": {
+      "min": [
+        -0.0021,
+        -0.0147,
+        -0.0064
+      ],
+      "max": [
+        0.0003,
+        0.0147,
+        0.0064
+      ],
+      "tris": 200
     },
     "762x51Magazine10_PMAG": {
       "min": [

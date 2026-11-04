@@ -1715,9 +1715,11 @@ MDR_STATS = {
 def mdr_parts(gun):
     """The bolt carrier in the right side's window (GoM's Bolt swap), the ambidextrous charging handle (back only while
     racked), the magazines (GoM's STANAGs at our size on the .223, the PMAGs on the .308), the muzzle parts (GoM's AR
-    family on the .223, the SCAR-H's mount and SOCOM762-RC on the .308), GoM's optics on the top rail, its foregrips
-    under the handguard, lights left and lasers right on its M-LOK sides (four hidden integral rail parts). No GoM
-    bipod: the MDRx takes its own handguard bipod (user, 2026-11-04)."""
+    family on the .223, the SCAR-H's mount and SOCOM762-RC on the .308), GoM's optics on the top rail (a hidden
+    integral part), lights and lasers on GoM's optional Picatinny_Rail_Left / _Right drawn as our M-LOK sections
+    (MDR*_RAIL_LEFT / _RIGHT; user, 2026-11-04). The .223 takes GoM's foregrips under its handguard (a hidden
+    integral part); the .308 has BLK LBL's ALX bipod handguard, whose legs fold into its underside (no foregrips),
+    drawn at `integrated_bipod` as the AUG HBAR's. No GoM bipod on either (user, 2026-11-04)."""
     w = "        ModelWeaponPart              = "
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
@@ -1730,8 +1732,14 @@ def mdr_parts(gun):
         lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in PMAGS]
         lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
                   f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+        lines += [f"{w}{M}.MDR308_Integrated_Bipod_Folded {M}.MDR308_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+                  f"{w}{M}.MDR308_Integrated_Bipod_Deployed {M}.MDR308_BIPOD_DEPLOYED integrated_bipod "
+                  f"integrated_bipod,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
-    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    if gun == 'MDR223':
+        lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.Picatinny_Rail_Left {M}.{gun}_RAIL_LEFT rail_left rail_left,",
+              f"{w}MarzGuns.Picatinny_Rail_Right {M}.{gun}_RAIL_RIGHT rail_right rail_right,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
     lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
               f"laser_right laser_right," for o in LASERS]
@@ -1836,12 +1844,16 @@ def mdrs():
     out = [f"module {M} {{\n"]
     for gun in MDRS:
         out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun],
-                             ['rail_down', 'foregrip']))
-        for part in ('BOLT', 'HANDLE'):
+                             ['integrated_bipod'] if gun == 'MDR308' else ['rail_down', 'foregrip']))
+        parts = ['BOLT', 'HANDLE', 'RAIL_LEFT', 'RAIL_RIGHT']
+        if gun == 'MDR308':
+            parts += ['BIPOD_FOLDED', 'BIPOD_DEPLOYED']
+        for part in parts:
+            tex = f"{gun}_BIPOD" if part.startswith('BIPOD') else gun
             out.append(f"""
     model {gun}_{part} {{
         mesh     = weapons/firearms/GunsOfTienPost93_{gun}|{gun}_{part},
-        texture  = {TEX}/{gun},
+        texture  = {TEX}/{tex},
         cullFace = None,
     }}
 """)
@@ -1881,13 +1893,16 @@ def mdrs():
         CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
     }}
 """)
-    for side in ('Up', 'Down', 'Left', 'Right'):
+    # the hidden integral top and bottom rails (the sides take GoM's optional rails), the ALX's legs
+    for part, ptype in [('MDR_Integrated_Rail_Up', 'RailUp'), ('MDR_Integrated_Rail_Down', 'RailDown'),
+                        ('MDR308_Integrated_Bipod_Folded', 'BipodIntegrated'),
+                        ('MDR308_Integrated_Bipod_Deployed', 'BipodIntegrated')]:
         items.append(f"""
-    item MDR_Integrated_Rail_{side} {{
+    item {part} {{
         ItemType        = base:weaponpart,
         DisplayCategory = WeaponPart,
         MountOn         = MarzGuns.FakeItem,
-        PartType        = Rail{side},
+        PartType        = {ptype},
         CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }}
@@ -2015,8 +2030,8 @@ def translations():
         f'{M}.762x51Magazine50_PMAG': 'PMAG 50Rds Drum 7.62x51mm Magazine',
         f'{M}.MDR_Integrated_Rail_Up': 'MDRx Integrated Rail (Up)',
         f'{M}.MDR_Integrated_Rail_Down': 'MDRx Integrated Rail (Down)',
-        f'{M}.MDR_Integrated_Rail_Left': 'MDRx Integrated Rail (Left)',
-        f'{M}.MDR_Integrated_Rail_Right': 'MDRx Integrated Rail (Right)',
+        f'{M}.MDR308_Integrated_Bipod_Folded': 'MDRx .308 ALX Bipod (Folded)',
+        f'{M}.MDR308_Integrated_Bipod_Deployed': 'MDRx .308 ALX Bipod (Deployed)',
     })
     for moved in ('57x28Magazine50_P90',):    # the main mod's now
         names.pop(f'{M}.{moved}', None)

@@ -146,7 +146,7 @@ def outline_panel(renders, g, photo):
 
 
 def sheet(renders, icons, photo):
-    p = B.Page(renders, 2480, 4300, "Desert Tech MDRx .223 (16\", side eject, black) and .308 (20\", forward eject, "
+    p = B.Page(renders, 2480, 5500,"Desert Tech MDRx .223 (16\", side eject, black) and .308 (20\", forward eject, "
                                     "FDE), GunsOfTienPost93.MDR223 / MDR308: Workbench renders of the exported FBX "
                                     "files + textures, as the game shows them")
     y = 70
@@ -155,7 +155,8 @@ def sheet(renders, icons, photo):
         label = "%s left side" % g
         if iou is not None:
             label += "; red = outline of Desert Tech's 16\" photo, silhouette overlap %.1f%% from the handguard's nose " \
-                     "(magazine left out)" % (iou * 100)
+                     "(magazine left out%s)" % (iou * 100, "; the photo has the stock handguard, ours BLK LBL's ALX"
+                                                if g == "MDR308" else "")
             print("%s silhouette IoU %.3f" % (g, iou))
         p.d.text((30, y), label, fill=(40, 40, 40), font=p.FS)
         p.put(None, 20, y + 34, 2440, im=ov)
@@ -170,8 +171,15 @@ def sheet(renders, icons, photo):
         put(g + "_back_right", 1660, y, 800, "right: carrier and charging handles back")
         y += 420
     put("MDR223_fitted_q", 20, y, 1200, "MDR223: GoM's Aimpoint, MKC foregrip, SR7 light, AimRight laser, AR mount + MKI")
-    put("MDR308_fitted_qr", 1240, y, 1200, "MDR308: GoM's LR4X, MKC foregrip, light, laser; the SCAR-H's mount + SOCOM762-RC")
+    put("MDR308_fitted_qr", 1240, y, 1200, "MDR308: GoM's LR4X, light, laser; the SCAR-H's mount + SOCOM762-RC")
     y += 620
+    put("MDR308_alx_deployed_q", 20, y, 1200, "MDR308: BLK LBL's ALX legs deployed (folded: its left side above)")
+    put("MDR308_alx_deployed_front", 1240, y, 560, "from the front")
+    put("MDR308_alx_folded_front", 1820, y, 560, "legs folded")
+    y += 700
+    put("MDR223_rails_left", 20, y, 1200, "MDR223: GoM's Picatinny Rail Left / Right drawn as our M-LOK sections")
+    put("MDR308_rails_right", 1240, y, 1200, "MDR308: its right rail on the ALX's 3 o'clock M-LOK row")
+    y += 480
     for i, r in enumerate((10, 20, 25, 50)):
         put("pmag%d" % r, 20 + i * 330, y, 300, "PMAG %d" % r)
     put("MDR308_drum_left", 1360, y, 1100, "MDR308 with the D-50")

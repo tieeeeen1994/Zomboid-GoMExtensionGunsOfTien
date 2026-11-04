@@ -3,8 +3,9 @@
     blender -b --factory-startup -P scripts/post93/build_mdr.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    P/models_X/weapons/firearms/GunsOfTienPost93_MDR223.fbx       MDR223_BODY, MDR223_BOLT, MDR223_HANDLE
-    P/models_X/weapons/firearms/GunsOfTienPost93_MDR308.fbx       MDR308_BODY, MDR308_BOLT, MDR308_HANDLE
+    P/models_X/weapons/firearms/GunsOfTienPost93_MDR223.fbx       MDR223_BODY, _BOLT, _HANDLE, _RAIL_LEFT, _RAIL_RIGHT
+    P/models_X/weapons/firearms/GunsOfTienPost93_MDR308.fbx       MDR308_BODY, _BOLT, _HANDLE, _RAIL_LEFT, _RAIL_RIGHT,
+                                                                  _BIPOD_FOLDED, _BIPOD_DEPLOYED (on MDR308_BIPOD.png)
     P/models_X/weapons/magazines/GunsOfTienPost93_PMAG_magazines.fbx  762x51Magazine10_PMAG, 762x51Magazine20_PMAG,
                                                                   762x51Magazine25_PMAG, 762x51Magazine50_PMAG (D-50)
     P/textures/weapons/GunsOfTienPost93/<name>.png                MDR223 (black), MDR308 (flat dark earth), 256;
@@ -20,6 +21,11 @@ from the muzzle tip, H up from the pistol grip's bottom. Real rifles Desert Tech
     side carries the plain cover of Desert Tech's forward-to-side kit.
   - MDR308: 7.62 NATO, 20" barrel (101.6 mm longer, the muzzle device moved out with it), forward ejection, flat
     dark earth: the forward-eject chute panel on both sides (as both photos show), its viewing window on the right.
+    BLK LBL's 20" ALX bipod handguard in place of the polymer one (user, 2026-11-04; "ALX" below): an aluminium
+    M-LOK frame whose two legs (MDR308_BIPOD_FOLDED / _DEPLOYED, gun space, drawn at `integrated_bipod`) fold back
+    flush into its underside from a pivot at the nose.
+Both take GoM's optional left and right Picatinny rails as our short M-LOK sections (MDR*_RAIL_LEFT / _RIGHT, origin
+on the handguard's side face, drawn at rail_left / rail_right), GoM's lights and lasers on them (user, 2026-11-04).
 Both have the ambidextrous non-reciprocating charging handle at the front of the upper's slot (MDR*_HANDLE, back only
 while racked) and the bolt carrier seen in the right side's window (MDR*_BOLT, GoM's Bolt swap). The magazine well is
 behind the grip: GoM's STANAG magazines (the .223, through the main mod's `_GoT` models) and our SR-25-pattern PMAGs
@@ -39,7 +45,7 @@ import sys
 
 import bpy
 import numpy as np
-from mathutils import Vector
+from mathutils import Matrix, Vector
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -53,7 +59,7 @@ FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_PMAG
 K = 0.000603                       # game units per real mm (the M16A2's proportion)
 K_OLD = 0.00065                    # GoM's rifles' (the `world` point is scaled from it, as on the SCARs)
 kit.K = K
-MATS = ["polymer", "upper", "dark", "metal", "rubber", "brass", "copper", "magpoly"]
+MATS = ["polymer", "upper", "dark", "metal", "rubber", "brass", "copper", "magpoly", "alx", "leg", "carbon"]
 kit.MATS[:] = MATS
 
 # ==================================================================================================
@@ -132,14 +138,84 @@ CH_TRAVEL = 110.0
 
 MAG_L, MAG_H = 490.0, 128.0        # the magazine's feed lips (module docstring)
 OPTIC_L = 390.0                    # over the grip on the upper's rail
-SIDE_L, SIDE_H = 165.0, 157.5      # GoM's lights / lasers on the handguard's lower M-LOK row
-# No bipod point: the MDRx takes its own handguard bipod, not GoM's (user, 2026-11-04)
+# No GoM bipod point: the MDRx takes its own handguard bipod (user, 2026-11-04), the .308's ALX below
 FOREGRIP_L = 150.0
+
+# --------------------------------------------------------------------------------------------------
+# BLK LBL's ALX bipod handguard on the .308 (user, 2026-11-04): Desert Tech's FDE photos of the 16" one
+# (references/mdr/alx, the store's "WLVRN/MDRX ALX Bipod 16" Handguard"): 9" (228.6 mm) long, 1 7/8" across, legs
+# 6 1/4" to 9 1/8" tall, aluminium with carbon fibre inner legs. Read on a millimetre grid over 6f9266eb.png (left
+# side, muzzle right, 7.826 px/mm): L = 67 + (1856 - x) / 7.826, H = 197 - (y - 210) / 7.826 (its nose on the stock
+# handguard's, its rail top on RAIL_TOP). The 16" lines up with the stock handguard: its rail starts at L 229.5,
+# where a shelf (H 186.4) runs under the MDRx's black front block, its rear tucks under the upper and into the
+# chassis down to L 294.5. The 20" (the .308's) is the same piece 101.6 mm longer ahead of ALX_SPLIT, with two more
+# M-LOK columns and a second lower slot; its legs are the 16"'s (Desert Tech lists one leg height, 6 1/4" to 9 1/8",
+# for every length), so the leg window ends with them, 101.6 mm earlier, and the underside behind it is closed. The
+# nose is then 4 mm behind the Ratchet compensator.
+# --------------------------------------------------------------------------------------------------
+W_ALX = 23.8                       # half of 1 7/8"
+ALX_LIP = 1.25                     # half thickness of the side walls' lower lips under the leg window
+ALX_SPLIT = 125.0                  # the 20" is the 16" stretched here
+
+
+def fwd(L):
+    return L - TWENTY if L < ALX_SPLIT else L
+
+
+# the frame's side outline (16" L, H): rail floor, shelf, rear tab, the leg window's notch (open across the whole
+# width: the legs fold up into it from below), the nose sloping back to the rail
+ALX_16 = [(229.6, RAIL_FLOOR), (229.6, 186.4), (246.5, 186.4), (266.0, 163.0), (289.0, 161.0), (292.5, 159.5),
+          (294.5, 156.0), (294.5, 146.5), (293.0, 142.0), (271.0, 118.5), (268.0, 118.5), (256.0, 125.0),
+          (244.0, 125.0), (247.5, 149.7), (113.0, 149.7), (101.0, 160.0), (92.0, 160.0), (86.0, 150.0),
+          (81.5, 140.0), (79.5, 125.0), (70.5, 125.0), (70.0, 126.5), (70.0, 143.0), (71.5, 150.0), (74.5, 160.0),
+          (77.0, 170.0), (81.0, 180.0), (94.0, 190.0), (96.5, RAIL_FLOOR)]
+WINDOW_REAR = ((244.0, 125.0), (247.5, 149.7))   # the leg window's slanted rear edge (16"): moves with the legs
+ALX = [(L - TWENTY if (L, H) in WINDOW_REAR else fwd(L), H) for L, H in ALX_16]
+ALX_LIPS = [(fwd(79.5), 125.0), (244.0 - TWENTY, 125.0), (244.0 - TWENTY, 128.8),
+            (fwd(79.5), 128.8)]                   # under the window, sides only
+ALX_RAIL = (fwd(98.5), 229.5)
+# M-LOK: two rows of long slots (Desert Tech: M-LOK at 2, 3, 9 and 10 o'clock), the front column's ends slanted on
+# the photo; the 20" adds two columns between the 16"'s middle and front ones (14 mm webs, as the photo's)
+ALX_ROW_A = [(172.5, 196.5), (133.0, 158.5), (82.4, 118.4), (32.4, 68.4), (fwd(92.0), fwd(120.0))]
+ALX_ROW_A_H = (177.3, 183.0)
+ALX_ROW_B = [(a - 2.75, c - 2.75) for a, c in ALX_ROW_A]
+ALX_ROW_B_H = (169.5, 175.3)
+ALX_LOW = [(124.0, 155.0), (23.4, 54.4)]          # the lower slot (one on the 16")
+ALX_LOW_H = (153.8, 159.8)
+ALX_VSLOT = (216.5, 229.0, 165.0, 185.5)         # the upright slot behind the rows
+ALX_QD = (179.5, 156.6, 4.3)                      # the round QD socket hole
+ALX_SCREWS = [(191.5, 156.6, 3.3), (222.0, 156.5, 3.3), (291.0, 153.2, 3.5)]
+# the legs (the user's photos, 2026-11-04: Firearmland's FDE ALX deployed, a black MDRx standing on one): each an
+# extruded aluminium housing with diagonal grip grooves and a release latch near its end, a carbon fibre inner leg
+# that slides out of it, a round rubber foot with a chamfered tip; a Torx pivot screw on the knuckle and a ribbed
+# black release paddle in the nose's cut-out above the hinge. Pivot at the nose, folded back flush into the window
+# (H 128.8-149.7) side by side, the inner leg pushed home (the 16" photo: housing to L 214, the foot to L 243.5).
+LEG_PIVOT = (fwd(88.5), 139.0)
+LEG_X = 10.1                       # each leg's centre off the bore line (the two fill the 41 mm channel)
+LEG_W, LEG_H = 9.5, 10.2           # the housing's half width, half height
+LEG_HOUSING = 125.5                # pivot to the housing's end
+LEG_LEN = 155.0                    # pivot to the foot's tip, folded (6 1/4" with the knuckle: Desert Tech's lowest)
+LEG_EXT = 55.0                     # the inner leg drawn out when deployed (of 73: 9 1/8" - 6 1/4")
+TUBE_R, FOOT_R = 6.0, 8.5
+# deployed: swung down past vertical by 3 degrees (feet a little forward); seen from the front the legs make a 45
+# degree V (user, 2026-11-04: "nearly 45 degrees"; the first build splayed them 8 degrees each, the HBAR's). The
+# knuckle and neck stay upright inside the nose and the bar splays from a knee just under the frame (LEG_KNEE from
+# the pivot): splayed from the pivot, the bar's top would cut through the side walls' lips.
+LEG_DOWN, LEG_SPLAY, LEG_KNEE = 93.0, 22.5, 19.5      # the splayed bar's inner top corner rises 3.6 mm
+
+# GoM's optional Picatinny_Rail_Left / _Right (user, 2026-11-04): our short M-LOK rail sections, five crossbars
+# (48.8 mm: crossbars 2 mm from both ends, so two M-LOK screws sit in the outer gaps), drawn at rail_left /
+# rail_right with their origin on the handguard's side face. The .223's on the stock handguard's lower M-LOK row
+# (where its lights and lasers were), the .308's on the ALX's 3 / 9 o'clock row (B), over its third column.
+SIDE_RAIL_LEN, SIDE_BASE, SIDE_TEETH = 48.8, 1.5, 3.0
+SIDE_RAIL = {"MDR223": (133.5, 157.5, W_HG),
+             "MDR308": ((ALX_ROW_B[2][0] + ALX_ROW_B[2][1]) / 2.0, sum(ALX_ROW_B_H) / 2.0, W_ALX)}
 
 
 class Gun:
-    def __init__(self, name, barrel, eject, bore_r, colours):
+    def __init__(self, name, barrel, eject, bore_r, colours, alx=False):
         self.name, self.barrel, self.eject, self.bore_r, self.colours = name, barrel, eject, bore_r, colours
+        self.alx = alx                                 # BLK LBL's ALX bipod handguard (the .308) or the stock one
         self.muzzle = -(barrel - 16.0) * 25.4          # L of the muzzle tip
         self.window = WINDOW[eject]
         La, Lb = self.window[:2]
@@ -150,7 +226,7 @@ class Gun:
 BLACK = {"polymer": (46, 46, 49), "upper": (54, 54, 58)}
 FDE = {"polymer": (170, 142, 100), "upper": (150, 124, 98)}
 G223 = Gun("MDR223", 16.0, "side", 9.5, BLACK)
-G308 = Gun("MDR308", 20.0, "forward", 10.5, FDE)
+G308 = Gun("MDR308", 20.0, "forward", 10.5, FDE, alx=True)
 GUNS = (G223, G308)
 
 
@@ -198,14 +274,19 @@ def build_body(g):
     slab(b, UPPER, half=W_UPPER, bevel=1.5, res=0, mat="upper")
     slab(b, RISER, half=W_RISER, bevel=2.0, res=1, mat="polymer")
     slab(b, PAD, half=W_PAD, bevel=2.0, res=1, mat="rubber")
-    slots = [stadium(a, c, *MLOK_TOP_H) for a, c in MLOK_TOP]
-    slab(b, HANDGUARD, slots, half=W_HG, bevel=2.0, res=1, mat="polymer")
+    if g.alx:
+        build_alx(b)
+        hg_rail = (ALX_RAIL[0], ALX_RAIL[1], "alx")
+    else:
+        slots = [stadium(a, c, *MLOK_TOP_H) for a, c in MLOK_TOP]
+        slab(b, HANDGUARD, slots, half=W_HG, bevel=2.0, res=1, mat="polymer")
+        hg_rail = (HG_RAIL[0], HG_RAIL[1], "polymer")
     slab(b, GRIP, half=W_GRIP, bevel=4.0, res=1, mat="polymer")
     slab(b, GUARD, [GUARD_HOLE], half=W_GUARD, bevel=1.5, res=0, mat="polymer")
     slab(b, TRIGGER, half=2.8, bevel=0.6, mat="dark")
     slab(b, MAG_RELEASE, half=21.0, bevel=0.8, mat="dark")
     slab(b, FRONT_BLOCK, half=12.0, bevel=0.6, mat="dark")
-    for La, Lb, mat in ((UPPER_RAIL[0], UPPER_RAIL[1], "upper"), (HG_RAIL[0], HG_RAIL[1], "polymer")):
+    for La, Lb, mat in ((UPPER_RAIL[0], UPPER_RAIL[1], "upper"), hg_rail):
         ya, yb = sorted((L0 - Lb, L0 - La))
         kit.picatinny(b, ya, yb, lambda u, h, y: Vector((u, y, RAIL_FLOOR - H0 + h)), base_h=0.5,
                       tooth_h=RAIL_TOP - RAIL_FLOOR + 0.5, mat=mat)
@@ -232,6 +313,99 @@ def build_body(g):
                                        (y(m + 18.0), 9.6), (y(m + 1.0), 9.6), (y(m), 8.6), (y(m), 4.5),
                                        (y(m + 10.0), 4.5), (y(m + 10.0), 0)], seg=16, mat="dark", phase=0.5)
     return b.to_object(g.name + "_BODY")
+
+
+def circle(cL, cH, r, n=16):
+    return [(cL + r * math.cos(2 * math.pi * k / n), cH + r * math.sin(2 * math.pi * k / n)) for k in range(n)]
+
+
+def build_alx(b):
+    """BLK LBL's ALX frame (part of the body): the solid side outline with its M-LOK slots, upright slot and QD hole
+    cut through (daylight shows through them, the barrel through the low ones, as on the stock handguard), the leg
+    window's notch open across the whole width, the side walls' thin lower lips under it, and at the channel's
+    front the bracket and pin the legs hinge on (the pin stays when they swing down)."""
+    holes = [stadium(a, c, *ALX_ROW_A_H) for a, c in ALX_ROW_A]
+    holes += [stadium(a, c, *ALX_ROW_B_H) for a, c in ALX_ROW_B]
+    holes += [stadium(a, c, *ALX_LOW_H) for a, c in ALX_LOW]
+    La, Lb, Ha, Hb = ALX_VSLOT
+    holes.append([(L, H) for H, L in stadium(Ha, Hb, La, Lb)][::-1])     # upright: swapped, wound as the rest
+    holes.append(circle(*ALX_QD))
+    # bevel 0.6: each hole's curve is offset by the bevel into the metal, and the two rows are 2 mm apart (1.2
+    # made their loops cross and the fill flipped inside out)
+    slab(b, ALX, holes, half=W_ALX, bevel=0.6, res=0, mat="alx")
+    both(lambda s: slab(b, ALX_LIPS, half=ALX_LIP, bevel=0.4, mat="alx", x0=s * (W_ALX - ALX_LIP)))
+    pl, ph = LEG_PIVOT
+    box(b, pl - 4.0, pl + 5.0, ph + 8.8, 150.5, -(W_ALX - 2.0), W_ALX - 2.0, mat="dark", bevel=0.6)
+    # the ribbed release paddle on both sides in the nose's cut-out, hung from its top edge
+    both(lambda s: box(b, fwd(91.0), fwd(100.0), 150.5, 160.3, s * (W_ALX - 3.0), s * (W_ALX - 0.2), mat="dark",
+                       bevel=0.6))
+    for hr in (152.0, 154.2, 156.4, 158.6):                     # its ribs, standing 0.6 mm proud
+        both(lambda s: box(b, fwd(91.6), fwd(99.4), hr - 0.45, hr + 0.45, s * (W_ALX - 0.4), s * (W_ALX + 0.4),
+                           mat="dark", bevel=0.2))
+    b.lathe("x", (0, *P(pl, ph)), [(-(W_ALX - 2.0), 0), (-(W_ALX - 2.0), 3.0), (W_ALX - 2.0, 3.0),
+                                   (W_ALX - 2.0, 0)], seg=10, mat="dark")
+
+
+def leg_xf(s, deployed, knee=False):
+    """Leg s (+1 the gun's left, -1 its right) from its local frame (pivot at the origin, the leg along -Y, its top
+    +Z) into the gun's builder space (mm). Deployed, the knuckle and neck only swing down; `knee` = the bar below
+    LEG_KNEE, also turned outward about the knee (local Z, along the gun once swung down) by LEG_SPLAY."""
+    pl, ph = LEG_PIVOT
+    t = Matrix.Translation(Vector((s * LEG_X, L0 - pl, ph - H0)))
+    if not deployed:
+        return t
+    m = t @ Matrix.Rotation(math.radians(LEG_DOWN), 4, 'X')
+    if knee:
+        k = Matrix.Translation(Vector((0.0, -LEG_KNEE, 0.0)))
+        m = m @ k @ Matrix.Rotation(math.radians(s * LEG_SPLAY), 4, 'Z') @ k.inverted()
+    return m
+
+
+def build_bipod(g, deployed):
+    """The ALX's two legs (gun space, drawn at `integrated_bipod`, the HBAR's way): extruded aluminium bars with a
+    knuckle round the pivot, the rubber foot at the end; folded they lie flush in the window, deployed they swing
+    down at the nose."""
+    b = kit.Builder()
+    n = LEG_LEN
+    for s in (1, -1):
+        xf, bar = leg_xf(s, deployed), leg_xf(s, deployed, knee=True)
+        # the housing starts at the knee, 19.5 mm from the pivot: deployed and splayed, its corners stay 1.9 mm
+        # under the frame's bottom edge (H 125), and only the narrower neck and the knuckle turn inside the nose,
+        # seated against its inner wall as the photo's hinge block is
+        b.box(-LEG_W, LEG_W, -LEG_HOUSING, -LEG_KNEE, -LEG_H, LEG_H, mat="leg", bevel=3.0, xf=bar)
+        b.box(-(LEG_W - 1.0), LEG_W - 1.0, -(LEG_KNEE + 1.5), 0.0, -8.0, 8.0, mat="leg", bevel=1.5, xf=xf)
+        b.lathe("x", (0, 0, 0), [(-(LEG_W - 1.0), 0), (-(LEG_W - 1.0), 8.5), (LEG_W - 1.0, 8.5),
+                                 (LEG_W - 1.0, 0)], seg=16, mat="leg", xf=xf)
+        # the Torx pivot screw's head on the knuckle's outer side
+        b.lathe("x", (0, 0, 0), [(s * (LEG_W - 1.2), 0), (s * (LEG_W - 1.2), 4.4), (s * (LEG_W - 0.3), 4.0),
+                                 (s * (LEG_W - 0.3), 0)], seg=14, mat="metal", xf=xf)
+        # the carbon inner leg (drawn out when deployed) and the rubber foot
+        e = LEG_EXT if deployed else 0.0
+        t0, t1 = LEG_HOUSING + e, LEG_LEN + e
+        if deployed:
+            b.lathe("y", (0, 0, 0), [(-(LEG_HOUSING - 8.0), 0), (-(LEG_HOUSING - 8.0), TUBE_R), (-(t0 + 1.0), TUBE_R),
+                                     (-(t0 + 1.0), 0)], seg=12, mat="carbon", xf=bar)
+        b.lathe("y", (0, 0, 0), [(-t0, 0), (-t0, FOOT_R - 1.0), (-(t0 + 1.5), FOOT_R), (-(t1 - 5.0), FOOT_R),
+                                 (-(t1 - 1.0), FOOT_R - 2.0), (-t1, FOOT_R - 3.5), (-t1, 0)], seg=16, mat="rubber",
+                xf=bar)
+    if deployed:
+        foot = leg_xf(1, True, knee=True) @ Vector((0.0, -(n + LEG_EXT), 0.0))
+        assert foot.x > LEG_X + 50.0 and foot.y > L0 - LEG_PIVOT[0], foot     # splayed out, a little forward
+    return b.to_object("%s_BIPOD_%s" % (g.name, "DEPLOYED" if deployed else "FOLDED"))
+
+
+def build_side_rail(g, s):
+    """Our short M-LOK Picatinny section for GoM's Picatinny_Rail_Left (s = +1) / _Right (-1): origin on the
+    handguard's side face at the rail's centre, crossbars standing out along s * X, two M-LOK screws in the outer
+    gaps between crossbars."""
+    b = kit.Builder()
+    half = SIDE_RAIL_LEN / 2.0
+    kit.picatinny(b, -half, half, lambda u, h, yy: Vector((s * h, yy, u)), base_h=SIDE_BASE, tooth_h=SIDE_TEETH,
+                  mat="dark")
+    for yy in (-15.0, 15.0):
+        b.lathe("x", (0, yy, 0), [(0.0, 0), (0.0, 2.2), (s * 2.8, 2.2), (s * 3.2, 1.6), (s * 3.2, 0)], seg=8,
+                mat="metal")
+    return b.to_object("%s_RAIL_%s" % (g.name, "LEFT" if s > 0 else "RIGHT"))
 
 
 def build_bolt(g):
@@ -320,7 +494,9 @@ def build_drum():
 # ==================================================================================================
 
 SHARED = {"dark": (24, 24, 25), "metal": (52, 52, 54), "rubber": (34, 34, 35), "brass": (150, 118, 62),
-          "copper": (140, 82, 52), "magpoly": (42, 42, 44)}
+          "copper": (140, 82, 52), "magpoly": (42, 42, 44),
+          "alx": (146, 124, 90), "leg": (50, 50, 54),         # the ALX's FDE anodising (the photos), its satin black legs
+          "carbon": (36, 36, 39)}
 
 kit.FONT.setdefault("5", ["111", "100", "111", "001", "111"])
 
@@ -350,7 +526,7 @@ def common(maps, col, mat, light):
     col *= occ[..., None]
     e = np.clip(edge * 9.0, 0, 1)
     convex = e * np.clip((ao_s - 0.55) / 0.4, 0, 1)
-    dark = np.isin(mat, [MATS.index(m) for m in ("dark", "metal", "rubber", "magpoly")]) | ~light
+    dark = np.isin(mat, [MATS.index(m) for m in ("dark", "metal", "rubber", "magpoly", "leg", "carbon")]) | ~light
     wear = np.where(dark, 46.0, 30.0) * (0.75 + 0.5 * kit.vnoise(p, 2.5, 5))
     col += (convex * wear)[..., None] * np.array([1.0, 0.97, 0.92])
     col *= (1.0 - 0.3 * e * (1 - np.clip((ao_s - 0.4) / 0.4, 0, 1)))[..., None]
@@ -429,6 +605,21 @@ def paint_gun(maps, g, col):
         col[pnl & left & rounded_rect(L, H, 482.0, 610.0, 144.0, 158.0, 3.0)] *= 0.7
         col[pnl & right & ~rounded_rect(L, H, Wa - 3.0, Wb + 3.0, Wc - 3.0, Wd + 3.0, 2.0) & (L < Wb + 6.0)] += 8
     pin(col, L, H, pnl, 615.0, 151.0, 2.2)
+    # the ALX: its Torx screws, the rear double-screw plate (mostly inside the upper and chassis)
+    if g.alx:
+        alx = (mat == MATS.index("alx")) & side & (np.abs(x) > W_ALX - 0.6)
+        for cL, cH, r in ALX_SCREWS:
+            d = np.hypot(L - cL, H - cH)
+            col[alx & (d < r)] = 14
+            col[alx & (d < 0.45 * r)] = 34
+        col[alx & rounded_rect(L, H, 247.0, 269.5, 142.0, 160.0, 4.0)] = 18
+        # the release paddle's horizontal ribs (the photos')
+        paddle = dark & (L > fwd(91.0) - 0.5) & (L < fwd(100.0) + 0.5) & (H > 150.0) & (H < 160.5)
+        col[paddle & (np.mod(H, 1.5) < 0.6)] = 8
+        col[paddle & (np.mod(H, 1.5) >= 0.6) & (np.mod(H, 1.5) < 0.9)] = 44
+        for cL in (252.7, 261.5):
+            d = np.hypot(L - cL, H - 151.0)
+            col[alx & (d < 4.4) & (d > 3.4)] = 8
     # the Ratchet compensator: its ports, the slot between its two front prongs, the bore
     metal = mat == MATS.index("dark")
     r = np.hypot(x, z - (BORE_H - H0))
@@ -485,6 +676,52 @@ def paint_mag(maps, col, kind):
     return col
 
 
+def paint_legs(maps, col, deployed):
+    """The ALX's legs, in each leg's own frame (leg_xf): the diagonal grip grooves along the housing's sides
+    (rising towards the pivot, as the photos'), the grey release latch in its recess near the housing's end, the
+    Torx star of the pivot screw, the carbon inner leg's twill weave, the foot's grip rings."""
+    p, n, mat = maps["pos"], maps["nrm"], maps["mat"]
+    legm = np.isin(mat, [MATS.index(m) for m in ("leg", "rubber", "carbon", "metal")])
+    for s in (1, -1):
+        inv = np.array(leg_xf(s, deployed).inverted(), np.float32)
+        lp = p @ inv[:3, :3].T + inv[:3, 3]
+        ln = n @ inv[:3, :3].T
+        if deployed:                 # the bar below the knee is splayed: its own frame there
+            inv2 = np.array(leg_xf(s, True, knee=True).inverted(), np.float32)
+            lp2 = p @ inv2[:3, :3].T + inv2[:3, 3]
+            below = (-lp[..., 1] > LEG_KNEE + 0.5)[..., None]
+            lp = np.where(below, lp2, lp)
+            ln = np.where(below, n @ inv2[:3, :3].T, ln)
+        mine = legm & (np.sign(p[..., 0]) == s)
+        ly, lz = lp[..., 1], lp[..., 2]
+        d = -ly
+        sidef = mine & (np.abs(ln[..., 0]) > 0.7)
+        housing = mine & (mat == MATS.index("leg"))
+        grooves = sidef & housing & (d > 40.0) & (d < LEG_HOUSING - 28.0) & (lz > -6.0) & (lz < LEG_H - 2.0)
+        ph = np.mod(d + lz, 7.0)
+        col[grooves & (ph < 2.0)] = 12
+        col[grooves & (ph >= 2.0) & (ph < 3.0)] += 34              # the lit lip of each groove
+        latch = sidef & housing & (d > LEG_HOUSING - 19.0) & (d < LEG_HOUSING - 3.0) & (lz > LEG_H - 4.5)
+        col[latch] = 10                                                 # the recess
+        col[latch & (d > LEG_HOUSING - 17.0) & (d < LEG_HOUSING - 5.0) & (lz > LEG_H - 3.5)] = (112, 112, 116)
+        # the Torx star on the screw head (6 lobes) and the knuckle round it
+        screw = mine & (mat == MATS.index("metal")) & (np.abs(ln[..., 0]) > 0.7)
+        r = np.hypot(ly, lz)
+        star = r < 1.4 + 0.5 * np.cos(6.0 * np.arctan2(lz, ly))
+        col[screw] = 26
+        col[screw & star] = 6
+        col[screw & (r > 3.6)] = 40
+        # the inner leg's 2/2 twill (1.5 mm tows), the foot's rings
+        carbon = mine & (mat == MATS.index("carbon"))
+        arc = np.arctan2(lp[..., 0], lz) * TUBE_R
+        tw = np.mod(np.floor(d / 1.5) + np.floor(arc / 1.5), 4) < 2
+        col[carbon & tw] += 12
+        col[carbon & ~tw] -= 6
+        rubber = mine & (mat == MATS.index("rubber"))
+        col[rubber & (np.mod(d, 3.0) < 0.8) & (np.hypot(lp[..., 0], lz) > FOOT_R - 0.4)] *= 0.6
+    return col
+
+
 def paint(maps, kind, g=None):
     mat = maps["mat"]
     col = np.zeros(maps["pos"].shape, np.float32)
@@ -495,11 +732,13 @@ def paint(maps, kind, g=None):
         col[mat == i] = base.get(name, SHARED["dark"])
     light = np.zeros(mat.shape, bool)
     if g is not None and g.colours is FDE:
-        light = np.isin(mat, [MATS.index("polymer"), MATS.index("upper")])
+        light = np.isin(mat, [MATS.index("polymer"), MATS.index("upper"), MATS.index("alx")])
     if kind == "gun":
         col = paint_gun(maps, g, col)
     elif kind in ("pmag10", "pmag20", "pmag25", "drum"):
         col = paint_mag(maps, col, kind)
+    elif kind in ("bipod_folded", "bipod_deployed"):
+        col = paint_legs(maps, col, kind == "bipod_deployed")
     col = common(maps, col, mat, light)
     return np.clip(col, 0, 255)
 
@@ -530,17 +769,20 @@ def gp(L, H, x=0.0):
 
 
 ZERO = [0.0, 0.0, 0.0]
-# How far GoM's parts sit from the surface they clamp to (no rails drawn on the M-LOK handguard, as the PS90's): the
-# PS90's values, then lights and lasers moved out by fit_audit.py's first run (they sank about 3 deeper than on GoM's
-# guns into the rounded handguard: lights 3.3, lasers 3.2, game units x 1000).
-LIGHT_IN, LASER_OUT, LASER_DOWN, FOREGRIP_UP = -0.0030, 0.0038, 0.0008, -0.0008
+# How far GoM's foregrips sit from the stock handguard's underside (fit_audit.py, as the PS90's); its lights 0.0007
+# out from our side rails' crossbar faces, its lasers 0.0018 out and 0.0008 lower (the Vectors' / AUG A1's
+# relations to a rail of this height)
+FOREGRIP_UP = -0.0008
+LIGHT_OUT, LASER_OUT, LASER_DOWN = 0.0007, 0.0018, 0.0008
 
 
 def points(g, bounds):
     rail_top = (RAIL_TOP - H0) * K
     oy = gp(OPTIC_L, 0)[1]
-    sy, sz = gp(SIDE_L, SIDE_H)[1:]
-    face = W_HG * K
+    side_l, side_h, wall = SIDE_RAIL[g.name]
+    sy, sz = gp(side_l, side_h)[1:]
+    face = wall * K                                            # the handguard's side, our rails' origins
+    bars = (wall + SIDE_BASE + SIDE_TEETH - 1.0) * K           # their crossbar faces (kit.picatinny)
     bottom = (HG_BOTTOM - H0) * K
     canon = g.muzzle + (28.8 if g is G223 else 48.0)
     pts = {
@@ -550,12 +792,10 @@ def points(g, bounds):
         # the SCARs' / MP7's relations to the rail's top (GoM's Picatinny_Rail_Up and its scopes)
         "rail_up": {"offset": [0.0, oy, round(rail_top - 0.0055, 4)], "rotate": ZERO},
         "scope": {"offset": [0.0, oy, round(rail_top - 0.0032, 4)], "rotate": ZERO},
-        "rail_down": {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + 0.0025, 4)], "rotate": ZERO},
-        "foregrip": {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + FOREGRIP_UP, 4)], "rotate": ZERO},
         "rail_left": {"offset": [round(face, 4), sy, sz], "rotate": ZERO},
-        "light_left": {"offset": [round(face - LIGHT_IN, 4), sy, sz], "rotate": ZERO},
+        "light_left": {"offset": [round(bars + LIGHT_OUT, 4), sy, sz], "rotate": ZERO},
         "rail_right": {"offset": [round(-face, 4), sy, sz], "rotate": ZERO},
-        "laser_right": {"offset": [round(-(face + LASER_OUT), 4), sy, round(sz - LASER_DOWN, 4)], "rotate": ZERO},
+        "laser_right": {"offset": [round(-(bars + LASER_OUT), 4), sy, round(sz - LASER_DOWN, 4)], "rotate": ZERO},
         "bolt_fired": {"offset": [0.0, round(-g.travel * K, 4), 0.0], "rotate": ZERO},
         "handle_back": {"offset": [0.0, round(-CH_TRAVEL * K, 4), 0.0], "rotate": ZERO},
         "world": {"offset": [round(0.02 * K / K_OLD, 4), round(0.13 * K / K_OLD, 4), 0.0],
@@ -568,13 +808,23 @@ def points(g, bounds):
                      if g is G223 else "762x51Magazine10/20/25/50_PMAG, origin at their feed lips"),
         "canon": ("as GoM's M4A1, 28.8 mm (0.0187) behind the muzzle: GoM's AR mount device and its muzzle parts"
                   if g is G223 else "the compensator's rear: SCARH_Muzzle_Mount_Device and SCARH_Suppressor"),
-        "accessories": "optics on the upper's rail at L %.0f; lights / lasers on the handguard's M-LOK sides at L %.0f, "
-                       "H %.1f; foregrips under it at L %.0f (no rails drawn; GoM's bipods do not fit)"
-                       % (OPTIC_L, SIDE_L, SIDE_H, FOREGRIP_L),
+        "accessories": "optics on the upper's rail at L %.0f; GoM's optional Picatinny_Rail_Left / _Right drawn as "
+                       "%s_RAIL_LEFT / _RIGHT (our M-LOK sections, origin on the side face at L %.1f, H %.1f), "
+                       "lights / lasers on them; %s" % (
+                           OPTIC_L, g.name, side_l, side_h,
+                           "no foregrips: the ALX's legs fold into its underside" if g.alx else
+                           "foregrips under the handguard at L %.0f (GoM's bipods do not fit)" % FOREGRIP_L),
         "bolt_fired": "%s_BOLT (the carrier in the right side's %s) back %.1f mm real"
                       % (g.name, "side-eject port" if g.eject == "side" else "chute's viewing window", g.travel),
         "handle_back": "%s_HANDLE (both knobs) back %.0f mm real, only while racked" % (g.name, CH_TRAVEL),
     }
+    if g.alx:
+        # BLK LBL's ALX legs are modelled in the gun's space (the HBAR's and the M249's way)
+        pts["integrated_bipod"] = {"offset": ZERO, "rotate": ZERO}
+        pts["_notes"]["integrated_bipod"] = "%s_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space" % g.name
+    else:
+        pts["rail_down"] = {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + 0.0025, 4)], "rotate": ZERO}
+        pts["foregrip"] = {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + FOREGRIP_UP, 4)], "rotate": ZERO}
     pts["_extras"] = {"handgun_hold": False, "photo_origin_mm": [L0, H0], "bore_mm": BORE_H,
                       "real_mm_per_game_unit": round(1.0 / K, 2), "k": K, "barrel_in": g.barrel, "eject": g.eject,
                       "length_mm": 698.5 - g.muzzle}
@@ -593,18 +843,32 @@ def main():
     scene.world = bpy.data.worlds.new("w")
     scene.world.color = (0, 0, 0)
 
-    guns = {g.name: (build_body(g), build_bolt(g), build_handle(g)) for g in GUNS}
+    guns = {}
+    for g in GUNS:
+        objs = [build_body(g), build_bolt(g), build_handle(g), build_side_rail(g, 1), build_side_rail(g, -1)]
+        if g.alx:
+            objs += [build_bipod(g, False), build_bipod(g, True)]
+        guns[g.name] = tuple(objs)
     mags = [build_pmag(10), build_pmag(20), build_pmag(25), build_drum()]
     for objs in guns.values():
-        kit.unwrap(list(objs), 0.005)
+        kit.unwrap([o for o in objs if "_BIPOD_" not in o.name], 0.005)
+        legs = [o for o in objs if "_BIPOD_" in o.name]
+        if legs:                       # their own texture (512): the 2 mm grooves need ~0.4 mm texels
+            kit.unwrap(legs, 0.008)
     for o in mags:
         kit.unwrap([o], 0.012)
 
     os.makedirs(TEX_DIR, exist_ok=True)
     for g in GUNS:
-        body, bolt, handle = guns[g.name]
-        texture([body, bolt, handle], [[body, handle], [body, bolt], [body, handle]], ["gun", "bolt", "handle"], 256,
-                os.path.join(TEX_DIR, g.name + ".png"), g)
+        body, bolt, handle, rail_l, rail_r = guns[g.name][:5]
+        legs = list(guns[g.name][5:])
+        near = legs[:1]                        # the folded legs shade the ALX's channel
+        objs = [body, bolt, handle, rail_l, rail_r]
+        ctx = [[body, handle] + near, [body, bolt], [body, handle], [rail_l], [rail_r]]
+        texture(objs, ctx, ["gun", "bolt", "handle", "rail", "rail"], 256, os.path.join(TEX_DIR, g.name + ".png"), g)
+        if legs:
+            texture(legs, [[body, o] for o in legs], ["bipod_folded", "bipod_deployed"], 512,
+                    os.path.join(TEX_DIR, g.name + "_BIPOD.png"), g)
     for kind, m in zip(("pmag10", "pmag20", "pmag25", "drum"), mags):
         texture([m], [[m]], [kind], 128, os.path.join(TEX_DIR, m.name + ".png"))
 

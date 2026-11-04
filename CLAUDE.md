@@ -1712,8 +1712,9 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `762x51Magazine10/20/25/50_PMAG` ("PMAG 20Rds 7.62x51mm Magazine", the 50 Magpul's D-50, a drum facing front and back: built first facing the sides as Magpul's real D-60 / D-50 do, and the user corrected it, "again", as for the SCAR-H's drum: **every drum in this mod faces front and back**, its axis along the barrel),
   profile "7.62x51mm SR-25", in GoM's 7.62x51mm ammo family (Ammunition.lua), modelled about the feed lips with GoM's
   STANAG `Bip01_Prop2`. Muzzle: the .223 GoM's AR family at `canon` = muzzle + 28.8 (the SCAR-L's), the .308 the
-  SCAR-H's mount + SOCOM762-RC at the compensator's rear (their MountOn in scar_items()). Four hidden
-  `MDR_Integrated_Rail_*` parts (shared) as on the PS90. **No GoM bipod** (user, 2026-11-04: "the MDRx has a different bipod system": Desert Tech's own bipod clamps to the handguard, the store's "BLK LBL ALX Handguard Bipod"): GoM's Bipod_Deployed / _Folded are left out of the MountOn, the rail rule, the model's points and the found-gun parts. First asked as "a foregrip or a bipod, not both" (GoM's bipod with its legs spans L 69-177 under the handguard, over the foregrip at L 150); Gunworks' `UpgradeExclusives` would have done it only for every gun at once (it pairs part types, and GoM's M4A1 / G36 take both), so a wrapper of its `IsBlockedByExclusive` for the MDRs was written and dropped. Lua: `shared/GunsOfTienPost93/MDR.lua`; loot one
+  SCAR-H's mount + SOCOM762-RC at the compensator's rear (their MountOn in scar_items()). Hidden
+  `MDR_Integrated_Rail_Up / _Down` parts (shared; the .308 uses only Up) as on the PS90; the sides take GoM's optional
+  rails (below). **No GoM bipod** (user, 2026-11-04: "the MDRx has a different bipod system": Desert Tech's own bipod clamps to the handguard, the store's "BLK LBL ALX Handguard Bipod"): GoM's Bipod_Deployed / _Folded are left out of the MountOn, the rail rule, the model's points and the found-gun parts. First asked as "a foregrip or a bipod, not both" (GoM's bipod with its legs spans L 69-177 under the handguard, over the foregrip at L 150); Gunworks' `UpgradeExclusives` would have done it only for every gun at once (it pairs part types, and GoM's M4A1 / G36 take both), so a wrapper of its `IsBlockedByExclusive` for the MDRs was written and dropped. Lua: `shared/GunsOfTienPost93/MDR.lua`; loot one
   Anachronistic alternative each with GoM's civilian `223_Box` / `308_Box` (GoM packs its AR-15 with `223_Box`), the
   D-50 in the high-capacity tactical spawner; Hot Brass (the .223 the AUG A3's values, the .308 gentle, forward and
   right, forwardOffset 0.36); tooltips.
@@ -1739,15 +1740,64 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `<gun>_HANDLE` = both knobs at L 278-292, `handle_back` 110 mm (the slot L 275-410). The ejection details are
   Desert Tech's kits (`mdrx-upgrade-kit_*`): the forward-eject chute is a long black assembly with a latch, the
   side-eject kit a plain cover for the other side and a frame with a long open window.
-- **Fit** (fit_audit.py): starting from the PS90's clamp depths, lights and lasers sank 3.2-3.3 deeper than on GoM's
-  guns into the rounded handguard (LIGHT_IN -0.0030, LASER_OUT 0.0038 now: 0.8-1.3 like GoM's); the bipod at L 95 sat
-  in the hand stop's hook, moved to L 118 and 0.0018 under the underside (0.8, GoM's own). No flag left on the MDRs.
-- **Files**: `scripts/post93/build_mdr.py` (Blender, ~2 min: both FBX, `GunsOfTienPost93_PMAG_magazines.fbx`,
-  textures, `mdr223_points.json` / `mdr308_points.json`), `render_mdr.py -- DIR` (its own copy of render_scar.py's
-  helpers: render_scar runs its main() on import), `make_mdr_art.py [--renders DIR] [--photo PATH]` (icons with the
+- **Side rails** (user, 2026-11-04: "optional Picatinny rails on the left and right"; our short M-LOK sections chosen
+  over GoM's 125 mm models): GoM's `Picatinny_Rail_Left / _Right` through the main mod's `Rails.Register` (the
+  Vectors' way), drawn as `MDR223_RAIL_LEFT / _RIGHT`, `MDR308_RAIL_LEFT / _RIGHT` (build_mdr.py
+  `build_side_rail`: five crossbars, 48.8 mm so they sit 2 mm from both ends and two M-LOK screws fill the outer gaps;
+  base 1.5, crossbars 3 proud: the Vectors'), origin on the handguard's side face. The .223's on the stock
+  handguard's lower M-LOK row (L 133.5, H 157.5), the .308's on the ALX's 3 / 9 o'clock row over its third column
+  (L 97.65, H 172.4). Lights 0.0007 out from the crossbar faces, lasers 0.0018 out and 0.0008 lower (the Vectors'
+  relations); found guns get them with ":PRL" / ":PRR". They replaced the hidden `MDR_Integrated_Rail_Left / _Right`
+  (removed with their names: the MDRx was unreleased).
+- **BLK LBL's ALX bipod handguard on the .308** (user, 2026-11-04, "built in" chosen over an optional part; the .223
+  keeps the polymer one). Desert Tech's store photos of the 16" FDE (`references/mdr/alx`, its page
+  `deserttech.com/wlvrn-mdrx-alx-bipod-16-handguard-bipod-blk-lbl-fde.html`, images under `/api/media/<id>/original.png`):
+  9" (228.6 mm), 1 7/8" across, legs 6 1/4"-9 1/8", aluminium with carbon fibre inner legs, M-LOK at 2, 3, 9 and 10
+  o'clock. Read on a mm grid over 6f9266eb.png (7.826 px/mm, L = 67 + (1856 - x) / 7.826, H = 197 - (y - 210) /
+  7.826): it lines up with the stock handguard (nose L 67-70, rear tucked to L 294.5, rail top on RAIL_TOP), its rail
+  starts at L 229.5 with a shelf (H 186.4) under the MDRx's black front block, body bottom H 125, leg window H
+  128.8-149.7 from L 79.5 to 247.5, leg pivot (88.5, 139). The 20" is that stretched 101.6 mm ahead of L 125
+  (`fwd`), two more M-LOK columns (14 mm webs) and a second lower slot; its legs are the 16"'s (Desert Tech lists
+  one leg height for every length), so its leg window ends with them (rear edge 101.6 mm earlier, L 142.4-145.9)
+  and the underside behind is closed. Its nose (L -31.6) is 4 mm behind the Ratchet
+  compensator and 20 mm behind the SOCOM762-RC's rear. Built as part of the body (`build_alx`, material `alx`):
+  the outline slab with the slots cut through, the window's notch open across the full width, thin side lips under
+  it, a bracket and pin for the legs at the nose, the ribbed release paddle (ribs as geometry) on both sides in the
+  nose's cut-out. Legs `MDR308_BIPOD_FOLDED / _DEPLOYED` (gun space at `integrated_bipod`, the HBAR's way, on
+  their own `MDR308_BIPOD.png` 512: the gun's 256 gave ~3 mm texels and lost the grooves), detailed from the
+  user's photos (Firearmland's FDE ALX deployed, a black MDRx standing on one): per leg a 19 x 20.4 mm extruded
+  housing (bevel 3) from the knee to 125.5 mm from the pivot with painted diagonal grooves (2 mm, 7 mm pitch) and
+  the grey latch in its recess near its end, a knuckle r 8.5 with a Torx screw head, a carbon inner leg (r 6, 2/2
+  twill painted) drawn out 55 mm when deployed (of the 73 the 6 1/4"-9 1/8" range allows), a round rubber foot
+  (r 8.5, ringed, chamfered tip); folded the inner leg is home and the foot ends 155 mm from the pivot (the 16"
+  photo: housing to L 214, foot to L 243.5). The first build's 257 mm legs filling the 20" channel were a guess and
+  put the feet 50 mm too low. Deployed = 93 degrees down (feet a little forward) and a 45 degree V seen from the
+  front (user, 2026-11-04: "nearly 45 degrees"; 8 degrees each was too straight): the knuckle and neck stay upright
+  inside the nose and the housing splays 22.5 degrees from a knee 19.5 mm below the pivot (`leg_xf(..., knee=True)`;
+  splayed from the pivot it cut through the side lips, and from 16 mm its inner top corner, rising 3.6 mm as it
+  turns, grazed the nose's bottom edge), feet at H -58, 178 mm across their outer edges (just under the D-50's base at -51, as the
+  user's photo stands with the magazine clear of the table). Painted in each leg's own frame (`paint_legs` inverts
+  `leg_xf`, the knee frame below the knee). No foregrip on the .308 (the folded legs fill the channel; the closed
+  underside behind it has none either). Lua (MDR.lua): Gunworks' FoldingBipod
+  (`BipodIntegrated`, found folded), GoM's rail bipod stats (as the HBAR's, without its spread modifier: semi-auto
+  only), BipodSystem stance; tooltip state lines as the HBAR's.
+- **Slab holes and bevels** (found on the ALX, 2026-11-04): `kit.slab` offsets every loop of its 2D curve by the
+  bevel into the material, so two holes (or a hole and the outline) closer than twice the bevel make crossing loops,
+  and Blender's curve fill flips inside out (the window filled, the wall above it empty). The ALX's rows are 2 mm
+  apart: bevel 0.6, not 1.2. Holes must also wind as `stadium()` does (counter-clockwise in L, H).
+- **Fit** (fit_audit.py, 2026-11-04): GoM's lights and lasers on the new side rails sit as on the Vectors (lights
+  1.0 / 1.3 deep, lasers 0.5 gap / 1.2, GoM's 0.6-0.7 / 0.3-1.0); foregrips on the .223 as before; the bipod at L
+  95 of the first build was dropped with GoM's bipods. Overlaps of the legs with the body (BVH, exported FBX) are
+  only the pivot pin and bracket inside the knuckles, the knuckles seated against the nose's inner wall (as the
+  photo's hinge block) and the barrel inside the channel. No flag left on the MDRs.
+- **Files**: `scripts/post93/build_mdr.py` (Blender, ~1.5 min: both FBX (bodies, bolts, handles, side rails, the
+  .308's legs), `GunsOfTienPost93_PMAG_magazines.fbx`, textures, `mdr223_points.json` / `mdr308_points.json`),
+  `render_mdr.py -- DIR` (its own copy of render_scar.py's helpers: render_scar runs its main() on import; `*_rails_*`
+  and `MDR308_alx_*` views), `make_mdr_art.py [--renders DIR] [--photo PATH]` (icons with the
   SCARs' cameras, the PMAGs with the MP7 magazine light, the D-50 with the MP7 drum's; `docs/post93_mdr_preview.png`
-  with the photo's silhouette), `gen_post93_guns.py mdrs()` (models_mdr.txt, items_mdr.txt, fixing_mdr.txt, names).
-  Rebuild: build, render, art, gen, `check_refs.py`, `fit_audit.py`. On the Mac the art script needs numpy on
+  with the photo's silhouette: .223 96.5 %, .308 93.1 % since the ALX), `gen_post93_guns.py mdrs()` (models_mdr.txt,
+  items_mdr.txt, fixing_mdr.txt, names). Rebuild: build, render, art, gen, `check_refs.py`, `fit_audit.py`. On
+  Windows the rebuild rewrites the PMAG FBX, textures and icons with byte noise only: restore them from git. On the Mac the art script needs numpy on
   PYTHONPATH (not `-I`).
 
 ## Bullpup set (2026-10-27)

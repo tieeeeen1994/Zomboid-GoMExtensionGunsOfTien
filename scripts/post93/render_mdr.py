@@ -6,8 +6,9 @@ Imports what build_mdr.py wrote, places every part at mdr223_points.json / mdr30
 (offset, then rotateXYZ in degrees, game space) and renders orthographic Workbench views into OUT_DIR: each gun's left
 side at its reference photo's scale (for the outline check in make_mdr_art.py), the right side (the window and the
 carrier), 3/4 views, the top, the carrier and handles back, the PMAGs and the D-50, GoM's STANAG 30 and AR mount device
-+ MKI on the .223, the SCAR-H's mount device + SOCOM762-RC on the .308, GoM's optics, foregrip, light and laser
-at their points, and GoM's FAMAS at the same scale. Game space is Blender world space, the mirror image of what the
++ MKI on the .223, the SCAR-H's mount device + SOCOM762-RC on the .308, GoM's optics, foregrip (the .223), light and
+laser on our side rails (MDR*_RAIL_LEFT / _RIGHT at rail_left / rail_right), the .308's ALX legs folded and deployed
+(`alx_*` views, at `integrated_bipod`), and GoM's FAMAS at the same scale. Game space is Blender world space, the mirror image of what the
 game shows; make_mdr_art.py flips every render left-right (render_scar.py's helpers).
 """
 
@@ -50,6 +51,19 @@ def load(path, texture, keep=None):
         o.data.materials.append(m)
         objs[o.name] = o
     return objs
+
+
+def retexture(objs, texture):
+    """Give imported objects another texture (load()'s material, on another image)."""
+    m = bpy.data.materials.new(os.path.basename(texture))
+    nt = m.node_tree
+    t = nt.nodes.new("ShaderNodeTexImage")
+    t.image = bpy.data.images.load(texture, check_existing=True)
+    t.interpolation = 'Closest'
+    nt.links.new(t.outputs[0], nt.nodes["Principled BSDF"].inputs[0])
+    for o in objs:
+        o.data.materials.clear()
+        o.data.materials.append(m)
 
 
 def place_at(o, point=None):
@@ -121,10 +135,14 @@ def main():
     sc.collection.objects.link(cam)
     sc.camera = cam
 
-    guns = {}
+    guns, rails, legs = {}, {}, {}
     for g in GUNS:
         objs = R.load(os.path.join(FIRE, "GunsOfTienPost93_%s.fbx" % g), os.path.join(TEX, g + ".png"))
         guns[g] = (objs[g + "_BODY"], objs[g + "_BOLT"], objs[g + "_HANDLE"])
+        rails[g] = (objs[g + "_RAIL_LEFT"], objs[g + "_RAIL_RIGHT"])
+        if g + "_BIPOD_FOLDED" in objs:           # on a texture of their own
+            legs[g] = (objs[g + "_BIPOD_FOLDED"], objs[g + "_BIPOD_DEPLOYED"])
+            retexture(legs[g], os.path.join(TEX, g + "_BIPOD.png"))
     pmags = {r: R.load(MAGS, os.path.join(TEX, "762x51Magazine%d_PMAG.png" % r), keep="762x51Magazine%d_PMAG" % r)
              ["762x51Magazine%d_PMAG" % r] for r in (10, 20, 25, 50)}
     supp = R.load(SCAR_PARTS, os.path.join(TEX, "SCARH_Suppressor.png"), keep="SCARH_Suppressor")["SCARH_Suppressor"]
@@ -146,13 +164,22 @@ def main():
             except Exception as e:
                 print("skip", name, e)
 
-    def state(g, mag=True, fired=False, back=False, rounds=20, extra=(), h_supp=False):
+    def state(g, mag=True, fired=False, back=False, rounds=20, extra=(), h_supp=False, side_rails=False,
+              deployed=False):
         p = PTS[g]
         body, bolt, handle = guns[g]
         place(body)
         place(bolt, p["bolt_fired"] if fired else None)
         place(handle, p["handle_back"] if back else None)
         objs = [body, bolt, handle]
+        if side_rails:
+            for o, point in zip(rails[g], ("rail_left", "rail_right")):
+                place(o, p[point])
+                objs.append(o)
+        if g in legs:
+            o = legs[g][1 if deployed else 0]
+            place(o, p["integrated_bipod"])
+            objs.append(o)
         if mag:
             if g == "MDR223":
                 m = g_parts.get("556x45Magazine30_STANAG")
@@ -197,15 +224,39 @@ def main():
         R.render(g + "_back_right", right, centre, length * k, w, 600)
         state(g, mag=False)
         R.render(g + "_nomag_under", (0.25, -0.2, 0.95), centre, length * k, w, 700)
+        state(g, mag=False, side_rails=True)
+        R.render(g + "_rails_left", left, centre, length * k, w, 600)
+        R.render(g + "_rails_right", right, centre, length * k, w, 600)
         if g == "MDR223":
-            state(g, extra=[("Aimpoint_Sight", "scope"), ("MKC_Foregrip", "foregrip"), ("SR7_Light", "light_left"),
-                            ("AimRight_Laser", "laser_right"), ("Muzzle_Mount_Device", "canon"),
-                            ("MKI_Suppressor", "canon")])
+            state(g, side_rails=True, extra=[("Aimpoint_Sight", "scope"), ("MKC_Foregrip", "foregrip"),
+                                             ("SR7_Light", "light_left"), ("AimRight_Laser", "laser_right"),
+                                             ("Muzzle_Mount_Device", "canon"), ("MKI_Suppressor", "canon")])
         else:
-            state(g, rounds=20, h_supp=True, extra=[("LR4X_Scope", "scope"), ("MKC_Foregrip", "foregrip"),
-                                                    ("SR7_Light", "light_left"), ("AimRight_Laser", "laser_right")])
+            state(g, rounds=20, h_supp=True, side_rails=True,
+                  extra=[("LR4X_Scope", "scope"), ("SR7_Light", "light_left"), ("AimRight_Laser", "laser_right")])
         R.render(g + "_fitted_q", q_left, centre + Vector((0, 0.04, 0)), (length + 200) * k, w, 800)
         R.render(g + "_fitted_qr", q_right, centre + Vector((0, 0.04, 0)), (length + 200) * k, w, 800)
+        R.render(g + "_fitted_left", left, centre + Vector((0, 0.04, 0)), (length + 200) * k, w, 600)
+        if g in legs:
+            # the ALX: legs folded and deployed, from the side, three quarters, under and from the front
+            for dep in (False, True):
+                tag = "deployed" if dep else "folded"
+                state(g, deployed=dep, side_rails=True, h_supp=True,
+                      extra=[("SR7_Light", "light_left"), ("AimRight_Laser", "laser_right")])
+                c2 = centre + Vector((0, 0.02, -0.03 if dep else 0.0))
+                R.render(g + "_alx_%s_left" % tag, left, c2, (length + 120) * k, w, 760 if dep else 600)
+                R.render(g + "_alx_%s_q" % tag, q_left, c2, (length + 120) * k, w, 900)
+                R.render(g + "_alx_%s_front" % tag, (0, -1, 0.0), Vector((0, 0, -0.03 if dep else 0.0)),
+                         0.32 if dep else 0.16, 700, 700)
+                # close on the legs from the front left, above (the user's Firearmland photo's angle), bare
+                state(g, mag=False, deployed=dep)
+                R.render(g + "_alx_%s_legs" % tag, (-0.6, -0.5, -0.35), Vector((0.0, 0.23, -0.025 if dep else 0.02)),
+                         0.15 if dep else 0.11, 1200, 1200)
+            state(g, mag=False, side_rails=True)
+            R.render(g + "_alx_under", (0.0, 0.0, 1.0), centre, length * k, w, 400)
+            fr = Vector((0.0, 0.22, 0.02))                         # the ALX's nose
+            R.render(g + "_alx_nose_q", q_left, fr, 0.14, 900, 700)
+            R.render(g + "_alx_nose_qr", q_right, fr, 0.14, 900, 700)
     state("MDR308", rounds=50)
     R.render("MDR308_drum_left", left, Vector((0.0, 0.0, -0.04)), 0.36, 1200, 900)
     R.render("MDR308_drum_q", q_right, Vector((0.0, 0.0, -0.04)), 0.36, 1200, 900)

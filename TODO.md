@@ -36,24 +36,14 @@ Built, never played. Tick each once seen working in game; details in the CLAUDE.
 - [ ] **MDRx .223 and .308** (Post-93, "Desert Tech MDRx"): in the hands and on the back; GoM's FAMAS reload with a
       STANAG (the main mod's `_Hand` item) and with a PMAG in the off hand (its `Bip01_Prop2` is GoM's STANAG's, never
       seen); the carrier moving in the right side's window and the charging handles only on the rack; GoM's optics,
-      foregrips, lights and lasers on the handguard (no GoM bipod offered); the SCAR-H's mount + SOCOM762-RC on the .308; Hot Brass
+      foregrips under the .223's handguard (no GoM bipod offered); the SCAR-H's mount + SOCOM762-RC on the .308; Hot Brass
       (the .223 to the right behind the grip, the .308 forward by the handguard); the loot (Anachronistic spawner).
-
-## Planned
-
-- [ ] **MDRx .308: BLK LBL's ALX bipod handguard** (user, 2026-11-04: "for mdrx .308 maybe we should"; CLAUDE.md
-      "Desert Tech MDRx"). GoM's bipods do not fit the MDRx (its own bipod system), so the .308 would get the ALX: an
-      aluminium M-LOK handguard whose two legs fold flush into its underside and swing down. Desert Tech sells it in
-      16" and 20" lengths, in black, FDE and Tungsten (store slugs `wlvrn-mdrx-alx-bipod-20-handguard-bipod-blk-lbl-fde`,
-      `mdrx-alx-bipod-20-handguard-by-blk-lbl-tungstenacc0294-t`; the 16" black's side photos are
-      `references/mdr/deserttech/64ad2285*.png` / `b9072fd9*.png`), so the 20" FDE one matches the .308. Built as the
-      AUG HBAR's integrated bipod: folded / deployed nodes at an `integrated_bipod` point, BipodIntegrated parts, its
-      stats and Gunworks' bipod stance. Open: replace the .308's handguard with the ALX for good, or offer it as a part.
-- [ ] **MDRx: optional Picatinny rails on the left and right** (user, 2026-11-04). GoM's `Picatinny_Rail_Left` /
-      `_Right` upgrades on the handguard's M-LOK sides, as the Vectors' and the AUG A3's left rail, in place of the
-      hidden `MDR_Integrated_Rail_Left` / `_Right` that carry GoM's lights and lasers today; rail models drawn at the
-      sides (`rail_left` / `rail_right`) and fit_audit.py for the lights and lasers on them. With the ALX on the .308
-      the rails go on its M-LOK slots too.
+- [ ] **MDRx .308's ALX bipod handguard** (Post-93, "Desert Tech MDRx", built 2026-11-04): found with the legs
+      folded; Gunworks' fold / unfold swaps them (legs down from the nose, the gun standing on its feet); the bipod
+      stance on a low wall or table while aiming; the deployed tooltip lines; no foregrip offered on the .308.
+- [ ] **MDRx side rails** (same section): GoM's Picatinny Rail Left / Right (and its universal rail) fit both MDRx,
+      drawn as our short M-LOK sections (the .223's on its lower slot row, the .308's high on the ALX); GoM's lights on
+      the left, lasers on the right, beams included; a found MDRx with a light or laser comes with its rail.
 
 ## Bugs
 

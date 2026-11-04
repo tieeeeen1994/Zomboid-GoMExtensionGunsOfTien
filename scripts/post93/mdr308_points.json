@@ -59,35 +59,11 @@
       0.0
     ]
   },
-  "rail_down": {
-    "offset": [
-      0.0,
-      0.1435,
-      0.0184
-    ],
-    "rotate": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  "foregrip": {
-    "offset": [
-      0.0,
-      0.1435,
-      0.0151
-    ],
-    "rotate": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
   "rail_left": {
     "offset": [
-      0.0157,
-      0.1345,
-      0.0323
+      0.0144,
+      0.1751,
+      0.0412
     ],
     "rotate": [
       0.0,
@@ -97,9 +73,9 @@
   },
   "light_left": {
     "offset": [
-      0.0187,
-      0.1345,
-      0.0323
+      0.0172,
+      0.1751,
+      0.0412
     ],
     "rotate": [
       0.0,
@@ -109,9 +85,9 @@
   },
   "rail_right": {
     "offset": [
-      -0.0157,
-      0.1345,
-      0.0323
+      -0.0144,
+      0.1751,
+      0.0412
     ],
     "rotate": [
       0.0,
@@ -121,9 +97,9 @@
   },
   "laser_right": {
     "offset": [
-      -0.0195,
-      0.1345,
-      0.0315
+      -0.0183,
+      0.1751,
+      0.0404
     ],
     "rotate": [
       0.0,
@@ -171,9 +147,22 @@
     "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 388, H 104)",
     "magazine": "762x51Magazine10/20/25/50_PMAG, origin at their feed lips",
     "canon": "the compensator's rear: SCARH_Muzzle_Mount_Device and SCARH_Suppressor",
-    "accessories": "optics on the upper's rail at L 390; lights / lasers on the handguard's M-LOK sides at L 165, H 157.5; foregrips under it at L 150 (no rails drawn; GoM's bipods do not fit)",
+    "accessories": "optics on the upper's rail at L 390; GoM's optional Picatinny_Rail_Left / _Right drawn as MDR308_RAIL_LEFT / _RIGHT (our M-LOK sections, origin on the side face at L 97.7, H 172.4), lights / lasers on them; no foregrips: the ALX's legs fold into its underside",
     "bolt_fired": "MDR308_BOLT (the carrier in the right side's chute's viewing window) back 39.5 mm real",
-    "handle_back": "MDR308_HANDLE (both knobs) back 110 mm real, only while racked"
+    "handle_back": "MDR308_HANDLE (both knobs) back 110 mm real, only while racked",
+    "integrated_bipod": "MDR308_BIPOD_FOLDED / _DEPLOYED are modelled in the gun's space"
+  },
+  "integrated_bipod": {
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
   },
   "_extras": {
     "handgun_hold": false,
@@ -200,7 +189,7 @@
         0.2952,
         0.057
       ],
-      "tris": 3876
+      "tris": 5336
     },
     "MDR308_BOLT": {
       "min": [
@@ -227,6 +216,58 @@
         0.0467
       ],
       "tris": 176
+    },
+    "MDR308_RAIL_LEFT": {
+      "min": [
+        -0.0003,
+        -0.0147,
+        -0.0064
+      ],
+      "max": [
+        0.0021,
+        0.0147,
+        0.0064
+      ],
+      "tris": 200
+    },
+    "MDR308_RAIL_RIGHT": {
+      "min": [
+        -0.0021,
+        -0.0147,
+        -0.0064
+      ],
+      "max": [
+        0.0003,
+        0.0147,
+        0.0064
+      ],
+      "tris": 200
+    },
+    "MDR308_BIPOD_FOLDED": {
+      "min": [
+        -0.0118,
+        0.1484,
+        0.015
+      ],
+      "max": [
+        0.0118,
+        0.247,
+        0.0273
+      ],
+      "tris": 736
+    },
+    "MDR308_BIPOD_DEPLOYED": {
+      "min": [
+        -0.0536,
+        0.2363,
+        -0.0978
+      ],
+      "max": [
+        0.0536,
+        0.253,
+        0.0262
+      ],
+      "tris": 832
     },
     "762x51Magazine10_PMAG": {
       "min": [

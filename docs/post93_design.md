@@ -373,12 +373,20 @@ No new rounds. References: `references/mdr/` (git-ignored, SOURCES.txt), see CLA
 Both: held as rifles (two hands, back slot), GoM's FAMAS reload ("famas_rifle", as the AUGs and the PS90), the
 ambidextrous charging handle at the front of the chassis drawn as our non-reciprocating `<gun>_HANDLE` with the bolt
 carrier plate in the port (section "The charging handle and the bolt are not always the same part"); the full-length
-top rail (receiver + handguard, ~14") for GoM's optics, M-LOK slots on the handguard's sides and bottom as hidden
-integral rail parts (the PS90's way) for lights (left), lasers (right) and foregrips (bottom), no GoM bipod (user,
-2026-11-04: the MDRx has its own handguard bipod); no bayonet,
+top rail (receiver + handguard, ~14") for GoM's optics, GoM's optional Picatinny_Rail_Left / _Right drawn as
+our short M-LOK rail sections for its lights and lasers (user, 2026-11-04, the Vectors' way; they replaced two
+hidden integral side rails), no GoM bipod (user, 2026-11-04: the MDRx has its own handguard bipod); no bayonet,
 no folding stock. Loot: civilian and post-1993, in GoM's `World_Anachronistic_Spawner`; proposed as one alternative
 giving one of the two guns (the PS90 / P90 TR way), built as one alternative each (the UMPs' rule: GoM rolls each
 group of an alternative on its own, so a shared one could pack the .223 with PMAGs and .308 boxes), each with three
 magazines and GoM's civilian boxes as its AR-15 kit (.223 / .308); the D-50 on 2 % of found .308s and in the
 high-capacity magazine spawner, as the SCAR-H drum. Colours (approved with the design): the .223 black, the .308 flat
 dark earth (the colour of the reference photos). Build notes: CLAUDE.md "Desert Tech MDRx".
+
+Handguards (user, 2026-11-04): the .223 keeps Desert Tech's polymer handguard, GoM's foregrips under it (a hidden
+integral bottom rail). Every .308 has **BLK LBL's 20" ALX bipod handguard** built in (the user chose "built in" over
+an optional part): FDE aluminium, M-LOK rows on its sides, its own top rail, two legs hinged at the nose that fold
+back flush into its underside. As the AUG HBAR's integrated bipod: `MDR308_Integrated_Bipod_Folded / _Deployed`
+(BipodIntegrated, Gunworks' FoldingBipod, found folded), GoM's rail bipod stats deployed (Aiming Time x1.1, Hit and
+Crit x1.15; no spread modifier, the gun is semi-automatic), Gunworks' bipod stance. The .308 takes no foregrip: the
+folded legs fill the underside (their grooved sides are the real ALX's grip surface).
