@@ -374,7 +374,8 @@ Both: held as rifles (two hands, back slot), GoM's FAMAS reload ("famas_rifle", 
 ambidextrous charging handle at the front of the chassis drawn as our non-reciprocating `<gun>_HANDLE` with the bolt
 carrier plate in the port (section "The charging handle and the bolt are not always the same part"); the full-length
 top rail (receiver + handguard, ~14") for GoM's optics, M-LOK slots on the handguard's sides and bottom as hidden
-integral rail parts (the PS90's way) for lights (left), lasers (right), foregrips and bipods (bottom); no bayonet,
+integral rail parts (the PS90's way) for lights (left), lasers (right) and foregrips (bottom), no GoM bipod (user,
+2026-11-04: the MDRx has its own handguard bipod); no bayonet,
 no folding stock. Loot: civilian and post-1993, in GoM's `World_Anachronistic_Spawner`; proposed as one alternative
 giving one of the two guns (the PS90 / P90 TR way), built as one alternative each (the UMPs' rule: GoM rolls each
 group of an alternative on its own, so a shared one could pack the .223 with PMAGs and .308 boxes), each with three

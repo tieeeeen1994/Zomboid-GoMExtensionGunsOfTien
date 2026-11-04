@@ -83,18 +83,6 @@
       0.0
     ]
   },
-  "bipod": {
-    "offset": [
-      0.0,
-      0.1628,
-      0.0141
-    ],
-    "rotate": [
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
   "rail_left": {
     "offset": [
       0.0157,
@@ -183,7 +171,7 @@
     "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the rear-top of the pistol grip (photo L 388, H 104)",
     "magazine": "762x51Magazine10/20/25/50_PMAG, origin at their feed lips",
     "canon": "the compensator's rear: SCARH_Muzzle_Mount_Device and SCARH_Suppressor",
-    "accessories": "optics on the upper's rail at L 390; lights / lasers on the handguard's M-LOK sides at L 165, H 157.5; foregrips under it at L 150, bipods at L 118 (no rails drawn)",
+    "accessories": "optics on the upper's rail at L 390; lights / lasers on the handguard's M-LOK sides at L 165, H 157.5; foregrips under it at L 150 (no rails drawn; GoM's bipods do not fit)",
     "bolt_fired": "MDR308_BOLT (the carrier in the right side's chute's viewing window) back 39.5 mm real",
     "handle_back": "MDR308_HANDLE (both knobs) back 110 mm real, only while racked"
   },

@@ -6,7 +6,7 @@ Imports what build_mdr.py wrote, places every part at mdr223_points.json / mdr30
 (offset, then rotateXYZ in degrees, game space) and renders orthographic Workbench views into OUT_DIR: each gun's left
 side at its reference photo's scale (for the outline check in make_mdr_art.py), the right side (the window and the
 carrier), 3/4 views, the top, the carrier and handles back, the PMAGs and the D-50, GoM's STANAG 30 and AR mount device
-+ MKI on the .223, the SCAR-H's mount device + SOCOM762-RC on the .308, GoM's optics, foregrip, light, laser and bipod
++ MKI on the .223, the SCAR-H's mount device + SOCOM762-RC on the .308, GoM's optics, foregrip, light and laser
 at their points, and GoM's FAMAS at the same scale. Game space is Blender world space, the mirror image of what the
 game shows; make_mdr_art.py flips every render left-right (render_scar.py's helpers).
 """
@@ -140,7 +140,7 @@ def main():
                                ("parts/foregrips", "MKC_Foregrip", "parts/foregrips"),
                                ("parts/pointers", "SR7_Light", "parts/pointers"),
                                ("parts/pointers", "AimRight_Laser", "parts/pointers"),
-                               ("parts/bipods", "Bipod_Deployed", "parts/bipods")):
+                               ):
             try:
                 g_parts[name] = gom(cat, name, tex)
             except Exception as e:
@@ -202,7 +202,7 @@ def main():
                             ("AimRight_Laser", "laser_right"), ("Muzzle_Mount_Device", "canon"),
                             ("MKI_Suppressor", "canon")])
         else:
-            state(g, rounds=20, h_supp=True, extra=[("LR4X_Scope", "scope"), ("Bipod_Deployed", "bipod"),
+            state(g, rounds=20, h_supp=True, extra=[("LR4X_Scope", "scope"), ("MKC_Foregrip", "foregrip"),
                                                     ("SR7_Light", "light_left"), ("AimRight_Laser", "laser_right")])
         R.render(g + "_fitted_q", q_left, centre + Vector((0, 0.04, 0)), (length + 200) * k, w, 800)
         R.render(g + "_fitted_qr", q_right, centre + Vector((0, 0.04, 0)), (length + 200) * k, w, 800)

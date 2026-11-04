@@ -1715,8 +1715,9 @@ MDR_STATS = {
 def mdr_parts(gun):
     """The bolt carrier in the right side's window (GoM's Bolt swap), the ambidextrous charging handle (back only while
     racked), the magazines (GoM's STANAGs at our size on the .223, the PMAGs on the .308), the muzzle parts (GoM's AR
-    family on the .223, the SCAR-H's mount and SOCOM762-RC on the .308), GoM's optics on the top rail, its foregrips and
-    bipods under the handguard, lights left and lasers right on its M-LOK sides (four hidden integral rail parts)."""
+    family on the .223, the SCAR-H's mount and SOCOM762-RC on the .308), GoM's optics on the top rail, its foregrips
+    under the handguard, lights left and lasers right on its M-LOK sides (four hidden integral rail parts). No GoM
+    bipod: the MDRx takes its own handguard bipod (user, 2026-11-04)."""
     w = "        ModelWeaponPart              = "
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
              f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
@@ -1731,7 +1732,6 @@ def mdr_parts(gun):
                   f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
-    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
     lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
               f"laser_right laser_right," for o in LASERS]
@@ -1836,7 +1836,7 @@ def mdrs():
     out = [f"module {M} {{\n"]
     for gun in MDRS:
         out.append(gun_model(gun, f'GunsOfTienPost93_{gun}', f'{gun}_BODY', pts[gun],
-                             ['rail_down', 'foregrip', 'bipod']))
+                             ['rail_down', 'foregrip']))
         for part in ('BOLT', 'HANDLE'):
             out.append(f"""
     model {gun}_{part} {{

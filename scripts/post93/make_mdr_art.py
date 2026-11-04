@@ -170,7 +170,7 @@ def sheet(renders, icons, photo):
         put(g + "_back_right", 1660, y, 800, "right: carrier and charging handles back")
         y += 420
     put("MDR223_fitted_q", 20, y, 1200, "MDR223: GoM's Aimpoint, MKC foregrip, SR7 light, AimRight laser, AR mount + MKI")
-    put("MDR308_fitted_qr", 1240, y, 1200, "MDR308: GoM's LR4X, bipod, light, laser; the SCAR-H's mount + SOCOM762-RC")
+    put("MDR308_fitted_qr", 1240, y, 1200, "MDR308: GoM's LR4X, MKC foregrip, light, laser; the SCAR-H's mount + SOCOM762-RC")
     y += 620
     for i, r in enumerate((10, 20, 25, 50)):
         put("pmag%d" % r, 20 + i * 330, y, 300, "PMAG %d" % r)

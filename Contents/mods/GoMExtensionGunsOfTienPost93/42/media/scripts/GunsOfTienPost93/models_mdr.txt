@@ -18,7 +18,6 @@ module GunsOfTienPost93 {
         attachment handle_back { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_down { offset = 0.0000 0.1435 0.0184, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip { offset = 0.0000 0.1435 0.0151, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.1628 0.0141, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model MDR223_BOLT {
@@ -51,7 +50,6 @@ module GunsOfTienPost93 {
         attachment handle_back { offset = 0.0000 -0.0663 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment rail_down { offset = 0.0000 0.1435 0.0184, rotate = 0.0000 0.0000 0.0000, }
         attachment foregrip { offset = 0.0000 0.1435 0.0151, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.1628 0.0141, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model MDR308_BOLT {

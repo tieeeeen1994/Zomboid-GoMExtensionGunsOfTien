@@ -69,7 +69,7 @@ W_GRIP, W_GUARD = 15.0, 7.0
 RAIL_FLOOR, RAIL_TOP = 193.6, 197.0
 UPPER_RAIL = (242.0, 470.0)        # the upper receiver's rail
 HG_RAIL = (117.0, 225.0)           # the handguard's rail
-HG_BOTTOM = 130.3                  # the handguard's underside (foregrips, bipods)
+HG_BOTTOM = 130.3                  # the handguard's underside (foregrips)
 
 # the polymer chassis: butt, magazine well, trigger housing (the upper and handguard are drawn over it)
 CHASSIS = [(262.0, 113.0), (282.0, 135.0), (282.0, 175.0), (694.9, 172.9), (698.5, 166.7), (697.6, 164.9),
@@ -133,7 +133,8 @@ CH_TRAVEL = 110.0
 MAG_L, MAG_H = 490.0, 128.0        # the magazine's feed lips (module docstring)
 OPTIC_L = 390.0                    # over the grip on the upper's rail
 SIDE_L, SIDE_H = 165.0, 157.5      # GoM's lights / lasers on the handguard's lower M-LOK row
-FOREGRIP_L, BIPOD_L = 150.0, 118.0
+# No bipod point: the MDRx takes its own handguard bipod, not GoM's (user, 2026-11-04)
+FOREGRIP_L = 150.0
 
 
 class Gun:
@@ -531,11 +532,8 @@ def gp(L, H, x=0.0):
 ZERO = [0.0, 0.0, 0.0]
 # How far GoM's parts sit from the surface they clamp to (no rails drawn on the M-LOK handguard, as the PS90's): the
 # PS90's values, then lights and lasers moved out by fit_audit.py's first run (they sank about 3 deeper than on GoM's
-# guns into the rounded handguard: lights 3.3, lasers 3.2, game units x 1000). Bipods behind the hand stop (at L 95 its
-# clamp went 3.1 deeper into the stop's hook than on GoM's guns) and 0.0018 under the underside (0.0006 above it, the
-# SCARs' relation to their rail, left it 2.4 deeper into the rounded handguard).
+# guns into the rounded handguard: lights 3.3, lasers 3.2, game units x 1000).
 LIGHT_IN, LASER_OUT, LASER_DOWN, FOREGRIP_UP = -0.0030, 0.0038, 0.0008, -0.0008
-BIPOD_UP = -0.0018
 
 
 def points(g, bounds):
@@ -554,7 +552,6 @@ def points(g, bounds):
         "scope": {"offset": [0.0, oy, round(rail_top - 0.0032, 4)], "rotate": ZERO},
         "rail_down": {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + 0.0025, 4)], "rotate": ZERO},
         "foregrip": {"offset": [0.0, gp(FOREGRIP_L, 0)[1], round(bottom + FOREGRIP_UP, 4)], "rotate": ZERO},
-        "bipod": {"offset": [0.0, gp(BIPOD_L, 0)[1], round(bottom + BIPOD_UP, 4)], "rotate": ZERO},
         "rail_left": {"offset": [round(face, 4), sy, sz], "rotate": ZERO},
         "light_left": {"offset": [round(face - LIGHT_IN, 4), sy, sz], "rotate": ZERO},
         "rail_right": {"offset": [round(-face, 4), sy, sz], "rotate": ZERO},
@@ -572,8 +569,8 @@ def points(g, bounds):
         "canon": ("as GoM's M4A1, 28.8 mm (0.0187) behind the muzzle: GoM's AR mount device and its muzzle parts"
                   if g is G223 else "the compensator's rear: SCARH_Muzzle_Mount_Device and SCARH_Suppressor"),
         "accessories": "optics on the upper's rail at L %.0f; lights / lasers on the handguard's M-LOK sides at L %.0f, "
-                       "H %.1f; foregrips under it at L %.0f, bipods at L %.0f (no rails drawn)"
-                       % (OPTIC_L, SIDE_L, SIDE_H, FOREGRIP_L, BIPOD_L),
+                       "H %.1f; foregrips under it at L %.0f (no rails drawn; GoM's bipods do not fit)"
+                       % (OPTIC_L, SIDE_L, SIDE_H, FOREGRIP_L),
         "bolt_fired": "%s_BOLT (the carrier in the right side's %s) back %.1f mm real"
                       % (g.name, "side-eject port" if g.eject == "side" else "chute's viewing window", g.travel),
         "handle_back": "%s_HANDLE (both knobs) back %.0f mm real, only while racked" % (g.name, CH_TRAVEL),

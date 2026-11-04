@@ -10,9 +10,10 @@
       item scripts).
     Both reload with GoM's FAMAS reload ("famas_rifle", its other bullpup, as the AUGs and the PS90). Their charging
     handle does not reciprocate: GoM's Bolt swap moves the carrier seen in the right side's window, the main mod's
-    ChargingHandle part the handles, only while racked. GoM's optics on the top rail, its foregrips and bipods under
-    the handguard, lights left and lasers right on its M-LOK sides: four hidden integral rail parts stand in for
-    M-LOK rail sections (the PS90's way), shared by both guns.
+    ChargingHandle part the handles, only while racked. GoM's optics on the top rail, its foregrips under the
+    handguard, lights left and lasers right on its M-LOK sides: four hidden integral rail parts stand in for M-LOK rail
+    sections (the PS90's way), shared by both guns. No GoM bipod: the MDRx takes its own handguard bipod (user,
+    2026-11-04), so GoM's bipods are left out of the MountOn, the rail rule and the found-gun parts.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -67,7 +68,7 @@ for _, gun in ipairs(MDRS) do
 end
 
 -------------------------------------------------
--- Rails: the four integral rails as parents of GoM's optics, foregrips, bipods, lights and lasers (each side takes
+-- Rails: the four integral rails as parents of GoM's optics, foregrips, lights and lasers (each side takes
 -- one kind, GoM's rule); the SOCOM762-RC already needs the SCAR-H's mount device (Guns.lua)
 -------------------------------------------------
 local OPTICS = {
@@ -77,14 +78,12 @@ local OPTICS = {
     "MarzGuns.PSO1_Scope", "MarzGuns.LRX12X_Scope",
 }
 local FOREGRIPS = { "MarzGuns.Stub_Foregrip", "MarzGuns.MKC_Foregrip", "MarzGuns.MK2_Foregrip" }
-local BIPODS = { "MarzGuns.Bipod_Deployed", "MarzGuns.Bipod_Folded" }
 local LIGHTS = { "MarzGuns.BrightPoint-5_Light", "MarzGuns.SR7_Light" }
 local LASERS = { "MarzGuns.AimRight_Laser", "MarzGuns.LRX-7_Laser" }
 local AR_MUZZLE = { "MarzGuns.AR_Muzzle_Mount_Device", "MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor",
     "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }
 RequiredAttachment.RegisterRequired(OPTICS, { RAIL_UP })
 RequiredAttachment.RegisterRequired(FOREGRIPS, { RAIL_DOWN })
-RequiredAttachment.RegisterRequired(BIPODS, { RAIL_DOWN })
 RequiredAttachment.RegisterRequired(LIGHTS, { RAIL_LEFT })
 RequiredAttachment.RegisterRequired(LASERS, { RAIL_RIGHT })
 
@@ -95,7 +94,7 @@ PreventRemoval.Register(permanent)
 -------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the SCARs' accessories at GoM's chances; the
 -- .223 GoM's M4A1 magazines (20 / 25 / 30 at 30 / 20 / 50), the .308 Magpul's 20 mostly, the 10 and 25 rarely, the
--- D-50 as rarely as the SCAR-H's drum (2%)
+-- D-50 as rarely as the SCAR-H's drum (2%); no bipod
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
@@ -118,10 +117,10 @@ if spawnTable then
         }
     end
     spawnTable[MDR223] = entry({ "MarzGuns.556x45Magazine20_STANAG:30", "MarzGuns.556x45Magazine25_STANAG:20",
-        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.Bipod_Folded:2", "MarzGuns.AR_Muzzle_Mount_Device:5" })
+        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.AR_Muzzle_Mount_Device:5" })
     spawnTable[MDR308] = entry({ M .. "762x51Magazine20_PMAG:60", M .. "762x51Magazine10_PMAG:10",
         M .. "762x51Magazine25_PMAG:10", M .. "762x51Magazine50_PMAG:2" },
-        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1", "MarzGuns.Bipod_Folded:5",
+        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1",
           M .. "SCARH_Muzzle_Mount_Device:5" })
 end
 
@@ -155,7 +154,7 @@ local function appendMountOn(partType, guns)
 end
 
 local function appendAll()
-    for _, list in ipairs({ OPTICS, FOREGRIPS, BIPODS, LIGHTS, LASERS }) do
+    for _, list in ipairs({ OPTICS, FOREGRIPS, LIGHTS, LASERS }) do
         for _, part in ipairs(list) do appendMountOn(part, MDRS) end
     end
     for _, list in ipairs({ STANAGS, AR_MUZZLE }) do

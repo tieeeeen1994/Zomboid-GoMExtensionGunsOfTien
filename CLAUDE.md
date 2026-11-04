@@ -510,6 +510,13 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   as the CRB's lowest pixel over its columns allows, its name to its left; a slot row of both guns and their Glock
   magazines and one line (rate and burst). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir>
   vectorcrb vectorsdp`, then `make_workshop_art.py --renders <dir> preview21`. Not yet on the Steam page.
+  preview22 (2026-11-04) is Post-93's MDRx .223 and .308, laid out like preview6: render_ad_guns.py `mdr223` /
+  `mdr308` (the SCARs' view and scale; the .223 with GoM's EXPS3, MKC foregrip, AR mount + MKI and a STANAG 30, the .308
+  with GoM's Elcan and Stub foregrip, the SCAR-H's mount + SOCOM762-RC and a PMAG 20), one scale for both, shrunk below the
+  width so the two bullpups (tall for their length) clear the slot row, lined up on the muzzle; names "MDRX .223 /
+  .308" with "DESERT TECH · calibre · SEMI-AUTOMATIC", a slot row (both guns, the PMAGs and D-50) and two lines.
+  Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <dir> mdr223 mdr308`, then
+  `make_workshop_art.py --renders <dir> preview22`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -1706,7 +1713,7 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   profile "7.62x51mm SR-25", in GoM's 7.62x51mm ammo family (Ammunition.lua), modelled about the feed lips with GoM's
   STANAG `Bip01_Prop2`. Muzzle: the .223 GoM's AR family at `canon` = muzzle + 28.8 (the SCAR-L's), the .308 the
   SCAR-H's mount + SOCOM762-RC at the compensator's rear (their MountOn in scar_items()). Four hidden
-  `MDR_Integrated_Rail_*` parts (shared) as on the PS90. Lua: `shared/GunsOfTienPost93/MDR.lua`; loot one
+  `MDR_Integrated_Rail_*` parts (shared) as on the PS90. **No GoM bipod** (user, 2026-11-04: "the MDRx has a different bipod system": Desert Tech's own bipod clamps to the handguard, the store's "BLK LBL ALX Handguard Bipod"): GoM's Bipod_Deployed / _Folded are left out of the MountOn, the rail rule, the model's points and the found-gun parts. First asked as "a foregrip or a bipod, not both" (GoM's bipod with its legs spans L 69-177 under the handguard, over the foregrip at L 150); Gunworks' `UpgradeExclusives` would have done it only for every gun at once (it pairs part types, and GoM's M4A1 / G36 take both), so a wrapper of its `IsBlockedByExclusive` for the MDRs was written and dropped. Lua: `shared/GunsOfTienPost93/MDR.lua`; loot one
   Anachronistic alternative each with GoM's civilian `223_Box` / `308_Box` (GoM packs its AR-15 with `223_Box`), the
   D-50 in the high-capacity tactical spawner; Hot Brass (the .223 the AUG A3's values, the .308 gentle, forward and
   right, forwardOffset 0.36); tooltips.

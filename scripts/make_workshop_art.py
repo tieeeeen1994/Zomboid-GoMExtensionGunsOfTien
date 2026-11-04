@@ -10,7 +10,8 @@ preview5.png (1024x1024, the sawn-off shotguns, the same), preview6.png (1024x10
 preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024x1024, Post-93's AUG A3, Para and HBAR,
 the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview17.png (1024x1024, the RPK
 and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.png (1024x1024, the
-Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same)
+Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same), preview22.png (1024x1024,
+Post-93's MDRx .223 and .308, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1143,6 +1144,54 @@ def preview21(path, W=1024):
     return save_under(page.convert("RGB"), path)
 
 
+def preview22(path, W=1024):
+    """Post-93's MDRx .223 and .308 (2026-11-04), laid out like preview6: both fitted out at one scale
+    (render_ad_guns.py "mdr223" / "mdr308", mirrored back to the game's view), lined up on the butt, each under its
+    name; then a slot row of what the add-on adds besides the guns (the .308's PMAGs and D-50) and two lines. Text only
+    for what plays (user, 2026-11-03: no barrel lengths or M-LOK)."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+    ims = {}
+    for name in ("mdr223", "mdr308"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    widest = max(im.width for im in ims.values())
+    # one scale for both: the longer fills the width unless the two (bullpups: tall for their length) would then run
+    # into the slot row
+    tall = sum(im.height for im in ims.values())
+    s = min(u(468) / widest, (u(388) - u(62) - 2 * u(40)) / tall)
+    x_right = (W + round(widest * s)) // 2       # lined up on the butt (on the right after the mirror)
+    y = u(62)
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+    for name, label, sub in (("mdr223", "MDRX .223", "DESERT TECH  ·  5.56X45MM  ·  SEMI-AUTOMATIC"),
+                             ("mdr308", "MDRX .308", "DESERT TECH  ·  7.62X51MM  ·  SEMI-AUTOMATIC")):
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = x_right - im.width
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(big.getlength(label)) + u(8), y + u(5)), sub, small,
+                                        (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + u(24))), (0, u(6)), u(6), 160)
+        y += u(24) + im.height + u(16)
+
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    slot_row(page, [post("MDR223"), post("MDR308"), post("762x51Magazine10_PMAG"), post("762x51Magazine20_PMAG"),
+                    post("762x51Magazine25_PMAG"), post("762x51Magazine50_PMAG")],
+             256, 400, ".308  ·  PMAG 10, 20, 25 AND D-50 DRUM")
+    for n, line in enumerate((".223 TAKES GUNS OF MARZ STANAG MAGAZINES  ·  .308 THE SCAR-H SUPPRESSOR",
+                              "GUNS OF MARZ SIGHTS, GRIPS, LIGHTS AND LASERS")):
+        page.alpha_composite(text_layer(size, (W // 2, u(464 + n * 16)), line, small, (60, 64, 70, 255),
+                                        anchor="ma", spacing=u(1)))
+    return save_under(page.convert("RGB"), path)
+
+
 def mod_icon(path, item, W=128):
     """128 px in-game mod list icon: one inventory icon scaled up crisp on the poster's background."""
     page = background((W, W)).convert("RGBA")
@@ -1198,6 +1247,8 @@ if __name__ == "__main__":
         preview20(os.path.join(ROOT, "preview20.png"))   # Post-93's PS90 Carbine, added the same way
     if want("preview21"):
         preview21(os.path.join(ROOT, "preview21.png"))   # Post-93's Vector CRB and SDP, added the same way
+    if want("preview22"):
+        preview22(os.path.join(ROOT, "preview22.png"))   # Post-93's MDRx .223 and .308, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):
