@@ -31,6 +31,7 @@ local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
 local Animations = require("WeaponSystems/Utils/Animations")
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local FoldingBipod = require("WeaponSystems/Utils/FoldingBipod")
+local BipodSystem = require("WeaponSystems/Utils/BipodSystem")
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
@@ -40,7 +41,7 @@ local Foregrip = require("GunsOfTien/Foregrip")
 local GoMReloads = require("GunsOfTien/GoMReloads")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "Bipods", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments", "UniversalAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -83,11 +84,7 @@ RateOfFire.RegisterSpreadPartModifier(BIPOD_DEPLOYED, { sustainedSpreadMult = 0.
 -- The bolt carrier, the charging handle (moved only while racked), GoM's FAMAS reload, the folding grip
 -------------------------------------------------
 for _, gun in ipairs(GUNS) do
-    Animations.RegisterWeaponWithAnimatedParts(gun, {
-        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-        cycleTicks = 3,
-    })
-    ChargingHandle.Register(gun)
+    Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("famas_rifle"))
     Foregrip.Register(gun, {
         folded = GRIP_FOLDED,
@@ -104,6 +101,8 @@ FoldingBipod.RegisterWeapon(HBAR, {
     attachments = { partType = "BipodIntegrated", folded = BIPOD_FOLDED, deployed = BIPOD_DEPLOYED },
     initialState = "folded",
 })
+-- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
+BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
 CSA.RegisterMultipleParts({
     [BIPOD_DEPLOYED] = {
         SF.Multiply("AimingTime", 1.1),

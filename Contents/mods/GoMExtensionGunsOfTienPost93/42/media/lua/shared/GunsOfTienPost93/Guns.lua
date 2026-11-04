@@ -45,7 +45,7 @@ local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 
-for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
+for _, file in ipairs({ "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "Stocks", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -146,13 +146,7 @@ RateOfFire.RegisterSpreadPartModifier(M .. "MP7A1_Integrated_Foregrip_Deployed",
 -- main mod's ChargingHandle part, back only while racked. The SCARs' handle rides with their carrier (above).
 -------------------------------------------------
 for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
-    Animations.RegisterWeaponWithAnimatedParts(gun, {
-        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-        cycleTicks = 3,
-    })
-end
-for _, gun in ipairs({ MP7, MP7A2, P90, UMP45, UMP9 }) do
-    ChargingHandle.Register(gun)
+    Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)
 end
 
 -------------------------------------------------

@@ -42,7 +42,7 @@ local Animations = require("WeaponSystems/Utils/Animations")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local Rails = require("GunsOfTien/Rails")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "Stocks", "AttachmentCustomStats",
     "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -82,11 +82,7 @@ RateOfFire.RegisterWeapon(MICROUZI, { rpm = 1200, enableSpread = true, sustained
 -- racked
 -------------------------------------------------
 for _, gun in ipairs(ALL) do
-    Animations.RegisterWeaponWithAnimatedParts(gun, {
-        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-        cycleTicks = 3,
-    })
-    ChargingHandle.Register(gun)
+    Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)
 end
 
 -------------------------------------------------

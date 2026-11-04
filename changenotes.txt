@@ -1,20 +1,7 @@
-3.9.0
+3.10.0
 
-FN P90
-- New in the main mod: the FN P90 as FN made it from 1990, with its ring sight on top. Its 50-round magazine lies along the top of the gun; held one-handed like Guns of Marz's MP5K, automatic at 900 rounds a minute or single shots, 5.7x28mm SS190 rounds that pierce
-- Guns of Marz's Picatinny rails fit on its sides, for lights (left) and lasers (right). No top rail: the ring sight is its sight
-- Found with Guns of Marz's police SMGs and on SWAT zombies, with its magazines and SS190 boxes. SS190 boxes and cartons also turn up in police, SWAT and gun store storage
-- The 5.7x28mm SS190 round, its boxes and cartons and the P90 magazine are now part of the main mod. They are the same items, so the ones in your saves stay. The SP90 suppressor and its mount stay in the Post-93 add-on and fit this P90 too while the add-on is on
-- The Post-93 add-on's P90 is now called the "P90 TR Submachine Gun"
-- Every P90 has a reworked trigger, trigger loop and stippled grips
-
-FN PS90 Carbine (Post-93 add-on)
-- New: the P90 with the PS90's 16-inch barrel, long flash hider and cheek riser and an M-LOK handguard, held two-handed like a rifle. Automatic at 900 rounds a minute or single shots, harder-hitting and longer-ranged than the P90
-- Takes the P90's magazine and the SP90 suppressor, Guns of Marz optics on the top rail, its lights, lasers and foregrips on the handguard
-- Sometimes found instead of the P90 TR
-
-KRISS Vector .45 Carbine and Vector 9mm Pistol (Post-93 add-on)
-- New: the Vector .45 Carbine, KRISS's CRB Enhanced: the Vector .45 with an M-LOK handguard, a 16-inch barrel in a long shroud and an M4-type stock that folds to the side, held two-handed. Harder-hitting, steadier, longer-ranged and quieter than the Vector .45 submachine gun. The shroud is not a suppressor; Guns of Marz's .45 muzzle mount and P45 suppressor fit on its end
-- New: the Vector 9mm Pistol, KRISS's SDP: the Vector 9mm without its stock, held one-handed. Quicker to bring up, less steady and shorter-ranged than the Vector 9mm submachine gun. Takes the AWC Mk9 suppressor
-- Both take the same Glock magazines as their submachine guns (.45: 13 and 30, 9mm: 17, 33 and 40), Guns of Marz optics and foregrips, and its side rails for lights and lasers; automatic at 1200 rounds a minute, two-round burst or single shots
-- Sometimes found instead of the Vector .45 and Vector 9mm submachine guns
+Gunworks and Guns of Marz update (November 2026)
+- Fixed: with Guns of Tien on, Guns of Marz's M16s, M4A1, CAR-15, XM177 and AR-15 never moved their charging handle when racked, and its revolvers never swung their cylinder out to reload. Our charging handles now use Gunworks' own way of moving a part only while racked, as Guns of Marz does
+- The M249, RPD, RPK, RPK-74 and the Post-93 AUG HBAR rest on low walls, windows and tables with their bipod deployed, using Gunworks' new bipod stance like Guns of Marz's M60
+- Reload timings follow Guns of Marz's new ones: aimed pistol reloads on the Glock 21, Five-seveN and UCP, the M249's and RPD's load
+- A gun saved before its charging handle was added shows the handle after its first rack, as Guns of Marz's guns do

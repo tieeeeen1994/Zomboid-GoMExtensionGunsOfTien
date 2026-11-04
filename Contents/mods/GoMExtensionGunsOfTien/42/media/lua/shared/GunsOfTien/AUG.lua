@@ -32,7 +32,7 @@ local Foregrip = require("GunsOfTien/Foregrip")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local Rails = require("GunsOfTien/Rails")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "AnimationsFiring", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/AnimationsFiring", "AttachmentCustomStats",
     "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -60,11 +60,7 @@ RateOfFire.RegisterSpreadPartModifier(DEPLOYED, { sustainedSpreadMult = 0.85, ma
 -------------------------------------------------
 -- The bolt carrier (GoM's rifles' bolt swap) and the charging handle, which moves only while racked
 -------------------------------------------------
-Animations.RegisterWeaponWithAnimatedParts(AUG, {
-    SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-    cycleTicks = 3,
-})
-ChargingHandle.Register(AUG)
+Animations.RegisterWeaponWithAnimatedParts(AUG, ChargingHandle.ANIMATED_PARTS)
 
 -------------------------------------------------
 -- Reload: GoM's FAMAS reload

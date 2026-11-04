@@ -260,26 +260,9 @@ if not layerRegistered then
         end)
 end
 
--------------------------------------------------
--- Keep the US round's cycling up to date on the shooter's copy
--------------------------------------------------
--- Gunworks re-applies stats on equip, attach / detach (server-side `complete` in MP) and round-type changes, but
--- the client's copy is not re-applied after a server-side attach, so the attack hook's per-shot call is used to
--- notice a PBS-1 fitted or removed (or the sandbox rule changed) since the last apply.
-if not Ammo.GunsOfTienWrapped then
-    Ammo.GunsOfTienWrapped = true
-    local vanillaSetter = Ammo.AmmoProfileSetter
-    function Ammo.AmmoProfileSetter(weapon, bulletType)
-        vanillaSetter(weapon, bulletType)
-        if not weapon or not weapon.getModData then return end
-        local md = weapon:getModData()
-        if md.ActiveAmmoProfile ~= "GunsOfTien_762x39US" then return end
-        local signature = tostring(subsonicRackRule()) .. (hasPart(weapon, PBS1) and "P" or "-")
-        if md.GunsOfTienCycling ~= signature then
-            md.GunsOfTienCycling = signature
-            SF.ReapplyAllModifiers(weapon)
-        end
-    end
-end
+-- The US round's cycling follows a PBS-1 fitted or removed through Gunworks alone (2026-11-04): its upgrade and
+-- removal hooks re-apply the modifiers on the server and call StatsSync.SendToClients, whose revision makes the
+-- owner's client re-apply the held gun's; every equip re-applies too. Until then this file wrapped
+-- Ammo.AmmoProfileSetter to notice the change at the next shot.
 
 return GunsOfTien

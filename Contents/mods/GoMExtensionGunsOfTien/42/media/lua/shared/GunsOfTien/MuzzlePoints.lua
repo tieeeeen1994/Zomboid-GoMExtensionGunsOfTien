@@ -12,7 +12,9 @@
     The AR-15 and M16s' point was at the front of GoM's AR muzzle mount device, which only carries a suppressor (and a
     suppressor turns the flash off, AttachmentCustomStats.lua); with GoM's flash hider, compensator or muzzle brake
     fitted (3.5-4.3 cm long) the flash now starts inside the device instead of 1-2 cm ahead of it. The point is one
-    per model, not per gun, so it is placed for the bare barrel. Left alone: guns under 1 cm off, GoM's MP5K (in our
+    per model, not per gun, so it is placed for the bare barrel. GoM moved the M14's and the M16A2 M203's points to
+    the bore itself on 2026-11-03 (re-measured 2026-11-04: every other point here still as before), so those two
+    are no longer set here. Left alone: guns under 1 cm off, GoM's MP5K (in our
     compact stance, which reads its point), and the M203 launcher models (`*_M203_Underbarrel`, drawn while the
     grenade launcher is selected). The MP5 and MP5A2 are not listed since 2026-10-27: their models are Guns of Tien's
     (scripts/build_mp5.py), whose muzzle points already sit at the barrel's end at their own size.
@@ -29,9 +31,7 @@ local MUZZLE_Y = {
     ["MarzGuns.DETECTIVE_38"] = 0.1491,   -- was 0.2038 (+5.5)
     ["MarzGuns.FAL"] = 0.5512,            -- was 0.5023 (-4.9)
     ["MarzGuns.FAMAS"] = 0.3057,          -- was 0.3158 (+1.0)
-    ["MarzGuns.M14"] = 0.5387,            -- was 0.5672 (+2.8)
     ["MarzGuns.M16A2"] = 0.4426,          -- was 0.4966 (+5.4)
-    ["MarzGuns.M16A2_M203"] = 0.4426,     -- was 0.4966 (+5.4)
     ["MarzGuns.M16A3"] = 0.4426,          -- was 0.4966 (+5.4)
     ["MarzGuns.M1_GARAND"] = 0.5255,      -- was 0.5537 (+2.8)
     ["MarzGuns.M93R"] = 0.1619,           -- was 0.1433 (-1.9)

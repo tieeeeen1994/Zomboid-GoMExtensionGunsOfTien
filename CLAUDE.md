@@ -34,7 +34,8 @@ User: "drop all animations that we have for this branch and then let's use EXIST
 guns". Neither mod ships an AnimSet node or a clip (`media/AnimSets` and `media/anims_X` deleted in both): every gun is
 held with vanilla's rifle or pistol clips, as GoM's guns are, and reloads with one of GoM's reload animIds through
 Gunworks' registry (`shared/GunsOfTien/GoMReloads.lua`: `profile(animId)`, Gunworks' "none" style, GoM's durations
-copied from the local table in its `Registries/ReloadAnims.lua`). No grip registrations (`GunworksGripAnim`) either.
+copied from the local table in its `Registries/ReloadsAndAnims/ReloadAnims.lua`, re-synced 2026-11-04: the clips'
+real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrations (`GunworksGripAnim`) either.
 
 - Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR, Vector 9mm (one-handed, pistol clips)
   "handgun2" (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance
@@ -83,8 +84,9 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   attaches the part on every such call (so a gun saved without one gets it then). Ours now all are: Uzis, MP7s, P90,
   UMPs, M249, as the AUGs and SCARs already were. Travels (builders, real mm): Uzi 80, Mini 65, Micro 50 along a slot
   painted on the top cover; MP7 50 (out of the receiver's rear above the stock); P90 60 along new raised steel tracks
-  (L 101-184); UMP 70 along its slot; M249 110 along its slot, the handle split off the body into `M249_BOLT` (an
-  equip hook fits Bolt_Lock to M249s saved before). Reworked from Commons photos (left / right sides) and renders of
+  (L 101-184); UMP 70 along its slot; M249 110 along its slot, the handle split off the body into `M249_BOLT` (M249s
+  saved before get Bolt_Lock at their first shot or rack; the equip hook that fitted it was dropped 2026-11-04,
+  GoM's way). Reworked from Commons photos (left / right sides) and renders of
   ours from six angles: the MP7's T-handle (stem under the rail end, crossbar, ribbed wing tabs; was one 40 mm
   block), the P90's tab behind its ring and the tracks. The Uzi knobs were already where IMI's are (measured: 75 /
   66 / 81 % from rear to front sight), the UMP's at the front of its slot high on the left.
@@ -117,9 +119,21 @@ copied from the local table in its `Registries/ReloadAnims.lua`). No grip regist
   front half is painted as the open chamber, its rear half as the carrier's grooved steel side, so the plate sliding
   back shows the chamber and never stands outside the port (no cut in the meshes). Every AUG draws the A1's
   `AUG_BOLT` (the A3 / Para / HBAR share the A1's stock and its `paint_body`). `shared/GunsOfTien/ChargingHandle.lua`
-  sets the handle back on the rack clip's `rackStart` and forward on `rackEnd` / complete / stop, before Gunworks'
-  own ISRackFirearm hooks, whose `CallAnimate` re-sends the parts; guns saved before get the forward part on equip or
-  at their first shot (wrapped `Animations.CallAnimationFunction`), found guns from the spawn tables. A separate part
+  holds `ChargingHandle.ANIMATED_PARTS`, which each gun file registers with Gunworks' own
+  `Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)` (one shared entry, as GoM shares
+  `Bolt_AR15`): GoM's `Bolt` swap when firing, and a `reload` table `MultipleAttachment = { Bolt, ChargingHandle =
+  { open = _Back, locked = _Forward } }`.
+  Since Gunworks' 2026-10 update, `Animations.CallAnimationFunction(weapon, open, route)` uses an entry's `reload`
+  table instead of the entry for route "reload" (rack `rackStart` / `rackEnd`, `openWeapon` / `closeWeapon`, the
+  server's split-rack stroke record), while firing keeps the entry: exactly a part that moves only while racked. GoM
+  does its AR-15s' `Charging_Handle` and its revolvers' swing-out cylinder that way (`AnimationsFiring.lua`). Until
+  2026-11-04 the file wrapped ISRackFirearm animEvent / complete / stop and `CallAnimationFunction(weapon, open)`,
+  which dropped `route` for **every** gun, so with Guns of Tien loaded GoM's AR-15 handles and revolver cylinders
+  never moved (Marz, 2026-11-03: "your charging handle code is overwriting it"). Never wrap Gunworks' animation
+  functions; when one must be wrapped, pass `...` through. A gun saved before the part existed shows no handle until
+  its first rack fits one, and an interrupted rack leaves the handle back until the next one, both as GoM's AR-15s
+  (user, 2026-11-04: GoM's way, so the equip hook that fitted it was dropped); found guns get it from their required
+  parts. Checked with lupa against Gunworks' real `Animations.lua`. A separate part
   is needed because the back slot (`AttachedModelNames`) and the floor (`ItemModelRenderer`) draw only the **first**
   ModelWeaponPart line matching a part (`break`); in hand (`ModelManager.addWeaponPartModels`) every match is drawn.
   Gunworks moves all registered parts together (one open / locked state for shots, empty and rack), so it cannot
@@ -2819,8 +2833,12 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   `ReapplyAllModifiers` runs on equip, game start (player 0), attach / detach (`complete`, server in MP), fire-mode /
   stock / bipod changes and round-type changes; the attack hook calls `Ammo.AmmoProfileSetter` per shot, which
   returns early when the round's enum equals the gun's AmmoType, so a gun firing only its script's own round never
-  gets an ammo profile (hence a layer for plain-round piercing). The client is not re-applied after a server-side
-  attach.
+  gets an ammo profile (hence a layer for plain-round piercing). Since Gunworks' 2026-11-03 update the client is
+  re-applied after a server-side attach / detach: the upgrade, rail and swap actions call
+  `StatsSync.SendToClients` (a modData revision + weapon sync + re-equip), and the owner's client re-applies its
+  held primary gun when the revision changes (`StatsSync.ApplyServerRevision`, OnPlayerUpdate; the first revision
+  it sees is only noted). Ammunition.lua's per-shot re-apply for the US round's PBS-1 rule was dropped for it
+  (2026-11-04); M249.lua's feed check stays (a magazine swap is no attach).
 - **Item definitions**: an `item X` block in another mod's scripts (same module) replaces GoM's whole item, by mod
   load order (user, 2026-10-14). This mod changes GoM's guns from Lua instead (script setters at
   OnInitGlobalModData), so GoM's other stats and later GoM updates are kept.
@@ -2865,9 +2883,15 @@ Scratch tools of that trace (inspect_fbx.py, bounds.py, gripzoom.py, rt.py, synt
 - **Textures**: gun 256x256 RGB atlas shared by its nodes (baked / painted detail: AO, wear, engraving); magazines and
   parts 128x128 RGB each. Icons `item_<Icon>.png` 32x32 RGBA: diagonal render, muzzle top right.
 - **Reload animations** are chosen by a string: Gunworks sets the `WeaponReloadType` anim variable (and
-  `GunworksReloadAnim`) to the `animId` registered per gun full type in GoM's `Registries/ReloadAnims.lua`
-  (`ReloadAnim.RegisterMultipleWeapons({ [fullType] = { animId, style = "none", durations } })`; MP5 / G3 / PSG1 =
-  "MP5", MP5K / TEC9 = "handgun2", FAMAS = "famas_rifle", FAL = "fal_rifle"; GoM renames ids between versions, so
+  `GunworksReloadAnim`) to the `animId` registered per gun full type in GoM's `Registries/ReloadsAndAnims/ReloadAnims.lua`
+  (`Registries/ReloadAnims.lua` before 2026-11-03; `ReloadAnim.RegisterMultipleWeapons({ [fullType] = { animId,
+  style = "none", durations } })`; MP5 / G3 / PSG1 = "hk_rifle" with rules "rollerDelayed" since 2026-11-03 (two-stroke
+  rack, `RackHKOpen` / `RackHK` gated on `GunworksRackPhase`; the old "MP5" nodes still ship and no GoM gun uses
+  them: our UMPs, Vector .45 / CRB and UZI_2H stay on them, user 2026-11-04 "only if applicable to reality": the
+  UMP and Vector hold their bolt open on the last round and are released after the magazine with one pull, which
+  is the old MP5 rack, not hk_rifle's lock-back-first then slap; a GoM update dropping them breaks those reloads), MP5K / TEC9 = "handgun2",
+  FAMAS = "famas_rifle", FAL = "fal_rifle"; aimed pistol reloads have their own nodes and durations
+  (`GunworksReloadAiming`, `loadAim` / `unloadAim` / `rackAim`); GoM renames ids between versions, so
   re-check a borrowed id after a GoM update: a stale one matches no node; better, copy the nodes under an id of
   our own, since another mod's same-path node file can replace GoM's). AnimSet XMLs (both `AnimSets/player/actions/` and
   `player-vehicle/actions/`): Load / Unload / Rack / RackAim per animId, conditions `PerformingAction=Reload`,
@@ -2883,6 +2907,18 @@ Scratch tools of that trace (inspect_fbx.py, bounds.py, gripzoom.py, rt.py, synt
 ## Gun data and registries in GoM (MP5 family as the template; traced 2026-10-14)
 
 Full report kept in the session; the essentials, all `require`-able public Gunworks modules (call after GoM's file):
+- **Gunworks / GoM update of 2026-11-03 / 04** (checked 2026-11-04): GoM's registries moved to
+  `Registries/ReloadsAndAnims/` (ReloadAnims, AnimationsFiring, ReloadRules; our `pcall(require, ...)` lists point
+  there now). New in Gunworks: the reload route (above, charging handles); reload rules / split racks
+  (`ReloadAnim/Rules.lua`, a profile's `rules`; none of ours use them); aimed reload durations (`loadAim` ...);
+  `StatsSync.SendToClients` (used by its upgrade, rail and swap actions; its fold actions and ours do without);
+  the **bipod stance** (`WeaponSystems/Utils/BipodSystem`: `RegisterBipod(deployedPartFullType)`; a ranged gun in
+  the primary hand with a registered part rests on a low wall, open window or 26-50 high surface ahead while aiming,
+  key G switches automatic / toggle, Y places in toggle mode; GoM registers its rail bipod and the M60 / BAR / M24
+  ones in `Bipods.lua`). Ours register their integrated deployed bipods next to `FoldingBipod.RegisterWeapon`
+  (M249, RPD, RPK / RPK-74, AUG HBAR); GoM's rail bipod on our guns is GoM's registration. GoM also fixed the M14's
+  and M16A2 M203's muzzle points (MuzzlePoints.lua no longer sets them) and its hand magazine grips are unchanged
+  (our `_GoT` copies compared).
 - **Item**: copy `MarzGuns.MP5` (G/scripts/MarzWeapons/items/weapons/smgs.txt 102-233): `AmmoType` = the round's id,
   `MagazineType` (default mag, overwritten at run time), `WeaponReloadType = boltaction` (engine mechanics; the
   animation comes from ReloadAnim), `SwingAnim = Rifle` (= anim `Weapon` = firearm; Handgun for one-handed),

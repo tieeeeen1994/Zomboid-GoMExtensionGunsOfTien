@@ -21,7 +21,7 @@ local Ammo = require("WeaponSystems/Utils/Ammo")
 local Animations = require("WeaponSystems/Utils/Animations")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "AnimationsFiring", "ReloadAnims", "PermanentAttachments" }) do
+for _, file in ipairs({ "Ammunition", "Magazines", "ReloadsAndAnims/AnimationsFiring", "ReloadsAndAnims/ReloadAnims", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
 

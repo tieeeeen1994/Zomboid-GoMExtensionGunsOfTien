@@ -38,7 +38,7 @@ local Rails = require("GunsOfTien/Rails")
 local GoMReloads = require("GunsOfTien/GoMReloads")
 require("GunsOfTien/Glock21")                -- its profile first: the .45 joins it
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "Stocks", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "Stocks", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -98,11 +98,7 @@ RateOfFire.RegisterSpreadPartModifier(STOCK_DEPLOYED, { sustainedSpreadMult = 0.
 -- MP5's, the pistol-held 9mm its MP5K's
 -------------------------------------------------
 for _, gun in ipairs(VECTORS) do
-    Animations.RegisterWeaponWithAnimatedParts(gun, {
-        SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-        cycleTicks = 3,
-    })
-    ChargingHandle.Register(gun)
+    Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile(PISTOL_HELD[gun] and "handgun2" or "MP5"))
     if not NO_STOCK[gun] then
         FoldingStock.RegisterWeapon(gun, {

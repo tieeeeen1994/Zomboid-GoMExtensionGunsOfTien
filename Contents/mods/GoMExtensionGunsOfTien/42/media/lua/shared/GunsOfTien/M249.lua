@@ -33,6 +33,7 @@ local Ammo = require("WeaponSystems/Utils/Ammo")
 local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local FoldingBipod = require("WeaponSystems/Utils/FoldingBipod")
+local BipodSystem = require("WeaponSystems/Utils/BipodSystem")
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
@@ -40,8 +41,8 @@ local Animations = require("WeaponSystems/Utils/Animations")
 local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local Rails = require("GunsOfTien/Rails")
 
-for _, file in ipairs({ "Magazines", "RPM", "ReloadAnims", "Bipods", "AttachmentCustomStats", "PermanentAttachments",
-    "AnimationsFiring", "Ammunition" }) do
+for _, file in ipairs({ "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "Bipods", "AttachmentCustomStats", "PermanentAttachments",
+    "ReloadsAndAnims/AnimationsFiring", "Ammunition" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
 
@@ -98,22 +99,9 @@ for i = 1, 9 do
     belt[i] = { threshold = i, part = "MarzGuns.Bullet_" .. i, slot = "Animated" .. i }
 end
 Animations.RegisterWeaponsWithCustomStates(M249, belt)
-Animations.RegisterWeaponWithAnimatedParts(M249, {
-    SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-    cycleTicks = 3,
-})
-ChargingHandle.Register(M249)
--- An M249 from before 2026-10-29 has the handle in its body mesh and no Bolt part, so nothing would draw it until
--- its first shot or rack (Gunworks attaches the part then): the owner's game fits the closed one when it is equipped,
--- the way Gunworks does (Animations.CallAnimate: attach, sync, re-equip). OnEquipPrimary also fires for zombies
--- (A-Life NPCs), which have no isLocalPlayer.
-Events.OnEquipPrimary.Add(function(character, item)
-    if not (item and character and character.isLocalPlayer and character:isLocalPlayer() and isM249(item))
-        or item:getWeaponPart("Bolt") then
-        return
-    end
-    Animations.CallAnimate(character, item, false)
-end)
+Animations.RegisterWeaponWithAnimatedParts(M249, ChargingHandle.ANIMATED_PARTS)
+-- An M249 from before 2026-10-29 has no Bolt part (its handle was in the body mesh): Gunworks fits one at its first
+-- shot or rack, as GoM's guns saved before a part existed (user, 2026-11-04: GoM's way, no equip hook).
 if not Animations.GunsOfTienM249Wrapped then
     Animations.GunsOfTienM249Wrapped = true
     local checkStates = Animations.CheckStates
@@ -136,6 +124,8 @@ FoldingBipod.RegisterWeapon(M249, {
     attachments = { partType = "BipodIntegrated", folded = BIPOD_FOLDED, deployed = BIPOD_DEPLOYED },
     initialState = "folded",
 })
+-- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
+BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
 CSA.RegisterMultipleParts({
     [BIPOD_DEPLOYED] = {
         SF.Multiply("AimingTime", 1.3),

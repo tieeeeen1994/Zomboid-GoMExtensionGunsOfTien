@@ -10,93 +10,42 @@
     and the handle is a part of its own: GunsOfTien.ChargingHandle_Forward / _Back (PartType ChargingHandle,
     items_handles.txt), drawn by each gun's ModelWeaponPart lines at `handle` / `handle_back`.
 
-    The handle goes back only while racked: between the rack clip's rackStart and rackEnd events (GoM's handgun2 and
-    FAMAS racks send both). It is set before Gunworks' own ISRackFirearm hooks run, whose Animations.CallAnimate
-    re-sends the gun's parts (syncHandWeaponFields + re-equip), so it travels with Gunworks' bolt sync. A gun saved
-    before 2026-10-30 has no ChargingHandle part: it gets the forward one when equipped (as the M249's Bolt part,
-    M249.lua) or at its first shot / rack; a found gun comes with it (the guns' spawn tables).
+    The handle goes back only while racked, through Gunworks' own reload route (2026-11-04): a gun's animated parts
+    entry may carry a `reload` table that the rack's rackStart / rackEnd (and openWeapon / closeWeapon) use instead
+    of the entry, while firing keeps the entry's parts. GoM moves its AR-15s' charging handle that way
+    (AnimationsFiring.lua, Bolt_AR15), and so do ours: each gun file registers ChargingHandle.ANIMATED_PARTS with
+    Gunworks' own Animations.RegisterWeaponWithAnimatedParts, one entry shared by every such gun as GoM shares
+    Bolt_AR15. Nothing of Gunworks' is wrapped (until 2026-11-04 this file wrapped ISRackFirearm and
+    Animations.CallAnimationFunction, and the latter dropped the route for every gun: GoM's AR-15 handles and its
+    revolvers' swing-out cylinders stopped moving, Marz, 2026-11-03).
+
+    A gun saved before 2026-10-30 has no ChargingHandle part and shows no handle until its first rack fits one, as
+    GoM's AR-15s saved before their handle part (user, 2026-11-04: GoM's way, no equip hook); a found or crafted
+    gun comes with it (the guns' required parts).
 --]]
 
-require("TimedActions/ISRackFirearm")
-
-local Animations = require("WeaponSystems/Utils/Animations")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 
 local ChargingHandle = {}
 
 ChargingHandle.FORWARD = "GunsOfTien.ChargingHandle_Forward"
 ChargingHandle.BACK = "GunsOfTien.ChargingHandle_Back"
-ChargingHandle.PART_TYPE = "ChargingHandle"
 
-local guns = {}
+local Bolt = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" }
 
---- A gun whose handle is the ChargingHandle part (its item script draws both states).
----@param fullType string
-function ChargingHandle.Register(fullType)
-    guns[fullType] = true
-end
-
-function ChargingHandle.Has(weapon)
-    return weapon ~= nil and instanceof(weapon, "HandWeapon") and guns[weapon:getFullType()] == true
-end
-
---- Fits the handle forward or back; false when it already was.
-function ChargingHandle.Set(weapon, back)
-    local want = back and ChargingHandle.BACK or ChargingHandle.FORWARD
-    local part = weapon:getWeaponPart(ChargingHandle.PART_TYPE)
-    if part and part:getFullType() == want then return false end
-    weapon:attachWeaponPart(instanceItem(want), true)
-    return true
-end
+--- The Gunworks animated parts entry of a gun whose handle is the ChargingHandle part (its item script draws both
+--- states): GoM's bolt swap (its AnimationsFiring.lua "Bolt") when firing, the bolt and the handle when racking.
+ChargingHandle.ANIMATED_PARTS = {
+    SingleAttachment = Bolt,
+    cycleTicks = 3,
+    reload = {
+        MultipleAttachment = {
+            Bolt = Bolt,
+            ChargingHandle = { open = ChargingHandle.BACK, locked = ChargingHandle.FORWARD },
+        },
+    },
+}
 
 PreventRemoval.Register({ ChargingHandle.FORWARD, ChargingHandle.BACK })
-
--- Wrapped once even if this file is reloaded (Gunworks' own hooks are wrapped under these)
-if not ISRackFirearm.GunsOfTienChargingHandle then
-    ISRackFirearm.GunsOfTienChargingHandle = true
-
-    local animEvent = ISRackFirearm.animEvent
-    function ISRackFirearm:animEvent(event, parameter)
-        if ChargingHandle.Has(self.gun) then
-            if event == "rackStart" then
-                ChargingHandle.Set(self.gun, true)
-            elseif event == "rackEnd" then
-                ChargingHandle.Set(self.gun, false)
-            end
-        end
-        return animEvent(self, event, parameter)
-    end
-
-    local complete = ISRackFirearm.complete
-    function ISRackFirearm:complete()
-        if ChargingHandle.Has(self.gun) then ChargingHandle.Set(self.gun, false) end
-        return complete(self)
-    end
-
-    local stop = ISRackFirearm.stop
-    function ISRackFirearm:stop()
-        if ChargingHandle.Has(self.gun) then ChargingHandle.Set(self.gun, false) end
-        return stop(self)
-    end
-
-    -- a gun saved without the part gets it at its first shot or rack (Gunworks syncs right after this call)
-    local callAnimationFunction = Animations.CallAnimationFunction
-    function Animations.CallAnimationFunction(weapon, open)
-        if ChargingHandle.Has(weapon) and not weapon:getWeaponPart(ChargingHandle.PART_TYPE) then
-            ChargingHandle.Set(weapon, false)
-        end
-        return callAnimationFunction(weapon, open)
-    end
-end
-
--- ... or as soon as its owner equips it (the M249's way, M249.lua)
-Events.OnEquipPrimary.Add(function(character, item)
-    if not (item and character and character.isLocalPlayer and character:isLocalPlayer() and ChargingHandle.Has(item))
-        or item:getWeaponPart(ChargingHandle.PART_TYPE) then
-        return
-    end
-    ChargingHandle.Set(item, false)
-    Animations.CallSyncHandWeaponFields(character, item)
-end)
 
 return ChargingHandle

@@ -27,7 +27,7 @@ local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local GoMReloads = require("GunsOfTien/GoMReloads")
 local Rails = require("GunsOfTien/Rails")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -48,11 +48,7 @@ PreventRemoval.Register({ MAG })
 -------------------------------------------------
 RateOfFire.RegisterWeapon(P90, { rpm = 900, enableSpread = true, sustainedSpread = 0.06, maxSpread = 1.1 })
 
-Animations.RegisterWeaponWithAnimatedParts(P90, {
-    SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-    cycleTicks = 3,
-})
-ChargingHandle.Register(P90)
+Animations.RegisterWeaponWithAnimatedParts(P90, ChargingHandle.ANIMATED_PARTS)
 ReloadAnim.RegisterWeapon(P90, GoMReloads.profile("handgun2"))
 
 -------------------------------------------------

@@ -21,7 +21,7 @@ local ChargingHandle = require("GunsOfTien/ChargingHandle")
 local GoMReloads = require("GunsOfTien/GoMReloads")
 require("GunsOfTienPost93/Guns")             -- the "5.7x28mm P90" profile first: the carbine joins it
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadAnims", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/ReloadAnims", "AttachmentCustomStats",
     "AttachmentsRequiredParts", "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -44,11 +44,7 @@ RateOfFire.RegisterWeapon(PS90, { rpm = 900, enableSpread = true, sustainedSprea
 -- GoM's bolt swap (the bolt seen through the port under the gun), the charging handles back only while racked (the
 -- TR's), GoM's FAMAS reload
 -------------------------------------------------
-Animations.RegisterWeaponWithAnimatedParts(PS90, {
-    SingleAttachment = { open = "MarzGuns.Bolt_Fired", locked = "MarzGuns.Bolt_Lock" },
-    cycleTicks = 3,
-})
-ChargingHandle.Register(PS90)
+Animations.RegisterWeaponWithAnimatedParts(PS90, ChargingHandle.ANIMATED_PARTS)
 ReloadAnim.RegisterWeapon(PS90, GoMReloads.profile("famas_rifle"))
 
 -------------------------------------------------

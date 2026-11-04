@@ -24,11 +24,12 @@ local Ammo = require("WeaponSystems/Utils/Ammo")
 local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
 local Animations = require("WeaponSystems/Utils/Animations")
 local FoldingBipod = require("WeaponSystems/Utils/FoldingBipod")
+local BipodSystem = require("WeaponSystems/Utils/BipodSystem")
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 
-for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "AnimationsFiring", "AttachmentCustomStats",
+for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/AnimationsFiring", "AttachmentCustomStats",
     "PermanentAttachments" }) do
     pcall(require, "MarzWeapons/Registries/" .. file)
 end
@@ -127,6 +128,8 @@ for _, gun in ipairs(GUNS) do
         initialState = "folded",
     })
 end
+-- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
+BipodSystem.RegisterBipod(DEPLOYED)
 CSA.RegisterMultipleParts({
     [DEPLOYED] = {
         SF.Multiply("AimingTime", 1.1),
