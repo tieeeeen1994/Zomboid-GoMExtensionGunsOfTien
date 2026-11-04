@@ -1186,7 +1186,7 @@ def preview22(path, W=1024):
                     post("762x51Magazine25_PMAG"), post("762x51Magazine50_PMAG")],
              256, 400, ".308  ·  PMAG 10, 20, 25 AND D-50 DRUM")
     for n, line in enumerate((".223 TAKES GUNS OF MARZ STANAG MAGAZINES  ·  .308 THE SCAR-H SUPPRESSOR",
-                              "GUNS OF MARZ SIGHTS, GRIPS, LIGHTS AND LASERS")):
+                              "GUNS OF MARZ SIGHTS, GRIPS, LIGHTS AND LASERS  ·  .308 FOLDING BIPOD")):
         page.alpha_composite(text_layer(size, (W // 2, u(464 + n * 16)), line, small, (60, 64, 70, 255),
                                         anchor="ma", spacing=u(1)))
     return save_under(page.convert("RGB"), path)

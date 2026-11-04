@@ -233,25 +233,31 @@ GUNS = {
     },
     # the MDRx .223 and .308 (preview22): rifles like the SCARs, the same view and scale (the .308 with its 20" barrel
     # and the SOCOM762-RC is about as long as the SCAR-H fitted out); the .223 with GoM's EXPS3, MKC foregrip, AR mount +
-    # MKI and a STANAG 30 (at our size), the .308 with GoM's Elcan and Stub foregrip (no GoM bipod fits it), the SCAR-H's mount + SOCOM762-RC and a PMAG 20
+    # MKI and a STANAG 30 (at our size), the .308 with GoM's Elcan, its ALX legs deployed (their own texture; no
+    # foregrip fits under them), the SCAR-H's mount + SOCOM762-RC and a PMAG 20; both with GoM's right Picatinny rail
+    # (our M-LOK section) and a laser on it, the side this view shows
     "mdr223": {
         "rifle": True, "points": "post93/mdr223_points.json",
         "fbx": "GunsOfTienPost93_MDR223", "tex": "MDR223",
-        "nodes": [("MDR223_BODY", None), ("MDR223_BOLT", None), ("MDR223_HANDLE", None)],
+        "nodes": [("MDR223_BODY", None), ("MDR223_BOLT", None), ("MDR223_HANDLE", None),
+                  ("MDR223_RAIL_RIGHT", "rail_right")],
         "gom_mag": ("magazines/assault_rifles", "556x45Magazine30_STANAG", "magazine"),
         "parts": [],
         "gom": [("scopes", "EXPS3_Sight", "scope"), ("foregrips", "MKC_Foregrip", "foregrip"),
-                ("muzzles", "Muzzle_Mount_Device", "canon"), ("suppressors", "MKI_Suppressor", "canon")],
+                ("muzzles", "Muzzle_Mount_Device", "canon"), ("suppressors", "MKI_Suppressor", "canon"),
+                ("pointers", "LRX-7_Laser", "laser_right")],
         "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
     },
     "mdr308": {
         "rifle": True, "points": "post93/mdr308_points.json",
         "fbx": "GunsOfTienPost93_MDR308", "tex": "MDR308",
-        "nodes": [("MDR308_BODY", None), ("MDR308_BOLT", None), ("MDR308_HANDLE", None)],
+        "nodes": [("MDR308_BODY", None), ("MDR308_BOLT", None), ("MDR308_HANDLE", None),
+                  ("MDR308_RAIL_RIGHT", "rail_right"),
+                  ("MDR308_BIPOD_DEPLOYED", "integrated_bipod", "GunsOfTienPost93_MDR308", "MDR308_BIPOD")],
         "mag": ("GunsOfTienPost93_PMAG_magazines", "762x51Magazine20_PMAG", "magazine"),
         "parts": [("GunsOfTienPost93_SCAR_parts", "SCARH_Muzzle_Mount_Device"),
                   ("GunsOfTienPost93_SCAR_parts", "SCARH_Suppressor")],
-        "gom": [("scopes", "ElcanX2_Scope", "scope"), ("foregrips", "Stub_Foregrip", "foregrip")],
+        "gom": [("scopes", "ElcanX2_Scope", "scope"), ("pointers", "AimRight_Laser", "laser_right")],
         "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE,
     },
     # the UMPs (preview7): rifles like the SCARs, the same view, a scale for their length; one body file for both, each
