@@ -21,12 +21,8 @@ if type(ammoMakerAmmoData) ~= "table" then
     Events.OnInitGlobalModData.Add(function()
         for newType in pairs(NEW_TYPES) do
             for _, name in ipairs({ "Make" .. newType, "Produce" .. newType }) do
-                local recipe = ScriptManager.instance:getCraftRecipe(name)
-                if recipe then
-                    recipe:getInputs():clear()
-                    recipe:getOutputs():clear()
-                    recipe:Load(name, "{ OnAddToMenu = False, NeedToBeLearn = True, }")
-                end
+                -- the main mod's helper also moves it out of Ammo Maker's category (an empty one showed otherwise)
+                GunsOfTien_HideAmmoMakerRecipe(name)
             end
         end
     end)

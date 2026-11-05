@@ -26,7 +26,8 @@
     the same way). At OnInitGlobalModData (before PostWorldDictionaryInit resolves inputs) this file hides every recipe
     of ours that needs Ammo Maker the way Ammo Maker hides its unused ones (ammomaker_recipeManager.lua
     updateRecipesInactive: OnAddToMenu = False, which the crafting lists call through callLuaBool and so skip, plus
-    NeedToBeLearn), and moves the belt link recipes out of its AmmoMakerParts category into vanilla's Welding.
+    NeedToBeLearn) and moves it to a vanilla category (see PARKED: a hidden recipe still lists its category), and
+    moves the belt link recipes out of its AmmoMakerParts category into vanilla's Welding.
 --]]
 
 local AMMO_MAKER = type(ammoMakerAmmoData) == "table" and type(ammoMakerAmmoParts) == "table"
@@ -67,8 +68,40 @@ local SOFT_POINT = [[
 }
 ]]
 
-local HIDDEN = "{ OnAddToMenu = False, NeedToBeLearn = True, }"
+local HIDDEN = "{ OnAddToMenu = False, NeedToBeLearn = True, category = %s, }"
 local LINK_RECIPES = { "GunsOfTien_MakeM27_Links", "GunsOfTien_MakeM13_Links" }
+
+-- A hidden recipe still names its category in every crafting window that queries its tags: the category column is
+-- built from the window's whole recipe list (42.21 BaseCraftingLogic.getCategoryList, OnAddToMenu and
+-- NeedToBeLearn play no part), so without Ammo Maker our placeholders showed an empty, untranslated "AmmoMakerAmmo"
+-- / "AmmoMakerParts" category (reported 2026-11-05). The tag index is built before Lua can drop the tags
+-- (CraftRecipeManager.Init from ScriptManager), so each hidden recipe moves to a vanilla category its window
+-- already lists: the commonest one among vanilla recipes of that tag.
+local PARKED = {
+    { "InHandCraft", "Miscellaneous" },
+    { "AnySurfaceCraft", "Weaponry" },
+    { "PrimitiveFurnace", "Blacksmithing" },
+    { "Furnace", "Blacksmithing" },
+}
+
+local function parkedCategory(recipe)
+    local tags = recipe:getTags()
+    for _, entry in ipairs(PARKED) do
+        if tags:contains(entry[1]) then return entry[2] end
+    end
+    return "Miscellaneous"
+end
+
+--- Hide a recipe that needs Ammo Maker: no inputs or outputs, off every list, in a vanilla category.
+--- Post-93's AmmoMaker.lua uses it too.
+---@param name string
+function GunsOfTien_HideAmmoMakerRecipe(name)
+    local recipe = ScriptManager.instance:getCraftRecipe(name)
+    if not recipe then return end
+    recipe:getInputs():clear()
+    recipe:getOutputs():clear()
+    recipe:Load(name, string.format(HIDDEN, parkedCategory(recipe)))
+end
 
 local function hiddenRecipes()
     local names = { SOFT_POINT_RECIPE, "GunsOfTien_MakeBirdshot", "GunsOfTien_ProduceBirdshot" }
@@ -91,12 +124,7 @@ local function onInitGlobalModData()
         return
     end
     for _, name in ipairs(hiddenRecipes()) do
-        local recipe = scripts:getCraftRecipe(name)
-        if recipe then
-            recipe:getInputs():clear()
-            recipe:getOutputs():clear()
-            recipe:Load(name, HIDDEN)
-        end
+        GunsOfTien_HideAmmoMakerRecipe(name)
     end
     for _, name in ipairs(LINK_RECIPES) do
         local recipe = scripts:getCraftRecipe(name)

@@ -2868,7 +2868,12 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   AmmoMaker.lua files hide every recipe of ours that needs it the way its `updateRecipesInactive` does (inputs and
   outputs cleared, `{ OnAddToMenu = False, NeedToBeLearn = True, }`; the crafting lists call OnAddToMenu through
   `callLuaBool`, a missing function = false = skipped) and move the belt link recipes from its `AmmoMakerParts`
-  category to vanilla's `Welding`. Presence test: its global `ammoMakerAmmoData` / `ammoMakerAmmoParts` (its shared
+  category to vanilla's `Welding`. A hidden recipe still adds its category: a crafting window's category column is
+  every category of its queried recipe list (42.21 `BaseCraftingLogic.getCategoryList`, no OnAddToMenu / learned
+  test), and the tag index is built before Lua runs (`CraftRecipeManager.Init` from `ScriptManager`), so an empty,
+  untranslated "AmmoMakerAmmo" showed without Ammo Maker (reported 2026-11-05). `GunsOfTien_HideAmmoMakerRecipe`
+  (main AmmoMaker.lua, Post-93's uses it) also moves each one to the commonest vanilla category of its tag
+  (InHandCraft Miscellaneous, AnySurfaceCraft Weaponry, Furnace / PrimitiveFurnace Blacksmithing). Presence test: its global `ammoMakerAmmoData` / `ammoMakerAmmoParts` (its shared
   files load before ours through `loadModAfter`). The parts' items still name its world models (unreachable
   without it: only its loot code and these recipes make them).
 
