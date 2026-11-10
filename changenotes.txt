@@ -1,9 +1,4 @@
-3.11.0
+3.11.1
 
-Desert Tech MDRx .223 and .308 (Post-93 add-on)
-- New: two semi-automatic bullpup rifles on Desert Tech's MDRx, held two-handed and reloaded with Guns of Marz's FAMAS reload
-- MDRx .223: black, 16-inch barrel, ejects to the right. Takes Guns of Marz's STANAG magazines, its .223 and 5.56x45mm rounds and its AR muzzle parts
-- MDRx .308: flat dark earth, 20-inch barrel, ejects forward. Takes .308 and 7.62x51mm rounds, the SCAR-H's muzzle mount and SOCOM762-RC suppressor, and new Magpul PMAG magazines: 10, 20 and 25 rounds and the 50-round D-50 drum
-- MDRx .308: BLK LBL's ALX aluminium handguard with a built-in bipod. Its two legs fold flush into the handguard's underside and swing down to rest the rifle on low walls and tables like Guns of Marz's bipods
-- Both: a top rail for Guns of Marz optics, and Guns of Marz's Picatinny Rail upgrades on the left and right (short M-LOK rail sections) for its lights and lasers. The .223 takes Guns of Marz's foregrips under its handguard. Guns of Marz's bipods do not fit the MDRx. The charging handles stay forward while firing and move only when racked
-- Found where Guns of Marz's late guns are found, each with its magazines and boxes. The D-50 also turns up on its own with Guns of Marz's high-capacity magazines
+Fix
+- Multiplayer: after a reload, the UMP45, UMP9, Vector .45 and CRB and SCAR-L and SCAR-H could have a round chambered but refuse to fire, saying "Chamber is open, close it before firing." until racked again. A Gunworks timing bug ended the rack on the server before the animation finished, the higher the Reloading skill the sooner. Racks now last as long as their animation, for every Gunworks gun

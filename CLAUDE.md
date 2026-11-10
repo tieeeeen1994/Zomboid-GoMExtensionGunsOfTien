@@ -2090,6 +2090,17 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   GoM's only say `canWalk`, so at `OnLoadMapZones` every recipe that says `canWalk` without the tag gets it through
   `getModTags()` (the live list behind `getTags()`). Without it, walking stopped the craft and cleared the whole queue
   (Tien's Ammo Bags' reload with box opening).
+- **Gunworks rack timed at the wrong speed on a server** (2026-11-11, also `GoMFixes.lua`): Gunworks'
+  `ISRackFirearm:serverStart` divides the profile's rack seconds by the character's `ReloadSpeed` before its
+  `initVars()` sets the rack's speed (0.8 + 0.04 x Reloading), so it uses the magazine insert's (0.8 + 0.10 x
+  Reloading); its other serverStarts set the speed first. The server ends the rack early (77% of the clip at
+  Reloading 5, 67% at 10), the client misses the clip's `rackEnd`, and `modData.gunworksBoltOpen` (set at
+  `rackStart`) stays on with a round chambered: "Chamber is open, close it before firing." on every shot. Hits
+  racks with a late `rackEnd`: GoM's old "MP5" nodes (UMPs, Vector .45 / CRB, UZI_2H: 0.79) and
+  `left_handle_load` (SCARs: 0.70, aimed 0.76); the other animIds GoT uses have it at 0.34-0.57. Our wrapper calls
+  `setReloadSpeed(chr, true)` and then Gunworks' serverStart (`...` passed through). Checked with lupa against
+  a mock of that order (978 ms → 1272 ms for MP5_Rack at Reloading 5); not yet played. Drop it once Gunworks
+  moves its `initVars()` up.
 - **GoM's muzzle points** (2026-10-26, `shared/GunsOfTien/MuzzlePoints.lua`, measured by `scripts/muzzle_audit.py` +
   `muzzle_audit_sheet.py`, side views in tmp/muzzle): the flash and the bullet / tracer start at the model's `muzzle`
   point; on 21 of GoM's 72 gun models it sat 1-7 (game units x 100) ahead of the barrel's end or inside it (only the
