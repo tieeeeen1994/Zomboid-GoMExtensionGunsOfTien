@@ -2084,6 +2084,12 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   `Bayonet.CanAttachBayonet` refused it everywhere; the overpressured 5.56's spread penalty is registered as
   `MarzGuns.556x45_Bullet_Overpressured`, but the round is `SWMG.` and `RateOfFire.getSpreadProfile` looks rounds up
   by their own type, so it never applied (now: automatic fire spread doubled, as GoM meant).
+- **Walking while opening boxes** (42.22, 2026-11-10, also `GoMFixes.lua`): `ISHandcraftAction:new` reads only the
+  `CanBeDoneWhileWalking` tag now, and `canWalk = true` is left to the crafting window (`isCanWalk()`). Our own
+  recipes carry the tag in their scripts (`gen_scripts.py`, `post93/gen_post93_ammo.py`: every recipe with `canWalk`).
+  GoM's only say `canWalk`, so at `OnLoadMapZones` every recipe that says `canWalk` without the tag gets it through
+  `getModTags()` (the live list behind `getTags()`). Without it, walking stopped the craft and cleared the whole queue
+  (Tien's Ammo Bags' reload with box opening).
 - **GoM's muzzle points** (2026-10-26, `shared/GunsOfTien/MuzzlePoints.lua`, measured by `scripts/muzzle_audit.py` +
   `muzzle_audit_sheet.py`, side views in tmp/muzzle): the flash and the bullet / tracer start at the model's `muzzle`
   point; on 21 of GoM's 72 gun models it sat 1-7 (game units x 100) ahead of the barrel's end or inside it (only the

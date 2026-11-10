@@ -158,7 +158,7 @@ def recipes():
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {{
             item 1 tags[gunsoftienpost93:ammobox50] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
         }}
@@ -174,7 +174,7 @@ def recipes():
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {{
             item 50 [{';'.join(q(n['round']) for n in rows)}] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }}
@@ -202,7 +202,7 @@ def recipes():
         time        = {time},
         category    = Packing,
         canWalk     = true,
-        Tags        = {tags},
+        Tags        = {tags};CanBeDoneWhileWalking,
         inputs {{
             item {in_count} tags[{tag}] mappers[ammoType] flags[{flags}],
         }}

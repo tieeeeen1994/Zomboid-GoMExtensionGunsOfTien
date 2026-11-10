@@ -9,7 +9,7 @@ module Base {
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 [GunsOfTien.LinkBox_M27] flags[Prop2;AllowFavorite;InheritFavorite],
         }
@@ -23,7 +23,7 @@ module Base {
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 200 [GunsOfTien.M27_Link] flags[AllowFavorite;InheritFavorite],
         }
@@ -58,7 +58,7 @@ module Base {
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 [GunsOfTien.LinkBox_M13] flags[Prop2;AllowFavorite;InheritFavorite],
         }
@@ -72,7 +72,7 @@ module Base {
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 100 [GunsOfTien.M13_Link] flags[AllowFavorite;InheritFavorite],
         }

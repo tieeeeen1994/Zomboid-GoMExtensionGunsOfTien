@@ -6,7 +6,7 @@ module Base {
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 tags[gunsoftien:ammobox20] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
         }
@@ -28,7 +28,7 @@ module Base {
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 20 [GunsOfTien.762x39_Bullet_US;GunsOfTien.762x39_Bullet_SP;GunsOfTien.762x39_Bullet_SteelCore;GunsOfTien.9x39_Bullet_SP6;GunsOfTien.3006_Bullet_SP;GunsOfTien.308_Bullet_SP] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
@@ -51,7 +51,7 @@ module Base {
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 tags[gunsoftien:ammobox25] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
         }
@@ -68,7 +68,7 @@ module Base {
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 25 [GunsOfTien.12Gauge_Shell_Birdshot] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
@@ -86,7 +86,7 @@ module Base {
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 tags[gunsoftien:ammobox50] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
         }
@@ -108,7 +108,7 @@ module Base {
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P;GunsOfTienPost93.57x28_Bullet] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
@@ -130,7 +130,7 @@ module Base {
         time        = 50,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 tags[gunsoftien:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
         }
@@ -159,7 +159,7 @@ module Base {
         time        = 50,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 12 tags[gunsoftien:ammobox] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
@@ -188,7 +188,7 @@ module Base {
         time        = 100,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {
             item 1 tags[gunsoftien:ammocrate] mappers[ammoType] flags[AllowFavorite;InheritFavorite],
         }
@@ -217,7 +217,7 @@ module Base {
         time        = 100,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
             item 4 tags[gunsoftien:ammocarton] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }

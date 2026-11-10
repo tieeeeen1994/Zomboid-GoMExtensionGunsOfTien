@@ -41,7 +41,8 @@ Maker they can be made.
   (retractable stock)
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
-  (they started a little ahead of it or inside it)
+  (they started a little ahead of it or inside it); opening and packing ammo boxes, cartons and crates can be done
+  while walking again (since 42.22 the game ignores the old walking setting Guns of Marz's recipes use)
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
   off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept

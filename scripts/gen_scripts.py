@@ -209,7 +209,7 @@ def recipes():
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {{
             item 1 tags[gunsoftien:ammobox{per}] mappers[ammoType] flags[Prop2;AllowFavorite;InheritFavorite],
         }}
@@ -225,7 +225,7 @@ def recipes():
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {{
             item {per} [{inputs}] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }}
@@ -260,7 +260,7 @@ def recipes():
         time        = {time},
         category    = Packing,
         canWalk     = true,
-        Tags        = {tags},
+        Tags        = {tags};CanBeDoneWhileWalking,
         inputs {{
             item {in_count} tags[{tag}] mappers[ammoType] flags[{flags}],
         }}
@@ -1330,7 +1330,7 @@ def belt_links():
         category    = Packing,
         recipeGroup = OpenBox,
         canWalk     = true,
-        Tags        = InHandCraft;CanBeDoneInDark,
+        Tags        = InHandCraft;CanBeDoneInDark;CanBeDoneWhileWalking,
         inputs {{
             item 1 [{MODULE}.{box}] flags[Prop2;AllowFavorite;InheritFavorite],
         }}
@@ -1344,7 +1344,7 @@ def belt_links():
         time        = 15,
         category    = Packing,
         canWalk     = true,
-        Tags        = InHandCraft,
+        Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {{
             item {per} [{MODULE}.{link}] flags[AllowFavorite;InheritFavorite],
         }}
