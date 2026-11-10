@@ -1,4 +1,8 @@
-3.11.1
+3.11.2
 
-Fix
-- Multiplayer: after a reload, the UMP45, UMP9, Vector .45 and CRB and SCAR-L and SCAR-H could have a round chambered but refuse to fire, saying "Chamber is open, close it before firing." until racked again. A Gunworks timing bug ended the rack on the server before the animation finished, the higher the Reloading skill the sooner. Racks now last as long as their animation, for every Gunworks gun
+Change
+- Ammunition weights now follow real cartridge weights on the same scale as Guns of Marz's ammo. 5.7x28mm and 4.6x30mm were weighed on a heavier scale than every other round
+- 5.7x28mm (SS190, SB193, SS197SR): 0.0042 a round (was 0.006); box 0.189, carton 1.814, crate 5.805 (were 0.27, 2.592, 8.294)
+- 4.6x30mm (DM11, Subsonic): 0.0046 a round (was 0.0066); box 0.207, carton 1.987, crate 6.358 (were 0.297, 2.851, 9.123)
+- M27 belt links: 0.0014 a link (was 0.002); a box of 200 0.252 (was 0.36). M13 belt links stay at 0.003, which already matched
+- Rounds and links already carried or stored take the new weight at once

@@ -4,7 +4,7 @@ module GunsOfTienPost93 {
     item 57x28_Bullet {
         DisplayCategory  = Ammo,
         ItemType         = base:normal,
-        Weight           = 0.006,
+        Weight           = 0.0042,
         Icon             = GunsOfTienPost93_57x28_Round_SS190,
         count            = 5,
         MetalValue       = 1.0,
@@ -16,7 +16,7 @@ module GunsOfTienPost93 {
     item 57x28_Box {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 0.27,
+        Weight             = 0.189,
         Icon               = GunsOfTienPost93_57x28_Box_SS190,
         MetalValue         = 30.0,
         PlaceMultipleSound = BoxOfRoundsPlaceAll,
@@ -30,7 +30,7 @@ module GunsOfTienPost93 {
     item 57x28_Carton {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 2.592,
+        Weight             = 1.814,
         Icon               = Parcel_Medium_Ammo,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,
@@ -44,7 +44,7 @@ module GunsOfTienPost93 {
     item 57x28_Crate {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
-        Weight             = 8.294,
+        Weight             = 5.805,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,

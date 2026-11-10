@@ -2830,6 +2830,9 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   cartons. Weights: box = 0.9 × its rounds (GoM's `AmmoPatch.lua` round weights), carton = 0.8 × 12 boxes, crate =
   0.8 × 4 cartons, each rounded to 3 decimals, so every packing step is lighter per round; every one of ours
   follows it (user, 2026-10-25: packing must always pay; Post-93's `packed_weights`, link boxes 0.9 of their links).
+  Round weights: GoM's `AmmoPatch.lua` is about 0.0007 per real gram of the cartridge (5.56x45 12 g = 0.0085,
+  7.62x51 24.5 g = 0.0165, .50 BMG 114 g = 0.08); ours use the same scale (2026-11-11, 3.11.2: 5.7x28 6.0 g = 0.0042,
+  4.6x30 6.6 g = 0.0046, M27 link 2.0 g = 0.0014, M13 link 4.35 g = 0.003; they had been grams / 1000).
   GoM's recipes (G/scripts/MarzWeapons/recipes/ammunition.txt) use closed `itemMapper` lists, so an
   outside mod cannot join them: own tags (`ItemTag.register` in registries.lua) and own recipe names, as V does
   (`OpenBoxOfBullets20_mvgi` etc., V/scripts/MarzVanillaWeapons/items/recipes.txt).

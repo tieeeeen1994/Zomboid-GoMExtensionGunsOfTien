@@ -195,7 +195,7 @@ crafted, for the M249 and GoM's M60 alike; a fired round's link is thrown out of
 picked up off the ground (first decided "straight into the inventory", changed the same day to "follow the
 realistic rules, treat links like hot brass").
 - Items: `GunsOfTien.M27_Link` "M27 5.56mm Belt Link" (the M249's) and `GunsOfTien.M13_Link` "M13 7.62mm Belt Link"
-  (GoM's M60), weight 0.002 each, and a box of each holding one belt ("Box of M27 Belt Links", 200; "Box of M13 Belt
+  (GoM's M60), weight 0.0014 and 0.003 (real 2.0 g and 4.35 g on GoM's ammo scale, 2026-11-11; first 0.002 each), and a box of each holding one belt ("Box of M27 Belt Links", 200; "Box of M13 Belt
   Links", 100) with Open / Pack recipes.
 - Filling a belt box (the M249's 200-round box, GoM's M60 100-round box) with Gunworks' Load Rounds takes one link
   from the main inventory with each round, any round of the family (belts mix loads freely, as the real 4 ball : 1

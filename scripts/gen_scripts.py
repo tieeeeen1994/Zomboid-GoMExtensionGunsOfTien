@@ -1280,9 +1280,10 @@ def m249():
 # Belt links (docs/design.md 4e, scripts/build_links.py, shared/GunsOfTien/BeltLinks.lua): the M249's M27 and GoM's
 # M60's M13 disintegrating links, consumed when a belt box is filled and given back when it is fired or emptied.
 # (item, box, per box, link weight, links made from one small metal sheet, English names). A box weighs 0.9 of its
-# links, GoM's ammo box bonus, so packing always pays (user, 2026-10-25).
+# links, GoM's ammo box bonus, so packing always pays (user, 2026-10-25). Link weights on GoM's ammo scale (about
+# 0.0007 a gram): M27 about 2.0 g, M13 about 4.35 g (user, 2026-11-11).
 LINKS = [
-    ('M27_Link', 'LinkBox_M27', 200, 0.002, 50, 'M27 5.56mm Belt Link', 'Box of M27 Belt Links'),
+    ('M27_Link', 'LinkBox_M27', 200, 0.0014, 50, 'M27 5.56mm Belt Link', 'Box of M27 Belt Links'),
     ('M13_Link', 'LinkBox_M13', 100, 0.003, 40, 'M13 7.62mm Belt Link', 'Box of M13 Belt Links'),
 ]
 LINKS_BOUNDS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'links_bounds.json')
@@ -2658,7 +2659,7 @@ M93 = 'GunsOfTienPost93'
 Q57 = {k: f"{M93}.57x28_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
                                           ('crate', 'Crate'))}
 # GoM's packing bonus as Post-93's gen_post93_ammo.py works it out for 5.7x28mm (6.0 g a round, 50 a box)
-W57 = dict(round='0.006', box='0.27', carton='2.592', crate='8.294')
+W57 = dict(round='0.0042', box='0.189', carton='1.814', crate='5.805')
 # the guns the P90's magazine fits
 P90_FAMILY = f"GunsOfTien.P90;{M93}.P90TR;{M93}.PS90"
 # the magazine in the off hand of the PS90's FAMAS reload (Post-93 build_ps90.py magazine_prop2: GoM's STANAG 30

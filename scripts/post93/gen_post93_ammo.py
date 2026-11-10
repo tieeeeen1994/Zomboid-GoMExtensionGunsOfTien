@@ -11,10 +11,12 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'Con
 MODULE = 'GunsOfTienPost93'
 ART = 'GunsOfTienPost93_'
 
-# Real cartridge weights: 4.6x30 about 6.6 g, 5.7x28 about 6.0 g. 50-round boxes, as both are sold.
+# Real cartridge weights: 4.6x30 about 6.6 g, 5.7x28 about 6.0 g, on GoM's scale (AmmoPatch.lua: about 0.0007 a
+# gram, e.g. 5.56x45 12 g = 0.0085, 7.62x51 24.5 g = 0.0165; user, 2026-11-11, from a player's real-weight table).
+# 50-round boxes, as both are sold.
 CALIBRES = {
-    '46x30': dict(name='4.6x30mm', weight='0.0066', mesh='46x30_Round'),
-    '57x28': dict(name='5.7x28mm', weight='0.006', mesh='57x28_Round'),
+    '46x30': dict(name='4.6x30mm', weight='0.0046', mesh='46x30_Round'),
+    '57x28': dict(name='5.7x28mm', weight='0.0042', mesh='57x28_Round'),
 }
 ROUNDS_PER_BOX, BOXES_PER_CARTON, CARTONS_PER_CRATE = 50, 12, 4
 
