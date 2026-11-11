@@ -28,3 +28,29 @@ option GunsOfTien.BeltLinks {
     page        = GunsOfTien,
     translation = GunsOfTien_BeltLinks,
 }
+
+option GunsOfTien.FirearmCritRule {
+    type        = enum,
+    numValues   = 3,
+    default     = 1,
+    page        = GunsOfTien,
+    translation = GunsOfTien_FirearmCritRule,
+}
+
+option GunsOfTien.FirearmCritLead {
+    type        = integer,
+    min         = 0,
+    max         = 100,
+    default     = 50,
+    page        = GunsOfTien,
+    translation = GunsOfTien_FirearmCritLead,
+}
+
+option GunsOfTien.FirearmMinimumDamage {
+    type        = integer,
+    min         = 0,
+    max         = 100,
+    default     = 0,
+    page        = GunsOfTien,
+    translation = GunsOfTien_FirearmMinimumDamage,
+}

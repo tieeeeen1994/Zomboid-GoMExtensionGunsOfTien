@@ -45,6 +45,17 @@ Built, never played. Tick each once seen working in game; details in the CLAUDE.
       drawn as our short M-LOK sections (the .223's on its lower slot row, the .308's high on the ALX); GoM's lights on
       the left, lasers on the right, beams included; a found MDRx with a light or laser comes with its rail.
 
+## Play-test before releasing 3.12.0
+
+Both options default to the game's own behaviour, so 3.12.0 changes nothing until they are set.
+
+- [ ] **Gun critical hits per target** ("Firearm crits per target", 2026-11-11): with a shotgun into a crowd, Old gives
+      some pellets crits and others none; Enhanced at lead 100 behaves like Default; on a server the zombie
+      damage follows the client's rolls and no error shows in either log.
+- [ ] **Minimum firearm damage** ("Minimum firearm damage", 2026-11-11): at 25, far shots with a scope at Aiming 0
+      wear zombies down instead of only staggering them; at 100 every hit lands; at 0 nothing changes; on a server the
+      zombie dies for everyone and the console shows no "[GunsOfTien] minimum firearm damage" line.
+
 ## Bugs
 
 - [ ] **No firing animation in one hand with the left hand full** (user, 2026-10-26: "Our guns in GoT that can be

@@ -259,7 +259,11 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `GunsOfTien.AmmoLootMultiplier` only drops that key from servers' saved sandbox files. **Sandbox options left**:
   `RealisticPiercing`, `ModdedSlotsUpright` (default on, `client/GunsOfTien/SlotTurns.lua`, applies from the next
   world load),
-  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `BeltLinks` (default on, see "Belt links"). `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `BeltLinks` (default on, see "Belt links"),
+  `FirearmCritRule` (1 Default = 42.22 per shot / 2 Old = 42.21 per target / 3 Enhanced = per target led by the
+  shot),
+  `FirearmCritLead` (0-100, default 50), see "Firearm crits per target", and `FirearmMinimumDamage` (0-100 %,
+  default 0), see "Minimum firearm damage". `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
@@ -2933,6 +2937,56 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   casing shape, `magazineLearnedRecipes` in its recipeManager) and the reloading press parts (one manual). Round
   assembly (`Make<type>` / `Produce<type>`) and bullets / shot (`MakeBalls00`...) need no book; ours match
   (`NeedToBeLearn = False` everywhere), and each new type keeps its calibre's casing, so the casing gate applies.
+
+## Firearm crits per target (42.22.2, built 2026-11-11, not played)
+
+User, 2026-11-11: "Crit rework" with three choices (default: no change from 42.22.2; old: per target; enhanced: per
+target, "trigger pull crit will influence the crit per target ... Kind of like DnD"), the enhanced weight as a second
+sandbox option. `shared/GunsOfTien/FirearmCrits.lua` (its header has the Java trace).
+- 42.22 dropped 42.21's per-target firearm crit re-roll (`CombatManager.processHit` under hit reaction SHOT, and
+  `IsoPlayer.hitConsequences`), leaving the one `pressedAttack` roll per trigger pull, so pellets and pierced targets
+  crit all together or not at all. Per target the flag sets the head hit reaction for a target not under the reticle
+  (head x3, in `getHitDamage` → `processHit`), crit damage x max(2, CritDmgMultiplier) and a zombie's knockdown.
+- Lua can only roll in `OnWeaponHitCharacter` (inside `Hit`, before `processHitDamage`), after that target's hit
+  reaction was chosen, so each roll decides its target's damage and knockdown and the **next** target's head
+  reaction. The first target keeps the trigger-pull roll: one-target shots are untouched by every choice.
+- Enhanced: p + (1 - p) k after a crit pull, p (1 - k) after none (k = lead / 100), average p; k 0 = per target,
+  1 = per shot. Checked in lupa with mocks (9-pellet shots, p = 30, lead 50: 64.7% / 14.9%, overall 29.7%).
+- Sides: the shooter's client rolls zombie targets (42.22 sends their damage), the server player and animal targets
+  (`PlayerHitPacket.processServer` fires `OnWeaponSwingHitPoint` per batch after setting the batch crit, and
+  `processWielder` resets the flag to it before each target packet), single player all.
+- Choices labelled Default / Old / Enhanced (user, 2026-11-11: "limit the options to Default, Old and Enhanced ...
+  explain it in the tooltip"); the tooltip has a line per choice.
+- Tien's Skill Mastery's Firearms.Crit (+5 pts at mastery 10, 2026-11-11) needs no code here: it tops up the
+  trigger pull in `OnWeaponSwing` (so the first target, which keeps the pull, has it) and raises the gun's
+  `getCriticalChance()` for the shot at `OnWeaponSwingHitPoint`, which `calculateCritChance` reads for Old /
+  Enhanced's later targets. Its melee crit reroll is per swing; 42.22 did not change melee.
+
+## Minimum firearm damage (42.22.2, built 2026-11-11, not played)
+
+User, 2026-11-11: instead of a minimum hit chance, "the minimum firearm % damage. So when the zombie staggers, it will
+still hit the minimum percentage damage ... basically it's like a clamp on the final damage"; tooltip to say that 100
+equals 42.21 and that 42.21's behaviour was a bug. Sandbox `FirearmMinimumDamage` (0-100 %, default 0 = vanilla).
+`shared/GunsOfTien/FirearmMinimumDamage.lua` (its header has the trace), `tests/firearm_test.py`.
+- The 42.21 bug: `attackCollisionCheck` passed `bIgnoreDamage` to `Hit` (~1159) and only afterwards OR-ed in the
+  failed roll's `ignoreHitCountDamage` (~1212), so with Firearms Use Damage Chance on Zombies only (default) every hit
+  that reached a zombie did full damage (crits too). 42.22 passes the roll's flag in `HitData`: a failed roll is a hit
+  whose damage `hitConsequences` skips (a stagger with hit force damage / 2.7, no XP).
+- Lua cannot see the roll (no event between `getHitData` and `Hit`; `StatisticsManager`, which counts "Bullets Damage
+  Ignored", and `CombatManager` are not exposed), so the file takes it over: MINIMUM_TO_HIT_CHANCE = 100 from the
+  shot's `OnWeaponSwingHitPoint` to the next tick (Java's roll always lands), its own roll in `OnWeaponHitCharacter`
+  with a Lua copy of `calculateHitChanceData` (checked against the Java worked by hand: 96 cases), and on a failed
+  zombie roll BASE_WEAPON_DAMAGE_MULTIPLIER and WEAPON_LEVEL_DAMAGE_MULTIPLIER_INCREMENT x share (/ the crit
+  multiplier on a crit) for that hit, put back at the next hit and the next tick. `CombatConfig.set` clamps to the
+  key's range; only `processHitDamage` reads those two keys, and a remote hit (`bRemote`) skips it, so the scaled
+  window touches nothing else.
+- Kept vanilla: the damage `Hit` returns is the packet's `hitDamage`, which the 42.22 server and the zombie's owner
+  apply as sent (no re-check of a client's zombie roll, `Hit.getClientRolledHitData`); kills and corpses follow.
+  A crit pull still knocks down (vanilla does that on a failed roll too). Cost: such hits give Aiming XP (the
+  server awards it for any hit not flagged ignored).
+- Players and animals: an MP client never rolls them (server), so they keep 42.22's rule. Single player rolls them
+  here: a failed roll misses again (`setAvoidDamage`, consumed by `Hit` after the event; blood and sound already
+  played) under Zombies only, or does 0 under All types. Vehicles (drive-by penalties) and Disabled are left alone.
 
 ## Combat mechanics that matter here (42.21 Java, traced 2026-10-14; decompiles in the session scratchpad)
 

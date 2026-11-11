@@ -1,4 +1,9 @@
-3.11.2
+3.12.0
+
+New sandbox options
+- Gun Critical Hits: how critical hits are decided when one shot hits several targets (shotgun pellets, rounds that pierce). Default is the game's rule since Build 42.22: one roll per shot, so a blast crits with every pellet or with none. Old rolls every target at its own chance, as before Build 42.22. Enhanced rolls every target too, but led by the trigger pull: a critical pull raises the other targets' chance and a plain one lowers it, by as much as Trigger Pull Lead for Gun Critical Hits sets (50 by default). A shot that hits one target is the same under every choice
+- Minimum Firearm Damage (%): since Build 42.22 a gun's failed hit roll on a zombie only staggers it and does no damage. This gives such a hit a share of the damage the same hit would have done, after the body part hit, clothing and range, never with the critical hit bonus. 0 (the default) is the game's rule. 100 makes every hit that reaches a zombie do full damage, as in Build 42.21, where that came from a bug fixed in Build 42.22. Players and animals are not changed, and such hits still give Aiming experience
+- Both default to the game's own behaviour, so nothing changes until a server sets them
 
 Change
 - Ammunition weights now follow real cartridge weights on the same scale as Guns of Marz's ammo. 5.7x28mm and 4.6x30mm were weighed on a heavier scale than every other round

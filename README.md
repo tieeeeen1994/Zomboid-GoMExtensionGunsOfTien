@@ -27,6 +27,12 @@ Maker they can be made.
 - Realistic sound radius and volume for the guns (not the grenade launchers)
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
+- Gun critical hits when one shot hits several targets (shotgun pellets, rounds that pierce): Build 42.22 rolls once
+  per shot, so a blast crits on every pellet or on none; Old rolls for each target again, as before Build 42.22, and
+  Enhanced rolls for each target but led by the trigger pull's roll (sandbox option, Default = Build 42.22's way)
+- Minimum firearm damage: since Build 42.22 a gun's failed hit roll on a zombie only staggers it for no damage; this
+  gives such a hit a share of the damage it would have done (after body part, clothing and range, never a critical
+  hit). 100% is Build 42.21's every-hit-lands, which came from a bug (sandbox option, 0% = the game's rule by default)
 - 9x39mm round renamed SP-5, 5.45x39mm round renamed 7N6
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
