@@ -31,6 +31,12 @@ Built, never played. Tick each once seen working in game; details in the CLAUDE.
 - [ ] **Vector 9mm Pistol** (Post-93, "Vector SDP"): the one-handed hold and GoM's MP5K reload with the turned model,
       on the back, the Mk9's mount device over the thread protector, the shared Vector 9mm loot.
 
+## Play-test before releasing the next version
+
+- [ ] **Steyr TMP** (main mod, CLAUDE.md "Steyr TMP"): one-handed and in a holster, GoM's MP5K reload with both
+      magazines, the bolt in the right port on each shot, the cocking knob back only while racked, the Mk9 on its
+      mount over the threaded barrel, Hot Brass to the right, found in the short SMG spawner's places.
+
 ## Play-test before releasing 3.11.0
 
 - [ ] **MDRx .223 and .308** (Post-93, "Desert Tech MDRx"): in the hands and on the back; GoM's FAMAS reload with a
@@ -55,6 +61,14 @@ Both options default to the game's own behaviour, so 3.12.0 changes nothing unti
 - [ ] **Minimum firearm damage** ("Minimum firearm damage", 2026-11-11): at 25, far shots with a scope at Aiming 0
       wear zombies down instead of only staggering them; at 100 every hit lands; at 0 nothing changes; on a server the
       zombie dies for everyone and the console shows no "[GunsOfTien] minimum firearm damage" line.
+
+## New guns (2026-11-11, designed, building in this order)
+
+- [ ] **SR-25** (main mod, design.md 4l): model previewed (docs/sr25_preview.png); next the scripts and Lua:
+      KAC's 20 in a main-mod profile that Post-93's PMAGs join, the integrated scope and bipod parts, loot.
+- [ ] **OTs-14 Groza: Groza-1, Groza-1 with the GP-25, Groza-2 (compact), Groza-4** (Post-93, post93_design.md
+      "OTs-14 Groza family"; models previewed, docs/post93_groza_preview.png): next the scripts and Lua (the GP-25
+      launcher mode as GoM's M203_Weapon); the optics mount still to check.
 
 ## Bugs
 

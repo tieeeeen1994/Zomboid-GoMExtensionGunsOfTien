@@ -575,7 +575,8 @@ def lasers():
 # lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
 # The main mod's Uzis take it too (user, 2026-10-23: the real Mk9 took the Uzi barrel nut's place), listed in their
 # own scripts (uzi() below).
-SMG9_GUNS = 'MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H'
+SMG9_GUNS = ('MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;'
+             'GunsOfTien.TMP')
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
 # Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
@@ -1692,6 +1693,189 @@ def uzi():
         names[f'{MODULE}.{uzi_mag(r)}'] = f"Uzi {r}Rds 9x19mm {'Extended ' if r >= 40 else ''}Magazine"
     for part, _, _, name in UZI_PARTS:
         names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# Steyr TMP (docs/design.md 4m, user 2026-11-11: 15 and 30-round magazines only; meshes and points:
+# scripts/build_tmp.py, icons: scripts/make_tmp_art.py, registries: shared/GunsOfTien/TMP.lua). Held like a pistol and
+# holstered as the Mini Uzi (the model turned, GoM's MP5K reload), the main mod's 9x19mm SMG mount device and Mk9 on
+# its threaded barrel (SMG9_GUNS), its front grip part of the frame (no part), no stock, no rails. Real: 130 mm barrel,
+# 1.3 kg, 850-900 rpm. Stats beside the Micro Uzi (117 mm) and Mini Uzi (197 mm); the front grip and the lower rate
+# hold it steadier than the Micro. Sound from sound_model.py's model: 9mm from a 5.1" barrel, f = 0.627 -> 110 / 31.
+TMP_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tmp_points.json')
+TMP_MAGS = [(15, 0.07), (30, 0.12)]      # Steyr's polymer magazines; GoM's MP5 20 / 30: 0.08 / 0.18 (steel)
+TMP_STATS = dict(min=0.7, max=1.1, crit=25.0, hit=46, aim=25, recoil=12, range=25.0, stop=3.5, weight=1.0,
+                 radius=110, volume=31, sight=(2, 10.0), angle=(0.955, 0.04), knock=2.5, mag=30)
+
+
+def tmp_mag(rounds):
+    return f'9x19Magazine{rounds}_TMP'
+
+
+def tmp():
+    pts = json.load(open(TMP_POINTS))
+    s = TMP_STATS
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model TMP {{
+        mesh     = weapons/firearms/GunsOfTien_TMP|TMP_BODY,
+        texture  = {tex}/TMP,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append("    }\n")
+    # TMP_BOLT = the bolt in the right ejection port, TMP_HANDLE = the cocking knob (moved only while racked)
+    for node in ('BOLT', 'HANDLE'):
+        models.append(f"""
+    model TMP_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_TMP|TMP_{node},
+        texture  = {tex}/TMP,
+        cullFace = None,
+    }}
+""")
+    for r, _ in TMP_MAGS:
+        models.append(f"""
+    model {tmp_mag(r)} {{
+        mesh     = weapons/magazines/GunsOfTien_TMP_magazines|{tmp_mag(r)},
+        texture  = {tex}/{tmp_mag(r)},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_tmp.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.TMP_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.TMP_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.ChargingHandle_Forward {MODULE}.TMP_HANDLE handle handle,",
+             f"{w}{MODULE}.ChargingHandle_Back {MODULE}.TMP_HANDLE handle_back handle_back,"]
+    parts += [f"{w}{MODULE}.{tmp_mag(r)} {MODULE}.{tmp_mag(r)} magazine magazine," for r, _ in TMP_MAGS]
+    parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    items = [f"module {MODULE} {{\n", f"""
+    item TMP {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['sight'][0]},
+        MaxSightRange                = {s['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = {s['angle'][0]},
+        AimingPerkMinAngleModifier   = {s['angle'][1]},
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 20.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_9x19,
+        AmmoBox                      = MarzGuns.9x19_Box,
+        ClipSize                     = {s['mag']},
+        MagazineType                 = {MODULE}.{tmp_mag(s['mag'])},
+        MaxAmmo                      = {s['mag']},
+        Reloadtime                   = 30,
+        AttachmentType               = Holster,
+        WeaponReloadType             = handgun,
+        SwingAnim                    = Handgun,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_TMP,
+        RunAnim                      = Run_Weapon2,
+        WeaponSprite                 = {MODULE}.TMP,
+        AimReleaseSound              = M9AimRelease,
+        BreakSound                   = M9Break,
+        BringToBearSound             = M9BringToBear,
+        ClickSound                   = M9Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = M9Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = M9Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M9UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = {s['knock']},
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+"""]
+    for r, weight in TMP_MAGS:
+        items.append(f"""
+    item {tmp_mag(r)} {{
+        AmmoType         = swmg:bullet_9x19,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{tmp_mag(r)},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {r},
+        MountOn          = {MODULE}.TMP,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{tmp_mag(r)},
+        WorldStaticModel = {MODULE}.{tmp_mag(r)},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_tmp.txt', ''.join(items))
+    # GoM repairs its SMGs with Aiming=3
+    write('scripts/GunsOfTien/fixing_tmp.txt', f"""module Base {{
+    fixing Fix TMP {{
+        Require = {MODULE}.TMP,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.TMP'] = 'TMP Machine Pistol'
+    for r, _ in TMP_MAGS:      # GoM's names ("MP5 30Rds 9x19mm Magazine")
+        names[f'{MODULE}.{tmp_mag(r)}'] = f"TMP {r}Rds 9x19mm Magazine"
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -2958,6 +3142,7 @@ if __name__ == '__main__':
     m249()
     belt_links()
     uzi()
+    tmp()
     aug()
     glock21()
     rpk()

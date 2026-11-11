@@ -3,7 +3,7 @@
     not always the same, and this is the case for MP7 and AUG").
 
     On every gun of both mods but the SCARs (whose handle rides with the carrier) the real handle stays forward while
-    the gun fires: the Uzi, Mini and Micro Uzi (IMI's top knob), the M249, the Steyr AUGs, and Post-93's MP7s, P90
+    the gun fires: the Uzi, Mini and Micro Uzi (IMI's top knob), the Steyr TMP (its knob at the rear top), the M249, the Steyr AUGs, and Post-93's MP7s, P90
     and UMPs (2026-10-30). Only the bolt or carrier inside moves, seen through the ejection port (on the right, under
     the P90 and the M249). So on these guns GoM's Bolt part (MarzGuns.Bolt_Lock / Bolt_Fired, which Gunworks swaps on each shot,
     while the gun is empty and during the rack) draws the bolt (`<gun>_BOLT`, a plate over the port's front half),

@@ -1,0 +1,185 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1248,
+      -0.0196
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "canon": {
+    "offset": [
+      0.0,
+      0.1067,
+      -0.0196
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.0133,
+      -0.0096
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0112,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handle_back": {
+    "offset": [
+      0.0,
+      -0.0151,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0209,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "canon": "the upper's front face (30 mm behind the muzzle): GunsOfTien.SMG9_Muzzle_Mount_Device and Mk9_Suppressor start here, over the threaded barrel",
+    "magazine": "9x19Magazine15_TMP / 30_TMP hang straight down from here (their feed lips); the 15's base is flush with the grip, the 30's 82 mm under it",
+    "bolt_fired": "TMP_BOLT (the bolt in the right ejection port) back 18.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+    "handle_back": "TMP_HANDLE (the cocking knob) pulled 25 mm straight back out of the upper, only while racked",
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = rear-top of the grip (photo L 207, H 172)"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      207.0,
+      172.0
+    ],
+    "bore_mm": 204.5,
+    "k": 0.000603
+  },
+  "_bounds": {
+    "TMP_BODY": {
+      "min": [
+        -0.0128,
+        -0.0458,
+        -0.0416
+      ],
+      "max": [
+        0.0115,
+        0.1248,
+        0.0543
+      ],
+      "tris": 1712
+    },
+    "TMP_BOLT": {
+      "min": [
+        0.0112,
+        0.0459,
+        -0.032
+      ],
+      "max": [
+        0.0117,
+        0.057,
+        -0.0247
+      ],
+      "tris": 44
+    },
+    "TMP_HANDLE": {
+      "min": [
+        -0.009,
+        -0.0446,
+        -0.0413
+      ],
+      "max": [
+        0.009,
+        -0.0121,
+        -0.0308
+      ],
+      "tris": 88
+    },
+    "TMP_BOLT_fired": {
+      "min": [
+        0.0112,
+        0.0348,
+        -0.032
+      ],
+      "max": [
+        0.0117,
+        0.0458,
+        -0.0247
+      ],
+      "tris": 44
+    },
+    "TMP_HANDLE_back": {
+      "min": [
+        -0.009,
+        -0.0597,
+        -0.0413
+      ],
+      "max": [
+        0.009,
+        -0.0271,
+        -0.0308
+      ],
+      "tris": 88
+    }
+  },
+  "_mags": {
+    "9x19Magazine15_TMP": {
+      "min": [
+        -0.0077,
+        -0.0115,
+        -0.0639
+      ],
+      "max": [
+        0.0077,
+        0.0115,
+        0.0002
+      ],
+      "tris": 218
+    },
+    "9x19Magazine30_TMP": {
+      "min": [
+        -0.0077,
+        -0.0115,
+        -0.1134
+      ],
+      "max": [
+        0.0077,
+        0.0115,
+        0.0002
+      ],
+      "tris": 218
+    }
+  }
+}

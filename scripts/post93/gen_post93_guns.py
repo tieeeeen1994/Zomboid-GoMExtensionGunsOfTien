@@ -1698,13 +1698,15 @@ PMAGS = [('762x51Magazine10_PMAG', 10, 0.1), ('762x51Magazine20_PMAG', 20, 0.15)
 # come up (a 3.7 kg bullpup); the .308 from GoM's M14 (22" against the MDR's 20": a little less top damage), quicker to
 # aim. Sounds from sound_model.py (5.56 from 16" = 187 / 53, 7.62x51 from 20" = 216 / 62, the SCAR-H's); GoM's AR-15
 # (M16 events) and M14 (M14 events, the SCAR-H's MSR788Shoot) handling sounds.
+# RecoilDelay paces semi-automatic fire (the next shot waits for it, ~30 units a second at Aiming 0); user,
+# 2026-11-11: fire faster, so 13 -> 10 and 16 -> 12 (about a third quicker than GoM's AR-15 / M14).
 MDR_STATS = {
-    'MDR223': dict(min=0.8, max=1.6, crit=20.0, critmult=3.5, hit=52, hitmod=4, aim=35, recoil=13, range=50.0,
+    'MDR223': dict(min=0.8, max=1.6, crit=20.0, critmult=3.5, hit=52, hitmod=4, aim=35, recoil=10, range=50.0,
                    minsight=8, maxsight=16.0, minangle=0.965, jam=1.0, cond=220, condmax=15, stop=2.0, door=4,
                    weight=3.7, metal=45.0, ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30,
                    mag='MarzGuns.556x45Magazine30_STANAG', prefix='M16', shoot='M16Shoot', gain=2.0, radius=187,
                    volume=53),
-    'MDR308': dict(min=1.2, max=2.1, crit=40.0, critmult=4.5, hit=52, hitmod=5, aim=50, recoil=16, range=60.0,
+    'MDR308': dict(min=1.2, max=2.1, crit=40.0, critmult=4.5, hit=52, hitmod=5, aim=50, recoil=12, range=60.0,
                    minsight=10, maxsight=18.0, minangle=0.95, jam=1.0, cond=240, condmax=10, stop=2.0, door=5,
                    weight=4.1, metal=55.0, ammo='swmg:bullet_762x51', box='MarzGuns.762x51_Box', clip=20,
                    mag=f'{M}.762x51Magazine20_PMAG', prefix='M14', shoot='MSR788Shoot', gain=2.5, radius=216,

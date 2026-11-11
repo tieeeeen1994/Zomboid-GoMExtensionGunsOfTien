@@ -393,3 +393,62 @@ folded legs fill the front of the underside (their grooved sides are the real AL
 the 20" handguard's underside is closed. The legs are the 16"'s (Desert Tech lists one leg height, 6 1/4" to
 9 1/8", for every length): aluminium housing, carbon inner leg (drawn out 55 mm deployed), rubber foot, splayed
 to a 45 degree V (user: "nearly 45 degrees"), detailed from the user's photos.
+
+## OTs-14 Groza family (user, 2026-11-11: designed, model previewed)
+
+User: "the Groza family that uses 7.62x39, 9x39 and 5.45x39". TsKIB SOO's bullpup on the AKS-74U's mechanism (about
+three quarters of its parts), by Telesh and Lebedev: work began in December 1992, prototypes within a year, shown at
+MILIPOL Moscow in April 1994, made 1994-1999 (Wikipedia "OTs-14 Groza"). Nothing of it existed in July 1993, so
+**Post-93**. Gas piston, rotating bolt, closed bolt; the AK's charging handle on the right, which moves with the
+carrier.
+
+| | `GunsOfTienPost93.GROZA1` "Groza-1 Assault Rifle" | `GROZA4` "Groza-4 Assault Rifle" | `GROZA2` "Groza-2 Prototype Assault Rifle" |
+|---|---|---|---|
+| Real | OTs-14-1A, 7.62x39; the Army adopted it in 1998, production stopped for lack of money | OTs-14-4A, 9x39 subsonic, 240 mm barrel, 610 mm, the main model (MVD 1994, then Spetsnaz) | OTs-14-2A, 5.45x39, a prototype only (never adopted) |
+| Magazines | GoM's "762x39" profile: its AK-47 30 and 75 box, the main mod's RPK 40 and 75 drum | GoM's AS VAL 10 / 20 / 30 (the real Groza took the OTs-12's 20, the VSS / AS pattern) | GoM's "545x39" profile: Bakelite 30, 45, 60 and the 100 drum |
+| Rounds | GoM's 7.62x39 and ours (US Subsonic, Soft Point, Steel Core) | GoM's SP-5 and our SP-6 | GoM's 7N6 |
+| Stats (set while building) | GoM's AKS-74U pattern with the 7.62 round | GoM's AS VAL | GoM's AKS-74U |
+
+All three (proposed): one shared model with a barrel and magazine well per calibre (the UMPs' and Vectors' way), held
+as a rifle, GoM's "famas_rifle" reload (the bullpup's magazine behind the grip, as the AUGs and MDRx), the carrier
+and handle as one part on GoM's swap (as the RPKs: the AK handle reciprocates, no ChargingHandle part), Auto /
+Single at 700 rpm (the real 700-750), loot as an alternative in GoM's `World_Anachronistic_Spawner` with up to 3
+magazines and the calibre's GoM box.
+
+Decided (user, 2026-11-11):
+- **Muzzle**: the Groza-4 gets its own detachable suppressor, modelled. The Groza-1 takes GoM's PBS-1, so US
+  Subsonic cycles it without racking while the PBS-1 is fitted ("PBS-1 groza can benefit from subsonic ammo without
+  racking"), the AKs' and RPK's rule.
+- **GP-25 grenade launcher** (user, 2026-11-11: "we can add a Groza-2 with GP-25"): a fourth gun, the 5.45x39
+  Groza-2 with the GP-25 fitted in place of its trigger group's front, built as GoM's `M16A2_M203`: the rifle with
+  the launcher as a permanent part plus a launcher-mode weapon item (GoM's `M203_Weapon`) that Gunworks swaps to,
+  firing GoM's 40 mm rounds (the VOG-25 is 40 mm too, GoM has no caseless round). The swap is to be traced in
+  GoM / Gunworks before building. The other three stay without a launcher. Read as the 5.45 Groza-2; the user to
+  confirm it is not meant for the 9x39 Groza-4, the main real model with the GP-25.
+
+Barrels and the GP-25 (user's photo, 2026-11-11, a Groza-1 with the GP-25, right side): the 7.62x39 Groza-1 (and the
+5.45x39 Groza-2) have the long barrel, standing 159 mm out of the front housing past the short gun's muzzle with a
+slotted compensator (about 770 mm overall; Wikipedia's 420 mm barrel), the Groza-4 the short one inside its forend
+(610 mm). The GP-25 version (rebuilt 2026-11-11 after the user's "looks horrible", from more photos:
+wikireading.ru's OTs-14-4A left / right, weaponland.ru's OTs-14-4A and Groza-1 with the launcher, armedman.ru's text;
+references/groza, not in the repo): the launcher's casing is the whole gun's handguard (a GP-25-like 40 mm unit
+without its own grip or quadrant sight); its front hangs from a coupling clamped round the barrel, which also carries
+the folding frame sight; the rifle's trigger base is removed and the launcher's takes its place, one trigger for both
+in its round opening, the AV / GR selector on its left above it. Modelled: the tube 72 mm across in a sleeve with four
+grooves, the chunky frame (as wide as 30 mm) whose underside sweeps up from the tube's rear to the pistol grip, the
+frame sight standing up, perpendicular to the barrel (user, 2026-11-11); the barrel 18 mm across, its muzzle about 148 mm past the
+short gun's. The OTs-14-4A (9x39) is the base model with the launcher in every source. The long Groza without the launcher (forend and front grip, the barrel out of it) has no photo
+of its own. Three bodies on one texture: scripts/post93/build_groza.py, preview docs/post93_groza_preview.png.
+
+Line-up (user, 2026-11-11: "Groza-1 with GP-25 and the other 3 groza regulars"): Groza-1 (long barrel, forend and
+front grip), Groza-1 with the GP-25, Groza-2 (the compact OTs-14-4A of the user's photo: no forend or front grip, the
+barrel's collar and threaded tip out of the front housing), Groza-4 (short barrel in the forend, front grip, its own
+suppressor).
+
+Still to check:
+- **Optics**: GoM's AK mount and AK optics only if photos show the Groza's side dovetail; to check.
+- **Barrels**: Wikipedia gives the Groza-1 a 420 mm barrel against the Groza-4's 240 mm, which does not fit one short
+  bullpup body; check other sources and photos before modelling.
+
+References to find before modelling: side-on photos of the Groza-4 and Groza-1 (Commons, museum and expo photos),
+GoM's AKS-74U and AS VAL renders for the style.

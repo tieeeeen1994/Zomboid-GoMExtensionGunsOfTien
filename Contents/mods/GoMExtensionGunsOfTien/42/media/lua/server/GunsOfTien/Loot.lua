@@ -35,6 +35,9 @@
     boxes as GoM's kit there (its standard magazine only). The long 40 and 50 come loose only, in
     MarzGuns.World_HighCap_Tactical_Magazine_Spawner (placed while GoM's SpawnHighCapMags is on), each with up to
     two boxes as GoM's MP5 drums.
+    The Steyr TMP (shared/GunsOfTien/TMP.lua; docs/design.md 4m; user, 2026-11-11) is one more kit in
+    MarzGuns.World_Short_SMG_Spawner beside the Uzis' (the gun, up to 6 of its 15 / 30-round magazines and 6 boxes of
+    GoM's 9mm, as GoM's kits there): a holstered machine pistol like its MP5K, TEC-9 and MAC-10.
     The Steyr AUG A1 (shared/GunsOfTien/AUG.lua; docs/design.md 4g; user, 2026-10-27) is an import as GoM's FNC, FAL,
     G3 and FAMAS are: one more alternative in MarzGuns.World_Import_Rifle_Spawner (gun stores, pawn shops' special
     guns, police evidence, survivalist trucks, rifle cases, late gun finds), packed as GoM's civilian FNC kit there
@@ -122,6 +125,9 @@ for _, mag in ipairs({ "GunsOfTien.9x19Magazine40_UZI", "GunsOfTien.9x19Magazine
         { items = { "MarzGuns.9x19_Box" }, amountChance = 2 },
     } }
 end
+-- the Steyr TMP kit beside the Uzis' in the short SMG spawner (GoM's MP5K / TEC-9 / MAC-10 kits there: 6 and 6)
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Short_SMG_Spawner", uziAlternative(
+    { "GunsOfTien.TMP" }, { "GunsOfTien.9x19Magazine15_TMP", "GunsOfTien.9x19Magazine30_TMP" }, 6) }
 -- the AUG A1 kit, as GoM's FNC kit in the import spawner (its other kits there carry 6 and 6 too)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner", {
     { items = { "GunsOfTien.AUG" }, amountChance = 1 },

@@ -1,0 +1,38 @@
+module GunsOfTien {
+
+    model TMP {
+        mesh     = weapons/firearms/GunsOfTien_TMP|TMP_BODY,
+        texture  = weapons/GunsOfTien/TMP,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1248 -0.0196, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0133 -0.0096, rotate = -180.0000 0.0000 -180.0000, }
+        attachment canon { offset = 0.0000 0.1067 -0.0196, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0112 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0211 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model TMP_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_TMP|TMP_BOLT,
+        texture  = weapons/GunsOfTien/TMP,
+        cullFace = None,
+    }
+
+    model TMP_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_TMP|TMP_HANDLE,
+        texture  = weapons/GunsOfTien/TMP,
+        cullFace = None,
+    }
+
+    model 9x19Magazine15_TMP {
+        mesh     = weapons/magazines/GunsOfTien_TMP_magazines|9x19Magazine15_TMP,
+        texture  = weapons/GunsOfTien/9x19Magazine15_TMP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x19Magazine30_TMP {
+        mesh     = weapons/magazines/GunsOfTien_TMP_magazines|9x19Magazine30_TMP,
+        texture  = weapons/GunsOfTien/9x19Magazine30_TMP,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

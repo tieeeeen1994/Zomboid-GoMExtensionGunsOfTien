@@ -431,6 +431,67 @@ Tula museum's (the bipod deployed).
 The exact place of the first model's handle along the receiver was not found in any source; it is drawn low on the
 right, running from over the drum to the grip (the feed-system photo shows the later folding handle there).
 
+## 4l. Knight's SR-25 (2026-11-11, designed, model previewed)
+
+User, 2026-11-11: "Can we add SR-25 from 1990 that uses PMAG". Knight's Armament / Eugene Stoner's 7.62x51mm AR-10
+revival (work from 1989, sold from about 1990-1991; Wikipedia's infobox: in service 1990), so main mod. The first model
+is the **Match rifle**: 24" free-floated Remington match barrel (the M24's blanks), round fibreglass handguard,
+flat-top upper with a 1913 rail and no iron sights, A2 stock, semi-automatic, 4.88 kg, 1118 mm (Wikipedia "SR-25";
+the 20" LW Match, the 16" Carbine and the Mk 11 came later). US special forces tried suppressed 20" SR-25s from
+about 1993 (forum and collector accounts only).
+
+**Magazines** (user, 2026-11-11: option (b)). The SR-25 first took AR-10-type 20-round magazines, then KAC's steel 20-round
+M16-like ones, which set the "SR-25 pattern" (Wikipedia). Magpul's PMAG 20 LR/SR fits it but dates from about 2009.
+Post-93 already has that pattern as `762x51Magazine10/20/25_PMAG` plus the D-50 drum (profile "7.62x51mm SR-25",
+the MDRx .308's). Either:
+- (a) move the PMAG family and the D-50 into the main mod under the same ids, the way 5.7x28mm moved with the P90
+  (section "P90 with its ring sight"). The SR-25 and the MDRx .308 then share them. The PMAGs would be in the main mod
+  although they come from after 1993.
+- (b) give the SR-25 KAC's own steel 20-round magazine in the main mod, and add it to the same profile so the
+  PMAGs fit it too when Post-93 is on. **Chosen.**
+
+| | `GunsOfTien.SR25` "SR-25 Semi-Automatic Rifle" |
+|---|---|
+| Real | 7.62x51 / .308, 24" (610 mm), 1118 mm, 4.88 kg, semi-automatic |
+| Family | GoM's 7.62x51mm family (its 7.62x51, .308, the main mod's .308 Soft Point) |
+| Fire | Single only (no FireModePossibilities, as GoM's AR-15 / M14 and the MDRx) |
+| Stats | between GoM's M14 and PSG1 (the SR-25 was sold as a 1 MOA rifle), numbers set while building |
+| Sound | sound_model.py, 7.62x51 from 24" |
+| Parts | **integrated scope and integrated bipod** (user, 2026-11-11: "sr-25 should have integrated scope, integrated bipod", replacing GoM's optics and bipod): the listing's Leupold Vari-X III 3.5-10x with high target knobs on a B-Square base and rings, in the body's mesh (a hidden required part with the scope's stats, the AUG A1's way), and a Harris 1A2-BR on the sling stud, folded forward under the barrel or deployed (BipodIntegrated, Gunworks' FoldingBipod, the AUG HBAR's way); no foregrip, no muzzle parts (the match barrel was plain) |
+| Hold, reload | rifle clips, GoM's "ar15_rifle" (the AR T-handle at the rear); the carrier in the port on GoM's swap, the T-handle only while racked (our ChargingHandle part, as GoM does its AR-15s) |
+| Colour | black (parkerized steel, black furniture) |
+| Loot | proposed: a kit beside GoM's PSG1 in `Zombie_Mercenary_Sniper_Spawner`, gun + up to 3 magazines + GoM's `308_Box` |
+
+Reference (user, 2026-11-11): an auction listing's right and left side photos of S# 22752 and its description: 24"
+barrel, low profile gas block ahead of a 12" composite free-floating handguard, flat-top upper without forward assist
+or brass deflector, the Leupold Vari-X III 3.5-10x on a B-Square base and rings, left-side controls, an A2 stock
+with trapdoor, two steel 20-round magazines. Built on GoM's AR15 (scripts/build_sr25.py, preview
+docs/sr25_preview.png).
+
+## 4m. Steyr TMP (2026-11-11, designed, built)
+
+User, 2026-11-11: "then the Steyr TMP". Steyr's 9x19mm machine pistol, designed 1989 by Friedrich Aigner, made
+1992-2001 (serial production from November 1992 by a Polish source; modernfirearms.net says it reached the market in
+1993), so main mod. Polymer upper and lower, closed bolt, rotating barrel, a fixed front grip moulded into the
+frame, no stock (an optional one came later), no rail on the first guns. The semi-automatic SPP (no front grip)
+and B&T's MP9 (2001) are not part of this.
+
+| | `GunsOfTien.TMP` "TMP Machine Pistol" |
+|---|---|
+| Real | 9x19, 130 mm barrel, 282 mm, 1.3 kg, 850-900 rpm |
+| Fire | Auto / Single, 900 rpm |
+| Stats | beside the Micro Uzi (117 mm, 1200 rpm) and Mini Uzi (197 mm): damage 0.7-1.1, HitChance 46, Aimingtime 25, RecoilDelay 12, range 25, crit 25, spread 0.18 / 2.2 (the front grip and the lower rate), weight 1.0 (GoM's SMG ratio) |
+| Sound | sound_model.py, 9x19 from 130 mm |
+| Magazines | its own polymer magazines, profile "TMP": 15 and 30 only (user, 2026-11-11; a few sources list a 20) |
+| Held | like a pistol, fits a holster (the Mini Uzi's way: GoM's MP5K / MAC-10), modelled turned for the pistol clips |
+| Reload | GoM's "handgun2" (MP5K / TEC-9) |
+| Muzzle | the main mod's 9x19mm SMG mount device + AWC Mk9 (the TMP's barrel takes a suppressor) |
+| Bolt | the bolt plate in the port on GoM's swap, the cocking handle only while racked (to check on photos whether it reciprocates) |
+| Colour | black |
+| Loot | proposed: an alternative in GoM's `World_Short_SMG_Spawner` beside its MP5K, TEC-9 and MAC-10, gun + up to 3 magazines + GoM's 9mm box |
+
+References to find before modelling: side-on photos of both sides (Commons, IMFDB), the magazine.
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

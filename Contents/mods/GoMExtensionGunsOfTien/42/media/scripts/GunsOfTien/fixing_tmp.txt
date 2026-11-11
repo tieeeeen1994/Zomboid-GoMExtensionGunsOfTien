@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix TMP {
+        Require = GunsOfTien.TMP,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

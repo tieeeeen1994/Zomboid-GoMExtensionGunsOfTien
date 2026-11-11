@@ -40,7 +40,7 @@ Maker they can be made.
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
   every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
   out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
-- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis
+- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis and TMP
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
   proportion, so the Mk9 sits on them as it does on the Uzis; Guns of Marz's MP5 is named for what it is, the MP5A3
@@ -97,6 +97,14 @@ Maker they can be made.
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits); the Uzi also with its police
   SMGs and on SWAT zombies, and with its criminals' guns (criminal zombies, bandit bags, pawn shops, stashes); the long
   magazines with its high-capacity magazines
+
+## Steyr TMP
+
+- Steyr TMP, the Austrian polymer machine pistol of 1992, held one-handed like the MP5K and MAC-10 and fitting a
+  holster, its front grip moulded in: automatic at 900 rounds a minute, or single shots
+- Its own 15 and 30-round magazines (the 15 flush with the grip)
+- The AWC Mk9 suppressor fits it on its 9mm SMG muzzle mount
+- Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits)
 
 ## Steyr AUG A1
 

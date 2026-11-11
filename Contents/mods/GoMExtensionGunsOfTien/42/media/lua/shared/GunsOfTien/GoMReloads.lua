@@ -20,7 +20,7 @@
       the old MP5 rack (one pull and release of a handle high on the left front, after the magazine) is how they
       are reloaded, and both handles sit there. The Uzi, open bolt, is cocked with one pull too.
       GoM ships these nodes but no GoM gun uses them now: if a GoM update drops them, these guns lose their reload;
-    - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Uzi, Mini Uzi and Micro Uzi, the MP7A1 / A2, the P90 TR,
+    - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Uzi, Mini Uzi and Micro Uzi, the Steyr TMP, the MP7A1 / A2, the P90 TR,
       the Vector 9mm;
     - "pistol_reload" (GoM's pistols): the Glock 21, the Five-seveN, the UCP Prototype;
     - "famas_rifle" (GoM's FAMAS): the AUG A1, A3, Para and HBAR, the PS90 Carbine (a top-loading bullpup: GoM has no

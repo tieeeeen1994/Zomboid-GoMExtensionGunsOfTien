@@ -242,6 +242,33 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   drum facing forward, no link rule (its belt does not disintegrate); section "RPD". **US Subsonic racks after every shot in the RPD** (user: "let just RPD rack every shot"): the
   rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
   not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre).
+- **Steyr TMP** (user, 2026-11-11; built, not played): main mod, held like a pistol and holstered, its own 15 and
+  30-round magazines only, the Mk9 on the SMG mount device; section "Steyr TMP". **SR-25** (main mod, KAC's own
+  steel 20 with Post-93's PMAGs fitting it too, GoM's optics and bipod, no muzzle parts) and the **OTs-14 Groza
+  family** (Post-93, with a GP-25 Groza-2) are designed (docs/design.md 4l, docs/post93_design.md), not built: the
+  models are previewed (user's photos, 2026-11-11), their scripts and Lua not written. SR-25: `scripts/build_sr25.py`
+  builds it on GoM's AR15 (piecewise along the bore onto the photo's landmarks, the barrel group swapped for the
+  photo's ring, tube, gas block and slim barrel), the integrated Leupold scope in the body, a Harris bipod as two
+  nodes, KAC's 20 from GoM's STANAG 20 (66 mm deep: 76 was "too large"); `render_sr25.py`, `make_sr25_preview.py`.
+  Groza: `scripts/post93/build_groza.py` (three bodies: GROZA4 short, GROZA long, GROZAGL with the GP-25, on one 512
+  texture; the drawing traced in `scripts/groza_reference_outline.json`), `render_groza.py`, `make_groza_preview.py`.
+  GoM's magazine meshes have different origins, so the Groza has a magazine point per calibre (`magazine` = AS VAL,
+  `magazine_762x39`, `magazine_545x39`), each seated as on GoM's own rifle: measured on GoM's AK-47 / AK-74 / AS VAL
+  by cutting the magazine with the receiver's bottom plane (insertion 22.7 / 27.7 / 31.9 mm), the back edge against
+  the magazine release, where an AK magazine locks (user, 2026-11-11: one shared point "doesn't fit", then "make the
+  mag release closer to the mag"; the back edges from the cut, halfway down the release, and for the AK-47 30 and
+  AS VAL 20 from the renders: a lug at their very top reaches further back than the edge seen below).
+  Four Grozas (user, 2026-11-11): Groza-1 (7.62x39, long barrel, forend and front grip), Groza-1 with the GP-25,
+  Groza-2 (5.45x39) the compact OTs-14-4A of the user's photo (references/groza/user_compact_4a.png: no forend, the
+  barrel's collar and threaded tip out of the front housing), Groza-4 (9x39, short barrel in the forend, front grip,
+  its suppressor). Trigger, guard and magazine release from the 4360 px Commons photo at full size (6.8 px a mm at
+  the guard): see build_groza.py's comments; the drawing's guard was 11 mm too shallow. The paint follows GoM's
+  AKS74U.png / ASVAL.png (user: "make the texture similar-ish"): darker steel with worn edges, deep crevices, baked
+  top light, rivets, seams and the front housing's panel painted, the gas tube's cover as GoM's AKS wood.
+  The user's pasted photos are not on disk (chat images are not saved): their landmarks were read by eye. More
+  Groza photos (2026-11-11, references/groza): tech.wikireading.ru/3850's images (storage.yandexcloud.net/wr4img/
+  259427_5_pic_10..23.jpg) and weaponland.ru's (images/automat_4/rossiya/OC-14*.jpg) download with a plain fetch;
+  Commons has only the drawing, the light assault version and a firing photo; namu.wiki, guns.fandom, imfdb refuse.
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -1228,6 +1255,40 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   selector's A / R / S letters (painted, positions read off the photos' grip-top lever), the Uzi's deployed stock
   (from IMI's 640 mm: struts straight back from the hinge to a butt plate at L 612-640).
 
+## Steyr TMP (2026-11-11)
+
+- **What** (user, 2026-11-11; design docs/design.md 4m): `GunsOfTien.TMP` "TMP Machine Pistol", main mod (made
+  1992-2001). Held like a pistol and holstered as the Mini Uzi (model turned at export, AttachmentType Holster, GoM's
+  "handgun2" reload), Auto / Single at 900 rpm (spread 0.2 / 2.4), its own profile "9x19mm TMP" with
+  `9x19Magazine15_TMP` / `30_TMP` only ("TMP 15Rds 9x19mm Magazine"; user: no 20), the main mod's 9x19mm SMG mount
+  device + Mk9 at `canon` (in `SMG9_GUNS`), no stock, no rails. Stats beside the Micro / Mini Uzi (gen_scripts.py
+  `TMP_STATS`), sound 110 / 31 from sound_model.py's formula (9mm from 5.1"). Loot: one kit in GoM's
+  `World_Short_SMG_Spawner` beside the Uzis' (6 magazines, 6 boxes); found guns the 30 at 30 %, the 15 at 20 %, the
+  mount device at 5 %. Hot Brass: the Micro Uzi's numbers.
+- **Reference**: Commons "Steyr TMP 9mmPara 001.jpg" (Spectrums, public domain; the left side, muzzle left, a 30-round
+  magazine, already cut out on white; references/steyr_tmp), traced with post93/trace_outline.py `--length 282
+  --muzzle left --threshold 225` into `scripts/tmp_reference_outline.json` (3.656 px/mm; the height then comes out at
+  the published 158 mm from the rear sight to the grip's bottom). Profiles read off 5 mm gridded 3x crops; L back from
+  the muzzle, H up from the magazine's base; bore H 204.5, origin (L 207, H 172) where the grip's back meets the
+  frame. Silhouette overlap with the trace 92 % (as the Uzis).
+- **Not in the photo, drawn from the TMP's layout**: the right side (the ejection port on the upper over the trigger,
+  L 112-150, H 211-227), the widths (upper 38 mm, frame 35, grips 31 / 26, magazine 24 x 36). The 15-round magazine
+  is the 30 shortened by 82 mm (5.1 mm a round, the MP5's 15 / 30 step), so its base is flush with the grip.
+- **Moving parts**: `TMP_BOLT` = the Uzis' plate over the port's front half (`bolt_fired` 18.5 mm); `TMP_HANDLE` =
+  the cocking knob in its recess at the upper's rear top on the bolt's tail block (as wide as the knob, filling the
+  channel's height, its bottom 1.5 mm inside the upper, its front 35 mm ahead of the knob), so the knob racked
+  (`handle_back`, 25 mm straight back) comes out of the upper's rear on a solid block (user, 2026-11-11: "this
+  should be connected", then "still disconnected": a first knob floated behind the gun, a round rod and then a 14 mm
+  flat slide still read as a thin bar).
+- **Files**: `scripts/build_tmp.py` (Blender, ~40 s: `GunsOfTien_TMP.fbx` TMP_BODY / TMP_BOLT / TMP_HANDLE,
+  `GunsOfTien_TMP_magazines.fbx`, TMP.png 256, the magazines' 128, `scripts/tmp_points.json`),
+  `scripts/render_tmp.py -- DIR`, `scripts/make_tmp_art.py [--renders DIR]` (icons with the MP7 cameras, sheet
+  `docs/tmp_preview.png` with the photo's outline and the TMP beside GoM's MP5K / MAC-10 at the same game scale),
+  `gen_scripts.py tmp()` (items_tmp.txt, models_tmp.txt, fixing_tmp.txt, names), `shared/GunsOfTien/TMP.lua`,
+  `client/GunsOfTien/TMPTooltips.lua`, loot in Loot.lua, Hot Brass in HotBrass.lua. Rebuild: build, render, art,
+  gen_scripts, check_refs, fit_audit (2026-11-11: the Mk9 1.2 into the barrel stub it covers, the magazines 5.0 into
+  the grip, the knob's rod 5.7 into the upper, all as built).
+
 ## Steyr AUG A1 (2026-10-27)
 
 - Files: `scripts/build_aug.py` (Blender, ~1 min: `GunsOfTien_AUG.fbx` AUG_BODY / AUG_BOLT / AUG_FOREGRIP,
@@ -1711,7 +1772,9 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 
 - **What**: `GunsOfTienPost93.MDR223` "MDRx .223 Semi-Automatic Rifle" (black, 16", side eject) and `MDR308` "MDRx .308
   Semi-Automatic Rifle" (flat dark earth, 20", forward eject), semi-automatic only (FireMode Single, no
-  FireModePossibilities and no RateOfFire registration, as GoM's AR-15 / M14), GoM's FAMAS reload. Magazines: the .223
+  FireModePossibilities and no RateOfFire registration, as GoM's AR-15 / M14), GoM's FAMAS reload. Semi-auto pace
+  is RecoilDelay alone (the next shot waits for the player's recoil delay = `getRecoilDelay(owner)` to count down
+  0.625 x multiplier per update, ~30 a second); user, 2026-11-11 "fire faster": .223 13 -> 10, .308 16 -> 12. Magazines: the .223
   GoM's STANAGs through the main mod's `_GoT` models and its `_Hand` items (HandMagazines, as the SCAR-L); the .308
   `762x51Magazine10/20/25/50_PMAG` ("PMAG 20Rds 7.62x51mm Magazine", the 50 Magpul's D-50, a drum facing front and back: built first facing the sides as Magpul's real D-60 / D-50 do, and the user corrected it, "again", as for the SCAR-H's drum: **every drum in this mod faces front and back**, its axis along the barrel),
   profile "7.62x51mm SR-25", in GoM's 7.62x51mm ammo family (Ammunition.lua), modelled about the feed lips with GoM's

@@ -143,6 +143,18 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- The Steyr TMP throws its cases out to the right from the port over the trigger, held like a pistol as the Micro
+    -- Uzi (its numbers: the port sits about as far ahead of the grip).
+    ["GunsOfTien.TMP"] = {
+        forwardOffset = 0.543,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.65,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
     -- The P90 throws its cases straight down through the port under the grip, as Post-93's P90 TR (its numbers): a
     -- short fall from under the gun with a slight forward drift.
     ["GunsOfTien.P90"] = {
