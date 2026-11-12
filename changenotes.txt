@@ -27,6 +27,9 @@ OTs-14 Groza (Post-93 add-on)
 - All four take Guns of Marz's Picatinny rail on the carrying handle, and every Guns of Marz optic on it
 - Found where Guns of Marz's late guns are found, each with its magazines and boxes
 
+Fix
+- Loot: since Guns of Marz's update of November 10, this mod's guns were found with only one magazine and one box (Guns of Marz changed how its loot spawners count items). They come with their full kits again, up to as many magazines and boxes as before
+
 Change
 - The SCAR-H's muzzle mount is now the "7.62x51mm Family Muzzle Mounting Device": the SCAR-H, the MDRx .308 and the Mk 11 take it
 - The MDRx .308 also takes the SR-25's 20-round magazine

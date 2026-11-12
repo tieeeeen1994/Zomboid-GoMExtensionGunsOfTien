@@ -387,7 +387,12 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   (Loot.lua `DIRECT`; n counted at run time, 7 = GoM's 5 + MP7 + P90).
 - **SCAR loot** (2026-10-20): military, the MP7's way: an alternative each in GoM's `World_Army_Rifle_Spawner` and
   `Zombie_Army_Rifle_Spawner` (see docs/post93_design.md). GoM spawners resolve through Gunworks' `ItemSpawnCore`: an
-  alternative picked evenly, each later group rolls 0..amountChance items. GoM's spawners also arm zombies
+  alternative picked evenly, each later group rolls `minAmountChance`..`maxAmountChance` items (both default 1;
+  until GoM's update of 2026-11-10 it was 0..`amountChance`, which the item spawner no longer reads: our kits used it
+  and spawned one magazine and one box each until renamed to `maxAmountChance` on 2026-11-12; GoM's
+  VanillaReplacerTable still uses `amountChance`, 0..n). Since that update GoM also resolves spawner items on zombies
+  itself (Hooks/ZombieAttachmentSpawners.lua: attached ones at creation / first update, the inventory's at death), so
+  ours ride along. GoM's spawners also arm zombies
   (`AttachedWeaponDefinitions.lua`: police / SWAT holsters, SWAT and army back slots), so a gun inside one reaches
   zombies too; a spawner item of our own (any `item` with `OnCreate = MarzGuns_OnCreate.SelectItem` plus an entry in
   GoM's `ItemSpawnerMap`) would have to be wired into those lists as well.

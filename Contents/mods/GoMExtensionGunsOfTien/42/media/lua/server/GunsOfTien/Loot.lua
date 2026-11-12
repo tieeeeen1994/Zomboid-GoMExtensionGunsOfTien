@@ -94,12 +94,12 @@ end
 
 local function m249Alternative(boxes)
     local alternative = {
-        { items = { "GunsOfTien.M249" }, amountChance = 1 },
-        { items = { "GunsOfTien.556x45Box200_M249" }, amountChance = boxes },
-        { items = { "MarzGuns.556x45_Box" }, amountChance = 4 },
+        { items = { "GunsOfTien.M249" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.556x45Box200_M249" }, maxAmountChance = boxes },
+        { items = { "MarzGuns.556x45_Box" }, maxAmountChance = 4 },
     }
     if beltLinks() then
-        alternative[#alternative + 1] = { items = { "GunsOfTien.LinkBox_M27" }, amountChance = boxes }
+        alternative[#alternative + 1] = { items = { "GunsOfTien.LinkBox_M27" }, maxAmountChance = boxes }
     end
     return alternative
 end
@@ -107,9 +107,9 @@ end
 -- Uzi kits: { spawner, guns, magazines, magazines and boxes }; high-capacity magazines: { spawner, magazine }
 local function uziAlternative(guns, mags, count)
     return {
-        { items = guns, amountChance = 1 },
-        { items = mags, amountChance = count },
-        { items = { "MarzGuns.9x19_Box" }, amountChance = count },
+        { items = guns, maxAmountChance = 1 },
+        { items = mags, maxAmountChance = count },
+        { items = { "MarzGuns.9x19_Box" }, maxAmountChance = count },
     }
 end
 local UZI_ALTERNATIVES = {
@@ -124,8 +124,8 @@ local UZI_ALTERNATIVES = {
 }
 for _, mag in ipairs({ "GunsOfTien.9x19Magazine40_UZI", "GunsOfTien.9x19Magazine50_UZI" }) do
     UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", {
-        { items = { mag }, amountChance = 1 },
-        { items = { "MarzGuns.9x19_Box" }, amountChance = 2 },
+        { items = { mag }, maxAmountChance = 1 },
+        { items = { "MarzGuns.9x19_Box" }, maxAmountChance = 2 },
     } }
 end
 -- the Steyr TMP kit beside the Uzis' in the short SMG spawner (GoM's MP5K / TEC-9 / MAC-10 kits there: 6 and 6)
@@ -145,33 +145,33 @@ UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner
 } }
 -- the AUG A1 kit, as GoM's FNC kit in the import spawner (its other kits there carry 6 and 6 too)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Import_Rifle_Spawner", {
-    { items = { "GunsOfTien.AUG" }, amountChance = 1 },
-    { items = { "GunsOfTien.556x45Magazine30_AUG" }, amountChance = 6 },
-    { items = { "MarzGuns.223_Box" }, amountChance = 6 },
+    { items = { "GunsOfTien.AUG" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.556x45Magazine30_AUG" }, maxAmountChance = 6 },
+    { items = { "MarzGuns.223_Box" }, maxAmountChance = 6 },
 } }
 
 -- the RPK and RPK-74 kits, as GoM's AK-47 and AK-74 kits in its Russian rifle spawner (6 and 6)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
-    { items = { "GunsOfTien.RPK" }, amountChance = 1 },
-    { items = { "GunsOfTien.762x39Magazine40_RPK" }, amountChance = 6 },
-    { items = { "MarzGuns.762x39_Box" }, amountChance = 6 },
+    { items = { "GunsOfTien.RPK" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.762x39Magazine40_RPK" }, maxAmountChance = 6 },
+    { items = { "MarzGuns.762x39_Box" }, maxAmountChance = 6 },
 } }
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
-    { items = { "GunsOfTien.RPK74" }, amountChance = 1 },
-    { items = { "MarzGuns.545x39Magazine45_Bakelite" }, amountChance = 6 },
-    { items = { "MarzGuns.545x39_Box" }, amountChance = 6 },
+    { items = { "GunsOfTien.RPK74" }, maxAmountChance = 1 },
+    { items = { "MarzGuns.545x39Magazine45_Bakelite" }, maxAmountChance = 6 },
+    { items = { "MarzGuns.545x39_Box" }, maxAmountChance = 6 },
 } }
 -- the RPD kit beside them (the gun, up to 3 drums, up to 6 boxes: the M249's kit has 2 / 3 belt boxes)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
-    { items = { "GunsOfTien.RPD" }, amountChance = 1 },
-    { items = { "GunsOfTien.762x39Drum100_RPD" }, amountChance = 3 },
-    { items = { "MarzGuns.762x39_Box" }, amountChance = 6 },
+    { items = { "GunsOfTien.RPD" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.762x39Drum100_RPD" }, maxAmountChance = 3 },
+    { items = { "MarzGuns.762x39_Box" }, maxAmountChance = 6 },
 } }
 -- the RPK's 40 and drum loose, beside GoM's 75 box and AK-74 drum in its Russian high-capacity spawner (2 boxes each)
 for _, mag in ipairs({ "GunsOfTien.762x39Magazine40_RPK", "GunsOfTien.762x39Drum75_RPK" }) do
     UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_HighCap_Russian_Magazine_Spawner", {
-        { items = { mag }, amountChance = 1 },
-        { items = { "MarzGuns.762x39_Box" }, amountChance = 2 },
+        { items = { mag }, maxAmountChance = 1 },
+        { items = { "MarzGuns.762x39_Box" }, maxAmountChance = 2 },
     } }
 end
 
@@ -179,17 +179,17 @@ end
 for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "MarzGuns.Zombie_Police_Handgun_Spawner", 4 },
     { "MarzGuns.World_Import_Pistol_Spawner", 6 } }) do
     UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { entry[1], {
-        { items = { "GunsOfTien.GLOCK21" }, amountChance = 1 },
-        { items = { "GunsOfTien.45Magazine13_GLOCK21" }, amountChance = entry[2] },
-        { items = { "MarzGuns.45_Box" }, amountChance = entry[2] },
+        { items = { "GunsOfTien.GLOCK21" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.45Magazine13_GLOCK21" }, maxAmountChance = entry[2] },
+        { items = { "MarzGuns.45_Box" }, maxAmountChance = entry[2] },
     } }
 end
 
 -- the P90 kit in the police SMG spawner, as Post-93's P90 TR kit there (up to 3 magazines and 2 boxes)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.Zombie_Police_SMG_Spawner", {
-    { items = { "GunsOfTien.P90" }, amountChance = 1 },
-    { items = { "GunsOfTienPost93.57x28Magazine50_P90" }, amountChance = 3 },
-    { items = { "GunsOfTienPost93.57x28_Box" }, amountChance = 2 },
+    { items = { "GunsOfTien.P90" }, maxAmountChance = 1 },
+    { items = { "GunsOfTienPost93.57x28Magazine50_P90" }, maxAmountChance = 3 },
+    { items = { "GunsOfTienPost93.57x28_Box" }, maxAmountChance = 2 },
 } }
 
 -- GoM's M60 kits get a group of M13 link boxes: { spawner, link boxes } (as many as the kit's belt boxes)
@@ -292,7 +292,7 @@ local function addLoot()
         local list = type(map) == "table" and map[entry[1]]
         local alternative = type(list) == "table" and alternativeWith(list, "MarzGuns.M60")
         if alternative then
-            local group = { items = { "GunsOfTien.LinkBox_M13" }, amountChance = entry[2] }
+            local group = { items = { "GunsOfTien.LinkBox_M13" }, maxAmountChance = entry[2] }
             alternative[#alternative + 1] = group
             addedGroups[#addedGroups + 1] = { alternative, group }
         else

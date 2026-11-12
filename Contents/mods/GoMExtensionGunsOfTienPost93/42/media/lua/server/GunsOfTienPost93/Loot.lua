@@ -84,52 +84,52 @@ end
 -------------------------------------------------
 local function mp7Alternative(boxes)
     return {
-        { items = { M .. "MP7A1", M .. "MP7A2" }, amountChance = 1 },     -- one of the two, as GoM's MP5 / MP5A2 / MP5SD
-        { items = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7" }, amountChance = 3 },
-        { items = { M .. "46x30_Box" }, amountChance = boxes },
+        { items = { M .. "MP7A1", M .. "MP7A2" }, maxAmountChance = 1 },     -- one of the two, as GoM's MP5 / MP5A2 / MP5SD
+        { items = { M .. "46x30Magazine20_MP7", M .. "46x30Magazine30_MP7", M .. "46x30Magazine40_MP7" }, maxAmountChance = 3 },
+        { items = { M .. "46x30_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function p90Alternative(boxes)
     return {
-        { items = { M .. "P90TR", M .. "PS90" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
-        { items = { M .. "57x28Magazine50_P90" }, amountChance = 3 },
-        { items = { M .. "57x28_Box" }, amountChance = boxes },
+        { items = { M .. "P90TR", M .. "PS90" }, maxAmountChance = 1 },     -- one of the two (user, 2026-11-03)
+        { items = { M .. "57x28Magazine50_P90" }, maxAmountChance = 3 },
+        { items = { M .. "57x28_Box" }, maxAmountChance = boxes },
     }
 end
 
 -- The UMPs, packed as the MP7's
 local function ump45Alternative(boxes)
     return {
-        { items = { M .. "UMP45" }, amountChance = 1 },
-        { items = { M .. "45Magazine25_UMP" }, amountChance = 3 },
-        { items = { "MarzGuns.45_Box" }, amountChance = boxes },
+        { items = { M .. "UMP45" }, maxAmountChance = 1 },
+        { items = { M .. "45Magazine25_UMP" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.45_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function ump9Alternative(boxes)
     return {
-        { items = { M .. "UMP9" }, amountChance = 1 },
-        { items = { M .. "9x19Magazine30_UMP" }, amountChance = 3 },
-        { items = { "MarzGuns.9x19_Box" }, amountChance = boxes },
+        { items = { M .. "UMP9" }, maxAmountChance = 1 },
+        { items = { M .. "9x19Magazine30_UMP" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.9x19_Box" }, maxAmountChance = boxes },
     }
 end
 
 -- MarzGuns.FIVESEVEN, as GoM's police pistols come (4 magazines, 4 boxes); the 30-round only on found guns (5%).
 local function fivesevenAlternative(boxes)
     return {
-        { items = { "MarzGuns.FIVESEVEN" }, amountChance = 1 },
-        { items = { M .. "57x28Magazine20_FIVESEVEN" }, amountChance = 4 },
-        { items = { M .. "57x28_Box" }, amountChance = boxes },
+        { items = { "MarzGuns.FIVESEVEN" }, maxAmountChance = 1 },
+        { items = { M .. "57x28Magazine20_FIVESEVEN" }, maxAmountChance = 4 },
+        { items = { M .. "57x28_Box" }, maxAmountChance = boxes },
     }
 end
 
 -- The UCP the same way; its drum only on found guns (5%).
 local function ucpAlternative(boxes)
     return {
-        { items = { M .. "UCP" }, amountChance = 1 },
-        { items = { M .. "46x30Magazine20_UCP" }, amountChance = 4 },
-        { items = { M .. "46x30_Box" }, amountChance = boxes },
+        { items = { M .. "UCP" }, maxAmountChance = 1 },
+        { items = { M .. "46x30Magazine20_UCP" }, maxAmountChance = 4 },
+        { items = { M .. "46x30_Box" }, maxAmountChance = boxes },
     }
 end
 
@@ -137,26 +137,26 @@ end
 -- rounds (the SCAR-L takes GoM's STANAG 30, as the M16 kit).
 local function scarlAlternative(count)
     return {
-        { items = { M .. "SCARL" }, amountChance = 1 },
-        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = count },
-        { items = { "MarzGuns.556x45_Box" }, amountChance = count },
+        { items = { M .. "SCARL" }, maxAmountChance = 1 },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, maxAmountChance = count },
+        { items = { "MarzGuns.556x45_Box" }, maxAmountChance = count },
     }
 end
 
 local function scarhAlternative(count)
     return {
-        { items = { M .. "SCARH" }, amountChance = 1 },
-        { items = { M .. "762x51Magazine20_SCARH" }, amountChance = count },
-        { items = { "MarzGuns.762x51_Box" }, amountChance = count },
+        { items = { M .. "SCARH" }, maxAmountChance = 1 },
+        { items = { M .. "762x51Magazine20_SCARH" }, maxAmountChance = count },
+        { items = { "MarzGuns.762x51_Box" }, maxAmountChance = count },
     }
 end
 
 -- The Mk 11 Mod 0 as the SCAR-H (user, 2026-11-12): the gun, up to n of the main mod's KAC 20s, up to n boxes
 local function mk11Alternative(count)
     return {
-        { items = { M .. "MK11" }, amountChance = 1 },
-        { items = { "GunsOfTien.762x51Magazine20_SR25" }, amountChance = count },
-        { items = { "MarzGuns.762x51_Box" }, amountChance = count },
+        { items = { M .. "MK11" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.762x51Magazine20_SR25" }, maxAmountChance = count },
+        { items = { "MarzGuns.762x51_Box" }, maxAmountChance = count },
     }
 end
 
@@ -167,9 +167,9 @@ local function grozaAlternative(guns, mag, box)
     for _, gun in ipairs(type(guns) == "table" and guns or { guns }) do items[#items + 1] = M .. gun end
     return function(count)
         return {
-            { items = items, amountChance = 1 },
-            { items = { mag }, amountChance = count },
-            { items = { box }, amountChance = count },
+            { items = items, maxAmountChance = 1 },
+            { items = { mag }, maxAmountChance = count },
+            { items = { box }, maxAmountChance = count },
         }
     end
 end
@@ -177,17 +177,17 @@ end
 -- The Vectors, packed as the UMPs: Glock's standard magazines (the main mod's Glock 21 13, GoM's Glock 17 17)
 local function vector45Alternative(boxes)
     return {
-        { items = { M .. "VECTOR45", M .. "VECTORCRB" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
-        { items = { "GunsOfTien.45Magazine13_GLOCK21" }, amountChance = 3 },
-        { items = { "MarzGuns.45_Box" }, amountChance = boxes },
+        { items = { M .. "VECTOR45", M .. "VECTORCRB" }, maxAmountChance = 1 },     -- one of the two (user, 2026-11-03)
+        { items = { "GunsOfTien.45Magazine13_GLOCK21" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.45_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function vector9Alternative(boxes)
     return {
-        { items = { M .. "VECTOR9", M .. "VECTORSDP" }, amountChance = 1 },     -- one of the two (user, 2026-11-03)
-        { items = { "MarzGuns.9x19Magazine17_GLOCK" }, amountChance = 3 },
-        { items = { "MarzGuns.9x19_Box" }, amountChance = boxes },
+        { items = { M .. "VECTOR9", M .. "VECTORSDP" }, maxAmountChance = 1 },     -- one of the two (user, 2026-11-03)
+        { items = { "MarzGuns.9x19Magazine17_GLOCK" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.9x19_Box" }, maxAmountChance = boxes },
     }
 end
 
@@ -197,25 +197,25 @@ end
 -- magazines and GoM's 7.62x39 boxes.
 local function augA3Alternative(boxes)
     return {
-        { items = { M .. "AUGA3" }, amountChance = 1 },
-        { items = { "GunsOfTien.556x45Magazine30_AUG" }, amountChance = 3 },
-        { items = { "MarzGuns.556x45_Box" }, amountChance = boxes },
+        { items = { M .. "AUGA3" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.556x45Magazine30_AUG" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.556x45_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function augParaAlternative(boxes)
     return {
-        { items = { M .. "AUGPARA" }, amountChance = 1 },
-        { items = { M .. "9x19Magazine25_AUG", M .. "9x19Magazine32_AUG" }, amountChance = 3 },
-        { items = { "MarzGuns.9x19_Box" }, amountChance = boxes },
+        { items = { M .. "AUGPARA" }, maxAmountChance = 1 },
+        { items = { M .. "9x19Magazine25_AUG", M .. "9x19Magazine32_AUG" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.9x19_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function augHbarAlternative(count)
     return {
-        { items = { M .. "AUGHBAR" }, amountChance = 1 },
-        { items = { M .. "762x39Magazine30_AUG" }, amountChance = count },
-        { items = { "MarzGuns.762x39_Box" }, amountChance = count },
+        { items = { M .. "AUGHBAR" }, maxAmountChance = 1 },
+        { items = { M .. "762x39Magazine30_AUG" }, maxAmountChance = count },
+        { items = { "MarzGuns.762x39_Box" }, maxAmountChance = count },
     }
 end
 
@@ -223,17 +223,17 @@ end
 -- the .223 with GoM's STANAG 30 and .223 boxes, the .308 with Magpul's PMAG 20 and .308 boxes
 local function mdr223Alternative(boxes)
     return {
-        { items = { M .. "MDR223" }, amountChance = 1 },
-        { items = { "MarzGuns.556x45Magazine30_STANAG" }, amountChance = 3 },
-        { items = { "MarzGuns.223_Box" }, amountChance = boxes },
+        { items = { M .. "MDR223" }, maxAmountChance = 1 },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.223_Box" }, maxAmountChance = boxes },
     }
 end
 
 local function mdr308Alternative(boxes)
     return {
-        { items = { M .. "MDR308" }, amountChance = 1 },
-        { items = { M .. "762x51Magazine20_PMAG" }, amountChance = 3 },
-        { items = { "MarzGuns.308_Box" }, amountChance = boxes },
+        { items = { M .. "MDR308" }, maxAmountChance = 1 },
+        { items = { M .. "762x51Magazine20_PMAG" }, maxAmountChance = 3 },
+        { items = { "MarzGuns.308_Box" }, maxAmountChance = boxes },
     }
 end
 
@@ -243,8 +243,8 @@ end
 local function highCap(mag, box)
     return function()
         return {
-            { items = { mag }, amountChance = 1 },
-            { items = { box }, amountChance = 2 },
+            { items = { mag }, maxAmountChance = 1 },
+            { items = { box }, maxAmountChance = 2 },
         }
     end
 end
