@@ -462,6 +462,7 @@ if spawnTable then
             M .. "57x28Magazine20_FIVESEVEN:50",
             M .. "57x28Magazine30_FIVESEVEN:5",
             "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
+            "MarzGuns.PJ-3_Laser:5", "MarzGuns.PX1_Laser:5", "MarzGuns.TR-1_Laser:5",
             "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
             M .. "P90_Muzzle_Mount_Device:5",
         },
@@ -475,6 +476,7 @@ if spawnTable then
             M .. "46x30Magazine20_UCP:50",
             M .. "46x30Magazine40_UCP:5",
             "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
+            "MarzGuns.PJ-3_Laser:5", "MarzGuns.PX1_Laser:5", "MarzGuns.TR-1_Laser:5",
             "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
             M .. "MP7_Muzzle_Mount_Device:5",
         },
@@ -510,13 +512,19 @@ local function appendMountOn(partType, guns)
     if changed then script:DoParam("MountOn = " .. table.concat(list, ";")) end
 end
 
--- GoM's pistol parts on the Five-seveN (from the Glock 17's / M92FS's ModelWeaponPart lines; the sights need the
--- Beretta mount, GoM's own RequiredAttachment rule). Under the rail GoM's two pistol lights (LP, a compact weapon
--- light; TL, a flashlight in a clamp, the pre-rail way), no lasers (user, 2026-10-16).
+-- GoM's pistol parts on the Five-seveN and the UCP (from the Glock 17's / M92FS's ModelWeaponPart lines; the sights
+-- need the Beretta mount, GoM's own RequiredAttachment rule). Under the rail GoM's three pistol lasers (each with the
+-- main mod's beam, Lasers.lua) and its two pistol lights (LP, a compact weapon light; TL, a flashlight in a clamp, the
+-- pre-rail way), one at a time (all PartType Underbarrel). Lasers since 2026-11-13 (user: "all our pistols should be
+-- able to be attached a laser attachment"; none from 2026-10-16).
 local PISTOL_PARTS = {
     "MarzGuns.Beretta_Mount", "MarzGuns.PL4_Sight", "MarzGuns.PM2_Sight", "MarzGuns.PS1_Sight",
+    "MarzGuns.PJ-3_Laser", "MarzGuns.PX1_Laser", "MarzGuns.TR-1_Laser",
     "MarzGuns.LP_Light", "MarzGuns.TL_Light",
 }
+-- the Five-seveN's item script (gen_post93_guns.py) lists its beams itself; the UCP is in our own module, which the
+-- main mod's Lasers.lua already leaves alone
+require("GunsOfTien/Lasers").SCRIPTED_BEAMS[FIVESEVEN] = true
 
 local function appendAll()
     for _, part in ipairs(OPTICS) do appendMountOn(part, { MP7, MP7A2, P90 }) end

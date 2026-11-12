@@ -52,6 +52,10 @@ Lasers.TYPES = {
 }
 Lasers.BEAM_PART_TYPE = "LaserBeam"
 
+-- Guns outside our modules whose own item scripts already list their beams (patchScripts would add them twice):
+-- Post-93's Five-seveN is MarzGuns.FIVESEVEN, GoM's unused name, and registers itself here from its Guns.lua.
+Lasers.SCRIPTED_BEAMS = {}
+
 -- the beam parts never show in the attachment menus (as the integrated rails)
 local beams = {}
 for _, entry in pairs(Lasers.TYPES) do beams[#beams + 1] = entry.beam end
@@ -150,7 +154,8 @@ local function patchScripts()
             if guns then
                 for i = 0, guns:size() - 1 do
                     local gunType = tostring(guns:get(i))
-                    local gun = gunType:find("^GunsOfTien") == nil and ScriptManager.instance:getItem(gunType)
+                    local gun = gunType:find("^GunsOfTien") == nil and not Lasers.SCRIPTED_BEAMS[gunType]
+                        and ScriptManager.instance:getItem(gunType)
                     if gun then
                         patched[gun] = patched[gun] or {}
                         if not patched[gun][entry.beam] then

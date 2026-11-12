@@ -306,16 +306,27 @@ assert GUN_HANDGUN.count("Handgun") == 1 and "TwoHandWeapon" not in GUN_HANDGUN
 
 # GoM's pistol parts the Five-seveN takes (the ModelWeaponPart lines of GoM's Glock 17 / M92FS)
 PISTOL_SIGHTS = ['PL4_Sight', 'PM2_Sight', 'PS1_Sight']
-# GoM's two pistol lights (LP: compact weapon light; TL: a flashlight in a clamp, the pre-rail way), no lasers
-# (user, 2026-10-16)
+# GoM's two pistol lights (LP: compact weapon light; TL: a flashlight in a clamp, the pre-rail way) and its three
+# pistol lasers, all on the underbarrel rail (one at a time: GoM gives them all PartType Underbarrel). No lasers from
+# 2026-10-16 until 2026-11-13 (user: "all our pistols should be able to be attached a laser attachment").
 PISTOL_POINTERS = ['LP_Light', 'TL_Light']
+PISTOL_LASERS = ['PJ-3_Laser', 'PX1_Laser', 'TR-1_Laser']
+
+
+def pistol_laser_lines():
+    """GoM's pistol lasers and their beams (the main mod's Lasers.lua) at the underbarrel point, as on the Glock 21."""
+    lines = [f"        ModelWeaponPart             = MarzGuns.{o} MarzGuns.{o} underbarrel underbarrel,"
+             for o in PISTOL_LASERS]
+    lines += [f"        ModelWeaponPart             = GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"GunsOfTien.LaserBeam_{o.replace('-', '')} underbarrel underbarrel," for o in PISTOL_LASERS]
+    return lines
 
 
 def fiveseven_item():
     """MarzGuns.FIVESEVEN, as GoM's pistols (GLOCK17 is the template) on our 5.7x28mm. Light recoil (HitChance 57,
     RecoilDelay 9), M92FS-class damage, pierces 2 with the standard SS190 round like the P90 (its script round, which
     Gunworks never profiles), realistic sound (the main mod's model: 5.7x28mm ~6.7 gr from a 122 mm barrel = 148 / 42;
-    the M16 is 175 / 50). Takes GoM's Beretta mount and pistol sights, its two pistol lights on the rail, the
+    the M16 is 175 / 50). Takes GoM's Beretta mount and pistol sights, its pistol lasers and lights on the rail, the
     5.7x28mm family's mount device (shared with the P90, as GoM's pistols share theirs) and its own SFN-57 suppressor
     (user, 2026-10-16: one suppressor per gun)."""
     parts = [f"        ModelWeaponPart             = MarzGuns.Slide_Lock {M}.FIVESEVEN_SLIDE slide_Lock slide_Lock,",
@@ -324,6 +335,7 @@ def fiveseven_item():
               f"magazine magazine," for n in (20, 30)]
     parts += ["        ModelWeaponPart             = MarzGuns.Beretta_Mount MarzGuns.Beretta_Mount rail_up rail_up,"]
     parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} scope scope," for s in PISTOL_SIGHTS]
+    parts += pistol_laser_lines()
     parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} underbarrel underbarrel,"
               for s in PISTOL_POINTERS]
     # the shared mount device item, drawn on the pistol as its own threaded-barrel adapter
@@ -429,7 +441,7 @@ def ucp_item():
     (1.6 g at 695 m/s against 2.0 g at about 650), so damage 0.55-0.95 (Five-seveN 0.6-1.0); weight 0.85 for 850 g (GoM's
     USP and M92FS weigh about their real kilograms); pierces 2 with DM11 like
     the MP7; light recoil. Realistic sound (the main mod's model: 4.6x30mm ~6 gr from 130 mm against the MP7's 180 mm =
-    125 / 36). Takes GoM's Beretta mount and pistol sights, its two pistol lights (no lasers, as the Five-seveN), and the
+    125 / 36). Takes GoM's Beretta mount and pistol sights, its pistol lasers and lights (as the Five-seveN), and the
     MP7's mount device (drawn as UCP_Muzzle_Mount_Device) and Rotex-II suppressor (user: "use the MP7 suppressor")."""
     parts = [f"        ModelWeaponPart             = MarzGuns.Slide_Lock {M}.UCP_SLIDE slide_Lock slide_Lock,",
              f"        ModelWeaponPart             = MarzGuns.Slide_Fired {M}.UCP_SLIDE slide_fired slide_fired,",
@@ -437,6 +449,7 @@ def ucp_item():
              f"        ModelWeaponPart             = {M}.46x30Magazine40_UCP {M}.46x30Magazine40_UCP magazine magazine,",
              "        ModelWeaponPart             = MarzGuns.Beretta_Mount MarzGuns.Beretta_Mount rail_up rail_up,"]
     parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} scope scope," for s in PISTOL_SIGHTS]
+    parts += pistol_laser_lines()
     parts += [f"        ModelWeaponPart             = MarzGuns.{s} MarzGuns.{s} underbarrel underbarrel,"
               for s in PISTOL_POINTERS]
     parts += [f"        ModelWeaponPart             = {M}.MP7_Muzzle_Mount_Device {M}.UCP_Muzzle_Mount_Device canon canon,",

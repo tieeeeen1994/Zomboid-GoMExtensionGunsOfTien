@@ -187,9 +187,9 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - The MP7s and the P90 TR held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
   lights and lasers
 - FN Five-seveN pistol (Guns of Marz's own gun, now named just "Five-SeveN"): 20 and 30-round magazines, its own SFN-57 suppressor,
-  takes Guns of Marz's pistol sights and pistol lights
+  takes Guns of Marz's pistol sights, pistol lasers and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
-  suppressor and Guns of Marz's pistol sights and pistol lights
+  suppressor and Guns of Marz's pistol sights, pistol lasers and pistol lights
 - FN SCAR-L (Mk 16) and SCAR-H (Mk 17, long barrel) in flat dark earth: side-folding stock, rails all round for Guns of Marz optics, foregrips, bipods, lights and lasers; the SCAR-L takes Guns of Marz's STANAG magazines and AR muzzle parts, the SCAR-H its own 20 and 10-round magazines, a 50-round drum and an SOCOM762-RC suppressor
 - H&K UMP45 and UMP9: one polymer body with each gun's own magazines (UMP45 25, 20 and 10-round translucent .45 ACP magazines; UMP9 30-round 9mm), side-folding stock, two-round burst, rails all round for Guns of Marz optics, foregrips, lights and lasers; the UMP45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the UMP9 the AWC Mk9
 - Steyr AUG A3, AUG Para and AUG HBAR on the A3 receiver: a short top rail and a right-side rail for Guns of Marz optics and lasers, Guns of Marz's Picatinny Rail on the left for its lights, the AUG's folding front grip; the A3 (green) takes the AUG A1's 30 and 42-round magazines and Guns of Marz's AR muzzle parts, the 9mm Para (sand) Steyr's 25 and 32-round magazines and the AWC Mk9, the 7.62x39mm HBAR (green) a heavy barrel, a folding bipod, Steyr's 30-round magazine and a 50-round one

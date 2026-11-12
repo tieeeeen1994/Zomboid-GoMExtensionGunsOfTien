@@ -366,8 +366,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   can switch it in `make_ammo_art.py`), real tip colours (SS190 black, SB193 violet, SS197SR blue).
 - **FN Five-seveN** (user, 2026-10-16) as `MarzGuns.FIVESEVEN`, GoM's own unused name: GoM's pistol features, 20 /
   30-round magazines, its own "SFN-57 Suppressor" on the 5.7x28mm mount device it shares with the P90 (user: one
-  suppressor per gun, the mount can be shared), under the rail GoM's two pistol lights (LP and TL; no lasers,
-  user 2026-10-16; GoM's TL Tactical Light is pistol-only in its scripts though its model is a full-size flashlight in
+  suppressor per gun, the mount can be shared), under the rail GoM's three pistol lasers and two pistol lights (LP and TL; one at a time, all
+  PartType Underbarrel; no lasers from 2026-10-16 until 2026-11-13, user: "all our pistols should be able to be
+  attached a laser attachment"; GoM's TL Tactical Light is pistol-only in its scripts though its model is a full-size flashlight in
   a clamp, the pre-rail way police lit pistols), spawns in
   GoM's police and SWAT handgun spawners and survivor / bandit bags, never civilian homes. See "FN Five-seveN" below.
 - **H&K UCP Prototype** (user, 2026-10-17): `GunsOfTienPost93.UCP`, H&K's never-sold 4.6x30mm pistol (prototypes
@@ -378,7 +379,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   own magazine, nothing shows it took the MP7's, so it keeps its own; a long 40, straight and then curved, was
   rejected); takes the
   MP7's mount device (drawn as `UCP_Muzzle_Mount_Device`) and Rotex-II, GoM's Beretta mount + pistol sights
-  and both pistol lights, no lasers. Spawns (user, 2026-10-17): never in civilian homes, so neither pistol is in
+  and its pistol lasers and lights. Spawns (user, 2026-10-17): never in civilian homes, so neither pistol is in
   GoM's `World_Anachronistic_Spawner` (GoM inserts it in vanilla's `FirearmWeapons_Late` / `SafehouseBin_Late`, the
   `SafehouseLoot_Late` survivor-safehouse rooms in houses, and in `SurvivorBag_Late` / `BanditBag_Late`); the
   Five-seveN and the UCP alike in GoM's police and SWAT handgun spawners (user, 2026-10-17: the UCP is not rare,
@@ -1488,7 +1489,8 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   .45 mount device drawn with its `MarzGuns.Muzzle_Mount_Device` model, as its USP). No magazine point. Drawn at 0.603,
   so it looks smaller than GoM's Glock 17 (0.72), although a real Glock 21 is a little bigger.
 - The pistol lasers' beams are ModelWeaponPart lines in its item script (gen_scripts.py), as every gun of ours has
-  them since 2026-10-30 (Lasers.lua skips `GunsOfTien*` guns).
+  them since 2026-10-30 (Lasers.lua skips `GunsOfTien*` guns, and guns listed in `Lasers.SCRIPTED_BEAMS`: Post-93's
+  `MarzGuns.FIVESEVEN`, whose script lists its beams too, would otherwise get them twice on every world load).
 
 ## RPK and RPK-74 (2026-11-02)
 
