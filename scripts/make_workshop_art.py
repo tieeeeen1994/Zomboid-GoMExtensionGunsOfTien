@@ -1192,6 +1192,113 @@ def preview22(path, W=1024):
     return save_under(page.convert("RGB"), path)
 
 
+def single_gun(page, name, top, max_w=470, max_h=250, bottom=None):
+    """preview18's one gun: render_ad_guns.py's ad_<name>.png mirrored back to the game's view, centred under `top`
+    (or, given `bottom`, centred between the two: a long rifle is width-bound and would leave a gap above the slots)."""
+    W = page.size[0]
+    k = W / 512
+    im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+    im = im.crop(im.getchannel("A").getbbox())
+    s = min(round(max_w * k) / im.width, round(max_h * k) / im.height)
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    y = round(top * k) if bottom is None else (round(top * k) + round(bottom * k) - im.height) // 2
+    paste_with_shadow(page, placed(page.size, im, ((W - im.width) // 2, y)), (0, round(6 * k)), round(6 * k), 160)
+    return y + im.height
+
+
+def preview23(path, W=1024):
+    """The main mod's SR-25 (3.13.0), one gun on its page as preview18: KAC's 20, the bipod deployed (render_ad_guns.py
+    "sr25"), then a slot row (the gun, its magazine, Guns of Marz's 7.62x51 box) and what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "SR-25", 34, "GUNS OF MARZ EXTENSION")
+    caption(page, 86, "7.62X51MM  ·  SEMI-AUTOMATIC", big=True)
+    single_gun(page, "sr25", 104, max_h=240, bottom=386)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("SR25"), main("762x51Magazine20_SR25"), gom("762x51_Box")], 256, 398, "20-ROUND MAGAZINE")
+    caption(page, 462, "BUILT-IN 3.5-10X SCOPE  ·  FOLDING BIPOD")
+    caption(page, 478, "WITH THE POST-93 ADD-ON, MAGPUL PMAGS AND THE D-50 FIT IT TOO")
+    save_under(page.convert("RGB"), path)
+
+
+def preview24(path, W=1024):
+    """The main mod's Steyr TMP (3.13.0), laid out like preview19: bare over fitted out with Guns of Marz's rails, an
+    Aimpoint, SR7 light, LRX-7 laser and the Mk9 on its mount (render_ad_guns.py "tmp" / "tmp_fitted"), then a slot row
+    and what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "STEYR TMP", 36, "GUNS OF MARZ EXTENSION")
+    caption(page, 86, "9X19MM  ·  900 RPM  ·  HELD ONE-HANDED", big=True)
+    bare_and_fitted(page, "tmp", "tmp_fitted", 112, max_w=380, max_h=262)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("TMP"), main("9x19Magazine15_TMP"), main("9x19Magazine30_TMP"), gom("9x19_Box"),
+                    main("SMG9_Muzzle_Mount_Device"), main("Mk9_Suppressor"), gom("Picatinny_Rail"),
+                    gom("Aimpoint_Sight"), gom("SR7_Light"), gom("LRX-7_Laser")],
+             256, 398, "15 AND 30-ROUND MAGAZINES  ·  AWC MK9")
+    caption(page, 462, "FITS A HOLSTER  ·  OPTIONAL RAILS FOR RED DOTS, LIGHTS AND LASERS")
+    save_under(page.convert("RGB"), path)
+
+
+def preview25(path, W=1024):
+    """Post-93's Mk 11 Mod 0 (3.13.0), one gun on its page as preview18 with the add-on's header: fitted out with Guns
+    of Marz's LR10X, bipod and AimRight on its rails, KAC's 20 and the SOCOM762-RC (render_ad_guns.py "mk11")."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "MK 11 MOD 0", 34, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+    caption(page, 86, "7.62X51MM  ·  SEMI-AUTOMATIC", big=True)
+    single_gun(page, "mk11", 104, max_h=240, bottom=386)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("MK11"), main("762x51Magazine20_SR25"), post("762x51Magazine20_PMAG"),
+                    post("762x51Magazine50_PMAG"), post("SCARH_Muzzle_Mount_Device"), post("SCARH_Suppressor"),
+                    gom("LR10X_Scope"), gom("Bipod_Deployed"), gom("AimRight_Laser")],
+             256, 398, "SR-25 MAGAZINES  ·  PMAGS  ·  SOCOM762-RC")
+    caption(page, 462, "RAILS ON ALL FOUR SIDES: OPTICS, FOREGRIPS, BIPODS, LIGHTS AND LASERS")
+    save_under(page.convert("RGB"), path)
+
+
+def preview26(path, W=1024):
+    """Post-93's four Grozas (3.13.0): one scale for all (render_ad_guns.py "groza1" / "grozagl" / "groza2" /
+    "groza4"), two by two, each under its name and calibre; then a slot row and what plays."""
+    H = W
+    size = (W, H)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "OTS-14 GROZA", 34, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+    caption(page, 86, "BULLPUP  ·  700 RPM", big=True)
+    guns = (("groza1", "GROZA-1", "7.62X39MM"), ("grozagl", "GROZA-1 WITH GP-25", "7.62X39MM  ·  40MM"),
+            ("groza2", "GROZA-2", "5.45X39MM  ·  ONE-HANDED"), ("groza4", "GROZA-4", "9X39MM  ·  SUPPRESSED"))
+    ims = {}
+    for name, _, _ in guns:
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    widest = max(im.width for im in ims.values())
+    tallest = max(im.height for im in ims.values())
+    s = min(u(236) / widest, u(108) / tallest)          # one scale: the GP-25 version fills its column
+    big, small = font(BOLD, u(13), b"Bold"), font(BOLD, u(9), b"Bold")
+    for n, (name, label, sub_) in enumerate(guns):
+        cx = u(132) if n % 2 == 0 else u(380)
+        y = u(108) + (n // 2) * u(142)
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        page.alpha_composite(text_layer(size, (cx, y), label, big, (28, 30, 34, 255), anchor="ma"))
+        page.alpha_composite(text_layer(size, (cx, y + u(16)), sub_, small, (60, 64, 70, 255), anchor="ma",
+                                        spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (cx - im.width // 2, y + u(30) + (u(108) - im.height) // 2)),
+                          (0, u(5)), u(5), 160)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("GROZA1"), post("GROZAGL"), post("GROZA2"), post("GROZA4"), gom("762x39Magazine30"),
+                    gom("545x39Magazine30"), gom("9x39Magazine20"), gom("40mm_Box"), gom("PBS-1_Suppressor")],
+             256, 398, "GUNS OF MARZ AK, AK-74 AND AS VAL MAGAZINES")
+    caption(page, 462, "OPTICS ON THE CARRYING HANDLE  ·  GP-25 FROM THE RADIAL MENU")
+    caption(page, 478, "GROZA-1 TAKES THE PBS-1  ·  GROZA-4 HAS ITS SUPPRESSOR BUILT IN")
+    save_under(page.convert("RGB"), path)
+
+
 def mod_icon(path, item, W=128):
     """128 px in-game mod list icon: one inventory icon scaled up crisp on the poster's background."""
     page = background((W, W)).convert("RGBA")
@@ -1249,6 +1356,14 @@ if __name__ == "__main__":
         preview21(os.path.join(ROOT, "preview21.png"))   # Post-93's Vector CRB and SDP, added the same way
     if want("preview22"):
         preview22(os.path.join(ROOT, "preview22.png"))   # Post-93's MDRx .223 and .308, added the same way
+    if want("preview23"):
+        preview23(os.path.join(ROOT, "preview23.png"))   # the SR-25 (3.13.0), added the same way
+    if want("preview24"):
+        preview24(os.path.join(ROOT, "preview24.png"))   # the Steyr TMP (3.13.0), added the same way
+    if want("preview25"):
+        preview25(os.path.join(ROOT, "preview25.png"))   # Post-93's Mk 11 Mod 0 (3.13.0), added the same way
+    if want("preview26"):
+        preview26(os.path.join(ROOT, "preview26.png"))   # Post-93's Grozas (3.13.0), added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

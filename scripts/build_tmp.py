@@ -71,6 +71,13 @@ MAG = (185.0, 188.0)               # the magazine's feed lips (axis straight dow
 PORT = (112.0, 150.0, 211.0, 227.0)   # the ejection port on the upper's right: L front, L rear, H low, H high
 KNOB = (262.0, 281.0, 225.0, 240.5)   # the cocking knob: L front, L rear, H low, H top
 KNOB_TRAVEL = 25.0                 # pulled straight back out of the upper's rear when racked
+# GoM's optional Picatinny rails (user, 2026-11-12: top, left and right), drawn as our short TMP_RAIL_UP / _LEFT /
+# _RIGHT (build_rails.py, which reads these): the top one on the flat top between the sights (red dots, as the Uzi's),
+# the side ones on the upper's faces ahead of the right ejection port (PORT starts at L 112), lights left, lasers right.
+TOP_RAIL = dict(L=(80.0, 200.0), H=234.8)
+SIDE_RAIL = dict(L=(62.0, 104.0), H=220.0)
+RAIL_TEETH = (4.0, 6.0)            # build_uzi.py's: crossbar faces 9 mm off the top
+SIDE_RAIL_TEETH = (1.5, 3.0)       # the AUG's / Uzis' low side rails: faces 3.5 mm off the upper
 
 # ==================================================================================================
 # Profiles (photo L, H mm), read off the traced photo on a 5 mm grid
@@ -212,9 +219,11 @@ def build_magazine(r):
 # Painting
 # ==================================================================================================
 
-BASE = {  # sRGB: Steyr's black polymer, a slightly greyer grip, the blued barrel, black steel, the magazine's polymer
-    "polymer": (60, 60, 63), "grip": (54, 54, 57), "metal": (70, 71, 75), "dark": (32, 32, 34),
-    "magpoly": (64, 64, 67), "brass": (150, 118, 62), "copper": (140, 82, 52),
+BASE = {  # sRGB: Steyr's black polymer, a slightly greyer grip, the blued barrel, black steel, the magazine's polymer.
+    # In GoM's way (user, 2026-11-11, after the Groza: "how about TMP"; GoM's TEC9 / MP5K / MAC10 grey at median 37-49,
+    # 5th-95th percentile 23-94, against this texture's 55 and 27-79): darker, more varied, worn edges, baked top light
+    "polymer": (46, 46, 49), "grip": (42, 42, 45), "metal": (56, 57, 61), "dark": (24, 24, 26),
+    "magpoly": (48, 48, 51), "brass": (150, 118, 62), "copper": (140, 82, 52),
 }
 rounded_rect = kit.rounded_rect
 
@@ -224,15 +233,16 @@ def common(maps, col, mat):
     ao_s, ao_b, edge = maps["occ"][..., 0], maps["occ"][..., 1], maps["occ"][..., 2]
     is_metal = np.isin(mat, [MATS.index(m) for m in ("metal", "dark", "brass", "copper")])
     mott = kit.vnoise(p, 6.0, 1) * 0.6 + kit.vnoise(p, 1.6, 2) * 0.4
-    col *= (0.93 + 0.14 * mott)[..., None]
+    col *= (0.88 + 0.24 * mott)[..., None]
     streak = kit.vnoise(p * np.array([1.0, 0.08, 1.0]), 0.8, 3)
-    col[is_metal] *= (0.92 + 0.16 * streak[is_metal])[..., None]
-    col *= (0.98 + 0.08 * np.clip(n[..., 2], -1, 1))[..., None]
-    occ = (0.7 + 0.3 * np.clip(ao_b, 0, 1) ** 1.3) * (0.74 + 0.26 * np.clip(ao_s, 0, 1))
+    col[is_metal] *= (0.82 + 0.36 * streak[is_metal])[..., None]
+    col *= (0.96 + 0.12 * np.clip(n[..., 2], -1, 1))[..., None]
+    col *= (0.84 + 0.3 * np.clip((p[..., 2] + 40.0) / 110.0, 0.0, 1.0))[..., None]     # lighter towards the top
+    occ = (0.62 + 0.38 * np.clip(ao_b, 0, 1) ** 1.5) * (0.66 + 0.34 * np.clip(ao_s, 0, 1))
     col *= occ[..., None]
     e = np.clip(edge * 9.0, 0, 1)
     convex = e * np.clip((ao_s - 0.55) / 0.4, 0, 1)
-    wear = np.where(is_metal, 70.0, 40.0) * (0.75 + 0.5 * kit.vnoise(p, 2.5, 5))
+    wear = np.where(is_metal, 110.0, 70.0) * (0.7 + 0.6 * kit.vnoise(p, 2.5, 5))
     col += (convex * wear)[..., None] * np.array([1.0, 1.0, 1.04])
     col *= (1.0 - 0.32 * e * (1 - np.clip((ao_s - 0.4) / 0.4, 0, 1)))[..., None]
     return col
@@ -375,7 +385,22 @@ def points(bounds):
         "handle_back": "TMP_HANDLE (the cocking knob) pulled %.0f mm straight back out of the upper, only while racked"
                        % KNOB_TRAVEL,
     }
-    # held like a pistol: everything turned with the gun; the magazine gets TURN; GoM's MP5K floor pose
+    # GoM's rails and the parts on them, by our guns' relations (build_uzi.py rail_points, build_aug.py): optics 0.0032
+    # under the top rail's crossbar tops, lights 0.0007 and lasers 0.0018 out from the side rails' (lasers 0.0008 lower)
+    ty, sy = (sum(r["L"]) / 2.0 for r in (TOP_RAIL, SIDE_RAIL))
+    face, side = sum(RAIL_TEETH) - 1.0, sum(SIDE_RAIL_TEETH) - 1.0
+    out = round((W_UPPER + side) * K, 4)
+    sz = gp(sy, SIDE_RAIL["H"])[2]
+    pts.update({
+        "rail_up": {"offset": gp(ty, TOP_RAIL["H"])},
+        "scope": {"offset": [0.0, gp(ty, 0.0)[1], round(gp(ty, TOP_RAIL["H"] + face)[2] - 0.0032, 4)]},
+        "rail_left": {"offset": gp(sy, SIDE_RAIL["H"], W_UPPER)},
+        "light_left": {"offset": [round(out + 0.0007, 4), gp(sy, 0.0)[1], sz]},
+        "rail_right": {"offset": gp(sy, SIDE_RAIL["H"], -W_UPPER)},
+        "laser_right": {"offset": [-round(out + 0.0018, 4), gp(sy, 0.0)[1], round(sz - 0.0008, 4)]},
+    })
+    # held like a pistol: everything turned with the gun (the rails and GoM's parts get TURN, modelled upright); the
+    # magazine gets TURN; GoM's MP5K floor pose
     pts = {k: kit.turned(v) for k, v in pts.items()}
     pts["magazine"]["rotate"] = list(kit.TURN)
     pts["world"] = {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO}

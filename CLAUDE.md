@@ -243,10 +243,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
   not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre).
 - **Steyr TMP** (user, 2026-11-11; built, not played): main mod, held like a pistol and holstered, its own 15 and
-  30-round magazines only, the Mk9 on the SMG mount device; section "Steyr TMP". **SR-25** (main mod, KAC's own
-  steel 20 with Post-93's PMAGs fitting it too, GoM's optics and bipod, no muzzle parts) and the **OTs-14 Groza
-  family** (Post-93, with a GP-25 Groza-2) are designed (docs/design.md 4l, docs/post93_design.md), not built: the
-  models are previewed (user's photos, 2026-11-11), their scripts and Lua not written. SR-25: `scripts/build_sr25.py`
+  30-round magazines only, the Mk9 on the SMG mount device; section "Steyr TMP". **SR-25** (main mod) and the **OTs-14 Groza
+  family** (Post-93) are built (docs/design.md 4l, docs/post93_design.md; scripts and Lua below). SR-25: `scripts/build_sr25.py`
   builds it on GoM's AR15 (piecewise along the bore onto the photo's landmarks, the barrel group swapped for the
   photo's ring, tube, gas block and slim barrel), the integrated Leupold scope in the body, a Harris bipod as two
   nodes, KAC's 20 from GoM's STANAG 20 (66 mm deep: 76 was "too large"); `render_sr25.py`, `make_sr25_preview.py`.
@@ -265,7 +263,48 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   the guard): see build_groza.py's comments; the drawing's guard was 11 mm too shallow. The paint follows GoM's
   AKS74U.png / ASVAL.png (user: "make the texture similar-ish"): darker steel with worn edges, deep crevices, baked
   top light, rivets, seams and the front housing's panel painted, the gas tube's cover as GoM's AKS wood.
-  The user's pasted photos are not on disk (chat images are not saved): their landmarks were read by eye. More
+  **GoM's optics only grip GoM's own rail** at GoM's spacing (M4A1 / M16A3: `scope` = `rail_up` + (0, -0.0066,
+  +0.0039); its `Picatinny_Rail_Up` mesh in parts/rails.fbx is 0.0756 long, 0.0152 wide, origin 0.0011 over its
+  bottom). A rail of our own with other dimensions left the rings floating (user, 2026-11-12: "the sniper wasn't even
+  holding"), so the Groza's `GROZA_RAIL_UP` (GoM's Picatinny_Rail_Up item, drawn as a base clamped on the carrying
+  handle) carries GoM's rail mesh itself, joined into our node and baked on our atlas, its scope point at GoM's
+  spacing. Do the same wherever GoM's optics must sit on a rail we model.
+  The user's pasted photos are not on disk (chat images are not saved): their landmarks were read by eye.
+  **SR-25 and Mk 11** (built 2026-11-12, not played): `gen_scripts.py sr25()` (items / models / fixing_sr25.txt,
+  KAC's 20 `GunsOfTien.762x51Magazine20_SR25` on GoM's STANAG 20 texture with its Bip01_Prop2, the hidden
+  `SR25_Integrated_Scope` (GoM's LR10X stats) and `_Bipod_Folded / _Deployed`), `shared/GunsOfTien/SR25.lua`,
+  `client/GunsOfTien/SR25Tooltips.lua`, `scripts/make_sr25_art.py` (icons); Post-93 `gen_post93_guns.py mk11()`,
+  `shared/GunsOfTienPost93/MK11.lua` (four hidden `MK11_Integrated_Rail_*` parents, KAC's 20 MountOn appended for
+  the Mk 11 and MDRx .308), `scripts/post93/make_mk11_art.py`. One magazine profile "7.62x51mm SR-25": the main mod
+  registers KAC's 20, Post-93 the PMAGs (Gunworks merges profiles of one name), the PMAGs' MountOn lists
+  `GunsOfTien.SR25` (the main mod is always there with Post-93). GoM's AR bolt / charging-handle table (local in its
+  AnimationsFiring.lua) is repeated in both Lua files; reload GoM's "ar15_rifle" with its rule
+  "boltCatchAfterEmptyInsert" (GoMReloads.lua). Loot: the SR-25 beside GoM's PSG-1 kits, the Mk 11 the SCAR-H's.
+  fit_audit 2026-11-12: nothing flagged.
+  **Grozas** (built 2026-11-12, not played): `gen_post93_guns.py grozas()` (items / models / fixing_groza.txt: GROZA1,
+  GROZA2, GROZA4 on one atlas with their own magazine / muzzle / canon points; the Groza-2 held like a pistol on
+  `GROZA2_HELD`, the upright body turned at export, with groza_points.json's "held" points (the shared bolt, rail,
+  magazines and optics turned by their points: fit_audit reads the same as upright); the Groza-4's can built in as
+  GoM's AS VAL, quiet stats on the gun and `GROZA4_Integrated_Suppressor` drawing `GROZA_Suppressor`; the AS VAL's
+  `9x39Magazine10/20/30_GoT` + `_Hand`), `shared/GunsOfTienPost93/Groza.lua` (GoM's "762x39" / "545x39" / "AS Val"
+  profiles, the RPKs' AK bolt that closes on empty, now exported as `GunsOfTien_RPK.CLOSES_ON_EMPTY`, "famas_rifle"
+  reload (the Groza-2 "handgun2") with HandMagazines, `Rails.Register(gun, { sides = { "Up" }, optics })`, MountOn appended for GoM's
+  magazines, AK muzzle mount and PBS-1), `scripts/post93/make_groza_art.py`. The GP-25 Groza is GoM's M16A2_M203
+  pattern (traced 2026-11-12): GoM's `Underbarrel.lua` = Gunworks' `Underbarrel.Register({ attachment = <hidden
+  PartType Underbarrel part on the rifle>, weapon = <launcher item>, model = "self" })`; the toggle is Gunworks' radial
+  menu (`Underbarrel.ToggleUnderbarrel`), which snapshots the rifle into the launcher's modData and clones every rifle
+  part onto the launcher (so the launcher item lists the rifle's ModelWeaponPart lines); "self" draws the launcher's own
+  model, GoM's being the rifle's body with `muzzle` moved to the launcher's bore. GoM's Underbarrel_Open / _Close
+  (PartType UnderbarrelChamber) only animate the M203's tube; Gunworks needs neither. Ours: `GROZAGL`,
+  `GROZAGL_GP25_Integrated`, `GROZAGL_GP25` (model on GROZAGL_BODY at `muzzle_gl`), the launcher in GoM's "40mm" ammo
+  family, reload `GoMReloads.nonMagazineProfile("m203_reload", "doublebarrel", true)`. The Groza-1's canon point sits 28 mm
+  behind its muzzle, as GoM's AK-47's. fit_audit 2026-11-12: nothing flagged.
+  **Mk 11 Mod 0** (Post-93, user 2026-11-12, model previewed): `scripts/post93/build_mk11.py` (imports build_sr25.py,
+  now guarded by `__main__`), `render_mk11.py`, `make_mk11_preview.py`. GoM's AR15 takes no optics: its model's
+  `scope` point is the M16A3's (a rail on the carry handle, 46 mm over the flat top), so our scope point follows our
+  guns' relation (0.0032 under the top crossbars; the AR15's flat-top crossbars at 71.5 mm over the grip origin, the
+  handguard's top rail flush with them). The SCAR-H mount device is shown as "7.62x51mm Family Muzzle Mounting
+  Device" (id kept). More
   Groza photos (2026-11-11, references/groza): tech.wikireading.ru/3850's images (storage.yandexcloud.net/wr4img/
   259427_5_pic_10..23.jpg) and weaponland.ru's (images/automat_4/rossiya/OC-14*.jpg) download with a plain fetch;
   Commons has only the drawing, the light assault version and a firing photo; namu.wiki, guns.fandom, imfdb refuse.
@@ -548,6 +587,13 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   .308" with "DESERT TECH · calibre · SEMI-AUTOMATIC", a slot row (both guns, the PMAGs and D-50) and two lines.
   Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <dir> mdr223 mdr308`, then
   `make_workshop_art.py --renders <dir> preview22`. Not yet on the Steam page.
+  preview23-26 (3.13.0, 2026-11-12): the main mod's SR-25 (preview23, `sr25`, one gun as preview18, centred between
+  the caption and the slot row: `single_gun(..., bottom=)`) and Steyr TMP (preview24, `tmp` / `tmp_fitted`, bare over
+  fitted out on its rails, as preview19), Post-93's Mk 11 (preview25, `mk11`, as preview23 with the add-on header) and
+  the four Grozas (preview26, `groza1` / `grozagl` / `groza2` / `groza4`, two by two at one scale). Rebuild:
+  `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> sr25 tmp tmp_fitted mk11 groza1 grozagl
+  groza2 groza4`, then `make_workshop_art.py --renders <dir> preview23 preview24 preview25 preview26`. Added on the
+  Steam page by hand.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -1261,7 +1307,10 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   1992-2001). Held like a pistol and holstered as the Mini Uzi (model turned at export, AttachmentType Holster, GoM's
   "handgun2" reload), Auto / Single at 900 rpm (spread 0.2 / 2.4), its own profile "9x19mm TMP" with
   `9x19Magazine15_TMP` / `30_TMP` only ("TMP 15Rds 9x19mm Magazine"; user: no 20), the main mod's 9x19mm SMG mount
-  device + Mk9 at `canon` (in `SMG9_GUNS`), no stock, no rails. Stats beside the Micro / Mini Uzi (gen_scripts.py
+  device + Mk9 at `canon` (in `SMG9_GUNS`), no stock. GoM's optional rails (user, 2026-11-12): `TMP_RAIL_UP` flat on
+  the top between the sights (L 80-200, red dots as the Uzi), `TMP_RAIL_LEFT` / `_RIGHT` on the upper's faces ahead
+  of the ejection port (L 62-104; build_tmp.py TOP_RAIL / SIDE_RAIL, build_rails.py), lights left, lasers right;
+  render_tmp.py's TMP_rails_* views; fit_audit flags nothing. Stats beside the Micro / Mini Uzi (gen_scripts.py
   `TMP_STATS`), sound 110 / 31 from sound_model.py's formula (9mm from 5.1"). Loot: one kit in GoM's
   `World_Short_SMG_Spawner` beside the Uzis' (6 magazines, 6 boxes); found guns the 30 at 30 %, the 15 at 20 %, the
   mount device at 5 %. Hot Brass: the Micro Uzi's numbers.

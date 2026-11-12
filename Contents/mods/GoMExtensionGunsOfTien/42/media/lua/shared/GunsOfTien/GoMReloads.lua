@@ -20,6 +20,8 @@
       the old MP5 rack (one pull and release of a handle high on the left front, after the magazine) is how they
       are reloaded, and both handles sit there. The Uzi, open bolt, is cocked with one pull too.
       GoM ships these nodes but no GoM gun uses them now: if a GoM update drops them, these guns lose their reload;
+    - "ar15_rifle" (GoM's AR-15 and M4A1, the rear T-handle, with GoM's "boltCatchAfterEmptyInsert" rule): the SR-25,
+      Post-93's Mk 11 Mod 0;
     - "handgun2" (GoM's MP5K / TEC-9, held like a pistol): the Uzi, Mini Uzi and Micro Uzi, the Steyr TMP, the MP7A1 / A2, the P90 TR,
       the Vector 9mm;
     - "pistol_reload" (GoM's pistols): the Glock 21, the Five-seveN, the UCP Prototype;
@@ -30,7 +32,8 @@
       reaching over to the right side; its FAL's, "fal_rifle", racks on the left but rocks the magazine in);
     - "m60_lmg" (GoM's M60): the M249;
     - "ak_rifle" (GoM's AKs and SVD: the handle on the right, racked with the left hand over the top): the RPK and
-      RPK-74.
+      RPK-74;
+    - "m203_reload" (GoM's M203, non-magazine: `nonMagazineProfile`): Post-93's GP-25 on the Groza-1.
 --]]
 
 local GoMReloads = {}
@@ -48,6 +51,10 @@ local DURATIONS = {
     left_handle_load = { unload = 1.733333, load = 1.733333, rack = 1.966667, rackAim = 1.966667 },
     m60_lmg = { unload = 7.533333, load = 6.75, rack = 2.766667 },
     ak_rifle = { unload = 1.866667, load = 1.866667, rack = 2.066667, rackAim = 1.666667 },
+    -- GoM's AR-15 / M4A1 (its rear T-handle; with its rule "boltCatchAfterEmptyInsert"): the SR-25 and Mk 11 Mod 0
+    ar15_rifle = { unload = 2.5, load = 2.5, rack = 2.166667, rackAim = 1.666667, rackClose = 1.695455 },
+    -- GoM's M203 (one grenade, its double-barrel archetype): Post-93's GP-25 on the Groza
+    m203_reload = { unload = 2.0, unloadAim = 2.2, load = 2.0, loadAim = 2.2, rack = 1.1, rackAim = 1.1 },
 }
 
 --- A Gunworks reload profile playing GoM's animation `animId`.
@@ -64,6 +71,20 @@ function GoMReloads.profile(animId, extra)
         profile[k] = v
     end
     return profile
+end
+
+--- A Gunworks reload profile for a gun loaded round by round, as GoM's ReloadAnims.lua nonMagazineProfile builds
+--- them (its M203: "m203_reload", archetype "doublebarrel", its own unload).
+---@param animId string
+---@param archetype string
+---@param customUnload boolean|nil
+---@return table
+function GoMReloads.nonMagazineProfile(animId, archetype, customUnload)
+    local durations = {}
+    for k, v in pairs(DURATIONS[animId]) do
+        durations[k] = v
+    end
+    return { animId = animId, archetype = archetype, customUnload = customUnload, durations = durations }
 end
 
 return GoMReloads

@@ -43,6 +43,13 @@ CRB from its upright nodes, the SDP from its turned ones turned back upright, bo
 The main mod's Glock 21 (preview16, `glock21` / `glock21_fitted`): bare and with GoM's pistol parts, both from the bare
 gun's camera so they line up, turned upright (`assembled` + `upright`), seen so the slide's markings read after the
 mirror.
+
+3.13.0 (2026-11-12): the main mod's SR-25 (preview23, `sr25`: KAC's 20, its bipod deployed, its scope in the body) and
+Steyr TMP (preview24, `tmp` / `tmp_fitted`: bare, and on GoM's rails with an Aimpoint, SR7 light, LRX-7 laser and the
+Mk9 on its mount, both from the bare gun's camera, turned upright); Post-93's Mk 11 Mod 0 (preview25, `mk11`: GoM's
+LR10X, bipod and laser on its rails, KAC's 20, the SOCOM762-RC) and the four Grozas (preview26, `groza1` / `grozagl` /
+`groza2` / `groza4`: one view and scale, each with GoM's standard magazine of its calibre at our size; the Groza-2
+from its upright body).
 """
 
 import json
@@ -165,12 +172,78 @@ P90_VIEW, P90_SCALE, P90_SIZE = (-0.88, 0.32, -0.26), 0.5, (2400, 1500)
 PS90_SCALE = 0.68                    # the PS90 with its SP90 is 0.15 longer
 
 
+# 3.13.0 (2026-11-12): SR-25, TMP, Mk 11, Grozas
+SR25_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_SR25.fbx")
+GOM_AR15_TEX = os.path.join(GOM, "textures/weapons/firearms/assault_rifles/AR15.png")
+KAC20 = (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_SR25_magazine.fbx"), "762x51Magazine20_SR25",
+         os.path.join(GOM, "textures/weapons/magazines/assault_rifles/556x45Magazine20_STANAG.png"), "magazine")
+TMP_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_TMP.fbx")
+TMP_BARE = [(TMP_FBX, n, os.path.join(MAIN_TEX, "TMP.png"), p) for n, p in
+            (("TMP_BODY", None), ("TMP_BOLT", None), ("TMP_HANDLE", None))] + [
+    (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_TMP_magazines.fbx"), "9x19Magazine30_TMP",
+     os.path.join(MAIN_TEX, "9x19Magazine30_TMP.png"), "magazine")]
+RAILS_FBX = os.path.join(MAIN_MEDIA, "models_X/weapons/parts/GunsOfTien_rails.fbx")
+TMP_VIEW, TMP_SCALE, TMP_SIZE = (-0.88, 0.32, -0.26), 0.5, (2400, 1500)
+MK11_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_MK11.fbx")
+SCAR_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_SCAR_parts.fbx")
+GROZA_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_GROZA.fbx")
+GROZA_TEX = os.path.join(TEX, "GROZA.png")
+GROZA_VIEW, GROZA_SCALE, GROZA_SIZE = (0.92, 0.3, -0.16), 0.6, (2400, 1200)
+
+
+def groza(body, mag_geo, mag_tex, mag_point, extra=()):
+    """A Groza as its item script draws it: body, the carrier, GoM's magazine at our size (`_GoT`), more parts."""
+    return [(GROZA_FBX, body, GROZA_TEX, None), (GROZA_FBX, "GROZA_BOLT", GROZA_TEX, None),
+            (GOM_AK_MAGS, mag_geo, os.path.join(GOM, "textures/weapons/magazines/assault_rifles/%s.png" % mag_tex),
+             mag_point, RPK_SCALE)] + list(extra)
+
+
 def gom_part(cat, name, point):
     return (os.path.join(GOM, "models_X/weapons/parts/%s.fbx" % cat),
             name, os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, name)), point)
 
 
 GUNS = {
+    "sr25": {"points": "sr25_points.json",
+             "assembled": [(SR25_FBX, n, GOM_AR15_TEX, pt) for n, pt in
+                           (("SR25_BODY", None), ("SR25_BOLT", None), ("SR25_CHARGING_HANDLE", None),
+                            ("SR25_BIPOD_DEPLOYED", "integrated_bipod"))] + [KAC20],
+             "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "tmp": {"points": "tmp_points.json", "assembled": TMP_BARE, "upright": True, "centre_on_assembled": True,
+            "view": TMP_VIEW, "scale": TMP_SCALE, "size": TMP_SIZE},
+    "tmp_fitted": {
+        "points": "tmp_points.json", "upright": True, "centre_on_assembled": True,
+        "assembled": TMP_BARE + [(RAILS_FBX, "TMP_RAIL_" + s, os.path.join(MAIN_TEX, "Rails.png"), "rail_" + s.lower())
+                                 for s in ("UP", "LEFT", "RIGHT")] + [
+            gom_part("scopes", "Aimpoint_Sight", "scope"), gom_part("pointers", "SR7_Light", "light_left"),
+            gom_part("pointers", "LRX-7_Laser", "laser_right")] + [
+            (SMG9_PARTS, n, os.path.join(SMG9_TEX, n + ".png"), "canon", round(0.000603 / 0.00072, 4))
+            for n in ("SMG9_Muzzle_Mount_Device", "Mk9_Suppressor")],
+        "view": TMP_VIEW, "scale": TMP_SCALE, "size": TMP_SIZE,
+    },
+    "mk11": {"points": "post93/mk11_points.json",
+             "assembled": [(MK11_FBX, n, GOM_AR15_TEX, None) for n in ("MK11_BODY", "MK11_BOLT", "MK11_CHARGING_HANDLE")]
+             + [KAC20] + [(SCAR_PARTS, n, os.path.join(TEX, n + ".png"), "canon")
+                          for n in ("SCARH_Muzzle_Mount_Device", "SCARH_Suppressor")] + [
+                 gom_part("scopes", "LR10X_Scope", "scope"), gom_part("bipods", "Bipod_Deployed", "bipod"),
+                 gom_part("pointers", "AimRight_Laser", "laser_right")],
+             "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "groza1": {"points": "post93/groza_points.json",
+               "assembled": groza("GROZA_BODY", "762x39Magazine30", "762x39Magazine30", "magazine_762x39", [
+                   (GROZA_FBX, "GROZA_RAIL_UP", GROZA_TEX, "rail_up"), gom_part("scopes", "Kobra_Sight", "scope")]),
+               "view": GROZA_VIEW, "scale": GROZA_SCALE, "size": GROZA_SIZE},
+    "grozagl": {"points": "post93/groza_points.json",
+                "assembled": groza("GROZAGL_BODY", "762x39Magazine30", "762x39Magazine30", "magazine_762x39"),
+                "view": GROZA_VIEW, "scale": GROZA_SCALE, "size": GROZA_SIZE},
+    "groza2": {"points": "post93/groza_points.json",
+               "assembled": groza("GROZA2_BODY", "545x39Magazine30", "545x39Magazine30", "magazine_545x39"),
+               "view": GROZA_VIEW, "scale": GROZA_SCALE, "size": GROZA_SIZE},
+    "groza4": {"points": "post93/groza_points.json",
+               "assembled": groza("GROZA4_BODY", "9x39Magazine20", "9x39Magazine20", "magazine", [
+                   (os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_GROZA_parts.fbx"), "GROZA_Suppressor",
+                    os.path.join(TEX, "GROZA_Suppressor.png"), "canon"),
+                   (GROZA_FBX, "GROZA_RAIL_UP", GROZA_TEX, "rail_up"), gom_part("scopes", "LR4X_Scope", "scope")]),
+               "view": GROZA_VIEW, "scale": GROZA_SCALE, "size": GROZA_SIZE},
     "p90std": {"points": "p90std_points.json", "assembled": P90STD_BARE, "upright": True, "centre_on_assembled": True,
                "view": P90_VIEW, "scale": P90_SCALE, "size": P90_SIZE},
     "p90std_fitted": {

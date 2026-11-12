@@ -96,7 +96,7 @@ local HAND = {
 -- each shot and then lets releaseActionLock close it only while a round is chambered, i.e. holds it open on an empty
 -- gun (right for the AUGs and UMPs). For the RPKs it closes always (releaseActionLockForce). lockActionOpen looks the
 -- release up on the table at each shot, so the wrapper takes effect for the next one. GoM's own AKs are left as GoM
--- registers them.
+-- registers them. Post-93's Grozas (AK mechanism) add themselves to the table (GunsOfTien_RPK.CLOSES_ON_EMPTY).
 local CLOSES_ON_EMPTY = { [RPK] = true, [RPK74] = true }
 if not Animations.GunsOfTienRPKWrapped and Animations.releaseActionLock and Animations.releaseActionLockForce then
     Animations.GunsOfTienRPKWrapped = true
@@ -219,4 +219,5 @@ if spawnTable then
     spawnTable[RPK74] = { required = { "MarzGuns.Bolt_Lock", FOLDED }, optionals = rpk74 }
 end
 
-GunsOfTien_RPK = { RPK = RPK, RPK74 = RPK74, MAG40 = MAG40, DRUM75 = DRUM75, FOLDED = FOLDED, DEPLOYED = DEPLOYED }
+GunsOfTien_RPK = { RPK = RPK, RPK74 = RPK74, MAG40 = MAG40, DRUM75 = DRUM75, FOLDED = FOLDED, DEPLOYED = DEPLOYED,
+    CLOSES_ON_EMPTY = CLOSES_ON_EMPTY }

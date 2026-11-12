@@ -103,6 +103,61 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 86, 124 },
     },
+    -- The Mk 11 Mod 0 throws its cases out of its AR port as the main mod's SR-25 (GoM's AR15's angles, a 7.62x51's
+    -- force).
+    ["GunsOfTienPost93.MK11"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 1.0,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 74, 86 },
+    },
+    -- The Grozas eject to the right from the port behind the grip, close to the cheek: GoM's AKS-74U / AS VAL
+    -- angles and force from the FAMAS's place (another bullpup). The Groza-2 is held like a pistol: the MP7's place
+    -- and angles (another pistol-held gun) with the port's 0.1 further back, the AKS-74U's force (to check in game).
+    ["GunsOfTienPost93.GROZA1"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 164, 164 },
+    },
+    ["GunsOfTienPost93.GROZAGL"] = {           -- the Groza-1's port; the GP-25 itself is caseless
+        forwardOffset = 0.10,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 164, 164 },
+    },
+    ["GunsOfTienPost93.GROZA2"] = {
+        forwardOffset = 0.44,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.90,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 164, 164 },
+    },
+    ["GunsOfTienPost93.GROZA4"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.09,
+        heightOffset  = 0.47,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 64, 128 },
+    },
     -- The UMPs eject to the right like GoM's MP5 (its values).
     ["GunsOfTienPost93.UMP45"] = {
         forwardOffset = 0.332,

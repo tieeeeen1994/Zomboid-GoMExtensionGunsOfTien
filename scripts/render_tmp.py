@@ -6,7 +6,8 @@ Imports what build_tmp.py wrote, places every part at tmp_points.json the way th
 in degrees, game space) and renders orthographic Workbench views into OUT_DIR: the left side at a fixed scale
 (px_per_mm in cameras.json, for the outline check in make_tmp_art.py) with the 30-round magazine, as photographed,
 its right side, 3/4 views, the 15-round magazine, the Mk9 on its mount device (drawn at the `_GoT` scale), the
-cocking knob back and the bolt fired, and GoM's MP5K / MAC-10 at the same scale. The TMP is modelled upside down (held
+cocking knob back and the bolt fired, GoM's rails with an Aimpoint, SR7 light and LRX-7 laser on them (2026-11-12), and
+GoM's MP5K / MAC-10 at the same scale. The TMP is modelled upside down (held
 like a pistol) and is turned back upright here. Game space is Blender world space, the mirror image of what the game
 shows; make_tmp_art.py flips every render left-right.
 """
@@ -113,10 +114,17 @@ def main():
                  keep=["SMG9_Muzzle_Mount_Device"])["SMG9_Muzzle_Mount_Device"]
     objs = load(os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTien_TMP.fbx"), os.path.join(TEX, "TMP.png"))
     body, bolt, handle = objs["TMP_BODY"], objs["TMP_BOLT"], objs["TMP_HANDLE"]
+    rails = load(os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTien_rails.fbx"), os.path.join(TEX, "Rails.png"),
+                 keep=["TMP_RAIL_UP", "TMP_RAIL_LEFT", "TMP_RAIL_RIGHT"])
+    gom_parts = {}
+    if GOM:
+        for cat, name in (("scopes", "Aimpoint_Sight"), ("pointers", "SR7_Light"), ("pointers", "LRX-7_Laser")):
+            gom_parts[name] = load(f"{GOM}/models_X/weapons/parts/{cat}.fbx",
+                                   f"{GOM}/textures/weapons/parts/{cat}/{name}.png", keep=[name])[name]
     p = PTS
     L0, H0 = p["_extras"]["photo_origin_mm"]
 
-    def state(mag="9x19Magazine30_TMP", can=False, racked=False, fired=False):
+    def state(mag="9x19Magazine30_TMP", can=False, racked=False, fired=False, railed=False):
         place(body)
         place(bolt, p["bolt_fired"] if fired else None)
         place(handle, p["handle_back"] if racked else None)
@@ -128,6 +136,14 @@ def main():
             place(mount, p["canon"], scale=GOT_PART_SCALE)
             place(supp, p["canon"], scale=GOT_PART_SCALE)
             shown += [mount, supp]
+        if railed:
+            for side, point in (("UP", "rail_up"), ("LEFT", "rail_left"), ("RIGHT", "rail_right")):
+                place(rails["TMP_RAIL_" + side], p[point])
+                shown.append(rails["TMP_RAIL_" + side])
+            for name, point in (("Aimpoint_Sight", "scope"), ("SR7_Light", "light_left"), ("LRX-7_Laser", "laser_right")):
+                if name in gom_parts:
+                    place(gom_parts[name], p[point])
+                    shown.append(gom_parts[name])
         show_only(shown)
 
     Lmax, Hmax = 282.0, 241.0          # the photo's frame (tmp_reference_outline.json); the knob racked reaches 316
@@ -147,6 +163,11 @@ def main():
     render("TMP_15_left", left, centre, span, w, h)
     state(racked=True, fired=True)
     render("TMP_racked_right", right, centre + Vector((0, -0.012, 0)), span + 40, w + 120, h)
+    state(railed=True)
+    render("TMP_rails_left", left, centre, span, w, h)
+    render("TMP_rails_right", right, centre, span, w, h)
+    render("TMP_rails_q_right", q_right, centre, span, w, int(h * 1.2))
+    render("TMP_rails_front", (0, -1, 0), centre, tall, h, h)
     state(can=True)
     render("TMP_mk9_left", left, centre + Vector((0, 0.06, 0)), span + 200, int((span + 200) * PX_PER_MM), h)
     json.dump({"TMP": {"px_per_mm": PX_PER_MM, "size": [w, h], "photo_centre_mm": [Lmax / 2.0, Hmax / 2.0]}},

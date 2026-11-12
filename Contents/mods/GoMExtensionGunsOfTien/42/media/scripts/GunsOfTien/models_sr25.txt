@@ -1,0 +1,45 @@
+module GunsOfTien {
+
+    model SR25 {
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_BODY,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.4806 0.0271, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0212 0.1150 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.0873 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0552 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0386 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment integrated_bipod { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model SR25_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_BOLT,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model SR25_CHARGING_HANDLE {
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_CHARGING_HANDLE,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model SR25_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_BIPOD_FOLDED,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model SR25_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_BIPOD_DEPLOYED,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model 762x51Magazine20_SR25 {
+        mesh     = weapons/magazines/GunsOfTien_SR25_magazine|762x51Magazine20_SR25,
+        texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0200 0.0538 -0.0146, rotate = -94.9600 23.4300 -89.8200, }
+    }
+}

@@ -9,7 +9,31 @@ module GunsOfTien {
         attachment magazine { offset = 0.0000 0.0133 -0.0096, rotate = -180.0000 0.0000 -180.0000, }
         attachment canon { offset = 0.0000 0.1067 -0.0196, rotate = 0.0000 0.0000 0.0000, }
         attachment bolt_fired { offset = 0.0000 -0.0112 0.0000, rotate = 0.0000 0.0000 0.0000, }
-        attachment handle_back { offset = 0.0000 -0.0211 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment handle_back { offset = 0.0000 -0.0151 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0404 -0.0379, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0404 -0.0401, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = -0.0115 0.0748 -0.0289, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0143 0.0748 -0.0289, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_right { offset = 0.0115 0.0748 -0.0289, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0154 0.0748 -0.0281, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model TMP_RAIL_UP {
+        mesh     = weapons/parts/GunsOfTien_rails|TMP_RAIL_UP,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model TMP_RAIL_LEFT {
+        mesh     = weapons/parts/GunsOfTien_rails|TMP_RAIL_LEFT,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
+    }
+
+    model TMP_RAIL_RIGHT {
+        mesh     = weapons/parts/GunsOfTien_rails|TMP_RAIL_RIGHT,
+        texture  = weapons/GunsOfTien/Rails,
+        cullFace = None,
     }
 
     model TMP_BOLT {

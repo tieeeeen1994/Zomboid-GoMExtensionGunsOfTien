@@ -104,7 +104,17 @@ Maker they can be made.
   holster, its front grip moulded in: automatic at 900 rounds a minute, or single shots
 - Its own 15 and 30-round magazines (the 15 flush with the grip)
 - The AWC Mk9 suppressor fits it on its 9mm SMG muzzle mount
+- Guns of Marz's optional Picatinny rails on top (its red dots), left (lights) and right (lasers), drawn as short rails sized to the gun
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits)
+
+## SR-25
+
+- Knight's SR-25 Match of 1990, Eugene Stoner's 7.62x51mm sniper rifle on the AR-10 pattern: a 24-inch match barrel
+  in a free-float tube, semi-automatic, on Guns of Marz's AR-15 receiver
+- Its own 3.5-10x scope and a folding bipod built in (deployed, it steadies aim and
+  rests the rifle on low walls and tables)
+- Knight's 20-round magazine; with the Post-93 add-on, Magpul's PMAGs and D-50 drum fit it too
+- Found where Guns of Marz's PSG-1 is (mercenary snipers, imported rifles), with its magazines and boxes
 
 ## Steyr AUG A1
 
@@ -186,6 +196,8 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - KRISS Vector .45 (flat dark earth, held two-handed) and 9mm (sand, held one-handed like Guns of Marz's MP5K), the Super V submachine guns: Glock magazines (the .45 the Glock 21's 13 and KRISS's 30-round extended magazine, the 9mm Guns of Marz's Glock 17 17, Glock's 33 and KRISS's 40-round extended magazine; the long ones fit the Glock 21 and Guns of Marz's Glock 17 too), side-folding stock, two-round burst at about 1200 rounds a minute with little recoil, top and bottom rails for Guns of Marz optics and foregrips, Guns of Marz's Picatinny Rails on both sides for its lights and lasers; the .45 takes Guns of Marz's .45 muzzle mount and P45 suppressor, the 9mm the AWC Mk9
 - KRISS Vector .45 Carbine (the Vector CRB Enhanced): the Vector .45 with an M-LOK handguard, a 16-inch barrel in a long shroud and an M4-type stock on a folding adapter, held two-handed; the same magazines, rails and muzzle parts, Guns of Marz foregrips under the handguard, harder-hitting, steadier, longer-ranged and quieter
 - KRISS Vector 9mm Pistol (the Vector SDP): the Vector 9mm without its stock, with an end cap and sling swivel and a thread protector, held one-handed like Guns of Marz's MP5K; the same magazines, rails and AWC Mk9, less steady and shorter-ranged, quicker to bring up
-- Desert Tech MDRx .223 and .308, semi-automatic bullpup rifles: the .223 (black, 16-inch barrel, ejects to the right) takes Guns of Marz's STANAG magazines and AR muzzle parts, the .308 (flat dark earth, 20-inch barrel, ejects forward) Magpul's 10, 20 and 25-round PMAG magazines and its 50-round D-50 drum, and the SCAR-H's SOCOM762-RC suppressor; a top rail for Guns of Marz optics, its optional left and right Picatinny rails (short M-LOK sections) for lights and lasers, foregrips under the .223's handguard, and on the .308 BLK LBL's ALX handguard with a built-in folding bipod (Guns of Marz's bipods do not fit the MDRx)
+- Desert Tech MDRx .223 and .308, semi-automatic bullpup rifles: the .223 (black, 16-inch barrel, ejects to the right) takes Guns of Marz's STANAG magazines and AR muzzle parts, the .308 (flat dark earth, 20-inch barrel, ejects forward) Magpul's 10, 20 and 25-round PMAG magazines and its 50-round D-50 drum, and the SCAR-H's SOCOM762-RC suppressor; a top rail for Guns of Marz optics, its optional left and right Picatinny rails (short M-LOK sections) for lights and lasers, foregrips under the .223's handguard, and on the .308 BLK LBL's ALX handguard with a built-in folding bipod (Guns of Marz's bipods do not fit the MDRx); the .308 also takes the SR-25's 20-round magazine
+- Knight's Mk 11 Mod 0, the SR-25 as US special forces adopted it in 2000: a 20-inch barrel, Knight's rail handguard with rails on all four sides for Guns of Marz optics (its sniper scopes need no mount), foregrips, bipods, lights and lasers, semi-automatic; takes the SR-25's 20-round magazine, Magpul's PMAGs and D-50 drum and the SOCOM762-RC suppressor; found where the SCAR-H is
+- TsKIB SOO's OTs-14 Groza bullpups of 1994, on the AKS-74U's mechanism, automatic: the Groza-1 (7.62x39mm, long barrel; Guns of Marz's AK-47 magazines and the RPK's 40 and drum; its AK muzzle mount and PBS-1, with which 7.62x39 US Subsonic cycles it; also with a GP-25 grenade launcher, switched to from Gunworks' radial menu like Guns of Marz's M16A2 with M203, firing its 40mm grenades), the compact Groza-2 Prototype (5.45x39mm, held like a pistol, Guns of Marz's AK-74 magazines) and the Groza-4 (9x39mm, Guns of Marz's AS VAL magazines, a built-in suppressor as on Guns of Marz's AS VAL); Guns of Marz's Picatinny rail fits on the carrying handle for its optics; found with Guns of Marz's post-1993 guns
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

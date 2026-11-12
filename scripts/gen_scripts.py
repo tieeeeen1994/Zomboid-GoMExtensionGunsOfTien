@@ -1722,9 +1722,13 @@ def tmp():
         texture  = {tex}/TMP,
         cullFace = None,
 """]
-    for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back'):
+    for name in ('muzzle', 'world', 'magazine', 'canon', 'bolt_fired', 'handle_back', 'rail_up', 'scope', 'rail_left',
+                 'light_left', 'rail_right', 'laser_right'):
         models.append(m249_attachment(name, pts[name]))
     models.append("    }\n")
+    # GoM's optional rails drawn as our short ones (build_rails.py; user, 2026-11-12)
+    for side in ('UP', 'LEFT', 'RIGHT'):
+        models.append(rail_model(f'TMP_RAIL_{side}'))
     # TMP_BOLT = the bolt in the right ejection port, TMP_HANDLE = the cocking knob (moved only while racked)
     for node in ('BOLT', 'HANDLE'):
         models.append(f"""
@@ -1752,6 +1756,9 @@ def tmp():
              f"{w}{MODULE}.ChargingHandle_Back {MODULE}.TMP_HANDLE handle_back handle_back,"]
     parts += [f"{w}{MODULE}.{tmp_mag(r)} {MODULE}.{tmp_mag(r)} magazine magazine," for r, _ in TMP_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    # GoM's rails (top: red dots, as the Uzi's; left: lights; right: lasers)
+    parts += rail_parts({s: f'{MODULE}.TMP_RAIL_{s.upper()}' for s in ('Up', 'Left', 'Right')}, RED_DOTS,
+                        lights=True, lasers=True)
     items = [f"module {MODULE} {{\n", f"""
     item TMP {{
         MinDamage                    = {s['min']},
@@ -1876,6 +1883,201 @@ def tmp():
     names[f'{MODULE}.TMP'] = 'TMP Machine Pistol'
     for r, _ in TMP_MAGS:      # GoM's names ("MP5 30Rds 9x19mm Magazine")
         names[f'{MODULE}.{tmp_mag(r)}'] = f"TMP {r}Rds 9x19mm Magazine"
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# Knight's SR-25 Match (docs/design.md 4l, user 2026-11-11: the 1990 rifle, integrated scope and bipod; meshes and
+# points: scripts/build_sr25.py, on GoM's AR15 texture; registries: shared/GunsOfTien/SR25.lua). Semi-automatic only
+# (FireMode Single, as GoM's AR-15 / M14 / PSG-1); GoM's AR bolt and charging handle parts (Bolt_Lock / _Fired,
+# Charging_Handle_Close / _Open) drawn with the SR-25's own nodes, as GoM draws its AR15's; KAC's 20 (the main mod's,
+# "7.62x51mm SR-25" profile, which Post-93's PMAGs join); the integrated Leupold 3.5-10x a hidden Scope part (GoM's
+# LR10X stats, user 2026-11-12) with no model (the scope is in the body's mesh); the integrated Harris two hidden
+# BipodIntegrated parts drawn with the gun's own nodes. No muzzle parts or rails (the match rifle had none).
+# Stats between GoM's M14 (1.2-2.2, aim 60) and PSG-1 (1.2-2.0, hit 50, aim 50): a 24" match barrel; 4.9 with the
+# scope and bipod (GoM's PSG-1 4.5, M14 4.2); sound 205 / 59 from sound_model.py (7.62x51 from 24", GoM's M24's).
+SR25_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sr25_points.json')
+SR25_MAG = '762x51Magazine20_SR25'
+SR25_TEX = 'weapons/firearms/assault_rifles/AR15'          # GoM's AR15, as the body is GoM's AR15 receiver
+SR25_PARTS = [  # hidden integrated parts: (item, part type, English name)
+    ('SR25_Integrated_Scope', 'Scope', 'SR-25 Integrated 3.5-10x Scope'),
+    ('SR25_Integrated_Bipod_Folded', 'BipodIntegrated', 'SR-25 Integrated Bipod (Folded)'),
+    ('SR25_Integrated_Bipod_Deployed', 'BipodIntegrated', 'SR-25 Integrated Bipod (Deployed)'),
+]
+
+
+def sr25():
+    pts = json.load(open(SR25_POINTS))
+    models = [f"module {MODULE} {{\n", f"""
+    model SR25 {{
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_BODY,
+        texture  = {SR25_TEX},
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'integrated_bipod'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append("    }\n")
+    for node in ('BOLT', 'CHARGING_HANDLE', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
+        models.append(f"""
+    model SR25_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_SR25|SR25_{node},
+        texture  = {SR25_TEX},
+        cullFace = None,
+    }}
+""")
+    # KAC's 20: GoM's STANAG 20 grown to the SR-25 pattern (build_sr25.py), its texture and its off-hand point
+    models.append(f"""
+    model {SR25_MAG} {{
+        mesh     = weapons/magazines/GunsOfTien_SR25_magazine|{SR25_MAG},
+        texture  = weapons/magazines/assault_rifles/556x45Magazine20_STANAG,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{m249_attachment('Bip01_Prop2', GOM_STANAG_PROP2)}    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_sr25.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.SR25_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.SR25_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.Charging_Handle_Close {MODULE}.SR25_CHARGING_HANDLE charging_handle_lock "
+             f"charging_handle_lock,",
+             f"{w}MarzGuns.Charging_Handle_Open {MODULE}.SR25_CHARGING_HANDLE charging_handle_open "
+             f"charging_handle_open,",
+             f"{w}{MODULE}.{SR25_MAG} {MODULE}.{SR25_MAG} magazine magazine,",
+             f"{w}{MODULE}.SR25_Integrated_Bipod_Folded {MODULE}.SR25_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+             f"{w}{MODULE}.SR25_Integrated_Bipod_Deployed {MODULE}.SR25_BIPOD_DEPLOYED integrated_bipod "
+             f"integrated_bipod,"]
+    items = [f"module {MODULE} {{\n", f"""
+    item SR25 {{
+        MinDamage                    = 1.2,
+        MaxDamage                    = 2.2,
+        CriticalChance               = 35.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.5,
+        HitChance                    = 55,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 55,
+        RecoilDelay                  = 16,
+        MaxRange                     = 60.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 10,
+        MaxSightRange                = 18.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 260,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 4.9,
+        MetalValue                   = 55.0,
+        FireMode                     = Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x51,
+        AmmoBox                      = MarzGuns.762x51_Box,
+        MagazineType                 = {MODULE}.{SR25_MAG},
+        MaxAmmo                      = 20,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_SR25,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.SR25,
+        AimReleaseSound              = M14AimRelease,
+        BreakSound                   = M14Break,
+        BringToBearSound             = M14BringToBear,
+        ClickSound                   = M14Jam,
+        DropSound                    = M14Drop,
+        EjectAmmoStartSound          = M14EjectAmmoStart,
+        EjectAmmoSound               = M14EjectAmmo,
+        EjectAmmoStopSound           = M14EjectAmmoStop,
+        EquipSound                   = M14Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M14InsertAmmoStart,
+        InsertAmmoSound              = M14InsertAmmo,
+        InsertAmmoStopSound          = M14InsertAmmoStop,
+        RackSound                    = M14Rack,
+        ShellFallSound               = M14CartridgeFall,
+        SwingSound                   = MSR788Shoot,
+        UnequipSound                 = M14UnEquip,
+        SoundGain                    = 2.5,
+        SoundRadius                  = 205,
+        SoundVolume                  = 59,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+    }}
+
+    item {SR25_MAG} {{
+        AmmoType         = swmg:bullet_762x51,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{SR25_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 20,
+        MountOn          = {MODULE}.SR25,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = 0.2,
+        WeightModifier   = 0.2,
+        StaticModel      = {MODULE}.{SR25_MAG},
+        WorldStaticModel = {MODULE}.{SR25_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+"""]
+    for part, ptype, _ in SR25_PARTS:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_sr25.txt', ''.join(items))
+    # GoM repairs its PSG-1 and M14 with Aiming=3
+    write('scripts/GunsOfTien/fixing_sr25.txt', f"""module Base {{
+    fixing Fix SR25 {{
+        Require = {MODULE}.SR25,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.SR25'] = 'SR-25 Semi-Automatic Rifle'          # GoM's "PSG-1 Semi-Automatic Rifle"
+    names[f'{MODULE}.{SR25_MAG}'] = 'SR-25 20Rds 7.62x51mm Magazine'   # GoM's "FAL 20Rds 7.62x51mm Magazine"
+    for part, _, name in SR25_PARTS:
+        names[f'{MODULE}.{part}'] = name
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -3143,6 +3345,7 @@ if __name__ == '__main__':
     belt_links()
     uzi()
     tmp()
+    sr25()
     aug()
     glock21()
     rpk()

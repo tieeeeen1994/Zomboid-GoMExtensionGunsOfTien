@@ -9,8 +9,11 @@ Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
                                                              (the long barrel with the GP-25 in place of the forend,
                                                              front grip and trigger guard), GROZA2_BODY (the Groza-2:
                                                              compact, no forend, the barrel's collar and threaded tip
-                                                             out of the front housing), GROZA_BOLT (the AK carrier
-                                                             and its handle on the right, one part as on GoM's AKs)
+                                                             out of the front housing), GROZA2_HELD (GROZA2_BODY
+                                                             turned 180 degrees about the bore: the Groza-2 is held
+                                                             like a pistol, user 2026-11-12), GROZA_BOLT (the AK
+                                                             carrier and its handle on the right, one part as on
+                                                             GoM's AKs)
     P/models_X/weapons/parts/GunsOfTienPost93_GROZA_parts.fbx  GROZA_Suppressor (the Groza-4's own can)
     P/textures/weapons/GunsOfTienPost93/GROZA.png            512, the four bodies and the carrier
     P/textures/weapons/GunsOfTienPost93/GROZA_Suppressor.png 128
@@ -44,6 +47,7 @@ import sys
 
 import bpy
 import numpy as np
+from mathutils import Matrix
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -54,6 +58,10 @@ TEX_DIR = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93")
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_GROZA.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_GROZA_parts.fbx")
 POINTS_JSON = os.path.join(HERE, "groza_points.json")
+GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
+                                           "3722134990/mods/GunsOfMarz/42.16/media"),
+                        "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/"
+                        "42.16/media") if os.path.isdir(p)), None)
 
 K = 0.000603
 K_OLD = 0.00065
@@ -257,6 +265,68 @@ def build_carrier():
     return b.to_object("GROZA_BOLT")
 
 
+# The optics mount (user, 2026-11-12: "that's not how the scope works on groza"; wikireading.ru: "оптический прицел,
+# устанавливаемый непосредственно на рукоятку для переноски", the optical sight mounted directly on the carrying
+# handle; its drawing of a commercial scope shows the mount block clamped on the handle's top bar just behind the
+# front post, the scope above the handle, its eyepiece back over the receiver). The PSO-1 side rail was only on an
+# early 7.62 model or prototype. In game it is GoM's optional Picatinny_Rail_Up (user, 2026-11-12: "let's use GoM's
+# Up"; the main mod's Uzi top rails and the MDRx side rails are GoM's rail items drawn with our models), drawn as
+# GROZA_RAIL_UP: a clamp round the top bar and a short rail on it, modelled in the gun's space (drawn at rail_up =
+# the origin), on the gun's atlas.
+# GoM's optics are made to clamp GoM's own rail at GoM's spacing (on its M4A1 / M16A3: scope = rail_up + (0, -0.0066,
+# +0.0039)); a rail of our own made with other dimensions left them not gripping it (user, 2026-11-12: "the sniper
+# wasn't even holding"). So the mount carries GoM's Picatinny_Rail_Up mesh itself (rails.fbx, 0.0756 long, 0.0152 wide,
+# its origin 0.0011 over its bottom), on our base: a plate as long as the rail between the handle's posts (its top bar
+# runs L 156-290), with a clamp jaw round the bar at each end (the bar rises 8.4 mm along the plate, so the plate is
+# level and the jaws reach down to it).
+GOM_RAIL_LEN, GOM_RAIL_BELOW = 0.0756, 0.0011     # game units
+RAIL_L = 223.0                                    # the rail's middle (L)
+MOUNT_BASE = (159.5, 286.5, 259.0, 264.0, 12.0)   # the plate: L from, to, H bottom, top, half width
+JAWS = ((162.0, 178.0, 241.5), (268.0, 284.0, 249.0))   # (L from, to, bottom H) under the plate, round the bar
+GOM_SCOPE_FROM_RAIL = (0.0, -0.0066, 0.0039)
+
+
+def rail_origin():
+    return (0.0, (L0 - RAIL_L) * K, (MOUNT_BASE[3] - H0) * K + GOM_RAIL_BELOW)
+
+
+def build_handle_mount():
+    b = kit.Builder()
+    m0, m1, h0, h1, hw = MOUNT_BASE
+    slab(b, [(m0, h0), (m1, h0), (m1, h1 - 1.5), (m1 - 1.5, h1), (m0 + 1.5, h1), (m0, h1 - 1.5)], half=hw,
+         bevel=0.5, mat="steel")
+    for a, c, bot in JAWS:
+        for sx in (1, -1):
+            box(b, a, c, bot, h0 + 0.5, sx * 7.2, sx * 11.5, mat="steel", bevel=0.6)
+            b.lathe("x", (sx * 11.5, L0 - (a + c) / 2.0, (bot + 4.0) - H0),
+                    [(0.0, 0.0), (0.0, 3.2), (sx * 1.6, 3.2), (sx * 1.6, 0.0)], seg=12, mat="metal")
+        box(b, a, c, bot, bot + 3.0, -11.5, 11.5, mat="steel", bevel=0.6)    # the jaw's bottom bridge under the bar
+    base = b.to_object("GROZA_RAIL_UP")
+    # GoM's rail on it, joined into the same node (FBX data space: (x, y, -z) game units, as our builder writes)
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.fbx(filepath=os.path.join(GOM, "models_X/weapons/parts/rails.fbx"))
+    rail = None
+    for o in set(bpy.data.objects) - before:
+        if o.name.split(".")[0] == "Picatinny_Rail_Up" and rail is None:
+            rail = o
+        else:
+            bpy.data.objects.remove(o)
+    ox, oy, oz = rail_origin()
+    rail.data.transform(Matrix.Translation((ox, oy, -oz)))
+    rail.matrix_world = Matrix.Identity(4)
+    rail.data.materials.clear()
+    for m in base.data.materials:
+        rail.data.materials.append(m)
+    for poly in rail.data.polygons:
+        poly.material_index = MATS.index("steel")
+    bpy.ops.object.select_all(action='DESELECT')
+    rail.select_set(True)
+    base.select_set(True)
+    bpy.context.view_layer.objects.active = base
+    bpy.ops.object.join()
+    return base
+
+
 def build_suppressor():
     """The Groza-4's detachable can, in its own frame: origin on the bore at the muzzle, +Y forward."""
     a, ln, r = SUPP
@@ -409,6 +479,28 @@ def points(bounds):
     return pts
 
 
+def held_points(pts):
+    """The Groza-2's points on GROZA2_HELD: each upright point turned with the body (x, z negated); every part drawn
+    there (the shared bolt and handle rail, modelled in place, and GoM's magazines and optics, modelled upright) turned
+    by the point (kit.TURN, as the MP7's); GoM's handgun floor pose (its MP5K / MAC10: -0.025, no turn) at our scale;
+    the back-slot turns for its rifle slots (kit.handgun_points)."""
+    def tn(name):
+        x, y, z = pts[name]["offset"]
+        return [round(-x, 4) + 0.0, y, round(-z, 4) + 0.0]
+    turn = list(kit.TURN)
+    return {
+        "muzzle": {"offset": tn("muzzle_compact"), "rotate": [-90.0, 0.0, -180.0]},
+        "magazine": {"offset": tn("magazine_545x39"), "rotate": turn},
+        "bolt_lock": {"offset": [0.0, 0.0, 0.0], "rotate": turn},
+        "bolt_fired": {"offset": tn("bolt_fired"), "rotate": turn},
+        "rail_up": {"offset": tn("rail_up"), "rotate": turn},
+        "scope": {"offset": tn("scope"), "rotate": turn},
+        "world": {"offset": [round(-0.025 * K / K_OLD, 4), 0.0, 0.0], "rotate": ZERO},
+        "rifle_back": {"offset": [0.0, 0.0, 0.0], "rotate": turn},
+        "rifle_back_bag": {"offset": [0.0, 0.0, 0.0], "rotate": turn},
+    }
+
+
 def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
@@ -421,20 +513,40 @@ def main():
     scene.world.color = (0, 0, 0)
     os.makedirs(TEX_DIR, exist_ok=True)
     bodies = [build_body(k) for k in ("short", "long", "gl", "compact")]
-    bolt, supp = build_carrier(), build_suppressor()
-    kit.unwrap(bodies + [bolt], 0.004)
+    bolt, supp, mount = build_carrier(), build_suppressor(), build_handle_mount()
+    kit.unwrap(bodies + [bolt, mount], 0.004)
     kit.unwrap([supp], 0.01)
-    texture([bake(o, [o, bolt], 512) for o in bodies] + [bake(bolt, [bodies[0], bolt], 512)],
-            ["body"] * 4 + ["bolt"], 512, os.path.join(TEX_DIR, "GROZA.png"))
+    texture([bake(o, [o, bolt], 512) for o in bodies] + [bake(bolt, [bodies[0], bolt], 512),
+                                                         bake(mount, [mount, bodies[0]], 512)],
+            ["body"] * 4 + ["bolt", "supp"], 512, os.path.join(TEX_DIR, "GROZA.png"))
     texture([bake(supp, [supp], 128)], ["supp"], 128, os.path.join(TEX_DIR, "GROZA_Suppressor.png"))
-    bounds = {o.name: kit.bounds_of(o) for o in bodies + [bolt, supp]}
+    # The Groza-2 held like a pistol (user, 2026-11-12: "hold Groza-2 using handgun stance"), as GoM's MP5K and our MP7 /
+    # P90: its body turned 180 degrees about the bore at export (build_mp7.py TURN), a copy so the upright GROZA2_BODY
+    # stays for the renders, icons and previews; the shared bolt, handle rail and GoM's magazines and optics are turned
+    # by its points instead (held_points).
+    held = bodies[3].copy()
+    held.data = bodies[3].data.copy()
+    held.name = held.data.name = "GROZA2_HELD"
+    bpy.context.scene.collection.objects.link(held)
+    held.data.transform(Matrix.Diagonal((-1.0, 1.0, -1.0, 1.0)))
+    bodies.append(held)
+    bounds = {o.name: kit.bounds_of(o) for o in bodies + [bolt, supp, mount]}
     pts = points(bounds)
+    # GoM's Picatinny_Rail_Up drawn as GROZA_RAIL_UP at the origin (modelled in place); GoM's optics on its rail, 0.0032 under the crossbars' tops
+    # (our guns' relation to GoM's optics), over the rail's middle
+    pts["rail_up"] = {"offset": [0.0, 0.0, 0.0], "rotate": ZERO}
+    pts["scope"] = {"offset": [round(c + d, 4) + 0.0 for c, d in zip(rail_origin(), GOM_SCOPE_FROM_RAIL)],
+                    "rotate": ZERO}
     pts["muzzle_long"] = {"offset": gp(LONG_MUZZLE, BORE), "rotate": [-90.0, 0.0, -180.0]}
     pts["muzzle_compact"] = {"offset": gp(COMPACT[0][0], BORE), "rotate": [-90.0, 0.0, -180.0]}
+    # the GP-25's bore opening (the tube's front on its axis): the launcher weapon's muzzle (gen_post93_guns.py
+    # GROZAGL_GP25, as GoM's M16A2_M203_Underbarrel model moves its muzzle to the M203's)
+    pts["muzzle_gl"] = {"offset": gp(GL_TUBE[0], GL_TUBE[2]), "rotate": [-90.0, 0.0, -180.0]}
+    pts["held"] = held_points(pts)
     with open(POINTS_JSON, "w") as fh:
         json.dump(pts, fh, indent=2)
         fh.write("\n")
-    kit.export(bodies + [bolt], FBX_GUN)
+    kit.export(bodies + [bolt, mount], FBX_GUN)
     kit.export([supp], FBX_PARTS)
     for name, bd in bounds.items():
         print("%-20s tris %5d  min %s  max %s" % (name, bd["tris"], bd["min"], bd["max"]))

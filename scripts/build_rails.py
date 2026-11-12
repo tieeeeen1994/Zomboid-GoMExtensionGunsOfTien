@@ -5,7 +5,8 @@ room (Blender 5.2, headless).
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTien/42/media):
     M/models_X/weapons/parts/GunsOfTien_rails.fbx   AUG_RAIL_LEFT, AUG_RAIL_RIGHT, UZI_RAIL_UP, UZI_RAIL_DOWN,
-                                                    UZI_RAIL_LEFT, MINIUZI_RAIL_UP, MINIUZI_RAIL_DOWN, MINIUZI_RAIL_LEFT
+                                                    UZI_RAIL_LEFT, MINIUZI_RAIL_UP, MINIUZI_RAIL_DOWN, MINIUZI_RAIL_LEFT,
+                                                    TMP_RAIL_UP, TMP_RAIL_LEFT, TMP_RAIL_RIGHT
     M/textures/weapons/GunsOfTien/Rails.png         128 atlas, black anodised (the AUG's "dark")
 
 User, 2026-10-30: the AUG A1 takes GoM's left and right rails, the Uzi and Mini Uzi its top, bottom and left ones, each
@@ -20,7 +21,10 @@ gun's own build script keeps where that is:
 - <GUN>_RAIL_UP: build_uzi.py RAILS: a saddle over the top cover with jaws down the receiver's sides (the clamp-on
   rails of Vector Arms and BWE), the rail on it; origin = the saddle's top at the rail's middle.
 - <GUN>_RAIL_DOWN under the handguard (origin on its underside), <GUN>_RAIL_LEFT on its left face, as the AUG's.
-The Uzis are held like a pistol: their points turn these upright models with the gun (build_uzi.py points()).
+- TMP_RAIL_UP (user, 2026-11-12) screwed flat on the Steyr TMP's top between the sights, TMP_RAIL_LEFT / _RIGHT on the
+  upper's faces ahead of the right ejection port (build_tmp.py TOP_RAIL / SIDE_RAIL).
+The Uzis and the TMP are held like a pistol: their points turn these upright models with the gun (build_uzi.py /
+build_tmp.py points()).
 """
 
 import sys as _sys
@@ -33,6 +37,7 @@ from mathutils import Vector
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import build_tmp as tm  # noqa: E402  (first: it sets kit.MATS too, the Uzi's and then the AUG's replace it)
 import build_uzi as uz  # noqa: E402  (sets kit.MATS to the Uzi's; build_aug, imported after it, sets the AUG's)
 import build_aug as a1  # noqa: E402
 
@@ -75,6 +80,14 @@ def top_rail(name, spec):
     return b.to_object(name)
 
 
+def flat_top_rail(name, length, teeth):
+    """Origin on the flat top at the rail's middle, the crossbars facing up (screwed straight on, no saddle)."""
+    b = kit.Builder()
+    half = length / 2.0
+    kit.picatinny(b, -half, half, lambda u, h, yy: Vector((u, yy, h)), base_h=teeth[0], tooth_h=teeth[1], mat="dark")
+    return b.to_object(name)
+
+
 def bottom_rail(name, spec):
     """Origin on the handguard's underside at the rail's middle, the crossbars facing down."""
     b = kit.Builder()
@@ -102,6 +115,10 @@ def main():
     for kind, r in uz.RAILS.items():
         rails += [top_rail(kind + "_RAIL_UP", r["up"]), bottom_rail(kind + "_RAIL_DOWN", r["down"]),
                   side_rail(kind + "_RAIL_LEFT", r["left"]["L"][1] - r["left"]["L"][0], uz.SIDE_RAIL_TEETH, 1)]
+    top, sides = tm.TOP_RAIL["L"], tm.SIDE_RAIL["L"]
+    rails += [flat_top_rail("TMP_RAIL_UP", top[1] - top[0], tm.RAIL_TEETH),
+              side_rail("TMP_RAIL_LEFT", sides[1] - sides[0], tm.SIDE_RAIL_TEETH, 1),
+              side_rail("TMP_RAIL_RIGHT", sides[1] - sides[0], tm.SIDE_RAIL_TEETH, -1)]
     kit.unwrap(rails, 0.012)
     a1.texture([a1.bake(o, [o], 128) for o in rails], ["bolt"] * len(rails), 128, TEXTURE)
     bounds = {o.name: kit.bounds_of(o) for o in rails}

@@ -1,0 +1,32 @@
+3.13.0
+
+Steyr TMP
+- New: Steyr's polymer machine pistol of 1992, held one-handed like Guns of Marz's MP5K and MAC-10 and fitting a holster, its front grip moulded in. Automatic at 900 rounds a minute, or single shots
+- Its own 15 and 30-round magazines (the 15 flush with the grip)
+- The AWC Mk9 suppressor fits it on the 9mm SMG muzzle mount
+- Guns of Marz's optional Picatinny rails on top (its red dots), left (lights) and right (lasers)
+- Found with Guns of Marz's short SMGs
+
+SR-25
+- New: Knight's SR-25 Match of 1990, Eugene Stoner's 7.62x51mm sniper rifle on the AR-10 pattern, semi-automatic, with a 24-inch match barrel in a free-float tube
+- Its own 3.5-10x scope and a folding bipod built in. Deployed from the gun's menu, the bipod steadies aim and rests the rifle on low walls and tables
+- Knight's 20-round magazine; with the Post-93 add-on, Magpul's PMAGs and D-50 drum fit it too
+- Found where Guns of Marz's PSG-1 is, with its magazines and boxes
+
+Mk 11 Mod 0 (Post-93 add-on)
+- New: the SR-25 as US special forces adopted it in 2000: a 20-inch barrel and Knight's rail handguard with rails on all four sides for Guns of Marz's optics (its sniper scopes need no mount), foregrips, bipods, lights and lasers. Semi-automatic
+- Takes the SR-25's 20-round magazine, Magpul's PMAGs and D-50 drum, and the SOCOM762-RC suppressor on its muzzle mount
+- Found where the SCAR-H is, mostly with Knight's magazine
+
+OTs-14 Groza (Post-93 add-on)
+- New: four of TsKIB SOO's Groza bullpups of 1994, on the AKS-74U's mechanism, automatic at 700 rounds a minute
+- Groza-1: 7.62x39mm with the long barrel. Takes Guns of Marz's AK-47 magazines and the RPK's 40 and drum, its AK muzzle mount and PBS-1 (with the PBS-1 fitted, 7.62x39 US Subsonic cycles it without racking)
+- Groza-1 with GP-25: the same rifle with a GP-25 grenade launcher. Switch to it and back from Gunworks' radial menu, as with Guns of Marz's M16A2 with M203. It fires Guns of Marz's 40mm grenades, one at a time, and leaves no case to pull out
+- Groza-2 Prototype: the compact 5.45x39mm one, held one-handed like the MP5K. Takes Guns of Marz's AK-74 magazines
+- Groza-4: 9x39mm, its suppressor built in like Guns of Marz's AS VAL's, a little louder than the AS VAL. Takes Guns of Marz's AS VAL magazines
+- All four take Guns of Marz's Picatinny rail on the carrying handle, and every Guns of Marz optic on it
+- Found where Guns of Marz's late guns are found, each with its magazines and boxes
+
+Change
+- The SCAR-H's muzzle mount is now the "7.62x51mm Family Muzzle Mounting Device": the SCAR-H, the MDRx .308 and the Mk 11 take it
+- The MDRx .308 also takes the SR-25's 20-round magazine

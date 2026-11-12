@@ -1,0 +1,21 @@
+module Base {
+    fixing Fix GROZA1 {
+        Require = GunsOfTienPost93.GROZA1,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix GROZA2 {
+        Require = GunsOfTienPost93.GROZA2,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix GROZA4 {
+        Require = GunsOfTienPost93.GROZA4,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix GROZAGL {
+        Require = GunsOfTienPost93.GROZAGL,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

@@ -107,7 +107,13 @@ def main():
     w, h = int(span * PX), int(tall * PX)
     centre = Vector((0.0, (L0 - Lmax / 2.0) * K, (Hmax / 2.0 - H0) * K))
 
-    def state(mag, can=False, fired=False, body="GROZA4_BODY"):
+    optics = {}
+    for cat, name in (("scopes", "PSO1_Scope"), ("scopes", "Kobra_Sight"), ("scopes", "LR4X_Scope")):
+        optics[name] = load(f"{GOM}/models_X/weapons/parts/{cat}.fbx", f"{GOM}/textures/weapons/parts/{cat}/{name}.png",
+                            keep=[name])[name]
+    optics["MOUNT"] = gun["GROZA_RAIL_UP"]           # GoM's Picatinny_Rail_Up, drawn as the handle mount
+
+    def state(mag, can=False, fired=False, body="GROZA4_BODY", optic=None):
         body = bodies[body]
         place(body)
         place(bolt, PTS["bolt_fired"] if fired else None)
@@ -117,6 +123,12 @@ def main():
         if can:
             place(supp, PTS["canon"])
             shown.append(supp)
+        if optic:
+            place(optics["MOUNT"], PTS["rail_up"])
+            shown.append(optics["MOUNT"])
+            if optic != "MOUNT":
+                place(optics[optic], PTS["scope"])
+                shown.append(optics[optic])
         show_only(shown)
 
     wide = centre + Vector((0, 0.05, 0))
@@ -138,6 +150,16 @@ def main():
     render("GROZA2_left_fired", (-1, 0, 0), wide, span + 160, w + 320, h)
     render("GROZA2_right_fired", (1, 0, 0), wide, span + 160, w + 320, h)
     render("GROZA2_q", (0.7, -0.5, -0.35), centre, span, w, int(h * 1.2))
+    for optic in ("MOUNT", "PSO1_Scope", "Kobra_Sight", "LR4X_Scope"):
+        for body, mag, tag in (("GROZA4_BODY", "9x39Magazine20", "GROZA4"), ("GROZA_BODY", "762x39Magazine30", "GROZA1")):
+            state(mag, body=body, optic=optic)
+            render("%s_%s_left" % (tag, optic), (-1, 0, 0), wide + Vector((0, 0, 0.03)), span + 160, w + 320,
+                   h + int(100 * PX))
+        state("9x39Magazine20", optic=optic)
+        render("GROZA4_%s_q" % optic, (-0.62, -0.5, -0.45), centre + Vector((0, 0, 0.02)), span, w, int(h * 1.45))
+    for optic in ("MOUNT", "PSO1_Scope", "LR4X_Scope", "Kobra_Sight"):
+        state("9x39Magazine20", optic=optic)
+        render("zoom_%s" % optic, (-1, 0, 0), Vector((0.0, 0.06, 0.07)), 180, 1400, 900)
     json.dump({"GROZA": {"px_per_mm": PX, "size": [w, h], "photo_centre_mm": [Lmax / 2.0, Hmax / 2.0]}},
               open(os.path.join(OUT, "cameras.json"), "w"), indent=1)
     for o in bpy.data.objects:

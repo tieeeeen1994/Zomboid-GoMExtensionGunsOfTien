@@ -131,10 +131,39 @@ lines[M .. "SCARL"] = {
 lines[M .. "SCARH"] = {
     "Uses .308/7.62x51mm NATO rounds.",
     "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: SCAR-H Muzzle Mount",
+    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
 }
 lines[M .. "762x51Magazine20_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+lines[M .. "MK11"] = {
+    "Uses .308/7.62x51mm NATO rounds.",
+    "Takes SR-25 pattern magazines.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
+}
 lines[M .. "762x51Magazine10_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+-- The Grozas (shared/GunsOfTienPost93/Groza.lua): GoM's Picatinny Rail upgrade on the carrying handle, in GoM's
+-- wording for its rail upgrades and AK muzzle parts
+lines[M .. "GROZA1"] = {
+    "Uses 7.62x39mm rounds.",
+    "Available Picatinny Slots: Up.",
+    "Compatible Muzzle Device: AK Muzzle Mount.",
+}
+lines[M .. "GROZAGL"] = {
+    "Uses 7.62x39mm rounds.",
+    "Available Picatinny Slots: Up.",
+    "Compatible Muzzle Device: AK Muzzle Mount.",
+    "Integrated GP-25 grenade launcher.",
+}
+lines[M .. "GROZAGL_GP25"] = { "Uses 40mm grenades." }
+lines[M .. "GROZA2"] = {
+    "Uses 5.45x39mm rounds.",
+    "Available Picatinny Slots: Up.",
+}
+lines[M .. "GROZA4"] = {
+    "Uses 9x39mm rounds.",
+    "Available Picatinny Slots: Up.",
+    "Integrated suppressor.",
+}
 lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
 
 lines[M .. "MP7A1"] = {
@@ -181,7 +210,7 @@ lines[M .. "MDR308"] = {
     "Available Picatinny Slots: Left, Right",
     "ALX handguard with an integrated folding bipod.",
     "Ejects spent cases forward.",
-    "Compatible Muzzle Device: SCAR-H Muzzle Mount",
+    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
 }
 GunsOfTien_TooltipStates[M .. "MDR308_Integrated_Bipod_Deployed"] = {
     "Folding bipod deployed:",

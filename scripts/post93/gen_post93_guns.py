@@ -910,7 +910,7 @@ def scar_items():
         Icon             = GunsOfTienPost93_{part},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {M}.SCARH;{M}.MDR308,
+        MountOn          = {M}.SCARH;{M}.MDR308;{M}.MK11,
         PartType         = {ptype},
         WorldStaticModel = {M}.{part},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
@@ -1732,6 +1732,7 @@ def mdr_parts(gun):
         lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
     else:
         lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in PMAGS]
+        lines += [f"{w}GunsOfTien.762x51Magazine20_SR25 GunsOfTien.762x51Magazine20_SR25 magazine magazine,"]
         lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
                   f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
         lines += [f"{w}{M}.MDR308_Integrated_Bipod_Folded {M}.MDR308_BIPOD_FOLDED integrated_bipod integrated_bipod,",
@@ -1883,7 +1884,7 @@ def mdrs():
         Icon             = GunsOfTienPost93_{mag},
         ItemType         = base:weaponpart,
         MaxAmmo          = {cap},
-        MountOn          = {M}.MDR308,
+        MountOn          = {M}.MDR308;{M}.MK11;GunsOfTien.SR25,
         PartType         = Clip,
         Tags             = base:riflemagazine,
         Weight           = {weight},
@@ -1917,6 +1918,556 @@ def mdrs():
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
 """ for g in MDRS) + "}\n")
+
+
+# Knight's Mk 11 Mod 0 (user, 2026-11-12; docs/post93_design.md "Knight's Mk 11 Mod 0"; meshes and points:
+# scripts/post93/build_mk11.py on the main mod's SR-25 receiver and GoM's AR15 texture; registries:
+# shared/GunsOfTienPost93/MK11.lua). Moddable: integrated Picatinny rails on all four sides (hidden parts, modelled in
+# the body) for GoM's optics, foregrips, bipods, lights and lasers; the 7.62x51mm mount device and SOCOM762-RC; the
+# SR-25 pattern magazines (the main mod's KAC 20, the PMAGs); GoM's AR bolt and charging handle parts drawn with its
+# own nodes. Semi-automatic only. Stats from the MDRx .308 (the same 20" 7.62x51, GoM's M14 base) with a match
+# barrel's accuracy (HitChance 56) and GoM's M14 pace (RecoilDelay 14); weight 4.5 (9.8 lb empty, GoM's M14 4.2 for
+# 4.5 kg); sound 216 / 62 from sound_model.py (7.62x51 from 20", as the SCAR-H and MDRx .308).
+MK11_TEX = 'weapons/firearms/assault_rifles/AR15'
+MK11_RAILS = [('MK11_Integrated_Rail_Up', 'RailUp'), ('MK11_Integrated_Rail_Down', 'RailDown'),
+              ('MK11_Integrated_Rail_Left', 'RailLeft'), ('MK11_Integrated_Rail_Right', 'RailRight')]
+
+
+def mk11():
+    pts = load_points('mk11_points.json')
+    out = [f"module {M} {{\n", f"""
+    model MK11 {{
+        mesh     = weapons/firearms/GunsOfTienPost93_MK11|MK11_BODY,
+        texture  = {MK11_TEX},
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'canon', 'scope', 'foregrip',
+                 'bipod', 'light_left', 'laser_right'):
+        out.append(attachment(name, pts[name]))
+    out.append("    }\n")
+    for node in ('BOLT', 'CHARGING_HANDLE'):
+        out.append(f"""
+    model MK11_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_MK11|MK11_{node},
+        texture  = {MK11_TEX},
+        cullFace = None,
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_mk11.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.MK11_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.MK11_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.Charging_Handle_Close {M}.MK11_CHARGING_HANDLE charging_handle_lock charging_handle_lock,",
+             f"{w}MarzGuns.Charging_Handle_Open {M}.MK11_CHARGING_HANDLE charging_handle_open charging_handle_open,",
+             f"{w}GunsOfTien.762x51Magazine20_SR25 GunsOfTien.762x51Magazine20_SR25 magazine magazine,"]
+    lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in PMAGS]
+    lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
+              f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    items = [f"module {M} {{\n", f"""
+    item MK11 {{
+        MinDamage                    = 1.2,
+        MaxDamage                    = 2.1,
+        CriticalChance               = 40.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.5,
+        HitChance                    = 56,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 50,
+        RecoilDelay                  = 14,
+        MaxRange                     = 60.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 10,
+        MaxSightRange                = 18.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1.0,
+        ConditionLowerChanceOneIn    = 260,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 4.5,
+        MetalValue                   = 55.0,
+        FireMode                     = Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x51,
+        AmmoBox                      = MarzGuns.762x51_Box,
+        MagazineType                 = GunsOfTien.762x51Magazine20_SR25,
+        MaxAmmo                      = 20,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_MK11,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.MK11,
+        AimReleaseSound              = M14AimRelease,
+        BreakSound                   = M14Break,
+        BringToBearSound             = M14BringToBear,
+        ClickSound                   = M14Jam,
+        DropSound                    = M14Drop,
+        EjectAmmoStartSound          = M14EjectAmmoStart,
+        EjectAmmoSound               = M14EjectAmmo,
+        EjectAmmoStopSound           = M14EjectAmmoStop,
+        EquipSound                   = M14Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M14InsertAmmoStart,
+        InsertAmmoSound              = M14InsertAmmo,
+        InsertAmmoStopSound          = M14InsertAmmoStop,
+        RackSound                    = M14Rack,
+        ShellFallSound               = M14CartridgeFall,
+        SwingSound                   = MSR788Shoot,
+        UnequipSound                 = M14UnEquip,
+        SoundGain                    = 2.5,
+        SoundRadius                  = 216,
+        SoundVolume                  = 62,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""]
+    for part, ptype in MK11_RAILS:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_mk11.txt', ''.join(items))
+    # GoM repairs its M14 / PSG-1 with Aiming=3
+    write(f'scripts/{M}/fixing_mk11.txt', f"""module Base {{
+    fixing Fix MK11 {{
+        Require = {M}.MK11,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{M}.MK11'] = 'Mk 11 Mod 0 Semi-Automatic Rifle'     # GoM's "PSG-1 Semi-Automatic Rifle" (user, 2026-11-12)
+    for part, ptype in MK11_RAILS:
+        names[f'{M}.{part}'] = 'Mk 11 Integrated Rail (%s)' % ptype[4:]
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# The OTs-14 Groza (user, 2026-11-11 / 12; docs/post93_design.md "OTs-14 Groza family"; meshes and points:
+# scripts/post93/build_groza.py; registries: shared/GunsOfTienPost93/Groza.lua). TsKIB SOO's bullpup on the AKS-74U's
+# mechanism, shown in April 1994. Three regular guns on one atlas (the GP-25 version is its own, later):
+# - GROZA1 "Groza-1": 7.62x39, the long barrel (GROZA_BODY), forend and front grip; GoM's "762x39" magazines (its 30
+#   and 75 box at our size, the main mod's RPK 40 and drum); GoM's AK muzzle mount and PBS-1 (so US Subsonic cycles it);
+# - GROZA2 "Groza-2 Prototype": 5.45x39, the compact OTs-14-4A of the user's photo, no forend; held like a pistol
+#   (user, 2026-11-12: "hold Groza-2 using handgun stance"), as GoM's MP5K and our MP7: GROZA2_HELD (the body turned
+#   180 degrees about the bore) and its turned points (groza_points.json "held"), GoM's handgun item lines
+#   (GUN_HANDGUN's); GoM's "545x39" magazines (Bakelite 30 / 45 / 60, the 100 drum) at our size; no muzzle parts;
+# - GROZA4 "Groza-4": 9x39, the short barrel in the forend (GROZA4_BODY), front grip; GoM's AS VAL 10 / 20 / 30 at our
+#   size; its suppressor built in (user, 2026-11-12: "9x39 default ammo is treated as subsonic... but the gun took the
+#   stats into its own", GoM's AS VAL): the quiet sound in the gun's own stats (GoM's AS VAL lines, CapGunRevolverShoot
+#   at gain 0.8, no muzzle flash) and the can drawn by a hidden part that cannot come off (as the SR-25's scope).
+# All: GoM's Picatinny Rail (Up) drawn as GROZA_RAIL_UP (a base clamped on the carrying handle with GoM's own rail on
+# it) and GoM's optics on it; the AK carrier and handle as one part on GoM's bolt swap; Auto / Single at 700 rpm.
+# Stats from GoM's AK-47 (Groza-1), AKS-74U (Groza-2) and AS VAL (Groza-4), a bullpup's steadier hold (HitChance a
+# little up); sounds from sound_model.py: 7.62x39 from 16.5" = 175 / 50 (GoM's AK-47's), 5.45 from about 8" =
+# 205 / 59 (its AKS-74U's), the Groza-4 24 / 6: a bit louder than GoM's AS VAL (22 / 6 in the main mod's
+# SoundTable, the user's figure for the integrally suppressed guns), as in real life (user, 2026-11-12: "make the groza
+# louder as it's louder in real life", then "just a bit", "like maybe a 24 / 6"): the AS VAL's can wraps a ported barrel, the
+# Groza's is a plain can on the muzzle of an ordinary one.
+GROZAS = {
+    'GROZA1': dict(body='GROZA_BODY', mag_point='magazine_762x39', muzzle='muzzle_long', canon='long',
+                   name='Groza-1 Assault Rifle', min=1.5, max=1.8, crit=25.0, critmult=6.0, hit=52, aim=50,
+                   range=50.0, sight=(8, 16.0), jam=0.5, cond=300, weight=3.0, ammo='swmg:bullet_762x39',
+                   box='MarzGuns.762x39_Box', mag='MarzGuns.762x39Magazine30', clip=30, shoot='JS14Shoot', gain=2.0,
+                   radius=175, volume=50),
+    'GROZA2': dict(body='GROZA2_HELD', held=True, mag_point='magazine_545x39', muzzle='muzzle_compact', canon=None,
+                   name='Groza-2 Prototype Assault Rifle', min=1.0, max=1.6, crit=25.0, critmult=3.0, hit=35, aim=25,
+                   range=40.0, sight=(6, 14.0), jam=0.5, cond=250, weight=2.6, ammo='swmg:bullet_545x39',
+                   box='MarzGuns.545x39_Box', mag='MarzGuns.545x39Magazine30_Bakelite', clip=30, shoot='JS14Shoot',
+                   gain=2.0, radius=205, volume=59),
+    'GROZA4': dict(body='GROZA4_BODY', mag_point='magazine', muzzle='muzzle', canon='integral', flash=False,
+                   name='Groza-4 Assault Rifle', min=0.7, max=1.4, crit=20.0, critmult=4.5, hit=52, aim=35,
+                   range=45.0, sight=(6, 14.0), jam=1.0, cond=250, weight=2.7, ammo='swmg:bullet_9x39',
+                   box='MarzGuns.9x39_Box', mag='MarzGuns.9x39Magazine20', clip=20, shoot='CapGunRevolverShoot',
+                   gain=0.8, radius=24, volume=6),
+}
+# GROZAGL "Groza-1 Assault Rifle with GP-25" (user, 2026-11-12: "Make the Groza-1 with GP-25 now"), built as GoM's
+# M16A2_M203 (its "M16A2 Assault Rifle with M203"): the Groza-1 on GROZAGL_BODY (the GP-25's casing as the handguard,
+# its trigger base in place of the rifle's guard), the Groza-1's stats, parts and magazines, heavier by the launcher
+# (GoM: the M16A2 3.4, with the M203 4.7; the GP-25 is 1.5 kg and replaces the forend: 3.0 + 1.2); a hidden
+# GROZAGL_GP25_Integrated part (PartType Underbarrel, GoM's M16A2_M203_Integrated) that Gunworks' Underbarrel swaps for
+# the launcher weapon GROZAGL_GP25 (shared/GunsOfTienPost93/Groza.lua), drawn with its own model: the same body with
+# its muzzle at the GP-25's bore (`muzzle_gl`), as GoM's M16A2_M203_Underbarrel.
+GROZAS['GROZAGL'] = dict(GROZAS['GROZA1'], body='GROZAGL_BODY', name='Groza-1 Assault Rifle with GP-25', weight=4.2)
+GROZA_GL_LAUNCHER_MODEL = dict(GROZAS['GROZAGL'], muzzle='muzzle_gl', canon_muzzle='muzzle_long')
+
+GROZA_MAGS = {   # GoM's magazines each takes, and the model it is drawn with at our size
+    'GROZA1': [('MarzGuns.762x39Magazine30', 'GunsOfTien.762x39Magazine30_GoT'),
+               ('MarzGuns.762x39Magazine75', 'GunsOfTien.762x39Magazine75_GoT'),
+               ('GunsOfTien.762x39Magazine40_RPK', 'GunsOfTien.762x39Magazine40_RPK'),
+               ('GunsOfTien.762x39Drum75_RPK', 'GunsOfTien.762x39Drum75_RPK')],
+    'GROZA2': [('MarzGuns.545x39Magazine%s' % n, 'GunsOfTien.545x39Magazine%s_GoT' % n)
+               for n in ('30_Bakelite', '45_Bakelite', '60_Bakelite', '100_Drum')],
+    'GROZA4': [('MarzGuns.9x39Magazine%d' % n, f'{M}.9x39Magazine%d_GoT' % n) for n in (10, 20, 30)],
+}
+GROZA_MAGS['GROZAGL'] = GROZA_MAGS['GROZA1']
+GROZA_GOT_SCALE = round(0.603 / 0.645, 4)          # GoM's rifles' magazines at our size (build_rpk.py's SCALE)
+GOM_9X39_PROP2 = ('0.0279 0.0937 -0.0020', '-86.2737 31.4012 -93.4148')   # GoM's own, kept unscaled (HandMagazines)
+GROZA_AK_CANON_BACK = 0.0282     # GoM's AK-47: its canon 0.0302 behind its muzzle at 0.645 = 46.8 mm, at our 0.603
+
+
+def grozas():
+    pts = load_points('groza_points.json')
+    out = [f"module {M} {{\n"]
+    for gun, g in list(GROZAS.items()) + [('GROZAGL_GP25', GROZA_GL_LAUNCHER_MODEL)]:
+        muzzle = pts[g['muzzle']]
+        if g.get('held'):           # held like a pistol: the turned body's points, all of them precomputed
+            out.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|{g['body']},
+        texture  = {TEX}/GROZA,
+        cullFace = None,
+""")
+            for name, value in pts['held'].items():
+                out.append(attachment(name, value))
+            out.append("    }\n")
+            continue
+        out.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|{g['body']},
+        texture  = {TEX}/GROZA,
+        cullFace = None,
+""")
+        out.append(attachment('muzzle', muzzle, [-90, 0, -180]))
+        out.append(attachment('world', pts['world']))
+        out.append(attachment('magazine', pts[g['mag_point']]))
+        for name in ('bolt_fired', 'rail_up', 'scope'):
+            out.append(attachment(name, pts[name]))
+        if g['canon'] == 'integral':
+            out.append(attachment('canon', pts['canon']))
+        elif g['canon'] == 'long':
+            o = pts[g.get('canon_muzzle', g['muzzle'])]['offset']
+            out.append(attachment('canon', [o[0], round(o[1] - GROZA_AK_CANON_BACK, 4), o[2]], [0, 0, 0]))
+        out.append("    }\n")
+    for node in ('GROZA_BOLT', 'GROZA_RAIL_UP'):
+        out.append(f"""
+    model {node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|{node},
+        texture  = {TEX}/GROZA,
+        cullFace = None,
+    }}
+""")
+    out.append(f"""
+    model GROZA_Suppressor {{
+        mesh     = weapons/parts/GunsOfTienPost93_GROZA_parts|GROZA_Suppressor,
+        texture  = {TEX}/GROZA_Suppressor,
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    for n in (10, 20, 30):
+        out.append(f"""
+    model 9x39Magazine{n}_GoT {{
+        mesh     = weapons/magazines/assault_rifles|9x39Magazine{n},
+        texture  = weapons/magazines/assault_rifles/9x39Magazine{n},
+        cullFace = None,
+        scale    = {GROZA_GOT_SCALE:.4f},
+        attachment Bip01_Prop2 {{ offset = {GOM_9X39_PROP2[0]}, rotate = {GOM_9X39_PROP2[1]}, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_groza.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    items = [f"module {M} {{\n"]
+    for gun, g in GROZAS.items():
+        lines = [f"{w}MarzGuns.Bolt_Lock {M}.GROZA_BOLT bolt_lock bolt_lock,",
+                 f"{w}MarzGuns.Bolt_Fired {M}.GROZA_BOLT bolt_fired bolt_fired,"]
+        lines += [f"{w}{mag} {model} magazine magazine," for mag, model in GROZA_MAGS[gun]]
+        lines += [f"{w}MarzGuns.Picatinny_Rail_Up {M}.GROZA_RAIL_UP rail_up rail_up,"]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+        if g['canon'] == 'long':
+            lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+                      f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
+        elif g['canon'] == 'integral':
+            lines += [f"{w}{M}.GROZA4_Integrated_Suppressor {M}.GROZA_Suppressor canon canon,"]
+        if gun == 'GROZAGL':
+            gl_lines = list(lines)      # the launcher weapon draws the rifle's parts too (Gunworks clones them onto it)
+        text = f"""
+    item {gun} {{
+        MinDamage                    = {g['min']},
+        MaxDamage                    = {g['max']},
+        CriticalChance               = {g['crit']},
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = {g['critmult']},
+        HitChance                    = {g['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {g['aim']},
+        RecoilDelay                  = 15,
+        MaxRange                     = {g['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {g['sight'][0]},
+        MaxSightRange                = {g['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = {g['jam']},
+        ConditionLowerChanceOneIn    = {g['cond']},
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {g['weight']},
+        MetalValue                   = 40.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {g['ammo']},
+        AmmoBox                      = {g['box']},
+        MagazineType                 = {g['mag']},
+        MaxAmmo                      = {g['clip']},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = {g['shoot']},
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = {g['gain']},
+        SoundRadius                  = {g['radius']},
+        SoundVolume                  = {g['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""
+        if g.get('held'):           # GoM's handgun-held lines (GUN_HANDGUN's edits of GUN_COMMON)
+            for a, b in (("WeaponReloadType             = boltaction,", "WeaponReloadType             = handgun,"),
+                         ("        TwoHandWeapon                = true,\n", ""),
+                         ("        RequiresEquippedBothHands    = true,\n", ""),
+                         ("        IdleAnim                     = Idle_Weapon2,\n", ""),
+                         ("SwingAnim                    = Rifle,", "SwingAnim                    = Handgun,"),
+                         ("MuzzleFlashModelKey          = muzzle_flash_shotgun,",
+                          "MuzzleFlashModelKey          = muzzle_flash_handgun,")):
+                assert a in text, a
+                text = text.replace(a, b)
+        if g.get('flash') is False:  # GoM's AS VAL has no muzzle flash
+            text = text.replace("        MuzzleFlashModelKey          = muzzle_flash_shotgun,\n", "")
+        items.append(text)
+    # The GP-25 as a weapon (GoM's M203_Weapon / CAR15_M203_Weapon, its stats and sounds: 40mm, one round, GoM's
+    # double-barrel reload), drawn as the Groza with its muzzle at the GP-25's bore. Its VOG-25 grenade is caseless, so
+    # nothing is left to pull out (ManuallyRemoveSpentRounds false; GoM's M203 keeps its spent case). GoM's 40mm
+    # family (the M203's rounds) stands in for the VOG-25: the same 40 mm bore, and GoM has no other grenade round.
+    items.append(f"""
+    item GROZAGL_GP25 {{
+        MinDamage                    = 1.8,
+        MaxDamage                    = 2.0,
+        CriticalChance               = 70.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 12.0,
+        HitChance                    = 65,
+        AimingPerkHitChanceModifier  = 4,
+        AimingMod                    = 2.0,
+        Aimingtime                   = 40,
+        MaxRange                     = 10.0,
+        MinSightRange                = 3,
+        MaxSightRange                = 8.0,
+        MinRange                     = 0.67,
+        MinAngle                     = 0.9,
+        JamGunChance                 = 0,
+        ConditionLowerChanceOneIn    = 50,
+        ConditionMax                 = 8,
+        DoorDamage                   = 30,
+        MaxHitcount                  = 9,
+        PiercingBullets              = false,
+        Projectilecount              = 9,
+        ProjectileSpread             = 3.5,
+        ProjectileWeightCenter       = 1.0,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        AttachmentType               = Rifle,
+        Weight                       = {GROZAS['GROZAGL']['weight']},
+        MetalValue                   = 80.0,
+        FireMode                     = Single,
+        IsAimedFirearm               = true,
+        IsAimedHandWeapon            = true,
+        AmmoType                     = swmg:round_40mm_buckshot,
+        AmmoBox                      = MarzGuns.40mm_Box_Buckshot,
+        MaxAmmo                      = 1,
+        HaveChamber                  = false,
+        InsertAllBulletsReload       = true,
+        needtobeclosedoncereload     = true,
+        Icon                         = GunsOfTienPost93_GROZAGL,
+        AimReleaseSound              = DoubleBarrelShotgunAimRelease,
+        BreakSound                   = DoubleBarrelShotgunBreak,
+        BringToBearSound             = DoubleBarrelShotgunBringToBear,
+        ClickSound                   = DoubleBarrelShotgunJam,
+        DropSound                    = DoubleBarrelShotgunDrop,
+        EjectAmmoStartSound          = DoubleBarrelShotgunEjectAmmoStart,
+        EjectAmmoSound               = DoubleBarrelShotgunEjectAmmo,
+        EjectAmmoStopSound           = DoubleBarrelShotgunEjectAmmoStop,
+        EquipSound                   = DoubleBarrelShotgunEquip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = DoubleBarrelShotgunInsertAmmoStart,
+        InsertAmmoSound              = DoubleBarrelShotgunInsertAmmo,
+        InsertAmmoStopSound          = DoubleBarrelShotgunInsertAmmoStop,
+        ManuallyRemoveSpentRounds    = false,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun_double_barrel,
+        PushBackMod                  = 0.8,
+        RackAfterShoot               = false,
+        Ranged                       = true,
+        RangeFalloff                 = true,
+        RecoilDelay                  = 30,
+        Reloadtime                   = 25,
+        RequiresEquippedBothHands    = true,
+        RunAnim                      = Run_Weapon2,
+        ShellFallSound               = DoubleBarrelShotgunCartridgeFall,
+        SoundGain                    = 4.0,
+        SoundRadius                  = 300,
+        SoundVolume                  = 300,
+        StopPower                    = 40.0,
+        SubCategory                  = Firearm,
+        SwingSound                   = DoubleBarrelShotgunShoot,
+        Swingtime                    = 2.0,
+        Tags                         = base:hasmetal;base:firearm,
+        TwoHandWeapon                = true,
+        UnequipSound                 = DoubleBarrelShotgunUnEquip,
+        UseEndurance                 = false,
+        WeaponReloadType             = doublebarrelshotgun,
+        WeaponSprite                 = {M}.GROZAGL_GP25,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 5,
+        AngleFalloff                 = true,
+        KnockBackOnNoDeath           = true,
+{chr(10).join(gl_lines)}
+    }}
+
+    item GROZAGL_GP25_Integrated {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = Underbarrel,
+        Weight          = 0.2,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    # the Groza-4's built-in can: a hidden part that cannot come off (the SR-25's integrated parts), no stats of its own
+    items.append(f"""
+    item GROZA4_Integrated_Suppressor {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = Canon,
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    for n in (10, 20, 30):     # GoM's AS VAL magazines at our size in the off hand (the main mod's HandMagazines.lua)
+        items.append(f"""
+    item 9x39Magazine{n}_Hand {{
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 9x39Magazine{n},
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = {M}.9x39Magazine{n}_GoT,
+        WorldStaticModel = {M}.9x39Magazine{n}_GoT,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_groza.txt', ''.join(items))
+    # GoM repairs its AKs with Aiming=3
+    write(f'scripts/{M}/fixing_groza.txt', "module Base {\n" + "\n".join(f"""    fixing Fix {g} {{
+        Require = {M}.{g},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for g in GROZAS) + "}\n")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for gun, g in GROZAS.items():
+        names[f'{M}.{gun}'] = g['name']      # GoM's "AS VAL Assault Rifle"; "Prototype" as the UCP's (user)
+    names.pop(f'{M}.GROZA_Suppressor', None)          # detachable until 2026-11-12
+    names[f'{M}.GROZA4_Integrated_Suppressor'] = 'Groza-4 Integrated Suppressor'
+    names[f'{M}.GROZAGL_GP25'] = 'GP-25 Grenade Launcher'                     # GoM: "M203 Grenade Launcher"
+    names[f'{M}.GROZAGL_GP25_Integrated'] = 'GP-25 Integrated Grenade Launcher'
+    for n in (10, 20, 30):
+        names[f'{M}.9x39Magazine{n}_Hand'] = f'AS VAL {n}Rds 9x39mm Magazine'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
 def translations():
@@ -1967,7 +2518,8 @@ def translations():
         f'{M}.SCAR_Integrated_Rail_Left': 'SCAR Integrated Rail (Left)',
         f'{M}.SCAR_Integrated_Rail_Right': 'SCAR Integrated Rail (Right)',
         f'{M}.SCARH_Suppressor': 'SOCOM762-RC Suppressor (7.62x51mm Weapons)',
-        f'{M}.SCARH_Muzzle_Mount_Device': 'SCAR-H Muzzle Mounting Device',
+        # generic since the Mk 11 Mod 0 takes it too (user, 2026-11-12), as the 4.6x30mm / 5.7x28mm mount devices
+        f'{M}.SCARH_Muzzle_Mount_Device': '7.62x51mm Family Muzzle Mounting Device',
         # GoM: "MP5 Submachine Gun", "MP5 30Rds 9x19mm Magazine", "Thompson 20Rds .45 ACP Magazine", "G36 30Rds
         # 5.56x45mm Translucent Magazine" (the UMP45's are smoked translucent polymer)
         f'{M}.UMP45': 'UMP45 Submachine Gun',
@@ -2061,5 +2613,7 @@ if __name__ == '__main__':
     vectors()
     ps90()
     mdrs()
+    mk11()
+    grozas()
     translations()
     print('written under', os.path.normpath(ROOT))

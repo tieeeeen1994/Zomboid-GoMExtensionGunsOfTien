@@ -72,7 +72,7 @@ SCOPE_Z = 77.0
 SCOPE = [(-6.0, 1.0), (-6.0, 19.0), (-4.0, 20.0), (58.0, 20.0), (72.0, 15.0), (100.0, 15.0), (104.0, 12.7),
          (214.0, 12.7), (246.0, 23.5), (304.0, 23.5), (309.0, 22.0), (309.0, 1.0)]
 SCOPE_RINGS = (88.0, 182.0)     # the B-Square rings, 16 mm wide, on risers (22 x 16) from the base
-BASE = (-8.0, 196.0, 33.0, 11.0)   # the B-Square base on the flat top: L from, to, its top over the bore, half width
+BASE = (6.0, 196.0, 33.0, 11.0)   # the B-Square base on the flat top: L from, to, its top over the bore, half width
 TURRET = 140.0                  # the high target knobs: elevation on top, windage on the right
 BIPOD_LEG = 200.0               # Harris 1A2-BR (6-9"): pivot to foot
 MAG_DEPTH, MAG_WIDTH, MAG_LEN = 66.0, 25.0, 152.0     # KAC's 20: 2.6" front to back (user, 2026-11-11: 76 was "too large"), the photo's length
@@ -411,4 +411,5 @@ def main():
     print("wrote", POINTS, json.dumps(pts["_extras"]))
 
 
-main()
+if __name__ == "__main__":
+    main()

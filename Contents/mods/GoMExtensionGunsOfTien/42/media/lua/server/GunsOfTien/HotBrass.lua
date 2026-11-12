@@ -143,6 +143,18 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
     },
+    -- The SR-25 throws its cases out of its AR port as GoM's AR15 (the same receiver, grown), as hard as its PSG-1's
+    -- 7.62x51 (shellForce 1).
+    ["GunsOfTien.SR25"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 1.0,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 74, 86 },
+    },
     -- The Steyr TMP throws its cases out to the right from the port over the trigger, held like a pistol as the Micro
     -- Uzi (its numbers: the port sits about as far ahead of the grip).
     ["GunsOfTien.TMP"] = {

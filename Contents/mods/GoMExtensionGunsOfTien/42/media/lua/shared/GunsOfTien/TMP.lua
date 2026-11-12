@@ -13,7 +13,10 @@
     - reload: GoM's own animations (GoMReloads.lua), its MP5K's ("handgun2");
     - AWC's Mk9 on the 9x19mm SMG mount device over its threaded barrel (Suppressors.lua has the can's stats and
       rule, the parts' MountOn and the gun's ModelWeaponPart lines are in their scripts);
-    - no stock (Steyr's optional fixed stock came later), no rails (none on the first guns), no bayonet.
+    - no stock (Steyr's optional fixed stock came later), no bayonet;
+    - GoM's optional Picatinny rails (user, 2026-11-12; Rails.lua): the top for red dots (as the Uzi: longer optics
+      overhang a gun this short), the left for lights, the right (ahead of the ejection port) for lasers, drawn as our
+      short TMP_RAIL_* (build_rails.py). No bottom rail: the front grip is moulded into the frame.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -55,6 +58,9 @@ Animations.RegisterWeaponWithAnimatedParts(TMP, ChargingHandle.ANIMATED_PARTS)
 local GoMReloads = require("GunsOfTien/GoMReloads")
 ReloadAnim.RegisterWeapon(TMP, GoMReloads.profile("handgun2"))
 
+local Rails = require("GunsOfTien/Rails")
+Rails.Register(TMP, { sides = { "Up", "Left", "Right" }, optics = Rails.RED_DOTS, lights = true, lasers = true })
+
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu (magazines go with the reload)
 -------------------------------------------------
@@ -63,7 +69,7 @@ PreventRemoval.Register(MAGS)
 -------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the cocking knob, one magazine by GoM's MP5
 -- rule (the 30 the TMP was issued with likelier than the short 15), a mount device sometimes, as GoM's MP5 / MAC-10
--- come with theirs.
+-- come with theirs; GoM's MP5 accessories with their rails (":PR*") at its chances, as the Uzi's, plus its lasers.
 -------------------------------------------------
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
@@ -72,6 +78,12 @@ if spawnTable then
         required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD },
         optionals = { MAGS[2] .. ":30", MAGS[1] .. ":20", M .. "SMG9_Muzzle_Mount_Device:5" },
     }
+    local list = spawnTable[TMP].optionals
+    for _, optic in ipairs(Rails.RED_DOTS) do list[#list + 1] = optic .. ":5:PRU" end
+    for _, e in ipairs({ "MarzGuns.BrightPoint-5_Light:10:PRL", "MarzGuns.SR7_Light:10:PRL",
+        "MarzGuns.AimRight_Laser:2:PRR", "MarzGuns.LRX-7_Laser:2:PRR" }) do
+        list[#list + 1] = e
+    end
 end
 
 GunsOfTien_TMP = { TMP = TMP, MAGS = MAGS }

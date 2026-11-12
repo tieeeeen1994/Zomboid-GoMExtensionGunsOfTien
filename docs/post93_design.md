@@ -394,7 +394,7 @@ the 20" handguard's underside is closed. The legs are the 16"'s (Desert Tech lis
 9 1/8", for every length): aluminium housing, carbon inner leg (drawn out 55 mm deployed), rubber foot, splayed
 to a 45 degree V (user: "nearly 45 degrees"), detailed from the user's photos.
 
-## OTs-14 Groza family (user, 2026-11-11: designed, model previewed)
+## OTs-14 Groza family (user, 2026-11-11: designed; all four built 2026-11-12)
 
 User: "the Groza family that uses 7.62x39, 9x39 and 5.45x39". TsKIB SOO's bullpup on the AKS-74U's mechanism (about
 three quarters of its parts), by Telesh and Lebedev: work began in December 1992, prototypes within a year, shown at
@@ -445,10 +445,58 @@ front grip), Groza-1 with the GP-25, Groza-2 (the compact OTs-14-4A of the user'
 barrel's collar and threaded tip out of the front housing), Groza-4 (short barrel in the forend, front grip, its own
 suppressor).
 
-Still to check:
-- **Optics**: GoM's AK mount and AK optics only if photos show the Groza's side dovetail; to check.
-- **Barrels**: Wikipedia gives the Groza-1 a 420 mm barrel against the Groza-4's 240 mm, which does not fit one short
-  bullpup body; check other sources and photos before modelling.
+Built (2026-11-12; `gen_post93_guns.py grozas()`, `shared/GunsOfTienPost93/Groza.lua`, `make_groza_art.py`): the
+optics on GoM's Picatinny Rail (Up) over the carrying handle (below), the barrels as the photos show them (above).
+- Stats: Groza-1 from GoM's AK-47 (1.5-1.8, HitChance 52, the bullpup's steadier hold), Groza-2 its AKS-74U (1.0-1.6),
+  Groza-4 its AS VAL (0.7-1.4, HitChance 52); sounds by sound_model.py (175 / 50, 205 / 59). 700 rpm, spread a
+  little under GoM's AK-47 / AKS-74U / AS VAL.
+- The Groza-2 is held like a pistol (user, 2026-11-12: "hold Groza-2 using handgun stance"), as GoM's MP5K and the
+  MP7: the body turned about the bore (GROZA2_HELD), its parts turned by their points, GoM's MP5K reload.
+- The Groza-4's suppressor is built in (user, 2026-11-12: "9x39 default ammo is treated as subsonic... but the gun took
+  the stats into its own. groza-4 needs to do the same"), as GoM's AS VAL: the quiet sound in the gun's own stats
+  (CapGunRevolverShoot, gain 0.8, no muzzle flash), the can a hidden part that cannot come off. A bit louder than the
+  AS VAL (user, 2026-11-12: "louder in real life", "just a bit", "like maybe a 24 / 6"): 24 / 6 against the AS VAL's 22 / 6, whose can wraps
+  a ported barrel.
+- GoM's AK bolt swap closing on an empty chamber (the RPKs' wrapper, `GunsOfTien_RPK.CLOSES_ON_EMPTY`), GoM's
+  "famas_rifle" reload with GoM's magazines in the off hand at our size (the main mod's AK / AK-74 `_Hand` items,
+  Post-93's own `9x39Magazine10/20/30_Hand` on `_GoT` models at 0.603 / 0.645).
+- Found gun: the bolt, GoM's standard magazine of the calibre mostly, a red dot or low scope now and then with its
+  rail (":PRU"). Loot: an alternative each in `World_Anachronistic_Spawner` (up to 3 magazines, up to 3 boxes).
+- The Groza-1 with the GP-25 (user, 2026-11-12: "Make the Groza-1 with GP-25 now"), `GROZAGL` "Groza-1 Assault
+  Rifle with GP-25", built as GoM's M16A2_M203: the Groza-1 on GROZAGL_BODY, 4.2 kg (GoM's M203 adds 1.3 to its
+  M16A2; the GP-25's 1.5 kg replaces the forend), a hidden `GROZAGL_GP25_Integrated` part (PartType Underbarrel) that
+  Gunworks' Underbarrel swaps for `GROZAGL_GP25` "GP-25 Grenade Launcher", drawn as the same body with its muzzle at
+  the GP-25's bore (`muzzle_gl`); GoM's M203 stats, sounds and reload ("m203_reload", the double-barrel archetype),
+  its 40mm family standing in for the VOG-25 (the same bore; GoM has no other grenade round), caseless (no spent case
+  to unload). No tube-opening parts (GoM's Underbarrel_Open / _Close slide the M203's tube; the GP-25 is muzzle-loaded).
+  Loot: the Groza-1's alternative picks one of the two, as GoM's M16 alternative its M16A2_M203.
 
-References to find before modelling: side-on photos of the Groza-4 and Groza-1 (Commons, museum and expo photos),
-GoM's AKS-74U and AS VAL renders for the style.
+
+## Knight's Mk 11 Mod 0 (user, 2026-11-12: designed and built)
+
+The SR-25 as SOCOM adopted it in May 2000 (Wikipedia "SR-25"), so Post-93: `GunsOfTienPost93.MK11` "Mk 11 Mod 0
+Semi-Automatic Rifle" (GoM's naming: its semi-automatic sniper rifles are "PSG-1 / SVD Semi-Automatic Rifle"; the
+user: "let's do Mk 11 Mod 0"). The difference with the 1990 SR-25: **moddable** (user: "The Mk 11 will be moddable.
+Like no integrated parts. I will have integrated picatinny rails though"): no integrated scope, bipod or suppressor;
+integrated Picatinny rails as hidden required parts, modelled in the body (KAC's rail handguard with rails on all
+four sides, the receiver's flat top), for GoM's optics on top, foregrips and bipods under, lights left, lasers right.
+The muzzle takes the SCAR-H's mount device (renamed "7.62x51mm Family Muzzle Mounting Device", user, 2026-11-12) and
+SOCOM762-RC, as the MDRx .308; magazines the main mod's KAC 20 and Post-93's PMAGs. Built on the SR-25's receiver and
+stock (scripts/post93/build_mk11.py) from Commons "SR-25 pic02.jpg" (CC BY 2.0, a Mk 11 with its kit), scaled by the
+SR-25's stock: the handguard to 545 mm ahead of the grip, the 20" barrel's muzzle at 700, the folded flip-up front
+sight on the top rail (GoM's AR15 receiver keeps its fixed rear sight block). Preview docs/post93_mk11_preview.png.
+
+Decided (user, 2026-11-12, the model approved): a found Mk 11 comes mostly with the KAC 20 (what SOCOM issued), the
+PMAGs and the D-50 rarer; loot as the SCAR-H (GoM's army rifle spawners, `World_Army_Rifle_Spawner` /
+`Zombie_Army_Rifle_Spawner`). The integrated top rail is registered as the parent GoM's optics need (as the MDRx's):
+no Sniper Mounting Rail (GoM's `Sniper_Mount` only adds a rail to its bolt-action rifles); GoM's LR10X / LRX12X / TR06X
+and every other optic fit straight on it.
+
+Groza optics (user asked "what is realistic?", 2026-11-12; then "that's not how the scope works on groza" to an AK
+side mount): the standard kit's optical sight is "mounted directly on the carrying handle" (wikireading.ru: "оптический
+прицел, устанавливаемый непосредственно на рукоятку для переноски"); its drawing of a commercial scope shows the mount
+block clamped on the handle's top bar just behind the front post, the scope above the handle. The PSO-1 on the
+receiver's side rail was only an early 7.62 model or prototype. So GoM's optional `Picatinny_Rail_Up` (user,
+2026-11-12: "let's use GoM's Up", over a Groza-only item), drawn on the Groza as `GROZA_RAIL_UP`: a clamp on the
+handle's top bar with a short Picatinny rail (the main mod's `Rails.Register`, as the Uzis' top rails), GoM's optics
+on it; without it the handle is bare, as on the real gun. Up only: no rails under or beside the forend.

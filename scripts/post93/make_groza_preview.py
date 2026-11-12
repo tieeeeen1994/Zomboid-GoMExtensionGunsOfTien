@@ -54,6 +54,10 @@ for n, t in (("GROZA4_supp_left", "Groza-4 with its own suppressor"),
              ("GROZA2_right_fired", "Groza-2, right side: the AK carrier handle back"),
              ("GROZA2_q", "Groza-2 from behind, right (as the user's photo)"),
              ("GROZA1_q", "Groza-1, 3/4 from behind, right"),
+             ("GROZA4_MOUNT_left", "GoM's Picatinny Rail (Up), drawn as a base clamped on the carrying handle with GoM's own rail on it"),
+             ("GROZA4_PSO1_Scope_left", "GoM's PSO-1 on it"),
+             ("GROZA4_LR4X_Scope_q", "GoM's LR4X"),
+             ("GROZA1_Kobra_Sight_left", "GoM's Kobra on the Groza-1"),
              ("gom_AKS74U", "GoM's AKS-74U at the same scale"),
              ("gom_ASVAL", "GoM's AS VAL at the same scale")):
     im = Image.open(os.path.join(R, n + ".png")).convert("RGBA")

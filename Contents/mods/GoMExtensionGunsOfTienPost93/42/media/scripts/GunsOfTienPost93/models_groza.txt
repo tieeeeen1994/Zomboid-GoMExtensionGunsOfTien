@@ -1,0 +1,112 @@
+module GunsOfTienPost93 {
+
+    model GROZA1 {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZA_BODY,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2521 0.0157, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0753 0.0137, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0217 0.0768, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2239 0.0157, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model GROZA2 {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZA2_HELD,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1315 -0.0157, rotate = -90.0000 0.0000 -180.0000, }
+        attachment magazine { offset = 0.0000 -0.0712 -0.0167, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_lock { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment scope { offset = 0.0000 0.0217 -0.0768, rotate = -180.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0232 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model GROZA4 {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZA4_BODY,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1628 0.0157, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0734 0.0192, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0217 0.0768, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1628 0.0157, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model GROZAGL {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZAGL_BODY,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2521 0.0157, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0753 0.0137, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0217 0.0768, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2239 0.0157, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model GROZAGL_GP25 {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZAGL_BODY,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1821 -0.0121, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0753 0.0137, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0217 0.0768, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2239 0.0157, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model GROZA_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZA_BOLT,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+    }
+
+    model GROZA_RAIL_UP {
+        mesh     = weapons/firearms/GunsOfTienPost93_GROZA|GROZA_RAIL_UP,
+        texture  = weapons/GunsOfTienPost93/GROZA,
+        cullFace = None,
+    }
+
+    model GROZA_Suppressor {
+        mesh     = weapons/parts/GunsOfTienPost93_GROZA_parts|GROZA_Suppressor,
+        texture  = weapons/GunsOfTienPost93/GROZA_Suppressor,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x39Magazine10_GoT {
+        mesh     = weapons/magazines/assault_rifles|9x39Magazine10,
+        texture  = weapons/magazines/assault_rifles/9x39Magazine10,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0279 0.0937 -0.0020, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x39Magazine20_GoT {
+        mesh     = weapons/magazines/assault_rifles|9x39Magazine20,
+        texture  = weapons/magazines/assault_rifles/9x39Magazine20,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0279 0.0937 -0.0020, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x39Magazine30_GoT {
+        mesh     = weapons/magazines/assault_rifles|9x39Magazine30,
+        texture  = weapons/magazines/assault_rifles/9x39Magazine30,
+        cullFace = None,
+        scale    = 0.9349,
+        attachment Bip01_Prop2 { offset = 0.0279 0.0937 -0.0020, rotate = -86.2737 31.4012 -93.4148, }
+    }
+}

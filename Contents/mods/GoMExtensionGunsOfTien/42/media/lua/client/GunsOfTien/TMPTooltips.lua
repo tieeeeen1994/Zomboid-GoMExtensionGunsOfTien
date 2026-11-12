@@ -10,6 +10,7 @@ local lines = tooltips.tooltipsPergun
 
 lines["GunsOfTien.TMP"] = {
     "Uses 9x19mm rounds.",
+    "Available Picatinny Slots: Up, Left, Right",
     "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
 }
 for _, n in ipairs({ 15, 30 }) do

@@ -431,7 +431,7 @@ Tula museum's (the bipod deployed).
 The exact place of the first model's handle along the receiver was not found in any source; it is drawn low on the
 right, running from over the drum to the grip (the feed-system photo shows the later folding handle there).
 
-## 4l. Knight's SR-25 (2026-11-11, designed, model previewed)
+## 4l. Knight's SR-25 (2026-11-11, designed, built 2026-11-12)
 
 User, 2026-11-11: "Can we add SR-25 from 1990 that uses PMAG". Knight's Armament / Eugene Stoner's 7.62x51mm AR-10
 revival (work from 1989, sold from about 1990-1991; Wikipedia's infobox: in service 1990), so main mod. The first model
@@ -455,12 +455,12 @@ the MDRx .308's). Either:
 | Real | 7.62x51 / .308, 24" (610 mm), 1118 mm, 4.88 kg, semi-automatic |
 | Family | GoM's 7.62x51mm family (its 7.62x51, .308, the main mod's .308 Soft Point) |
 | Fire | Single only (no FireModePossibilities, as GoM's AR-15 / M14 and the MDRx) |
-| Stats | between GoM's M14 and PSG1 (the SR-25 was sold as a 1 MOA rifle), numbers set while building |
+| Stats | between GoM's M14 and PSG1 (the SR-25 was sold as a 1 MOA rifle), numbers set while building; the integrated 3.5-10x scope has GoM's LR10X stats (user, 2026-11-12) |
 | Sound | sound_model.py, 7.62x51 from 24" |
 | Parts | **integrated scope and integrated bipod** (user, 2026-11-11: "sr-25 should have integrated scope, integrated bipod", replacing GoM's optics and bipod): the listing's Leupold Vari-X III 3.5-10x with high target knobs on a B-Square base and rings, in the body's mesh (a hidden required part with the scope's stats, the AUG A1's way), and a Harris 1A2-BR on the sling stud, folded forward under the barrel or deployed (BipodIntegrated, Gunworks' FoldingBipod, the AUG HBAR's way); no foregrip, no muzzle parts (the match barrel was plain) |
 | Hold, reload | rifle clips, GoM's "ar15_rifle" (the AR T-handle at the rear); the carrier in the port on GoM's swap, the T-handle only while racked (our ChargingHandle part, as GoM does its AR-15s) |
 | Colour | black (parkerized steel, black furniture) |
-| Loot | proposed: a kit beside GoM's PSG1 in `Zombie_Mercenary_Sniper_Spawner`, gun + up to 3 magazines + GoM's `308_Box` |
+| Loot | as GoM's PSG-1 (user, 2026-11-12): beside it in its spawners (`Zombie_Mercenary_Sniper_Spawner`, `World_Import_Rifle_Spawner`), gun + up to 3 magazines + GoM's `308_Box` |
 
 Reference (user, 2026-11-11): an auction listing's right and left side photos of S# 22752 and its description: 24"
 barrel, low profile gas block ahead of a 12" composite free-floating handguard, flat-top upper without forward assist
@@ -486,6 +486,7 @@ and B&T's MP9 (2001) are not part of this.
 | Held | like a pistol, fits a holster (the Mini Uzi's way: GoM's MP5K / MAC-10), modelled turned for the pistol clips |
 | Reload | GoM's "handgun2" (MP5K / TEC-9) |
 | Muzzle | the main mod's 9x19mm SMG mount device + AWC Mk9 (the TMP's barrel takes a suppressor) |
+| Rails | GoM's optional ones (user, 2026-11-12), our short models: top between the sights (red dots, as the Uzi), left (lights) and right ahead of the ejection port (lasers); no bottom (the front grip is moulded in) |
 | Bolt | the bolt plate in the port on GoM's swap, the cocking handle only while racked (to check on photos whether it reciprocates) |
 | Colour | black |
 | Loot | proposed: an alternative in GoM's `World_Short_SMG_Spawner` beside its MP5K, TEC-9 and MAC-10, gun + up to 3 magazines + GoM's 9mm box |
