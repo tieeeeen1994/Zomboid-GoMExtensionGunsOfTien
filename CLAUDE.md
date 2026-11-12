@@ -3226,6 +3226,16 @@ Scratch tools of that trace (inspect_fbx.py, bounds.py, gripzoom.py, rt.py, synt
 ## Gun data and registries in GoM (MP5 family as the template; traced 2026-10-14)
 
 Full report kept in the session; the essentials, all `require`-able public Gunworks modules (call after GoM's file):
+- **Gunworks / GoM update of 2026-11-10** (checked 2026-11-12, files dated after 2026-11-05): GoM's item spawner reads
+  `minAmountChance` / `maxAmountChance` now (our kits renamed from `amountChance`, see "SCAR loot"), and it resolves
+  spawners on zombies itself (Hooks/ZombieAttachmentSpawners.lua); GoM reworked its own reloads (new `ak47_marz`,
+  `ar15_marz`, `bar_marz`... nodes, `*_HB.xml`) but still ships every id ours borrow (MP5, handgun2, pistol_reload,
+  famas_rifle, left_handle_load, m60_lmg, ak_rifle, ar15_rifle, m203_reload), with the same clip lengths as
+  GoMReloads.lua; Gunworks' Animations.lua keeps releaseActionLock / releaseActionLockForce / lockActionOpen /
+  CheckStates as RPK.lua and M249.lua wrap them; RackPhases.lua's new opening / closing path is opt-in;
+  ReloadAnimHooks.lua (our rack-speed fix in GoMFixes.lua), Ammo.lua and the ReloadAnim utils HandMagazines.lua
+  wraps did not change; RateOfFire / StatsSync keep the calls we make. Still broken in GoM (our GoMFixes.lua still
+  needed): the overpressured 5.56's spread key, the K98 bayonet registration, its box recipes' walk tag.
 - **Gunworks / GoM update of 2026-11-03 / 04** (checked 2026-11-04): GoM's registries moved to
   `Registries/ReloadsAndAnims/` (ReloadAnims, AnimationsFiring, ReloadRules; our `pcall(require, ...)` lists point
   there now). New in Gunworks: the reload route (above, charging handles); reload rules / split racks
