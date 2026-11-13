@@ -46,6 +46,11 @@ local NEW_TYPES = {
     ["3006SpringSP"] = { "3006Spring", { bulletType = "GunsOfTien.BulletRifleMSP" } },
     ["308WinSP"] = { "308Win", { bulletType = "GunsOfTien.BulletRifleMSP" } },
     ["12Bird"] = { "12Buck00", { bulletType = "GunsOfTien.Birdshot" } },
+    -- .22 LR (Ammo Maker's 22LR: 4 grains, small handgun bullet): subsonic x0.7, hyper velocity x1.4 (as +P+) on a
+    -- hollow-point bullet
+    ["22LRSS"] = { "22LR", { grainsAmount = 3 } },
+    ["22LRHP"] = { "22LR", { bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
+    ["22LRHV"] = { "22LR", { grainsAmount = 6, bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
 }
 
 local SOFT_POINT_RECIPE = "GunsOfTien_MakeSoftPointBullet"
@@ -200,6 +205,9 @@ local MAP = {
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTienPost93.57x28_Bullet", ammoType = "57x28" },
     -- .22 LR: Ammo Maker's own 22LR type (rimfire case, small handgun bullet)
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet", ammoType = "22LR" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_Subsonic", ammoType = "22LRSS" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_HollowPoint", ammoType = "22LRHP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_HyperVelocity", ammoType = "22LRHV" },
 }
 
 MAP.gunsOfTien = true

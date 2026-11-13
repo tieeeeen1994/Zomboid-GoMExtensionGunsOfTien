@@ -31,10 +31,10 @@ rules in CLAUDE.md (GoM's animations only, vanilla rifle / pistol hold + a GoM r
       stats of its own.
 - [x] **.22 LR round** (main mod, built 2026-11-13, not played): items, ammo type, family, Ammo Maker, Hot Brass, box
       art (CLAUDE.md ".22 LR").
+- [x] **.22 LR special loads** (built 2026-11-13, not played): Subsonic, Hollow Point, Hyper Velocity; profiles,
+      Ammo Maker types, Hot Brass, tooltips, art (CLAUDE.md ".22 LR"). Not loot, like the other special loads.
 - [ ] **.22 LR loot**: GoM spawns each calibre's standard box, so the .22 box should spawn; decide where with the
       .22 pistol.
-- [ ] **Change notes** for that release: the 4.6x30 / 5.7x28 boxes got new art (own layouts, MP7A1 / UCP pictures,
-      the IRON WASP maker on 5.7x28) besides the new guns and the .22 LR.
 
 ## New Mod - EQUAL LOOT DISTRIBUTION
 

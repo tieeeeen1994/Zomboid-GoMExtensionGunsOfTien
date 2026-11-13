@@ -30,6 +30,24 @@ local ROUNDS = {
         "Range reduced by 50%",
         "Pellet spread doubled",
     },
+    ["GunsOfTien.22LR_Bullet_HollowPoint"] = {
+        "Damage to targets increased by 20%",
+        "Critical Damage increased by 15%",
+        "Critical Chance increased by 5%",
+        "Chance to degrade weapon condition increased by 11%",
+    },
+    ["GunsOfTien.22LR_Bullet_HyperVelocity"] = {
+        "Damage to targets increased by 25%",
+        "Critical Damage increased by 10%",
+        "Sound Radius and Volume increased by 10%",
+        "Chance to degrade weapon condition increased by 25%",
+    },
+    ["GunsOfTien.22LR_Bullet_Subsonic"] = {
+        "Damage to targets decreased by 15%",
+        "Sound Radius and Volume reduced by 40%",
+        "Self-loading guns need racking every shot",
+        "Stacks with suppressors for maximum effectiveness",
+    },
     ["GunsOfTien.3006_Bullet_SP"] = {
         "Damage to targets increased by 20%",
         "Critical Damage increased by 15%",
@@ -100,6 +118,10 @@ local ROUNDS = {
         "Critical Damage decreased by 5%",
         "Piercing targets",
         "Able to hit up to 3 targets",
+    },
+    ["GunsOfTienPost93.57x28_Bullet"] = {
+        "Piercing targets",
+        "Able to hit up to 2 targets",
     },
     ["SWMG.12Gauge_Shell_Slug"] = {
         "Damage to targets increased by 100%",

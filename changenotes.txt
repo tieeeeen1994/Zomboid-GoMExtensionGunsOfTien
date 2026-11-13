@@ -1,4 +1,14 @@
-3.13.1
+3.14.0
+
+.22 LR
+- New calibre: the .22 Long Rifle, for the .22 guns to come (no gun fires it yet). In boxes of 50, cartons and crates, opened and packed like the other rounds
+- The plain round is the common 40 grain lead round nose. Three special loads, each in its own boxes, cartons and crates:
+- Subsonic: 15% less damage, 40% quieter, stacks with suppressors. Self-loading .22s have to be racked after every shot with it; revolvers are not affected
+- Hollow Point: 20% more damage, harder critical hits, slightly more wear on the gun
+- Hyper Velocity: 25% more damage, a little louder, more wear on the gun
+- Like the other special loads they are not found as loot. With Ammo Maker every .22 LR load can be made, and with Hot Brass they throw .22 casings
 
 Change
+- New box art for the 4.6x30mm and 5.7x28mm rounds: each calibre has a layout of its own (the MP7A1 on 4.6x30mm DM11, the UCP Prototype on Subsonic, the "Iron Wasp" maker on 5.7x28mm)
 - Five-SeveN and UCP Prototype (Post-93 add-on): Guns of Marz's three pistol lasers fit them now, as on the Glock 21. They go under the barrel where the pistol lights go, so a pistol takes a light or a laser
+- The P90's 5.7x28mm SS190 round now lists in its tooltip that it pierces up to 2 targets

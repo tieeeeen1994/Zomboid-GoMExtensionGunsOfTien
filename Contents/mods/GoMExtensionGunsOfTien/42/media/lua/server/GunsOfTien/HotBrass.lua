@@ -28,12 +28,17 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     -- the P90's SS190 (Post-93's id, moved here with the P90 on 2026-11-03)
     ["GunsOfTienPost93.57x28_Bullet"] = "HBVCEF.57x28_Casing",
     ["GunsOfTien.22LR_Bullet"] = "HBVCEF.22_Casing",
+    ["GunsOfTien.22LR_Bullet_Subsonic"] = "HBVCEF.22_Casing",
+    ["GunsOfTien.22LR_Bullet_HollowPoint"] = "HBVCEF.22_Casing",
+    ["GunsOfTien.22LR_Bullet_HyperVelocity"] = "HBVCEF.22_Casing",
 })
 
 SpentCasingPhysics.RegisterPressureProfiles({
     ["GunsOfTien_762x39US"] = 0.25,
     ["GunsOfTien_9x19Subsonic"] = 0.7,
     ["GunsOfTien_9x19PPP"] = 1.5,
+    ["GunsOfTien_22LRSubsonic"] = 0.7,
+    ["GunsOfTien_22LRHyperVelocity"] = 1.3,
     ["GunsOfTien_45P"] = 1.3,
     ["GunsOfTien_12GaugeBirdshot"] = 0.9,
 })

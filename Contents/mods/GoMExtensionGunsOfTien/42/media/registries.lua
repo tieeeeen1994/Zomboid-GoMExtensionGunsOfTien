@@ -28,6 +28,9 @@ GunsOfTien_AmmoTypes.BULLET_57x28 = AmmoType.register("gunsoftienpost93:bullet_5
 
 -- .22 LR (2026-11-13): a calibre of its own (neither vanilla, Gunworks nor Guns of Marz has one)
 GunsOfTien_AmmoTypes.BULLET_22LR = AmmoType.register("gunsoftien:bullet_22lr", "GunsOfTien.22LR_Bullet")
+GunsOfTien_AmmoTypes.BULLET_22LR_Subsonic = AmmoType.register("gunsoftien:bullet_22lr_subsonic", "GunsOfTien.22LR_Bullet_Subsonic")
+GunsOfTien_AmmoTypes.BULLET_22LR_HollowPoint = AmmoType.register("gunsoftien:bullet_22lr_hollow_point", "GunsOfTien.22LR_Bullet_HollowPoint")
+GunsOfTien_AmmoTypes.BULLET_22LR_HyperVelocity = AmmoType.register("gunsoftien:bullet_22lr_hyper_velocity", "GunsOfTien.22LR_Bullet_HyperVelocity")
 
 -- Box / carton / crate tags of this mod's own open and pack recipes (GoM's recipes use closed item mappers).
 GunsOfTien_Tags = {}

@@ -11,4 +11,40 @@ module GunsOfTien {
         texture = worlditems/GunsOfTien/Boxes/GunsOfTien_22LR_Box,
         scale   = 0.4,
     }
+
+    model GunsOfTien_22LR_Round_SS {
+        mesh    = Worlditems/Ammunition/Rounds|22_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_22LR_Round_SS,
+        scale   = 0.015,
+    }
+
+    model GunsOfTien_22LR_Box_SS {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_22LR_Box_SS,
+        scale   = 0.4,
+    }
+
+    model GunsOfTien_22LR_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|22_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_22LR_Round_HP,
+        scale   = 0.015,
+    }
+
+    model GunsOfTien_22LR_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_22LR_Box_HP,
+        scale   = 0.4,
+    }
+
+    model GunsOfTien_22LR_Round_HV {
+        mesh    = Worlditems/Ammunition/Rounds|22_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_22LR_Round_HV,
+        scale   = 0.015,
+    }
+
+    model GunsOfTien_22LR_Box_HV {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_22LR_Box_HV,
+        scale   = 0.4,
+    }
 }

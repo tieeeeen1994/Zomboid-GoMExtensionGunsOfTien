@@ -1783,7 +1783,7 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   release; later candidates Walther PPK/S .22, Ruger SP101 .22, S&W J-frame .22s): neither vanilla, Gunworks
   (`registries.lua`: no .22), nor GoM (only the `22_Round` / `22_Casing` meshes and `MarzGuns.22_Round_Base` /
   `22_Casing` models) has a .22 LR round, so it is a calibre of its own in the **main mod** (the round predates 1993,
-  and so do the later candidates). One load: 40 gr lead round nose. Items `GunsOfTien.22LR_Bullet / _Box / _Carton /
+  and so do the later candidates). Plain load: 40 gr lead round nose (special loads below). Items `GunsOfTien.22LR_Bullet / _Box / _Carton /
   _Crate` (".22 LR Round", ".22 LR Box", "Carton of .22 LR Boxes", "Crate of .22 LR Boxes"), AmmoType
   `gunsoftien:bullet_22lr` (`GunsOfTien_AmmoTypes.BULLET_22LR`), Gunworks family ".22 LR" (the round only, no profile:
   its guns' magazines join where they are defined), Ammo Maker's own `22LR` type (rimfire case, BulletHandgunS), Hot
@@ -1830,6 +1830,25 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   load_mesh" of 2026-11-03. The fix regenerates every round byte for byte.
 - **Loot: not yet**: GoM spawns each calibre's standard box, so the .22 LR box should spawn, but where depends on the
   guns that fire it (decide with the HK416 .22 LR Pistol).
+- **Special loads** (user, 2026-11-13: "add the special ammo", after a review proposing them; all pre-1993, so the
+  main mod): `22LR_Bullet_Subsonic / _HollowPoint / _HyperVelocity` with their `_Box_ / _Carton_ / _Crate_` (gen_scripts
+  `LOADS_22LR`, `Q22_LOADS` in `EXTRA_50`), ammo ids `gunsoftien:bullet_22lr_subsonic / _hollow_point /
+  _hyper_velocity`, the plain round's weights (GoM's loads all weigh their plain round's), not loot. Profiles
+  (Ammunition.lua): Subsonic (40 gr, about 1050 fps) damage x0.85, sound x0.6 (quieter than the 9x19 subsonic's 0.7:
+  no crack, the quietest load behind a suppressor), racks self-loading guns only, always (user: "NO OPTION.
+  the gun decides it": no sandbox option; the profile function reads the shadow `base` item, so `haveChamber()`
+  false = revolver and `isRackAfterShoot()` true = manual action are left alone);
+  Hollow Point (36 gr copper-plated,
+  CCI Mini-Mag HP, 1963) the 9x19 / .45 hollow points' numbers; Hyper Velocity (32 gr copper-plated hollow point,
+  about 1640 fps, CCI Stinger 1976; the brand is not named) damage x1.25, crit damage x1.1, sound x1.1, wear one in N
+  x0.8. Hot Brass: the .22 casing, pressure 0.7 / 1.3. Ammo Maker: `22LRSS` (3 grains of 22LR's 4), `22LRHP`
+  (`BulletHandgunSHP`), `22LRHV` (6 grains, SHP). Art (make_22lr_art.py `LOADS`): GoM's tip paint from f 0.28 in its
+  5.56 colours (SS blue, HP green, OP violet for hyper velocity) over a lead (subsonic) or GoM-copper bullet; the
+  bullet's f comes from the mesh position behind each `bullet_texels()` texel (`bullet_fractions_22`), as the case
+  shares its UV island. Boxes: `layout_22lr` with the frame, lid flap, ribbon and side in the load colour (SS / HV:
+  GoM red hue-swapped to the tip; HP: GoM's 9x19 red, since HP green would read as the plain box), the ribbon naming
+  the load, the sticker in GoM's colours for it; the plain box and round are byte-identical to before. Regenerating
+  RoundTooltips.lua also added the SS190's lines (piercing, up to 2), which it had lacked since the 11-03 move.
 
 ## PS90 Carbine (Post-93, 2026-11-03)
 

@@ -79,10 +79,13 @@ Ammo.RegisterMultipleAmmoFamilies({
     ["5.7x28mm"] = {
         { type = "GunsOfTienPost93.57x28_Bullet", enum = T.BULLET_57x28, profile = "GunsOfTienPost93_57x28SS190" },
     },
-    -- .22 LR (2026-11-13): one plain load, no profile (a gun never profiles its own script round); its guns'
-    -- magazines join the family where they are defined
+    -- .22 LR (2026-11-13): the plain 40 gr lead round nose has no profile (a gun never profiles its own script
+    -- round); the special loads follow it. Its guns' magazines join the family where they are defined.
     [".22 LR"] = {
         { type = "GunsOfTien.22LR_Bullet", enum = T.BULLET_22LR },
+        { type = "GunsOfTien.22LR_Bullet_Subsonic", enum = T.BULLET_22LR_Subsonic, profile = "GunsOfTien_22LRSubsonic" },
+        { type = "GunsOfTien.22LR_Bullet_HollowPoint", enum = T.BULLET_22LR_HollowPoint, profile = "GunsOfTien_22LRHollowPoint" },
+        { type = "GunsOfTien.22LR_Bullet_HyperVelocity", enum = T.BULLET_22LR_HyperVelocity, profile = "GunsOfTien_22LRHyperVelocity" },
     },
 })
 -- the P90's magazine (the P90, Post-93's P90 TR and PS90); Post-93 adds the Five-seveN's
@@ -217,6 +220,36 @@ Ammo.RegisterMultipleAmmoStats({
     -- 5.7x28mm SS190 (Post-93's profile name kept): the P90s' script round, which Gunworks never profiles on them, so
     -- this only restores the standard piercing when a gun switches back from SB193 / SS197SR (Post-93)
     ["GunsOfTienPost93_57x28SS190"] = list(pierce(2)),
+    -- .22 LR special loads (2026-11-13), against the plain 40 gr high-velocity lead round nose. Subsonic (40 gr,
+    -- about 1050 fps): no sonic crack, the quietest load there is behind a suppressor, so quieter than the 9x19
+    -- subsonic's x0.7. Hollow point (36 gr copper-plated, CCI Mini-Mag HP, 1963): the 9x19 / .45 hollow points'
+    -- numbers. Hyper velocity (32 gr copper-plated hollow point at about 1640 fps, CCI Stinger, 1976): hits
+    -- hardest, is louder and wears the gun a little more (a longer case, more powder).
+    -- A self-loading .22 (blowback, tuned for high-velocity rounds) is not cycled by a subsonic round, so it has to
+    -- be racked after every shot. The gun decides, no option: `base` is the gun's own item with its parts
+    -- (StatsFactory restores RackAfterShot from it before any layer runs), so a revolver (no chamber) and a manual
+    -- action (racks anyway) are left as they are, and the plain round gives the gun its own setting back.
+    ["GunsOfTien_22LRSubsonic"] = list(
+        damage(0.85),
+        sound(0.6),
+        function(weapon, base)
+            if base and base:haveChamber() and not base:isRackAfterShoot() then
+                weapon:setRackAfterShoot(true)
+            end
+        end
+    ),
+    ["GunsOfTien_22LRHollowPoint"] = list(
+        damage(1.2),
+        SF.Multiply("CritDmgMultiplier", 1.15),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+    ),
+    ["GunsOfTien_22LRHyperVelocity"] = list(
+        damage(1.25),
+        SF.Multiply("CritDmgMultiplier", 1.1),
+        sound(1.1),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.8)
+    ),
 })
 
 -------------------------------------------------

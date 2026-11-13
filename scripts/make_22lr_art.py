@@ -18,6 +18,14 @@ Box. A 50-round HandGunAmmoBox from GoM's 9x19_Box with make_ammo_art.make_box (
 redrawn in a layout of its own (layout_22lr): a yellow face framed in green, a snarling gold wolf's head (draw_wolf,
 original art) on a green roundel where GoM's 9x19 box has its gold eagle, a huge ".22", a green "LONG RIFLE" ribbon,
 the long side green; "40 GR LEAD" on the lid sticker.
+Special loads (LOADS, user 2026-11-13): subsonic, hollow point and hyper velocity, each marked GoM's way, a painted
+tip in GoM's 5.56 colours (subsonic blue, hollow point green, overpressured violet for hyper velocity) from f >= 0.28
+of the bullet. The subsonic keeps the lead bullet; the hollow point and hyper velocity rounds are copper-plated in
+GoM's copper (the 5.56 jacket). As the 22_Round's bullet shares its UV island with the case, the bullet's f comes from
+the mesh position behind each bullet texel (bullet_fractions_22). Their boxes keep the .22 layout with the frame,
+ribbon and lid flap in the load's colour (subsonic and hyper velocity: GoM's red hue-swapped to the tip, as the 4.6x30
+subsonic box; hollow point: GoM's 9x19 box red, apart from the plain box's green), the ribbon naming the load and the
+sticker in GoM's colours for that load.
 
 Usage:  python3 scripts/make_22lr_art.py              write every output
         python3 scripts/make_22lr_art.py --sheet [P]  also write a contact sheet (default docs/22lr_art_sheet.png)
@@ -49,6 +57,15 @@ ROUND_CAMERA = A.CAMERAS["item_9x19_Round_Base.png"]
 M.CALIBRES["22LR"] = dict(text=".22", panel=(226, 196, 64), ink=(24, 40, 20))
 BOX_SPEC = dict(name=BOX, calibre="22LR", outer=(46, 112, 64), band=(236, 224, 150), text=(28, 72, 36),
                 load="Long Rifle", sticker="40 GR LEAD", note="layout_22lr: yellow face, wolf roundel, .22, LONG RIFLE ribbon")
+
+GOM_RED = (161, 67, 59)             # GoM's 9x19 box red (make_ammo_art hue-swaps it for its subsonic box)
+# The special loads (gen_scripts.py LOADS_22LR): art suffix, bullet, GoM scheme for the tip and sticker, box frame
+# colour (None = GoM red hue-swapped to the tip), ribbon / side text, sticker text.
+LOADS = [
+    dict(art="SS", bullet="lead", scheme="SS", outer=None, ribbon="SUBSONIC", sticker="SUBSONIC"),
+    dict(art="HP", bullet="copper", scheme="HP", outer=GOM_RED, ribbon="HOLLOW POINT", sticker="HOLLOW PT"),
+    dict(art="HV", bullet="copper", scheme="OP", outer=None, ribbon="HYPER VELOCITY", sticker="HYPER VEL"),
+]
 
 def draw_wolf(size=400, gold=(232, 182, 58), shade=(196, 140, 40), dark=(84, 50, 12)):
     """The .22 LR box's emblem in the place GoM's 9x19 box has its gold eagle (user, 2026-11-13: "we can use an animal
@@ -99,11 +116,11 @@ def layout_22lr(img, spec, cal):
     d = ImageDraw.Draw(img)
     d.ellipse((8, 26, 39, 55), fill=M.shade(green, 0.8) + (255,), outline=gold + (255,), width=2)
     M.picture(img, draw_wolf(), (11, 29, 36, 52))
-    M.text(img, (4, 57, 43, 76), ".22", ink)
+    M.text(img, (4, 57, 43, 76), ".22", spec.get("ink", ink))
     M.fill(img, (0, 79, 47, 88), green)
-    M.text(img, (3, 80, 44, 87), "LONG RIFLE", yellow)
+    M.text(img, (3, 80, 44, 87), spec.get("ribbon", "LONG RIFLE"), yellow)
     M.fill(img, M.SIDE, green)
-    M.text(img, (50, 26, 61, 88), ".22 LONG RIFLE", yellow, True)
+    M.text(img, (50, 26, 61, 88), spec.get("side", ".22 LONG RIFLE"), yellow, True)
 
 
 def use_9x19_reference():
@@ -132,7 +149,43 @@ def bullet_texels():
     return grown
 
 
-def make_round():
+def bullet_fractions_22():
+    """{(x, y): f} over bullet_texels(): f 0 at the case mouth .. 1 at the point, from the 22_Round mesh position
+    behind each texel along its long axis (A.bullet_fractions floods the case too: one UV island); gutter texels
+    with no triangle take their neighbours' f."""
+    tris = A.load_mesh(A.ROUNDS_FBX, "22_Round")
+    grid = A.texel_positions(tris, 128, 128)
+    axis = max(range(3), key=lambda k: max(abs(p[k]) for ps, _ in tris for p in ps))
+    cells = bullet_texels()
+    values = {c: grid[c[1]][c[0]][axis] for c in cells if grid[c[1]][c[0]] is not None}
+    case = [grid[y][x][axis] for y in range(128) for x in range(128)
+            if grid[y][x] is not None and (x, y) not in cells]
+    sign = 1 if sum(values.values()) / len(values) > sum(case) / len(case) else -1
+    lo, hi = min(sign * v for v in values.values()), max(sign * v for v in values.values())
+    f = {c: (sign * v - lo) / (hi - lo) for c, v in values.items()}
+    rest = sorted(c for c in cells if c not in f)
+    for _ in range(4):
+        for x, y in list(rest):
+            near = [f[n] for n in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)) if n in f]
+            if near:
+                f[(x, y)] = sum(near) / len(near)
+                rest.remove((x, y))
+    return f
+
+
+def gom_copper():
+    """GoM's copper jacket (make_ammo_art.copper on its 5.56 reference, whatever reference is set now)."""
+    saved = (M.REF_GEOMETRY, M.REF_TEXTURE)
+    M.REF_GEOMETRY, M.REF_TEXTURE = "556x45_Round", "Nato_Round_Base"
+    try:
+        return M.copper()
+    finally:
+        M.REF_GEOMETRY, M.REF_TEXTURE = saved
+
+
+def make_round(bullet=LEAD, tip=None):
+    """The plain round (lead bullet, no tip) or a special load: `bullet` the bullet's colour, `tip` a paint from
+    A.GOM_PAINT_FROM to the point (texture and icon painted as make_ammo_art paints its rounds)."""
     use_9x19_reference()
     tex = Image.open(os.path.join(A.GOM_ROUNDS, CASE_TEXTURE + ".png")).convert("RGBA")
     px = tex.load()
@@ -142,8 +195,31 @@ def make_round():
     wp = world.load()
     for c in cells:
         if wp[c][3]:
-            wp[c] = A.paint(wp[c], LEAD, ref, 1.0)
-    return M.render_round_icon("22_Round", world, ROUND_CAMERA), world
+            wp[c] = A.paint(wp[c], bullet, ref, 1.0)
+    icon = M.render_round_icon("22_Round", world, ROUND_CAMERA)
+    if tip is None:
+        return icon, world
+    layers = [(A.GOM_PAINT_FROM, 1.0, tip)]
+    fractions = bullet_fractions_22()
+    world = M.paint_texture(world, fractions, [(f0, f1, c, 1.0) for f0, f1, c in layers])
+    icon = A.paint_round_icon(icon, "22_Round", ROUND_CAMERA, fractions, layers)
+    return icon, world
+
+
+def load_specs():
+    """(round name, box name, bullet colour, tip, box spec) per special load."""
+    copper = gom_copper()
+    out = []
+    for load in LOADS:
+        scheme = M.gom(load["scheme"])
+        outer = load["outer"] or A.set_hue(GOM_RED, A.hue_of(scheme["tip"])[0])
+        box = dict(BOX_SPEC, name="%s_%s" % (BOX, load["art"]), outer=outer, band=scheme["band"], text=scheme["text"],
+                   load=load["ribbon"].title(), sticker=load["sticker"], ink=M.shade(outer, 0.45),
+                   ribbon=load["ribbon"], side=".22 LR " + load["ribbon"],
+                   note="layout_22lr in %s (GoM %s colours)" % (load["ribbon"].lower(), load["scheme"]))
+        out.append(("%s_%s" % (ROUND, load["art"]), box["name"], LEAD if load["bullet"] == "lead" else copper,
+                    scheme["tip"], box))
+    return out
 
 
 def save(img, path):
@@ -161,6 +237,15 @@ def build():
     written += [(save(icon, os.path.join(OUT, "item_%s.png" % BOX)), M.BOX_ICON),
                 (save(world, os.path.join(OUT, "worlditems/GunsOfTien/Boxes", BOX + ".png")),
                  "%s.png, %s" % (M.BOX_TEX, BOX_SPEC["note"]))]
+    for round_name, box_name, bullet, tip, box in load_specs():
+        icon, world = make_round(bullet, tip)
+        written += [(save(icon, os.path.join(OUT, "item_%s.png" % round_name)), "render of 22_Round + tip"),
+                    (save(world, os.path.join(OUT, "worlditems/GunsOfTien/Rounds", round_name + ".png")),
+                     "%s.png, bullet %s, tip %s" % (CASE_TEXTURE, bullet, tip))]
+        icon, world = M.make_box(box, layout_22lr)
+        written += [(save(icon, os.path.join(OUT, "item_%s.png" % box_name)), M.BOX_ICON),
+                    (save(world, os.path.join(OUT, "worlditems/GunsOfTien/Boxes", box_name + ".png")),
+                     "%s.png, %s" % (M.BOX_TEX, box["note"]))]
     return written
 
 
@@ -168,29 +253,38 @@ def contact_sheet(path, scale=6):
     cell = 32 * scale
     pad, label_h = 12, 18
     font = ImageFont.truetype(A.FONT, 13)
-    icons = [("GoM 9x19 Round", Image.open(os.path.join(A.GOM_TEX, "item_9x19_Round_Base.png"))),
-             (".22 LR Round", Image.open(os.path.join(OUT, "item_%s.png" % ROUND)))
-             , ("GoM 9x19 Box", Image.open(os.path.join(A.GOM_TEX, M.BOX_ICON))),
-             (".22 LR Box", Image.open(os.path.join(OUT, "item_%s.png" % BOX)))]
-    round_tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Rounds", ROUND + ".png"))
-    box_tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Boxes", BOX + ".png"))
-    width = pad + len(icons) * (cell + pad)
-    height = pad + label_h + cell + pad + label_h + 256 + pad
-    sheet = Image.new("RGBA", (max(width, pad + 256 + pad + 128 + pad + 256 + pad), height), (78, 80, 88, 255))
+    rounds = [ROUND] + ["%s_%s" % (ROUND, l["art"]) for l in LOADS]
+    boxes = [BOX] + ["%s_%s" % (BOX, l["art"]) for l in LOADS]
+    ours = lambda n: Image.open(os.path.join(OUT, "item_%s.png" % n))
+    icons = ([("GoM 9x19 Round", Image.open(os.path.join(A.GOM_TEX, "item_9x19_Round_Base.png")))]
+             + [(n.replace("GunsOfTien_", ""), ours(n)) for n in rounds]
+             + [("GoM 9x19 Box", Image.open(os.path.join(A.GOM_TEX, M.BOX_ICON)))]
+             + [(n.replace("GunsOfTien_", ""), ours(n)) for n in boxes])
+    per_row = 5
+    icon_rows = (len(icons) + per_row - 1) // per_row
+    width = max(pad + per_row * (cell + pad), pad + len(rounds) * (128 + pad), pad + len(boxes) * (128 + 128 + pad))
+    height = pad + icon_rows * (label_h + cell + pad) + (label_h + 128 + pad) + (label_h + 256 + pad)
+    sheet = Image.new("RGBA", (width, height), (78, 80, 88, 255))
     d = ImageDraw.Draw(sheet)
-    x = pad
-    for text, img in icons:
-        d.text((x, pad), text, font=font, fill=(255, 255, 255, 255))
-        d.rectangle((x, pad + label_h, x + cell - 1, pad + label_h + cell - 1), fill=(96, 98, 108, 255))
-        sheet.alpha_composite(img.convert("RGBA").resize((cell, cell), Image.NEAREST), (x, pad + label_h))
-        x += cell + pad
-    y = pad + label_h + cell + pad
-    d.text((pad, y), "round texture", font=font, fill=(255, 255, 255, 255))
-    sheet.alpha_composite(round_tex.convert("RGBA").resize((256, 256), Image.NEAREST), (pad, y + label_h))
-    x = pad + 256 + pad
-    d.text((x, y), "box texture / on the mesh", font=font, fill=(255, 255, 255, 255))
-    sheet.alpha_composite(box_tex.convert("RGBA").resize((128, 256), Image.NEAREST), (x, y + label_h))
-    sheet.alpha_composite(M.box_preview(box_tex, 8), (x + 128 + pad, y + label_h))
+    for i, (text, img) in enumerate(icons):
+        x = pad + (i % per_row) * (cell + pad)
+        y = pad + (i // per_row) * (label_h + cell + pad)
+        d.text((x, y), text, font=font, fill=(255, 255, 255, 255))
+        d.rectangle((x, y + label_h, x + cell - 1, y + label_h + cell - 1), fill=(96, 98, 108, 255))
+        sheet.alpha_composite(img.convert("RGBA").resize((cell, cell), Image.NEAREST), (x, y + label_h))
+    y = pad + icon_rows * (label_h + cell + pad)
+    for i, n in enumerate(rounds):
+        x = pad + i * (128 + pad)
+        d.text((x, y), n.replace("GunsOfTien_", "") + " texture", font=font, fill=(255, 255, 255, 255))
+        tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Rounds", n + ".png"))
+        sheet.alpha_composite(tex.convert("RGBA").resize((128, 128), Image.NEAREST), (x, y + label_h))
+    y += label_h + 128 + pad
+    for i, n in enumerate(boxes):
+        x = pad + i * (128 + 128 + pad)
+        d.text((x, y), n.replace("GunsOfTien_", "") + " texture / on the mesh", font=font, fill=(255, 255, 255, 255))
+        tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Boxes", n + ".png"))
+        sheet.alpha_composite(tex.convert("RGBA").resize((128, 256), Image.NEAREST), (x, y + label_h))
+        sheet.alpha_composite(M.box_preview(tex, 4), (x + 128, y + label_h + 64))
     sheet.save(path)
 
 

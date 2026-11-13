@@ -42,6 +42,7 @@ NOTES = {
     "GunsOfTien.762x39_Bullet_US": {"after": ["Needs racking every shot", "Cycles normally with a PBS-1 suppressor",
                                               SUPPRESSED]},
     "GunsOfTien.9x19_Bullet_Subsonic": {"after": [SUPPRESSED]},
+    "GunsOfTien.22LR_Bullet_Subsonic": {"after": ["Self-loading guns need racking every shot", SUPPRESSED]},
     "SWMG.556x45_Bullet_Subsonic": {"after": [SUPPRESSED]},
     "SWMG.3030_Bullet": {"before": ["Does not pierce"]},
     "Base.3030Bullets": {"before": ["Does not pierce"]},

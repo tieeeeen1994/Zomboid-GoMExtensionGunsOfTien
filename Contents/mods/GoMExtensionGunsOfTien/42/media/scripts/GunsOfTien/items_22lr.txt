@@ -54,4 +54,166 @@ module GunsOfTien {
         Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
         DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
     }
+
+    item 22LR_Bullet_Subsonic {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0023,
+        Icon             = GunsOfTien_22LR_Round_SS,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.GunsOfTien_22LR_Round_SS,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_22lr_subsonic,
+    }
+
+    item 22LR_Box_Subsonic {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.103,
+        Icon               = GunsOfTien_22LR_Box_SS,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.GunsOfTien_22LR_Box_SS,
+        WorldStaticModel   = GunsOfTien.GunsOfTien_22LR_Box_SS,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 22LR_Carton_Subsonic {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.989,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 22LR_Crate_Subsonic {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.165,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 22LR_Bullet_HollowPoint {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0023,
+        Icon             = GunsOfTien_22LR_Round_HP,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.GunsOfTien_22LR_Round_HP,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_22lr_hollow_point,
+    }
+
+    item 22LR_Box_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.103,
+        Icon               = GunsOfTien_22LR_Box_HP,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.GunsOfTien_22LR_Box_HP,
+        WorldStaticModel   = GunsOfTien.GunsOfTien_22LR_Box_HP,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 22LR_Carton_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.989,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 22LR_Crate_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.165,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 22LR_Bullet_HyperVelocity {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0023,
+        Icon             = GunsOfTien_22LR_Round_HV,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.GunsOfTien_22LR_Round_HV,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_22lr_hyper_velocity,
+    }
+
+    item 22LR_Box_HyperVelocity {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.103,
+        Icon               = GunsOfTien_22LR_Box_HV,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.GunsOfTien_22LR_Box_HV,
+        WorldStaticModel   = GunsOfTien.GunsOfTien_22LR_Box_HV,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 22LR_Carton_HyperVelocity {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.989,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 22LR_Crate_HyperVelocity {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.165,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
 }

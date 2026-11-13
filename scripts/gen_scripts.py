@@ -322,6 +322,9 @@ AMMOMAKER_TYPES = [
     ('3006SpringSP', '.30-06 Springfield SP', '.30-06 Springfield SP soft point round - 1910s'),
     ('308WinSP', '.308 Winchester SP', '.308 Winchester SP soft point round - 1952'),
     ('12Bird', '12 bore birdshot', '12 bore birdshot (aka. 12-gauge) - 18.5mm - 1860'),
+    ('22LRSS', '.22 LR SS', '.22 long rifle SS 40gr sub sonic round - 1930s'),
+    ('22LRHP', '.22 LR HP', '.22 long rifle HP hollow point round - 1963'),
+    ('22LRHV', '.22 LR HV', '.22 long rifle HV hyper velocity round - 1976'),
 ]
 
 
@@ -3051,8 +3054,13 @@ P90_FAMILY = f"GunsOfTien.P90;{M93}.P90TR;{M93}.PS90"
 # the .22 LR's items (ammo_22lr())
 Q22 = {k: f"{MODULE}.22LR_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
                                             ('crate', 'Crate'))}
+# the .22 LR's special loads (user, 2026-11-13): item suffix, art suffix, English label, ammo id (registries.lua)
+LOADS_22LR = [('Subsonic', 'SS', 'Subsonic', 'bullet_22lr_subsonic'),
+              ('HollowPoint', 'HP', 'Hollow Point', 'bullet_22lr_hollow_point'),
+              ('HyperVelocity', 'HV', 'Hyper Velocity', 'bullet_22lr_hyper_velocity')]
+Q22_LOADS = [{k: f"{q}_{var}" for k, q in Q22.items()} for var, _, _, _ in LOADS_22LR]
 # 50-round boxes outside ROUNDS that share this mod's open / pack recipes (recipes()): 5.7x28mm SS190, .22 LR
-EXTRA_50 = [Q57, Q22]
+EXTRA_50 = [Q57, Q22] + Q22_LOADS
 # the magazine in the off hand of the PS90's FAMAS reload (Post-93 build_ps90.py magazine_prop2: GoM's STANAG 30
 # point after the magazine is stood on its feed end); the P90 and the TR reload with GoM's MP5K one, which shows none
 P90_MAG_PROP2 = {'offset': [0.0200, 0.0538, -0.0146], 'rotate': [85.4927, 66.5693, -90.4154]}
@@ -3183,8 +3191,8 @@ def ammo_57x28():
 # .22 LR (user, 2026-11-13: the round first, for the HK416 .22 LR Pistol and later .22 guns). Neither vanilla, Gunworks
 # nor GoM has one (GoM ships only the 22_Round / 22_Casing meshes), so it is a calibre of its own in the main mod:
 # the round existed long before 1993 and later .22 guns (Walther PPK/S .22, Ruger SP101 .22, S&W J-frames) are
-# pre-1993. One load, the common 40 gr lead round nose; boxes of 50 as sold, then GoM's carton (12 boxes) and crate
-# (4 cartons). Weight on GoM's scale (~0.0007 per real gram of the cartridge, CLAUDE.md "How a round works"):
+# pre-1993. The plain round is the common 40 gr lead round nose; special loads (LOADS_22LR, user 2026-11-13):
+# subsonic, hollow point, hyper velocity. Boxes of 50 as sold, then GoM's carton (12 boxes) and crate (4 cartons). Weight on GoM's scale (~0.0007 per real gram of the cartridge, CLAUDE.md "How a round works"):
 # a loaded round weighs about 3.3 g (bullet 2.59 g = 40 gr; brass rimfire case, priming and powder about 0.7 g).
 # Art: scripts/make_22lr_art.py.
 # ==================================================================================================
@@ -3205,12 +3213,12 @@ W22 = packed_weights(round(ROUND_22LR_GRAMS * 0.0007, 4), 50)       # 0.0023 / 0
 
 
 def ammo_22lr():
-    """items_22lr.txt / models_22lr.txt and their names; the open / pack recipes are recipes()'s (50 a box)."""
-    art_round, art_box = f"{MODULE}_22LR_Round", f"{MODULE}_22LR_Box"
-    items = f"""module {MODULE} {{
-    imports {{ Base }}
-
-    item 22LR_Bullet {{
+    """items_22lr.txt / models_22lr.txt and their names, the plain round and its special loads (LOADS_22LR); the open
+    / pack recipes are recipes()'s (50 a box, EXTRA_50). Every load weighs the plain round's, as GoM's 5.56 loads
+    and our 9x19 ones all weigh their plain round's."""
+    def items_of(sfx, art_round, art_box, ammo_id):
+        return f"""
+    item 22LR_Bullet{sfx} {{
         DisplayCategory  = Ammo,
         ItemType         = base:normal,
         Weight           = {W22['round']},
@@ -3219,10 +3227,10 @@ def ammo_22lr():
         MetalValue       = 1.0,
         WorldStaticModel = {MODULE}.{art_round},
         Tags             = base:ammo,
-        AmmoType         = gunsoftien:bullet_22lr,
+        AmmoType         = gunsoftien:{ammo_id},
     }}
 
-    item 22LR_Box {{
+    item 22LR_Box{sfx} {{
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
         Weight             = {W22['box']},
@@ -3236,7 +3244,7 @@ def ammo_22lr():
         Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
     }}
 
-    item 22LR_Carton {{
+    item 22LR_Carton{sfx} {{
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
         Weight             = {W22['carton']},
@@ -3250,7 +3258,7 @@ def ammo_22lr():
         DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
     }}
 
-    item 22LR_Crate {{
+    item 22LR_Crate{sfx} {{
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
         Weight             = {W22['crate']},
@@ -3263,11 +3271,10 @@ def ammo_22lr():
         Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
         DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
     }}
-}}
 """
-    write('scripts/GunsOfTien/items_22lr.txt', items)
-    models = f"""module {MODULE} {{
 
+    def models_of(art_round, art_box):
+        return f"""
     model {art_round} {{
         mesh    = Worlditems/Ammunition/Rounds|22_Round,
         texture = worlditems/GunsOfTien/Rounds/{art_round},
@@ -3279,17 +3286,31 @@ def ammo_22lr():
         texture = worlditems/GunsOfTien/Boxes/{art_box},
         scale   = 0.4,
     }}
-}}
 """
-    write('scripts/GunsOfTien/models_22lr.txt', models)
+
+    # (item suffix, art suffix, English label, ammo id): the plain round first
+    loads = [('', '', None, 'bullet_22lr')] + [(f"_{var}", f"_{art}", label, ammo_id)
+                                               for var, art, label, ammo_id in LOADS_22LR]
+    items = [f"module {MODULE} {{\n    imports {{ Base }}\n"]
+    models = [f"module {MODULE} {{\n"]
+    for sfx, art, _, ammo_id in loads:
+        art_round, art_box = f"{MODULE}_22LR_Round{art}", f"{MODULE}_22LR_Box{art}"
+        items.append(items_of(sfx, art_round, art_box, ammo_id))
+        models.append(models_of(art_round, art_box))
+    items.append("}\n")
+    models.append("}\n")
+    write('scripts/GunsOfTien/items_22lr.txt', ''.join(items))
+    write('scripts/GunsOfTien/models_22lr.txt', ''.join(models))
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path))
-    names.update({
-        Q22['round']: '.22 LR Round',
-        Q22['box']: '.22 LR Box',
-        Q22['carton']: 'Carton of .22 LR Boxes',
-        Q22['crate']: 'Crate of .22 LR Boxes',
-    })
+    for q, (_, _, label, _) in zip([Q22] + Q22_LOADS, loads):
+        cal = f".22 LR {label}" if label else ".22 LR"
+        names.update({
+            q['round']: f'{cal} Round',
+            q['box']: f'{cal} Box',
+            q['carton']: f'Carton of {cal} Boxes',
+            q['crate']: f'Crate of {cal} Boxes',
+        })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 

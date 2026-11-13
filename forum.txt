@@ -19,6 +19,7 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*].30-06 Springfield Soft Point
 [*].308 Winchester Soft Point
 [*]12 Gauge Birdshot
+[*].22 LR, a new calibre for .22 guns to come: the plain round, Subsonic, Hollow Point, Hyper Velocity
 [/list]
 
 [h2]Changes to Guns of Marz[/h2]
@@ -26,6 +27,7 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*]Realistic sound radius and volume for the guns (not the grenade launchers)
 [*]Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 [*]7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
+[*].22 LR Subsonic must be racked after each shot in self-loading guns, not in revolvers
 [*]Gun critical hits when one shot hits several targets (shotgun pellets, rounds that pierce): Build 42.22 rolls once per shot, so a blast crits on every pellet or on none; Old rolls for each target again, as before Build 42.22, and Enhanced rolls for each target but led by the trigger pull's roll (sandbox option, Default = Build 42.22's way)
 [*]Minimum firearm damage: since Build 42.22 a gun's failed hit roll on a zombie only staggers it for no damage; this gives such a hit a share of the damage it would have done (after body part, clothing and range, never a critical hit). 100% is Build 42.21's every-hit-lands, which came from a bug (sandbox option, 0% = the game's rule by default)
 [*]Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon light's) and give their aiming bonus only while on
