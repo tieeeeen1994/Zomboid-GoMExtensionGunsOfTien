@@ -1,14 +1,10 @@
-3.14.0
+3.15.0
 
-.22 LR
-- New calibre: the .22 Long Rifle, for the .22 guns to come (no gun fires it yet). In boxes of 50, cartons and crates, opened and packed like the other rounds
-- The plain round is the common 40 grain lead round nose. Three special loads, each in its own boxes, cartons and crates:
-- Subsonic: 15% less damage, 40% quieter, stacks with suppressors. Self-loading .22s have to be racked after every shot with it; revolvers are not affected
-- Hollow Point: 20% more damage, harder critical hits, slightly more wear on the gun
-- Hyper Velocity: 25% more damage, a little louder, more wear on the gun
-- Like the other special loads they are not found as loot. With Ammo Maker every .22 LR load can be made, and with Hot Brass they throw .22 casings
-
-Change
-- New box art for the 4.6x30mm and 5.7x28mm rounds: each calibre has a layout of its own (the MP7A1 on 4.6x30mm DM11, the UCP Prototype on Subsonic, the "Iron Wasp" maker on 5.7x28mm)
-- Five-SeveN and UCP Prototype (Post-93 add-on): Guns of Marz's three pistol lasers fit them now, as on the Glock 21. They go under the barrel where the pistol lights go, so a pistol takes a light or a laser
-- The P90's 5.7x28mm SS190 round now lists in its tooltip that it pierces up to 2 targets
+H&K HK416 (Post-93 add-on)
+- New gun: the H&K HK416 D14.5RS, the piston-driven M4 of 2004 with a 14.5-inch barrel, as "HK416 Assault Rifle"
+- Takes Guns of Marz's STANAG magazines (20 to 150 rounds) and its AR muzzle parts: the AR muzzle mount, the MKI and NDR suppressors, the compensator, flash hider and muzzle brake
+- H&K's free-floating rail system with rails on all four sides: Guns of Marz optics on top, foregrips and bipods underneath, lights on the left, lasers on the right
+- H&K's six-position stock: steadier and quicker to aim with it pulled out. H&K's grip, and its red and white fire mode labels on both sides of the ambidextrous selector
+- Automatic or single shots at 850 rounds a minute. Hits like Guns of Marz's M4A1 but a little steadier, jams less and wears more slowly
+- The flip-up iron sights fold away under an optic: the rear sight folds under a red dot or holographic sight (the front stays up and shows through it), both fold under a magnified scope
+- Found where the SCAR-L is: in Guns of Marz's army rifle kits and on army zombies, with STANAG 30 magazines and boxes of 5.56x45mm
