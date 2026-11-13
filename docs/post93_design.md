@@ -500,3 +500,45 @@ receiver's side rail was only an early 7.62 model or prototype. So GoM's optiona
 2026-11-12: "let's use GoM's Up", over a Groza-only item), drawn on the Groza as `GROZA_RAIL_UP`: a clamp on the
 handle's top bar with a short Picatinny rail (the main mod's `Rails.Register`, as the Uzis' top rails), GoM's optics
 on it; without it the handle is bare, as on the real gun. Up only: no rails under or beside the forend.
+
+## H&K HK416 D14.5RS (user, 2026-11-13: model built for review, the rest proposed)
+
+The first of the HK416 / HK417 set (TODO.md): H&K's 14.5" carbine in its original pattern (2004-05, Wikipedia
+"Heckler & Koch HK416"; not the A5): an M4-type AR with H&K's G36-derived short-stroke piston, a cold hammer-forged
+368 mm barrel, the free-floating rail system ("RS": rails on all four sides), rail-mounted flip-up sights and the
+six-position telescopic stock with storage. Infobox: 850 rpm, STANAG magazines; the D14.5RS weighs 3.49 kg and is
+about 800-900 mm long (stock in / out; sources differ).
+
+**Model** (scripts/post93/build_hk416.py, render_hk416.py, make_hk416_preview.py; preview
+docs/post93_hk416_preview.png), rebuilt 2026-11-13 from 28 reference images gathered first (references/hk416/,
+SOURCES.txt, contact_sheet.png: IMFDB side views, H&K's 2007 operator's manual, licensed VFC D14.5RS / HK416D replicas
+from both ends with close-ups, the user's photo). Measured on IMFDB's clean D14.5RS left side (1.69 px a mm, read
+off GoM's receiver; its muzzle lands within 8 mm of GoM's M4A1's, the same barrel): GoM's AR15 receiver, buffer tube,
+bolt and handle kept, its flat-top rail carried to the rear; the Free Floating Rail System to 447.6 mm, rails at 12 /
+3 / 6 / 9 o'clock, four oval slots over and under each side rail, QD cup at the front, lock boss under the rear; the
+gas block with the MP5-type front sight up; the stepped barrel and H&K's flash hider (GoM's birdcage stretched to
+54 mm); H&K's diopter rear sight up (as in every photo); H&K's ergonomic grip (traced, replaces GoM's A2 grip); H&K's
+telescopic stock (housing, ribbed lower body, butt block with ribbed pad and sling loop), its own node `HK416_STOCK`,
+deployed at `stock`, all the way in at `stock_folded` (75 mm). The earliest production guns (2004-05: IMFDB's first
+14.5", the 2007 manual's photos) had the M4 six-position stock and an A2-type grip; the H&K stock and grip are what
+every later D14.5RS photo and the licensed replica show. On GoM's AR15 texture.
+
+Decided (user, 2026-11-13: "I approve of this HK416"; built the same day, not played):
+
+| | `GunsOfTienPost93.HK416` "HK416 Assault Rifle" (GoM: "M4A1 Assault Rifle") |
+|---|---|
+| Family / magazines | GoM's 5.56 family and STANAG magazines (20 to 150, profile "STANAG") on GoM's own models (the gun is at GoM's AR15 size), MountOn appended as for the SCAR-L / MDRx .223 |
+| Muzzle | GoM's AR mount device and its parts (MKI / NDR, LR2, LX, Trix42), as the SCAR-L |
+| Stock | `HK416_Integrated_Stock_Folded / _Deployed` (Gunworks' FoldingStock, as GoM's M4A1) drawing `HK416_STOCK`; out: GoM's CAR-15 / our SCARs' stats (HitChance x1.15, AimingTime x0.85; GoM's M4A1 stock has none) |
+| Rails | four integrated rails as hidden required parts (the Mk 11's way): optics, foregrips + bipods, lights left, lasers right |
+| Iron sights | follow the optic (user, 2026-11-13, three states): Gunworks' `ConditionalModel` on the Scope slot: none = both up (`HK416`), a red dot / holographic sight (EXPS1, EXPS3, Aimpoint, OKP-7, Reflex S2, JS14, Kobra) = rear folded (`HK416_RD`), a magnified scope (Elcan, LR4X, LR10X, LRX12X, TA28, TR06X, PSO-1) = both folded (`HK416_FD`); other mods' optics leave them up |
+| Stats | GoM's M4A1 (1.0-1.4, range 40) with the SCAR-L's HitChance 52 (free-floating barrel), jam 0.75 and condition 1 in 250 (piston guns), 850 rpm (GoM's M4A1's spread), Auto / Single |
+| Sound | 193 / 55 (the main mod's realistic model for GoM's M4A1, 5.56 from 14.5"), GoM's M16 sound events |
+| Reload | GoM's "ar15_rifle" with "boltCatchAfterEmptyInsert" (as the SR-25 / Mk 11) |
+| Weight | 3.5 |
+| Loot | the SCAR-L's: an alternative in GoM's `World_Army_Rifle_Spawner` (up to 6 STANAG 30s and boxes) and `Zombie_Army_Rifle_Spawner` (4); a found gun rolls GoM's M4A1 magazines and optics |
+
+No bayonet (no lug on the rail system), ejection to the right (Hot Brass: GoM's M4A1 / the SCAR-L's values), the bolt
+and handle GoM's AR15 table. Optics sit 150 mm ahead of the grip, clear of the diopter: on the body each optic picks,
+every GoM optic sinks at most 1.4 (fit_audit's units) and red dots float up to 1.2 (fit_audit itself reads the
+sights-up body, where the Elcan's rear meets the standing diopter).

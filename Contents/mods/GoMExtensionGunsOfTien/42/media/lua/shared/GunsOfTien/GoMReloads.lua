@@ -51,7 +51,7 @@ local DURATIONS = {
     left_handle_load = { unload = 1.733333, load = 1.733333, rack = 1.966667, rackAim = 1.966667 },
     m60_lmg = { unload = 7.533333, load = 6.75, rack = 2.766667 },
     ak_rifle = { unload = 1.866667, load = 1.866667, rack = 2.066667, rackAim = 1.666667 },
-    -- GoM's AR-15 / M4A1 (its rear T-handle; with its rule "boltCatchAfterEmptyInsert"): the SR-25 and Mk 11 Mod 0
+    -- GoM's AR-15 / M4A1 (its rear T-handle; with its rule "boltCatchAfterEmptyInsert"): the SR-25, Mk 11 Mod 0 and HK416
     ar15_rifle = { unload = 2.5, load = 2.5, rack = 2.166667, rackAim = 1.666667, rackClose = 1.695455 },
     -- GoM's M203 (one grenade, its double-barrel archetype): Post-93's GP-25 on the Groza
     m203_reload = { unload = 2.0, unloadAim = 2.2, load = 2.0, loadAim = 2.2, rack = 1.1, rackAim = 1.1 },

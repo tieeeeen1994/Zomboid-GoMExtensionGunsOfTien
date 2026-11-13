@@ -308,6 +308,15 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   Groza photos (2026-11-11, references/groza): tech.wikireading.ru/3850's images (storage.yandexcloud.net/wr4img/
   259427_5_pic_10..23.jpg) and weaponland.ru's (images/automat_4/rossiya/OC-14*.jpg) download with a plain fetch;
   Commons has only the drawing, the light assault version and a firing photo; namu.wiki, guns.fandom, imfdb refuse.
+- **HK416 D14.5RS** (Post-93, user, 2026-11-13; built, not played): section "HK416 D14.5RS". Its iron sights fold
+  under optics; every other gun is to be audited for the same (TODO.md).
+- **References before models** (user, 2026-11-13, said before and not recorded: "How many times do I need to tell
+  you to gather MANY images of different angles of the gun?"): every new gun starts with an image hunt, not a model:
+  both sides, top, front, 3/4 views from both ends and close-ups (rail, sights, stock, grip, receiver) of that exact
+  variant, saved in `references/<gun>/` with SOURCES.txt and a contact sheet, landmarks read off them, then the model.
+  Sources that worked for the HK416: IMFDB images (`curl` with a browser user agent fetches /images/...), the maker's
+  operator's manual PDF (images out with PyMuPDF), licensed airsoft replica listings (airsoft.ch, Redwolf galleries;
+  Evike is behind Cloudflare), Commons categories (mostly field photos).
 - **Loot: none** (user, 2026-10-17: "GoM doesn't allow you to loot specialized ammunition... do not add them, as well
   as our mod's"): GoM spawns only each calibre's standard box (plus the 12 ga slug beside buckshot and the 40 mm
   grenades); its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured never spawn. All 12 of this mod's rounds
@@ -1996,6 +2005,50 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   items_mdr.txt, fixing_mdr.txt, names). Rebuild: build, render, art, gen, `check_refs.py`, `fit_audit.py`. On
   Windows the rebuild rewrites the PMAG FBX, textures and icons with byte noise only: restore them from git. On the Mac the art script needs numpy on
   PYTHONPATH (not `-I`).
+
+## HK416 D14.5RS (Post-93, 2026-11-13; built, not played)
+
+User, 2026-11-13: the standard HK416 first of the HK416 / HK417 set. The first draft (one drawing, one side photo)
+was rejected: "gather MANY images of different angles of the gun" (rule in "Decisions taken with the user"). Rebuilt
+from 28 references in `references/hk416/` (SOURCES.txt, contact_sheet.png): IMFDB side views (the clean left side of a
+D14.5RS, `imfdb/HK416_14.5_Current.jpg`, is the measuring reference), H&K's August 2007 operator's manual (both sides,
+the upper with the rail system off, the rail's line drawing and rear cross-section, the diopter sight exploded; images
+out with PyMuPDF installed to the scratchpad), the licensed VFC D14.5RS and HK416D replicas (3/4 views from both ends,
+close-ups), the HK416N photo and the user's photo. No straight top or front view exists among them.
+- **Model** (`scripts/post93/build_hk416.py`): GoM's AR15 at its own size (an M4-sized AR, nothing grown): its
+  receiver, flat top, buffer tube, bolt and charging handle kept; its A2 stock, A2 grip, fixed rear sight block (the
+  flat-top rail is carried to the receiver's rear in its place) and everything ahead of the receiver replaced. The
+  photo maps at 1.69 px a mm along and across, read off GoM's receiver (end plate x 1040 = 11.4 mm behind the grip,
+  upper front x 690 = 218.5, bore y 131.5); its muzzle lands at 618.5 against GoM's M4A1's 611 (the same 14.5"
+  barrel). GoM's receiver sits 9 mm lower over the bore than the real one, so the rail system and sights are measured
+  from the receiver's flat top (70.9), everything else from the bore (42.78). Rail system to 447.6, its bottom
+  crossbars at 11.8, side rails at 38.1; four oval slots over and under each side rail (dark plates on GoM's
+  near-black texture patch, `DARK`), QD cup, lock boss; gas block with the MP5-type front sight; the barrel stepped
+  8.3 / 6.8 mm; GoM's birdcage stretched to the photo's 54 mm as H&K's flash hider (canon 564.7, muzzle 618.5);
+  H&K's grip traced (`loft_z`, horizontal sections); H&K's stock (`HK416_STOCK`: housing, lower body, butt with
+  ribbed pad and sling loop; diagonal ribs on the lower body were tried and removed, user: "Remove this weird
+  thing"); **selector labels** (user, 2026-11-13: "as an HK ... the red labels ... an important detail"): GoM's AR15
+  texture has no red or white, so they are a node of their own, `HK416_MARKINGS`, on our 32x16
+  `textures/weapons/GunsOfTienPost93/HK416_MARKINGS.png` (make_hk416_art.py), drawn by a ModelWeaponPart line on the
+  always-fitted `HK416_Integrated_Rail_Left`: red single shot above the pivot, white safe ahead, red auto behind,
+  read off the photo round H&K's pivot and placed round GoM's (each plate 0.3 mm off the receiver, found by a ray),
+  on both sides, with GoM's selector boss and lever mirrored onto the right (H&K's selector is ambidextrous) where the photo has it at `stock_folded` (all the way in) and 75 mm back at `stock`.
+  The earliest 2004-05 guns had the M4 stock and an A2-type grip; the H&K stock and grip are what every later D14.5RS
+  photo and the replica show. Review: `render_hk416.py`, `make_hk416_preview.py` (docs/post93_hk416_preview.png),
+  icon `make_hk416_art.py`.
+- **Iron sights follow the optic** (user, 2026-11-13: "is it possible to have different iron sights when a scope or
+  sight is installed?", three states): three bodies `HK416_BODY` (both up, as every photo), `_RD` (rear folded: a red
+  dot or holographic sight, the front seen through it), `_FD` (both folded: a magnified scope), as models `HK416` /
+  `HK416_RD` / `HK416_FD` with the same points. Gunworks' `ConditionalModel` (a StatsFactory layer that sets
+  `WeaponSprite` on every ReapplyAllModifiers: equip, attach, detach, load; the sprite is saved per gun) matches the
+  Scope slot's full type against `RED_DOTS` / `SCOPES` in `shared/GunsOfTienPost93/HK416.lua`; GoM itself never does
+  this. Folded, the rear sight drops to a block 7 mm over the rail so long scopes clear it; optics sit at 150 mm
+  (fit-checked per body with a scratch script exec'ing fit_audit.py's top part: every optic on the body it picks sinks
+  at most 1.4, red dots float up to 1.2; fit_audit itself reads the sights-up body and flags the Elcan).
+- **Wiring**: `gen_post93_guns.py hk416()` (models / items / fixing_hk416.txt, names), `HK416.lua` (STANAG profile,
+  850 rpm, GoM's AR bolt / handle table and "ar15_rifle" with `boltCatchAfterEmptyInsert`, FoldingStock + the SCARs'
+  stock stats, integrated rails, ConditionalModel, spawn table, MountOn appends), Tooltips.lua, HotBrass.lua (the
+  SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
 
 ## Bullpup set (2026-10-27)
 

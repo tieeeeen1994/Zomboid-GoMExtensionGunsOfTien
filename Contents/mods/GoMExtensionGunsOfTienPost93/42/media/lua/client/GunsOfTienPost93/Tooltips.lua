@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
     Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
-    .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, the Mk 11, the HK416, the Grozas, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -141,6 +141,18 @@ lines[M .. "MK11"] = {
     "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
 }
 lines[M .. "762x51Magazine10_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+-- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats, its flip-up iron sights
+lines[M .. "HK416"] = {
+    "Uses .223/5.56x45mm NATO rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Compatible Muzzle Device: AR Muzzle Mount",
+    "Iron sights fold under an optic.",
+}
+GunsOfTien_TooltipStates[M .. "HK416_Integrated_Stock_Deployed"] = {
+    "Collapsible stock deployed:",
+    "Aiming Time reduced by 15%",
+    "Hit Chance increased by 15%",
+}
 -- The Grozas (shared/GunsOfTienPost93/Groza.lua): GoM's Picatinny Rail upgrade on the carrying handle, in GoM's
 -- wording for its rail upgrades and AK muzzle parts
 lines[M .. "GROZA1"] = {

@@ -16,11 +16,12 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
 ## Next release: the HK416 / HK417 set (Post-93)
 
-Agreed with the user 2026-11-13: four guns, two receivers. Not designed in `docs/post93_design.md` yet; follow the
-rules in CLAUDE.md (GoM's animations only, vanilla rifle / pistol hold + a GoM reload animId; sizes from the M16).
+Agreed with the user 2026-11-13: four guns, two receivers. Only the HK416 is designed in `docs/post93_design.md`
+so far; gather many references of each gun from every angle before modelling it, and follow the rules in CLAUDE.md (GoM's animations only, vanilla rifle / pistol hold + a GoM reload animId; sizes from the M16).
 
-- [ ] **HK416 D14.5RS**: the standard 14.5" carbine (2004-05, original pattern, not the A5). 5.56 on GoM's STANAG
-      magazines, rifle-held, GoM's `ar15_rifle` reload with `boltCatchAfterEmptyInsert` (as the SR-25 / Mk 11).
+- [x] **HK416 D14.5RS** (built 2026-11-13, not played): model approved, items, Lua, loot, icon, docs (CLAUDE.md
+      "HK416 D14.5RS", docs/post93_design.md). Its iron sights fold under optics (three bodies). Still to do for the
+      release: the Workshop preview (render_ad_guns.py / make_workshop_art.py) and the change note.
 - [ ] **HK416 .22 LR Pistol**: H&K-licensed rimfire built by Umarex / Walther (H&K USA relaunch 2019, models
       81000403 / 81000404): 8.5" threaded barrel, blowback, top rail, about 4.5 lb, its own 10 / 20-round magazines
       (they join the ".22 LR" family). Proposed pistol-held, GoM's MP5K way like the Vector SDP (`handgun2`); confirm.
@@ -35,6 +36,15 @@ rules in CLAUDE.md (GoM's animations only, vanilla rifle / pistol hold + a GoM r
       Ammo Maker types, Hot Brass, tooltips, art (CLAUDE.md ".22 LR"). Not loot, like the other special loads.
 - [ ] **.22 LR loot**: GoM spawns each calibre's standard box, so the .22 box should spawn; decide where with the
       .22 pistol.
+
+## Iron sights under optics: audit every gun (user, 2026-11-13)
+
+- [ ] The HK416 folds its iron sights when an optic is fitted (Gunworks' `ConditionalModel` on the Scope slot,
+      CLAUDE.md "HK416 D14.5RS"); none of our other guns do, so standing sights clip GoM's optics or look wrong under
+      them. Go through every gun of both mods that takes an optic: which iron sights it has (fixed, flip-up, carry
+      handle, none), what the real gun does with them under a red dot and under a magnified scope (fold, remove, stay
+      and co-witness), and build the folded / removed bodies where they differ. Guns with fixed sights that cannot
+      fold (front sight towers, AK sights) stay as they are; check whether optics clear them (fit_audit).
 
 ## New Mod - EQUAL LOOT DISTRIBUTION
 

@@ -120,5 +120,12 @@
   "GunsOfTienPost93.GROZA4_Integrated_Suppressor": "Groza-4 Integrated Suppressor",
   "GunsOfTienPost93.GROZAGL": "Groza-1 Assault Rifle with GP-25",
   "GunsOfTienPost93.GROZAGL_GP25": "GP-25 Grenade Launcher",
-  "GunsOfTienPost93.GROZAGL_GP25_Integrated": "GP-25 Integrated Grenade Launcher"
+  "GunsOfTienPost93.GROZAGL_GP25_Integrated": "GP-25 Integrated Grenade Launcher",
+  "GunsOfTienPost93.HK416": "HK416 Assault Rifle",
+  "GunsOfTienPost93.HK416_Integrated_Stock_Folded": "HK416 Integrated Stock (Folded)",
+  "GunsOfTienPost93.HK416_Integrated_Stock_Deployed": "HK416 Integrated Stock (Deployed)",
+  "GunsOfTienPost93.HK416_Integrated_Rail_Up": "HK416 Integrated Rail (Up)",
+  "GunsOfTienPost93.HK416_Integrated_Rail_Down": "HK416 Integrated Rail (Down)",
+  "GunsOfTienPost93.HK416_Integrated_Rail_Left": "HK416 Integrated Rail (Left)",
+  "GunsOfTienPost93.HK416_Integrated_Rail_Right": "HK416 Integrated Rail (Right)"
 }

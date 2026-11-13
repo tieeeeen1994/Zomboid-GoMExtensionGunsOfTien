@@ -199,4 +199,5 @@ def main():
     print("wrote", OUT_GUN, POINTS, json.dumps(pts["_extras"]))
 
 
-main()
+if __name__ == "__main__":
+    main()

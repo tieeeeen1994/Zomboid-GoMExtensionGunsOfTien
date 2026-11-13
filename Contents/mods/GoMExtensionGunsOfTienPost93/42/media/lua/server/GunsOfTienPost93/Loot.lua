@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR and PS90, the Five-seveN, the UCP Prototype, the SCAR-L and
     SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45, 9mm, CRB and SDP, the MDRx .223
-    and .308, the Mk 11, the Grozas, and their ammunition
+    and .308, the Mk 11, the HK416, the Grozas, and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -151,6 +151,15 @@ local function scarhAlternative(count)
     }
 end
 
+-- The HK416 as the SCAR-L (user, 2026-11-13): the gun, up to n of GoM's STANAG 30s, up to n boxes
+local function hk416Alternative(count)
+    return {
+        { items = { M .. "HK416" }, maxAmountChance = 1 },
+        { items = { "MarzGuns.556x45Magazine30_STANAG" }, maxAmountChance = count },
+        { items = { "MarzGuns.556x45_Box" }, maxAmountChance = count },
+    }
+end
+
 -- The Mk 11 Mod 0 as the SCAR-H (user, 2026-11-12): the gun, up to n of the main mod's KAC 20s, up to n boxes
 local function mk11Alternative(count)
     return {
@@ -260,6 +269,8 @@ local SPAWNERS = {
     { "MarzGuns.Zombie_Army_Rifle_Spawner", scarhAlternative, 4 },
     { "MarzGuns.World_Army_Rifle_Spawner", mk11Alternative, 6 },
     { "MarzGuns.Zombie_Army_Rifle_Spawner", mk11Alternative, 4 },
+    { "MarzGuns.World_Army_Rifle_Spawner", hk416Alternative, 6 },
+    { "MarzGuns.Zombie_Army_Rifle_Spawner", hk416Alternative, 4 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", mp7Alternative, 2 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", p90Alternative, 2 },
     { "MarzGuns.Zombie_Police_SMG_Spawner", ump45Alternative, 2 },

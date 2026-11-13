@@ -103,6 +103,17 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 80,
         spinForce     = { 86, 124 },
     },
+    -- The HK416 ejects from its AR port as GoM's M4A1 (the SCAR-L's values, which are the M4A1's).
+    ["GunsOfTienPost93.HK416"] = {
+        forwardOffset = 0.291,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 64, 128 },
+    },
     -- The Mk 11 Mod 0 throws its cases out of its AR port as the main mod's SR-25 (GoM's AR15's angles, a 7.62x51's
     -- force).
     ["GunsOfTienPost93.MK11"] = {

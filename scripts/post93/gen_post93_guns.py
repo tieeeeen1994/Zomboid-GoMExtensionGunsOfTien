@@ -1,5 +1,5 @@
 """Writes the MP7A1 / P90 TR / Five-seveN / UCP Prototype / SCAR-L / SCAR-H / UMP45 / UMP9 / Steyr AUG A3, Para and HBAR
-/ KRISS Vector .45, 9mm, CRB and SDP / PS90 Carbine / MDRx .223 and .308 item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
+/ KRISS Vector .45, 9mm, CRB and SDP / PS90 Carbine / MDRx .223 and .308 / Mk 11 / HK416 / Grozas item and model scripts, their parts, repair recipes and names for Guns of Tien - Post-93
 (the AUGs' points: build_aug3.py's auga3 / augpara / aughbar_points.json; the Vectors': build_vector.py's
 vector_points.json / vector9_points.json, build_vectorcrb.py's vectorcrb_points.json, build_vectorsdp.py's
 vectorsdp_points.json; the MDRx's: build_mdr.py's mdr223 / mdr308_points.json).
@@ -2100,6 +2100,196 @@ def mk11():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# H&K HK416 D14.5RS (user, 2026-11-13; docs/post93_design.md "H&K HK416 D14.5RS"; meshes and points:
+# scripts/post93/build_hk416.py on GoM's AR15 and its texture; registries: shared/GunsOfTienPost93/HK416.lua).
+# Three bodies for the iron sights (Gunworks' ConditionalModel picks one from the optic: HK416 both up, HK416_RD rear
+# folded for a red dot or holographic sight, HK416_FD both folded for a magnified scope), all with the same points.
+# GoM's STANAG magazines through GoM's own models (the gun is at GoM's AR15 size, as its M4A1), GoM's AR muzzle parts,
+# integrated rails on all four sides (hidden parts, modelled in the body), H&K's telescopic stock as its own part
+# pair. Stats: GoM's M4A1 (the same 14.5" 5.56) with the SCAR-L's steadier hold and durability (another piston
+# gun: HitChance 52, condition 1 in 250, jam 0.75); Auto / Single (H&K's safe / semi / auto) at 850 rpm (H&K);
+# weight 3.5 (3.49 kg empty, GoM's rifles weigh their kilograms); sound 193 / 55 (the main mod's model for GoM's
+# M4A1: 5.56 from 14.5").
+HK416_TEX = 'weapons/firearms/assault_rifles/AR15'
+HK416_BODIES = [('HK416', 'HK416_BODY'), ('HK416_RD', 'HK416_BODY_RD'), ('HK416_FD', 'HK416_BODY_FD')]
+HK416_PARTS = [('HK416_Integrated_Stock_Folded', 'StockIntegrated', None),
+               ('HK416_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+               ('HK416_Integrated_Rail_Up', 'RailUp', None), ('HK416_Integrated_Rail_Down', 'RailDown', None),
+               ('HK416_Integrated_Rail_Left', 'RailLeft', None), ('HK416_Integrated_Rail_Right', 'RailRight', None)]
+
+
+def hk416():
+    pts = load_points('hk416_points.json')
+    out = [f"module {M} {{\n"]
+    for model, node in HK416_BODIES:
+        out.append(f"""
+    model {model} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416|{node},
+        texture  = {HK416_TEX},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'canon', 'stock_folded',
+                     'scope', 'foregrip', 'bipod', 'light_left', 'laser_right'):
+            out.append(attachment(name, pts[name]))
+        out.append("    }\n")
+    # H&K's selector labels on their own small texture (the AR15's has no red or white), drawn through the always
+    # fitted left rail part
+    out.append(f"""
+    model HK416_MARKINGS {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416|HK416_MARKINGS,
+        texture  = {TEX}/HK416_MARKINGS,
+        cullFace = None,
+    }}
+""")
+    for node in ('BOLT', 'CHARGING_HANDLE', 'STOCK'):
+        out.append(f"""
+    model HK416_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416|HK416_{node},
+        texture  = {HK416_TEX},
+        cullFace = None,
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_hk416.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.HK416_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.HK416_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.Charging_Handle_Close {M}.HK416_CHARGING_HANDLE charging_handle_lock charging_handle_lock,",
+             f"{w}MarzGuns.Charging_Handle_Open {M}.HK416_CHARGING_HANDLE charging_handle_open charging_handle_open,",
+             f"{w}{M}.HK416_Integrated_Stock_Folded {M}.HK416_STOCK stock_folded stock_folded,",
+             f"{w}{M}.HK416_Integrated_Stock_Deployed {M}.HK416_STOCK stock stock,",
+             f"{w}{M}.HK416_Integrated_Rail_Left {M}.HK416_MARKINGS markings markings,"]
+    lines += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in STANAGS]
+    lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+    lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    items = [f"module {M} {{\n", f"""
+    item HK416 {{
+        MinDamage                    = 1.0,
+        MaxDamage                    = 1.4,
+        CriticalChance               = 18.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 3.5,
+        HitChance                    = 52,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 15,
+        RecoilDelay                  = 13,
+        MaxRange                     = 40.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 6,
+        MaxSightRange                = 14.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 0.75,
+        ConditionLowerChanceOneIn    = 250,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 1.8,
+        DoorDamage                   = 3,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 3.5,
+        MetalValue                   = 30.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_556x45,
+        AmmoBox                      = MarzGuns.556x45_Box,
+        ClipSize                     = 30,
+        MagazineType                 = MarzGuns.556x45Magazine30_STANAG,
+        MaxAmmo                      = 30,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_HK416,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.HK416,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M16Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 1.9,
+        SoundRadius                  = 193,
+        SoundVolume                  = 55,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""]
+    for part, ptype, weight in HK416_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_hk416.txt', ''.join(items))
+    # GoM repairs its M4A1 with Aiming=3
+    write(f'scripts/{M}/fixing_hk416.txt', f"""module Base {{
+    fixing Fix HK416 {{
+        Require = {M}.HK416,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{M}.HK416'] = 'HK416 Assault Rifle'                 # GoM's "M4A1 Assault Rifle" (user, 2026-11-13)
+    names[f'{M}.HK416_Integrated_Stock_Folded'] = 'HK416 Integrated Stock (Folded)'
+    names[f'{M}.HK416_Integrated_Stock_Deployed'] = 'HK416 Integrated Stock (Deployed)'
+    for part, ptype, _ in HK416_PARTS[2:]:
+        names[f'{M}.{part}'] = 'HK416 Integrated Rail (%s)' % ptype[4:]
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # The OTs-14 Groza (user, 2026-11-11 / 12; docs/post93_design.md "OTs-14 Groza family"; meshes and points:
 # scripts/post93/build_groza.py; registries: shared/GunsOfTienPost93/Groza.lua). TsKIB SOO's bullpup on the AKS-74U's
 # mechanism, shown in April 1994. Three regular guns on one atlas (the GP-25 version is its own, later):
@@ -2627,6 +2817,7 @@ if __name__ == '__main__':
     ps90()
     mdrs()
     mk11()
+    hk416()
     grozas()
     translations()
     print('written under', os.path.normpath(ROOT))
