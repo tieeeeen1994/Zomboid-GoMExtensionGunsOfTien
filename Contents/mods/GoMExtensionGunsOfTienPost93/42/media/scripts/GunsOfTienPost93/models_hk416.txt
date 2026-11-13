@@ -54,6 +54,42 @@ module GunsOfTienPost93 {
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }
 
+    model HK416_RDX {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416|HK416_BODY_RDX,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3730 0.0258, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1015 0.0144, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0470 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0329 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model HK416_FDX {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416|HK416_BODY_FDX,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3730 0.0258, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0200 0.1300 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1015 0.0144, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0470 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0329 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
+        attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
+    }
+
     model HK416_MARKINGS {
         mesh     = weapons/firearms/GunsOfTienPost93_HK416|HK416_MARKINGS,
         texture  = weapons/GunsOfTienPost93/HK416_MARKINGS,

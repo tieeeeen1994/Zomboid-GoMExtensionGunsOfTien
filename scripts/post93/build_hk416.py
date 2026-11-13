@@ -24,7 +24,8 @@ Parts:
 - the gas block with H&K's MP5-type flip-up front sight (up) just ahead of it; the barrel stepped down ahead of the
   block (8.3 / 6.8 mm radius); H&K's flash hider (GoM's AR15 birdcage, stretched to the photo's 54 mm);
 - H&K's rotary diopter rear sight (up, as in every photo) on the receiver's flat top, which runs to the rear; both
-  sights also folded in two more bodies (user, 2026-11-13: the iron sights follow the optic fitted);
+  sights also folded in two more bodies (user, 2026-11-13: the iron sights follow the optic fitted), and two with the
+  rear taken off the rail for the optics whose mount sits on its spot (the Kobra, the Elcan, the TR06X);
 - H&K's ergonomic grip (traced; replaces GoM's A2 grip); GoM's selector mirrored onto the right side (H&K's is
   ambidextrous) and H&K's red and white selector labels on both sides (HK416_MARKINGS);
 - H&K's telescopic stock as its own node: the housing over the buffer tube, the lower body, the butt block with the ribbed pad and the sling loop; drawn at `stock` deployed (75 mm back) and at
@@ -32,7 +33,8 @@ Parts:
 
 Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
     P/models_X/weapons/firearms/GunsOfTienPost93_HK416.fbx   HK416_BODY (sights up), HK416_BODY_RD (rear folded),
-                                                             HK416_BODY_FD (both folded), HK416_BOLT,
+                                                             HK416_BODY_FD (both folded), HK416_BODY_RDX /
+                                                             HK416_BODY_FDX (rear off, front up / folded), HK416_BOLT,
                                                              HK416_CHARGING_HANDLE, HK416_STOCK,
                                                              HK416_MARKINGS (the selector labels, own texture)
     scripts/post93/hk416_points.json                         points
@@ -92,7 +94,9 @@ QD = (py(335.0), 158.0)            # the QD sling cup (y mm, photo y px)
 LOCK = (py(660.0), py(620.0), 150.0, 170.0)   # the rail lock boss under the rear (y, y, photo y px)
 FRONT_POST = (py(292.0), py(278.0), 12.0, 90.0, 167.0)   # post y span, its top, the base's top / bottom (px)
 REAR_SIGHT = (py(945.0), py(890.0), 45.0, 12.0, (py(928.0), py(893.0)))   # base y, base top, top (px), drum y
-SIGHT_STATES = [("HK416_BODY", True, True), ("HK416_BODY_RD", True, False), ("HK416_BODY_FD", False, False)]
+# front up, rear up (True) / folded (False) / taken off (None)
+SIGHT_STATES = [("HK416_BODY", True, True), ("HK416_BODY_RD", True, False), ("HK416_BODY_FD", False, False),
+                ("HK416_BODY_RDX", True, None), ("HK416_BODY_FDX", False, None)]
 SCOPE_Y = 150.0                    # GoM's optics over the receiver, ahead of the diopter (fit-checked)
 STOCK_TRAVEL = 75.0                # the photo's stock is all the way in; deployed is this much further back
 STOCK_HALF = (19.0, 16.0, 22.0)    # housing, lower body, butt block
@@ -380,6 +384,8 @@ def add_sights(bm, uv, black, s, front_up, rear_up):
     r0, r1, rbase, rtop, (d0, d1) = s["rear"]
     zb_top = rz(rbase)
     dr = (rz(rtop) - zb_top) / 2.0
+    if rear_up is None:
+        return                                  # taken off the rail: an optic's mount sits on its spot
     if rear_up:
         # the clamp base (the photo's height), the drum across the bore between its two guards
         sr.box(bm, uv, black, (0.0, (r0 + r1) / 2.0, (rail_top + zb_top) / 2.0),
@@ -388,11 +394,13 @@ def add_sights(bm, uv, black, s, front_up, rear_up):
         for side in (-1, 1):
             sr.box(bm, uv, black, (side * 11.0, (d0 + d1) / 2.0, zb_top + dr * 0.8), (2.4, d1 - d0 + 4.0, dr * 1.6))
     else:
-        # folded: the sight body pivots down into the clamp, leaving a low block (about 10 mm over the rail) with the
-        # drum's guards lying forward on it, so a scope's long body clears it
-        low = rail_top + 7.0
+        # folded: the sight body pivots down into the clamp, leaving a low block (3.5 mm over the rail) with the
+        # drum's guards lying forward on it, under every optic's body (2026-11-13: 10 mm went into the OKP-3, the
+        # Elcan, the PSO-1 and the LR4X / LR10X; the lowest underside over it is the OKP-3's, 6.0 x 0.001 over the
+        # scope point)
+        low = rail_top + 2.0
         sr.box(bm, uv, black, (0.0, (r0 + r1) / 2.0, (rail_top + low) / 2.0), (24.0, r1 - r0, low - rail_top + 1.0))
-        sr.box(bm, uv, black, (0.0, (r0 + r1) / 2.0 + 3.0, low + 1.5), (22.0, r1 - r0 - 10.0, 3.0))
+        sr.box(bm, uv, black, (0.0, (r0 + r1) / 2.0 + 3.0, low + 0.75), (22.0, r1 - r0 - 10.0, 1.5))
 
 
 def g(v):

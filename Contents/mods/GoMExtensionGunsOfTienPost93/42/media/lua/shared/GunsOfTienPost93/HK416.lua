@@ -9,8 +9,9 @@
       foregrips and bipods (bottom), lights (left) and lasers (right), as the SCARs' and the Mk 11's;
     - the iron sights follow the optic (user, 2026-11-13): Gunworks' ConditionalModel swaps the gun's model by what is
       in its Scope slot: no optic = both flip-up sights up (HK416), a red dot or holographic sight = the rear folded and
-      the front seen through it (HK416_RD), a magnified scope = both folded (HK416_FD). The three bodies share every
-      attachment point. Optics from other mods leave the sights up;
+      the front seen through it (HK416_RD), a magnified scope = both folded (HK416_FD), and the rear taken off where
+      the Kobra's, the Elcan's or the TR06X's mount sits on its spot (HK416_RDX / HK416_FDX). The bodies share every
+      attachment point. Registered with the other guns' in IronSights.lua; optics from other mods leave the sights up;
     - H&K's six-position stock (HK416_Integrated_Stock_Folded / _Deployed, Gunworks' FoldingStock as GoM's M4A1), with
       GoM's CAR-15 / our SCARs' stock stats when out;
     - magazines: GoM's STANAG profile (GoM's own magazines and models, as its M4A1); muzzle: GoM's AR mount device and
@@ -23,13 +24,13 @@ local Magazine = require("WeaponSystems/Utils/Magazine")
 local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local FoldingStock = require("WeaponSystems/Utils/FoldingStock")
-local ConditionalModel = require("WeaponSystems/Utils/ConditionalModel")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
 local Animations = require("WeaponSystems/Utils/Animations")
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local GoMReloads = require("GunsOfTien/GoMReloads")
+local IronSights = require("GunsOfTienPost93/IronSights")
 require("GunsOfTienPost93/Guns")             -- the SCAR-L's STANAG and AR muzzle registrations first
 
 for _, file in ipairs({ "Magazines", "RPM", "Stocks", "ReloadsAndAnims/ReloadAnims", "ReloadsAndAnims/AnimationsFiring",
@@ -91,14 +92,7 @@ CSA.RegisterMultipleParts({
 -- The integrated rails as parents of GoM's parts
 -------------------------------------------------
 -- GoM's optics: no magnification (the front sight is seen through them), then the magnified ones
-local RED_DOTS = {
-    "MarzGuns.EXPS1_Sight", "MarzGuns.EXPS3_Sight", "MarzGuns.Aimpoint_Sight", "MarzGuns.OKP3_Sight",
-    "MarzGuns.ReflexS2_Sight", "MarzGuns.JS14_Sight", "MarzGuns.Kobra_Sight",
-}
-local SCOPES = {
-    "MarzGuns.ElcanX2_Scope", "MarzGuns.LR10X_Scope", "MarzGuns.TA28_Scope", "MarzGuns.LR4X_Scope",
-    "MarzGuns.TR06X_Scope", "MarzGuns.PSO1_Scope", "MarzGuns.LRX12X_Scope",
-}
+local RED_DOTS, SCOPES = IronSights.RED_DOTS, IronSights.SCOPES
 local OPTICS = {}
 for _, list in ipairs({ RED_DOTS, SCOPES }) do
     for _, o in ipairs(list) do OPTICS[#OPTICS + 1] = o end
@@ -120,17 +114,6 @@ RequiredAttachment.RegisterRequired(LIGHTS, { RAIL_LEFT })
 RequiredAttachment.RegisterRequired(LASERS, { RAIL_RIGHT })
 CSA.RegisterMultipleParts({ [RAIL_UP] = {}, [RAIL_DOWN] = {}, [RAIL_LEFT] = {}, [RAIL_RIGHT] = {} })
 PreventRemoval.Register({ RAIL_UP, RAIL_DOWN, RAIL_LEFT, RAIL_RIGHT })
-
--------------------------------------------------
--- The iron sights follow the optic (the bodies in models_hk416.txt)
--------------------------------------------------
-ConditionalModel.Register(HK416, {
-    rules = {
-        { parts = { Scope = RED_DOTS }, model = M .. "HK416_RD" },
-        { parts = { Scope = SCOPES }, model = M .. "HK416_FD" },
-    },
-    default = HK416,
-})
 
 -------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): GoM's AR15 bolt and handle, the stock in,

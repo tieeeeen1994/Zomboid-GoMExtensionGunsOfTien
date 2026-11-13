@@ -8,3 +8,9 @@ H&K HK416 (Post-93 add-on)
 - Automatic or single shots at 850 rounds a minute. Hits like Guns of Marz's M4A1 but a little steadier, jams less and wears more slowly
 - The flip-up iron sights fold away under an optic: the rear sight folds under a red dot or holographic sight (the front stays up and shows through it), both fold under a magnified scope
 - Found where the SCAR-L is: in Guns of Marz's army rifle kits and on army zombies, with STANAG 30 magazines and boxes of 5.56x45mm
+
+Iron sights under optics (Post-93 add-on)
+- The MP7A1 and MP7A2, the SCAR-L and SCAR-H and the four Vectors now show their flip-up iron sights as the HK416 does: up with no optic, the rear folded under a red dot or holographic sight, both folded under a magnified scope
+- Where an optic's mount sits on the rear sight's spot on the rail (the Elcan and the TR06X on the SCAR-L; the Kobra, the Elcan and the TR06X on the HK416), the rear sight is taken off instead
+- The SCARs' rear sight now stands up when no optic is fitted, and the Vectors' sights stand up too (they were always folded)
+- On the UMP45 and UMP9, the LR10X, LRX12X and PSO-1 sit further forward on the top rail, so their eyepieces clear the fixed rear sight

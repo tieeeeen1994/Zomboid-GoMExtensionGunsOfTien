@@ -39,7 +39,9 @@ so far; gather many references of each gun from every angle before modelling it,
 
 ## Iron sights under optics: audit every gun (user, 2026-11-13)
 
-- [ ] The HK416 folds its iron sights when an optic is fitted (Gunworks' `ConditionalModel` on the Scope slot,
+- [x] (built 2026-11-13, not played; CLAUDE.md "Iron sights under optics": the MP7s, SCARs and Vectors got the
+      HK416's states, the UMPs' long scopes moved forward, the rest clear) The HK416 folds its iron sights when an
+      optic is fitted (Gunworks' `ConditionalModel` on the Scope slot,
       CLAUDE.md "HK416 D14.5RS"); none of our other guns do, so standing sights clip GoM's optics or look wrong under
       them. Go through every gun of both mods that takes an optic: which iron sights it has (fixed, flip-up, carry
       handle, none), what the real gun does with them under a red dot and under a magnified scope (fold, remove, stay

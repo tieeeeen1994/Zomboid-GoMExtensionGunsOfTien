@@ -309,7 +309,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   259427_5_pic_10..23.jpg) and weaponland.ru's (images/automat_4/rossiya/OC-14*.jpg) download with a plain fetch;
   Commons has only the drawing, the light assault version and a firing photo; namu.wiki, guns.fandom, imfdb refuse.
 - **HK416 D14.5RS** (Post-93, user, 2026-11-13; built, not played): section "HK416 D14.5RS". Its iron sights fold
-  under optics; every other gun is to be audited for the same (TODO.md).
+  under optics; every other gun was audited for the same (section "Iron sights under optics": the MP7s, SCARs and
+  Vectors got the same states).
 - **References before models** (user, 2026-11-13, said before and not recorded: "How many times do I need to tell
   you to gather MANY images of different angles of the gun?"): every new gun starts with an image hunt, not a model:
   both sides, top, front, 3/4 views from both ends and close-ups (rail, sights, stock, grip, receiver) of that exact
@@ -2041,14 +2042,57 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
   dot or holographic sight, the front seen through it), `_FD` (both folded: a magnified scope), as models `HK416` /
   `HK416_RD` / `HK416_FD` with the same points. Gunworks' `ConditionalModel` (a StatsFactory layer that sets
   `WeaponSprite` on every ReapplyAllModifiers: equip, attach, detach, load; the sprite is saved per gun) matches the
-  Scope slot's full type against `RED_DOTS` / `SCOPES` in `shared/GunsOfTienPost93/HK416.lua`; GoM itself never does
-  this. Folded, the rear sight drops to a block 7 mm over the rail so long scopes clear it; optics sit at 150 mm
-  (fit-checked per body with a scratch script exec'ing fit_audit.py's top part: every optic on the body it picks sinks
-  at most 1.4, red dots float up to 1.2; fit_audit itself reads the sights-up body and flags the Elcan).
+  Scope slot's full type against `RED_DOTS` / `SCOPES` in `shared/GunsOfTienPost93/IronSights.lua` (was HK416.lua);
+  GoM itself never does this. Folded, the rear sight drops to a block 3.5 mm over the rail (7 mm until the audit of
+  2026-11-13 found the OKP-3, Elcan, PSO-1, LR4X and LR10X in it), and two more bodies take the rear off for the
+  Kobra, Elcan and TR06X, whose mounts sit on its spot (`HK416_RDX` / `HK416_FDX`, section "Iron sights under
+  optics"); optics sit at 150 mm; fit_audit reads the sights-up body and flags the Elcan.
 - **Wiring**: `gen_post93_guns.py hk416()` (models / items / fixing_hk416.txt, names), `HK416.lua` (STANAG profile,
   850 rpm, GoM's AR bolt / handle table and "ar15_rifle" with `boltCatchAfterEmptyInsert`, FoldingStock + the SCARs'
-  stock stats, integrated rails, ConditionalModel, spawn table, MountOn appends), Tooltips.lua, HotBrass.lua (the
+  stock stats, integrated rails, spawn table, MountOn appends; its sight states in IronSights.lua), Tooltips.lua, HotBrass.lua (the
   SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
+
+## Iron sights under optics (both mods, 2026-11-13; built, not played)
+
+User (TODO.md): the HK416 folds its sights under an optic, so go through every gun of both mods that takes one.
+Measured with a scratch clash test (fit_audit.py's top part exec'd, then a BVH overlap of each optic as placed against
+the body, counting only body faces higher than 4.2 x 0.001 over the gun's `scope` point, i.e. above the rail
+crossbars at 3.2; optic undersides over each sight's footprint gave the fold heights). Per gun:
+- **Flip-up sights, now three states** (Gunworks' ConditionalModel on the Scope slot, all registered in
+  `shared/GunsOfTienPost93/IronSights.lua`, which HK416.lua now uses too): no optic = both up (the gun's own model),
+  GoM's seven red dots (`IronSights.RED_DOTS`) = `<GUN>_RD` rear folded, front up (seen through the dot), its seven
+  magnified optics (`SCOPES`, the Elcan counted as one) = `<GUN>_FD` both folded; `_RDX` / `_FDX` take the rear off
+  for optics whose mount sits on its very spot whatever its height (rear ring or base clamp at or under the rail top):
+  SCAR-L Elcan + TR06X, HK416 Kobra (RDX) + Elcan + TR06X (FDX). Guns: **MP7A1 / MP7A2** (H&K's flip-ups, modelled
+  up; standing, the long scopes went 11-13 into them), **SCAR-L / SCAR-H** (FN's folding front on the gas block and
+  rear on the rail; modelled front up, rear folded, so the default model now has the rear raised), the **four
+  Vectors** (KRISS's flip-ups, modelled folded; FD = the builder's body, UP / RD raise them), **HK416**. Every state
+  clears every optic of its rule (2026-11-13, after: MP7 fold top 5.0, SCAR rear fold 4.3, HK416 folded rear lowered
+  from rail + 10 mm to rail + 3.5 mm in build_hk416.py, which went into the OKP-3, Elcan, PSO-1, LR4X and LR10X).
+- **Meshes**: `scripts/post93/build_sight_states.py` makes the MP7 / SCAR / Vector states from the exported bodies
+  (each builder bakes its texture with the sights in it): every sight is a mesh island (the builder's slab), found by
+  its y range; fold = scale about its base along the gun's up axis to a top height, raise = the same upward with the
+  top narrowed (taper, a leaf rather than a block), remove = delete; UVs kept, so the paint is the builder's. Writes
+  `GunsOfTienPost93_<FILE>_Sights.fbx` (MP7A1, MP7A2, SCARL, SCARH, VECTOR, VECTORCRB, VECTORSDP) with only the
+  states the builder's body is not in; the SCARs' own `SCARL_BODY` / `SCARH_BODY` nodes are now unused by the scripts
+  (still what render / art scripts draw). Turned (pistol-held) bodies are turned back first. **Rebuild order**: a gun's
+  builder, then build_sight_states.py, then gen_post93_guns.py (`SIGHT_STATES` writes one model per state with the
+  gun's points and texture; `sight_state_models()`); the HK416's states stay in its builder (`SIGHT_STATES` there,
+  rear `None` = taken off).
+- **Fixed sights, left as they are and clear of every optic**: Uzi / Mini Uzi / UZI_2H and TMP (optics on the rail
+  between their sights), RPK / RPK-74 (AK sights, optics on GoM's AK side mount), the Grozas (the carrying handle's
+  sights, GoM's rail on top), the M249 (rear sight behind the feed cover rail). **UMP45 / UMP9**: the rear sight
+  housing is fixed and 12.2 tall; the LR10X, LRX12X and PSO-1 went into it, so their UMP copies
+  (`UMP_OPTIC_OFFSET` in gen_post93_guns.py, the part model's own `scope` point) sit 27 / 29 / 30 x 0.001 forward
+  (the PSO-1 also raised 5.6 as before), the LRX12X's front ring at the rail's last crossbar; the rest clear.
+- **No iron sights to move**: AUG A3 / Para / HBAR (A3 rail, no BUIS), MDRx .223 / .308, P90 TR, PS90. **No optic
+  slot**: AUG A1 and SR-25 (integral scopes), main P90 (ring sight), RPD, Micro Uzi. **Pistols** (Glock 21,
+  Five-seveN, UCP): fixed slide sights, GoM's pistol sights on its Beretta mount clear them.
+- **Mk 11** left as built: its KAC front sight is modelled folded and the rear is GoM's AR15 fixed block (7.2, behind
+  every optic's footprint); the real Mk 11 is issued with its scope and folded BUIS, and a raised front over that low
+  rear block would not line up, so no states (the PSO-1's side bracket touches the receiver at 7.2, as on GoM's guns).
+- fit_audit.py and scale_audit.py read each gun's own model (sights up), so fit_audit still flags the Elcan on the
+  HK416's sights-up body; that body is never drawn with an optic.
 
 ## Bullpup set (2026-10-27)
 

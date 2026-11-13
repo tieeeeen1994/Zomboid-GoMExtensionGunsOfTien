@@ -21,8 +21,11 @@ M = 'GunsOfTienPost93'
 TEX = 'weapons/GunsOfTienPost93'
 
 # GoM accessories the guns can carry, drawn at the gun's points (same lists as the MP5's ModelWeaponPart lines).
-# optic -> how far the UMPs draw it raised (its own `scope` point; fit_audit.py)
-UMP_OPTIC_RAISE = {'PSO1_Scope': 0.0056}
+# optic -> how far the UMPs draw it forward and raised (its own `scope` point): the PSO-1's side bracket went into the
+# receiver (fit_audit.py, 2026-10-26), and the long scopes' eyepieces into the fixed rear sight housing (12.2 x 0.001
+# over the scope point; 2026-11-13, CLAUDE.md "Iron sights under optics"): each moved forward just past it, their
+# rings still on the top rail (the LRX12X's front ring at its last crossbar)
+UMP_OPTIC_OFFSET = {'PSO1_Scope': (0.030, 0.0056), 'LR10X_Scope': (0.027, 0.0), 'LRX12X_Scope': (0.029, 0.0)}
 OPTICS = ['EXPS1_Sight', 'EXPS3_Sight', 'ElcanX2_Scope', 'LR10X_Scope', 'Aimpoint_Sight', 'TA28_Scope', 'LR4X_Scope',
           'OKP3_Sight', 'ReflexS2_Sight', 'JS14_Sight', 'Kobra_Sight', 'TR06X_Scope', 'PSO1_Scope', 'LRX12X_Scope']
 LASERS = ['AimRight_Laser', 'LRX-7_Laser']
@@ -66,11 +69,41 @@ def attachment(name, value, rotate=None):
     return line + " }\n"
 
 
-def gun_model(model, file, node_body, points, extra_points):
+# The iron sights follow the optic (CLAUDE.md "Iron sights under optics"; Gunworks' ConditionalModel in
+# shared/GunsOfTienPost93/IronSights.lua picks the model from the Scope slot): gun -> [(model suffix, FBX file, body
+# node)], the first being the gun's own model (no optic, sights up). Every state has the gun's points and texture. The
+# other states come from scripts/post93/build_sight_states.py (GunsOfTienPost93_<file>_Sights.fbx); the HK416's
+# from its builder (hk416()).
+SIGHT_STATES = {
+    'MP7A1': [('', 'MP7A1', 'MP7A1_BODY'), ('_RD', 'MP7A1_Sights', 'MP7A1_BODY_RD'),
+              ('_FD', 'MP7A1_Sights', 'MP7A1_BODY_FD')],
+    'MP7A2': [('', 'MP7A2', 'MP7A2_BODY'), ('_RD', 'MP7A2_Sights', 'MP7A2_BODY_RD'),
+              ('_FD', 'MP7A2_Sights', 'MP7A2_BODY_FD')],
+    'SCARL': [('', 'SCARL_Sights', 'SCARL_BODY_UP'), ('_RD', 'SCARL_Sights', 'SCARL_BODY_RD'),
+              ('_FD', 'SCARL_Sights', 'SCARL_BODY_FD'), ('_FDX', 'SCARL_Sights', 'SCARL_BODY_FDX')],
+    'SCARH': [('', 'SCARH_Sights', 'SCARH_BODY_UP'), ('_RD', 'SCARH_Sights', 'SCARH_BODY_RD'),
+              ('_FD', 'SCARH_Sights', 'SCARH_BODY_FD')],
+    'VECTOR45': [('', 'VECTOR_Sights', 'VECTOR_BODY_UP'), ('_RD', 'VECTOR_Sights', 'VECTOR_BODY_RD'),
+                 ('_FD', 'VECTOR', 'VECTOR_BODY')],
+    'VECTOR9': [('', 'VECTOR_Sights', 'VECTOR9_BODY_UP'), ('_RD', 'VECTOR_Sights', 'VECTOR9_BODY_RD'),
+                ('_FD', 'VECTOR', 'VECTOR9_BODY')],
+    'VECTORCRB': [('', 'VECTORCRB_Sights', 'VECTORCRB_BODY_UP'), ('_RD', 'VECTORCRB_Sights', 'VECTORCRB_BODY_RD'),
+                  ('_FD', 'VECTORCRB', 'VECTORCRB_BODY')],
+    'VECTORSDP': [('', 'VECTORSDP_Sights', 'VECTORSDP_BODY_UP'), ('_RD', 'VECTORSDP_Sights', 'VECTORSDP_BODY_RD'),
+                  ('_FD', 'VECTORSDP', 'VECTORSDP_BODY')],
+}
+
+
+def sight_state_models(gun, points, extra_points):
+    return [gun_model(gun + suffix, 'GunsOfTienPost93_' + file, node, points, extra_points, texture=gun)
+            for suffix, file, node in SIGHT_STATES[gun]]
+
+
+def gun_model(model, file, node_body, points, extra_points, texture=None):
     out = f"""
     model {model} {{
         mesh     = weapons/firearms/{file}|{node_body},
-        texture  = {TEX}/{model},
+        texture  = {TEX}/{texture or model},
         cullFace = None,
 """
     out += attachment('muzzle', points['muzzle'], rot(points['muzzle']) or [-90, 0, -180])
@@ -104,36 +137,34 @@ def pistol_model(name, points):
 
 def models(mp7, mp7a2, p90, fiveseven, ucp, scarl, scarh, ump):
     out = [f"module {M} {{\n"]
-    out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
-                         ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag']))
+    out += sight_state_models('MP7A1', mp7, ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag'])
     # MP7A1_1H / MP7A2_1H: the same model, kept for guns saved with it (a one-hand swap until 2026-10-28)
     out.append(gun_model('MP7A1', 'GunsOfTienPost93_MP7A1', 'MP7A1_BODY', mp7,
                          ['stock_folded', 'foregrip_deployed', 'rifle_back', 'rifle_back_bag'])
                .replace('    model MP7A1 {', '    model MP7A1_1H {', 1))
     # the MP7A2's body and texture are its own; bolt carrier, handle and stock are the A1's models (MP7A1_BOLT /
     # MP7A1_HANDLE / MP7A1_STOCK)
-    out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
-                         ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
+    out += sight_state_models('MP7A2', mp7a2, ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag'])
     out.append(gun_model('MP7A2', 'GunsOfTienPost93_MP7A2', 'MP7A2_BODY', mp7a2,
                          ['stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']).replace('    model MP7A2 {', '    model MP7A2_1H {', 1))
     out.append(gun_model('P90TR', 'GunsOfTienPost93_P90TR', 'P90TR_BODY', p90, ['rifle_back', 'rifle_back_bag']))
     out.append(pistol_model('FIVESEVEN', fiveseven))
     out.append(pistol_model('UCP', ucp))
     scar_points = ['stock', 'stock_folded', 'rail_down', 'foregrip', 'bipod']
-    out.append(gun_model('SCARL', 'GunsOfTienPost93_SCARL', 'SCARL_BODY', scarl, scar_points))
-    out.append(gun_model('SCARH', 'GunsOfTienPost93_SCARH', 'SCARH_BODY', scarh, scar_points))
+    out += sight_state_models('SCARL', scarl, scar_points)
+    out += sight_state_models('SCARH', scarh, scar_points)
     # both UMPs are one mesh (UMP_BODY) with their own textures (markings); bolt and stock shared
     for gun in UMPS:
         out.append(gun_model(gun, 'GunsOfTienPost93_UMP', 'UMP_BODY', ump, ['stock', 'stock_folded', 'rail_down', 'foregrip']))
     # GoM's optics drawn on the UMPs through a model of their own, raised where its mount went into the receiver
     # (scripts/fit_audit.py, 2026-10-26: the PSO-1's side bracket 6.9 x 0.001 into the UMP against 1.3 on GoM's guns)
-    for o, dz in UMP_OPTIC_RAISE.items():
+    for o, (dy, dz) in UMP_OPTIC_OFFSET.items():
         out.append(f"""
     model {o}_UMP {{
         mesh     = weapons/parts/scopes|{o},
         texture  = weapons/parts/scopes/{o},
         cullFace = None,
-        attachment scope {{ offset = 0.0000 0.0000 {dz:.4f}, rotate = 0.0000 0.0000 0.0000, }}
+        attachment scope {{ offset = 0.0000 {dy:.4f} {dz:.4f}, rotate = 0.0000 0.0000 0.0000, }}
     }}
 """)
     for model, file, node, tex in [
@@ -962,7 +993,7 @@ def ump_parts(gun):
         # the main mod's Mk9 at our size (its `_GoT` models; GoM's MP5s draw the GoM-sized ones)
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
                   f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
-    lines += [f"{w}MarzGuns.{o} {(M + '.' + o + '_UMP') if o in UMP_OPTIC_RAISE else 'MarzGuns.' + o} scope scope,"
+    lines += [f"{w}MarzGuns.{o} {(M + '.' + o + '_UMP') if o in UMP_OPTIC_OFFSET else 'MarzGuns.' + o} scope scope,"
               for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
@@ -1272,15 +1303,13 @@ def vectors():
     pts9 = load_points('vector9_points.json')
     prop2 = pts['_extras']['pistol_magazines']
     out = [f"module {M} {{\n"]
-    out.append(gun_model('VECTOR45', 'GunsOfTienPost93_VECTOR', 'VECTOR_BODY', pts,
-                         ['stock', 'stock_folded', 'rail_down', 'foregrip']))
-    out.append(gun_model('VECTOR9', 'GunsOfTienPost93_VECTOR', 'VECTOR9_BODY', pts9,
-                         ['stock', 'stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag']))
-    out.append(gun_model('VECTORCRB', 'GunsOfTienPost93_VECTORCRB', 'VECTORCRB_BODY',
-                         load_points('vectorcrb_points.json'), ['stock', 'stock_folded', 'rail_down', 'foregrip']))
-    out.append(gun_model('VECTORSDP', 'GunsOfTienPost93_VECTORSDP', 'VECTORSDP_BODY',
-                         load_points('vectorsdp_points.json'), ['rail_down', 'foregrip', 'rifle_back',
-                                                                'rifle_back_bag']))
+    out += sight_state_models('VECTOR45', pts, ['stock', 'stock_folded', 'rail_down', 'foregrip'])
+    out += sight_state_models('VECTOR9', pts9,
+                              ['stock', 'stock_folded', 'rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag'])
+    out += sight_state_models('VECTORCRB', load_points('vectorcrb_points.json'),
+                              ['stock', 'stock_folded', 'rail_down', 'foregrip'])
+    out += sight_state_models('VECTORSDP', load_points('vectorsdp_points.json'),
+                              ['rail_down', 'foregrip', 'rifle_back', 'rifle_back_bag'])
     for n, tex in (('VECTOR', 'VECTOR45'), ('VECTOR9', 'VECTOR9')):
         for part in ('BOLT', 'HANDLE', 'RAIL_LEFT', 'RAIL_RIGHT'):
             out.append(f"""
@@ -2111,7 +2140,8 @@ def mk11():
 # weight 3.5 (3.49 kg empty, GoM's rifles weigh their kilograms); sound 193 / 55 (the main mod's model for GoM's
 # M4A1: 5.56 from 14.5").
 HK416_TEX = 'weapons/firearms/assault_rifles/AR15'
-HK416_BODIES = [('HK416', 'HK416_BODY'), ('HK416_RD', 'HK416_BODY_RD'), ('HK416_FD', 'HK416_BODY_FD')]
+HK416_BODIES = [('HK416', 'HK416_BODY'), ('HK416_RD', 'HK416_BODY_RD'), ('HK416_FD', 'HK416_BODY_FD'),
+                ('HK416_RDX', 'HK416_BODY_RDX'), ('HK416_FDX', 'HK416_BODY_FDX')]
 HK416_PARTS = [('HK416_Integrated_Stock_Folded', 'StockIntegrated', None),
                ('HK416_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
                ('HK416_Integrated_Rail_Up', 'RailUp', None), ('HK416_Integrated_Rail_Down', 'RailDown', None),
