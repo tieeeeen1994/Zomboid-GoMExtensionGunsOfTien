@@ -542,3 +542,61 @@ No bayonet (no lug on the rail system), ejection to the right (Hot Brass: GoM's 
 and handle GoM's AR15 table. Optics sit 150 mm ahead of the grip, clear of the diopter: on the body each optic picks,
 every GoM optic sinks at most 1.4 (fit_audit's units) and red dots float up to 1.2 (fit_audit itself reads the
 sights-up body, where the Elcan's rear meets the standing diopter).
+
+## H&K HK416 .22 LR pistols (user, 2026-11-13: both generations; decided, models next)
+
+User: "Let's start with HK416 pistol", then, shown the two that were sold, "WHY NOT BOTH??? MP5 series has a lot of
+variations itself"; held like a pistol (confirmed). References gathered first (references/hk416_22/, SOURCES.txt,
+four contact sheets: about 30 photos of the first generation, 80 of the second, 34 of the magazines, the H&K USA
+sheet and H&K GmbH's card; no straight top or front view exists among them). Both are civilian .22 trainers made
+in Germany under H&K's licence, blowback, semi-automatic, no stock and **no buffer tube** (the receiver ends in a
+round cap with a sling point), H&K's ergonomic grip, the HK416's receiver markings, the same polymer magazines.
+
+| | Gen 1: Walther HK416 .22 Tactical Pistol | Gen 2: H&K USA HK416 .22 LR Pistol |
+|---|---|---|
+| Real | Carl Walther for Walther Arms / Umarex USA, about 2009/10 to 2018 (5780303 = 20 rds, 578030310 = 10) | Umarex for H&K USA, from 2019 (81000403 = 20 rds, 81000404 = 10; grey, FDE, two-tone, bronze variants) |
+| Size | 9" barrel, 17.2" (437 mm), 5.0 lb (2.27 kg) without magazine | 8.5" (217 mm) barrel, 425 mm, 63.8 mm wide, 272 mm tall, 2050 g without magazine (H&K USA sheet) |
+| Front | short quad rail (RIS, four rails, the HK416 D10RS look), the barrel inside a long round shroud that looks like a can (thread M8x0.75 under it) | HK416 A5-style M-LOK handguard, Mil-STD-1913 top, 4-prong flash hider on a 1/2x28 thread |
+| Sights | H&K style: hooded post on the rail's front, rotary diopter rear; clamped on the rail, taken off for an optic | polymer flip-ups (rear fully adjustable, aperture 33 mm high), sight radius 304.6 mm |
+| Colour | black only | **HK bronze** (user, 2026-11-13; H&K's brown, the A5's colour) |
+
+Decided (user, 2026-11-13, asked with the colours and the proposal below): gen 2 in **HK bronze**; **named by
+their rails**, "HK416 .22 Quad Rail Pistol" (gen 1) and "HK416 .22 M-LOK Pistol" (gen 2); **Auto and Single**
+(select fire like the Vector SDP, though both real ones are semi-automatic); **no suppressor part**: "The other
+pistol seems integrated suppressor. we won't have a lootable part of it. only integrated for now", so gen 1's
+can-like shroud counts as an integral suppressor (sound_model.py's integral rule: 71 / 20 becomes 22 / 6, the AS
+VAL's) and gen 2 takes no can. (Flagged to the user: the real gen-1 shroud is a barrel shroud over a .22 liner, not
+a suppressor.) Item ids `HK416QR22` / `HK416ML22` replace the proposal's.
+
+The proposal (superseded where the decisions above say otherwise):
+- **Items** `GunsOfTienPost93.HK416T22` "HK416 .22 Tactical Pistol" (Walther's own product name) and
+  `GunsOfTienPost93.HK41622` "HK416 .22 Pistol"; Post-93 (both after 1993).
+- **Held like a pistol** (confirmed): the Vector SDP's way, a turned model, SwingAnim Handgun, GoM's MP5K reload
+  ("handgun2"), back slot, never a holster. **Semi-automatic only**, as sold (the user took select fire for the SDP;
+  say so if wanted here too).
+- **Magazines**: H&K's own polymer .22 magazines fit both (same part numbers under Walther, Umarex and H&K USA:
+  51000199 / 51000200 / 51000208), charcoal grey as shipped: "HK416 10Rds .22 LR Magazine" (short, straight),
+  "HK416 20Rds .22 LR Magazine" (curved), "HK416 30Rds .22 LR Extended Magazine" (long, curved), weights 0.06 / 0.08
+  / 0.12, joining the main mod's ".22 LR" family (plain, Subsonic, Hollow Point, Hyper Velocity). Aftermarket 50-round
+  drums exist but are not H&K's: left out.
+- **Stats** (.22 LR from 8.5-9": about 137 J against a 9 mm pistol's 500): damage 0.3-0.6, crit 25, HitChance 55,
+  Aimingtime 20, RecoilDelay 6 (almost no recoil), range 22, condition 1 in 180 (dirty rimfire blowback), weight
+  2.0 (gen 2) / 2.2 (gen 1). Sound from sound_model.py (.22 LR, 2 grains, subsonic from these barrels: 326 m/s): 72 /
+  21 (8.5") and 71 / 20 (9"), GoM's quietest pistol shot events.
+- **Rails**: gen 1 its four integral rails (optics on top; lights left, lasers right; no foregrip: a vertical grip
+  makes a US pistol an NFA "AOW", and the pistol hold has no support hand), gen 2 its top rail and GoM's optional
+  side rails on the M-LOK handguard for lights and lasers (the Vector SDP's way).
+- **Iron sights follow the optic** (IronSights.lua): gen 2 folds like the HK416 (rear folded under a red dot, both
+  under a scope); gen 1 has the rear taken off under any optic, the front kept under a red dot and taken off under a
+  scope.
+- **Muzzle**: gen 2's thread takes a .22 suppressor once the flash hider is off; gen 1's thread is under the shroud
+  (an adaptor in real life). GoM has no .22 can: either a .22 suppressor of our own (one per gun family, the
+  established rule: a real 1990s-2010s model) or none; to decide.
+- **Loot** (civilian guns, the first in Post-93): GoM's `World_Anachronistic_Spawner` (civilian homes and survivor
+  stashes, as GoM's other late guns) and the gun store lists; the .22 LR box (still unspawned) beside vanilla's
+  9 mm pistol boxes in civilian ammo lists. Details with the build.
+- **Hot Brass**: the .22 casing, ejection to the right.
+- **Model**: from GoM's AR15 receiver like the HK416 (receiver, bolt, charging handle; buffer tube off, the round
+  end cap added), the HK416's traced H&K grip and selector labels; gen 1 the HK416's front sight and diopter on a
+  short quad rail and the shroud; gen 2 a new A5-style handguard, polymer flip-ups and flash hider. Exported turned
+  (pistol-held) like the Vector SDP.

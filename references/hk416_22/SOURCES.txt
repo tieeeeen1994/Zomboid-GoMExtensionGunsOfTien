@@ -1,0 +1,299 @@
+HK416 .22 LR pistols: references gathered 2026-11-13, before modelling (user: "WHY NOT BOTH???", so both
+generations). Contact sheets: contact_sheet_gen1.png / _gen2.png / _magazines.png / _docs.png. Not in git
+(references/ is ignored); photos belong to their sites.
+
+GEN 1 = Walther HK416 .22 Pistol (Carl Walther under licence, imported by Walther Arms / Umarex USA, about
+2009/10 to 2018; 5780303 = 20 rds, 578030310 = 10 rds): 9" (229 mm) barrel inside a long round shroud
+that looks like a can (the .22 barrel is a liner in a shroud), short quad rail (RIS) with a top rail
+continuous with the receiver's, H&K-style front sight on the rail's front and H&K-style rotary diopter
+rear, H&K grip, no buffer tube (the receiver ends in a round cap), 17.2" (437 mm), 5.0 lb (2.27 kg) without
+magazine, 10 / 20 rounds, muzzle thread M8x0.75 (Small Arms Review, Feb 2011). Black.
+GEN 2 = H&K USA HK416 .22 LR Pistol (Umarex, Germany; H&K USA relaunch 2019; 81000403 = 20 rds,
+81000404 = 10 rds, FDE / two-tone / grey / bronze variants 81000530 / 531 / 598 / 976 ...): HK416 A5-style
+M-LOK handguard (Mil-STD-1913 top), polymer flip-up sights, 4-prong flash hider, H&K grip, functional dust
+cover, no buffer tube. H&K USA sheet (docs/bing_217): 425 mm long, barrel 217 mm (8.5", 1/2x28), width
+63.8 mm, height 272 mm, 2050 g without magazine, 10 / 20 / 30 rounds, rear aperture height 33 mm, rear
+aperture width 54.2 mm, front sight width 1.8 mm. H&K GmbH card (docs/bing_005): sight radius 304.6 mm, 326
+m/s, 137 J, "polymer flip-up, the rear fully adjustable", 1 turn in 13.75", no stock (optional brace).
+
+Best measuring views: gen1/bing_133.jpg (3000 px, right side), gen1/bing_071.jpg (4000 px, right),
+gen1/bing_004.jpg (left), gen1/bing_638.jpg (left); gen2/bing_037.jpg (4896 px, right, bronze),
+gen2/bing_242.jpg (left, grey), gen2/bing_006.jpg / bing_186.jpg (FDE right / left), gen2/bing_138.jpg (left).
+3/4 views: gen1 bing_001, 002, 155; gen2 bing_189, 267, 305, retail gritr_354152. Rear: gen2 bing_293, 398.
+Close-ups: gen1 bing_014, 161 (diopter, end cap); gen2 lynx_rifle_review/* (sights, handguard, muzzle,
+selector, top of the upper), bing_088, 400, 405, 438, 443, 446, 451, 458; docs/bing_391, 408, 409, 411
+(Firearms News rifle review: handguard off, sights, flash hider). No straight top or front view was found.
+Magazines (magazines/): H&K / Umarex 10 (short straight), 20 (curved), 30 (long curved) polymer, grey and
+black; aftermarket 50-round drums (bing_541, 548) are not H&K's.
+
+Per-file sources (Bing image results; page title, page, image URL):
+gen1/bing_001.jpg          Walther HK 416 22LR Tactical Rimfire Pistol
+                           Sportsman's Outdoor ... (https://www.sportsmansoutdoorsuperstore.com/prodimages/alt_images/hk-416-pistol.jpg)
+gen1/bing_002.jpg          H&k Walther Hk 416 22 Lr Semi Auto Pistol Auction
+                           https://www.liveauctioneers.com/item/171829382_handk-walther-hk-416-22-lr-semi-auto-pistol (https://p1.liveauctioneers.com/6949/319977/171829382_1_x.jpg?quality=70&version=1708113694)
+gen1/bing_004.jpg          Walther HK416 .22LR caliber pistol for sale.
+                           https://collectorsfirearms.com/104811-walther-hk416-22lr-npr40013-new.html/ (https://collectorsfirearms.com/wp-content/uploads/2024/09/544275.jpg)
+gen1/bing_009.jpg          Walther HK 416 22LR Pistol New in box.
+                           https://www.icollector.com/Walther-HK-416-22LR-Pistol-New-in-box_i23505614 (https://dygtyjqp7pi0m.cloudfront.net/i/26242/23505614_2.jpg?v=8D2D95FB79AFE90)
+gen1/bing_011.jpg          For Sale: HK416 WALTHER HK 416 PISTOL 22LR 22 LR ... near WAYNEDALE ..
+                           https://www.armslist.com/posts/15691120/fort-wayne-indiana-handguns-for-sale--hk416-walthe (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2025/12/07/15691120_02_hk416_walther_hk_416_pistol_22_1024.jpg)
+gen1/bing_012.webp         HK416 Dual Folding Brace With Direct Fit - .22LR
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-dual-folding-brace-with-direct-fit-22lr/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/16891/68716/IMG_1989HKPARTS__28513.1723821414.jpg?c=1)
+gen1/bing_014.jpg          Bid Now: HECKLER & KOCH MODEL HK 416 .22 LR CAL PISTOL - February 1 ..
+                           https://www.invaluable.com/auction-lot/heckler-koch-model-hk-416-22-lr-cal-pistol-90137-c- (https://image.invaluable.com/housePhotos/CenturionAuctions/96/741096/H5403-L317841905_original.jpg)
+gen1/bing_035.jpg          Walther HK 416 22LR Tactical Rimfire Pistol
+                           Sportsman's Outdoor ... (https://www.sportsmansoutdoorsuperstore.com/prodimages/alt_images/5780303-walther-hk.jpg)
+gen1/bing_040.jpg          ARMSLIST - For Sale: HK 416 Pistol 22lr
+                           https://www.armslist.com/posts/8476662/miami-florida-handguns-for-sale--hk-416-pistol-22lr (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2018/06/12/8476662_02_hk_416_pistol_22lr_640.jpg)
+gen1/bing_045.jpg          ARMSLIST - For Sale: NEW HK416 .22LR PISTOL +1-20RD MAG /$30 SHIP
+                           https://www.armslist.com/posts/5384336/allentown-handguns-for-sale--new-hk416--22lr-pistol (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/04/14/5384336_05_new_hk416_22lr_pistol_1_20rd_m_640.jpg)
+gen1/bing_048.jpg          ARMSLIST - For Sale: NEW HK416 .22LR PISTOL +1-20RD MAG /$30 SHIP
+                           https://www.armslist.com/posts/5384336/allentown-handguns-for-sale--new-hk416--22lr-pistol (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/04/14/5384336_04_new_hk416_22lr_pistol_1_20rd_m_640.jpg)
+gen1/bing_049.jpg          ARMSLIST - For Sale: HK 416 Pistol 9" Barrel 22LR
+                           https://www.armslist.com/posts/10139396/georgia-handguns-for-sale--hk-416-pistol-9--barrel (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2019/06/24/10139396_01_hk_416_pistol_9_barrel_22lr_640.jpg)
+gen1/bing_050.jpg          ARMSLIST - For Sale: HK 416-22 Pistol 20+1 NEW Quad Rail
+                           https://www.armslist.com/posts/5933068/albuquerque-new-mexico-handguns-for-sale--hk-416-22 (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/09/24/5933068_02_hk_416_22_pistol_20_1_new_quad_640.jpg)
+gen1/bing_065.jpg          ARMSLIST - For Sale: HK 416 22LR SEMI AUTO PISTOL
+                           https://www.armslist.com/posts/5641979/dallas-texas-handguns-for-sale--hk-416-22lr-semi-au (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/07/03/5641979_01_hk_416_22lr_semi_auto_pistol__640.jpg)
+gen1/bing_067.jpg          HK Model HK 416 Pistol - 22 LR HV - SN: HK015858 - FirearmAuction.com
+                           https://www.firearmauction.com/auctions/24130/lot/131553-hk-model-hk-416-pistol-22-lr-hv-s (https://d3j17a2r8lnfte.cloudfront.net/mar/2026/6/medium/NcAaL0x0MNxqPrkv8h5rNncx.jpeg)
+gen1/bing_071.jpg          At Auction: HK MODEL 416 .22 LR CALIBER SEMI AUTO PISTOL
+                           https://www.invaluable.com/auction-lot/hk-model-416-22-lr-caliber-semi-auto-pistol-118167- (https://image.invaluable.com/housePhotos/CenturionAuctions/92/778392/H5403-L382915784_original.jpg)
+gen1/bing_084.jpg          H&K 416 .22LR Pistol
+                           thefirearmblog.com (https://cdn-fastly.thefirearmblog.com/media/2024/05/15/14127151/h-k-416-22lr-pistol.jpg?size=720x845&nocrop=1)
+gen1/bing_113.jpg          ARMSLIST - For Sale: HK- Heckler and Koch H&K 416 Pistol .22 LR, Umare
+                           https://www.armslist.com/posts/6143089/denver-colorado-handguns-for-sale--hk--heckler-and- (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/11/24/6143089_01_hk_heckler_and_koch_h_k_416_pi_640.jpg)
+gen1/bing_133.jpg          Bid Now: HECKLER & KOCH MODEL HK 416 .22 LR CAL PISTOL - February 1 ..
+                           https://www.invaluable.com/auction-lot/heckler-koch-model-hk-416-22-lr-cal-pistol-90137-c- (https://image.invaluable.com/housePhotos/CenturionAuctions/96/741096/H5403-L317841883_original.jpg)
+gen1/bing_151.jpg          ARMSLIST - For Sale: NEW HK416 .22LR PISTOL +1-20RD MAG /$30 SHIP
+                           https://www.armslist.com/posts/5384336/allentown-handguns-for-sale--new-hk416--22lr-pistol (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/04/14/5384336_03_new_hk416_22lr_pistol_1_20rd_m_640.jpg)
+gen1/bing_155.jpg          ARMSLIST - For Sale: NEW HK416 .22LR PISTOL +1-20RD MAG /$30 SHIP
+                           https://www.armslist.com/posts/5384336/allentown-handguns-for-sale--new-hk416--22lr-pistol (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2016/04/14/5384336_07_new_hk416_22lr_pistol_1_20rd_m_640.jpg)
+gen1/bing_161.jpg          Bid Now: HECKLER & KOCH MODEL HK 416 .22 LR CAL PISTOL - February 1 ..
+                           https://www.invaluable.com/auction-lot/heckler-koch-model-hk-416-22-lr-cal-pistol-90137-c- (https://image.invaluable.com/housePhotos/CenturionAuctions/96/741096/H5403-L317841916_original.jpg)
+gen1/bing_221.jpg          Walther / H&K 416-22 Pistol in wheeling, WV, Ohio gun classifieds ...
+                           https://www.gunlistings.org/ohio-gun-classifieds/wheeling_wv/pistols/289713/ (https://www.gunlistings.org/uploads/2_pistols_walther__hk_41622_pistol_289713.jpg)
+gen1/bing_257.jpg          ARMSLIST - For Sale: H&K HK416 22cal semi pistol
+                           https://www.armslist.com/posts/6880695/jacksonville-north-carolina-handguns-for-sale--h-k- (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2017/05/26/6880695_03_h_k_hk416_22cal_semi_pistol_640.jpg)
+gen1/bing_259.jpg          ARMSLIST - For Sale: H&K HK416 22cal semi pistol
+                           https://www.armslist.com/posts/6880695/jacksonville-north-carolina-handguns-for-sale--h-k- (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2017/05/26/6880695_01_h_k_hk416_22cal_semi_pistol_640.jpg)
+gen1/bing_308.jpg          H&K 416 .22LR Pistol
+                           thefirearmblog.com (https://cdn-fastly.thefirearmblog.com/media/2024/05/15/14127163/h-k-416-22lr-pistol.jpg?size=720x845&nocrop=1)
+gen1/bing_341.jpg          ARMSLIST - For Sale: HECKLER AND KOCH HK416 22LR
+                           https://www.armslist.com/posts/9869050/ocala-handguns-for-sale--heckler-and-koch-hk416-22l (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2019/04/21/9869050_02_heckler_and_koch_hk416_22lr_640.jpg)
+gen1/bing_638.jpg          Walther H&K 416 Pistol 22LR 8.5" Barrel 20+1 - Gunbuyer
+                           https://www.gunbuyer.com/walther-22lr-hk416-pistol-wal5780303-d.html (https://www.gunbuyer.com/media/catalog/product/cache/b04d66171d00fad12bf0465168dada64/_/2/_2_2_22110-default-l.jpg)
+gen2/bing_006.jpg          HK 81000531 HK416 FDE PISTOL 22LR 1 10RD - Take Aim Gun Range
+                           https://takeaimgunrange.com/firearms/hk-81000531-hk416-fde-pistol-22lr-1-10rd/ (https://takeaimgunrange.com/wp-content/uploads/2022/11/129927.jpg)
+gen2/bing_013.jpg          HK416, Rimfire Pistol, .22lr, one 20rd magazine 81000403 For Sale ...
+                           https://www.eurooptic.com/hk416-rimfire-pistol-22lr-one-20rd-magazine-81000403 (https://images.eurooptic.com/images/products/heckler-koch/4/heckler-koch-hk416-22lr-20rd-pistol.jpg?w=3840&q=75)
+gen2/bing_019.jpg          HK416 Retractable Stock - .22LR PDWC
+                           https://hkparts.net/hk-rifle-smg-parts/hkp-walther-416-22lr-pdwc-retractable-stock/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/590x590/products/18706/79525/IMG_8737HKPARTS__69734.1752853814.jpg?c=1)
+gen2/bing_023.jpg          New HK 416 22LR Pistol & Rifle - YouTube
+                           https://www.youtube.com/watch?v=G1OeM2G97YE (https://i.ytimg.com/vi/G1OeM2G97YE/maxresdefault.jpg)
+gen2/bing_029.webp         HK 416 1913 Adapter (.22 LR)
+                           https://1913stocks.com/hk-416-1913-adapter-22-lr/ (https://cdn11.bigcommerce.com/s-2fcw2pv1dn/images/stencil/1280x1280/products/272/3298/416alum2__25056.1753974208.png?c=2)
+gen2/bing_031.jpg          Heckler & Koch HK416 .22 LR 81000642
+                           Gun Genius (https://assets.gunbroker.com/image/upload/v1746574302/GunGenius/v3/6a52baea14052f1a1028e7b0ddcefd5d/original/hk-hk416-22-long-rifle-85in-bronze-modern-sporting-pistol-201-rounds-1690552-2.jpg)
+gen2/bing_037.jpg          HK HK416 22LR Rimfire Pistol with FDE and Black Finish
+                           Sportsman's . (https://www.sportsmansoutdoorsuperstore.com/prodimages/105577-DEFAULT-l.jpg)
+gen2/bing_039.jpg          (R) Heckler & Koch Model HK416 .22LR Pistol
+                           Guns & Military Artifact (https://images.proxibid.com/AuctionImages/10896/275226/FullDetail/54-1.jpg)
+gen2/bing_043.jpg          For Sale: HK 416 PISTOL .22LR near North charleston, Charleston, SC ..
+                           https://www.armslist.com/posts/11202538/charleston-south-carolina-handguns-for-sale--hk-41 (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2020/02/16/11202538_01_hk_416_pistol_22lr_640.jpg)
+gen2/bing_054.jpg          H & K HK 81000531 HK416 PISTOL 22LR (1)10R FDE 8.5 Handgun
+                           https://www.dunhamssports.com/h---k-hk-81000531-hk416-pistol-22lr--1-10r-fde-8-5-handgun-W (https://www.dunhamssports.com/media/b4/b4/e3/1774158416/0206318960009_HK_81000531_HK416_PISTOL_22LR_110R_FDE_85_Handgun__01.jpg?ts=1774158416)
+gen2/bing_063.jpg          HK416 Pistol in .22LR
+                           Blue Ridge Supplies (https://hkpartspro.com/imagecache/productXLarge/hk416-22-lr-pistol-oblique-recolored-oct-29-2018.jpg)
+gen2/bing_064.jpg          SOLD HK 416 .22 Pistols For Sale. New in Box. $350.00 Each Black or FD
+                           https://www.sturmgewehr.com/forums/index.php?/topic/38800-sold-hk-416-22-pistols-for-sale- (https://www.sturmgewehr.com/forums/uploads/monthly_2025_01/20250102_082711.jpg.f13460158902c8ba4a996105edc934de.jpg)
+gen2/bing_066.jpg          SOLD HK 416 .22 Pistols For Sale. New in Box. $350.00 Each Black or FD
+                           https://www.sturmgewehr.com/forums/index.php?/topic/38800-sold-hk-416-22-pistols-for-sale- (https://www.sturmgewehr.com/forums/uploads/monthly_2025_01/20250101_122523.jpg.89a42401c3f6f1965b779c9e5f868b32.jpg)
+gen2/bing_086.png          H&K HK416 PISTOL 22LR HK BROWN 8.5IN BARREL 10RD 81000976 - C.O.P.S ..
+                           https://copsgunshop.net/shop/hk-hk416-pistol-22lr-hk-brown-8-5in-barrel-10rd-81000976/ (https://copsgunshop.net/wp-content/uploads/2026/06/642230267725-scaled.png)
+gen2/bing_088.jpg          HK416 .22LR Review (2026): The Affordable HK416 Trainer Rifle
+                           https://lynxdefense.com/reviews/hk416-22lr/ (https://lynxdefense.com/wp-content/uploads/2021/09/hk416-rightside.jpg)
+gen2/bing_092.jpg          Heckler & Koch 81000975 HK416 22LR Pistol 8.5" Barrel 20RD FDE - Semi
+                           https://www.gunbroker.com/item/1128409332 (https://testnetsuite.camfour.com/CatalogImages/642230267718.jpg)
+gen2/bing_096.jpg          Heckler & Koch HK 416 22LR 8.5" Tungsten H&K-HK-416 AR-15 AR15 +ORIG .
+                           https://www.gunbroker.com/item/1103810759 (https://cash-for-arms-pictures.s3.amazonaws.com/recZKNG9uD7N2BKcb/2.jpg)
+gen2/bing_104.jpg          H&K HK416 PISTOL 22LR FDE 10RD 81000976 - Semi Auto Pistols at ...
+                           https://www.gunbroker.com/item/1143532647 (https://sightsdata.s3.amazonaws.com/yellowstoneimages/hk-hk416-pistol-22lr-fde-10rd-81000976-2-5.jpg)
+gen2/bing_122.jpg          Umarex HK416 22LR Pistol - Baer Auctioneers - Realty, LLC
+                           https://www.baerauctions.com/auctions/10217/lot/113657-umarex-hk416-22lr-pistol (https://d3j17a2r8lnfte.cloudfront.net/baer/2024/8/medium/YGwEsBRUR7z6Y3syJRPQUSaH.jpeg)
+gen2/bing_134.jpg          Heckler & Koch HK416 .22 LR 81000529
+                           Gun Genius (https://assets.gunbroker.com/image/upload/v1746574312/GunGenius/v3/48e4a47e325c36bf0d780cfef1d550e3/original/hk-416-22-long-rifle-16in-flat-dark-earth-semi-automatic-modern-sporting-rifle-101-rounds-1783791-2.jpg)
+gen2/bing_138.jpg          Halbautomat Umarex HK416 .22 LR, Langwaffen Neu Waffen / Gebraucht ...
+                           https://www.aebiwaffen.ch/de/8841/halbautomat-umarex-hk416-22-lr (https://www.aebiwaffen.ch/de/media/halbautomat-umarex-hk416-22-lr.bql9c8OmrfgLa5OQEVCkdQ.jpg)
+gen2/bing_167.jpg          Heckler & Koch HK416 .22LR Pistol - C.O.P.S . GunShop
+                           https://copsgunshop.net/shop/heckler-koch-hk416-22lr-pistol/ (https://copsgunshop.net/wp-content/uploads/2020/08/HK416-.22-LR-Pistol_Right-1600x800-1.jpg)
+gen2/bing_170.jpg          Lot - H&K HK416 .22LR AR STYLE PISTOL
+                           https://www.3bsauction.com/auction-lot/h-k-hk416-.22lr-ar-style-pistol_83b78e4472 (https://image.invaluable.com/housePhotos/3bsauction/60/813460/H22914-L437941576_original.jpg)
+gen2/bing_186.jpg          HK 81000531 HK416 PISTOL 22LR (1)10R FDE 8.5
+                           Bucks & Jakes Outfitter (https://bucksandjakes.com/wp-content/uploads/2024/06/2689157.jpg)
+gen2/bing_189.jpg          HK 81000531 HK416 PISTOL 22LR (1)10R FDE 8.5
+                           Paducah Shooters (https://paducahshooters.com/wp-content/uploads/2023/12/2689229.jpg)
+gen2/bing_226.png          Heckler and Koch HK416 Pistol Flat Dark Earth .22 LR 8.5? Barrel 20 ..
+                           https://miamishooterssupply.com/product/heckler-and-koch-hk416-pistol-flat-dark-earth-22-l (https://miamishooterssupply.com/wp-content/uploads/2025/06/hk_416_1_2.png)
+gen2/bing_232.jpg          H&K HK416 8.5" 22LR 20rd Pistol,HK Brown
+                           Palmetto State Armory (https://palmettostatearmory.com/media/catalog/product/cache/b58f8310bd83805a3fa3e038c16ad36c/6/4/642230267718__23856.jpg)
+gen2/bing_235.jpg          Heckler & Koch HK416 .22 LR 81000596
+                           Gun Genius (https://assets.gunbroker.com/image/upload/v1746574318/GunGenius/v3/ca0a3560c621a76f09e845559905825c/original/heckler-and-koch-hk416-22-long-rifle-161in-gray-semi-automatic-modern-sporting-rifle-201-rounds-1789091-2.jpg)
+gen2/bing_242.jpg          HK HK416 PISTOL 22LR GREY 20RD #
+                           NJG (https://images.coreware.com/images/products/1077336-14304019.jpg)
+gen2/bing_266.jpg          HK HK416 Pistol 22LR 8.5" Barrel 10rd Black - Semi Auto Pistols at ...
+                           https://www.gunbroker.com/item/1125444186 (https://testnetsuite.camfour.com/CatalogImages/W280-25790.jpg)
+gen2/bing_267.jpg          HK416-.22-LR-Pistol.jpg
+                           Northwest Firearms (https://data.northwestfirearms.com/xfmg/thumbnail/207/207232-9fedf5e56c51fb36089b71b8d63bf69a.jpg?1666410245)
+gen2/bing_293.jpg          Heckler & Koch HK416 .22 LR 81000898
+                           Gun Genius (https://assets.gunbroker.com/image/upload/v1746574297/GunGenius/v3/56a974c1a871814fa80beb5f44fd398a/original/hk-416-22-long-rifle-85in-matte-black-modern-sporting-pistol-301-rounds-1843479-4.jpg)
+gen2/bing_295.jpg          HK 416 Pistol 22 LR, 8.5" Threaded Barrel, Tungsten Gray, Flip-Up ...
+                           https://www.impactguns.com/semi-auto-handguns/hk-416-pistol-22-lr-8-5-threaded-barrel-tung (https://cdn11.bigcommerce.com/s-1kqh9qmybo/images/stencil/1280x1280/products/125195/241332/hk-hk416-81000599__75396.1729291242.jpg?c=2)
+gen2/bing_298.png          HK416, Rimfire Pistol, .22lr, one 20rd magazine 81000403 - CastleRock
+                           https://castlerockfirearms.com/tr/grab-a-gun/hk416-rimfire-pistol-22lr-one-20rd-magazine-8 (https://castlerockfirearms.com/wp-content/uploads/2022/07/Screenshot-2.png)
+gen2/bing_305.jpg          Heckler & Koch HK416 .22 LR 81000898
+                           Gun Genius (https://assets.gunbroker.com/image/upload/v1746574294/GunGenius/v3/56a974c1a871814fa80beb5f44fd398a/original/hk-416-22-long-rifle-85in-matte-black-modern-sporting-pistol-301-rounds-1843479-2.jpg)
+gen2/bing_323.png          Hk hk416 22 lr semi-auto pistol 8.50in black fde 10+1 - Semi Auto ...
+                           https://www.gunbroker.com/item/1170855283 (https://assets.flxpoint.com/account/25842/variants/336269498/images/469588950.png)
+gen2/bing_324.jpg          H&K HK416 Pistol 22LR - Semi Auto Pistols at GunBroker.com : 116641219
+                           https://www.gunbroker.com/item/1166412192 (https://d1hp7jxkqf3f2e.cloudfront.net/WH004582LTU/WH004582LTU_04.jpg)
+gen2/bing_325.jpg          H&K HK416 Pistol 22LR - Semi Auto Pistols at GunBroker.com : 116641219
+                           https://www.gunbroker.com/item/1166412192 (https://d1hp7jxkqf3f2e.cloudfront.net/WH004582LTU/WH004582LTU_05.jpg)
+gen2/bing_326.jpg          H&K HK416 Pistol 22LR - Semi Auto Pistols at GunBroker.com : 116641219
+                           https://www.gunbroker.com/item/1166412192 (https://d1hp7jxkqf3f2e.cloudfront.net/WH004582LTU/WH004582LTU_02.jpg)
+gen2/bing_329.jpg          H&K HK416 Pistol 22LR - Semi Auto Pistols at GunBroker.com : 116641219
+                           https://www.gunbroker.com/item/1166412192 (https://d1hp7jxkqf3f2e.cloudfront.net/WH004582LTU/WH004582LTU_03.jpg)
+gen2/bing_332.jpg          HK 416 22 LR - Semi Auto Pistols at GunBroker.com : 1152939320
+                           https://www.gunbroker.com/item/1152939320 (https://assets.flxpoint.com/account/53803/processed_129927.1769393149455.jpg)
+gen2/bing_335.jpg          H&K HK416 Pistol 22LR - Semi Auto Pistols at GunBroker.com : 116641219
+                           https://www.gunbroker.com/item/1166412192 (https://d1hp7jxkqf3f2e.cloudfront.net/WH004582LTU/WH004582LTU_thumb.jpg)
+gen2/bing_342.jpg          H&K HK 416 22LR Semi Automatic Pistol
+                           USA Pawn (https://shop.usapawn.com/files/inventory/ebay/1711466/1722260522-lg.jpg)
+gen2/bing_346.jpg          ARMSLIST - For Sale: NEW IN BOX HK, HK416, 22LR, Semi-automatic ...
+                           https://www.armslist.com/posts/13355270/vermont-handguns-for-sale--new-in-box-hk--hk416--2 (https://s3.amazonaws.com/mgm-content/sites/armslist/uploads/posts/2021/06/18/13355270_01_new_in_box_hk_hk416_22lr_semi__640.jpg)
+gen2/bing_397.jpg          HK416 Review: H&K?s Magnificent Rimfire - Sniper Country
+                           https://snipercountry.com/hk416-review/ (http://143.244.165.192/wp-content/uploads/2020/10/HK416-right-1024x527.jpg)
+gen2/bing_398.webp         HK416 Review: H&K?s Magnificent Rimfire - Sniper Country
+                           https://snipercountry.com/hk416-review/ (https://snipercountry.com/wp-content/uploads/2020/10/HK416-buffer-tube-hookup-1024x830.jpg)
+gen2/bing_400.jpg          HK416 Review: H&K?s Magnificent Rimfire - Sniper Country
+                           https://snipercountry.com/hk416-review/ (http://143.244.165.192/wp-content/uploads/2020/11/By-Umarex-1024x698.jpg)
+gen2/bing_404.png          HK, 416 Sports South Exclusive 22 LR 20+1 8.50" Black Steel Threaded .
+                           https://notjustguns.com/product-details?id=123949 (https://cdn49.coreware.com/cache/image-full-213496-8bc67f5d05ca85871410a1e08464f9af.jpg)
+gen2/bing_405.jpg          HK416 Review: H&K?s Magnificent Rimfire - Sniper Country
+                           https://snipercountry.com/hk416-review/ (http://143.244.165.192/wp-content/uploads/2020/10/HK416-safety-1024x721.jpg)
+gen2/bing_429.png          HK HK416 Pistol, 22 Long Rifle, 8.5in. Barrel, 20rd, Threaded - F ...
+                           https://www.gunbroker.com/item/1129095530 (https://assets.flxpoint.com/account/28473/products/139595774/images/174093944.png)
+gen2/bing_438.jpg          HK 416 22 Long Rifle 8.5in Matte Black Modern Sporting Pistol ? 10+1 .
+                           https://miamishooterssupply.com/product/hk-416-22-long-rifle-8-5in-matte-black-modern-spor (https://miamishooterssupply.com/wp-content/uploads/2025/06/hk-416-22-long-rifle-85in-matte-black-modern-sporting-pistol-101-rounds-1843480-3.jpg)
+gen2/bing_439.jpg          SOLD HK 416 .22 Pistols For Sale. New in Box. $350.00 Each Black or FD
+                           https://www.sturmgewehr.com/forums/index.php?/topic/38800-sold-hk-416-22-pistols-for-sale- (https://www.sturmgewehr.com/forums/uploads/monthly_2025_01/20250102_082625.jpg.3023f3f66e7ae2355630b9dbdf647c25.jpg)
+gen2/bing_443.jpg          HK 416 .22LR Pistol Brace and Stock Adapter - Picatinny
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-pistol-brace-and-stock-adapter-22lr-picatinny (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/1280w/products/14468/61332/IMG_6623HKPARTS__30856.1723821355.jpg?c=1)
+gen2/bing_446.jpg          HK416 .22LR Review (2026): The Affordable HK416 Trainer Rifle
+                           https://lynxdefense.com/reviews/hk416-22lr/ (https://lynxdefense.com/wp-content/uploads/2021/09/hk416-handguard.jpg)
+gen2/bing_451.jpg          HK416 .22LR Review (2026): The Affordable HK416 Trainer Rifle
+                           https://lynxdefense.com/reviews/hk416-22lr/ (https://lynxdefense.com/wp-content/uploads/2021/09/hk416-safety.jpg)
+gen2/bing_458.jpg          HK416 .22LR Review (2026): The Affordable HK416 Trainer Rifle
+                           https://lynxdefense.com/reviews/hk416-22lr/ (https://lynxdefense.com/wp-content/uploads/2021/09/hk426-frontsight.jpg)
+gen2/bing_460.jpg          Heckler & Koch 416 .22 LR HV Pistol SN# HB023080, Flip-Up Sights - May
+                           https://bids.auctionbymayo.com/auctions/41111/lot/6297076-heckler-and-koch-416-22-lr-hv-pi (https://as-assets.marknetalliance.com/affiliate-24/2025/2/medium/M72Jl56ms6MvOmNUeulHyUco.jpeg)
+gen2/bing_467.jpg          Heckler & Koch 416 .22 LR HV Pistol SN# HB023080, Flip-Up Sights - May
+                           https://bids.auctionbymayo.com/auctions/41111/lot/6297076-heckler-and-koch-416-22-lr-hv-pi (https://as-assets.marknetalliance.com/affiliate-24/2025/2/medium/SqDlKX9Atn3NErl1utNeUXHb.jpeg)
+gen2/bing_470.png          HK 416 Pistol .22 LR - S and S Guns
+                           https://sandsguns.com/product/hk-416-pistol-22-lr/ (https://sandsguns.com/wp-content/uploads/2025/01/hkpistolleft8f12-removebg-preview.png)
+magazines/bing_101.webp    - Heckler & Koch HK416 .22 LR 10 Rounds Pistol Magazine - AR15Discount
+                           https://ar15discounts.com/products/heckler-koch-hk416-22-lr-10-rounds-pistol-magazine/ (https://ar15discounts.com/wp-content/uploads/2025/07/SKU27872_3.webp)
+magazines/bing_112.webp    - Heckler & Koch HK416 .22 LR 10 Rounds Pistol Magazine - AR15Discount
+                           https://ar15discounts.com/products/heckler-koch-hk416-22-lr-10-rounds-pistol-magazine/ (https://ar15discounts.com/wp-content/uploads/2025/07/SKU27872_2.webp)
+magazines/bing_283.webp    Heckler & Koch HK416 .22 LR 10 Rounds Pistol Magazine - Dirty Bird ...
+                           https://dirtybirdusa.com/products/heckler-koch-hk416-22-lr-10-rounds-pistol-magazine/ (https://dirtybirdusa.com/wp-content/uploads/2025/07/SKU27872_5.webp)
+magazines/bing_284.jpg     GUNS Magazine HK 416 .22 LR Pistol - GUNS Magazine
+                           https://gunsmagazine.com/guns/rifles/hk-416-22-lr-pistol/ (https://gunsmagazine.com/wp-content/uploads/2020/03/G0620-HK416-7.jpg)
+magazines/bing_481.jpg     HK416 Magazine - 30 Round - .22LR Pistols and Rifles
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-30-round-22lr-pistols-and-rifles/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/590x590/products/12145/50253/IMG_0115HKPARTS__47019.1755730213.jpg?c=1)
+magazines/bing_486.jpg     Find HK 416 .22 Series at HK Parts
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-22-series/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/590x590/products/14531/61636/IMG_6964HKPARTS__06399.1755733175.jpg?c=1)
+magazines/bing_489.jpg     HK416 Magazine - .22LR - Gray
+                           https://hkparts.net/all-parts/walther-30-round-hk-416-22lr-magazine-gray/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/12148/50277/IMG_0602HKPARTS__21369.1696324643.jpg?c=1)
+magazines/bing_497.jpg     HK - Magazine 22 LR 30 Rd - Fits HK416 22LR - Black
+                           https://www.bauer-precision.com/hk-magazine-22-lr-30-rd-fits-hk416-22lr-black/ (https://cdn11.bigcommerce.com/s-50c7cl/images/stencil/1280x1280/products/5885/28323/MGHK51000208_2_HR__57016.1680723316.jpg?c=2?imbypass=on)
+magazines/bing_500.jpg     Heckler & Koch HK416 .22 LR 30 Round Rifle Magazine
+                           $1.10 Off Free . (https://www.opticsplanet.com/i/original/opplanet-umarex-pistol-magazine-hk416-22-lr-30-rounds-black-51000208-30rd-main)
+magazines/bing_503.jpg     HK - HK416 22LR 20 Round Magazine - Black
+                           https://www.bucksnortoutfitters.com/hk-hk416-22lr-20-round-magazine-black/ (https://cdn11.bigcommerce.com/s-c8t7x77d/images/stencil/1280x1280/products/2671/2669/HK_-_HK416_20_Round_Magazine__01952.1605797492.jpg?c=2)
+magazines/bing_509.jpg     H&K HK416 Rifle Magazine .22 LR 20/rd
+                           https://www.natchezss.com/hk-hk416-rifle-magazine-22-lr-20rd (https://media.natchezss.com/images/product/HZ51000200/HZ51000200-1.jpg)
+magazines/bing_512.jpg     HK416, .22lr 20rd Magazine 51000200 For Sale - EuroOptic
+                           https://www.eurooptic.com/hk416-22lr-20rd-magazine-51000200 (https://images.eurooptic.com/images/products/heckler-koch/4/heckler-koch-51000200.jpg)
+magazines/bing_523.webp    Heckler & Koch HK416 .22 LR 10 Rounds Pistol Magazine - Dirty Bird ...
+                           https://dirtybirdusa.com/products/heckler-koch-hk416-22-lr-10-rounds-pistol-magazine/ (https://dirtybirdusa.com/wp-content/uploads/2025/07/SKU27872_1.webp)
+magazines/bing_527.jpg     HK 416 .22LR mags 10rd
+                           Blue Ridge Supplies (https://hkpartspro.com/imagecache/productXLarge/mghk51000199_2_hr1.jpg)
+magazines/bing_535.webp    - Heckler & Koch HK416 .22 LR 10 Rounds Pistol Magazine - AR15Discount
+                           https://ar15discounts.com/products/heckler-koch-hk416-22-lr-10-rounds-pistol-magazine/ (https://ar15discounts.com/wp-content/uploads/2025/07/SKU27872_4.webp)
+magazines/bing_541.jpg     HK416 Magazine - 50 Round Drum - .22LR - Translucent
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-50-round-drum-22lr-translucent/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/12151/50287/IMG_0542HKPARTS__31989.1696324647.jpg?c=1)
+magazines/bing_546.jpg     HK 416 .22 - 30 Round Magazine - Charcoal Gray
+                           https://hkparts.net/all-parts/walther-30-round-hk-416-22lr-magazine-gray/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/1280x1280/products/12148/50271/IMG_0591HKPARTS__85430.1696324640.jpg?c=1)
+magazines/bing_548.jpg     HK416 Magazine - 50 Round Drum - .22LR - Translucent
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-50-round-drum-22lr-translucent/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/12151/50286/IMG_0544HKPARTS__47566.1696324646.jpg?c=1)
+magazines/bing_550.jpg     HK416 Magazine - 30 Round - .22LR Pistols and Rifles
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-30-round-22lr-pistols-and-rifles/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/14531/61638/IMG_6966HKPARTS__01655.1696336876.jpg?c=1)
+magazines/bing_552.webp    HK416 Magazine - 30 Round - .22LR Pistols and Rifles
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-30-round-22lr-pistols-and-rifles/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/14531/61637/IMG_6968HKPARTS__04154.1696336876.jpg?c=1)
+magazines/bing_558.jpg     HK 416 .22LR mags 10rd
+                           Blue Ridge Supplies (https://hkpartspro.com/imagecache/productXLarge/mghk51000199_1_hr1.jpg)
+magazines/bing_559.jpg     HK 22 LR 10RD MK 416 MAGAZINE - Bereli Inc.
+                           https://www.bereli.com/hk-22-lr-10rd-mk-416-magazine/ (https://cdn11.bigcommerce.com/s-yqqkx/images/stencil/1280x1280/products/539561/522999/577610_1__39506.1682367108.jpg?c=2)
+magazines/bing_564.jpg     Heckler & Koch HK416 .22 LR 20 Round Rifle Magazine Review - Gun Value
+                           https://www.gunvaluesboard.com/heckler-koch-hk416-22-lr-20-round-rifle-magazine-review/ (https://www.opticsplanet.com/i/original/opplanet-umarex-pistol-magazine-hk416-22-lr-20-rounds-black-51000200-20rd-main.jpg)
+magazines/bing_566.jpg     Heckler & Koch 416 .22LR Magazine - 20 Round HK51000200
+                           https://www.primaryarms.com/hk-416-22lr-magazine-20-round (https://www.primaryarms.com/SSP%20Applications/NetSuite%20Inc.%20-%20SCA%20Mont%20Blanc/Development/img/HK51000200_00.jpg)
+magazines/bing_570.jpg     HK416 Magazine - 30 Round - .22LR Pistols and Rifles
+                           https://hkparts.net/hk-rifle-smg-parts/hk416-magazine-30-round-22lr-pistols-and-rifles/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/2560w/products/14531/61640/IMG_6962HKPARTS__07161.1696336878.jpg?c=1)
+magazines/bing_581.jpg     HK416 .22lr 30 Round Magazine ? Jokerz Custom
+                           https://jokerzcustom.com/product/hk416-22lr-30-round-magazine/ (https://jokerzcustom.com/wp-content/uploads/2020/12/577606_1.jpg)
+magazines/bing_588.jpg     Heckler & Koch 416 .22LR Magazine - 20 Round HK51000200
+                           https://www.primaryarms.com/hk-416-22lr-magazine-20-round (https://www.primaryarms.com/SSP%20Applications/NetSuite%20Inc.%20-%20SCA%20Mont%20Blanc/Development/img/HK51000200_01.jpg)
+magazines/bing_591.jpg     HK 416 Black Detachable 30-Round Magazine, .22 LR Caliber, Model ...
+                           https://www.gunbroker.com/item/1137072920 (https://res-5.cloudinary.com/davidsons-inc/v1/media/catalog/product/5/1/51000208.jpg)
+magazines/bing_597.jpg     HK 416 Rimfire (Walther/Umarex) Magazine .22 Long Rifle 20 Rounds ...
+                           https://www.cheaperthandirt.com/hk-416-rimfire-waltherumarex-magazine-.22-long-rifle-20-ro (https://cdn.cheaperthandirt.com/media/catalog/product/cache/17/image/1000x/9df78eab33525d08d6e5fb8d27136e95/1/2/125502.jpg)
+magazines/bing_598.jpg     Matte Grey Walther 30 Round .22 LR Magazine - Fits: HK416
+                           https://madisonguns.com/matte-grey-walther-30-round-22-lr-magazine-fits-hk416-1/ (https://cdn11.bigcommerce.com/s-sfd6yrpk93/images/stencil/1280x1280/products/1370/2364/NqUTEH__23357.1613666929.jpg?c=1)
+magazines/bing_599.jpg     Black Walther 20 Round .22 LR Magazine - Fits: HK416
+                           https://madisonguns.com/black-walther-20-round-22-lr-magazine-fits-hk416-1/ (https://cdn11.bigcommerce.com/s-sfd6yrpk93/images/stencil/1280x1280/products/1369/2363/JaLulb__11453.1613666929.jpg?c=1)
+magazines/bing_603.png     Heckler & Koch HK416 .22LR Rifle Magazine ? Shelby Co Ammo
+                           https://www.shelbycoammo.com/products/heckler-koch-hk416-22lr-rifle-magazine (https://www.shelbycoammo.com/cdn/shop/files/Heckler_KochHK416.22LRRifleMagazine.png?v=1765759050&width=4096)
+magazines/bing_619.jpg     Heckler and Koch 416 .22LR 10 Rd. Magazine - firearmspartshop.com
+                           https://www.firearmspartshop.com/product/heckler-and-koch-416-22lr-10-rd-magazine/ (https://www.firearmspartshop.com/wp-content/uploads/2025/09/577610.jpg)
+magazines/bing_635.webp    H&K HK416 Rifle Magazine .22 LR 30/rd - Mashburn Weaponry
+                           https://mashburnweaponry.com/product/hk-hk416-rifle-magazine-22-lr-30-rd/ (https://mashburnweaponry.com/wp-content/uploads/https3A2F2Fmedia.chattanoogashooting.com2Fimages2Fproduct2FHZ510002082FHZ51000208-1.webp)
+docs/bing_005.jpg          Tactical Weapons ? Heckler & Koch GmbH - HK416 .22 LR Pistol
+                           https://tactical-weapons.tumblr.com/post/650387726210908160/heckler-koch-gmbh-hk416-22-lr- (https://64.media.tumblr.com/0a16e17342a706139101ac394126a1c4/bbbd7ac6bd30db66-bf/s1280x1920/fe5144369e96f166a433a1be0e195c81f397db43.jpg)
+docs/bing_217.jpg          New .22's Inbound
+                           HKPRO Forums (https://www.geekgunman.com/images/HK416_22_pistol.jpg)
+docs/bing_403.jpg          HK416 Pistol
+                           PDF (https://imgv2-2-f.scribdassets.com/img/document/629329100/original/5abd899354/1711266647?v=1)
+docs/bing_478.png          HKP HK 416 .22 LR Flash Hider
+                           https://hkparts.net/rifle-smg-parts/hkp-hk-416-22-lr-flash-hider/ (https://cdn11.bigcommerce.com/s-vxfkqern53/images/stencil/590x590/products/13835/74749/2__96098.1740587752.png?c=1)
+docs/bing_391.jpg          The HK 416 Rimfire Rifle in .22LR: Review - Firearms News
+                           https://www.firearmsnews.com/editorial/hk-416-rimfire-rifle-review/510124 (https://content.osgnetworks.tv/photopacks/kh-416-rimfire-rifle-review_510111/510122_hk-rimfire-rifle-review-06_hero_1200x800.jpg)
+docs/bing_408.jpg          The HK 416 Rimfire Rifle in .22LR: Review - Firearms News
+                           https://www.firearmsnews.com/editorial/hk-416-rimfire-rifle-review/510124 (https://content.osgnetworks.tv/photopacks/kh-416-rimfire-rifle-review_510111/510112_hk-rimfire-rifle-review-07_hero_1200x800.jpg)
+docs/bing_409.jpg          The HK 416 Rimfire Rifle in .22LR: Review - Firearms News
+                           https://www.firearmsnews.com/editorial/hk-416-rimfire-rifle-review/510124 (https://content.osgnetworks.tv/photopacks/kh-416-rimfire-rifle-review_510111/510120_hk-rimfire-rifle-review-04_hero_1200x800.jpg)
+docs/bing_411.jpg          The HK 416 Rimfire Rifle in .22LR: Review - Firearms News
+                           https://www.firearmsnews.com/editorial/hk-416-rimfire-rifle-review/510124 (https://content.osgnetworks.tv/photopacks/kh-416-rimfire-rifle-review_510111/510119_hk-rimfire-rifle-review-03_hero_1200x800.jpg)
+docs/bing_300.jpg          The HK 416 Rimfire Rifle in .22LR: Review - Firearms News
+                           https://www.firearmsnews.com/editorial/hk-416-rimfire-rifle-review/510124 (https://content.osgnetworks.tv/photopacks/kh-416-rimfire-rifle-review_510111/510113_hk-rimfire-rifle-review-08_hero_1200x800.jpg)
+gen1/sos_walther_pistol*.jpg   Sportsman's Outdoor Superstore, Walther HK 416 22LR Tactical Rimfire Pistol (5780303)
+gen2/gritr_*.jpg               gritrsports.com, HK 416 22LR 8.5in 10rd pistol 81000404
+gen2/blackstone_brown.jpg      blackstoneshooting.com, HK416 22LR 8.5" HK brown
+gen2/laarmory_3.jpg            laarmory.net, HK HK416 22LR 8.5" threaded 20rd M-LOK
+gen2/eurooptic_10rd.jpg, gradys_fde.jpg, snipercountry_right.jpg, sos_fde_black.jpg, takeaim_fde.jpg,
+  yellowstone_fde.jpg          retailer / review listings found by Bing (EuroOptic, Grady's, Sniper Country,
+                               Sportsman's Outdoor Superstore 81000530, Take Aim, Yellowstone Armory 81000976)
+gen2/lynx_rifle_review/*       lynxdefense.com/reviews/hk416-22lr/ (the gen-2 rifle with a brace: same upper,
+                               sights, safety, muzzle device)
+docs/armslist_rifle_box.jpg    Armslist, gen-2 rifle and its box

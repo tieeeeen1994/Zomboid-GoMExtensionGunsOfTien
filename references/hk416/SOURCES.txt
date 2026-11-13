@@ -1,0 +1,22 @@
+HK416 D14.5RS references (gathered 2026-11-13, before modelling; contact_sheet.png shows them all)
+
+Side views
+- imfdb/HK416_14.5_Current.jpg   IMFDB, D14.5RS left side (H&K stock and grip): the main measuring reference
+- imfdb/Hk416-2.jpg              IMFDB, earliest production 14.5" with the M4 6-position stock
+- imfdb/HK416_current.jpg, 1-HK416-16.5-LEFT1.jpg, HK416_20_inch_barrel.jpg, Heckler_and_Koch_416.jpg,
+  Hk416_10_inch_left.jpg, HK_MR556A1_QuadRail.jpg, HKM4D-D10B.jpg   IMFDB, other barrel lengths / sides
+- user_hk416_left.png            the user's photo (newer handguard), left side
+- Hk-416.png                     Commons, CC BY-SA 4.0, drawing of both sides
+- HK416N.jpg / HK416N.png        Commons, CC BY-SA 3.0 / 2.0, HK416N 3/4 left
+
+H&K operator's manual (August 2007), hk416_operators_manual.pdf (gunlib.app), images in manual/
+- p03_*  the five models side by side; p05_0 / p05_1 left and right side with controls; p07_* D10RS / D14.5RS
+- p11_5  the upper with the rail system off (barrel, gas block, front sight base)
+- p26_0  line drawing of the Free Floating Rail System (3/4, rear cross-section); p24_0 / p25_0 exploded upper / lower
+- p27_*  the diopter rear sight exploded; p17_* sight picture
+
+Licensed replicas (VFC for Umarex, H&K markings and real dimensions)
+- vfc_d145rs_1..3.jpg            airsoft.ch listing "H&K HK416 D14.5RS V2": 3/4 from the front left and right, receiver
+- redwolf_hk416d/hk416d_1..12    Redwolf "Umarex HK416D GBB Gen 3": 3/4 views from both ends, along the top rail,
+                                 close-ups of the receiver, stock, sights, rail top, bolt carrier
+No straight top or front view was found; the rail's cross-section is from p26_0 and the 3/4 views.

@@ -2052,6 +2052,43 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
   stock stats, integrated rails, spawn table, MountOn appends; its sight states in IronSights.lua), Tooltips.lua, HotBrass.lua (the
   SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
 
+## HK416 .22 LR pistols (Post-93, 2026-11-13; models built for review, nothing wired)
+
+User: both generations ("WHY NOT BOTH??? MP5 series has a lot of variations itself"), pistol-held, Auto + Single,
+named by their rails, gen 2 in HK bronze, gen 1's can-like shroud an integral suppressor, no suppressor part
+(docs/post93_design.md "H&K HK416 .22 LR pistols"). References first: `references/hk416_22/` (SOURCES.txt, contact
+sheets per group; about 145 photos found through Bing image search, `www.bing.com/images/async?q=...&first=N&count=35`
+works with curl where most gun retailers answer 403).
+- **Scale**: the measuring photos (gen1/bing_133, gen2/bing_037, right sides mirrored to muzzle-left, 1800 px wide)
+  map to GoM's AR15 receiver by the magazine well's front face (206.7 mm, as on the HK416's photo) and the run from it
+  to the trigger guard's opening (71 mm): 3.72 / 3.66 px a mm. The trigger opening, the H&K grip's depth, the upper's
+  front and both barrels (from the bolt face) agree; H&K's 425 mm and Walther's 17.2" overall lengths are 6-13 %
+  under what the photos give (measured without the flash hider / end cap, it seems). Read photo coordinates off 2x
+  zoomed crops with a 10 px grid (a whole 1800 px photo shown at once misread the rear by 150-200 px once).
+  `render_hk416_22.py` renders each gun at its photo's scale and framing (`<gun>_photo.png`): laid over the photo
+  (scratch only) the handguard, slots, flash hider / shroud, grip, trigger guard and magazine land on the photo's.
+- **Build** (`scripts/post93/build_hk416_22.py`, ~10 s): GoM's AR15 receiver as the HK416's (its stock, buffer tube,
+  end plate, A2 grip and everything ahead of 212 mm removed; the flat top carried to the rear; the selector mirrored;
+  the HK416's traced H&K grip and selector labels), a round end cap where the tube would start (both real ones have
+  no buffer tube), then per gun: **QR22** Walther's short quad rail (to 372 mm, the HK416's rail code), the shroud
+  (r 18.3 to the muzzle at 444), rail bolt heads, the sling ring under the cap, H&K-style hooded front and rotary
+  diopter clamped on the rail; **ML22** the A5-style M-LOK handguard (to 405, half width 25, the photo's three slot
+  rows), QD socket bosses, rail locks, the barrel and a 4-prong flash hider (`arc_prism`, to 473), polymer flip-ups.
+  Sight states: QR22 `_RD` rear off (any red dot), `_FD` both off (scope); ML22 `_RD` rear folded / `_FD` both
+  folded / `_RDX` / `_FDX` rear off, the HK416's rule and fold height (rear folded = 3.5 mm block). Exported turned
+  (the Vector SDP's way) as `GunsOfTienPost93_HK416QR22.fbx` / `_HK416ML22.fbx` (BODY + states, BOLT,
+  CHARGING_HANDLE, MARKINGS), points `hk416_22_points.json` (turned; magazine / scope / light / laser turn upright
+  parts with -180 0 -180). The ML22's body texture `HK416ML22.png` (make_hk416_22_art.py): GoM's AR15 texture top
+  left, the same in bronze top right; faces carry a `bronze` int layer (GoM's four big receiver islands, the rail
+  extension, the handguard) and `remap_bronze` moves their UVs right.
+- **Magazines** (`GunsOfTienPost93_HK416_22_magazines.fbx`, upright, in GoM's STANAG frame at the AR15's `magazine`
+  point; `HK416_22_MAG.png`): `22LRMagazine10_HK416` (straight, from the gen-1 photo), `_20` (curved, gen-2 photo),
+  `_30` (the 20's edges carried on 42 mm along their curve); each a ladder of sections (quads only), a dark feed slot
+  and three screws per side.
+- **Not done**: items, model scripts, Lua (IronSights.Register, stats, magazine family), loot, icons, a clash run of
+  the states against GoM's optics (needs the items for fit_audit; the folded / removed rear repeats the HK416's
+  checked heights, and both front sights stand 205 mm or more ahead of the scope point).
+
 ## Iron sights under optics (both mods, 2026-11-13; built, not played)
 
 User (TODO.md): the HK416 folds its sights under an optic, so go through every gun of both mods that takes one.

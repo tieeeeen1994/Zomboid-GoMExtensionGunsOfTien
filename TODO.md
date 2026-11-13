@@ -22,9 +22,18 @@ so far; gather many references of each gun from every angle before modelling it,
 - [x] **HK416 D14.5RS** (built 2026-11-13, not played): model approved, items, Lua, loot, icon, docs (CLAUDE.md
       "HK416 D14.5RS", docs/post93_design.md). Its iron sights fold under optics (three bodies). Still to do for the
       release: the Workshop preview (render_ad_guns.py / make_workshop_art.py) and the change note.
-- [ ] **HK416 .22 LR Pistol**: H&K-licensed rimfire built by Umarex / Walther (H&K USA relaunch 2019, models
-      81000403 / 81000404): 8.5" threaded barrel, blowback, top rail, about 4.5 lb, its own 10 / 20-round magazines
-      (they join the ".22 LR" family). Proposed pistol-held, GoM's MP5K way like the Vector SDP (`handgun2`); confirm.
+- [ ] **HK416 .22 LR pistols, both generations** (user, 2026-11-13: "WHY NOT BOTH???"; pistol-held confirmed):
+      Walther's quad-rail "HK416 .22 Tactical Pistol" (about 2009/10-2018) and H&K USA's M-LOK "HK416 .22 LR Pistol"
+      (2019-), sharing H&K's 10 / 20 / 30-round .22 magazines. References gathered (references/hk416_22/,
+      SOURCES.txt, contact sheets); design decided in docs/post93_design.md "H&K HK416 .22 LR pistols" (gen 2 in HK
+      bronze, "Quad Rail" / "M-LOK" names, Auto + Single, gen 1's shroud an integral suppressor, no can part).
+      Models built for review 2026-11-13 (CLAUDE.md "HK416 .22 LR pistols"), **waiting on the user's verdict**
+      (review images: rerun `render_hk416_22.py`; photo overlays as in that section). Open points put to the user:
+      the M-LOK pistol's flip-up sights are plain blocks; the 30-round magazine's length is estimated (the 20's curve
+      carried on 42 mm, no measurable photo of a 30); the Quad Rail's shroud is an integral suppressor by the user's
+      choice, but the real one is only a barrel shroud (realistic = as loud as the M-LOK). After approval: items, model
+      scripts, Lua (IronSights.Register, stats, the ".22 LR" magazine family), loot (with the .22 box), icons, the
+      clash run against GoM's optics (fit_audit).
 - [ ] **HK417 D16RS "Recce"**: the standard 16" 7.62x51 rifle; its own 10 / 20-round magazines (real HK417
       magazines do not fit the SR-25, so not the SR-25's).
 - [ ] **HK417 D20RS "Sniper"**: the longest, original pattern: 20" barrel, 1,085 / 1,005 mm, 4.23 kg; the Recce's
