@@ -15,5 +15,7 @@ gun, not to pick one or ask "which one?".
 "WHY NOT BOTH??? MP5 series has a lot of variations itself."
 
 **How to apply:** in the reference hunt, note every real variant; propose building them all, named so they can be
-told apart. Still ask about genuine design choices within each (colour, fire modes, names). Related:
+told apart. Still ask about genuine design choices within each (colour, fire modes, names). The user may still
+narrow it later: the same day, while the two .22 pistols were being wired, "let's use walther's" shelved the M-LOK one
+(docs/shelved_hk416ml22.md), so shelve rather than delete a variant they drop. Related:
 [[release-two-guns-minimum]], [[gather-many-gun-references]].

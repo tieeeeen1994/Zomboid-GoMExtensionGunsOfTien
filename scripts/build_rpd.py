@@ -91,14 +91,21 @@ STOCK = [(788.0, 103.0), (788.0, 150.0), (820.0, 141.0), (860.0, 133.0), (880.0,
          (918.0, 20.0), (912.0, 40.0), (906.0, 55.0), (895.0, 64.0), (880.0, 72.0), (860.0, 80.0), (840.0, 87.0),
          (820.0, 93.0), (800.0, 99.0)]
 BUTTPLATE = [(1035.0, 4.0), (1040.0, 6.0), (1041.0, 126.0), (1036.0, 128.0)]
-GRIP = [(745.0, 101.0), (743.0, 60.0), (742.0, 12.0), (746.0, 4.0), (760.0, 2.0), (776.0, 3.0), (781.0, 10.0),
+GRIP = [(729.5, 101.0), (731.0, 80.0), (733.5, 55.0), (737.5, 40.0), (741.0, 28.0), (742.0, 12.0), (746.0, 4.0), (760.0, 2.0), (776.0, 3.0), (781.0, 10.0),
         (781.0, 50.0), (783.0, 101.0)]
-TRIGGER = [(724.0, 101.0), (720.0, 92.0), (716.0, 85.0), (712.0, 82.0), (710.0, 84.0), (714.0, 90.0),
-           (717.0, 101.0)]
-GUARD_OUT = [(740.0, 100.0), (738.0, 82.0), (730.0, 74.0), (715.0, 71.0), (690.0, 72.0), (683.0, 78.0),
-             (683.0, 100.0)]
-GUARD_IN = [(736.0, 100.0), (734.0, 84.0), (728.0, 77.5), (715.0, 75.0), (692.0, 76.0), (687.0, 80.0),
-            (687.0, 100.0)]
+# The trigger, the guard and the grip's raked front, read off references/rpd/rpd_finnish_full.jpg in this frame
+# (x = 4872 - 4.4204 L, y = 1372 - 4.4204 H; trigger audit 2026-11-13, user: "the triggers you make are not good").
+# The white PNG the profiles came from had lost the guard's bottom bar, so the guard was drawn 5-10 mm too far back,
+# its bar 5 mm high, and the trigger leant back. Now: the guard a long rounded loop (opening L 677-726, H 70-97, its
+# top corners rounded, a 3 mm bar), the trigger hanging from L 708-712.5 and curling forward to its tip at L 698.5,
+# H 78, the grip's front raked from L 729.5 at the top to 741 at H 28.
+TRIGGER = [(712.5, 101.0), (712.3, 93.7), (711.0, 86.9), (707.2, 80.9), (701.9, 77.9), (698.8, 77.9),
+           (698.3, 79.2), (700.4, 80.3), (704.6, 82.6), (707.0, 86.3), (708.0, 91.4), (708.2, 101.0)]
+GUARD_OUT = [(729.5, 100.0), (728.8, 94.0), (728.8, 74.0), (726.0, 68.8), (720.5, 66.8), (684.0, 66.8),
+             (677.5, 68.5), (674.0, 73.0), (673.3, 94.0), (671.5, 100.0)]
+GUARD_IN = [(723.5, 96.9), (726.1, 94.0), (726.1, 76.0), (724.0, 71.8), (720.0, 70.0), (684.0, 70.0),
+            (679.5, 71.6), (677.0, 75.0), (677.0, 94.0), (679.5, 96.9)]
+GUARD_TOP = (679.5, 723.5, 96.9, 100.5)          # the opening's flat top under the trigger housing
 GAS_BLOCK = [(198.0, 104.0), (198.0, 152.0), (205.0, 156.0), (238.0, 156.0), (242.0, 150.0), (242.0, 104.0)]
 FRONT_SIGHT = [(13.0, 148.0), (13.0, 170.0), (16.0, 188.0), (20.0, 195.0), (32.0, 195.0), (35.0, 188.0),
                (35.0, 148.0)]
@@ -159,6 +166,7 @@ def build_body():
     slab(b, GRIP, half=W_GRIP, bevel=3.5, res=1, mat="wood")
     slab(b, TRIGGER, half=2.5, bevel=0.6, mat="dark")
     b.strip(PL(GUARD_OUT), PL(GUARD_IN), -3.5, 3.5, mat="steel", bevel=0.5)
+    box(b, GUARD_TOP[0], GUARD_TOP[1], GUARD_TOP[2], GUARD_TOP[3], -3.5, 3.5, mat="steel", bevel=0.4)
     # forward: the dog-bone handguard, the barrel and the gas cylinder under it, the gas block, the front sight
     slab(b, HANDGUARD, half=W_HG, bevel=4.0, res=1, mat="wood")
     lathe_y(b, BORE, [(512.0, 0.0), (512.0, 11.5), (382.0, 11.5), (380.0, 9.5), (76.0, 9.5), (75.0, 10.5),

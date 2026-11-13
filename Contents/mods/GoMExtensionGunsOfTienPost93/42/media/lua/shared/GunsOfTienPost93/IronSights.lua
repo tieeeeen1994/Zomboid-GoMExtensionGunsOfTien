@@ -12,7 +12,9 @@
     - a magnified scope, `_FD`: both folded;
     - `_RDX` / `_FDX`: the same with the rear sight taken off the rail, for the optics whose mount sits on its spot
       (measured: the Elcan and the TR06X on the SCAR-L; the Kobra, the Elcan and the TR06X on the HK416).
-    Guns: MP7A1, MP7A2, SCAR-L, SCAR-H, the four Vectors (modelled folded until now), the HK416. Optics from other mods
+    Guns: MP7A1, MP7A2, SCAR-L, SCAR-H, the four Vectors (modelled folded until now), the HK416, and the HK416 .22
+    Quad Rail Pistol (registered in HK416_22.lua: Walther's clamped-on sights come off instead of folding, the rear
+    under a red dot, both under a scope). Optics from other mods
     leave the sights up. The others keep theirs: fixed sights the optics clear (Uzis, TMP, RPKs, Grozas, M249, UMPs,
     whose long scopes are drawn further forward), the pistols' slide sights, guns with no iron sights (AUG A3 family,
     MDRx, P90 TR, PS90), integral optics (AUG A1, SR-25) and the Mk 11 (its front sight is already folded).

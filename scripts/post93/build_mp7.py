@@ -355,9 +355,21 @@ FRONT_GRIP = [(78.0, 104.5), (74.3, 93.0), (74.3, 85.1), (76.6, 78.0), (79.9, 74
 GUARD_OUT = [(172.7, 104.0), (178.0, 79.0), (181.0, 73.8), (188.0, 70.8), (229.0, 71.0), (233.5, 70.0)]
 GUARD_IN = [(176.7, 104.0), (181.5, 81.0), (184.0, 76.2), (190.0, 73.8), (228.0, 73.9), (232.5, 73.7)]
 # the blade's top runs up into the receiver (its bottom is H 103.5): ending at H 101.5, as traced, left it floating
-# (user, 2026-10-18: "trigger looks detached")
-TRIGGER = [(228.0, 106.5), (222.0, 106.5), (222.0, 101.5), (219.0, 95.0), (214.0, 88.0), (208.0, 82.0),
-           (203.5, 80.5), (203.0, 78.5), (206.0, 78.5), (212.0, 81.5), (218.0, 86.5), (223.0, 92.5)]
+# (user, 2026-10-18: "trigger looks detached"). Re-read 2026-11-14 (trigger audit) off IMFDB's studio left side of an
+# MP7A1 ("H&K MP71A1.jpg", 1400 px; the whole model registered on it at 3.18 px a mm, IoU 0.88, the guard on the
+# photo's): the blade stands upright (front edge L 215.3-216.2) down to H 92, then sweeps forward to its split tips at
+# L 204.6-208, H 78.6-81; behind it, above H 93.5, the trigger's upper body and bar fill the opening back to the grip
+# (a small window left out). It was one forward-leaning blade, its top 6 mm too far back. The Bundeswehr photo (an
+# angled cut-out) and the black MP7A2 agree on the top; the angled one put the tip 3 mm too far back.
+TRIGGER = [(230.5, 106.5), (215.3, 106.5), (215.3, 101.6), (215.6, 100.3), (216.2, 99.1), (216.2, 94.0), (215.9, 92.8),
+           (215.6, 91.5), (214.7, 90.2), (213.7, 89.0), (212.8, 87.7), (211.2, 86.5), (209.6, 85.2), (208.0, 83.9),
+           (206.1, 82.7), (204.8, 81.4), (204.6, 80.6), (205.6, 80.0), (206.6, 79.0), (207.4, 78.6), (208.2, 78.9),
+           (210.9, 80.2), (213.1, 81.4), (214.7, 82.7), (215.9, 83.9), (217.2, 85.2), (218.1, 86.5), (218.7, 87.7),
+           (219.7, 89.0), (220.3, 90.2), (221.0, 91.5), (223.5, 92.8), (226.5, 93.4), (230.5, 93.8)]
+# the opening's lower rear corner is a fillet about 7 mm round where the guard's floor meets the grip (the same
+# studio photo, 2026-11-14; it was square)
+GUARD_FILLET = [(232.0, 82.0), (228.5, 81.4), (227.6, 80.2), (226.6, 78.9), (225.4, 77.6), (224.1, 76.4),
+                (222.5, 75.4), (221.0, 74.6), (219.5, 73.0), (232.0, 73.0)]
 SELECTOR = [(237.0, 105.0), (241.0, 103.5), (262.0, 114.0), (261.0, 118.0), (258.0, 118.5)]
 FRONT_SIGHT = [(89.3, 166.0), (89.3, 178.1), (90.2, 179.9), (111.2, 179.9), (112.2, 183.7), (117.8, 185.1),
                (120.1, 185.1), (122.0, 181.3), (127.6, 182.3), (134.6, 182.7), (135.5, 181.8), (135.5, 178.1),
@@ -395,6 +407,7 @@ def build_body(a2=False):
     slab(b, PL(NOSE), half=W_NOSE, bevel=1.5, mat="metal")
     slab(b, PL(GRIP), half=W_GRIP, bevel=4.5, res=1, mat="grip")
     b.strip(PL(GUARD_OUT), PL(GUARD_IN), -W_GUARD, W_GUARD)
+    slab(b, PL(GUARD_FILLET), half=W_GUARD, bevel=0.6)
     slab(b, PL(TRIGGER), half=3.0, bevel=0.6, mat="metal")
     # Picatinny rail along the top, sights on it (both flipped up), short side rails on both sides.
     rail_h = RAIL_BASE_H - H0

@@ -31,7 +31,7 @@ plate with its holes. The long barrel and the GP-25 from the user's photo (2026-
 side, an AK-47 magazine; read by eye at the receiver's scale, 1.51 px/mm): the barrel stands 159 mm past the short
 gun's muzzle (about 770 mm overall: Wikipedia's 420 mm barrel for the Groza-1 against the Groza-4's 240), a slotted
 compensator; the GP-25's ribbed tube under it from 105 mm behind to 41 mm ahead of the short muzzle, held by a clamp
-round the barrel, its frame where the trigger guard was (the trigger showing in its round opening), its leaf sight
+round the barrel, its frame where the trigger guard was (its crescent trigger the round opening's rear edge), its leaf sight
 standing over the barrel. Profiles in the drawing's (L, H) mm: L back from the muzzle, H up from the magazine's base;
 the bore is at H 171.
 
@@ -101,14 +101,26 @@ LONG_MUZZLE = -148.0               # the Groza-1 / -2 muzzle (the user's photo -
 # it (references/groza: wl_groza1_gl.jpg, read on a grid at the receiver's scale, 1.39 mm a pixel): the launcher's
 # casing is the gun's handguard (no separate GP-25 grip or quadrant sight); its front hangs from a coupling clamped
 # round the barrel, which carries the frame sight (folded back over the barrel, as on the user's photo); the rifle's
-# trigger base is replaced by the launcher's, the trigger in its round opening, the AV / GR selector on its left.
+# trigger base is replaced by the launcher's, the crescent trigger at its round opening's rear, the AV / GR selector on its left.
 GL_TUBE = (-32.0, 103.0, 125.0, 36.0)   # the tube in its ribbed sleeve: L front, L rear, axis H, radius (72 mm across)
 GL_RIBS = (-8.0, 18.0, 44.0, 70.0)      # its circumferential grooves (L)
 GL_COUPLING = (-28.0, -2.0, 12.5)       # the coupling round the barrel over the tube's front: L from, to, radius
-GL_FRAME = [(100.0, 152.0), (100.0, 91.0), (160.0, 90.0), (168.0, 94.0), (175.0, 103.0), (181.0, 116.0),
-            (188.0, 130.0), (197.0, 140.0), (208.0, 147.0), (208.0, 152.0)]   # the trigger base, side outline
-GL_HOLE = (148.0, 128.0, 17.0)          # its round opening (34 mm), the trigger in it
-GL_TRIGGER_SHIFT = -34.0           # the rifle's trigger shape, hanging from the round opening's top
+# The trigger base re-read off wl_groza1_gl.jpg on the L / H grid (trigger audit, 2026-11-14; the 4A's am_4a_gl.jpg
+# shows the same layout): one trigger fires rifle and launcher (the selector picks; Wikipedia "OTs-14 Groza"), and it
+# is not the rifle's blade hanging in the middle of the opening (as built until then) but a crescent forming the
+# opening's rear edge, 4.6 mm thick at mid-height (the see-through part L 141.2-167.1, H 113-143.5); behind it a window
+# (L 172-197, H 111.5-143, its front a ring 5 mm round the opening) with the trigger bar across it at H 130; the
+# frame's bottom at H 96 and its rear edge from L 168 there up to the grip (L 197.5 at H 116). The opening was 3.5 mm
+# larger and 8.5 mm further forward.
+GL_FRAME = [(100.0, 152.0), (100.0, 96.0), (168.0, 96.0), (172.0, 97.0), (176.0, 99.0), (180.0, 101.0),
+            (184.0, 104.0), (190.0, 110.0), (197.5, 116.0), (203.0, 120.0), (208.0, 127.0),
+            (208.0, 152.0)]                     # the trigger base, side outline
+GL_HOLE = (156.45, 128.25, 15.25)       # its round opening (30.5 mm)
+GL_CRESCENT = 4.6                       # the trigger: the opening's rear, cut by the same circle this much forward
+GL_RING = 20.5                          # the window's front edge: a ring this far round the opening's centre
+GL_WINDOW = [(184.0, 111.5), (187.5, 113.5), (190.5, 116.0), (194.0, 119.5), (196.5, 123.0), (197.0, 128.0),
+             (196.5, 136.0), (194.0, 140.0), (189.0, 143.0)]   # its bottom and rear, then the ring from H 143 to 112
+GL_ROD = (172.0, 197.5, 130.0, 3.0)     # the trigger bar across the window: L from, to, H, radius
 # The compact Groza-2 (user, 2026-11-11: "I want Groza-2 to be the image i posted", a compact OTs-14-4A, right side
 # three-quarter, references/groza/user_compact_4a.png): no forend or front grip, the rifle's trigger guard, the
 # barrel out of the front housing in a thick collar, then a threaded tip under a grooved thread protector; read
@@ -228,10 +240,24 @@ def build_body(kind):
         for xa, xb, ha, hb in ((-11.0, -7.0, hH, top), (7.0, 11.0, hH, top), (-11.0, 11.0, top - 8.0, top),
                                (-11.0, 11.0, hH, hH + 14.0)):
             box(b, hL - 1.6, hL + 1.6, ha, hb, xa, xb, mat="steel", bevel=0.3)
-        # the launcher's trigger base: the frame from the tube's rear to the pistol grip, its round opening, the
-        # trigger in it, the selector's knob on the left
-        slab(b, GL_FRAME, [circle(GL_HOLE[0], GL_HOLE[1], GL_HOLE[2], 24)], half=15.0, bevel=2.0, res=1, mat="steel")
-        slab(b, [(L + GL_TRIGGER_SHIFT, H) for L, H in TRIGGER], half=2.5, bevel=0.5, mat="dark")
+        # the launcher's trigger base: the frame from the tube's rear to the pistol grip, its round opening with the
+        # crescent trigger at its rear, the window behind with the trigger bar, the selector's knob on the left
+        cL, cH, cr = GL_HOLE
+        window = list(GL_WINDOW)
+        for i in range(13):                     # the ring, from the window's top (H 143) down to its bottom (H 112)
+            t = math.asin((143.0 - cH) / GL_RING) - i / 12.0 * (math.asin((143.0 - cH) / GL_RING)
+                                                                + math.asin((cH - 112.0) / GL_RING))
+            window.append((cL + GL_RING * math.cos(t), cH + GL_RING * math.sin(t)))
+        slab(b, GL_FRAME, [circle(cL, cH, cr, 24), window], half=15.0, bevel=2.0, res=1, mat="steel")
+        # the crescent, counter-clockwise: up the opening's rear (1 mm into the frame's wall), down the same circle
+        # moved GL_CRESCENT forward; its tips stop where it is about 1.5 mm thick
+        crescent = [(cL + (cr + 1.0) * math.cos(math.radians(a)), cH + (cr + 1.0) * math.sin(math.radians(a)))
+                    for a in range(-100, 101, 10)]
+        crescent += [(cL - GL_CRESCENT + cr * math.cos(math.radians(a)), cH + cr * math.sin(math.radians(a)))
+                     for a in range(85, -86, -10)]
+        slab(b, crescent, half=2.5, bevel=0.5, mat="dark")
+        r0, r1, rH, rr = GL_ROD
+        lathe_y(b, rH, [(r1, 0.0), (r1, rr), (r0, rr), (r0, 0.0)], seg=12, mat="dark")
         b.lathe("x", (15.0, L0 - 117.0, 140.0 - H0), [(0.0, 0.0), (0.0, 4.5), (3.5, 4.5), (3.5, 0.0)], seg=12,
                 mat="dark")
     lathe_y(b, BORE, [(134.0, 0.0), (134.0, 9.0), (131.0, 9.0), (131.0, 13.5), (118.0, 13.5), (118.0, 0.0)],

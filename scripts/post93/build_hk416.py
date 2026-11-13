@@ -123,6 +123,36 @@ SEL_LABELS_PX = [("RED", 935.0, 951.0, 169.0, 177.0), ("WHITE", 910.0, 926.0, 19
 MARK_PATCH = {"RED": (0.06, 0.12, 0.44, 0.88), "WHITE": (0.56, 0.12, 0.94, 0.88)}
 
 
+# The trigger (user, 2026-11-13: "the trigger is not aligned though.... i've told you this many times"): GoM's AR15
+# carries its trigger blade about 7-10 mm behind where H&K's and Walther's sit in the guard opening (their photos), so
+# every gun built on GoM's AR15 moves GoM's trigger island along the bore until its blade's middle, at mid-height,
+# lands on its photo's. The blade is read where it is half way down the guard opening (GoM's z -25 .. -15), on the
+# photo as that row's dark pixels (the HK416 895.2 px, the .22 1320 px, the HK417 1287.5 px; checked after the move by
+# the same rows of the photo-scale renders).
+TRIGGER_PX = 895.0                 # the HK416 photo's blade middle at mid-height (x 891.5-899 at y 236 px)
+
+
+def trigger_island(comps):
+    """GoM's AR15 trigger: the thin island (|x| < 4 mm) hanging into the guard opening."""
+    for c in comps:
+        ys = [sr.gy(v) for v in c]
+        if (len(c) >= 40 and max(abs(v.co.x) for v in c) / R < 4.0 and min(ys) > 60.0 and max(ys) < 116.0
+                and min(sr.gz(v) for v in c) < -30.0):
+            return c
+    raise RuntimeError("GoM's trigger island not found")
+
+
+def align_trigger(comps, target_y):
+    """Move GoM's trigger along the bore so its blade's middle at mid-height is at target_y (mm); returns the move."""
+    c = trigger_island(comps)
+    band = [sr.gy(v) for v in c if -25.0 <= sr.gz(v) <= -15.0]
+    dy = target_y - (min(band) + max(band)) / 2.0
+    for v in c:
+        v.co.y += dy * R
+    print("trigger moved %.1f mm forward" % dy)
+    return dy
+
+
 def loft(bm, uv, patch, cols, chamfer):
     """A solid along y from cross-sections [(y, z_top, z_bot, half_width)] (chamfered rectangles), capped."""
     rings = []
@@ -209,6 +239,7 @@ def build_gun():
     bm.from_mesh(body.data)
     uv = bm.loops.layers.uv.active
     comps = sr.islands(bm)
+    align_trigger(comps, py(TRIGGER_PX))
     ahead = [c for c in comps if min(sr.gy(v) for v in c) >= CUT]
     barrel = max((c for c in ahead if max(v.co.x for v in c) / R < 12.0),
                  key=lambda c: max(sr.gy(v) for v in c) - min(sr.gy(v) for v in c))

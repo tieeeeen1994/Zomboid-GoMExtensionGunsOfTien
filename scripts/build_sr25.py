@@ -55,25 +55,41 @@ GOM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/
                         "42.16/media") if os.path.isdir(p)), None)
 
 R = 0.000603                    # GoM's ARs: game units per real mm (the M16A2's proportion, ours too)
-KNOTS = ((-273.5, -321.0), (0.0, 0.0), (168.0, 137.5), (218.5, 194.0))   # GoM AR15 mm -> SR-25 mm along the bore
+# The landmarks above were read from the grip's rear top, where the grip meets the receiver at its back. GoM's origin
+# (the hand) is not there: GoM's grip meets the receiver GRIP_TOP mm ahead of it. Until 2026-11-14 the landmarks were
+# pinned to the origin, which squeezed GoM 0..168 (grip, trigger, guard) to 0.82 of its size: a guard opening 45 mm long
+# against the photo's 51, the grip 20 % thin, the magazine and everything ahead about 35 mm too close to the hand (the
+# trigger audit, TODO.md; measured on IMFDB's 4798 px right side of a Mk 11 Mod 0, KAC's lower with the A2 grip and
+# stock: GoM's grip edges and trigger guard pins land on the photo's at one scale, 1.03 of GoM's along the bore, and
+# its lower front and upper receiver front at the photo landmarks + 35 within 6 mm). So every photo landmark is
+# GRIP_TOP further forward of the origin; the overall length stays 1118.
+GRIP_TOP = 35.0
+KNOTS = ((-273.5, -321.0 + GRIP_TOP), (0.0, 0.0), (168.0, 137.5 + GRIP_TOP),
+         (218.5, 194.0 + GRIP_TOP))     # GoM AR15 mm -> SR-25 mm along the bore
 GROW_Z, GROW_X = 1.05, 1.06
 CUT = 212.0                     # GoM's pieces starting this far ahead of the grip (mm) are the barrel group: dropped
-RING = (194.0, 221.0, 30.0)     # the barrel nut's ribbed ring: L from, to, radius
-TUBE = (221.0, 499.0, 30.0, -5.0)   # the free-float tube: L from, to, radius, its axis against the bore (the listing's
-                                    # 12" composite handguard, ring included; the photo read 518)
-GAS = (499.0, 522.0)            # the low profile gas block ahead of it
-MUZZLE = 797.0                  # 1118 mm overall with the butt at -321
+RING = (194.0 + GRIP_TOP, 221.0 + GRIP_TOP, 30.0)   # the barrel nut's ribbed ring: L from, to, radius
+TUBE = (221.0 + GRIP_TOP, 499.0 + GRIP_TOP, 30.0, -5.0)   # the free-float tube: L from, to, radius, its axis against
+                                    # the bore (the listing's 12" composite handguard, ring included; the photo read 518)
+GAS = (499.0 + GRIP_TOP, 522.0 + GRIP_TOP)   # the low profile gas block ahead of it
+MUZZLE = 797.0 + GRIP_TOP       # 1118 mm overall with the butt at -321 + GRIP_TOP
 BARREL_R = (8.6, 7.4)           # the barrel out of the gas block, at the muzzle (the photo's 17 and 14 mm)
-STUD = 450.0                    # the sling stud under the tube (the bipod clamps on it)
+STUD = 450.0 + GRIP_TOP         # the sling stud under the tube (the bipod clamps on it)
+# GoM's trigger blade sits 4.6 mm behind the Mk 11 photo's once mapped: its middle at mid-height of the guard opening
+# (z -31 .. -22 after growing) goes to the photo's (455.5 px at row 200 of the crop: GoM 94.5, here 97.0; rows 170 and
+# 230 put it 1.5 mm further forward, and the photo's blade is thicker: 98.5)
+TRIGGER_Y = 98.5
 # The integrated scope: Leupold's Vari-X III 3.5-10x40 (the listing: "w/ high target knobs", on a B-Square base and
 # rings): 1" tube, 40 mm objective, about 315 mm long, its eyepiece just over the grip (the photo), its axis 77 mm over
 # the bore (the photo's tall rings). Profile (mm forward of the grip, radius) from the eyepiece to the objective.
 SCOPE_Z = 77.0
-SCOPE = [(-6.0, 1.0), (-6.0, 19.0), (-4.0, 20.0), (58.0, 20.0), (72.0, 15.0), (100.0, 15.0), (104.0, 12.7),
-         (214.0, 12.7), (246.0, 23.5), (304.0, 23.5), (309.0, 22.0), (309.0, 1.0)]
-SCOPE_RINGS = (88.0, 182.0)     # the B-Square rings, 16 mm wide, on risers (22 x 16) from the base
-BASE = (6.0, 196.0, 33.0, 11.0)   # the B-Square base on the flat top: L from, to, its top over the bore, half width
-TURRET = 140.0                  # the high target knobs: elevation on top, windage on the right
+SCOPE = [(y + GRIP_TOP, r) for y, r in
+         [(-6.0, 1.0), (-6.0, 19.0), (-4.0, 20.0), (58.0, 20.0), (72.0, 15.0), (100.0, 15.0), (104.0, 12.7),
+          (214.0, 12.7), (246.0, 23.5), (304.0, 23.5), (309.0, 22.0), (309.0, 1.0)]]
+SCOPE_RINGS = (88.0 + GRIP_TOP, 182.0 + GRIP_TOP)   # the B-Square rings, 16 mm wide, on risers (22 x 16) from the base
+BASE = (6.0 + GRIP_TOP, 196.0 + GRIP_TOP, 33.0, 11.0)   # the B-Square base on the flat top: L from, to, its top over
+                                                        # the bore, half width
+TURRET = 140.0 + GRIP_TOP       # the high target knobs: elevation on top, windage on the right
 BIPOD_LEG = 200.0               # Harris 1A2-BR (6-9"): pivot to foot
 MAG_DEPTH, MAG_WIDTH, MAG_LEN = 66.0, 25.0, 152.0     # KAC's 20: 2.6" front to back (user, 2026-11-11: 76 was "too large"), the photo's length
 
@@ -205,6 +221,22 @@ def grow_mesh(bm):
         v.co = Vector((x * R, y * R, -z * R))
 
 
+def align_trigger(bm, target_y):
+    """Move GoM's trigger (the thin island hanging into the guard opening) along the bore so its blade's middle at
+    mid-height of the opening is at target_y (mm, after growing); returns the move."""
+    for c in islands(bm):
+        ys = [gy(v) for v in c]
+        if (len(c) >= 40 and max(abs(v.co.x) for v in c) / R < 4.5 and min(ys) > 50.0 and max(ys) < 135.0
+                and min(gz(v) for v in c) < -30.0):
+            band = [gy(v) for v in c if -31.0 <= gz(v) <= -22.0]
+            dy = target_y - (min(band) + max(band)) / 2.0
+            for v in c:
+                v.co.y += dy * R
+            print("trigger moved %.1f mm forward" % dy)
+            return dy
+    raise RuntimeError("GoM's trigger island not found")
+
+
 def gom_points():
     text = open(f"{GOM}/scripts/MarzWeapons/models/weapons/assault_rifles.txt", encoding="utf-8").read()
     m = re.search(r"\bmodel\s+AR15\s*\{(.*?)\n    \}", text, re.S)
@@ -235,6 +267,7 @@ def build_gun():
     recv_front = max(gy(v) for c in comps if c not in ahead for v in c)
     bmesh.ops.delete(bm, geom=[v for c in ahead for v in c], context='VERTS')
     grow_mesh(bm)
+    align_trigger(bm, TRIGGER_Y)
     bore_g = bore * GROW_Z
     rear = min(gy(v) for v in bm.verts)
     # the magazine well: the piece round the magazine's place (GoM's lips at 168, mapped to 137.5) that ends low but

@@ -4,17 +4,17 @@ module GunsOfTienPost93 {
         mesh     = weapons/firearms/GunsOfTienPost93_MK11|MK11_BODY,
         texture  = weapons/firearms/assault_rifles/AR15,
         cullFace = None,
-        attachment muzzle { offset = 0.0000 0.4221 0.0271, rotate = -90.0000 0.0000 -180.0000, }
-        attachment world { offset = 0.0212 0.1150 0.0000, rotate = 180.0000 0.0000 180.0000, }
-        attachment magazine { offset = 0.0000 0.0873 0.0151, rotate = 0.0000 0.0000 0.0000, }
-        attachment bolt_fired { offset = 0.0000 -0.0552 0.0000, rotate = 0.0000 0.0000 0.0000, }
-        attachment charging_handle_open { offset = 0.0000 -0.0386 0.0000, rotate = 0.0000 0.0000 0.0000, }
-        attachment canon { offset = 0.0000 0.4221 0.0271, rotate = 0.0000 0.0000 0.0000, }
-        attachment scope { offset = 0.0000 0.0724 0.0399, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2533 0.0078, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.3015 0.0034, rotate = 0.0000 0.0000 0.0000, }
-        attachment light_left { offset = 0.0200 0.2834 0.0239, rotate = 0.0000 0.0000 0.0000, }
-        attachment laser_right { offset = -0.0211 0.2834 0.0231, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.4432 0.0271, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0212 0.1361 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1062 0.0151, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0491 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0344 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.4432 0.0271, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0935 0.0399, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2744 0.0078, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.3226 0.0034, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0200 0.3045 0.0239, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0211 0.3045 0.0231, rotate = 0.0000 0.0000 0.0000, }
     }
 
     model MK11_BOLT {

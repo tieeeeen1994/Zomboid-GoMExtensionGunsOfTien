@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- loot for the MP7A1 and MP7A2, the P90 TR and PS90, the Five-seveN, the UCP Prototype, the SCAR-L and
     SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector .45, 9mm, CRB and SDP, the MDRx .223
-    and .308, the Mk 11, the HK416, the Grozas, and their ammunition
+    and .308, the Mk 11, the HK416, the HK416 .22 pistol, the HK417s, the Grozas, and their ammunition
 
     - Guns come through Guns of Marz's spawner items: a new alternative (the gun with its magazines and boxes) in
       MarzGuns.World_Anachronistic_Spawner (GoM's post-1993 guns: G36, Benelli M4, AA-12...; gun stores and late
@@ -41,6 +41,11 @@
       rounds differ): the gun, up to 3 of GoM's standard magazines of its calibre (the AK-47's 30, the Bakelite 5.45 30,
       the AS VAL 20) and up to 3 of GoM's boxes; the Groza-1's alternative gives it or the Groza-1 with the GP-25 (one
       of the two, as GoM's M16 alternative picks its M16A2_M203 among its M16s).
+    - The HK417 Recce and Sniper (user, 2026-11-13) the SCAR-H's and Mk 11's way: one alternative in GoM's two army
+      rifle spawners giving one of the two, with up to n of their 20-round magazines and up to n 7.62x51mm boxes.
+    - The HK416 .22 Quad Rail Pistol (user, 2026-11-13; a civilian .22, the first in Post-93) in the Anachronistic
+      spawner, an alternative of its own (the gun, up to 3 of its 20-round magazine, up to 4 .22 LR boxes), as GoM's
+      other post-1993 civilian guns.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -55,6 +60,9 @@
       police, SWAT and gun store lists, rarely. The special loads (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR) never
       spawn as loot, as GoM never spawns its own (its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured):
       they come from Ammo Maker (user, 2026-10-17).
+    - The main mod's .22 LR box and carton (its plain round; the special loads never spawn) beside vanilla's 9mm box
+      and carton in every list that has them, civilian homes included: .22 LR was the commonest round in America, and
+      it is what the HK416 .22 pistol fires. Here rather than in the main mod, which has no .22 gun.
     - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum, SCAR-H 50 drum, Glock 30 / 33 / 40, the MDRx .308's D-50) also on their own, each with boxes, as
       new alternatives of GoM's MarzGuns.World_HighCap_Tactical_Magazine_Spawner (with its M92FS / M93R / MP5 drums).
     Everything that can spawn follows GoM (user, 2026-10-17: "everything needs to be lootable the same as GoM").
@@ -166,6 +174,24 @@ local function mk11Alternative(count)
         { items = { M .. "MK11" }, maxAmountChance = 1 },
         { items = { "GunsOfTien.762x51Magazine20_SR25" }, maxAmountChance = count },
         { items = { "MarzGuns.762x51_Box" }, maxAmountChance = count },
+    }
+end
+
+-- The HK417s, as the SCAR-H / Mk 11: one of the two, up to n of H&K's 20s, up to n boxes
+local function hk417Alternative(count)
+    return {
+        { items = { M .. "HK417", M .. "HK417S" }, maxAmountChance = 1 },
+        { items = { M .. "762x51Magazine20_HK417" }, maxAmountChance = count },
+        { items = { "MarzGuns.762x51_Box" }, maxAmountChance = count },
+    }
+end
+
+-- The HK416 .22 Quad Rail Pistol: the gun, up to 3 of its 20s (it was sold with one), up to n .22 LR boxes
+local function hk416qr22Alternative(boxes)
+    return {
+        { items = { M .. "HK416QR22" }, maxAmountChance = 1 },
+        { items = { M .. "22LRMagazine20_HK416" }, maxAmountChance = 3 },
+        { items = { "GunsOfTien.22LR_Box" }, maxAmountChance = boxes },
     }
 end
 
@@ -302,6 +328,9 @@ local SPAWNERS = {
     { "MarzGuns.World_Anachronistic_Spawner", grozaAlternative({ "GROZA1", "GROZAGL" }, "MarzGuns.762x39Magazine30", "MarzGuns.762x39_Box"), 3 },
     { "MarzGuns.World_Anachronistic_Spawner", grozaAlternative("GROZA2", "MarzGuns.545x39Magazine30_Bakelite", "MarzGuns.545x39_Box"), 3 },
     { "MarzGuns.World_Anachronistic_Spawner", grozaAlternative("GROZA4", "MarzGuns.9x39Magazine20", "MarzGuns.9x39_Box"), 3 },
+    { "MarzGuns.World_Anachronistic_Spawner", hk416qr22Alternative, 4 },
+    { "MarzGuns.World_Army_Rifle_Spawner", hk417Alternative, 6 },
+    { "MarzGuns.Zombie_Army_Rifle_Spawner", hk417Alternative, 4 },
     -- the HBAR's 50 beside GoM's own 7.62x39 75 (its high-capacity Russian-calibre magazine spawner)
     { "MarzGuns.World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x39Magazine50_AUG", "MarzGuns.762x39_Box"), 0 },
 }
@@ -401,13 +430,16 @@ Events.OnInitGlobalModData.Add(addSpawners)
 -- Boxes and cartons in world containers
 -------------------------------------------------
 -- Beside vanilla's 9mm box / carton (GoM's own boxes and cartons come in place of or beside vanilla ones), only in
--- police, SWAT and gun store lists: no civilian homes. Every loot table (procedural rooms, vehicles, bags, the top-level
+-- police, SWAT and gun store lists: no civilian homes (the .22 LR, marked `true`, in every list). Every loot table (procedural rooms, vehicles, bags, the top-level
 -- suburbs lists), as GoM's Distribution.Insert does.
 -- The 5.7x28mm SS190 box and carton are the main mod's loot since 2026-11-03 (its server/GunsOfTien/Loot.lua): they
 -- moved there with the P90.
 local WORLD = {
     { M .. "46x30_Box", "Base.Bullets9mmBox", 0.05 },
     { M .. "46x30_Carton", "Base.Bullets9mmCarton", 0.05 },
+    -- .22 LR everywhere vanilla's 9mm is, civilian homes too (the last field)
+    { "GunsOfTien.22LR_Box", "Base.Bullets9mmBox", 0.1, true },
+    { "GunsOfTien.22LR_Carton", "Base.Bullets9mmCarton", 0.05, true },
 }
 
 local function isWantedList(name)
@@ -422,14 +454,14 @@ local function addWorldLoot()
     if multiplier <= 0 then return end
     local tables = { ProceduralDistributions.list, VehicleDistributions, BagsAndContainers, SuburbsDistributions }
     for _, entry in ipairs(WORLD) do
-        local newItem, baseItem, share = entry[1], entry[2], entry[3] * multiplier
+        local newItem, baseItem, share, everywhere = entry[1], entry[2], entry[3] * multiplier, entry[4]
         local script = ScriptManager.instance:getItem(baseItem)
         if script and ScriptManager.instance:getItem(newItem) then
             local name, fullName = script:getName(), script:getFullName()
             for _, lootTable in ipairs(tables) do
                 for listName, data in pairs(lootTable) do
                     local items = type(listName) == "string" and type(data) == "table" and data.items
-                    if type(items) == "table" and isWantedList(listName) then
+                    if type(items) == "table" and (everywhere or isWantedList(listName)) then
                         local weights = {}
                         for i = 1, #items - 1, 2 do
                             if (items[i] == name or items[i] == fullName) and type(items[i + 1]) == "number" then
@@ -453,8 +485,8 @@ Events.OnPostDistributionMerge.Add(addWorldLoot)
 -- Direct entries: both pistols in survivor and bandit bags
 -------------------------------------------------
 -- GoM's Anachronistic spawner sits in SurvivorBag_Late at 2 and BanditBag_Late at 1 and picks one of its guns evenly
--- (GoM's 5 plus ours: 18 with the MP7, the P90, the two UMPs, the AUG A3 and Para, the two Vectors, the two MDRs,
--- the three Grozas), so each gets 2/n and 1/n there. n is counted at run time,
+-- (GoM's 5 plus ours: 19 with the MP7, the P90, the two UMPs, the AUG A3 and Para, the two Vectors, the two MDRs,
+-- the three Grozas, the HK416 .22 pistol), so each gets 2/n and 1/n there. n is counted at run time,
 -- so a gun added to SPAWNERS later keeps the pistols in step.
 local ANACHRONISTIC = "MarzGuns.World_Anachronistic_Spawner"
 local SURVIVOR, BANDIT = 2, 1

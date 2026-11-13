@@ -543,7 +543,32 @@ and handle GoM's AR15 table. Optics sit 150 mm ahead of the grip, clear of the d
 every GoM optic sinks at most 1.4 (fit_audit's units) and red dots float up to 1.2 (fit_audit itself reads the
 sights-up body, where the Elcan's rear meets the standing diopter).
 
-## H&K HK416 .22 LR pistols (user, 2026-11-13: both generations; decided, models next)
+## H&K HK417 16" Recce and 20" Sniper (user, 2026-11-13: "start on the HK417 until finished"; built, not played; model approved)
+
+The HK416's 7.62x51mm big brother in its original pattern (2006-; Wikipedia "Heckler & Koch HK417", modernfirearms.net:
+short-stroke piston as the G36, seven-lug rotating bolt, cold hammer-forged barrels, the HK416's four-sided free-floating
+rail system, H&K's six-position stock, translucent 10 and 20-round polymer magazines, 600 rpm; the 16" 985 / 905 mm
+stock out / in). Both from the TODO: the 16" Recce and the 20" Sniper, one receiver, stock and magazines, the Sniper
+with a longer barrel and handguard. References: references/hk417/ (SOURCES.txt, contact_sheet.png; about 370 photos,
+H&K's own press photo of a 16" the measuring one). Model: scripts/post93/build_hk417.py (see CLAUDE.md "HK417 Recce and
+Sniper"); review renders render_hk417.py; icons and the magazine texture make_hk417_art.py.
+
+| | `GunsOfTienPost93.HK417` "HK417 Battle Rifle" (16" Recce) | `GunsOfTienPost93.HK417S` "HK417 Sniper Rifle" (20" Sniper) |
+|---|---|---|
+| Names | GoM's "G3 Battle Rifle" | GoM's "M24 Sniper Rifle" |
+| Magazines | H&K's 20 (standard) and 10, `762x51Magazine20_HK417` / `10` (0.15 / 0.1), profile "7.62x51mm HK417" (real HK417 magazines fit neither the SR-25 nor the SCAR-H), GoM's 7.62x51mm family | the same |
+| Stats | our SCAR-H's (the same 16" 7.62x51): 1.3-1.8, crit 30 x5, HitChance 53 (free-floating), aim 50, recoil 15, range 60, jam 0.5 and condition 1 in 250 (piston, as the HK416), weight 4.1 | our Mk 11's role, select fire: 1.3-2.1, crit 40 x5, HitChance 56 (accurized), aim 55, range 65, sight 10 / 20, condition 1 in 260, weight 4.3 |
+| Fire | Auto / Single at 600 rpm, spread 0.2 / 3.2 | 600 rpm, 0.18 / 3.0 |
+| Sound | sound_model.py's 7.62x51 from 16": 231 / 66, MSR788Shoot at 2.5 (the SCAR-H's) | from 20": 216 / 62 |
+| Stock | `HK417_Integrated_Stock_Folded / _Deployed` drawing `HK417_STOCK`; out: HitChance x1.15, AimingTime x0.85 (the HK416's), automatic spread x0.75 / 0.85 | the same |
+| Rails | four integrated rails as hidden required parts: optics, foregrips + bipods, lights left, lasers right | the same, longer |
+| Muzzle | the SCAR-H's 7.62x51mm mount device and SOCOM762-RC (5/8x24 as the SCAR-H) | the same |
+| Iron sights | the HK416's flip-ups and states: rear folded under a red dot, both under a scope; no rear-off states (fit_audit: every optic clears the folded rear) | the same |
+| Reload | GoM's "ar15_rifle" with "boltCatchAfterEmptyInsert" (as the Mk 11) | the same |
+| Loot | one alternative in GoM's `World_Army_Rifle_Spawner` (6) and `Zombie_Army_Rifle_Spawner` (4) giving one of the two, with up to n of H&K's 20s and 7.62x51mm boxes (the SCAR-H's / Mk 11's way) | |
+| Hot Brass | the Mk 11's values | the same |
+
+## H&K HK416 .22 LR pistols (user, 2026-11-13: both decided, then only Walther's built; not played)
 
 User: "Let's start with HK416 pistol", then, shown the two that were sold, "WHY NOT BOTH??? MP5 series has a lot of
 variations itself"; held like a pistol (confirmed). References gathered first (references/hk416_22/, SOURCES.txt,
@@ -567,6 +592,22 @@ pistol seems integrated suppressor. we won't have a lootable part of it. only in
 can-like shroud counts as an integral suppressor (sound_model.py's integral rule: 71 / 20 becomes 22 / 6, the AS
 VAL's) and gen 2 takes no can. (Flagged to the user: the real gen-1 shroud is a barrel shroud over a .22 liner, not
 a suppressor.) Item ids `HK416QR22` / `HK416ML22` replace the proposal's.
+
+Then, while the two were wired (user, 2026-11-13: "let's use walther's"): **only Walther's gen 1 ships**; H&K USA's
+M-LOK pistol is shelved (docs/shelved_hk416ml22.md). Built the same day (not played):
+
+| | `GunsOfTienPost93.HK416QR22` "HK416 .22 Quad Rail Pistol" |
+|---|---|
+| Hold | like a pistol (the Vector SDP's way: turned model, GoM's handgun item lines), back slot, GoM's MP5K reload ("handgun2"; GoM's AR bolt catch rule left out: its close step needs a clip the MP5K reload has not got) |
+| Magazines | H&K's 10 / 20 / 30 (`22LRMagazine10/20/30_HK416`, 0.06 / 0.08 / 0.12), profile ".22 LR HK416", the main mod's ".22 LR" family; the 20 as standard (Walther sold it with one) |
+| Fire | Auto / Single at 900 rpm (our choice for a light .22 blowback), spread 0.06 / 0.9, the least of our automatics; Single first |
+| Stats | the proposal's: 0.3-0.6, crit 25 (x3.0), HitChance 55, aiming 20, recoil 6, range 22, jam 1.0, condition 1 in 180, weight 2.2, stop power 0.8 |
+| Sound | a plain shroud after all (user, 2026-11-13: "Plain shroud, loud", over the integral suppressor decided above): .22 LR from 9", 71 / 20, its shot the main mod's synthesised .22 LR sound `GunsOfTien_22LRShoot` (every .22 LR gun's; scripts/make_22lr_sound.py) at GoM's pistol gain 1.5, handgun muzzle flash; GoM's M16 handling sounds; no muzzle parts |
+| Rails | all four as hidden integrated parts: optics on top, GoM's foregrips underneath (user, 2026-11-13: "let it take a foregrip", as the pistol-held MP7A2 and Vector SDP; at 330 mm, about 60 mm ahead of the curved 30), lights left, lasers right |
+| Iron sights | IronSights.Register: the rear taken off under a red dot (`HK416QR22_RD`), both under a scope (`_FD`); every GoM optic clears the body it draws (fit_audit against each state) |
+| Bolt, handle | GoM's AR15 table (HK416.lua's) |
+| Loot | an alternative in GoM's `World_Anachronistic_Spawner` (the gun, up to 3 of its 20, up to 4 .22 LR boxes); the .22 LR box (0.1) and carton (0.05) beside vanilla's 9mm box / carton in **every** list, homes included (.22 LR was America's commonest round; Post-93's Loot.lua, as the main mod has no .22 gun) |
+| Hot Brass | the SDP's place, lighter (force 0.45); the main mod maps the .22 rounds to HBVCEF.22_Casing |
 
 The proposal (superseded where the decisions above say otherwise):
 - **Items** `GunsOfTienPost93.HK416T22` "HK416 .22 Tactical Pistol" (Walther's own product name) and

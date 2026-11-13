@@ -163,12 +163,26 @@ GRIP = [(652.0, 252.0), (646.0, 224.0), (671.0, 164.0), (672.5, 155.6), (670.0, 
         (674.0, 143.3), (680.4, 143.0), (700.0, 146.7), (711.0, 149.3), (728.0, 154.0), (733.0, 156.4),
         (736.0, 159.3), (736.0, 162.0), (733.0, 164.5), (728.6, 171.6), (697.0, 225.3), (694.5, 232.0),
         (695.3, 239.0), (700.3, 245.7), (705.5, 248.1), (707.4, 250.7), (713.0, 252.0)]
-TRIGGER = [(643.0, 251.0), (636.0, 240.0), (630.0, 232.0), (624.0, 225.0), (620.0, 222.0), (617.0, 224.0),
-           (622.0, 232.0), (628.0, 242.0), (632.0, 251.0)]
-GUARD = [(646.0, 224.0), (641.0, 216.0), (604.0, 215.0), (597.0, 218.5), (598.0, 222.0), (605.0, 218.5),
-         (640.0, 219.0), (643.5, 226.0)]
-GUARD_FRONT = [(596.0, 251.0), (596.0, 236.0), (604.0, 229.0), (616.0, 234.0), (612.0, 238.0), (604.0, 237.0),
-               (601.0, 242.0), (604.0, 251.0)]
+# The trigger and the trigger housing's curved front, read off the turned USAF photo at 3x in this frame (x = 4201 -
+# 3.817 L, y = 2402 - 3.817 H, scratch m249_turned_x2.png; trigger audit 2026-11-13, user: "the triggers you make are
+# not good"): the blade's back edge drops nearly straight from L 634 and curls forward to its tip at L 615.5, H 218
+# (it leant back from L 643); the housing's front is an arc from under the trigger (L 622, H 236) up to the receiver
+# at L 594 (it hung 8 mm lower as a post). Re-read 2026-11-14 with the whole model registered on the photo (user: "the
+# M249 might not be good"): the arc meets the receiver at L 608, not 594 (the photo shows background there); it now
+# runs (608, 250.7), (615.9, 246.8), (621.2, 241.6), (623.1, 236.3).
+TRIGGER = [(634.2, 251.0), (633.5, 243.0), (632.1, 236.2), (629.9, 229.2), (626.8, 224.8), (623.3, 221.3),
+           (619.5, 219.2), (615.5, 218.3), (616.5, 219.6), (618.1, 220.0), (621.6, 223.1), (623.8, 227.4),
+           (624.2, 231.8), (622.4, 236.2), (621.5, 243.0), (621.5, 251.0)]
+# The guard bar (2026-11-14, the registered photo; user: the trigger "should not be connected" to it, the bar "should be
+# connected" to the grip): a 2 mm strip (H 215-217.1; it was 4 mm, its top at 219, touching the trigger's tip, which
+# the photo clears by about 1 mm), its rear end a 2 mm band curving up into the grip's front at H 222-226 (its centre
+# (637.3, 216.7), (640.3, 217.4), (642.9, 219.5), (644.4, 222.1), (645.4, 224.3); it was a wedge meeting the grip in a
+# point), its front end at L 594.5 (was 597).
+GUARD = [(648.5, 227.0), (648.5, 223.0), (646.2, 220.5), (644.5, 218.0), (641.5, 216.0), (637.0, 215.0),
+         (601.5, 215.0), (594.5, 218.0), (595.5, 220.5), (602.5, 217.0), (636.0, 217.2), (639.5, 218.6),
+         (642.0, 220.6), (643.6, 223.0), (644.6, 227.0)]
+GUARD_FRONT = [(608.0, 251.5), (611.0, 250.2), (615.9, 246.8), (619.0, 244.0), (621.2, 241.6), (622.6, 238.5),
+               (623.1, 236.3), (623.8, 238.0), (623.8, 251.5)]
 HANDGUARD = [(483.0, 276.0), (483.0, 253.0), (478.0, 246.0), (472.0, 241.3), (345.0, 241.3), (345.0, 303.0),
              (345.0, 331.0), (472.0, 331.0), (483.0, 336.0)]
 HG_CAP = [(346.0, 241.0), (338.0, 240.5), (331.0, 242.0), (329.0, 246.0), (328.0, 266.0), (330.0, 300.0),

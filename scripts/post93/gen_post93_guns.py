@@ -954,7 +954,7 @@ def scar_items():
         Icon             = GunsOfTienPost93_{part},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {M}.SCARH;{M}.MDR308;{M}.MK11,
+        MountOn          = {M}.SCARH;{M}.MDR308;{M}.MK11;{M}.HK417;{M}.HK417S,
         PartType         = {ptype},
         WorldStaticModel = {M}.{part},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
@@ -2320,6 +2320,456 @@ def hk416():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# H&K HK417 16" "Recce" and 20" "Sniper" (user, 2026-11-13, TODO.md "the HK416 / HK417 set"; docs/post93_design.md
+# "H&K HK417"; meshes and points: scripts/post93/build_hk417.py on GoM's AR15 and its texture; registries:
+# shared/GunsOfTienPost93/HK417.lua). The HK416's 7.62x51mm big brother in its original pattern (2006-): one receiver,
+# H&K's grip and telescopic stock, H&K's own translucent 10 and 20-round magazines (profile "7.62x51mm HK417": real
+# HK417 magazines fit neither the SR-25 nor the SCAR-H), four integrated rails (hidden parts as the HK416's), the
+# SCAR-H's 7.62x51mm mount device and SOCOM762-RC at canon (5/8x24, as the SCAR-H), iron sights following the optic
+# (the HK416's states). Auto / Single at 600 rpm (H&K).
+# Stats: the Recce as our SCAR-H (the same 16" 7.62x51), a little steadier from the free-floating barrel and its
+# weight (HitChance 53, jam 0.5, condition 1 in 250 as the HK416), 4.1 (about 4.05 kg); the Sniper as our Mk 11 (20",
+# an accurized barrel: HitChance 56, crit 40) but select fire, 4.3 (about 4.23 kg), slower to bring up.
+# Sound from sound_model.py's 7.62x51 (46 grains, 22" reference): 16" 231 / 66, 20" 216 / 62; the SCAR-H's and
+# Mk 11's shot (MSR788Shoot at gain 2.5), GoM's M16 handling sounds.
+HK417_GUNS = {
+    'HK417': dict(name='HK417 Battle Rifle', min=1.3, max=1.8, crit=30.0, critmult=5.0, hit=53, aim=50, recoil=15,
+                  range=60.0, sight=(10, 18.0), cond=250, weight=4.1, radius=231, volume=66),
+    'HK417S': dict(name='HK417 Sniper Rifle', min=1.3, max=2.1, crit=40.0, critmult=5.0, hit=56, aim=55, recoil=15,
+                   range=65.0, sight=(10, 20.0), cond=260, weight=4.3, radius=216, volume=62),
+}
+HK417_STATES = ['', '_RD', '_FD']
+HK417_MAGS = [('762x51Magazine20_HK417', 20, 0.15), ('762x51Magazine10_HK417', 10, 0.1)]
+HK417_PARTS = [('HK417_Integrated_Stock_Folded', 'StockIntegrated', None),
+               ('HK417_Integrated_Stock_Deployed', 'StockIntegrated', 0.2),
+               ('HK417_Integrated_Rail_Up', 'RailUp', None), ('HK417_Integrated_Rail_Down', 'RailDown', None),
+               ('HK417_Integrated_Rail_Left', 'RailLeft', None), ('HK417_Integrated_Rail_Right', 'RailRight', None)]
+
+
+def hk417():
+    allpts = load_points('hk417_points.json')
+    out = [f"module {M} {{\n"]
+    for gun in HK417_GUNS:
+        pts = allpts[gun]
+        for suffix in HK417_STATES:
+            out.append(f"""
+    model {gun}{suffix} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK417|{gun}_BODY{suffix},
+        texture  = {HK416_TEX},
+        cullFace = None,
+""")
+            for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'canon', 'stock_folded',
+                         'scope', 'foregrip', 'bipod', 'light_left', 'laser_right'):
+                out.append(attachment(name, pts[name]))
+            out.append("    }\n")
+    out.append(f"""
+    model HK417_MARKINGS {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK417|HK417_MARKINGS,
+        texture  = {TEX}/HK416_MARKINGS,
+        cullFace = None,
+    }}
+""")
+    for node in ('BOLT', 'CHARGING_HANDLE', 'STOCK'):
+        out.append(f"""
+    model HK417_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK417|HK417_{node},
+        texture  = {HK416_TEX},
+        cullFace = None,
+    }}
+""")
+    # the magazines in GoM's STANAG frame at the gun's `magazine` point, GoM's floor pose
+    for mag, _, _ in HK417_MAGS:
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_HK417_magazines|{mag},
+        texture  = {TEX}/HK417_MAG,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_hk417.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.HK417_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.HK417_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.Charging_Handle_Close {M}.HK417_CHARGING_HANDLE charging_handle_lock charging_handle_lock,",
+             f"{w}MarzGuns.Charging_Handle_Open {M}.HK417_CHARGING_HANDLE charging_handle_open charging_handle_open,",
+             f"{w}{M}.HK417_Integrated_Stock_Folded {M}.HK417_STOCK stock_folded stock_folded,",
+             f"{w}{M}.HK417_Integrated_Stock_Deployed {M}.HK417_STOCK stock stock,",
+             f"{w}{M}.HK417_Integrated_Rail_Left {M}.HK417_MARKINGS markings markings,"]
+    lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in HK417_MAGS]
+    lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
+              f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    items = [f"module {M} {{\n"]
+    for gun, s in HK417_GUNS.items():
+        items.append(f"""
+    item {gun} {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = {s['critmult']},
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['sight'][0]},
+        MaxSightRange                = {s['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 0.5,
+        ConditionLowerChanceOneIn    = {s['cond']},
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 6,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 45.0,
+        FireMode                     = Single,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x51,
+        AmmoBox                      = MarzGuns.762x51_Box,
+        ClipSize                     = 20,
+        MagazineType                 = {M}.762x51Magazine20_HK417,
+        MaxAmmo                      = 20,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = MSR788Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.5,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+""")
+    # H&K's polymer magazines: GoM's weights (its FAL / SCAR-H 20 0.15, PMAG 10 0.1)
+    for mag, rounds, weight in HK417_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = swmg:bullet_762x51,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {rounds},
+        MountOn          = {';'.join(f'{M}.{g}' for g in HK417_GUNS)},
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in HK417_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_hk417.txt', ''.join(items))
+    write(f'scripts/{M}/fixing_hk417.txt', "module Base {\n" + "\n".join(f"""    fixing Fix {g} {{
+        Require = {M}.{g},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for g in HK417_GUNS) + "}\n")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for gun, s in HK417_GUNS.items():
+        names[f'{M}.{gun}'] = s['name']                 # GoM's "G3 Battle Rifle", "M24 Sniper Rifle"
+    names[f'{M}.762x51Magazine20_HK417'] = 'HK417 20Rds 7.62x51mm Magazine'
+    names[f'{M}.762x51Magazine10_HK417'] = 'HK417 10Rds 7.62x51mm Magazine'
+    names[f'{M}.HK417_Integrated_Stock_Folded'] = 'HK417 Integrated Stock (Folded)'
+    names[f'{M}.HK417_Integrated_Stock_Deployed'] = 'HK417 Integrated Stock (Deployed)'
+    for part, ptype, _ in HK417_PARTS[2:]:
+        names[f'{M}.{part}'] = 'HK417 Integrated Rail (%s)' % ptype[4:]
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# Walther's HK416 .22 LR pistol (user, 2026-11-13: both generations decided, then "let's use walther's": only this
+# one ships, the M-LOK one is shelved; docs/post93_design.md "H&K HK416 .22 LR pistols"; meshes and points:
+# scripts/post93/build_hk416_22.py on GoM's AR15 and its texture; registries: shared/GunsOfTienPost93/HK416_22.lua).
+# Carl Walther's HK416 .22 Tactical Pistol (about 2009/10-2018): blowback .22 LR, no stock and no buffer tube, a short
+# quad rail, the barrel in a long round shroud (a plain barrel shroud, not a suppressor: user, 2026-11-13, "Plain
+# shroud, loud", replacing the integral suppressor first decided), H&K-style hooded front and rotary diopter rear on
+# the rail, H&K's grip and selector labels.
+# Held like a pistol (the Vector SDP's way: turned nodes and points, GoM's handgun item lines, the back slot), select
+# fire Auto / Single (user's choice; the real pistol is semi-automatic). Iron sights: the rear taken off under any
+# red dot (HK416QR22_RD), both under a magnified scope (_FD). H&K's polymer .22 magazines, 10 straight, 20 and 30
+# curved, in the main mod's ".22 LR" family. Rails: optics on the top, GoM's foregrips underneath (user, 2026-11-13:
+# "let it take a foregrip", as the pistol-held MP7A2 and Vector SDP do), lights left, lasers right (integrated,
+# hidden parts as the HK416's).
+# Stats (.22 LR from 9": about 137 J against a 9 mm pistol's 500): damage 0.3-0.6, crit 25, HitChance 55, aiming 20,
+# almost no recoil (6), range 22, a dirty rimfire blowback wears (1 in 180) and jams more (1.0); weight 2.2 (5.0 lb
+# empty, 2.27 kg). Sound: sound_model.py's .22 LR from 9" (2 grains, subsonic from this barrel), 71 / 20; the shot
+# is the main mod's own .22 LR sound, GunsOfTien_22LRShoot (scripts/make_22lr_sound.py, every .22 LR gun's), at GoM's
+# pistol gain 1.5, with the handgun muzzle flash.
+HK416QR22_BODIES = [('HK416QR22', 'HK416QR22_BODY'), ('HK416QR22_RD', 'HK416QR22_BODY_RD'),
+                    ('HK416QR22_FD', 'HK416QR22_BODY_FD')]
+HK416QR22_MAGS = [('22LRMagazine10_HK416', 10, 0.06), ('22LRMagazine20_HK416', 20, 0.08),
+                  ('22LRMagazine30_HK416', 30, 0.12)]
+HK416QR22_PARTS = [('HK416QR22_Integrated_Rail_Up', 'RailUp'), ('HK416QR22_Integrated_Rail_Down', 'RailDown'),
+                   ('HK416QR22_Integrated_Rail_Left', 'RailLeft'), ('HK416QR22_Integrated_Rail_Right', 'RailRight')]
+
+
+def hk416qr22():
+    pts = load_points('hk416_22_points.json')['HK416QR22']
+    out = [f"module {M} {{\n"]
+    for model, node in HK416QR22_BODIES:
+        out.append(f"""
+    model {model} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|{node},
+        texture  = {HK416_TEX},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'scope', 'foregrip',
+                     'light_left', 'laser_right', 'rifle_back', 'rifle_back_bag'):
+            out.append(attachment(name, pts[name]))
+        out.append("    }\n")
+    out.append(f"""
+    model HK416QR22_MARKINGS {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_MARKINGS,
+        texture  = {TEX}/HK416_MARKINGS,
+        cullFace = None,
+    }}
+""")
+    for node in ('BOLT', 'CHARGING_HANDLE'):
+        out.append(f"""
+    model HK416QR22_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_{node},
+        texture  = {HK416_TEX},
+        cullFace = None,
+    }}
+""")
+    # the magazines upright in GoM's STANAG frame (the gun's turned `magazine` point turns them), GoM's floor pose
+    for mag, _, _ in HK416QR22_MAGS:
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_HK416_22_magazines|{mag},
+        texture  = {TEX}/HK416_22_MAG,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_hk416_22.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.HK416QR22_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.HK416QR22_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.Charging_Handle_Close {M}.HK416QR22_CHARGING_HANDLE charging_handle_lock "
+             f"charging_handle_lock,",
+             f"{w}MarzGuns.Charging_Handle_Open {M}.HK416QR22_CHARGING_HANDLE charging_handle_open "
+             f"charging_handle_open,",
+             f"{w}{M}.HK416QR22_Integrated_Rail_Left {M}.HK416QR22_MARKINGS markings markings,"]
+    lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in HK416QR22_MAGS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+    lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+              f"laser_right laser_right," for o in LASERS]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+    items = [f"module {M} {{\n", f"""
+    item HK416QR22 {{
+        MinDamage                    = 0.3,
+        MaxDamage                    = 0.6,
+        CriticalChance               = 25.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 3.0,
+        HitChance                    = 55,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 20,
+        RecoilDelay                  = 6,
+        MaxRange                     = 22.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 4,
+        MaxSightRange                = 12.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1.0,
+        ConditionLowerChanceOneIn    = 180,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.2,
+        StopPower                    = 0.8,
+        DoorDamage                   = 1,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 2.2,
+        MetalValue                   = 25.0,
+        FireMode                     = Single,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_22lr,
+        AmmoBox                      = GunsOfTien.22LR_Box,
+        ClipSize                     = 20,
+        MagazineType                 = {M}.22LRMagazine20_HK416,
+        MaxAmmo                      = 20,
+        Reloadtime                   = 25,
+        WeaponReloadType             = handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_HK416QR22,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Handgun,
+        WeaponSprite                 = {M}.HK416QR22,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = GunsOfTien_22LRShoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = 71,
+        SoundVolume                  = 20,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""]
+    for mag, rounds, weight in HK416QR22_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = gunsoftien:bullet_22lr,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {rounds},
+        MountOn          = {M}.HK416QR22,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype in HK416QR22_PARTS:
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_hk416_22.txt', ''.join(items))
+    write(f'scripts/{M}/fixing_hk416_22.txt', f"""module Base {{
+    fixing Fix HK416QR22 {{
+        Require = {M}.HK416QR22,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{M}.HK416QR22'] = 'HK416 .22 Quad Rail Pistol'          # named by its rail (user, 2026-11-13)
+    names[f'{M}.22LRMagazine10_HK416'] = 'HK416 10Rds .22 LR Magazine'
+    names[f'{M}.22LRMagazine20_HK416'] = 'HK416 20Rds .22 LR Magazine'
+    names[f'{M}.22LRMagazine30_HK416'] = 'HK416 30Rds .22 LR Extended Magazine'
+    for part, ptype in HK416QR22_PARTS:
+        names[f'{M}.{part}'] = 'HK416 .22 Integrated Rail (%s)' % ptype[4:]
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # The OTs-14 Groza (user, 2026-11-11 / 12; docs/post93_design.md "OTs-14 Groza family"; meshes and points:
 # scripts/post93/build_groza.py; registries: shared/GunsOfTienPost93/Groza.lua). TsKIB SOO's bullpup on the AKS-74U's
 # mechanism, shown in April 1994. Three regular guns on one atlas (the GP-25 version is its own, later):
@@ -2848,6 +3298,8 @@ if __name__ == '__main__':
     mdrs()
     mk11()
     hk416()
+    hk416qr22()
+    hk417()
     grozas()
     translations()
     print('written under', os.path.normpath(ROOT))

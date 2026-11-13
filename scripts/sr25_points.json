@@ -2,7 +2,7 @@
   "muzzle": {
     "offset": [
       0.0,
-      0.4806,
+      0.5017,
       0.0271
     ],
     "rotate": [
@@ -14,7 +14,7 @@
   "magazine": {
     "offset": [
       0.0,
-      0.0873,
+      0.1062,
       0.0151
     ],
     "rotate": [
@@ -26,7 +26,7 @@
   "bolt_fired": {
     "offset": [
       0.0,
-      -0.0552,
+      -0.0491,
       0.0
     ],
     "rotate": [
@@ -38,7 +38,7 @@
   "world": {
     "offset": [
       0.0212,
-      0.115,
+      0.1361,
       0.0
     ],
     "rotate": [
@@ -50,7 +50,7 @@
   "charging_handle_open": {
     "offset": [
       0.0,
-      -0.0386,
+      -0.0344,
       0.0
     ],
     "rotate": [
@@ -73,15 +73,15 @@
   },
   "_extras": {
     "bore_mm": 44.92,
-    "receiver_front_mm": 194.0,
-    "muzzle_mm": 797.0,
-    "rear_mm": -321.0,
-    "stud_mm": 450.0,
+    "receiver_front_mm": 229.0,
+    "muzzle_mm": 832.0,
+    "rear_mm": -286.0,
+    "stud_mm": 485.0,
     "hg_bottom_mm": 9.92,
     "gom_receiver_front_mm": 218.5,
     "well_bottom_mm": [
-      109.0,
-      182.2,
+      136.7,
+      217.2,
       -46.1
     ],
     "magazine": {
@@ -96,7 +96,7 @@
     "knots": [
       [
         -273.5,
-        -321.0
+        -286.0
       ],
       [
         0.0,
@@ -104,11 +104,11 @@
       ],
       [
         168.0,
-        137.5
+        172.5
       ],
       [
         218.5,
-        194.0
+        229.0
       ]
     ],
     "grow_zx": [

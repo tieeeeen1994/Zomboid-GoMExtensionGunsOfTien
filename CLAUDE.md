@@ -311,6 +311,22 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
 - **HK416 D14.5RS** (Post-93, user, 2026-11-13; built, not played): section "HK416 D14.5RS". Its iron sights fold
   under optics; every other gun was audited for the same (section "Iron sights under optics": the MP7s, SCARs and
   Vectors got the same states).
+- **HK417 Recce and Sniper** (Post-93, user, 2026-11-13: "start on the HK417 until finished"; built, not played):
+  the 16" "HK417 Battle Rifle" and 20" "HK417 Sniper Rifle", section "HK417 Recce and Sniper".
+- **HK416 .22 Quad Rail Pistol** (Post-93, user, 2026-11-13; built, not played): Walther's .22 LR HK416, held like
+  a pistol, its round shroud a plain barrel shroud (user, 2026-11-13: "Plain shroud, loud"; it was an integral
+  suppressor at first); the M-LOK .22 pistol shelved. Section "HK416 .22 Quad Rail Pistol".
+- **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
+  you this many times. the triggers you make are not good"): check every new gun's trigger blade against its
+  measuring photo by laying the photo-scale render's outline over it, row by row, before showing the gun. GoM's AR15
+  carries its trigger island (thin, |x| < 4 mm, hanging into the guard) 7-12 mm behind where H&K's and Walther's
+  blades sit, so the guns built on it move it (`build_hk416.align_trigger`: the blade's middle at mid-height, GoM's
+  z -25..-15, onto that photo row's dark pixels): HK416 +8.0 mm, HK416 .22 +12.4, HK417 +6.7. Every other gun was
+  audited the same day (TODO.md "Trigger audit": what was fixed, what is still open): traced triggers were re-read
+  off their photos, GoM's AK trigger moves back in build_rpk.py `move_trigger`. The SR-25 / Mk 11 (2026-11-14):
+  landmarks measured from a photo's "grip's rear top" must not be pinned to GoM's origin (the hand): GoM's AR15 grip
+  meets the receiver 35 mm ahead of it (`build_sr25.GRIP_TOP`); pinning them there had squeezed the grip, trigger and
+  guard to 0.82. `build_sr25.align_trigger` then puts GoM's blade on IMFDB's Mk 11 Mod 0 photo (`TRIGGER_Y`).
 - **References before models** (user, 2026-11-13, said before and not recorded: "How many times do I need to tell
   you to gather MANY images of different angles of the gun?"): every new gun starts with an image hunt, not a model:
   both sides, top, front, 3/4 views from both ends and close-ups (rail, sights, stock, grip, receiver) of that exact
@@ -1838,8 +1854,18 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 - `make_art.load_mesh` matches a geometry name with or without Blender's `.NNN` suffix: GoM's updated Rounds.fbx
   names some geometries `556x45_Round.001` (models keep the plain name), which was the "make_ammo_art.py fails in
   load_mesh" of 2026-11-03. The fix regenerates every round byte for byte.
-- **Loot: not yet**: GoM spawns each calibre's standard box, so the .22 LR box should spawn, but where depends on the
-  guns that fire it (decide with the HK416 .22 LR Pistol).
+- **Loot** (2026-11-13, with the HK416 .22 Quad Rail Pistol): the plain box and carton beside vanilla's 9mm box /
+  carton in every loot list, homes included, from Post-93's Loot.lua (the main mod has no .22 gun); also in the
+  pistol's Anachronistic spawner alternative. The special loads never spawn.
+- **Shot sound** (user, 2026-11-13: "synthesize it. just remember other .22 LR will use this sound too"; approved by
+  ear, "this is fine"): every .22 LR gun of both mods fires `GunsOfTien_22LRShoot` (sounds_22lr.txt, four variations
+  picked at random: the game's `GameSound.getRandomClip` takes one of a sound's `clip` blocks), made by
+  `scripts/make_22lr_sound.py` (Blender's numpy and aud, fixed seeds): an N-wave and a 1.5-4 kHz crack dying in about
+  3 ms, a 15-20 ms darker gas body, a small low thump, two light bolt clacks (blowback, 7-10 and 20-28 ms), a dark
+  outdoor tail with a faint slap-back, soft-saturated, its loudest 30 ms at -9 dBFS (peaks about -1). Vanilla's 9 mm
+  shot is an FMOD bank event; the loose media/sound/9mmShot.ogg is a flat clipped 400 ms burst, no level reference,
+  so the clip `volume` (1.0) is to be set by ear in game against GoM's M9 (a .22 pistol about 6 dB under a 9 mm).
+  Sound radius / volume stay per gun (sound_model.py: .22 LR, 2 grains, against an 18" rifle barrel, no crack).
 - **Special loads** (user, 2026-11-13: "add the special ammo", after a review proposing them; all pre-1993, so the
   main mod): `22LR_Bullet_Subsonic / _HollowPoint / _HyperVelocity` with their `_Box_ / _Carton_ / _Crate_` (gen_scripts
   `LOADS_22LR`, `Q22_LOADS` in `EXTRA_50`), ammo ids `gunsoftien:bullet_22lr_subsonic / _hollow_point /
@@ -1987,7 +2013,9 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   underside behind it has none either). Lua (MDR.lua): Gunworks' FoldingBipod
   (`BipodIntegrated`, found folded), GoM's rail bipod stats (as the HBAR's, without its spread modifier: semi-auto
   only), BipodSystem stance; tooltip state lines as the HBAR's.
-- **Slab holes and bevels** (found on the ALX, 2026-11-04): `kit.slab` offsets every loop of its 2D curve by the
+- **Slab holes and bevels** (found on the ALX, 2026-11-04; and on the Five-seveN, UCP, MDRx and UMP guards in the
+  2026-11-13 trigger audit, where an opening's top within two bevels of the guard's hidden top edge closed the
+  opening and buried the trigger: keep a hidden top edge well up inside the frame): `kit.slab` offsets every loop of its 2D curve by the
   bevel into the material, so two holes (or a hole and the outline) closer than twice the bevel make crossing loops,
   and Blender's curve fill flips inside out (the window filled, the wall above it empty). The ALX's rows are 2 mm
   apart: bevel 0.6, not 1.2. Holes must also wind as `stadium()` does (counter-clockwise in L, H).
@@ -2052,10 +2080,13 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
   stock stats, integrated rails, spawn table, MountOn appends; its sight states in IronSights.lua), Tooltips.lua, HotBrass.lua (the
   SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
 
-## HK416 .22 LR pistols (Post-93, 2026-11-13; models built for review, nothing wired)
+## HK416 .22 Quad Rail Pistol (Post-93, 2026-11-13; built, not played)
 
-User: both generations ("WHY NOT BOTH??? MP5 series has a lot of variations itself"), pistol-held, Auto + Single,
-named by their rails, gen 2 in HK bronze, gen 1's can-like shroud an integral suppressor, no suppressor part
+User: both generations ("WHY NOT BOTH??? MP5 series has a lot of variations itself"), then, while they were wired,
+"let's use walther's": only Walther's gen 1 (`HK416QR22`) ships; H&K USA's M-LOK gen 2 is shelved
+(docs/shelved_hk416ml22.md; its code stays in the builder, `GENS`). As decided: pistol-held, Auto + Single,
+named by their rails, gen 2 in HK bronze, gen 1's can-like shroud an integral suppressor (then, the same day, a plain
+loud shroud as on the real gun: "Plain shroud, loud"; sound 71 / 20 on GoM's pistol lines), no suppressor part
 (docs/post93_design.md "H&K HK416 .22 LR pistols"). References first: `references/hk416_22/` (SOURCES.txt, contact
 sheets per group; about 145 photos found through Bing image search, `www.bing.com/images/async?q=...&first=N&count=35`
 works with curl where most gun retailers answer 403).
@@ -2085,9 +2116,66 @@ works with curl where most gun retailers answer 403).
   point; `HK416_22_MAG.png`): `22LRMagazine10_HK416` (straight, from the gen-1 photo), `_20` (curved, gen-2 photo),
   `_30` (the 20's edges carried on 42 mm along their curve); each a ladder of sections (quads only), a dark feed slot
   and three screws per side.
-- **Not done**: items, model scripts, Lua (IronSights.Register, stats, magazine family), loot, icons, a clash run of
-  the states against GoM's optics (needs the items for fit_audit; the folded / removed rear repeats the HK416's
-  checked heights, and both front sights stand 205 mm or more ahead of the scope point).
+- **Iron sights redone** (user, 2026-11-13: "not convinced with the iron sights"): read off gen1/bing_133.jpg at full
+  size (3000 px, 6.2 px a mm, `q22y()`), checked by overlaying the photo-scale render: the front a low clamp, a stem
+  bevelled at its back and H&K's hood, a 24 mm ring along the bore round the post (`tube_y`), its top 40.8 mm over the
+  rail; the rear H&K's diopter, a 20 mm chamfered clamp block, a housing with a rounded back, the 22 mm drum (smooth
+  below, knurled above, dark) standing on its front leaning a little forward, its top 38.7 mm over the rail, screws in
+  the sides. They had been a box with a cylinder across it and a fork of plates.
+- **Wiring** (2026-11-13): `gen_post93_guns.py hk416qr22()` (models_hk416_22.txt: the three sight bodies with
+  every turned point, BOLT, CHARGING_HANDLE, MARKINGS drawn through the always-fitted `HK416QR22_Integrated_Rail_Left`,
+  the magazines upright with GoM's floor pose; items_hk416_22.txt; fixing_hk416_22.txt; names),
+  `shared/GunsOfTienPost93/HK416_22.lua` (profile ".22 LR HK416" in the main mod's ".22 LR" family, 900 rpm,
+  GoM's AR bolt / handle table, "handgun2" reload, four hidden rails (foregrips on the bottom one, user: "let it take
+  a foregrip"; `foregrip` point at 330 mm, the HK416's rail face + 0.003 rule, added to the builder's points()), `IronSights.Register`, spawn table, MountOn
+  appends), Tooltips.lua, HotBrass.lua, Loot.lua (Anachronistic spawner alternative; the .22 LR box and carton beside
+  vanilla's 9mm ones in every list). Stats and choices: docs/post93_design.md. GoM's AR bolt catch rule
+  (`boltCatchAfterEmptyInsert`) is left off: its `close` step plays `rackClose`, which "handgun2" has no duration
+  for (GoMReloads.lua).
+- **Icons** (`make_hk416_22_art.py icons()`, after the textures): the gun on the MP7 "gun" camera (fitted on GoM's
+  MP5), its turned nodes turned back (`-180 0 -180`) and the 20 at the turned point negated in x and z; the
+  magazines on the SCARs' rifle magazine camera with the MP7 magazine light. On Windows the run rewrites
+  HK416_22_MAG.png with byte noise only (pixels equal): restore it from git.
+- **Fit** (fit_audit, 2026-11-13): it reads the sights-up body, where the Elcan and TA28 go 5-6 into the diopter;
+  run again with the model pointed at `_FD` and at `_RD` (a scratch edit of models_hk416_22.txt, restored), every GoM
+  optic clears (red dots float up to 1.2 as on the HK416, the scopes sink at most 1.4); GoM's foregrips sit as on
+  its guns (in 0.2-1.2) and end about 60 mm ahead of the curved 30's front; nothing else flagged.
+  `check_refs.py` passes.
+
+## HK417 Recce and Sniper (Post-93, 2026-11-13; built, not played; model approved: "it looks great")
+
+User: "start on the HK417 until finished" (TODO's 16" Recce and 20" Sniper); design table in docs/post93_design.md
+"H&K HK417". References first (rule above): `references/hk417/` (SOURCES.txt, contact_sheet.png; about 370 photos
+from Bing image search and IMFDB, most of them VFC / Umarex licensed replicas, H&K's own press photo the measuring one).
+- **Scale** (`scripts/post93/build_hk417.py`): H&K's press photo of a 16" from its left (`bing/b_028.jpg`, 2000 px,
+  sights folded, 10-round magazine, stock part way out) at 2.08 px a mm, the mean of three reads within 4 % (trigger
+  guard opening 56 mm as on the AR-15; the H&K grip's base 157 mm under the bore as on our HK416; the overall length
+  between H&K's 905 / 985). Lengths are anchored on the trigger guard opening's centre (107.7 mm on GoM's AR15), so
+  GoM's receiver stays as it is behind the trigger group (the HK416's grip and stock fit unchanged) and is stretched
+  ahead of it (`KNOTS`: 135.7 -> 135.7, 218.5 -> 240.2, the upper's front) for the 7.62 magazine well; heights and
+  widths grow 5 / 6 % as our SR-25's (`build_sr25.GROW_Z / GROW_X`). Laid over the photo (render_hk417.py
+  `HK417_photo`, mirrored) barrel, flash hider, rail, slots, well, grip, trigger and magazine land on the photo's; the
+  receiver's top sits a few mm low (GoM's receiver, as on the HK416).
+- **Build**: GoM's AR15 as in build_hk416.py (its barrel group, A2 stock and grip and fixed rear sight dropped, the
+  flat top carried to the rear, the selector mirrored, H&K's grip, H&K's labels `HK417_MARKINGS` on HK416_MARKINGS.png),
+  then per gun (`VARIANTS`): the rail system (to 471.6 / 570.6 mm, half width 25, bottom crossbars 30.3 under the bore,
+  side rails at the bore, the photo's oval slots, QD cup, two cover screws), the gas block with H&K's front sight just
+  ahead of it, the barrel (r 9.0, stepped to 8.0), GoM's birdcage stretched to the photo's 63 mm flash hider (8 %
+  fatter), the diopter rear sight at the flat top's rear (25-58 mm, the photo's). The Sniper from IMFDB's
+  `HK417_20MOD.jpg` scaled by its receiver: rail and barrel each about 100 mm longer (`SNIPER_EXTRA` 99, the barrel
+  101.6), the front slot group moved forward with them. The stock is build_hk416's at this bore (`HK417_STOCK`).
+  Sight states `_RD` / `_FD` only: with the rear at the flat top's very rear, folded, every GoM optic clears it
+  (fit_audit run with each model pointed at `_RD` and `_FD` by a scratch edit, max sink 1.5, red dots float up to
+  1.1), so no `_RDX` / `_FDX`. Points `hk417_points.json` {"HK417", "HK417S"}.
+- **Magazines** (`GunsOfTienPost93_HK417_magazines.fbx`, GoM's STANAG frame at the grown `magazine` point):
+  H&K's straight, raked translucent magazines from the photo's 10 (86 mm deep, 100 mm out of the well), the 20 40 mm
+  longer along its edges (photos of it: 1.9 times as long as deep); a black base plate square to the slanted bottom
+  edge, raised window frames (dark) on the sides; `HK417_MAG.png` (make_hk417_art.py: smoke-grey polymer with darker
+  bands where the rounds show, and black).
+- **Wiring**: `gen_post93_guns.py hk417()` (models_hk417.txt, items_hk417.txt, fixing_hk417.txt, names; the SCAR-H
+  mount device's and SOCOM762-RC's MountOn list both guns), `shared/GunsOfTienPost93/HK417.lua`, Tooltips.lua,
+  HotBrass.lua (the Mk 11's values), Loot.lua (one alternative in GoM's two army rifle spawners). check_refs and the
+  Lua syntax check pass.
 
 ## Iron sights under optics (both mods, 2026-11-13; built, not played)
 

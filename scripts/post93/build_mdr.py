@@ -13,7 +13,7 @@ Writes (P = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
     scripts/post93/mdr223_points.json, mdr308_points.json         attachment points (game space)
 
 Design: docs/post93_design.md, "Desert Tech MDRx .223 and .308". One MDRx chassis for both guns, traced from Desert
-Tech's left-side photo of a flat dark earth 16" MDRx (references/mdr/deserttech/c196b688..., not in the repo:
+Tech's right-side photo (muzzle right) of a flat dark earth 16" MDRx (references/mdr/deserttech/c196b688..., not in the repo:
 trace_outline.py at --length 698.5, the 16" forward-eject rifle's published 27.5"; its height then reads 198.5 mm
 against the published 200.4, and its top rail's crossbars 9.9 mm apart). Profiles are in that photo's (L, H) mm: L back
 from the muzzle tip, H up from the pistol grip's bottom. Real rifles Desert Tech sold (user, 2026-11-04):
@@ -113,12 +113,23 @@ GRIP = [(342.7, 68.7), (344.1, 62.4), (357.1, 13.9), (357.1, 10.8), (354.4, 4.5)
         (360.3, 0.0), (392.6, 7.2), (398.4, 9.4), (402.9, 13.0), (402.5, 20.7), (400.7, 31.0), (397.1, 46.7),
         (390.4, 65.1), (385.0, 76.4), (381.4, 88.0), (382.7, 96.6), (386.8, 103.8), (389.0, 108.0), (340.0, 108.0),
         (338.7, 75.0)]
-GUARD = [(345.0, 102.0), (338.7, 68.3), (320.3, 62.0), (283.9, 67.8), (282.1, 71.0), (275.4, 97.5), (273.6, 99.3),
-         (275.0, 102.0)]
+# (2026-11-13, trigger audit: the guard's top edge, hidden in the chassis, was within two bevels of the opening's top, so
+# the bevel's offsets crossed and the curve fill closed the opening's top and buried the trigger; it now reaches
+# 6.5 mm up inside the chassis. See kit.slab in CLAUDE.md, "Slab holes and bevels".)
+GUARD = [(345.0, 106.0), (338.7, 68.3), (320.3, 62.0), (283.9, 67.8), (282.1, 71.0), (275.4, 97.5), (273.6, 99.3),
+         (275.0, 106.0)]
 GUARD_HOLE = [(332.4, 99.5), (285.2, 99.5), (283.9, 96.6), (283.4, 85.8), (286.6, 73.2), (288.4, 71.9), (318.9, 67.4),
               (334.7, 72.3), (337.3, 75.5), (337.8, 79.5)]
-TRIGGER = [(327.0, 99.0), (323.0, 90.0), (320.0, 80.0), (316.5, 71.5), (314.0, 72.5), (317.0, 82.0), (319.0, 92.0),
-           (320.5, 99.0)]
+# Desert Tech's skeletonised trigger (trigger audit 2026-11-14, read off references/mdr/deserttech's studio right side,
+# the model registered on it at 2.23 px a mm, IoU 0.98): a curved front blade (face L 315.9 at the top, 316.8 at H 94,
+# 314.6 at the tip) and a straight rear bar (L 322.2-324, flaring to 326.7 at the top), joined at the tip (H 71.4) and
+# by a brace at H 91-92.5, two narrow windows between. It was a thin diagonal blade, its face about 3 mm back.
+TRIGGER = [(327.5, 101.0), (326.7, 99.2), (325.0, 96.5), (324.0, 93.8), (324.0, 78.5), (323.6, 77.0), (322.5, 76.0),
+           (320.0, 74.5), (318.0, 73.0), (316.5, 71.5), (315.5, 71.0), (314.6, 71.6), (314.6, 75.0), (315.0, 78.0),
+           (315.5, 81.2), (315.9, 84.0), (316.4, 88.4), (316.8, 93.8), (316.2, 97.0), (315.9, 99.2), (315.9, 101.0)]
+TRIGGER_WINDOWS = [[(324.0, 99.0), (321.0, 99.0), (321.6, 96.0), (321.8, 93.3), (322.3, 93.3), (322.8, 96.0)],
+                   [(322.2, 90.3), (321.3, 90.3), (320.8, 85.0), (320.2, 80.0), (319.5, 77.6), (320.2, 76.5),
+                    (321.0, 77.0), (322.2, 78.5)]]
 MAG_RELEASE = [(452.0, 103.0), (453.0, 86.0), (462.0, 82.0), (463.0, 95.0), (458.0, 104.0)]
 SELECTOR = (367.0, 124.0)
 
@@ -283,7 +294,7 @@ def build_body(g):
         hg_rail = (HG_RAIL[0], HG_RAIL[1], "polymer")
     slab(b, GRIP, half=W_GRIP, bevel=4.0, res=1, mat="polymer")
     slab(b, GUARD, [GUARD_HOLE], half=W_GUARD, bevel=1.5, res=0, mat="polymer")
-    slab(b, TRIGGER, half=2.8, bevel=0.6, mat="dark")
+    slab(b, TRIGGER, TRIGGER_WINDOWS, half=2.8, bevel=0.3, mat="dark")
     slab(b, MAG_RELEASE, half=21.0, bevel=0.8, mat="dark")
     slab(b, FRONT_BLOCK, half=12.0, bevel=0.6, mat="dark")
     for La, Lb, mat in ((UPPER_RAIL[0], UPPER_RAIL[1], "upper"), hg_rail):

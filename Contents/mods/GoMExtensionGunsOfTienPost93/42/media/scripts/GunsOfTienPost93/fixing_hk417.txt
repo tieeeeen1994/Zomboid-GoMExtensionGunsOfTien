@@ -1,0 +1,11 @@
+module Base {
+    fixing Fix HK417 {
+        Require = GunsOfTienPost93.HK417,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+
+    fixing Fix HK417S {
+        Require = GunsOfTienPost93.HK417S,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

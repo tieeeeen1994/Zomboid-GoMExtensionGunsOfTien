@@ -1,7 +1,7 @@
 --[[
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
     Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
-    .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, the Mk 11, the HK416, the Grozas, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
+    .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, the Mk 11, the HK416, the HK416 .22 pistol, the HK417s, the Grozas, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
     GoM's own entries).
 --]]
 
@@ -153,6 +153,33 @@ GunsOfTien_TooltipStates[M .. "HK416_Integrated_Stock_Deployed"] = {
     "Aiming Time reduced by 15%",
     "Hit Chance increased by 15%",
 }
+-- The HK417s (shared/GunsOfTienPost93/HK417.lua): the HK416's stock and iron sights, the SCAR-H's mount device
+for _, gun in ipairs({ "HK417", "HK417S" }) do
+    lines[M .. gun] = {
+        "Uses .308/7.62x51mm NATO rounds.",
+        "Integrated Picatinny rails: Up, Down, Left, Right",
+        "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
+        "Iron sights fold under an optic.",
+    }
+end
+for _, n in ipairs({ 10, 20 }) do
+    lines[M .. "762x51Magazine" .. n .. "_HK417"] = { "Uses .308/7.62x51mm NATO rounds." }
+end
+GunsOfTien_TooltipStates[M .. "HK417_Integrated_Stock_Deployed"] = {
+    "Collapsible stock deployed:",
+    "Aiming Time reduced by 15%",
+    "Hit Chance increased by 15%",
+}
+-- The HK416 .22 Quad Rail Pistol (shared/GunsOfTienPost93/HK416_22.lua): its clamped-on iron sights taken off under
+-- an optic
+lines[M .. "HK416QR22"] = {
+    "Uses .22 LR rounds.",
+    "Integrated Picatinny rails: Up, Down, Left, Right",
+    "Iron sights come off under an optic.",
+}
+for _, n in ipairs({ 10, 20, 30 }) do
+    lines[M .. "22LRMagazine" .. n .. "_HK416"] = { "Uses .22 LR rounds." }
+end
 -- The Grozas (shared/GunsOfTienPost93/Groza.lua): GoM's Picatinny Rail upgrade on the carrying handle, in GoM's
 -- wording for its rail upgrades and AK muzzle parts
 lines[M .. "GROZA1"] = {

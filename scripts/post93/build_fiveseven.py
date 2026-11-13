@@ -127,9 +127,12 @@ RAIL_SLOTS = [22.0, 32.0, 42.0, 52.0, 62.0]             # slot centres, 10 mm pi
 RAIL_TEETH = [(16.3, 19.4)] + [(c + 2.6, c + 7.4) for c in RAIL_SLOTS[:-1]] + [(64.6, 67.0)]
 
 # Trigger guard (outer edge, its top hidden in the frame) and the trigger opening inside it.
-GUARD = [(70.0, 100.0), (74.5, 97.6), (75.2, 96.5), (76.0, 92.9), (77.6, 86.0), (79.0, 78.0), (80.3, 74.8),
+# (2026-11-13, trigger audit: the guard's top edge, hidden in the frame, was within two bevels of the opening's top, so
+# the bevel's offsets crossed and the curve fill closed the opening's top and buried the trigger; it now reaches
+# 6.5 mm up inside the frame. See kit.slab in CLAUDE.md, "Slab holes and bevels".)
+GUARD = [(70.0, 104.0), (74.5, 97.6), (75.2, 96.5), (76.0, 92.9), (77.6, 86.0), (79.0, 78.0), (80.3, 74.8),
          (82.0, 72.8), (85.6, 70.7), (115.7, 67.5), (128.8, 67.5), (133.0, 66.8), (135.8, 65.3), (137.3, 63.8),
-         (139.0, 60.5), (139.0, 99.0)]
+         (139.0, 60.5), (139.0, 104.0)]
 OPENING = [(88.0, 97.5), (85.4, 95.8), (83.1, 93.7), (81.6, 90.5), (81.2, 86.7), (82.9, 78.8), (83.9, 76.9),
            (85.2, 75.6), (88.0, 74.5), (117.0, 71.7), (121.7, 71.7), (125.6, 72.2), (129.6, 73.7), (131.1, 75.0),
            (132.2, 77.1), (132.4, 79.4), (131.8, 88.0), (131.5, 97.5)]

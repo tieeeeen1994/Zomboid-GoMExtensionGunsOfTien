@@ -40,7 +40,8 @@ POINTS = os.path.join(HERE, "mk11_points.json")
 SR25_POINTS = os.path.join(HERE, "..", "sr25_points.json")
 R = sr.R
 
-HG = (194.0, 545.0)                # the rail handguard: from the receiver's front to its front ring (mm ahead of grip)
+G = sr.GRIP_TOP                    # the photo landmarks are from the grip's rear top, G ahead of the origin (build_sr25)
+HG = (194.0 + G, 545.0 + G)        # the rail handguard: from the receiver's front to its front ring
 RECV_RAIL_TOP = 71.5               # GoM's AR15 flat top's crossbar tops (mm over the grip origin, measured on the mapped
                                    # mesh; its fixed rear sight stands at 78). GoM's AR15 takes no optics: its model's
                                    # scope point is the M16A3's, over a rail on the carry handle, 46 mm higher, so the
@@ -49,9 +50,9 @@ HG_HALF, HG_BOT = 25.0, -30.0      # the handguard's body: half width, bottom un
                                    # rail, whose crossbars are flush with the receiver's
 RAIL_BASE, RAIL_TOOTH = (15.6, 3.0), (21.2, 4.0)   # Picatinny: base width / height, crossbar width / height
 PITCH, TOOTH_LEN = 10.0, 5.3
-MUZZLE, BARREL_R = 700.0, 11.0     # 20" heavy barrel, its end (where the SCAR-H's mount device goes)
-FRONT_SIGHT = (520.0, 538.0)       # the folded flip-up front sight on the top rail
-SCOPE_Y = 120.0                    # GoM's optics: over the receiver's front half and the handguard's rear
+MUZZLE, BARREL_R = 700.0 + G, 11.0    # 20" heavy barrel, its end (where the SCAR-H's mount device goes)
+FRONT_SIGHT = (520.0 + G, 538.0 + G)      # the folded flip-up front sight on the top rail
+SCOPE_Y = 120.0 + G                # GoM's optics: over the receiver's front half and the handguard's rear
 
 
 def prism(bm, uv, patch, section, y0, y1):
@@ -119,6 +120,7 @@ def build_gun(scope_mm):
     steel, black = sr.uv_patch(bm, uv, barrel), sr.uv_patch(bm, uv, guard)
     bmesh.ops.delete(bm, geom=[v for c in ahead for v in c], context='VERTS')
     sr.grow_mesh(bm)
+    sr.align_trigger(bm, sr.TRIGGER_Y)
     B = bore * sr.GROW_Z
     old = set(bm.faces)
     # the 20" barrel out of the handguard, a plain end where the SCAR-H's mount device goes
@@ -180,10 +182,10 @@ def main():
         "muzzle": {"offset": [0.0, g(MUZZLE), g(B)], "rotate": [-90.0, 0.0, -180.0]},
         "canon": {"offset": [0.0, g(MUZZLE), g(B)], "rotate": [0.0, 0.0, 0.0]},
         "scope": {"offset": [0.0, g(SCOPE_Y), round(g(f["top"]) - 0.0032, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "foregrip": {"offset": [0.0, g(420.0), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "bipod": {"offset": [0.0, g(500.0), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "light_left": {"offset": [round(g(f["side"]) + 0.0007, 4), g(470.0), g(f["side_h"])], "rotate": [0.0, 0.0, 0.0]},
-        "laser_right": {"offset": [round(-g(f["side"]) - 0.0018, 4), g(470.0), round(g(f["side_h"]) - 0.0008, 4)],
+        "foregrip": {"offset": [0.0, g(420.0 + G), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
+        "bipod": {"offset": [0.0, g(500.0 + G), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
+        "light_left": {"offset": [round(g(f["side"]) + 0.0007, 4), g(470.0 + G), g(f["side_h"])], "rotate": [0.0, 0.0, 0.0]},
+        "laser_right": {"offset": [round(-g(f["side"]) - 0.0018, 4), g(470.0 + G), round(g(f["side_h"]) - 0.0008, 4)],
                         "rotate": [0.0, 0.0, 0.0]},
     })
     pts["_extras"] = {"bore_mm": round(B, 2), "rail_faces_mm": {k: round(v, 2) for k, v in f.items()},

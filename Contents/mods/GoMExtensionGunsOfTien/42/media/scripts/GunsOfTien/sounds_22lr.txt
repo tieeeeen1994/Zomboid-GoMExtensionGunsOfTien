@@ -1,0 +1,34 @@
+module Base
+{
+    /* The .22 LR shot for every .22 LR gun of both mods (scripts/make_22lr_sound.py; synthesised, one variation
+       picked at random per shot). Vanilla's M9Shoot as the pattern: category Item, two at a time per emitter. */
+    sound GunsOfTien_22LRShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip
+        {
+            distanceMax = 1000,
+            volume = 1.0,
+            file = media/sounds/gunsoftien_22lr_shoot_1.ogg,
+        }
+        clip
+        {
+            distanceMax = 1000,
+            volume = 1.0,
+            file = media/sounds/gunsoftien_22lr_shoot_2.ogg,
+        }
+        clip
+        {
+            distanceMax = 1000,
+            volume = 1.0,
+            file = media/sounds/gunsoftien_22lr_shoot_3.ogg,
+        }
+        clip
+        {
+            distanceMax = 1000,
+            volume = 1.0,
+            file = media/sounds/gunsoftien_22lr_shoot_4.ogg,
+        }
+    }
+}

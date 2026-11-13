@@ -9,6 +9,27 @@ H&K HK416 (Post-93 add-on)
 - The flip-up iron sights fold away under an optic: the rear sight folds under a red dot or holographic sight (the front stays up and shows through it), both fold under a magnified scope
 - Found where the SCAR-L is: in Guns of Marz's army rifle kits and on army zombies, with STANAG 30 magazines and boxes of 5.56x45mm
 
+H&K HK417 (Post-93 add-on)
+- New guns: the H&K HK417, the HK416's 7.62x51mm big brother of 2006, as the 16-inch "HK417 Battle Rifle" (Recce) and the 20-inch "HK417 Sniper Rifle" (Sniper)
+- H&K's own translucent 10 and 20-round 7.62x51mm magazines (they fit only the HK417s)
+- H&K's free-floating rail system with rails on all four sides: Guns of Marz optics on top, foregrips and bipods underneath, lights on the left, lasers on the right; the Sniper's rail system and barrel are longer
+- H&K's six-position stock: steadier and quicker to aim with it pulled out. H&K's grip and its red and white fire mode labels on both sides
+- Automatic or single shots at 600 rounds a minute. The Battle Rifle hits like the SCAR-H and is a little steadier; the Sniper hits harder and further, slower to bring up
+- Takes the SCAR-H's 7.62x51mm muzzle mount and SOCOM762-RC suppressor
+- The flip-up iron sights fold under an optic: the rear under a red dot or holographic sight, both under a magnified scope
+- Found where the SCAR-H is: in Guns of Marz's army rifle kits and on army zombies, one of the two, with 20-round magazines and boxes of 7.62x51mm
+
+HK416 .22 Quad Rail Pistol (Post-93 add-on)
+- New gun: Walther's HK416 .22 Tactical Pistol (about 2009 to 2018), the HK416 as a .22 LR pistol, as "HK416 .22 Quad Rail Pistol"
+- Held one-handed like Guns of Marz's MP5K and carried on the back. No stock: the receiver ends in a round cap
+- H&K's 10, 20 and 30-round .22 LR magazines. Fires the main mod's .22 LR rounds (plain, Subsonic, Hollow Point, Hyper Velocity)
+- A short quad rail: Guns of Marz optics on top, foregrips underneath, lights on the left, lasers on the right
+- Automatic or single shots at 900 rounds a minute with almost no recoil. Weak, short-ranged, and the dirty .22 wears it faster and jams more
+- Its own .22 LR shot sound, a light, sharp crack (every .22 LR gun will use it)
+- H&K-style iron sights clamped on the rail come off under an optic: the rear under a red dot or holographic sight, both under a magnified scope
+- Found with Guns of Marz's post-1993 guns (gun stores and late loot), with its 20-round magazines and .22 LR boxes
+- .22 LR boxes and cartons now turn up wherever vanilla's 9mm boxes and cartons do, homes included
+
 Iron sights under optics (Post-93 add-on)
 - The MP7A1 and MP7A2, the SCAR-L and SCAR-H and the four Vectors now show their flip-up iron sights as the HK416 does: up with no optic, the rear folded under a red dot or holographic sight, both folded under a magnified scope
 - Where an optic's mount sits on the rear sight's spot on the rail (the Elcan and the TR06X on the SCAR-L; the Kobra, the Elcan and the TR06X on the HK416), the rear sight is taken off instead

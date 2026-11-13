@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix HK416QR22 {
+        Require = GunsOfTienPost93.HK416QR22,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

@@ -1,0 +1,89 @@
+module GunsOfTienPost93 {
+
+    model HK416QR22 {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_BODY,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2678 -0.0258, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1015 -0.0144, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0470 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0329 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0905 -0.0396, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1990 -0.0093, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0188 0.1809 -0.0225, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0199 0.1809 -0.0217, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model HK416QR22_RD {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_BODY_RD,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2678 -0.0258, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1015 -0.0144, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0470 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0329 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0905 -0.0396, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1990 -0.0093, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0188 0.1809 -0.0225, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0199 0.1809 -0.0217, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model HK416QR22_FD {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_BODY_FD,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2678 -0.0258, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1015 -0.0144, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0470 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment charging_handle_open { offset = 0.0000 -0.0329 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0905 -0.0396, rotate = -180.0000 0.0000 -180.0000, }
+        attachment foregrip { offset = 0.0000 0.1990 -0.0093, rotate = -180.0000 0.0000 -180.0000, }
+        attachment light_left { offset = -0.0188 0.1809 -0.0225, rotate = -180.0000 0.0000 -180.0000, }
+        attachment laser_right { offset = 0.0199 0.1809 -0.0217, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+        attachment rifle_back_bag { offset = 0.0000 0.0000 0.0000, rotate = -180.0000 0.0000 -180.0000, }
+    }
+
+    model HK416QR22_MARKINGS {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_MARKINGS,
+        texture  = weapons/GunsOfTienPost93/HK416_MARKINGS,
+        cullFace = None,
+    }
+
+    model HK416QR22_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_BOLT,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model HK416QR22_CHARGING_HANDLE {
+        mesh     = weapons/firearms/GunsOfTienPost93_HK416QR22|HK416QR22_CHARGING_HANDLE,
+        texture  = weapons/firearms/assault_rifles/AR15,
+        cullFace = None,
+    }
+
+    model 22LRMagazine10_HK416 {
+        mesh     = weapons/magazines/GunsOfTienPost93_HK416_22_magazines|22LRMagazine10_HK416,
+        texture  = weapons/GunsOfTienPost93/HK416_22_MAG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 22LRMagazine20_HK416 {
+        mesh     = weapons/magazines/GunsOfTienPost93_HK416_22_magazines|22LRMagazine20_HK416,
+        texture  = weapons/GunsOfTienPost93/HK416_22_MAG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 22LRMagazine30_HK416 {
+        mesh     = weapons/magazines/GunsOfTienPost93_HK416_22_magazines|22LRMagazine30_HK416,
+        texture  = weapons/GunsOfTienPost93/HK416_22_MAG,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

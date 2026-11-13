@@ -108,7 +108,10 @@ def main():
     mags = load(os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_HK416_22_magazines.fbx"),
                 {None: os.path.join(TEX, "HK416_22_MAG.png")})
     marks_tex = os.path.join(TEX, "HK416_MARKINGS.png")
-    for gen, states, mag_rds in (("QR22", ("", "_RD", "_FD"), 10), ("ML22", ("", "_RD", "_FD", "_RDX", "_FDX"), 20)):
+    gens = (("QR22", ("", "_RD", "_FD"), 10), ("ML22", ("", "_RD", "_FD", "_RDX", "_FDX"), 20))
+    for gen, states, mag_rds in gens:
+        if "HK416" + gen not in PTS:            # shelved (build_hk416_22.py GENS)
+            continue
         n = "HK416" + gen
         body_tex = AR_TEX if gen == "QR22" else os.path.join(TEX, "HK416ML22.png")
         tex = {None: AR_TEX, n + "_MARKINGS": marks_tex}
@@ -148,6 +151,33 @@ def main():
             render(n + "_mag%d" % rds, right, Vector((0.0, 0.11, -0.02)), 0.3, 1400, 1000)
         state(fired=True, racked=True)
         render(n + "_racked", right, Vector((0.0, 0.09, 0.0)), 0.2, 1400, 900)
+        # fitted (the QR22's rails): GoM's Aimpoint on the rear-off body, MKC foregrip, SR7 light, AimRight laser
+        if gen == "QR22":
+            parts = {}
+            for fbx, node, tx in (("scopes", "Aimpoint_Sight", "scopes"), ("foregrips", "MKC_Foregrip", "foregrips"),
+                                  ("pointers", "SR7_Light", "pointers"), ("pointers", "AimRight_Laser", "pointers")):
+                path = f"{GOM}/models_X/weapons/parts/{fbx}.fbx"
+                if not os.path.exists(path):
+                    continue
+                got = load(path, {None: f"{GOM}/textures/weapons/parts/{tx}/{node}.png"})
+                for k, o in got.items():
+                    if k != node:
+                        bpy.data.objects.remove(o)
+                if node in got:
+                    parts[node] = got[node]
+            where = {"Aimpoint_Sight": "scope", "MKC_Foregrip": "foregrip", "SR7_Light": "light_left",
+                     "AimRight_Laser": "laser_right"}
+            state("_RD", magazine=mags["22LRMagazine20_HK416"])
+            shown = [o for o in bpy.data.objects if o.type == 'MESH' and not o.hide_render]
+            for node, o in parts.items():
+                place(o, point=upright_point(pts[where[node]]))
+                shown.append(o)
+            show_only(shown)
+            render(n + "_fitted_right", right, Vector((0.0, 0.135, 0.0)), SIZE, W, H)
+            render(n + "_fitted_q", (0.6, -0.55, -0.45), Vector((0.0, 0.135, 0.0)), SIZE, W, int(H * 1.1))
+            for o in parts.values():
+                o.hide_render = True
+                o.name = o.name + "_done"
         # the photo's framing: its px a mm across 1800 px, its well face and bore where the photo has them
         px, mw, bore, ph = PHOTO[gen]
         B = pts["_extras"]["bore_mm"]

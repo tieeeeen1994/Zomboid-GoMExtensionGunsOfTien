@@ -139,6 +139,25 @@ def set_gyz(v, y=None, z=None):
         v.co.z = -z * R
 
 
+# GoM's AK triggers sit 3-3.6 mm (at our size) ahead of where the RPK / RPK-74 photos have the blade (trigger audit
+# 2026-11-13, user: "the triggers you make are not good"; references/rpk/rpk_level.png and Soviet_RPK-74.jpg
+# registered on the guns): moved back along the bore, in GoM's mm before SCALE.
+TRIGGER_MOVE = {"RPK": -3.0 / SCALE, "RPK74": -3.6 / SCALE}
+
+
+def move_trigger(bm, dy):
+    """GoM's AK trigger: the thin island (|x| < 4.5 mm) hanging into the guard, 20-40 vertices."""
+    for c in islands(bm):
+        ys, zs = [gy(v) for v in c], [gz(v) for v in c]
+        if (20 <= len(c) <= 40 and max(abs(v.co.x) for v in c) / R < 4.5 and 70.0 < min(ys) and max(ys) < 120.0
+                and 18.0 < max(ys) - min(ys) < 40.0 and min(zs) < -30.0):
+            for v in c:
+                v.co.y += dy * R
+            print("trigger moved %.1f mm" % dy)
+            return
+    raise RuntimeError("GoM's AK trigger island not found")
+
+
 def bore_z(bm):
     """The bore height and the bare barrel's radius (mm): the longest piece starting ahead of the receiver is the
     barrel (the receiver end to the muzzle in one), its last ring behind the front sight block the bare barrel's."""
@@ -498,6 +517,7 @@ def main():
         bm.verts.ensure_lookup_table()
         bore, barrel_r = bore_z(bm)
         stock(bm, bore)
+        move_trigger(bm, TRIGGER_MOVE[gun])
         lengthen(bm, spec, gun)
         muzzle_y = max(gy(v) for v in bm.verts if abs(gz(v) - bore) < barrel_r + 1.0)
         bm.to_mesh(body.data)

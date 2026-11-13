@@ -113,13 +113,26 @@ FRAME = [(1.1, SLIDE_BOTTOM), (1.1, 102.0), (3.4, 99.8), (4.9, 96.0), (7.6, 93.4
 RAIL_TEETH = [(12.1, 15.6), (19.7, 23.5), (28.5, 32.6), (38.0, 41.7), (47.4, 51.2), (55.9, 56.5)]
 
 # Squared trigger guard with a flat front, the opening (behind the trigger it reaches the grip's front strap).
-GUARD = [(72.0, 92.0), (74.8, 91.1), (77.8, 88.0), (79.3, 85.0), (79.3, 76.7), (78.6, 75.1), (78.6, 72.9),
+# (2026-11-13, trigger audit: the guard's top edge, hidden in the frame, was within two bevels of the opening's top, so
+# the bevel's offsets crossed and the curve fill closed the opening's top and buried the trigger; it now reaches
+# 4.5 mm up inside the frame. See kit.slab in CLAUDE.md, "Slab holes and bevels".)
+GUARD = [(72.0, 96.0), (74.8, 91.1), (77.8, 88.0), (79.3, 85.0), (79.3, 76.7), (78.6, 75.1), (78.6, 72.9),
          (77.8, 72.1), (77.8, 69.4), (79.3, 67.6), (88.0, 66.0), (96.8, 65.3), (103.2, 64.9), (114.6, 65.3),
-         (118.4, 66.0), (121.8, 67.6), (126.0, 66.8), (129.8, 65.7), (131.0, 67.0), (131.0, 92.0)]
+         (118.4, 66.0), (121.8, 67.6), (126.0, 66.8), (129.8, 65.7), (131.0, 67.0), (131.0, 96.0)]
 OPENING = [(86.9, 91.5), (84.6, 89.9), (83.5, 86.9), (83.5, 75.5), (84.3, 72.5), (85.8, 71.0), (95.3, 70.6),
            (110.0, 70.8), (118.0, 71.2), (122.5, 72.5), (124.2, 75.0), (123.0, 82.0), (120.5, 88.5), (118.5, 91.5)]
-TRIGGER = [(108.5, 91.5), (111.5, 91.5), (113.5, 86.0), (117.0, 80.0), (117.5, 75.5), (115.0, 72.0), (110.0, 70.5),
-           (107.0, 71.0), (108.5, 72.5), (112.5, 74.5), (114.0, 77.5), (112.5, 82.0), (109.5, 87.0)]
+# The trigger re-read 2026-11-14 (trigger audit) off IMFDB's studio left side "Hk_ucp_3.jpg" (550 px; the model
+# registered on it at 2.63 px a mm, IoU 0.94): a C about 4.5 mm deep, its back bulging to L 115.4 at H 83, hooking
+# forward to its tip at L 103 just over the floor. It bulged lower and further back (L 117.5 at H 75.5) and stopped at
+# L 107, its lower half 2-5 mm behind the photo's.
+TRIGGER = [(107.4, 92.5), (112.3, 92.5), (112.3, 90.3), (113.1, 88.5), (113.5, 86.9), (114.2, 85.7), (114.6, 84.6),
+           (115.4, 83.4), (115.4, 82.3), (115.0, 81.2), (114.6, 80.0), (114.2, 78.9), (114.2, 77.7), (113.9, 76.6),
+           (113.1, 75.5), (111.9, 74.3), (110.4, 73.2), (108.5, 72.0), (106.5, 71.4), (103.5, 71.2), (102.8, 71.8),
+           (103.6, 72.5), (105.0, 73.2), (106.3, 74.3), (107.8, 75.5), (108.9, 76.6), (109.3, 77.7), (109.7, 78.9),
+           (110.1, 80.0), (110.4, 81.2), (111.0, 82.3), (111.2, 83.4), (110.8, 84.8), (110.1, 86.9), (109.3, 88.6),
+           (107.6, 90.3)]
+TRIGGER_BAR = [(112.0, 87.5), (122.5, 87.5), (122.5, 85.3), (112.0, 85.3)]   # the bar from the blade's back to the
+                                                                       # grip, across the opening (the photo)
 
 GRIP = [(118.5, 92.0), (120.5, 88.5), (123.0, 82.0), (124.2, 75.0), (125.5, 70.0), (129.0, 66.0), (131.3, 64.1),
         (132.8, 60.7), (133.6, 58.1), (134.7, 48.6), (135.5, 44.8), (137.4, 39.5), (140.0, 30.7), (143.1, 25.0),
@@ -155,6 +168,7 @@ def build_body():
     slab(b, GUARD, [OPENING], half=W_GUARD, bevel=1.6, res=1)
     slab(b, GRIP, half=W_GRIP, bevel=3.5, res=2, mat="grip")
     slab(b, TRIGGER, half=2.8, bevel=0.8, mat="dark")
+    slab(b, TRIGGER_BAR, half=1.5, bevel=0.4, mat="dark")
     both(lambda s: slab(b, SLIDE_RELEASE, half=0.7, bevel=0.3, mat="control", x0=s * (W_FRAME + 0.4)))
     both(lambda s: slab(b, SLIDE_STOP, half=0.6, bevel=0.3, mat="dark", x0=s * (W_FRAME + 0.3)))
     both(lambda s: slab(b, REAR_LEVER, half=0.7, bevel=0.3, mat="dark", x0=s * (W_FRAME + 0.4)))

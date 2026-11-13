@@ -3,7 +3,7 @@
     blender -b --factory-startup -P scripts/post93/build_hk416_22.py
 
 User, 2026-11-13 (docs/post93_design.md "H&K HK416 .22 LR pistols"): both generations, held like pistols, Auto and
-Single, named by their rails:
+Single, named by their rails; then only Walther's ships (the M-LOK one is shelved: GENS below, docs/shelved_hk416ml22.md):
 - HK416QR22 "HK416 .22 Quad Rail Pistol": Carl Walther's (about 2009/10-2018), black, a short four-sided rail, the
   barrel inside a long round shroud (an integral suppressor in game, user's choice), H&K-style hooded front sight on
   the rail's front and rotary diopter rear;
@@ -60,6 +60,12 @@ OUT = {"QR22": os.path.join(FIRE, "GunsOfTienPost93_HK416QR22.fbx"),
        "ML22": os.path.join(FIRE, "GunsOfTienPost93_HK416ML22.fbx")}
 OUT_MAGS = os.path.join(P93, "models_X/weapons/magazines/GunsOfTienPost93_HK416_22_magazines.fbx")
 POINTS = os.path.join(HERE, "hk416_22_points.json")
+
+# The guns built. The M-LOK pistol is shelved (user, 2026-11-13: only Walther's ships, "let's use walther's"); its
+# code stays, add "ML22" back here to build it again (and make_hk416_22_art.py's HK416ML22.png).
+GENS = ("QR22",)
+# each measuring photo's trigger blade, its middle at mid-height (px; build_hk416.py align_trigger)
+TRIGGER_PX = {"QR22": 1321.0, "ML22": None}
 
 MW_MM = 206.7                       # GoM's magazine well front face (mm ahead of the grip origin)
 # per photo: px a mm, the well's front face (px), the bore, the rail system's top and bottom (photo y px)
@@ -144,6 +150,8 @@ def receiver(gen):
     uv = bm.loops.layers.uv.active
     bronze = bm.faces.layers.int.new("bronze")
     comps = sr.islands(bm)
+    if TRIGGER_PX[gen] is not None:
+        hk.align_trigger(comps, py(gen, TRIGGER_PX[gen]))
 
     def ymin(c):
         return min(sr.gy(v) for v in c)
@@ -312,33 +320,88 @@ def build_ml22(bm, uv, info):
         bronze_faces
 
 
+# Walther's sights, read off gen1/bing_133.jpg at full size (3000 px, its right side, muzzle right: 6.2 px a mm; photo
+# x to gun mm by Q22Y, heights in mm over the rail's top). User, 2026-11-13: "not convinced with the iron sights" (they
+# were a box with a cylinder across it and a fork of plates); now the shapes the photo and its close-ups show (bing_014,
+# bing_161, bing_155).
+def q22y(x):
+    """bing_133.jpg x (px, 3000 px, muzzle right) to gun mm ahead of the grip origin (its mirrored 1800 px frame)."""
+    return py("QR22", 1800.0 - 0.6 * x)
+
+
+Q22_PX = 6.2
+
+
+def prism_x(bm, uv, patch, profile, x0, x1):
+    """A convex side profile [(y, z)] (gun mm) extruded across x from x0 to x1, capped."""
+    rings = [[bm.verts.new((x * R, y * R, -z * R)) for y, z in profile] for x in (x0, x1)]
+    n = len(profile)
+    a, b = rings
+    faces = [bm.faces.new((a[k], a[(k + 1) % n], b[(k + 1) % n], b[k])) for k in range(n)]
+    faces += [bm.faces.new(a), bm.faces.new(list(reversed(b)))]
+    sr.paint(uv, patch, faces)
+
+
+def tube_y(bm, uv, patch, cz, y0, y1, r_in, r_out, seg=20):
+    """A ring about an axis along y at height cz: outer and inner walls and the two end faces (open in the middle)."""
+    def ring(y, r):
+        return [bm.verts.new((r * math.cos(2 * math.pi * i / seg) * R, y * R,
+                              -(cz + r * math.sin(2 * math.pi * i / seg)) * R)) for i in range(seg)]
+    o0, o1, i0, i1 = ring(y0, r_out), ring(y1, r_out), ring(y0, r_in), ring(y1, r_in)
+    faces = []
+    for k in range(seg):
+        n = (k + 1) % seg
+        faces.append(bm.faces.new((o0[k], o0[n], o1[n], o1[k])))
+        faces.append(bm.faces.new((i0[k], i1[k], i1[n], i0[n])))
+        faces.append(bm.faces.new((o0[k], i0[k], i0[n], o0[n])))
+        faces.append(bm.faces.new((o1[k], o1[n], i1[n], i1[k])))
+    sr.paint(uv, patch, faces)
+
+
 def sights_qr22(bm, uv, black, h, front, rear):
-    """Walther's H&K-style sights, clamped on the rail: the hooded front post on the rail's front, the rotary
-    diopter at the rear; each up or taken off (None)."""
-    g = "QR22"
+    """Walther's H&K-style sights, clamped on the rail, each up or taken off (None):
+    - the front: a low clamp along the rail's front, a stem bevelled at its back (its front edge square), and on it
+      H&K's hood, a 24 mm ring along the bore round the post (its top 40.8 mm over the rail);
+    - the rear: H&K's rotary diopter, a 20 mm clamp block, a housing over its back with a rounded rear top, and the
+      knurled 22 mm drum standing on the housing's front, leaning a little forward (its top face 38.7 mm over the
+      rail), a screw in the housing's side."""
     rt = h.rail_top
+
+    def z(ypx, rail_px):
+        return rt + (rail_px - ypx) / Q22_PX
     if front:
-        b0, b1 = py(g, 488.0), py(g, 383.0)               # the clamp along the rail (325.5 .. 353.7)
-        f0, f1 = py(g, 455.0), py(g, 385.0)               # the ring's ears (334.4 .. 353.2)
-        top, btop = h.over_rail(57.0), rt + 5.0
-        sr.box(bm, uv, black, (0.0, (b0 + b1) / 2.0, rt + 2.5), (22.0, b1 - b0, 5.0))
-        fy, fl = (f0 + f1) / 2.0, f1 - f0
-        for side in (-1, 1):
-            sr.box(bm, uv, black, (side * 8.0, fy, (btop + top) / 2.0), (3.2, fl, top - btop))
-        sr.box(bm, uv, black, (0.0, fy, (btop + top - 4.0) / 2.0), (2.6, 3.0, top - 4.0 - btop))
-        sr.box(bm, uv, black, (0.0, fy, top - 1.0), (19.2, fl, 2.0))
-        # the brace from the ring down to the clamp's front
-        sr.box(bm, uv, black, (0.0, (b0 + f0) / 2.0, btop + 4.0), (12.0, f0 - b0 + 2.0, 8.0))
+        rail = 348.0
+        sr.box(bm, uv, black, (0.0, (q22y(2150.0) + q22y(2470.0)) / 2.0, rt + 1.0),
+               (22.0, q22y(2470.0) - q22y(2150.0), 5.0))                        # the clamp along the rail
+        ring_bot, ring_top = z(245.0, rail), z(95.0, rail)
+        prism_x(bm, uv, black, [(q22y(2190.0), rt), (q22y(2358.0), rt), (q22y(2358.0), ring_bot + 2.0),
+                                (q22y(2245.0), ring_bot + 2.0)], -9.0, 9.0)     # the stem, bevelled at the back
+        cz, r_out = (ring_bot + ring_top) / 2.0, (ring_top - ring_bot) / 2.0
+        tube_y(bm, uv, black, cz, q22y(2245.0), q22y(2345.0), r_out - 2.4, r_out)   # the hood
+        sr.box(bm, uv, black, (0.0, (q22y(2285.0) + q22y(2305.0)) / 2.0, (ring_bot + cz + 2.0) / 2.0),
+               (1.8, q22y(2305.0) - q22y(2285.0), cz + 2.0 - ring_bot))         # the post inside it
+        for s in (-1, 1):
+            sr.lathe_x(bm, uv, hk.DARK, (s * 9.0, q22y(2275.0), z(320.0, rail)), [(0.0, 2.2), (s * 0.5, 2.2)], seg=12)
     if rear:
-        r0, r1 = py(g, 1470.0), py(g, 1330.0)             # the clamp (61.5 .. 99.2)
-        d0, d1 = py(g, 1400.0), py(g, 1325.0)             # the drum (80.4 .. 99.5)
-        zb_top = h.over_rail(150.0)
-        dr = (h.over_rail(45.0) - zb_top) / 2.0
-        sr.box(bm, uv, black, (0.0, (r0 + r1) / 2.0, (rt + zb_top) / 2.0), (24.0, r1 - r0, zb_top - rt + 1.0))
-        sr.lathe_x(bm, uv, black, (-10.0, (d0 + d1) / 2.0, zb_top + dr - 0.5), [(0.0, dr), (20.0, dr)], seg=16)
-        # the guards behind the drum
-        g0 = py(g, 1460.0)
-        sr.box(bm, uv, black, (0.0, (g0 + d0) / 2.0, zb_top + dr * 0.8), (22.0, d0 - g0, dr * 1.6))
+        rail = 372.0
+        top = z(247.5, rail)
+        prism_x(bm, uv, black, [(q22y(552.0), rt - 1.0), (q22y(770.0), rt - 1.0), (q22y(770.0), top - 1.5),
+                                (q22y(765.0), top), (q22y(557.0), top), (q22y(552.0), top - 1.5)],
+                -12.0, 12.0)                                                     # the clamp block
+        prism_x(bm, uv, black, [(q22y(552.0), top), (q22y(690.0), top), (q22y(650.0), z(142.0, rail)),
+                                (q22y(585.0), z(145.0, rail)), (q22y(556.0), z(170.0, rail)),
+                                (q22y(552.0), z(185.0, rail))], -10.5, 10.5)     # the housing, its back rounded
+        bottom = (0.0, q22y(700.0), z(228.0, rail))
+        topc = (0.0, q22y(730.0), z(132.0, rail))
+        mid = tuple(a + (b - a) * 0.62 for a, b in zip(bottom, topc))
+        r = 0.5 * (795.0 - 665.0) / Q22_PX * 0.97
+        sr.rod(bm, uv, black, bottom, mid, r - 0.7, seg=24)                    # the drum: smooth below,
+        sr.rod(bm, uv, hk.DARK, mid, topc, r, seg=32)                           # knurled (dark) above
+        for s in (-1, 1):
+            sr.lathe_x(bm, uv, hk.DARK, (s * 10.5, q22y(592.0), z(227.0, rail)), [(0.0, 1.9), (s * 0.5, 1.9)],
+                       seg=12)                                                  # the housing's screw
+            sr.lathe_x(bm, uv, hk.DARK, (s * 12.0, q22y(660.0), z(332.0, rail)), [(0.0, 1.6), (s * 0.4, 1.6)],
+                       seg=12)                                                  # the clamp's pin
 
 
 def sights_ml22(bm, uv, black, h, front, rear):
@@ -603,9 +666,12 @@ def points(f, B):
         "light_left": {"offset": [round(g(f["side"]) + 0.0007, 4), g(300.0), g(f["side_h"])], "rotate": [0.0, 0.0, 0.0]},
         "laser_right": {"offset": [round(-g(f["side"]) - 0.0018, 4), g(300.0), round(g(f["side_h"]) - 0.0008, 4)],
                         "rotate": [0.0, 0.0, 0.0]},
+        # GoM's foregrips under the bottom rail (user, 2026-11-13: "let it take a foregrip"), the HK416's rule (the
+        # rail face + 0.003), towards the rail's front (220-368 mm) to keep clear of the curved magazines
+        "foregrip": {"offset": [0.0, g(330.0), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
     })
     # turned (held like a pistol): x and z negated; parts modelled upright turn with -180 0 -180 (build_vector.py)
-    upright = ("magazine", "scope", "light_left", "laser_right")
+    upright = ("magazine", "scope", "light_left", "laser_right", "foregrip")
     out = {}
     for name, p in pts.items():
         x, y, z = p["offset"]
@@ -624,7 +690,7 @@ def main():
         sys.exit("Guns of Marz not found")
     bpy.ops.wm.read_factory_settings(use_empty=True)
     allpts = {}
-    for gen in ("QR22", "ML22"):
+    for gen in GENS:
         ups, f, B = build_gun(gen)
         allpts["HK416" + gen] = points(f, B)
         exp = [turned(o, o.name[:-3]) for o in ups]

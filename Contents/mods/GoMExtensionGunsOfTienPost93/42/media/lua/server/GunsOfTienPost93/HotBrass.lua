@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H,
-    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm, MDRx .223 and .308
+    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm, MDRx .223 and .308, the HK416 .22 pistol, the HK417s
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -117,6 +117,27 @@ SpentCasingPhysics.RegisterWeaponParams({
     -- The Mk 11 Mod 0 throws its cases out of its AR port as the main mod's SR-25 (GoM's AR15's angles, a 7.62x51's
     -- force).
     ["GunsOfTienPost93.MK11"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 1.0,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 74, 86 },
+    },
+    -- The HK417s throw their 7.62x51 cases out of their AR port as the Mk 11 (its values).
+    ["GunsOfTienPost93.HK417"] = {
+        forwardOffset = 0.30,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 1.0,
+        sideSpread    = 60,
+        heightSpread  = 30,
+        ejectAngle    = 75,
+        spinForce     = { 74, 86 },
+    },
+    ["GunsOfTienPost93.HK417S"] = {
         forwardOffset = 0.30,
         sideOffset    = 0.10,
         heightOffset  = 0.45,
@@ -264,6 +285,18 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = { 80, 100 },
         ejectAngle    = 80,
         spinForce     = { 24, 34 },
+    },
+    -- The HK416 .22 Quad Rail Pistol: held like the SDP, its AR port just ahead of the grip as on the MP7 (the SDP's
+    -- place); a .22 LR case is light, so it flies less far (the main mod maps the .22 rounds to HBVCEF.22_Casing).
+    ["GunsOfTienPost93.HK416QR22"] = {
+        forwardOffset = 0.544,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.45,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 16, 24 },
     },
     -- The MDRx .223 ejects to the right from its side-eject port behind the grip, as the AUG A3 (its values). The .308
     -- ejects forward: its chute carries the case along the right side and drops it out by the handguard's rear, ahead

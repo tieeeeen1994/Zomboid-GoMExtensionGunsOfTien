@@ -113,8 +113,12 @@ GUARD = [(68.0, 92.0), (70.3, 88.2), (70.9, 86.9), (70.4, 76.1), (69.5, 72.0), (
 OPENING = [(86.2, 89.5), (83.5, 88.8), (81.2, 87.5), (79.9, 86.2), (78.5, 83.7), (78.0, 81.9), (77.9, 76.9),
            (78.7, 74.3), (79.8, 72.5), (81.4, 71.2), (83.8, 70.3), (103.5, 69.1), (110.0, 68.9), (113.5, 69.6),
            (116.0, 71.5), (117.2, 74.5), (117.4, 80.0), (116.8, 85.5), (115.5, 89.5)]
-TRIGGER = [(104.0, 90.0), (107.5, 90.0), (109.5, 86.0), (111.5, 80.0), (112.5, 74.5), (112.0, 71.5), (109.8, 70.6),
-           (108.2, 71.2), (109.6, 73.0), (109.4, 77.5), (107.6, 82.5), (105.5, 86.5)]
+# The trigger shoe, read off the photo at 4x in this frame (x = 1321 - 6.1914 L, y = 881 - 6.1914 H; trigger audit
+# 2026-11-13, user: "the triggers you make are not good"): about 6.5 mm thick, leaning forward to its tip at L 104,
+# H 69. It was 3 mm thick and leant back to L 110-112.
+TRIGGER = [(105.5, 90.5), (113.0, 90.5), (112.9, 88.1), (113.3, 84.9), (112.9, 81.7), (112.1, 78.0), (110.9, 74.0),
+           (108.9, 71.2), (106.0, 69.6), (104.1, 69.2), (104.8, 72.4), (106.0, 76.8), (107.0, 81.7), (106.6, 84.9),
+           (105.6, 88.5)]
 
 # The Gen 2 grip: a straight front strap down from the guard (the photo's Hogue sleeve has finger grooves), its back
 # edge 1.5 mm inside the sleeve's, the frame ending 6 mm above the magazine's base plate.
