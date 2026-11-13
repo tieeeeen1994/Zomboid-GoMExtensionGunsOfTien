@@ -26,6 +26,9 @@ GunsOfTien_AmmoTypes.SHELL_12G_Birdshot = AmmoType.register("gunsoftien:shell_12
 -- registries.lua points its own table at this one). Registry.register throws on a duplicate: registered here only.
 GunsOfTien_AmmoTypes.BULLET_57x28 = AmmoType.register("gunsoftienpost93:bullet_57x28", "GunsOfTienPost93.57x28_Bullet")
 
+-- .22 LR (2026-11-13): a calibre of its own (neither vanilla, Gunworks nor Guns of Marz has one)
+GunsOfTien_AmmoTypes.BULLET_22LR = AmmoType.register("gunsoftien:bullet_22lr", "GunsOfTien.22LR_Bullet")
+
 -- Box / carton / crate tags of this mod's own open and pack recipes (GoM's recipes use closed item mappers).
 GunsOfTien_Tags = {}
 GunsOfTien_Tags.AmmoBox20 = ItemTag.register("gunsoftien:ammobox20")

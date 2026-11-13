@@ -27,6 +27,7 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTien.12Gauge_Shell_Birdshot"] = "HBVCEF.12Gauge_Hull_Green",
     -- the P90's SS190 (Post-93's id, moved here with the P90 on 2026-11-03)
     ["GunsOfTienPost93.57x28_Bullet"] = "HBVCEF.57x28_Casing",
+    ["GunsOfTien.22LR_Bullet"] = "HBVCEF.22_Casing",
 })
 
 SpentCasingPhysics.RegisterPressureProfiles({

@@ -27,6 +27,7 @@ Usage:  python3 make_art.py            write every output
 import colorsys
 import math
 import os
+import re
 import struct
 import sys
 import zlib
@@ -136,7 +137,10 @@ def load_mesh(path, geometry=None):
         roots.append(node)
     geos = list(_walk(roots, "Geometry"))
     if geometry is not None:
-        geos = [g for g in geos if g["props"][1].split(b"\x00")[0].decode() == geometry]
+        # GoM's Rounds.fbx (2026-11 update) names some geometries with Blender's duplicate suffix ("556x45_Round.001")
+        # while their models keep the plain name, so a ".NNN" suffix is ignored.
+        geos = [g for g in geos
+                if re.sub(r"\.\d+$", "", g["props"][1].split(b"\x00")[0].decode()) == geometry]
     geo = geos[0]
     child = lambda parent, nm: next(c for c in parent["children"] if c["name"] == nm)
     flat = child(geo, "Vertices")["props"][0]

@@ -100,6 +100,7 @@ module Base {
             GunsOfTien.45_Bullet_HollowPoint   = GunsOfTien.45_Box_HollowPoint,
             GunsOfTien.45_Bullet_P             = GunsOfTien.45_Box_P,
             GunsOfTienPost93.57x28_Bullet      = GunsOfTienPost93.57x28_Box,
+            GunsOfTien.22LR_Bullet             = GunsOfTien.22LR_Box,
         }
     }
 
@@ -110,7 +111,7 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
-            item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P;GunsOfTienPost93.57x28_Bullet] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P;GunsOfTienPost93.57x28_Bullet;GunsOfTien.22LR_Bullet] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
@@ -122,6 +123,7 @@ module Base {
             GunsOfTien.45_Box_HollowPoint   = GunsOfTien.45_Bullet_HollowPoint,
             GunsOfTien.45_Box_P             = GunsOfTien.45_Bullet_P,
             GunsOfTienPost93.57x28_Box      = GunsOfTienPost93.57x28_Bullet,
+            GunsOfTien.22LR_Box             = GunsOfTien.22LR_Bullet,
         }
     }
 
@@ -151,6 +153,7 @@ module Base {
             GunsOfTien.308_Box_SP           = GunsOfTien.308_Carton_SP,
             GunsOfTien.12Gauge_Box_Birdshot = GunsOfTien.12Gauge_Carton_Birdshot,
             GunsOfTienPost93.57x28_Box      = GunsOfTienPost93.57x28_Carton,
+            GunsOfTien.22LR_Box             = GunsOfTien.22LR_Carton,
         }
     }
 
@@ -180,6 +183,7 @@ module Base {
             GunsOfTien.308_Carton_SP           = GunsOfTien.308_Box_SP,
             GunsOfTien.12Gauge_Carton_Birdshot = GunsOfTien.12Gauge_Box_Birdshot,
             GunsOfTienPost93.57x28_Carton      = GunsOfTienPost93.57x28_Box,
+            GunsOfTien.22LR_Carton             = GunsOfTien.22LR_Box,
         }
     }
 
@@ -209,6 +213,7 @@ module Base {
             GunsOfTien.308_Carton_SP           = GunsOfTien.308_Crate_SP,
             GunsOfTien.12Gauge_Carton_Birdshot = GunsOfTien.12Gauge_Crate_Birdshot,
             GunsOfTienPost93.57x28_Carton      = GunsOfTienPost93.57x28_Crate,
+            GunsOfTien.22LR_Carton             = GunsOfTien.22LR_Crate,
         }
     }
 
@@ -238,6 +243,7 @@ module Base {
             GunsOfTien.308_Crate_SP           = GunsOfTien.308_Carton_SP,
             GunsOfTien.12Gauge_Crate_Birdshot = GunsOfTien.12Gauge_Carton_Birdshot,
             GunsOfTienPost93.57x28_Crate      = GunsOfTienPost93.57x28_Carton,
+            GunsOfTien.22LR_Crate             = GunsOfTien.22LR_Carton,
         }
     }
 }

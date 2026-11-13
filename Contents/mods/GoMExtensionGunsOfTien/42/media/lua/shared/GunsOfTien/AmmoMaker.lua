@@ -198,6 +198,8 @@ local MAP = {
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.12Gauge_Shell_Birdshot", ammoType = "12Bird" },
     -- the P90's SS190 (Post-93's id; moved here 2026-11-03): Ammo Maker's own 57x28 type
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTienPost93.57x28_Bullet", ammoType = "57x28" },
+    -- .22 LR: Ammo Maker's own 22LR type (rimfire case, small handgun bullet)
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet", ammoType = "22LR" },
 }
 
 MAP.gunsOfTien = true

@@ -170,6 +170,7 @@ PS90_BARE = [(PS90_FBX, n, os.path.join(TEX, "PS90.png"), None)
              for n in ("PS90_BODY", "PS90_BOLT", "PS90_HANDLE")] + [P90_MAG]
 P90_VIEW, P90_SCALE, P90_SIZE = (-0.88, 0.32, -0.26), 0.5, (2400, 1500)
 PS90_SCALE = 0.68                    # the PS90 with its SP90 is 0.15 longer
+BOX_VIEW, BOX_SIZE = (-1.0, 0.0, 0.0), (800, 560)      # ammo box pictures: straight from the side
 
 
 # 3.13.0 (2026-11-12): SR-25, TMP, Mk 11, Grozas
@@ -549,6 +550,27 @@ GUNS = {
                   ("GunsOfTienPost93_FIVESEVEN_parts", "FIVESEVEN_Suppressor")],
         "gom": [],                   # only what the mod adds
         "view": (0.8, -0.3, -0.35), "scale": PISTOL_SCALE, "size": PISTOL_SIZE,
+    },
+    # Pictures on the ammo boxes (2026-11-13, make_ammo_art.py; user: no GoM eagle on our boxes): each calibre's gun,
+    # bare, straight from the side as a box print shows it. 4.6x30mm: the MP7A1 (stock and grip folded, 30-round
+    # magazine). (The 5.7x28mm boxes show no gun since 2026-11-13: their maker's wasp.)
+    "box_mp7": {
+        "points": "post93/mp7_points.json",
+        "fbx": "GunsOfTienPost93_MP7A1", "tex": "MP7A1",
+        "nodes": [("MP7A1_BODY", None), ("MP7A1_BOLT", None), ("MP7A1_HANDLE", None), ("MP7A1_STOCK", "stock_folded"),
+                  ("MP7A1_FOREGRIP", None)],
+        "mag": ("GunsOfTienPost93_MP7_magazines", "46x30Magazine30_MP7", "magazine"),
+        "parts": [], "gom": [],
+        "view": BOX_VIEW, "scale": 0.34, "size": BOX_SIZE,
+    },
+    # the 4.6x30mm Subsonic box shows the UCP (user, 2026-11-13), bare, with its 20-round magazine
+    "box_ucp": {
+        "points": "post93/ucp_points.json",
+        "fbx": "GunsOfTienPost93_UCP", "tex": "UCP",
+        "nodes": [("UCP_BODY", None), ("UCP_SLIDE", None)],
+        "mag": ("GunsOfTienPost93_UCP_magazines", "46x30Magazine20_UCP", None),
+        "parts": [], "gom": [],
+        "view": BOX_VIEW, "scale": 0.24, "size": BOX_SIZE,
     },
     "ucp": {
         "points": "post93/ucp_points.json",

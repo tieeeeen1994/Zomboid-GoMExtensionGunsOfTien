@@ -79,6 +79,11 @@ Ammo.RegisterMultipleAmmoFamilies({
     ["5.7x28mm"] = {
         { type = "GunsOfTienPost93.57x28_Bullet", enum = T.BULLET_57x28, profile = "GunsOfTienPost93_57x28SS190" },
     },
+    -- .22 LR (2026-11-13): one plain load, no profile (a gun never profiles its own script round); its guns'
+    -- magazines join the family where they are defined
+    [".22 LR"] = {
+        { type = "GunsOfTien.22LR_Bullet", enum = T.BULLET_22LR },
+    },
 })
 -- the P90's magazine (the P90, Post-93's P90 TR and PS90); Post-93 adds the Five-seveN's
 Ammo.RegisterMultipleItemsWithFamilies({ ["5.7x28mm"] = { "GunsOfTienPost93.57x28Magazine50_P90" } })

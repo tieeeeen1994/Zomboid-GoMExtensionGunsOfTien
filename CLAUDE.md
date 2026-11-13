@@ -1760,8 +1760,8 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `GunsOfTien/P90Tooltips.lua`), their loot (the SP90 and mount in GoM's part spawners, the SS190 box and carton beside
   vanilla's 9mm ones in police / SWAT / gun store lists). Post-93 keeps SB193, SS197SR, its recipes and the TR / PS90 /
   Five-seveN. translations() in both generators merge into ItemName.json, so the moved keys are popped from Post-93's.
-  Known: `make_ammo_art.py` currently fails reading GoM's Rounds.fbx in make_art.py's `load_mesh` (before writing
-  anything; not from this move).
+  `make_ammo_art.py` failed reading GoM's Rounds.fbx in make_art.py's `load_mesh` (not from this move; fixed
+  2026-11-13, section ".22 LR").
   The SP90 and its mount device went back to Post-93 the same day (user: "move mounting device and suppressor to
   post 93": the SP90 is later than July 1993): their items, stats, rule, loot and tooltips are Post-93's again, their
   MountOn lists `GunsOfTien.P90`, and the P90's script names them, so they fit it whenever Post-93 is on.
@@ -1776,6 +1776,60 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   `docs/p90_preview.png`), `gen_scripts.py p90()` (models_p90.txt, items_p90.txt, fixing_p90.txt, name),
   `shared/GunsOfTien/P90.lua`, Loot.lua, HotBrass.lua, `client/GunsOfTien/P90Tooltips.lua`. Rebuild: build, render, art,
   `gen_scripts.py`, `check_refs.py`, `fit_audit.py`.
+
+## .22 LR (main mod, 2026-11-13)
+
+- **What** (user, 2026-11-13: "make the .22 LR round first", for the HK416 .22 LR Pistol of the planned HK416 / HK417
+  release; later candidates Walther PPK/S .22, Ruger SP101 .22, S&W J-frame .22s): neither vanilla, Gunworks
+  (`registries.lua`: no .22), nor GoM (only the `22_Round` / `22_Casing` meshes and `MarzGuns.22_Round_Base` /
+  `22_Casing` models) has a .22 LR round, so it is a calibre of its own in the **main mod** (the round predates 1993,
+  and so do the later candidates). One load: 40 gr lead round nose. Items `GunsOfTien.22LR_Bullet / _Box / _Carton /
+  _Crate` (".22 LR Round", ".22 LR Box", "Carton of .22 LR Boxes", "Crate of .22 LR Boxes"), AmmoType
+  `gunsoftien:bullet_22lr` (`GunsOfTien_AmmoTypes.BULLET_22LR`), Gunworks family ".22 LR" (the round only, no profile:
+  its guns' magazines join where they are defined), Ammo Maker's own `22LR` type (rimfire case, BulletHandgunS), Hot
+  Brass `HBVCEF.22_Casing`. Boxes of 50 (as sold; the real brick is 10 boxes, GoM's carton is 12, kept), opened and
+  packed by the main mod's 50-round, carton and crate recipes (`EXTRA_50` in gen_scripts.py, with the SS190).
+- **Weight**: a loaded 40 gr round weighs about 3.3 g (bullet 2.59 g per Lapua / Fiocchi; brass case, priming and
+  powder about 0.7 g; ~51 gr total is the usual figure, no maker lists it), so 0.0023 on GoM's scale (~0.0007 a
+  gram); box 0.103, carton 0.989, crate 3.165 (`packed_weights`, GoM's 0.9 / 0.8 / 0.8).
+- **Art** (`scripts/make_22lr_art.py`, imports post93/make_ammo_art.py; sheet `docs/22lr_art_sheet.png`): world
+  texture = GoM's Pistol_Standard brass with the bullet in lead grey. The 22_Round's bullet and case share one UV
+  island (a heeled bullet), so `bullet_fractions` floods the whole texture; the bullet texels are where GoM's own
+  Pistol_Light .22 texture is black. The icon is rendered with GoM's 9x19 icon camera and make_ammo_art's renderer
+  re-referenced to GoM's 9x19 icon / Pistol_Standard (its 5.56 reference made the brass too orange).
+- **Box art, one layout per calibre** (user, 2026-11-13: "is this really the symbol?", then "can we change the art for
+  4.6 and 5.7 ammo boxes as well?", then "it looks weird because they look the same format design. change the
+  elements around"). GoM's gold eagle is GoM's own mark, on its 9x19 box only: vanilla's 9mm box
+  (`textures/WorldItems/BoxOfRounds9MM.png`, the same layout) shows a pistol there, and vanilla's and most of GoM's
+  boxes show a gun that fires the round (GoM's .45 / .50 / .357 / .44 are made-up brands with a mascot, its rifle
+  boxes a vertical calibre and the rifle). Every box of ours still starts from GoM's 9x19 box (lid flap with sticker
+  and barcode, tray of rounds), then `make_box(spec, design)` (post93/make_ammo_art.py; None = GoM's layout with its
+  eagle, byte-identical to the old function, checked) redraws the visible sleeve: `FACE` (0, 22, 47, 91), the top,
+  texture up = the end away from the tray, and `SIDE` (48, 22, 63, 91), the long side (vertical text reads bottom to
+  top); the lid flap faces away in the icon view. Layouts: **4.6x30** (`layout_46x30`) bands across: dark band with
+  "4.6x30mm", the gun in a light window (MP7A1 on DM11, the UCP on Subsonic: user, 2026-11-13; a box spec's
+  `picture` overrides the calibre's), the load's name large on the load colour (olive DM11, blue Subsonic), dark side;
+  **5.7x28** (`layout_57x28`) GoM's rifle box way with a brand box's maker and mascot (user: "for 5.7, can we use an
+  animal as well?", then, when vanilla's bird map symbol was tried: "Don't use zomboid stuff... use animals that are
+  fierce like how an ammo would brand itself... like how gom does it"): light box, "5.7x28mm" up a strip of the load
+  colour, a made-up maker "IRON WASP" with an angry wasp drawn by `draw_wasp()` (PIL primitives, original art), no
+  gun (user: "Remove the gun from 5.7 boxes"), the load on a label,
+  side in the load colour; **.22 LR** (`layout_22lr` in
+  make_22lr_art.py; user: "we can use an animal emblem like the 9mm box... use another emblem. And shuffle the
+  elements around") a yellow face framed in green, a snarling gold wolf's head (`draw_wolf()`, original art; vanilla's
+  9mm box pistol was there before and went with the "no game art" rule) on a green roundel where GoM's eagle sits, a
+  huge green ".22", a green "LONG RIFLE" ribbon, green side. The MP7A1 (stock and grip folded, 30-round
+  magazine) and UCP (20-round magazine) are side-on Workbench renders of our own models (`render_ad_guns.py
+  box_mp7 / box_ucp`, view
+  straight from the side), cropped and kept 300 px wide in `scripts/post93/box_art/` so the art scripts need no
+  Blender, mirrored to muzzle left. Box print uses the Windows font (Arial Bold; the Post-93 boxes were first drawn
+  with the Mac's Arial Narrow Bold), now on all of them. The 32 px icons keep GoM's shading (transfer_print), so a
+  layout reads as colour blocks there.
+- `make_art.load_mesh` matches a geometry name with or without Blender's `.NNN` suffix: GoM's updated Rounds.fbx
+  names some geometries `556x45_Round.001` (models keep the plain name), which was the "make_ammo_art.py fails in
+  load_mesh" of 2026-11-03. The fix regenerates every round byte for byte.
+- **Loot: not yet**: GoM spawns each calibre's standard box, so the .22 LR box should spawn, but where depends on the
+  guns that fire it (decide with the HK416 .22 LR Pistol).
 
 ## PS90 Carbine (Post-93, 2026-11-03)
 

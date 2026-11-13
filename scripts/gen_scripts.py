@@ -197,10 +197,11 @@ def recipes():
         opened = [(f"{MODULE}.{round_item(c, v)}", f"{MODULE}.{c}_Box_{v}") for c, v in rows]
         packed = [(f"{MODULE}.{c}_Box_{v}", f"{MODULE}.{round_item(c, v)}") for c, v in rows]
         rounds = [f"{MODULE}.{round_item(c, v)}" for c, v in rows]
-        if per == 50:                       # the 5.7x28mm SS190 kept under Post-93's names (ammo_57x28())
-            opened.append((Q57['round'], Q57['box']))
-            packed.append((Q57['box'], Q57['round']))
-            rounds.append(Q57['round'])
+        if per == 50:                       # the 5.7x28mm SS190 kept under Post-93's names (ammo_57x28()), .22 LR
+            for q in EXTRA_50:
+                opened.append((q['round'], q['box']))
+                packed.append((q['box'], q['round']))
+                rounds.append(q['round'])
         inputs = ';'.join(rounds)
         out.append(f"""
     craftRecipe GunsOfTien_OpenBoxOf{per}Bullets {{
@@ -237,20 +238,19 @@ def recipes():
     }}
 """)
     all_rows = [(cal, var) for cal, var, _, _ in ROUNDS]
-    q57 = Q57
     for name, action, time, tags, tag, count, pairs in (
             ('GunsOfTien_OpenCartonOfBoxesOfAmmo', 'UnPackBox', 50, 'InHandCraft;CanBeDoneInDark',
              'gunsoftien:ammocarton', 12, [(f"{MODULE}.{c}_Box_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows]
-             + [(q57['box'], q57['carton'])]),
+             + [(q['box'], q['carton']) for q in EXTRA_50]),
             ('GunsOfTien_PlaceBoxesOfAmmoInCarton', 'PackingBox', 50, 'InHandCraft', 'gunsoftien:ammobox', 12,
              [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Box_{v}") for c, v in all_rows]
-             + [(q57['carton'], q57['box'])]),
+             + [(q['carton'], q['box']) for q in EXTRA_50]),
             ('GunsOfTien_OpenCrateOfBoxesOfAmmo', 'UnPackBox', 100, 'InHandCraft;CanBeDoneInDark',
              'gunsoftien:ammocrate', 4, [(f"{MODULE}.{c}_Carton_{v}", f"{MODULE}.{c}_Crate_{v}") for c, v in all_rows]
-             + [(q57['carton'], q57['crate'])]),
+             + [(q['carton'], q['crate']) for q in EXTRA_50]),
             ('GunsOfTien_PlaceBoxesOfAmmoInCrates', 'PackingBox', 100, 'InHandCraft', 'gunsoftien:ammocarton', 4,
              [(f"{MODULE}.{c}_Crate_{v}", f"{MODULE}.{c}_Carton_{v}") for c, v in all_rows]
-             + [(q57['crate'], q57['carton'])])):
+             + [(q['crate'], q['carton']) for q in EXTRA_50])):
         opening = name.startswith('GunsOfTien_Open')
         in_count, out_count = (1, count) if opening else (count, 1)
         flags = 'AllowFavorite;InheritFavorite' if opening else 'AllowFavorite;InheritFavorite;IsExclusive'
@@ -3048,6 +3048,11 @@ Q57 = {k: f"{M93}.57x28_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), (
 W57 = dict(round='0.0042', box='0.189', carton='1.814', crate='5.805')
 # the guns the P90's magazine fits
 P90_FAMILY = f"GunsOfTien.P90;{M93}.P90TR;{M93}.PS90"
+# the .22 LR's items (ammo_22lr())
+Q22 = {k: f"{MODULE}.22LR_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
+                                            ('crate', 'Crate'))}
+# 50-round boxes outside ROUNDS that share this mod's open / pack recipes (recipes()): 5.7x28mm SS190, .22 LR
+EXTRA_50 = [Q57, Q22]
 # the magazine in the off hand of the PS90's FAMAS reload (Post-93 build_ps90.py magazine_prop2: GoM's STANAG 30
 # point after the magazine is stood on its feed end); the P90 and the TR reload with GoM's MP5K one, which shows none
 P90_MAG_PROP2 = {'offset': [0.0200, 0.0538, -0.0146], 'rotate': [85.4927, 66.5693, -90.4154]}
@@ -3171,6 +3176,120 @@ def ammo_57x28():
     })
     for moved in ('P90_Suppressor', 'P90_Muzzle_Mount_Device'):      # Post-93's (back there 2026-11-03)
         names.pop(f'{M93}.{moved}', None)
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# ==================================================================================================
+# .22 LR (user, 2026-11-13: the round first, for the HK416 .22 LR Pistol and later .22 guns). Neither vanilla, Gunworks
+# nor GoM has one (GoM ships only the 22_Round / 22_Casing meshes), so it is a calibre of its own in the main mod:
+# the round existed long before 1993 and later .22 guns (Walther PPK/S .22, Ruger SP101 .22, S&W J-frames) are
+# pre-1993. One load, the common 40 gr lead round nose; boxes of 50 as sold, then GoM's carton (12 boxes) and crate
+# (4 cartons). Weight on GoM's scale (~0.0007 per real gram of the cartridge, CLAUDE.md "How a round works"):
+# a loaded round weighs about 3.3 g (bullet 2.59 g = 40 gr; brass rimfire case, priming and powder about 0.7 g).
+# Art: scripts/make_22lr_art.py.
+# ==================================================================================================
+
+ROUND_22LR_GRAMS = 3.3
+
+
+def packed_weights(round_w, per_box):
+    """GoM's packing bonus (Post-93's gen_post93_ammo.py packed_weights): box 0.9 of its rounds, carton 0.8 of 12
+    boxes, crate 0.8 of 4 cartons, each rounded to 3 decimals from the rounded step before."""
+    box = round(round_w * per_box * 0.9, 3)
+    carton = round(box * 12 * 0.8, 3)
+    crate = round(carton * 4 * 0.8, 3)
+    return dict(round=f"{round_w:g}", box=f"{box:g}", carton=f"{carton:g}", crate=f"{crate:g}")
+
+
+W22 = packed_weights(round(ROUND_22LR_GRAMS * 0.0007, 4), 50)       # 0.0023 / 0.103 / 0.989 / 3.165
+
+
+def ammo_22lr():
+    """items_22lr.txt / models_22lr.txt and their names; the open / pack recipes are recipes()'s (50 a box)."""
+    art_round, art_box = f"{MODULE}_22LR_Round", f"{MODULE}_22LR_Box"
+    items = f"""module {MODULE} {{
+    imports {{ Base }}
+
+    item 22LR_Bullet {{
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = {W22['round']},
+        Icon             = {art_round},
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = {MODULE}.{art_round},
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_22lr,
+    }}
+
+    item 22LR_Box {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W22['box']},
+        Icon               = {art_box},
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = {MODULE}.{art_box},
+        WorldStaticModel   = {MODULE}.{art_box},
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }}
+
+    item 22LR_Carton {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W22['carton']},
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }}
+
+    item 22LR_Crate {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {W22['crate']},
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_22lr.txt', items)
+    models = f"""module {MODULE} {{
+
+    model {art_round} {{
+        mesh    = Worlditems/Ammunition/Rounds|22_Round,
+        texture = worlditems/GunsOfTien/Rounds/{art_round},
+        scale   = 0.015,
+    }}
+
+    model {art_box} {{
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/{art_box},
+        scale   = 0.4,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/models_22lr.txt', models)
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names.update({
+        Q22['round']: '.22 LR Round',
+        Q22['box']: '.22 LR Box',
+        Q22['carton']: 'Carton of .22 LR Boxes',
+        Q22['crate']: 'Crate of .22 LR Boxes',
+    })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -3335,6 +3454,7 @@ if __name__ == '__main__':
     recipes()
     translations()
     ammo_57x28()
+    ammo_22lr()
     p90()
     ammomaker()
     lasers()

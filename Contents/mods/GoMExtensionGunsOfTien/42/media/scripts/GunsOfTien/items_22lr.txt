@@ -1,0 +1,57 @@
+module GunsOfTien {
+    imports { Base }
+
+    item 22LR_Bullet {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0023,
+        Icon             = GunsOfTien_22LR_Round,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.GunsOfTien_22LR_Round,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_22lr,
+    }
+
+    item 22LR_Box {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.103,
+        Icon               = GunsOfTien_22LR_Box,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.GunsOfTien_22LR_Box,
+        WorldStaticModel   = GunsOfTien.GunsOfTien_22LR_Box,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 22LR_Carton {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.989,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 22LR_Crate {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.165,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+}

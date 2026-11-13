@@ -1,0 +1,14 @@
+module GunsOfTien {
+
+    model GunsOfTien_22LR_Round {
+        mesh    = Worlditems/Ammunition/Rounds|22_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_22LR_Round,
+        scale   = 0.015,
+    }
+
+    model GunsOfTien_22LR_Box {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_22LR_Box,
+        scale   = 0.4,
+    }
+}

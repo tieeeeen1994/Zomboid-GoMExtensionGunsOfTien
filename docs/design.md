@@ -493,6 +493,22 @@ and B&T's MP9 (2001) are not part of this.
 
 References to find before modelling: side-on photos of both sides (Commons, IMFDB), the magazine.
 
+## 4n. .22 LR (2026-11-13, built)
+
+User: "let's make the .22 LR round first" (for the HK416 .22 LR Pistol; the planned release is HK416 D14.5RS, HK416
+.22 LR Pistol, HK417 D16RS "Recce", HK417 D20RS "Sniper"), weight from our current rounds and the real round, own
+boxes, cartons and crates.
+
+| | .22 LR (40 gr lead round nose) |
+|---|---|
+| Items | `GunsOfTien.22LR_Bullet / _Box / _Carton / _Crate`, AmmoType `gunsoftien:bullet_22lr`, family ".22 LR" |
+| Real | bullet 2.59 g (40 gr); loaded round about 3.3 g |
+| Weight | round 0.0023 (GoM's ~0.0007 a gram), box of 50 0.103, carton of 12 boxes 0.989, crate of 4 cartons 3.165 |
+| Ammo Maker | its own `22LR` type |
+| Hot Brass | `HBVCEF.22_Casing` |
+| Art | brass case, lead-grey bullet (GoM's 22_Round mesh); box layout of its own: yellow face framed in green, a gold wolf's head emblem on a green roundel (our own drawing, no GoM eagle), huge ".22", "LONG RIFLE" ribbon (the 4.6x30 / 5.7x28 boxes got layouts of their own too) |
+| Loot | not yet: decided with the first .22 gun |
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?
