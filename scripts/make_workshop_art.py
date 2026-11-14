@@ -13,7 +13,7 @@ and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.p
 Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same), preview22.png (1024x1024,
 Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP, Mk 11, Grozas, the same),
 preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
-Post-93's HK417 battle and marksman rifles, the same)
+Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1408,6 +1408,44 @@ def preview28(path, W=1024):
              "10 AND 20-ROUND MAGAZINES", (), W)
 
 
+def preview29(path, W=1024):
+    """The main mod's .22 LR (3.14.0 / 3.15.0): the four loads two by two, each its box with the round tucked into its
+    corner (32 px inventory icons scaled up crisp), the load's name and what it does in play; then two lines."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, ".22 LR AMMUNITION", 40, "GUNS OF MARZ EXTENSION")
+    caption(page, 92, "A NEW CALIBRE  ·  BOXES OF 50, CARTONS AND CRATES", big=True)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    loads = (("", ".22 LR", ("THE STANDARD ROUND",)),
+             ("_SS", "SUBSONIC", ("QUIETEST, A LITTLE WEAKER", "SELF-LOADERS RACK EACH SHOT")),
+             ("_HP", "HOLLOW POINT", ("HITS HARDER", "MORE CRITICAL HITS")),
+             ("_HV", "HYPER VELOCITY", ("HITS HARDEST", "LOUDER, MORE GUN WEAR")))
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+    box_px, round_px = 32 * max(1, round(64 * k / 32)), 32 * max(1, round(40 * k / 32))
+    group = box_px + round_px // 3              # the box with the round over its lower right corner
+    for n, (suffix, name, lines) in enumerate(loads):
+        cx, y = u(128 + 256 * (n % 2)), u(124 + 142 * (n // 2))
+        x = cx - group // 2
+        paste_with_shadow(page, placed(size, icon(main("22LR_Box" + suffix), box_px), (x, y)), (0, u(4)), u(4), 190)
+        paste_with_shadow(page, placed(size, icon(main("22LR_Round" + suffix), round_px),
+                                       (x + box_px - round_px * 2 // 3, y + box_px - round_px * 3 // 4)),
+                          (0, u(3)), u(3), 190)
+        ty = y + box_px + round_px // 4 + u(8)
+        page.alpha_composite(text_layer(size, (cx, ty), name, big, (28, 30, 34, 255), anchor="ma"))
+        for m, line in enumerate(lines):
+            page.alpha_composite(text_layer(size, (cx, ty + u(24 + m * 15)), line, small, (60, 64, 70, 255),
+                                            anchor="ma", spacing=u(1)))
+    caption(page, 434, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND", big=True)
+    # the main mod has no .22 gun: the pistol and the boxes in loot come with the add-on (its Loot.lua)
+    caption(page, 454, "POST-93 ADD-ON: THE HK416 .22 PISTOL, AND BOXES WHERE 9MM BOXES ARE")
+    save_under(page.convert("RGB"), path)
+
+
 if __name__ == "__main__":
     def want(name):
         return not ONLY or name in ONLY
@@ -1468,6 +1506,8 @@ if __name__ == "__main__":
         preview27(os.path.join(ROOT, "preview27.png"))   # Post-93's HK416 and .22 pistol (3.15.0), added the same way
     if want("preview28"):
         preview28(os.path.join(ROOT, "preview28.png"))   # Post-93's HK417s (3.15.0), added the same way
+    if want("preview29"):
+        preview29(os.path.join(ROOT, "preview29.png"))   # the main mod's .22 LR loads, added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

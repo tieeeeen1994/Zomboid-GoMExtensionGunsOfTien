@@ -308,12 +308,12 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   Groza photos (2026-11-11, references/groza): tech.wikireading.ru/3850's images (storage.yandexcloud.net/wr4img/
   259427_5_pic_10..23.jpg) and weaponland.ru's (images/automat_4/rossiya/OC-14*.jpg) download with a plain fetch;
   Commons has only the drawing, the light assault version and a firing photo; namu.wiki, guns.fandom, imfdb refuse.
-- **HK416 D14.5RS** (Post-93, user, 2026-11-13; built, not played): section "HK416 D14.5RS". Its iron sights fold
+- **HK416 D14.5RS** (Post-93, user, 2026-11-13; played 2026-11-14): section "HK416 D14.5RS". Its iron sights fold
   under optics; every other gun was audited for the same (section "Iron sights under optics": the MP7s, SCARs and
   Vectors got the same states).
-- **HK417 Recce and Sniper** (Post-93, user, 2026-11-13: "start on the HK417 until finished"; built, not played):
+- **HK417 Recce and Sniper** (Post-93, user, 2026-11-13: "start on the HK417 until finished"; played 2026-11-14):
   the 16" "HK417 Battle Rifle" and 20" "HK417 Marksman Rifle", section "HK417 Recce and Sniper".
-- **HK416 .22 Quad Rail Pistol** (Post-93, user, 2026-11-13; built, not played): Walther's .22 LR HK416, held like
+- **HK416 .22 Quad Rail Pistol** (Post-93, user, 2026-11-13; played 2026-11-14): Walther's .22 LR HK416, held like
   a pistol, its round shroud a plain barrel shroud (user, 2026-11-13: "Plain shroud, loud"; it was an integral
   suppressor at first); the M-LOK .22 pistol shelved. Section "HK416 .22 Quad Rail Pistol".
 - **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
@@ -322,7 +322,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   carries its trigger island (thin, |x| < 4 mm, hanging into the guard) 7-12 mm behind where H&K's and Walther's
   blades sit, so the guns built on it move it (`build_hk416.align_trigger`: the blade's middle at mid-height, GoM's
   z -25..-15, onto that photo row's dark pixels): HK416 +8.0 mm, HK416 .22 +12.4, HK417 +6.7. Every other gun was
-  audited the same day (TODO.md "Trigger audit": what was fixed, what is still open): traced triggers were re-read
+  audited the same day (section "Trigger audit": what was fixed per gun): traced triggers were re-read
   off their photos, GoM's AK trigger moves back in build_rpk.py `move_trigger`. The SR-25 / Mk 11 (2026-11-14):
   landmarks measured from a photo's "grip's rear top" must not be pinned to GoM's origin (the hand): GoM's AR15 grip
   meets the receiver 35 mm ahead of it (`build_sr25.GRIP_TOP`); pinning them there had squeezed the grip, trigger and
@@ -640,6 +640,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   previews still show the triggers from before the 2026-11-13/14 audit (a few pixels at 1024), and their specs name
   the sights-up bodies of the MP7s, SCARs and Vectors, which now stand up under an optic: re-rendering them needs the
   `_RD` / `_FD` bodies first.
+  preview29 (2026-11-14) is the main mod's .22 LR: the four loads two by two (box icon with the round over its
+  corner, scaled up crisp; name and what it does in play centred under it), no gun (the main mod has none); the loot
+  line names the Post-93 add-on, whose Loot.lua is the only one spawning .22 LR boxes. Rebuild: `make_workshop_art.py
+  preview29` (no renders). Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -2078,7 +2082,7 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   Windows the rebuild rewrites the PMAG FBX, textures and icons with byte noise only: restore them from git. On the Mac the art script needs numpy on
   PYTHONPATH (not `-I`).
 
-## HK416 D14.5RS (Post-93, 2026-11-13; built, not played)
+## HK416 D14.5RS (Post-93, 2026-11-13; played 2026-11-14)
 
 User, 2026-11-13: the standard HK416 first of the HK416 / HK417 set. The first draft (one drawing, one side photo)
 was rejected: "gather MANY images of different angles of the gun" (rule in "Decisions taken with the user"). Rebuilt
@@ -2123,7 +2127,7 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
   stock stats, integrated rails, spawn table, MountOn appends; its sight states in IronSights.lua), Tooltips.lua, HotBrass.lua (the
   SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
 
-## HK416 .22 Quad Rail Pistol (Post-93, 2026-11-13; built, not played)
+## HK416 .22 Quad Rail Pistol (Post-93, 2026-11-13; played 2026-11-14)
 
 User: both generations ("WHY NOT BOTH??? MP5 series has a lot of variations itself"), then, while they were wired,
 "let's use walther's": only Walther's gen 1 (`HK416QR22`) ships; H&K USA's M-LOK gen 2 is shelved
@@ -2187,7 +2191,7 @@ works with curl where most gun retailers answer 403).
   its guns (in 0.2-1.2) and end about 60 mm ahead of the curved 30's front; nothing else flagged.
   `check_refs.py` passes.
 
-## HK417 Recce and Sniper (Post-93, 2026-11-13; built, not played; model approved: "it looks great")
+## HK417 Recce and Sniper (Post-93, 2026-11-13; played 2026-11-14; model approved: "it looks great")
 
 User: "start on the HK417 until finished" (TODO's 16" Recce and 20" Sniper); design table in docs/post93_design.md
 "H&K HK417". References first (rule above): `references/hk417/` (SOURCES.txt, contact_sheet.png; about 370 photos
@@ -2222,7 +2226,7 @@ from Bing image search and IMFDB, most of them VFC / Umarex licensed replicas, H
   HotBrass.lua (the Mk 11's values), Loot.lua (one alternative in GoM's two army rifle spawners). check_refs and the
   Lua syntax check pass.
 
-## Iron sights under optics (both mods, 2026-11-13; built, not played)
+## Iron sights under optics (both mods, 2026-11-13; played 2026-11-14)
 
 User (TODO.md): the HK416 folds its sights under an optic, so go through every gun of both mods that takes one.
 Measured with a scratch clash test (fit_audit.py's top part exec'd, then a BVH overlap of each optic as placed against
@@ -2263,6 +2267,90 @@ crossbars at 3.2; optic undersides over each sight's footprint gave the fold hei
   rear block would not line up, so no states (the PSO-1's side bracket touches the receiver at 7.2, as on GoM's guns).
 - fit_audit.py and scale_audit.py read each gun's own model (sights up), so fit_audit still flags the Elcan on the
   HK416's sights-up body; that body is never drawn with an optic.
+
+## Trigger audit (both mods, 2026-11-13 / 14; played 2026-11-14)
+
+
+Every gun's trigger was laid over its measuring photo (renders at the photo's scale, the blade's middle compared
+row by row; overlays and numbers in the session scratch `audit_A..D`, method in CLAUDE.md "Triggers must sit where
+the photo has them"). Fixed and rebuilt (models only; icons not regenerated, the triggers barely show at 32 px):
+HK416 / HK416 .22 / HK417s (GoM's AR15 trigger moved forward 6.7-12.4 mm), Vectors x4 (re-traced from the SDP photo:
+15-18 mm too far back and curving the wrong way), AUG A1 / A3 / Para / HBAR (Steyr's deep block, it was a hook 17-21
+mm too far forward; the opening's top-front corner rounded), RPD (trigger, guard loop and grip front re-traced from
+the full photo: the white PNG had lost the guard's bar), Glock 21 and M249 (blades leaned the wrong way; the M249's
+housing front was a post 8 mm too low), TMP (blade and the opening's rear wall), Mini / Micro Uzi (5.1 / 5.4 mm back),
+RPK / RPK-74 (GoM's AK trigger 3 / 3.6 mm back), SCAR-L (tip curls forward), SCAR-H (4.5 mm back, low confidence),
+Five-seveN, UCP, MDRx, UMP (the guard's top edge sat within two bevels of the opening, so the fill closed the opening
+and buried the trigger; the top edge now reaches up inside the frame).
+
+The 2026-11-14 fixes below (SR-25, Mk 11, Groza-1 GP-25, Mini / Micro Uzi, MP7, UCP, MDRx; UMP left as is) were
+reviewed by the user on one sheet of outline overlays and approved ("these are fine").
+
+SR-25 and Mk 11 (2026-11-14, checked on IMFDB's 4798 px Mk 11 Mod 0 side view, `SR25.jpg`, KAC's lower with the A2
+grip and stock): the 2026-11-13 reading (opening 9 mm too tall, front wall 7 mm back) came from the small, downward
+angled pic02 and did not hold. The real fault: `build_sr25.py` pinned the landmarks read from the grip's rear top to
+GoM's origin, 35 mm behind it, squeezing GoM's grip, trigger and guard to 0.82 (opening 45 mm long against 51, grip
+20 % thin, the magazine and everything ahead 35 mm too close to the hand). Every landmark now sits `GRIP_TOP` = 35 mm
+further forward (KNOTS, ring, tube, gas block, stud, muzzle, scope, the Mk 11's handguard, sights and part points;
+the overall length stays 1118 / the Mk 11's as before), and `align_trigger` moves GoM's blade 4.8 mm forward. Grip
+edges, guard pins, the opening's front wall and floor now land within 1-2 px, the blade's middle within 0.4 mm on
+three rows. Models and points rebuilt, scripts regenerated; icons and Workshop previews not redone.
+
+Groza-1 with GP-25 (2026-11-14): the opening is not empty. One trigger fires rifle and launcher (selector), a crescent
+forming the opening's rear edge (both photos), and the "rod" is its trigger bar across a window behind, closed below
+by the frame. `build_groza.py` now builds that from wl_groza1_gl.jpg on the L / H grid: the opening 30.5 mm at L 156.5
+(was 34 at 148), the crescent, the window and bar, the frame's bottom at H 96 (was 90) and its rear edge 10-15 mm
+further back. Laid over the photo, all within about 1 mm but the opening's lower front corner (the photo's is squarer,
+3-4 mm). The atlas is repacked (GROZA.png changes with the FBX).
+
+Mini and Micro Uzi (2026-11-14, `build_uzi.py`): both guards were 4-7 mm bands where IMI's is a 2-3 mm stamped strip.
+Mini (IMFDB MiniUzi_01.jpg, 1.9475 px a mm): the strip with its floor 2.8 mm lower, the housing's underside over the
+opening rising from 111 to 114 (was flat at 110): the opening 32 mm tall (was 23); the blade's tip 3.4 mm further
+forward and 2 mm lower. Micro (IMFDB Microuziextendedstock.jpg, 1338 px, the body registered at 2.81 px a mm, IoU 0.89;
+the earlier "front wall 4-6 mm behind" came from the two small photos and did not hold): the strip, its underside
+4 mm higher; the blade reaching to 1 mm over the floor, its tip forward (it stopped 7 mm higher); the housing's lump
+at the opening's rear top. Laid over the photos, within about 1 mm. MINIUZI.png / MICROUZI.png are re-baked with the
+FBX; the magazine textures were bake noise and restored.
+
+MP7A1 / A2 (2026-11-14, `build_mp7.py` TRIGGER, GUARD_FILLET): measured on IMFDB's studio MP7A1 ("H&K MP71A1.jpg",
+1400 px, the whole model registered at 3.18 px a mm, IoU 0.88, its guard on the photo's). The blade now stands upright
+(front edge L 215.3-216.2) to H 92 and sweeps forward to its split tips (L 204.6-208, H 78.6-81); its upper body and
+bar fill the opening behind it above H 93.5; the opening's lower rear corner is a 7 mm fillet. It was one
+forward-leaning blade, its top 6 mm too far back. The angled Bundeswehr cut-out misplaces the tip by 3 mm (perspective):
+use flat studio views. MP7A1.png / MP7A2.png re-baked; the magazine and part textures were bake noise and restored.
+
+UCP (2026-11-14, `build_ucp.py` TRIGGER, TRIGGER_BAR): IMFDB's studio "Hk_ucp_3.jpg" (550 px, the model registered at
+2.63 px a mm, IoU 0.94): the blade a 4.5 mm C bulging back to L 115.4 at H 83 and hooking forward to its tip at L 103
+just over the floor (it bulged lower and further back and stopped at L 107), plus the trigger bar across the opening
+behind it. Within about 0.5 mm. UCP.png re-baked; magazine and mount textures were bake noise and restored.
+
+MDRx .223 / .308 (2026-11-14, `build_mdr.py` TRIGGER, TRIGGER_WINDOWS): Desert Tech's skeletonised trigger from its
+studio right side (the model registered at 2.23 px a mm, IoU 0.98): curved front blade, straight rear bar, joined at
+the tip and by a brace at H 91-92.5, two narrow windows (was a thin diagonal blade, its face about 3 mm back). Within
+about 0.5 mm. MDR223.png / MDR308.png re-baked; the PMAG files were bake noise and restored.
+
+M249 (2026-11-14, user: "the M249 might not be good"; `build_m249.py` GUARD_FRONT, GUARD): with the whole model
+registered on the levelled USAF photo (IoU 0.83), the blade matched but the housing's curved front met the receiver at
+L 594 where the photo shows background back to L 608; re-traced. The guard bar (user: the trigger "should not be
+connected" to it, the bar "should be connected" to the grip): a 2 mm strip (it was 4 mm, touching the trigger's tip;
+the photo clears it by about 1 mm), its rear a band curving up into the grip's front (it was a wedge meeting the grip
+in a point), its front end at L 594.5 (was 597). Within about 1 mm. Approved by the user ("yes this is correct").
+
+RPK-74: judged "good enough" by the user on the sheet (2026-11-14); left as is.
+
+Steyr TMP (2026-11-14, user: "should be rebuilt"; `build_tmp.py` LOWER, GUARD_IN / GUARD_OUT, TRIGGER): the whole
+model registered on the Commons photo (3.67 px a mm, IoU 0.93), the opening flood-filled off it and traced: its top at
+H 180 (a pocket in the lower; it was 177), Steyr's large rounded top corners, the front wall out to L 107.3, the rear
+at L 153.7, a 1.6 mm floor (it was 3 mm), the guard's rear running into the grip (no sliver gap), the blade re-traced.
+Within about 1 mm. TMP.png re-baked. Approved by the user ("ok this is better"). The Grozas and the RPK were looked at on the same kind of sheet and judged good.
+
+Accepted as they are (user, 2026-11-14, on the overlay sheets): SR-25 and Mk 11 (the small leftovers of GoM's AR15
+shapes), RPK, RPK-74, UMP45 / UMP9, the Grozas, P90 / P90 TR / PS90. The MDRx docstring's photo side is corrected.
+
+Icons regenerated 2026-11-14 for every gun the audit rebuilt (main mod: AUG, Glock 21, M249, Mini / Micro Uzi, RPD,
+RPK, RPK-74, SR-25, TMP; Post-93: AUG A3 / HBAR, Five-seveN, Grozas, HK416, HK416 .22, HK417s, MDRx, Mk 11, MP7s,
+SCARs, UCP, UMPs, Vectors) with each gun's make_*_art.py; magazine and part icons that came out identical or within a
+few levels (bake noise) were restored from git.
 
 ## Bullpup set (2026-10-27)
 
