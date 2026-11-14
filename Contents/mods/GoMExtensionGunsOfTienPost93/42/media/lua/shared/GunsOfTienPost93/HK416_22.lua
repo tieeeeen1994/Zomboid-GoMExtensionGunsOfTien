@@ -5,8 +5,9 @@
     Carl Walther's licensed .22 LR copy of the HK416 (about 2009/10-2018), built on GoM's AR15 receiver like our HK416
     (scripts/post93/build_hk416_22.py). H&K USA's later M-LOK pistol was shelved (user: "let's use walther's").
     - held like a pistol (the Vector SDP's way: turned model, GoM's MP5K reload "handgun2"), back slot, never a holster;
-    - select fire Auto / Single (user's choice, as on the Vector SDP; the real pistol is semi-automatic): a light
-      blowback bolt, 900 rpm, almost no recoil, so it spreads least of our automatics;
+    - semi-automatic only, as the real pistol (user, 2026-11-14: "make HK416 pistol semi automatic"; it was select
+      fire Auto / Single at 900 rpm): FireMode Single, no FireModePossibilities and no RateOfFire registration, as the
+      MDRs, so its pace is RecoilDelay 6 alone (about 5 shots a second at most; GoM's pistols 11-17);
     - H&K's polymer .22 magazines, 10 straight, 20 and 30 curved: a profile of their own, ".22 LR HK416", in the main
       mod's ".22 LR" family (its plain round and the Subsonic, Hollow Point and Hyper Velocity loads);
     - the long round barrel shroud is only a shroud, as on the real gun (user, 2026-11-13: "Plain shroud, loud"; it
@@ -22,7 +23,6 @@
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
 local Ammo = require("WeaponSystems/Utils/Ammo")
-local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
 local ReloadAnim = require("WeaponSystems/ReloadAnim/HandlerFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local PreventRemoval = require("WeaponSystems/Utils/PreventRemovals")
@@ -45,13 +45,11 @@ local RAIL_LEFT = M .. "HK416QR22_Integrated_Rail_Left"
 local RAIL_RIGHT = M .. "HK416QR22_Integrated_Rail_Right"
 
 -------------------------------------------------
--- Magazines, rate of fire
+-- Magazines (semi-automatic only: no rate of fire registration)
 -------------------------------------------------
 Magazine.RegisterMagazineProfile(".22 LR HK416", MAGS)
 Magazine.RegisterWeaponWithProfile(".22 LR HK416", GUN)
 Ammo.RegisterMultipleItemsWithFamilies({ [".22 LR"] = MAGS })
--- 900 rpm; a .22 barely moves the muzzle, so it spreads less than the Vector SDP (0.10 / 1.4)
-RateOfFire.RegisterWeapon(GUN, { rpm = 900, enableSpread = true, sustainedSpread = 0.06, maxSpread = 0.9 })
 
 -------------------------------------------------
 -- GoM's AR15 bolt and charging handle, GoM's MP5K reload

@@ -50,6 +50,10 @@ Mk9 on its mount, both from the bare gun's camera, turned upright); Post-93's Mk
 LR10X, bipod and laser on its rails, KAC's 20, the SOCOM762-RC) and the four Grozas (preview26, `groza1` / `grozagl` /
 `groza2` / `groza4`: one view and scale, each with GoM's standard magazine of its calibre at our size; the Groza-2
 from its upright body).
+
+3.15.0 (2026-11-14): Post-93's HK416 and HK416 .22 Quad Rail Pistol (preview27, `hk416` / `hk416qr22`, the .22
+turned upright) and HK417 Battle / Marksman Rifles (preview28, `hk417` / `hk417s`): all four one view and scale, fitted
+out, each with the sight body its optic picks.
 """
 
 import json
@@ -204,7 +208,66 @@ def gom_part(cat, name, point):
             name, os.path.join(GOM, "textures/weapons/parts/%s/%s.png" % (cat, name)), point)
 
 
+# 3.15.0 (2026-11-14): Post-93's HK416 and HK416 .22 Quad Rail Pistol (preview27) and HK417s (preview28), one view
+# and scale for all four, so the .22 shows its real size beside the rifle. All four are drawn at GoM's size with its AR15 texture and GoM's parts at scale 1, as their
+# item scripts draw them: the sight body the fitted optic picks (IronSights.lua: `_RD` red dot, `_FD` magnified),
+# bolt, charging handle and markings at the origin, the stock deployed. The .22 is held like a pistol, modelled
+# upside down (`upright`).
+HK416_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_HK416.fbx")
+HK417_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_HK417.fbx")
+HK22_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_HK416QR22.fbx")
+HK_MARKS = os.path.join(TEX, "HK416_MARKINGS.png")
+HK_SCALE, HK_SIZE = 1.1, (2400, 1000)
+
+
+def hk(fbx, gun, body, stock=True):
+    """An HK416 / HK417 / .22 body as its item script draws it (`gun` names the nodes, `body` the sight state)."""
+    nodes = [(gun + "_BODY" + body, GOM_AR15_TEX, None), (gun + "_BOLT", GOM_AR15_TEX, None),
+             (gun + "_CHARGING_HANDLE", GOM_AR15_TEX, None), (gun + "_MARKINGS", HK_MARKS, None)]
+    if stock:
+        nodes.append((gun + "_STOCK", GOM_AR15_TEX, "stock"))
+    return [(fbx, n, t, p) for n, t, p in nodes]
+
+
+HK417_MAG20 = (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_HK417_magazines.fbx"),
+               "762x51Magazine20_HK417", os.path.join(TEX, "HK417_MAG.png"), "magazine")
+SCARH_MUZZLE = [(SCAR_PARTS, n, os.path.join(TEX, n + ".png"), "canon")
+                for n in ("SCARH_Muzzle_Mount_Device", "SCARH_Suppressor")]
+
+
 GUNS = {
+    # preview27: the HK416 with an EXPS3 (rear sight folded), MKC foregrip, AimRight laser, AR mount + MKI and a
+    # STANAG 30; the HK417 Battle Rifle with an Aimpoint, MKC and AimRight; the Sniper with an LR10X (both sights
+    # folded), bipod and the SCAR-H's mount + SOCOM762-RC; both HK417s with H&K's 20; lasers on the right rail, the side this view shows (game space: -x)
+    "hk416": {"points": "post93/hk416_points.json",
+              "assembled": hk(HK416_FBX, "HK416", "_RD") + [
+                  (os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"), "556x45Magazine30_STANAG",
+                   os.path.join(GOM, "textures/weapons/magazines/assault_rifles/556x45Magazine30_STANAG.png"),
+                   "magazine"),
+                  gom_part("muzzles", "Muzzle_Mount_Device", "canon"), gom_part("suppressors", "MKI_Suppressor", "canon"),
+                  gom_part("scopes", "EXPS3_Sight", "scope"), gom_part("foregrips", "MKC_Foregrip", "foregrip"),
+                  gom_part("pointers", "AimRight_Laser", "laser_right")],
+              "view": RIFLE_VIEW, "scale": HK_SCALE, "size": HK_SIZE},
+    "hk417": {"points": "post93/hk417_points.json", "points_key": "HK417",
+              "assembled": hk(HK417_FBX, "HK417", "_RD") + [HK417_MAG20] + [
+                  gom_part("scopes", "Aimpoint_Sight", "scope"), gom_part("foregrips", "MKC_Foregrip", "foregrip"),
+                  gom_part("pointers", "AimRight_Laser", "laser_right")],
+              "view": RIFLE_VIEW, "scale": HK_SCALE, "size": HK_SIZE},
+    "hk417s": {"points": "post93/hk417_points.json", "points_key": "HK417S",
+               "assembled": [(f, n.replace("HK417_BODY", "HK417S_BODY"), t, p)
+                             for f, n, t, p in hk(HK417_FBX, "HK417", "_FD")] + [HK417_MAG20] + SCARH_MUZZLE + [
+                   gom_part("scopes", "LR10X_Scope", "scope"), gom_part("bipods", "Bipod_Deployed", "bipod"),
+                   gom_part("pointers", "AimRight_Laser", "laser_right")],
+               "view": RIFLE_VIEW, "scale": HK_SCALE, "size": HK_SIZE},
+    # preview28: the .22 pistol with an Aimpoint (the clamped-on rear sight off: `_RD`), MKC foregrip, AimRight and
+    # H&K's 20-round magazine
+    "hk416qr22": {"points": "post93/hk416_22_points.json", "points_key": "HK416QR22", "upright": True,
+                  "assembled": hk(HK22_FBX, "HK416QR22", "_RD", stock=False) + [
+                      (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_HK416_22_magazines.fbx"),
+                       "22LRMagazine20_HK416", os.path.join(TEX, "HK416_22_MAG.png"), "magazine"),
+                      gom_part("scopes", "Aimpoint_Sight", "scope"), gom_part("foregrips", "MKC_Foregrip", "foregrip"),
+                      gom_part("pointers", "AimRight_Laser", "laser_right")],
+                  "view": RIFLE_VIEW, "scale": HK_SCALE, "size": HK_SIZE},
     "sr25": {"points": "sr25_points.json",
              "assembled": [(SR25_FBX, n, GOM_AR15_TEX, pt) for n, pt in
                            (("SR25_BODY", None), ("SR25_BOLT", None), ("SR25_CHARGING_HANDLE", None),

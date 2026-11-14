@@ -88,6 +88,9 @@ SCARs, UCP, UMPs, Vectors) with each gun's make_*_art.py; magazine and part icon
 few levels (bake noise) were restored from git.
 
 - [ ] A look at every fixed trigger in game.
+- [ ] Put preview27 / preview28 (3.15.0) on the Steam page by hand. The older previews still show the pre-audit
+      triggers (a few pixels); redoing them needs the MP7 / SCAR / Vector specs moved to their `_RD` / `_FD` bodies
+      first (CLAUDE.md, Workshop art).
 
 ## Next release: the HK416 / HK417 set (Post-93)
 
@@ -95,17 +98,17 @@ Agreed with the user 2026-11-13: four guns, two receivers (then three: the M-LOK
 so far; gather many references of each gun from every angle before modelling it, and follow the rules in CLAUDE.md (GoM's animations only, vanilla rifle / pistol hold + a GoM reload animId; sizes from the M16).
 
 - [x] **HK416 D14.5RS** (built 2026-11-13, not played): model approved, items, Lua, loot, icon, docs (CLAUDE.md
-      "HK416 D14.5RS", docs/post93_design.md). Its iron sights fold under optics (three bodies). Still to do for the
-      release: the Workshop preview (render_ad_guns.py / make_workshop_art.py) and the change note.
+      "HK416 D14.5RS", docs/post93_design.md). Its iron sights fold under optics (three bodies). Workshop preview
+      (preview27, with the .22 pistol) and change note done; still to do: the in-game check.
 - [x] **HK416 .22 Quad Rail Pistol** (built 2026-11-13, not played): Walther's gen-1 pistol only (user: "let's use
       walther's"; H&K USA's M-LOK pistol shelved, docs/shelved_hk416ml22.md): items, model scripts, Lua, loot (with
       the .22 LR box), icons, docs (CLAUDE.md "HK416 .22 Quad Rail Pistol"). Still open from the review: its 30-round
-      magazine's length is estimated (no measurable photo of a 30). Still to do for the release: the Workshop
-      preview and the in-game check (pistol hold, sight states, magazines seating, Hot Brass place).
-- [x] **HK417 16" "Recce" and 20" "Sniper"** (built 2026-11-13, not played): "HK417 Battle Rifle" / "HK417 Sniper
+      magazine's length is estimated (no measurable photo of a 30). Workshop preview (preview27, with the rifle) done; still to do:
+      the in-game check (pistol hold, sight states, magazines seating, Hot Brass place).
+- [x] **HK417 16" "Recce" and 20" "Sniper"** (built 2026-11-13, not played): "HK417 Battle Rifle" / "HK417 Marksman
       Rifle", one receiver, H&K's 10 / 20 magazines, items, Lua, loot, icons, docs (CLAUDE.md "HK417 Recce and
-      Sniper", docs/post93_design.md "H&K HK417"). Model approved (user: "it looks great"). Still to do for the
-      release: the Workshop preview and the in-game check.
+      Sniper", docs/post93_design.md "H&K HK417"). Model approved (user: "it looks great"). Workshop preview (preview28)
+      done; still to do: the in-game check.
 - [x] **.22 LR round** (main mod, built 2026-11-13, not played): items, ammo type, family, Ammo Maker, Hot Brass, box
       art (CLAUDE.md ".22 LR").
 - [x] **.22 LR special loads** (built 2026-11-13, not played): Subsonic, Hollow Point, Hyper Velocity; profiles,

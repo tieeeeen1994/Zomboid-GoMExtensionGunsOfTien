@@ -10,7 +10,7 @@ H&K HK416 (Post-93 add-on)
 - Found where the SCAR-L is: in Guns of Marz's army rifle kits and on army zombies, with STANAG 30 magazines and boxes of 5.56x45mm
 
 H&K HK417 (Post-93 add-on)
-- New guns: the H&K HK417, the HK416's 7.62x51mm big brother of 2006, as the 16-inch "HK417 Battle Rifle" (Recce) and the 20-inch "HK417 Sniper Rifle" (Sniper)
+- New guns: the H&K HK417, the HK416's 7.62x51mm big brother of 2006, as the 16-inch "HK417 Battle Rifle" (Recce) and the 20-inch "HK417 Marksman Rifle" (Sniper)
 - H&K's own translucent 10 and 20-round 7.62x51mm magazines (they fit only the HK417s)
 - H&K's free-floating rail system with rails on all four sides: Guns of Marz optics on top, foregrips and bipods underneath, lights on the left, lasers on the right; the Sniper's rail system and barrel are longer
 - H&K's six-position stock: steadier and quicker to aim with it pulled out. H&K's grip and its red and white fire mode labels on both sides
@@ -35,3 +35,9 @@ Iron sights under optics (Post-93 add-on)
 - Where an optic's mount sits on the rear sight's spot on the rail (the Elcan and the TR06X on the SCAR-L; the Kobra, the Elcan and the TR06X on the HK416), the rear sight is taken off instead
 - The SCARs' rear sight now stands up when no optic is fitted, and the Vectors' sights stand up too (they were always folded)
 - On the UMP45 and UMP9, the LR10X, LRX12X and PSO-1 sit further forward on the top rail, so their eyepieces clear the fixed rear sight
+
+Triggers (both mods)
+- Every gun's trigger and trigger guard was laid over photos of the real gun and redrawn where it was off. Main mod: the AUG A1, Glock 21, M249, Mini and Micro Uzi, RPD, RPK and RPK-74, SR-25 and Steyr TMP. Post-93 add-on: the AUG A3, Para and HBAR, the Five-seveN and UCP, the Groza-1 with GP-25, the MDRx .223 and .308, the Mk 11, the MP7s, the SCARs, the UMPs and the four Vectors
+- The SR-25 and Mk 11 had their grip, trigger and guard squeezed to four fifths of their size; they are back to full size
+- The Groza-1 with GP-25 now shows its single trigger, which fires both the rifle and the launcher
+- The inventory icons of those guns are redrawn to match

@@ -1,34 +1,18 @@
 module Base
 {
-    /* The .22 LR shot for every .22 LR gun of both mods (scripts/make_22lr_sound.py; synthesised, one variation
-       picked at random per shot). Vanilla's M9Shoot as the pattern: category Item, two at a time per emitter. */
+    /* The .22 LR shot for every .22 LR gun of both mods: vanilla's Trapper carbine shot (a .45 carbine, its
+       softest real gun report), so the shot keeps vanilla's bang + tail, indoor / outdoor and distant layers,
+       which a loose file clip cannot do. Its raw bang is about 1 dB under the M9's and its first 300 ms about
+       5.5 dB under, so it plays at full volume. Vanilla's TrapperCarbineShoot as the pattern. */
     sound GunsOfTien_22LRShoot
     {
         category = Item,
         maxInstancesPerEmitter = 2,
         clip
         {
+            event = Weapon/Firearm/TrapperCarbine/Shoot,
             distanceMax = 1000,
             volume = 1.0,
-            file = media/sounds/gunsoftien_22lr_shoot_1.ogg,
-        }
-        clip
-        {
-            distanceMax = 1000,
-            volume = 1.0,
-            file = media/sounds/gunsoftien_22lr_shoot_2.ogg,
-        }
-        clip
-        {
-            distanceMax = 1000,
-            volume = 1.0,
-            file = media/sounds/gunsoftien_22lr_shoot_3.ogg,
-        }
-        clip
-        {
-            distanceMax = 1000,
-            volume = 1.0,
-            file = media/sounds/gunsoftien_22lr_shoot_4.ogg,
         }
     }
 }

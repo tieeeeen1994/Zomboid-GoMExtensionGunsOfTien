@@ -312,7 +312,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   under optics; every other gun was audited for the same (section "Iron sights under optics": the MP7s, SCARs and
   Vectors got the same states).
 - **HK417 Recce and Sniper** (Post-93, user, 2026-11-13: "start on the HK417 until finished"; built, not played):
-  the 16" "HK417 Battle Rifle" and 20" "HK417 Sniper Rifle", section "HK417 Recce and Sniper".
+  the 16" "HK417 Battle Rifle" and 20" "HK417 Marksman Rifle", section "HK417 Recce and Sniper".
 - **HK416 .22 Quad Rail Pistol** (Post-93, user, 2026-11-13; built, not played): Walther's .22 LR HK416, held like
   a pistol, its round shroud a plain barrel shroud (user, 2026-11-13: "Plain shroud, loud"; it was an integral
   suppressor at first); the M-LOK .22 pistol shelved. Section "HK416 .22 Quad Rail Pistol".
@@ -626,6 +626,20 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> sr25 tmp tmp_fitted mk11 groza1 grozagl
   groza2 groza4`, then `make_workshop_art.py --renders <dir> preview23 preview24 preview25 preview26`. Added on the
   Steam page by hand.
+  preview27-28 (3.15.0, 2026-11-14): one page per receiver (user: the HK416 rifle and its .22 pistol together, the
+  HK417s on their own; short text). preview27 is laid out like preview21 (rifle on top, pistol under its muzzle end,
+  the block centred above the slot row), preview28 through `gun_pair` (like preview6). preview27: render_ad_guns.py `hk416` (EXPS3, so the
+  `_RD` body, MKC, AimRight, AR mount + MKI, GoM's STANAG 30) and `hk416qr22` (Aimpoint, MKC, AimRight, H&K's 20,
+  turned upright); preview28: `hk417` (Aimpoint, MKC, AimRight, H&K's 20) and `hk417s` (LR10X, so `_FD`, bipod, the
+  SCAR-H's mount + SOCOM762-RC). All four share one camera (`HK_SCALE`, the ortho width, and `HK_SIZE`): the page
+  scales each pair by one factor, so a render made at another ortho width shows at the wrong size (the .22 first came
+  out bigger than the rifle). All drawn at GoM's size with GoM's parts at scale 1, as their item scripts do. The lasers go on `laser_right` (game -x, the side
+  RIFLE_VIEW shows); AimRight sits flush with the handguard and reads as part of it, a light on `light_left` would be
+  hidden. Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> hk416 hk417 hk417s
+  hk416qr22`, then `make_workshop_art.py --renders <dir> preview27 preview28`. Not yet on the Steam page. The older
+  previews still show the triggers from before the 2026-11-13/14 audit (a few pixels at 1024), and their specs name
+  the sights-up bodies of the MP7s, SCARs and Vectors, which now stand up under an optic: re-rendering them needs the
+  `_RD` / `_FD` bodies first.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -1857,15 +1871,44 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
 - **Loot** (2026-11-13, with the HK416 .22 Quad Rail Pistol): the plain box and carton beside vanilla's 9mm box /
   carton in every loot list, homes included, from Post-93's Loot.lua (the main mod has no .22 gun); also in the
   pistol's Anachronistic spawner alternative. The special loads never spawn.
-- **Shot sound** (user, 2026-11-13: "synthesize it. just remember other .22 LR will use this sound too"; approved by
-  ear, "this is fine"): every .22 LR gun of both mods fires `GunsOfTien_22LRShoot` (sounds_22lr.txt, four variations
-  picked at random: the game's `GameSound.getRandomClip` takes one of a sound's `clip` blocks), made by
-  `scripts/make_22lr_sound.py` (Blender's numpy and aud, fixed seeds): an N-wave and a 1.5-4 kHz crack dying in about
-  3 ms, a 15-20 ms darker gas body, a small low thump, two light bolt clacks (blowback, 7-10 and 20-28 ms), a dark
-  outdoor tail with a faint slap-back, soft-saturated, its loudest 30 ms at -9 dBFS (peaks about -1). Vanilla's 9 mm
-  shot is an FMOD bank event; the loose media/sound/9mmShot.ogg is a flat clipped 400 ms burst, no level reference,
-  so the clip `volume` (1.0) is to be set by ear in game against GoM's M9 (a .22 pistol about 6 dB under a 9 mm).
+- **Shot sound** (user, 2026-11-14: "let's use trapper carbine then"): every .22 LR gun of both mods fires
+  `GunsOfTien_22LRShoot` (sounds_22lr.txt), one clip playing vanilla's `Weapon/Firearm/TrapperCarbine/Shoot` event
+  (the .45 Trapper carbine, vanilla's softest real gun report) at volume 1.0: its raw bang is ~1 dB under the M9's and
+  its first 300 ms ~5.5 dB under, about where a .22 next to a 9 mm belongs, and as an event it keeps vanilla's bang +
+  tail, indoor / outdoor and distant layers. History: a synthesised clip first (2026-11-13, `scripts/make_22lr_sound.py`,
+  Blender numpy + aud, deleted with its .ogg on 2026-11-14, in git history). Reworked the same day (no bolt clacks,
+  "feel like wood"; one fixed shot, "the random cracks are too annoying instead of satisfying ... keep it minimal"; an
+  unpitched noise crack, random-pitch resonators knocked like a woodblock; louder), then dropped: a `file =` clip
+  cannot have a vanilla event's layered setup (user: "we need to actually have the same setup as the vanilla one"),
+  and an event cannot be pitched. Changed sound files need a full game restart to be heard.
+  GoM ships no shot sounds (checked 2026-11-14): its only sound files are the M1 Garand's clip ping and ping drop
+  (`media/sound`, plus four MagDrop oggs in GunsOfMarzPreviousVersion), and every gun's `SwingSound` is a vanilla FMOD
+  event (M9Shoot and M16Shoot 10 guns each, MSR788Shoot 9, JS2000ShotgunShoot / DoubleBarrelShotgunShoot 7, ...; the
+  G36C fires L92Shoot, `firearm_L92_shot_close_01..05` + `shot_close_tail_outdoor_01..05` in ZomboidSound.bank).
+  Vanilla has no .22 gun or sound; its light shots with their own samples are M9 (`firearm_M9_*`), TrapperCarbine
+  (.45) and the cap guns. M36Shoot, M1911Shoot and M625Shoot have no samples of their own (their events reuse
+  others; event data not read). A sound script clip's `pitch` key (42.22, from class constant pools, not a full
+  decompile): `GameSoundScript` parses it, `FMODSoundEmitter$FileSound` applies it with `FMOD_Channel_SetPitch`
+  (resampling: higher and shorter), but `$EventSound` has no pitch call (only `EventInstance_SetVolume`, parameters,
+  timeline), so pitch works for `file =` clips and is presumably ignored for `event =` clips; `volume` reaches both.
+  Mod FMOD banks: `FMODManager` loads banks from `media/sound/banks/` through `ZomboidFileSystem.getAbsolutePath`
+  and has no folder listing, so (constant pools again) a mod could only replace a vanilla bank of the same name, not
+  add one. A vanilla shot event layers bang + tail with indoor (small / medium / large), outdoor and distant samples,
+  which a `file =` clip cannot do; using a vanilla event (as GoM does for every gun) keeps all of that.
   Sound radius / volume stay per gun (sound_model.py: .22 LR, 2 grains, against an 18" rifle barrel, no crack).
+  Measured against vanilla (2026-11-14, user: "the .22 sound effect is low volume"): `M9Shoot` (Weapon/Firearm/M9/Shoot)
+  layers `firearm_M9_transient_close_01..05` (mono, 0.55 s) with `firearm_M9_outdoor_tail_close_01..05` (stereo, 4.8 s;
+  indoor_tail_small/medium/large and transient_distant / outdoor_tail_distant also exist) in ZomboidSound.bank's FSB5
+  (Vorbis, headerless). Decoded without outside tools: Blender's libvorbis (aud, CONTAINER_OGG / CODEC_VORBIS) at bitrate
+  16000 mono / 136000 stereo, 48 kHz, gives setup headers whose CRC32 equals the bank's (732013636 / 4067957314), so
+  the FSB packets ([u16 size][packet]..., sample offset = header bits 6-33 × 16) rebuild into Ogg files ffmpeg reads.
+  Raw levels (peak / loudest 30 ms / RMS of the first 300 ms, dBFS): M9 transient 0 / -6 / -11, tail -3.5 / -13.7 / -17,
+  both at unity -5.5 / -10; the .22 clips before the rework -1 / -9 / -18 over 0.7 s. So the .22's crack is only ~3.5 dB under the M9,
+  but its first 300 ms carry ~8 dB less energy and it has no tail, so it sounds well over the intended 6 dB quieter.
+  The event's own gain and bus levels were not read (FMOD event metadata), so these are clip levels only.
+  In a game recording (2026-11-14, 15 shots) every shot was one of the four clips at the same gain, but 7 of them
+  started 50-110 ms into the clip (correlation 0.995 with the clip from that point), so they had no crack: the game
+  sometimes starts a loose-file clip late. Cause not traced yet.
 - **Special loads** (user, 2026-11-13: "add the special ammo", after a review proposing them; all pre-1993, so the
   main mod): `22LR_Bullet_Subsonic / _HollowPoint / _HyperVelocity` with their `_Box_ / _Carton_ / _Crate_` (gen_scripts
   `LOADS_22LR`, `Q22_LOADS` in `EXTRA_50`), ammo ids `gunsoftien:bullet_22lr_subsonic / _hollow_point /
@@ -2084,7 +2127,9 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
 
 User: both generations ("WHY NOT BOTH??? MP5 series has a lot of variations itself"), then, while they were wired,
 "let's use walther's": only Walther's gen 1 (`HK416QR22`) ships; H&K USA's M-LOK gen 2 is shelved
-(docs/shelved_hk416ml22.md; its code stays in the builder, `GENS`). As decided: pistol-held, Auto + Single,
+(docs/shelved_hk416ml22.md; its code stays in the builder, `GENS`). As decided: pistol-held, Auto + Single (then
+**semi-automatic only**, user 2026-11-14: "make HK416 pistol semi automatic": FireMode Single, no
+FireModePossibilities, no RateOfFire registration, as the MDRs; pace = RecoilDelay 6, about 5 shots a second),
 named by their rails, gen 2 in HK bronze, gen 1's can-like shroud an integral suppressor (then, the same day, a plain
 loud shroud as on the real gun: "Plain shroud, loud"; sound 71 / 20 on GoM's pistol lines), no suppressor part
 (docs/post93_design.md "H&K HK416 .22 LR pistols"). References first: `references/hk416_22/` (SOURCES.txt, contact
@@ -2125,7 +2170,7 @@ works with curl where most gun retailers answer 403).
 - **Wiring** (2026-11-13): `gen_post93_guns.py hk416qr22()` (models_hk416_22.txt: the three sight bodies with
   every turned point, BOLT, CHARGING_HANDLE, MARKINGS drawn through the always-fitted `HK416QR22_Integrated_Rail_Left`,
   the magazines upright with GoM's floor pose; items_hk416_22.txt; fixing_hk416_22.txt; names),
-  `shared/GunsOfTienPost93/HK416_22.lua` (profile ".22 LR HK416" in the main mod's ".22 LR" family, 900 rpm,
+  `shared/GunsOfTienPost93/HK416_22.lua` (profile ".22 LR HK416" in the main mod's ".22 LR" family, semi only,
   GoM's AR bolt / handle table, "handgun2" reload, four hidden rails (foregrips on the bottom one, user: "let it take
   a foregrip"; `foregrip` point at 330 mm, the HK416's rail face + 0.003 rule, added to the builder's points()), `IronSights.Register`, spawn table, MountOn
   appends), Tooltips.lua, HotBrass.lua, Loot.lua (Anachronistic spawner alternative; the .22 LR box and carton beside

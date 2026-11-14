@@ -34,7 +34,6 @@ module GunsOfTienPost93 {
         Weight                       = 2.2,
         MetalValue                   = 25.0,
         FireMode                     = Single,
-        FireModePossibilities        = Auto/Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,

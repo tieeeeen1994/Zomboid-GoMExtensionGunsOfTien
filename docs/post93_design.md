@@ -553,7 +553,7 @@ with a longer barrel and handguard. References: references/hk417/ (SOURCES.txt, 
 H&K's own press photo of a 16" the measuring one). Model: scripts/post93/build_hk417.py (see CLAUDE.md "HK417 Recce and
 Sniper"); review renders render_hk417.py; icons and the magazine texture make_hk417_art.py.
 
-| | `GunsOfTienPost93.HK417` "HK417 Battle Rifle" (16" Recce) | `GunsOfTienPost93.HK417S` "HK417 Sniper Rifle" (20" Sniper) |
+| | `GunsOfTienPost93.HK417` "HK417 Battle Rifle" (16" Recce) | `GunsOfTienPost93.HK417S` "HK417 Marksman Rifle" (20" Sniper; renamed from "Sniper Rifle" 2026-11-14) |
 |---|---|---|
 | Names | GoM's "G3 Battle Rifle" | GoM's "M24 Sniper Rifle" |
 | Magazines | H&K's 20 (standard) and 10, `762x51Magazine20_HK417` / `10` (0.15 / 0.1), profile "7.62x51mm HK417" (real HK417 magazines fit neither the SR-25 nor the SCAR-H), GoM's 7.62x51mm family | the same |
@@ -587,7 +587,8 @@ round cap with a sling point), H&K's ergonomic grip, the HK416's receiver markin
 
 Decided (user, 2026-11-13, asked with the colours and the proposal below): gen 2 in **HK bronze**; **named by
 their rails**, "HK416 .22 Quad Rail Pistol" (gen 1) and "HK416 .22 M-LOK Pistol" (gen 2); **Auto and Single**
-(select fire like the Vector SDP, though both real ones are semi-automatic); **no suppressor part**: "The other
+(select fire like the Vector SDP, though both real ones are semi-automatic; changed 2026-11-14 to **semi-automatic
+only**, user: "make HK416 pistol semi automatic"); **no suppressor part**: "The other
 pistol seems integrated suppressor. we won't have a lootable part of it. only integrated for now", so gen 1's
 can-like shroud counts as an integral suppressor (sound_model.py's integral rule: 71 / 20 becomes 22 / 6, the AS
 VAL's) and gen 2 takes no can. (Flagged to the user: the real gen-1 shroud is a barrel shroud over a .22 liner, not
@@ -600,9 +601,9 @@ M-LOK pistol is shelved (docs/shelved_hk416ml22.md). Built the same day (not pla
 |---|---|
 | Hold | like a pistol (the Vector SDP's way: turned model, GoM's handgun item lines), back slot, GoM's MP5K reload ("handgun2"; GoM's AR bolt catch rule left out: its close step needs a clip the MP5K reload has not got) |
 | Magazines | H&K's 10 / 20 / 30 (`22LRMagazine10/20/30_HK416`, 0.06 / 0.08 / 0.12), profile ".22 LR HK416", the main mod's ".22 LR" family; the 20 as standard (Walther sold it with one) |
-| Fire | Auto / Single at 900 rpm (our choice for a light .22 blowback), spread 0.06 / 0.9, the least of our automatics; Single first |
+| Fire | semi-automatic only (2026-11-14; was Auto / Single at 900 rpm, spread 0.06 / 0.9): FireMode Single, no RateOfFire registration, pace RecoilDelay 6 |
 | Stats | the proposal's: 0.3-0.6, crit 25 (x3.0), HitChance 55, aiming 20, recoil 6, range 22, jam 1.0, condition 1 in 180, weight 2.2, stop power 0.8 |
-| Sound | a plain shroud after all (user, 2026-11-13: "Plain shroud, loud", over the integral suppressor decided above): .22 LR from 9", 71 / 20, its shot the main mod's synthesised .22 LR sound `GunsOfTien_22LRShoot` (every .22 LR gun's; scripts/make_22lr_sound.py) at GoM's pistol gain 1.5, handgun muzzle flash; GoM's M16 handling sounds; no muzzle parts |
+| Sound | a plain shroud after all (user, 2026-11-13: "Plain shroud, loud", over the integral suppressor decided above): .22 LR from 9", 71 / 20, its shot the main mod's .22 LR sound `GunsOfTien_22LRShoot` (every .22 LR gun's; vanilla's Trapper carbine event since 2026-11-14) at GoM's pistol gain 1.5, handgun muzzle flash; GoM's M16 handling sounds; no muzzle parts |
 | Rails | all four as hidden integrated parts: optics on top, GoM's foregrips underneath (user, 2026-11-13: "let it take a foregrip", as the pistol-held MP7A2 and Vector SDP; at 330 mm, about 60 mm ahead of the curved 30), lights left, lasers right |
 | Iron sights | IronSights.Register: the rear taken off under a red dot (`HK416QR22_RD`), both under a scope (`_FD`); every GoM optic clears the body it draws (fit_audit against each state) |
 | Bolt, handle | GoM's AR15 table (HK416.lua's) |

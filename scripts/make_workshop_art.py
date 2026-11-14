@@ -11,7 +11,9 @@ preview13.png (1024x1024, the Mosin-Nagant Obrez, the same), preview14.png (1024
 the same), preview15.png (1024x1024, Post-93's KRISS Vector .45 and 9mm, the same), preview17.png (1024x1024, the RPK
 and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.png (1024x1024, the
 Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same), preview22.png (1024x1024,
-Post-93's MDRx .223 and .308, the same)
+Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP, Mk 11, Grozas, the same),
+preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
+Post-93's HK417 battle and marksman rifles, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1308,6 +1310,104 @@ def mod_icon(path, item, W=128):
     print("wrote", path)
 
 
+def gun_pair(path, guns, slots, slot_label, lines, W=1024):
+    """Two guns laid out like preview6 (no big title, the add-on line on top): both fitted out at one scale (their
+    render_ad_guns.py renders, mirrored back), each centred, under its name, calibre and rate; then a slot
+    row and what plays. guns = ((render name, label, sub-label), ...)."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+    ims = {}
+    for name, _, _ in guns:
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    label_h, gap, top, bottom = u(24), u(22), u(64), u(396)
+    s = min((bottom - top - 2 * label_h - gap) / sum(im.height for im in ims.values()),
+            u(468) / max(im.width for im in ims.values()))
+    x0 = (W - round(max(im.width for im in ims.values()) * s)) // 2
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+    y = top
+    for name, label, sub_ in guns:
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        x0 = (W - im.width) // 2                    # each gun centred on the page (user, 2026-11-14)
+        page.alpha_composite(text_layer(size, (x0 + u(4), y), label, big, (28, 30, 34, 255)))
+        lw = ImageDraw.Draw(page).textlength(label, font=big)
+        page.alpha_composite(text_layer(size, (x0 + u(4) + round(lw) + u(10), y + u(5)), sub_, small,
+                                        (60, 64, 70, 255), spacing=u(1)))
+        paste_with_shadow(page, placed(size, im, (x0, y + label_h)), (0, u(6)), u(6), 160)
+        y += label_h + im.height + gap
+    slot_row(page, slots, 256, 414, slot_label)
+    for n, line in enumerate(lines):
+        caption(page, 462 + n * 16, line)
+    save_under(page.convert("RGB"), path)
+
+
+def preview27(path, W=1024):
+    """Post-93's HK416 and HK416 .22 Quad Rail Pistol (3.15.0), laid out like preview21 (user: rifle and pistol on one
+    page): one camera and scale (render_ad_guns.py "hk416" / "hk416qr22"), the rifle across the top, the pistol under
+    its muzzle end with its name to its left; then a slot row and one line."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+    ims = {}
+    for name in ("hk416", "hk416qr22"):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    s = u(440) / ims["hk416"].width
+    rifle, pistol = [ims[n].resize((round(ims[n].width * s), round(ims[n].height * s)), Image.LANCZOS)
+                     for n in ("hk416", "hk416qr22")]
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+    x_r = (W - rifle.width) // 2
+    x_p = x_r + rifle.width - pistol.width - u(8)          # room on its left for the in-game name
+    alpha = rifle.getchannel("A").load()
+    lowest = max((y for x in range(max(0, x_p - x_r), rifle.width) for y in range(rifle.height - 1, -1, -1)
+                  if alpha[x, y] > 40 and (y == rifle.height - 1 or alpha[x, y + 1] <= 40)), default=0)
+    # the name line, rifle and pistol centred between the add-on line and the slot row
+    block = u(26) + lowest + u(14) + pistol.height
+    y_r = (u(50) + u(416) - block) // 2 + u(26)
+    page.alpha_composite(text_layer(size, (x_r + u(4), y_r - u(26)), "HK416 ASSAULT RIFLE", big, (28, 30, 34, 255)))
+    page.alpha_composite(text_layer(size, (x_r + u(4) + round(big.getlength("HK416 ASSAULT RIFLE")) + u(8), y_r - u(21)),
+                                    "5.56X45MM  ·  850 RPM  ·  STANAG MAGAZINES", small, (60, 64, 70, 255), spacing=u(1)))
+    paste_with_shadow(page, placed(size, rifle, (x_r, y_r)), (0, u(6)), u(6), 160)
+    y_p = y_r + lowest + u(14)
+    paste_with_shadow(page, placed(size, pistol, (x_p, y_p)), (0, u(6)), u(6), 160)
+    ly = y_p + pistol.height // 2 - u(16)
+    page.alpha_composite(text_layer(size, (x_p - u(10), ly), "HK416 .22 QUAD RAIL PISTOL", big, (28, 30, 34, 255), anchor="ra"))
+    page.alpha_composite(text_layer(size, (x_p - u(10), ly + u(22)), ".22 LR  ·  900 RPM  ·  ONE-HANDED", small,
+                                    (60, 64, 70, 255), anchor="ra", spacing=u(1)))
+    page.alpha_composite(text_layer(size, (x_p - u(10), ly + u(37)), "10, 20 AND 30-ROUND MAGAZINES", small,
+                                    (60, 64, 70, 255), anchor="ra", spacing=u(1)))
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [post("HK416"), gom("556x45Magazine30_STANAG"), post("HK416QR22"), post("22LRMagazine10_HK416"),
+                    post("22LRMagazine20_HK416"), post("22LRMagazine30_HK416")],
+             256, 412, "")
+    save_under(page.convert("RGB"), path)
+
+
+def preview28(path, W=1024):
+    """Post-93's HK417 Battle Rifle and Marksman Rifle (3.15.0), as gun_pair: Aimpoint, MKC, AimRight ("hk417"); LR10X,
+    bipod, the SCAR-H's mount + SOCOM762-RC ("hk417s"); both with H&K's 20."""
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    gun_pair(path, (("hk417", "HK417 BATTLE RIFLE", "7.62X51MM  ·  600 RPM"),
+                    ("hk417s", "HK417 MARKSMAN RIFLE", "7.62X51MM  ·  600 RPM")),
+             [post("HK417"), post("HK417S"), post("762x51Magazine10_HK417"), post("762x51Magazine20_HK417")],
+             "10 AND 20-ROUND MAGAZINES", (), W)
+
+
 if __name__ == "__main__":
     def want(name):
         return not ONLY or name in ONLY
@@ -1364,6 +1464,10 @@ if __name__ == "__main__":
         preview25(os.path.join(ROOT, "preview25.png"))   # Post-93's Mk 11 Mod 0 (3.13.0), added the same way
     if want("preview26"):
         preview26(os.path.join(ROOT, "preview26.png"))   # Post-93's Grozas (3.13.0), added the same way
+    if want("preview27"):
+        preview27(os.path.join(ROOT, "preview27.png"))   # Post-93's HK416 and .22 pistol (3.15.0), added the same way
+    if want("preview28"):
+        preview28(os.path.join(ROOT, "preview28.png"))   # Post-93's HK417s (3.15.0), added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

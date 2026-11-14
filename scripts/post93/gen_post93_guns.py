@@ -2335,7 +2335,7 @@ def hk416():
 HK417_GUNS = {
     'HK417': dict(name='HK417 Battle Rifle', min=1.3, max=1.8, crit=30.0, critmult=5.0, hit=53, aim=50, recoil=15,
                   range=60.0, sight=(10, 18.0), cond=250, weight=4.1, radius=231, volume=66),
-    'HK417S': dict(name='HK417 Sniper Rifle', min=1.3, max=2.1, crit=40.0, critmult=5.0, hit=56, aim=55, recoil=15,
+    'HK417S': dict(name='HK417 Marksman Rifle', min=1.3, max=2.1, crit=40.0, critmult=5.0, hit=56, aim=55, recoil=15,
                    range=65.0, sight=(10, 20.0), cond=260, weight=4.3, radius=216, volume=62),
 }
 HK417_STATES = ['', '_RD', '_FD']
@@ -2558,8 +2558,9 @@ def hk417():
 # quad rail, the barrel in a long round shroud (a plain barrel shroud, not a suppressor: user, 2026-11-13, "Plain
 # shroud, loud", replacing the integral suppressor first decided), H&K-style hooded front and rotary diopter rear on
 # the rail, H&K's grip and selector labels.
-# Held like a pistol (the Vector SDP's way: turned nodes and points, GoM's handgun item lines, the back slot), select
-# fire Auto / Single (user's choice; the real pistol is semi-automatic). Iron sights: the rear taken off under any
+# Held like a pistol (the Vector SDP's way: turned nodes and points, GoM's handgun item lines, the back slot),
+# semi-automatic only as the real pistol (user, 2026-11-14; it was select fire Auto / Single): FireMode Single, no
+# FireModePossibilities, as the MDRs. Iron sights: the rear taken off under any
 # red dot (HK416QR22_RD), both under a magnified scope (_FD). H&K's polymer .22 magazines, 10 straight, 20 and 30
 # curved, in the main mod's ".22 LR" family. Rails: optics on the top, GoM's foregrips underneath (user, 2026-11-13:
 # "let it take a foregrip", as the pistol-held MP7A2 and Vector SDP do), lights left, lasers right (integrated,
@@ -2567,7 +2568,8 @@ def hk417():
 # Stats (.22 LR from 9": about 137 J against a 9 mm pistol's 500): damage 0.3-0.6, crit 25, HitChance 55, aiming 20,
 # almost no recoil (6), range 22, a dirty rimfire blowback wears (1 in 180) and jams more (1.0); weight 2.2 (5.0 lb
 # empty, 2.27 kg). Sound: sound_model.py's .22 LR from 9" (2 grains, subsonic from this barrel), 71 / 20; the shot
-# is the main mod's own .22 LR sound, GunsOfTien_22LRShoot (scripts/make_22lr_sound.py, every .22 LR gun's), at GoM's
+# is the main mod's .22 LR sound, GunsOfTien_22LRShoot (sounds_22lr.txt: vanilla's Trapper carbine event, every .22
+# LR gun's), at GoM's
 # pistol gain 1.5, with the handgun muzzle flash.
 HK416QR22_BODIES = [('HK416QR22', 'HK416QR22_BODY'), ('HK416QR22_RD', 'HK416QR22_BODY_RD'),
                     ('HK416QR22_FD', 'HK416QR22_BODY_FD')]
@@ -2668,7 +2670,6 @@ def hk416qr22():
         Weight                       = 2.2,
         MetalValue                   = 25.0,
         FireMode                     = Single,
-        FireModePossibilities        = Auto/Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,
