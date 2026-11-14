@@ -24,7 +24,7 @@ HK416 .22 Quad Rail Pistol (Post-93 add-on)
 - Held one-handed like Guns of Marz's MP5K and carried on the back. No stock: the receiver ends in a round cap
 - H&K's 10, 20 and 30-round .22 LR magazines. Fires the main mod's .22 LR rounds (plain, Subsonic, Hollow Point, Hyper Velocity)
 - A short quad rail: Guns of Marz optics on top, foregrips underneath, lights on the left, lasers on the right
-- Automatic or single shots at 900 rounds a minute with almost no recoil. Weak, short-ranged, and the dirty .22 wears it faster and jams more
+- Semi-automatic with almost no recoil. Weak, short-ranged, and the dirty .22 wears it faster and jams more
 - Its own .22 LR shot sound, a light, sharp crack (every .22 LR gun will use it)
 - H&K-style iron sights clamped on the rail come off under an optic: the rear under a red dot or holographic sight, both under a magnified scope
 - Found with Guns of Marz's post-1993 guns (gun stores and late loot), with its 20-round magazines and .22 LR boxes

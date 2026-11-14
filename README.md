@@ -21,14 +21,22 @@ Maker they can be made.
 - .30-06 Springfield Soft Point
 - .308 Winchester Soft Point
 - 12 Gauge Birdshot
-- .22 LR, a new calibre (the Post-93 add-on's HK416 .22 pistol fires it): the plain round, Subsonic, Hollow Point, Hyper Velocity
+
+## .22 LR
+
+A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small game.
+
+- The plain round (40 grain lead round nose), in boxes of 50, cartons and crates
+- Special loads, not found as loot and made with Ammo Maker: Subsonic (quieter and a little weaker; must be racked after each shot in self-loading guns, not in revolvers or bolt, lever and pump actions), Hollow Point, and Hyper Velocity (hits harder, crits harder, louder, and wears the gun a little faster)
+- Every .22 LR gun fires a light, sharp report, well under a 9mm's
+- With Hot Brass its spent casings fly out like any other
+- With the Post-93 add-on, which has the first .22 LR gun (the HK416 .22 Quad Rail Pistol), plain .22 LR boxes and cartons turn up wherever 9mm boxes and cartons do, homes included
 
 ## Changes to Guns of Marz
 
 - Realistic sound radius and volume for the guns (not the grenade launchers)
 - Plain .30-06, 7.62x51mm and .308 rounds pierce (sandbox option)
 - 7.62x39mm US (Subsonic) must be racked after each shot unless a PBS-1 is fitted (sandbox option)
-- .22 LR Subsonic must be racked after each shot in self-loading guns, not in revolvers
 - Gun critical hits when one shot hits several targets (shotgun pellets, rounds that pierce): Build 42.22 rolls once
   per shot, so a blast crits on every pellet or on none; Old rolls for each target again, as before Build 42.22, and
   Enhanced rolls for each target but led by the trigger pull's roll (sandbox option, Default = Build 42.22's way)
