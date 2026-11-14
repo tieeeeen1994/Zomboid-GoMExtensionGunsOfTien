@@ -41,3 +41,5 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 ## New Mod - EQUAL LOOT DISTRIBUTION
 
 This will modify all loot so that all guns spawn without discrimination. Ammo and mags will still spawn beside the gun.
+Sub-mod "Loot Equalizer", parked 2026-11-15: decisions, the spawner-table takeover idea and the open questions are in
+`docs/equal_loot_design.md`.
