@@ -1945,8 +1945,13 @@ def sr25():
              f"charging_handle_lock,",
              f"{w}MarzGuns.Charging_Handle_Open {MODULE}.SR25_CHARGING_HANDLE charging_handle_open "
              f"charging_handle_open,",
-             f"{w}{MODULE}.{SR25_MAG} {MODULE}.{SR25_MAG} magazine magazine,",
-             f"{w}{MODULE}.SR25_Integrated_Bipod_Folded {MODULE}.SR25_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+             f"{w}{MODULE}.{SR25_MAG} {MODULE}.{SR25_MAG} magazine magazine,"]
+    # Post-93's PMAGs and D-50 (its MountOn lists the SR-25, its MDR.lua puts them in the "7.62x51mm SR-25"
+    # profile): drawn at the magazine point the Mk 11 shares with the SR-25. Only strings until such a part is
+    # attached, so harmless without Post-93.
+    parts += [f"{w}GunsOfTienPost93.762x51Magazine{n}_PMAG GunsOfTienPost93.762x51Magazine{n}_PMAG magazine magazine,"
+              for n in (10, 20, 25, 50)]
+    parts += [f"{w}{MODULE}.SR25_Integrated_Bipod_Folded {MODULE}.SR25_BIPOD_FOLDED integrated_bipod integrated_bipod,",
              f"{w}{MODULE}.SR25_Integrated_Bipod_Deployed {MODULE}.SR25_BIPOD_DEPLOYED integrated_bipod "
              f"integrated_bipod,"]
     items = [f"module {MODULE} {{\n", f"""

@@ -277,7 +277,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `shared/GunsOfTienPost93/MK11.lua` (four hidden `MK11_Integrated_Rail_*` parents, KAC's 20 MountOn appended for
   the Mk 11 and MDRx .308), `scripts/post93/make_mk11_art.py`. One magazine profile "7.62x51mm SR-25": the main mod
   registers KAC's 20, Post-93 the PMAGs (Gunworks merges profiles of one name), the PMAGs' MountOn lists
-  `GunsOfTien.SR25` (the main mod is always there with Post-93). GoM's AR bolt / charging-handle table (local in its
+  `GunsOfTien.SR25` (the main mod is always there with Post-93), and every gun of the profile lists every one of its
+  magazines as a `ModelWeaponPart` (the SR-25 lacked the PMAGs until 2026-11-16: a PMAG in it had no model, reported
+  as "doesn't take PMAGs"; a line naming a Post-93 item is only a string until such a part attaches). GoM's AR bolt / charging-handle table (local in its
   AnimationsFiring.lua) is repeated in both Lua files; reload GoM's "ar15_rifle" with its rule
   "boltCatchAfterEmptyInsert" (GoMReloads.lua). Loot: the SR-25 beside GoM's PSG-1 kits, the Mk 11 the SCAR-H's.
   fit_audit 2026-11-12: nothing flagged.
