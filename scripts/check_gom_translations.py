@@ -27,7 +27,9 @@ AM = WS + "/2788256295/mods"
 TIEN = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Contents/mods"))
 # GoM's ReloadAllMagazines_Compac.lua only looks these up to remove another mod's menu options by their text; English
 # from us would not match that mod's and must not be added.
-IGNORE = {"ContextMenu_ReloadAllMagazines_LoadAllMagazines", "ContextMenu_ReloadAllMagazines_UnloadAllMagazines"}
+IGNORE = {"ContextMenu_ReloadAllMagazines_LoadAllMagazines", "ContextMenu_ReloadAllMagazines_UnloadAllMagazines",
+          # Gunworks' CanShootMessage.lua uses the English sentence as its key; getText of a missing key returns it
+          "Chamber is open, close it before firing."}
 # whose keys are checked: GoM's and Gunworks', and this repo's two mods' own (their item names and gun tooltip rows
 # went unchecked until 2026-10-31, when the charging handle's row showed raw keys)
 SOURCES = {"GoM": GOM, "Gunworks": GW, "Tien": TIEN}

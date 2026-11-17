@@ -421,6 +421,8 @@ module Base {
         'Tooltip_weapon_BoosterScope': 'Magnifier',
         'Tooltip_weapon_Shellholder': 'Shell Holder',
         'Tooltip_weapon_UnderbarrelChamber': 'Underbarrel Chamber',
+        # GoM's own charging handle parts (animated.txt, GoM update of 2026-11-04), worded as ours
+        'Tooltip_weapon_Charging_Handle': 'Charging Handle',
     })
     tooltips.update({'Tooltip_weapon_Animated%d' % n: 'Belt Round %d' % n for n in range(1, 10)})
     # Item tooltips GoM's scripts name but never translated (scripts/check_gom_translations.py lists them). Its break
@@ -461,6 +463,9 @@ module Base {
     # GoM items without a name: the hidden weapon a fitted bayonet stabs with, and explosion fragments (debris models)
     names['MarzGuns.Attack_Bayonet'] = 'Bayonet'
     names.update({'MarzGuns.frag_%d' % n: 'Fragment' for n in range(16)})
+    # GoM's charging handle parts (GoM update of 2026-11-04): Close = handle forward, Open = pulled back, as ours
+    names['MarzGuns.Charging_Handle_Close'] = 'Charging Handle (Forward)'
+    names['MarzGuns.Charging_Handle_Open'] = 'Charging Handle (Back)'
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipes_tr, indent=2) + '\n')
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')

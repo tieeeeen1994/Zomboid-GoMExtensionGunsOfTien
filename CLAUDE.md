@@ -2613,6 +2613,9 @@ hidden weapon a fitted bayonet stabs with) and `frag_0-15` (explosion debris), `
 `IGUI_ClickToRemove` and `IGUI_SelectAmmunition`. Deliberately left: GoM's ReloadAllMagazines_Compac.lua looks up
 `ContextMenu_ReloadAllMagazines_*` only to remove another mod's options by their text. Fire mode labels are built
 (`ContextMenu_FireMode_` .. mode) and all covered by vanilla (Auto / Burst / Single) and Gunworks (Real*).
+2026-11-17: GoM's charging handle parts (`MarzGuns.Charging_Handle_Close` / `_Open`, PartType `Charging_Handle`,
+its 2026-11-04 update) got names worded as ours (gen_scripts.py `translations()`); Gunworks' 2026-11-10
+`CanShootMessage.lua` passes the English sentence itself to `getText`, which shows as is (IGNORE).
 
 Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of GoM's table against its registries:
 - **Wear is "one chance in N"**: `ConditionLowerChanceOneIn` × m changes the chance by 1 / m, so ×1.5 is a third
