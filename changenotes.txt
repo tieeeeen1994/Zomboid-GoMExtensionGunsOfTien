@@ -1,5 +1,0 @@
-3.15.1
-
-Fix
-- SR-25 (with the Post-93 add-on): Magpul's PMAGs and D-50 drum now show in the rifle when loaded. They always fit it, but the gun was drawn with no magazine
-- Guns of Marz's new charging handles had no English names: a gun's tooltip showed raw keys for them. They read "Charging Handle (Forward)" and "Charging Handle (Back)" now
