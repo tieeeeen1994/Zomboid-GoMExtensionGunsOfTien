@@ -5,8 +5,13 @@
     Bayonet icon) and the inventory context menu. Instant, as Gunworks' underbarrel switch (user, 2026-11-19).
 
     The key is a vanilla key binding (the keyBinding table, [Guns of Tien] section in the controls), as
-    TienInspectWeapon's: OnKeyPressed fires on release and not while a text box has focus. The radial menu only
-    opens for firearms, so a fixed bayonet is unfixed with the key or the context menu.
+    TienInspectWeapon's: OnKeyPressed fires on release and not while a text box has focus.
+
+    The firearm radial (hold the reload key) only opens for ranged weapons: ISFirearmRadialMenu.checkWeapon, which
+    the key and joypad handlers look up by name at every call (Gunworks wraps it the same way), so it is answered
+    true for a fixed bayonet too, and fillMenu (vanilla clears the menu and adds nothing for a melee item) gets a
+    single Stop Using Bayonet slice (user, 2026-11-19). A tap of the key would start BeginAutomaticReload with the
+    spear (through Gunworks' magazine and reload-rule hooks), so a tap does nothing while fixed.
 
     Multiplayer: the client asks the server (the swap is the server's, it moves items) and refreshes the hotbar when
     the answer comes; single player swaps at once.
@@ -14,10 +19,12 @@
 
 require("ISUI/ISInventoryPaneContextMenu")
 require("ISUI/ISFirearmRadialMenu")
+require("TimedActions/ISReloadWeaponAction")
 
 local FixedBayonet = require("GunsOfTien/FixedBayonet")
 
 local RADIAL_ICON = "media/ui/GunworksRadial_DeployBayonet.png"
+local RADIAL_ICON_STOP = "media/ui/GunworksRadial_FoldBayonet.png"
 local REQUEST_GAP_MS = 500
 
 local function registerKeyBinding()
@@ -102,9 +109,25 @@ local fillMenu = ISFirearmRadialMenu.fillMenu
 function ISFirearmRadialMenu:fillMenu()
     fillMenu(self)
     local weapon = self.character:getPrimaryHandItem()
-    if not FixedBayonet.CanFix(weapon) then return end
+    local fix = offer(weapon)
+    if fix == nil then return end
     local character = self.character
-    getPlayerRadialMenu(self.playerNum):addSlice(label(true), getTexture(RADIAL_ICON), function()
-        FixedBayonet.Request(character, weapon, true)
-    end)
+    getPlayerRadialMenu(self.playerNum):addSlice(label(fix), getTexture(fix and RADIAL_ICON or RADIAL_ICON_STOP),
+        function()
+            FixedBayonet.Request(character, weapon, fix)
+        end)
+end
+
+local checkWeapon = ISFirearmRadialMenu.checkWeapon
+
+function ISFirearmRadialMenu.checkWeapon(playerObj)
+    if FixedBayonet.IsFixed(playerObj:getPrimaryHandItem()) then return true end
+    return checkWeapon(playerObj)
+end
+
+local beginAutomaticReload = ISReloadWeaponAction.BeginAutomaticReload
+
+ISReloadWeaponAction.BeginAutomaticReload = function(playerObj, gun)
+    if FixedBayonet.IsFixed(gun) then return end
+    return beginAutomaticReload(playerObj, gun)
 end

@@ -2699,8 +2699,12 @@ Bayonet / Stop Using Bayonet (key label "Use / Stop Using Bayonet"), the option 
   Command `GunsOfTien` / `fixedBayonet { itemId, fix }`, only for the primary hand item. Key: vanilla `keyBinding`
   entry `GunsOfTien_FixBayonet` (section `[GunsOfTien]`, labels in `Translate/EN/UI.json`), default Z: vanilla
   binds every other letter but K, and K is TienInspectWeapon's and Tien's Skill Mastery's; Z only switches seats in
-  a vehicle, where the key does nothing. Radial slice (Gunworks' Deploy Bayonet icon) only to fix (the firearm
-  radial does not open for a melee item); context menu both ways.
+  a vehicle, where the key does nothing. Radial slice both ways: Gunworks' Deploy Bayonet icon to fix, its Fold
+  Bayonet icon to unfix. The firearm radial opens only for ranged weapons, so `ISFirearmRadialMenu.checkWeapon`
+  (looked up by name by the key and joypad handlers) answers true for a fixed item, and vanilla's `fillMenu` leaves
+  it an empty menu to which the one slice is added; a tap of the reload key would run `BeginAutomaticReload` on
+  the spear through Gunworks' hooks, so that returns at once for a fixed item (user, 2026-11-19, after the release
+  commit). Context menu both ways.
 - **Items**: `scripts/GunsOfTien/items_fixedbayonet.txt` from `gen_scripts.py fixed_bayonets()` (reads Guns of
   Marz's scripts and names through check_refs.py; run it alone with `py -c "import gen_scripts;
   gen_scripts.fixed_bayonets()"` from scripts/): `GunsOfTien.FixedBayonet_<GUN>` for GoM's 16 bayonet guns and the
