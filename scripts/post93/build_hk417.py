@@ -418,8 +418,10 @@ def points(var, f):
         "stock": {"offset": [0.0, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]},
         "stock_folded": {"offset": [0.0, g(hk.STOCK_TRAVEL), 0.0], "rotate": [0.0, 0.0, 0.0]},
         "scope": {"offset": [0.0, g(SCOPE_Y), round(g(f["top"]) - 0.0032, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "foregrip": {"offset": [0.0, g(390.0 + e), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "bipod": {"offset": [0.0, g(435.0 + e), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
+        # bipod clamp ending at the rail's front (471.6 + e), foregrip 93 mm behind it, GoM's AR15 spacing (as
+        # build_hk416.py; they went over each other at 390 / 435)
+        "foregrip": {"offset": [0.0, g(355.0 + e), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
+        "bipod": {"offset": [0.0, g(448.0 + e), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
         "light_left": {"offset": [round(g(f["side"]) + 0.0007, 4), g(420.0 + e), g(f["side_h"])],
                        "rotate": [0.0, 0.0, 0.0]},
         "laser_right": {"offset": [round(-g(f["side"]) - 0.0018, 4), g(420.0 + e), round(g(f["side_h"]) - 0.0008, 4)],

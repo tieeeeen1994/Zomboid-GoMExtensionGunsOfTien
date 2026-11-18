@@ -3479,6 +3479,112 @@ def p90():
     names[f'{MODULE}.P90'] = 'P90 Submachine Gun'        # the 1990 gun; Post-93's is the P90 TR (user, 2026-11-03)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
+# Every gun Guns of Marz fits a bayonet to (Registries/Bayonets.lua RegisterMountableWeapon, plus the SKS's folding
+# one, RegisterIntegratedBayonet): each gets a melee item it turns into while its bayonet is fixed
+# (shared/GunsOfTien/FixedBayonet.lua).
+FIXED_BAYONET_GUNS = ['M16A1', 'M16A2', 'M16A3', 'AR15', 'FAMAS', 'M14', 'XM177', 'M4A1', 'M1_GARAND', 'G3', 'MOSIN',
+                      'M1903', 'MOSSBERG_590', 'BENELLI_M4', 'TRENCHGUN', 'REMINGTON_870', 'SKS']
+
+# Gunworks' bayonet stab weapon, Guns of Marz's MarzGuns.Attack_Bayonet (weapons/melee.txt): its combat stats, kept
+# as they were (user, 2026-11-19). Not copied: its Sharpness and HeadCondition (a fixed bayonet wears its own
+# condition, the knife's), its spear tags (fishing, glue and tape repairs) and OnBreak (spear parts).
+FIXED_BAYONET_STATS = """\
+        DisplayCategory           = Weapon,
+        ItemType                  = base:weapon,
+        Categories                = base:improvised;base:spear,
+        SubCategory               = Spear,
+        TwoHandWeapon             = true,
+        RequiresEquippedBothHands = true,
+        BreakSound                = SpearHuntingKnifeBreak,
+        CritDmgMultiplier         = 5.0,
+        CriticalChance            = 20.0,
+        DamageCategory            = Slash,
+        DamageMakeHole            = true,
+        DoorDamage                = 7,
+        DoorHitSound              = SpearHuntingKnifeHit,
+        HitFloorSound             = SpearHuntingKnifeHit,
+        HitSound                  = SpearHuntingKnifeHit,
+        IdleAnim                  = Idle_Weapon2,
+        ImpactSound               = SpearHuntingKnifeHit,
+        KnockBackOnNoDeath        = false,
+        KnockdownMod              = 0.0,
+        MaxDamage                 = 1.7,
+        MaxHitcount               = 2,
+        MaxRange                  = 1.48,
+        MinAngle                  = 0.8,
+        MinDamage                 = 1.2,
+        MinRange                  = 0.98,
+        MinimumSwingtime          = 2.0,
+        PushBackMod               = 0.3,
+        RunAnim                   = Run_Weapon2,
+        SoundMap                  = SpearStab SpearHuntingKnifeStab,
+        SplatBloodOnNoDeath       = false,
+        SplatNumber               = 1,
+        SwingAmountBeforeImpact   = 0.02,
+        SwingAnim                 = Spear,
+        SwingSound                = SpearHuntingKnifeSwing,
+        Swingtime                 = 2.0,
+        TreeDamage                = 0,
+        OnBreak                   = GunsOfTien_FixedBayonet.OnBreak,
+"""
+
+
+def fixed_bayonets():
+    """A gun with its bayonet fixed is swapped for one of these, the way Gunworks swaps a rifle for its underbarrel
+    launcher (shared/GunsOfTien/FixedBayonet.lua). Each carries its gun's weight, icon, model, attachment type and
+    ModelWeaponPart lines, read from Guns of Marz's scripts here and copied again from the live gun scripts at
+    OnLoadedMapZones (so a Guns of Marz update needs no new build). Condition: the gun's own maximum for the SKS (its
+    bayonet is part of the gun), else 10, every Guns of Marz bayonet knife's; the chance to lose a point is set per
+    item from the knife (or the SKS). FixedBayonet is the fallback for a gun another mod registers later."""
+    import check_refs
+    gom = [r for r in check_refs.OTHERS if '3722134990' in r.replace(os.sep, '/')]
+    if not gom:
+        raise SystemExit('Guns of Marz not found')
+    guns = {}
+    for root in gom:
+        for kind, name, kv, _ in check_refs.parse_scripts(root):
+            if kind == 'item':
+                guns[name] = kv
+    # every item a ModelWeaponPart line may name: Guns of Marz's own M16A3 lists a MarzGuns.M203 no mod defines
+    known = {name.lower() for root in check_refs.ROOTS for kind, name, _, _ in check_refs.parse_scripts(root)
+             if kind == 'item'}
+    gom_names = {}
+    for root in gom:
+        p = os.path.join(root, 'lua/shared/Translate/EN/ItemName.json')
+        if os.path.isfile(p):
+            gom_names.update(json.load(open(p, encoding='utf-8')))
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path, encoding='utf-8'))
+    out = [f"module {MODULE} {{\n"]
+
+    def block(item, weight, icon, sprite, attachment, condition, parts):
+        lines = [f"\n    item {item} {{\n", f"        Weight                    = {weight},\n",
+                 f"        Icon                      = {icon},\n", f"        WeaponSprite              = {sprite},\n",
+                 f"        AttachmentType            = {attachment},\n",
+                 f"        ConditionMax              = {condition},\n",
+                 "        ConditionLowerChanceOneIn = 75,\n", FIXED_BAYONET_STATS]
+        lines += [f"        ModelWeaponPart           = {p},\n" for p in parts]
+        lines.append("    }\n")
+        return ''.join(lines)
+
+    for gun in FIXED_BAYONET_GUNS:
+        kv = guns[f'MarzGuns.{gun}']
+        first = lambda k: kv[k][-1]
+        condition = first('conditionmax') if gun == 'SKS' else '10'
+        parts = [p for p in kv.get('modelweaponpart', []) if p.split()[0].lower() in known]
+        out.append(block(f'FixedBayonet_{gun}', first('weight'), first('icon'), first('weaponsprite'),
+                         first('attachmenttype'), condition, parts))
+        gun_name = names.get(f'MarzGuns.{gun}') or gom_names[f'MarzGuns.{gun}']
+        names[f'{MODULE}.FixedBayonet_{gun}'] = f'{gun_name} (Bayonet Fixed)'
+    kv = guns['MarzGuns.M16A1']
+    out.append(block('FixedBayonet', kv['weight'][-1], kv['icon'][-1], kv['weaponsprite'][-1],
+                     kv['attachmenttype'][-1], '10', []))
+    names[f'{MODULE}.FixedBayonet'] = 'Rifle (Bayonet Fixed)'
+    out.append("}\n")
+    write('scripts/GunsOfTien/items_fixedbayonet.txt', ''.join(out))
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 if __name__ == '__main__':
     items()
     models()
@@ -3504,4 +3610,5 @@ if __name__ == '__main__':
     charging_handles()
     mp5_family()
     one_hand()
+    fixed_bayonets()
     print('written under', os.path.normpath(ROOT))

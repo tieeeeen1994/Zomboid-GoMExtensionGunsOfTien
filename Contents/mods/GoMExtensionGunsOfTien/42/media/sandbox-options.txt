@@ -54,3 +54,10 @@ option GunsOfTien.FirearmMinimumDamage {
     page        = GunsOfTien,
     translation = GunsOfTien_FirearmMinimumDamage,
 }
+
+option GunsOfTien.FixedBayonets {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_FixedBayonets,
+}

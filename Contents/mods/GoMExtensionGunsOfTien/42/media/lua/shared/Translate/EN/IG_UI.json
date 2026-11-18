@@ -23,5 +23,8 @@
   "IGUI_GunsOfTien_TOZ34_SawnBoth": "Sawn-Off TOZ-34 Pistol",
   "IGUI_GunsOfTien_MOSIN_SawnBarrel": "Mosin-Nagant Bolt Rifle (Sawn-Off Barrel)",
   "IGUI_GunsOfTien_MOSIN_SawnStock": "Mosin-Nagant Bolt Rifle (Sawn-Off Stock)",
-  "IGUI_GunsOfTien_MOSIN_SawnBoth": "Mosin-Nagant Obrez"
+  "IGUI_GunsOfTien_MOSIN_SawnBoth": "Mosin-Nagant Obrez",
+  "IGUI_GunsOfTien_FixBayonet": "Fix Bayonet",
+  "IGUI_GunsOfTien_UnfixBayonet": "Unfix Bayonet",
+  "IGUI_GunsOfTien_FixBayonetHold": "Hold it in your hands first."
 }

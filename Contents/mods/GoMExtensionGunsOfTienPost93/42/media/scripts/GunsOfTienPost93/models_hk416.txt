@@ -12,8 +12,8 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2002 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2563 0.0057, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }
@@ -30,8 +30,8 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2002 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2563 0.0057, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }
@@ -48,8 +48,8 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2002 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2563 0.0057, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }
@@ -66,8 +66,8 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2002 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2563 0.0057, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }
@@ -84,8 +84,8 @@ module GunsOfTienPost93 {
         attachment canon { offset = 0.0000 0.3405 0.0258, rotate = 0.0000 0.0000 0.0000, }
         attachment stock_folded { offset = 0.0000 0.0452 0.0000, rotate = 0.0000 0.0000 0.0000, }
         attachment scope { offset = 0.0000 0.0905 0.0396, rotate = 0.0000 0.0000 0.0000, }
-        attachment foregrip { offset = 0.0000 0.2231 0.0101, rotate = 0.0000 0.0000 0.0000, }
-        attachment bipod { offset = 0.0000 0.2472 0.0057, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2002 0.0101, rotate = 0.0000 0.0000 0.0000, }
+        attachment bipod { offset = 0.0000 0.2563 0.0057, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0188 0.2412 0.0230, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0199 0.2412 0.0222, rotate = 0.0000 0.0000 0.0000, }
     }

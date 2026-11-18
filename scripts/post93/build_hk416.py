@@ -453,8 +453,11 @@ def main():
         "stock": {"offset": [0.0, 0.0, 0.0], "rotate": [0.0, 0.0, 0.0]},
         "stock_folded": {"offset": [0.0, g(STOCK_TRAVEL), 0.0], "rotate": [0.0, 0.0, 0.0]},
         "scope": {"offset": [0.0, g(SCOPE_Y), round(g(f["top"]) - 0.0032, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "foregrip": {"offset": [0.0, g(370.0), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
-        "bipod": {"offset": [0.0, g(410.0), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
+        # bipod clamp (its point -21.5 .. +21.6 mm) ending at the rail's front (447.5), foregrip 93 mm behind it as on
+        # GoM's AR15 (foregrip front 11 mm short of the bipod's rear, which reaches 58.5 mm behind its point; user,
+        # 2026-11-18: they went over each other at 370 / 410)
+        "foregrip": {"offset": [0.0, g(332.0), round(g(f["bottom"]) + 0.003, 4)], "rotate": [0.0, 0.0, 0.0]},
+        "bipod": {"offset": [0.0, g(425.0), round(g(f["bottom"]) + 0.003 - 0.0044, 4)], "rotate": [0.0, 0.0, 0.0]},
         "light_left": {"offset": [round(g(f["side"]) + 0.0007, 4), g(400.0), g(f["side_h"])], "rotate": [0.0, 0.0, 0.0]},
         "laser_right": {"offset": [round(-g(f["side"]) - 0.0018, 4), g(400.0), round(g(f["side_h"]) - 0.0008, 4)],
                         "rotate": [0.0, 0.0, 0.0]},

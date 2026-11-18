@@ -356,8 +356,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `SubsonicRackRule` (1 always / 2 unless PBS-1 (default) / 3 never), `BeltLinks` (default on, see "Belt links"),
   `FirearmCritRule` (1 Default = 42.22 per shot / 2 Old = 42.21 per target / 3 Enhanced = per target led by the
   shot),
-  `FirearmCritLead` (0-100, default 50), see "Firearm crits per target", and `FirearmMinimumDamage` (0-100 %,
-  default 0), see "Minimum firearm damage". `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  `FirearmCritLead` (0-100, default 50), see "Firearm crits per target", `FirearmMinimumDamage` (0-100 %,
+  default 0), see "Minimum firearm damage", and `FixedBayonets` (default on, read live), see "Fixed bayonets". `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
@@ -526,7 +526,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
   (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `ChargingHandle.lua`: the non-reciprocating
-  handles of the AUGs and MP7s, with `scripts/GunsOfTien/items_handles.txt`), `lua/server/GunsOfTien/HotBrass.lua` (no
+  handles of the AUGs and MP7s, with `scripts/GunsOfTien/items_handles.txt`; `FixedBayonet.lua` with its server and
+  client `FixedBayonetMenu.lua` halves and `items_fixedbayonet.txt`, section "Fixed bayonets"), `lua/server/GunsOfTien/HotBrass.lua` (no
   loot: see "Loot: none"), `lua/client/GunsOfTien/Tooltips.lua`, `lua/client/GunsOfTien/SlotTurns.lua` (our guns'
   turns on modded attachment slots, sandbox `ModdedSlotsUpright`), `lua/shared/Translate/EN/` (ItemName, Recipes,
   Tooltip, Sandbox), `textures/`.
@@ -2128,6 +2129,10 @@ close-ups), the HK416N photo and the user's photo. No straight top or front view
   850 rpm, GoM's AR bolt / handle table and "ar15_rifle" with `boltCatchAfterEmptyInsert`, FoldingStock + the SCARs'
   stock stats, integrated rails, spawn table, MountOn appends; its sight states in IronSights.lua), Tooltips.lua, HotBrass.lua (the
   SCAR-L's / M4A1's values), Loot.lua (the SCAR-L's spawners). check_refs and the Lua syntax check pass.
+- **Foregrip and bipod** (user, 2026-11-18: "they seem to go over each other"; HK417s too): GoM's bipod mesh reaches
+  58.5 mm behind its point (clamp -21.5 .. +21.6), its foregrips about ±24 mm, and GoM's AR15 spaces the points 93.5 mm
+  (11 mm between them). So the bipod's clamp ends at the rail's front and the foregrip sits 93 mm behind it: HK416
+  332 / 425, HK417 355 / 448 (+99 on the Sniper), gap 10.7-10.9 mm (were 370 / 410 and 390 / 435, fully overlapping).
 
 ## HK416 .22 Quad Rail Pistol (Post-93, 2026-11-13; played 2026-11-14)
 
@@ -2630,8 +2635,8 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   written round lines matched its profiles.
 - **Parts and guns** (gen_handling_tooltips.py `info_rows`): shell holder "fire 40% faster" = Recoil Delay ×0.6;
   bayonets: any of the five fits any of 16 guns (`Bayonet.RegisterMountableWeapon` in Bayonets.lua; the M4A1 and XM177
-  take them but did not say so), a fixed bayonet stabs as `MarzGuns.Attack_Bayonet` (1.2-1.7 damage, reach 1.48,
-  crit 20%), and none fits with a suppressor, muzzle device or M203 (`SetExclusives`); the Picatinny Rail becomes the
+  take them but did not say so), a fixed bayonet stabs with `MarzGuns.Attack_Bayonet`'s stats (1.2-1.7 damage,
+  reach 1.48, crit 20%; since 2026-11-19 through our own items, section "Fixed bayonets"), and none fits with a suppressor, muzzle device or M203 (`SetExclusives`); the Picatinny Rail becomes the
   slot picked in the upgrade menu (UniversalAttachments.lua); speedloaders per gun in SpeedLoader.lua (the Mosin's
   5-round stripper clip had no line); the Remington 700 / Model 70 slings are `WeightModifier = -1`, the VP70M stock
   has no stats; the Camp Carbine, Glock 17, VP70M, Double Deuce (2-bore) and four magazines had no lines.
@@ -2665,6 +2670,65 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   mount device (5.4 cm): with GoM's flash hider, compensator or brake (3.5-4.3 cm) the flash now starts inside the
   device; suppressors turn it off (AttachmentCustomStats.lua). Left: guns under 1 cm off, the MP5K (compact stance),
   the `*_M203_Underbarrel` launcher models (CAR-15's point 19 cm ahead of its launcher, M16A2's at the rifle's).
+
+## Fixed bayonets (2026-11-19; built, not played)
+
+User, 2026-11-19: bayonet stabs never raised Spear; asked for a rework "using the underbarrel design" (a mode the gun
+switches into), its own key, also the radial and context menu, instant, Attack_Bayonet's stats, Spear is fine.
+Then a sandbox option, "not all would want this change": `FixedBayonets` (default on), read whenever it is used
+(`FixedBayonet.IsEnabled`, no restart). Off = Gunworks' own `BayonetAttack` again (kept as
+`FixedBayonet.gunworksAttack`), `CanFix` false everywhere (key, radial, menu, server), but `Unfix` still works so
+a gun fixed before stays recoverable.
+
+- **Why Gunworks' bayonet gave no XP on a server** (traced in the 42.22.2 jar): `Bayonet.BayonetAttack` (shove with
+  a bayonet fitted, or `BayonetCharge.lua` after 1 s of sprinting) puts a client-only `instanceItem` stand-in,
+  `MarzGuns.Attack_Bayonet`, in both hands for one swing. `EquipPacket.processServer` resolves hand items with
+  `getInventory():getItemWithID`, finds nothing and empties the server's hands; the hit packet's weapon
+  (`fields/hit/Weapon.parse`, same lookup) fails `isConsistent`, so the server drops the whole hit: no
+  `OnWeaponHitXp` (fired only by the server in MP, `fields/hit/Hit.java` ~201; by `CombatManager` ~1204 in single
+  player), no endurance, no maintenance roll. The zombie still took damage from the attacker's client. Single player
+  gave Spear XP (damage × 0.9, max 3 a hit). Vanilla melee damage and crit notes (`getWeaponLevel` off by one for
+  every non-axe weapon, the long-stab +30 crit only for `base:fakespear` items) are vanilla bugs, left alone.
+- **The mode** (`shared/GunsOfTien/FixedBayonet.lua`, `server/GunsOfTien/FixedBayonet.lua`,
+  `client/GunsOfTien/FixedBayonetMenu.lua`): built like Gunworks' `Underbarrel.PerformSwap` (snapshot of the gun in
+  the new item's modData `GoT_FixedBayonetGun`, real item swapped in on the server with `sendRemove/AddItem...` +
+  `sendEquip`, rebuilt on the way back), but our own copy: PerformSwap refuses a weapon that is not ranged, so it
+  could not switch back from a melee item, and its helpers are local. `Underbarrel.StatePreservers` are honoured.
+  Command `GunsOfTien` / `fixedBayonet { itemId, fix }`, only for the primary hand item. Key: vanilla `keyBinding`
+  entry `GunsOfTien_FixBayonet` (section `[GunsOfTien]`, labels in `Translate/EN/UI.json`), default Z: vanilla
+  binds every other letter but K, and K is TienInspectWeapon's and Tien's Skill Mastery's; Z only switches seats in
+  a vehicle, where the key does nothing. Radial slice (Gunworks' Deploy Bayonet icon) only to fix (the firearm
+  radial does not open for a melee item); context menu both ways.
+- **Items**: `scripts/GunsOfTien/items_fixedbayonet.txt` from `gen_scripts.py fixed_bayonets()` (reads Guns of
+  Marz's scripts and names through check_refs.py; run it alone with `py -c "import gen_scripts;
+  gen_scripts.fixed_bayonets()"` from scripts/): `GunsOfTien.FixedBayonet_<GUN>` for GoM's 16 bayonet guns and the
+  SKS, plus `GunsOfTien.FixedBayonet` for a gun registered later (wrong weight, parts drawn only on its own client).
+  One per gun because `HandWeapon.getActualWeight` = script weight + parts' weight modifiers (no per-item weight).
+  Each carries its gun's Weight, Icon, WeaponSprite, AttachmentType and ModelWeaponPart lines (minus GoM's dangling
+  `MarzGuns.M203` line on the M16A3) and Attack_Bayonet's combat stats, without its Sharpness, HeadCondition, spear
+  tags and OnBreak. At `OnLoadedMapZones` `SyncScripts` copies the live gun script's Weight (`DoParam`) and refills
+  the item's ModelWeaponPart list from the gun's: `Item.InstanceItem` hands every instance the script's own
+  ArrayList, so `list:clear()` + `addAll(gunList)` reaches items already made (`Item` has no Lua getter for it).
+- **Parts** are cloned onto the melee item with `attachWeaponPart(part, false)`: drawn and weighed, no stat change
+  (`attachWeaponPart(..., true)` adds MaxRange, damage, etc.; a scope would lengthen the stab). The gun's sprite is
+  set per item (saved when it differs), so a sawn Mosin stock shows.
+- **Wear** = the bayonet's: condition from the attachment part (Gunworks copies the knife's onto it), the SKS's from
+  the gun; `ConditionMax` 10 (all five knives, and GoM's SKS); 1 in N from the knife script (K98 / M1905 40, M5 50,
+  M9 / M1 75; SKS 200), set per item in `Fix` and again on `OnEquipPrimary` (`setConditionLowerChance` is not
+  saved; the owner's client rolls the wear in MP and syncs it). At 0 the script's `OnBreak =
+  GunsOfTien_FixedBayonet.OnBreak` (Java `InventoryItem.setBroken`, server / SP only, user = the player holding it in
+  the main inventory) queues it; the next tick unfixes: Gunworks' `RemoveBayonet` gives the knife back at 0 (an SKS
+  comes back broken).
+- **Gunworks' stab is off**: `Bayonet.BayonetAttack` is replaced (callback = vanilla's attack hook for a shove,
+  none for the sprint charge, which then does nothing). Its `bayonetHit` command and `GWAttackAnimation` relay go
+  unused.
+- **Hotbar**: `Replace` copies `attachedSlot` / `attachedSlotType` / `attachedToModel` onto the new item before it
+  is sent (they are in the item bytes); the client sets `needsRefresh` on the answer (single player in `Replace`), and
+  `ISHotbar:refresh` finds it by slot index. The gun's item ID changes on every swap, as with Gunworks' underbarrel.
+- Checked with lupa (scratch harness, Gunworks' real Bayonet.lua and Underbarrel.lua, mocked items): fix and unfix
+  of an M16A1 with an M9 and a scope (ammo, chamber, fire mode, modData, blood, favourite, slot, part conditions),
+  break to a broken knife through the OnBreak queue, the SKS deploying its bayonet, the server ignoring a command for
+  an item not in the primary hand. Not yet seen in game: the spear animations with a rifle model, remote players.
 
 ## Lasers on a battery (2026-10-18)
 
