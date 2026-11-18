@@ -1,5 +1,5 @@
 --[[
-    Guns of Tien -- Fix / Unfix Bayonet (shared/GunsOfTien/FixedBayonet.lua has the why): its own key (default Z,
+    Guns of Tien -- Use / Stop Using Bayonet, i.e. fix / unfix (shared/GunsOfTien/FixedBayonet.lua has the why): its own key (default Z,
     which vanilla binds only to switching seats in a vehicle, where no one stabs; vanilla binds every other free
     letter but K, which TienInspectWeapon and Tien's Skill Mastery use), the firearm radial menu (Gunworks' Deploy
     Bayonet icon) and the inventory context menu. Instant, as Gunworks' underbarrel switch (user, 2026-11-19).

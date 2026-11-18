@@ -47,11 +47,12 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Lasers work: switch them on from the gun's menu or the firearm radial; while on, the laser shows a short red
   beam on the gun, also to other players; they run on a battery (about 3 weeks switched on, changed like a weapon
   light's) and give their aiming bonus only while on
-- Fixed bayonets: a gun with a bayonet fitted (or the SKS's folding one) becomes a spear with Fix Bayonet: its own
-  key (Fix / Unfix Bayonet in the controls, Z by default), the firearm radial or the gun's menu; Unfix Bayonet (key
-  or menu) gives the gun back with its ammunition, magazine, parts and hotbar slot. Fixed, it cannot fire; it stabs
-  with Gunworks' bayonet stats, trains Spear, Strength and Fitness (also on a server, where bayonet hits gave no XP
-  before) and wears the bayonet, which comes off broken at 0. A shove or a sprint no longer stabs (sandbox option)
+- Bayonet usage: a gun with a bayonet fitted (or the SKS's folding one) becomes a spear with Use Bayonet: its own
+  key (Use / Stop Using Bayonet in the controls, Z by default), the firearm radial or the gun's menu; Stop Using
+  Bayonet (key or menu) gives the gun back with its ammunition, magazine, parts and hotbar slot. While the bayonet is
+  in use the gun cannot fire; it stabs with Gunworks' bayonet stats, trains Spear, Strength and Fitness (also on a
+  server, where bayonet hits gave no XP before) and wears the bayonet, which comes off broken at 0. A shove or a
+  sprint no longer stabs (sandbox option Toggle Bayonet Usage, off by default)
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
   every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
   out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do

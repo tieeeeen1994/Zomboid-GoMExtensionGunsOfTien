@@ -37,8 +37,9 @@
     The gun's item ID changes on every swap, as with Gunworks' underbarrel. The hotbar slot stays: the attached slot
     fields travel with the item (InventoryItem.save), and ISHotbar's refresh picks it up by slot index.
 
-    Sandbox option FixedBayonets (default on; user, 2026-11-19: "not all would want this change"), read when it is
-    used, so a change applies at once: off = Gunworks' own stab again and no Fix Bayonet, but a gun already fixed
+    Sandbox option FixedBayonets ("Toggle Bayonet Usage", default off; user, 2026-11-19: "not all would want this
+    change"), read when it is used, so a change applies at once: off = Gunworks' own stab again and no Use Bayonet
+    (the player-facing name of fixing; Stop Using Bayonet = unfixing), but a gun already fixed
     can still be unfixed (key, menu, server), so no one is left holding a spear.
 --]]
 

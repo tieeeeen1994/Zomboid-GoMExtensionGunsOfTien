@@ -1,11 +1,11 @@
 3.16.0
 
-Fixed bayonets
-- A gun with a bayonet fitted, or the SKS with its folding bayonet, now has Fix Bayonet: on its own key (Fix / Unfix Bayonet in the controls, Z by default), in the firearm radial and in the gun's menu. The gun becomes a spear until you choose Unfix Bayonet (key or menu), which gives it back with its ammunition, magazine, parts and hotbar slot
-- Fixed, it cannot fire. It stabs with Guns of Marz's bayonet stats and trains Spear, Strength and Fitness, now also on a server, where bayonet stabs gave no experience before
+Bayonet usage (sandbox option, off by default)
+- A gun with a bayonet fitted, or the SKS with its folding bayonet, now has Use Bayonet: on its own key (Use / Stop Using Bayonet in the controls, Z by default), in the firearm radial and in the gun's menu. The gun becomes a spear until you choose Stop Using Bayonet (key or menu), which gives it back with its ammunition, magazine, parts and hotbar slot
+- While the bayonet is in use, the gun cannot fire. It stabs with Guns of Marz's bayonet stats and trains Spear, Strength and Fitness, now also on a server, where bayonet stabs gave no experience before
 - Stabbing wears the bayonet at its own rate. A worn-out bayonet comes off broken
 - A shove or a sprint no longer stabs while a bayonet is fitted
-- New sandbox option Fixed Bayonets (on by default). Off brings back Guns of Marz's own bayonet. It applies at once, and guns already fixed can still be unfixed
+- New sandbox option Toggle Bayonet Usage (off by default). Off keeps Guns of Marz's own bayonet. It applies at once, and a gun whose bayonet is in use can still be given back
 
 HK416 and HK417 (Post-93 add-on)
 - A foregrip and a bipod fitted together no longer overlap under the handguard

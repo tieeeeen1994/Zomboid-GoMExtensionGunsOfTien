@@ -357,7 +357,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `FirearmCritRule` (1 Default = 42.22 per shot / 2 Old = 42.21 per target / 3 Enhanced = per target led by the
   shot),
   `FirearmCritLead` (0-100, default 50), see "Firearm crits per target", `FirearmMinimumDamage` (0-100 %,
-  default 0), see "Minimum firearm damage", and `FixedBayonets` (default on, read live), see "Fixed bayonets". `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  default 0), see "Minimum firearm damage", and `FixedBayonets` ("Toggle Bayonet Usage", default off, read live), see "Fixed bayonets". `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
@@ -2675,10 +2675,12 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
 
 User, 2026-11-19: bayonet stabs never raised Spear; asked for a rework "using the underbarrel design" (a mode the gun
 switches into), its own key, also the radial and context menu, instant, Attack_Bayonet's stats, Spear is fine.
-Then a sandbox option, "not all would want this change": `FixedBayonets` (default on), read whenever it is used
+Then a sandbox option, "not all would want this change": `FixedBayonets`, read whenever it is used
 (`FixedBayonet.IsEnabled`, no restart). Off = Gunworks' own `BayonetAttack` again (kept as
 `FixedBayonet.gunworksAttack`), `CanFix` false everywhere (key, radial, menu, server), but `Unfix` still works so
-a gun fixed before stays recoverable.
+a gun fixed before stays recoverable. Renamed for players the same day (user): the menu, radial and key say Use
+Bayonet / Stop Using Bayonet (key label "Use / Stop Using Bayonet"), the option "Toggle Bayonet Usage", default
+**off**; code, key binding id, option id and item ids keep "fix" (the items are named "<gun> (Bayonet Fixed)").
 
 - **Why Gunworks' bayonet gave no XP on a server** (traced in the 42.22.2 jar): `Bayonet.BayonetAttack` (shove with
   a bayonet fitted, or `BayonetCharge.lua` after 1 s of sprinting) puts a client-only `instanceItem` stand-in,
