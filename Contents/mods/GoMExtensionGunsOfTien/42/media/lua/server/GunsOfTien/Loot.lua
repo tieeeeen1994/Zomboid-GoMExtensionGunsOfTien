@@ -60,6 +60,13 @@
     and AK-74 drum, each with up to two boxes.
     The RPD (shared/GunsOfTien/RPD.lua; user, 2026-11-02) is a third kit there beside the RPKs: the gun, up to 3 of its
     belt drums, up to 6 boxes of GoM's 7.62x39. Its drum does not come loose.
+    The Walther PPK .22 (shared/GunsOfTien/PPK.lua; user, 2026-11-19) goes where GoM's civilian pistols do, packed as
+    the Glock 21's kits there (the gun, up to 4 or 6 of its magazines, as many .22 LR boxes): one more alternative in
+    MarzGuns.Zombie_Civilian_Handgun_Spawner and MarzGuns.World_Import_Pistol_Spawner (gun stores, an import); not the
+    police spawner (no US police force carried it).
+    The .22 LR box and carton (the plain round; the special loads never spawn) beside vanilla's 9mm box and carton in
+    every list that has them, civilian homes included: .22 LR was the commonest round in America (moved here from
+    Post-93's Loot.lua with the PPK, 2026-11-19, so a server without the add-on has .22 ammunition for it).
     The P90 with its ring sight (shared/GunsOfTien/P90.lua; user, 2026-11-03) where Post-93's P90 TR goes outside
     GoM's post-1993 spawner: one more kit in MarzGuns.Zombie_Police_SMG_Spawner (SWAT zombies, police bags, prison
     riot storage, SWAT vehicles), packed as the TR's there (the gun, up to 3 magazines, up to 2 boxes of SS190).
@@ -182,6 +189,15 @@ for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "M
         { items = { "GunsOfTien.GLOCK21" }, maxAmountChance = 1 },
         { items = { "GunsOfTien.45Magazine13_GLOCK21" }, maxAmountChance = entry[2] },
         { items = { "MarzGuns.45_Box" }, maxAmountChance = entry[2] },
+    } }
+end
+
+-- Walther PPK kits, as the Glock 21's in GoM's civilian pistol spawners: { spawner, magazines and boxes }
+for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "MarzGuns.World_Import_Pistol_Spawner", 6 } }) do
+    UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { entry[1], {
+        { items = { "GunsOfTien.PPK" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.22LRMagazine8_PPK" }, maxAmountChance = entry[2] },
+        { items = { "GunsOfTien.22LR_Box" }, maxAmountChance = entry[2] },
     } }
 end
 
@@ -338,11 +354,15 @@ Events.OnPostDistributionMerge.Add(addBoxes)
 
 -------------------------------------------------
 -- The 5.7x28mm SS190 box and carton beside vanilla's 9mm ones, only in police, SWAT and gun store lists (moved from
--- Post-93's Loot.lua with the round, 2026-11-03): every loot table, as GoM's Distribution.Insert does
+-- Post-93's Loot.lua with the round, 2026-11-03), and the .22 LR box and carton beside them in every list, civilian
+-- homes too (the last field; moved from Post-93's Loot.lua with the PPK, 2026-11-19): every loot table, as GoM's
+-- Distribution.Insert does
 -------------------------------------------------
 local WORLD = {
     { "GunsOfTienPost93.57x28_Box", "Base.Bullets9mmBox", 0.05 },
     { "GunsOfTienPost93.57x28_Carton", "Base.Bullets9mmCarton", 0.05 },
+    { "GunsOfTien.22LR_Box", "Base.Bullets9mmBox", 0.1, true },
+    { "GunsOfTien.22LR_Carton", "Base.Bullets9mmCarton", 0.05, true },
 }
 
 local function isWantedList(name)
@@ -357,14 +377,14 @@ local function addWorldAmmo()
     if multiplier <= 0 then return end
     local tables = { ProceduralDistributions.list, VehicleDistributions, BagsAndContainers, SuburbsDistributions }
     for _, entry in ipairs(WORLD) do
-        local newItem, baseItem, share = entry[1], entry[2], entry[3] * multiplier
+        local newItem, baseItem, share, everywhere = entry[1], entry[2], entry[3] * multiplier, entry[4]
         local script = ScriptManager.instance:getItem(baseItem)
         if script and ScriptManager.instance:getItem(newItem) then
             local name, fullName = script:getName(), script:getFullName()
             for _, lootTable in ipairs(tables) do
                 for listName, data in pairs(lootTable or {}) do
                     local items = type(listName) == "string" and type(data) == "table" and data.items
-                    if type(items) == "table" and isWantedList(listName) then
+                    if type(items) == "table" and (everywhere or isWantedList(listName)) then
                         local weights = {}
                         for i = 1, #items - 1, 2 do
                             if (items[i] == name or items[i] == fullName) and type(items[i + 1]) == "number" then

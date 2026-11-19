@@ -509,6 +509,29 @@ boxes, cartons and crates.
 | Art | brass case, lead-grey bullet (GoM's 22_Round mesh); box layout of its own: yellow face framed in green, a gold wolf's head emblem on a green roundel (our own drawing, no GoM eagle), huge ".22", "LONG RIFLE" ribbon (the 4.6x30 / 5.7x28 boxes got layouts of their own too) |
 | Loot | not yet: decided with the first .22 gun |
 
+## 4o. Walther PPK .22 LR (2026-11-19, designed, built, not played)
+
+User, 2026-11-19: "add walther PPK in guns of tien as a pistol that uses .22 LR", "please use several references so
+that the gun is modeled properly", "We can use 1 mag for it only", then "this one should fit an ankle holster". Main
+mod: the PPK dates from 1931 and the main mod has the .22 LR round. The variant is the post-war Ulm PPK in .22 l.r.
+(serial suffix "LR"), what a Kentuckian would own in 1993: German PPKs came in before the 1968 import rules (the
+later PPK/S, the PP frame with the PPK slide, took 10 rounds of .22). The PPK .22's magazine is given as 8 or 9
+rounds by different sources (Walther's own figure was not found); 8 is used (Wikipedia-derived tables, the PP / PPK
+.22 magazine sold as 8 rounds).
+
+| | |
+|---|---|
+| Item | `GunsOfTien.PPK`, "Walther PPK" (GoM's "Browning Hi-Power" style); magazine `GunsOfTien.22LRMagazine8_PPK`, "Walther PPK 8Rds .22 LR Magazine", 0.05, the only one, profile ".22 LR PPK" in the main mod's ".22 LR" family |
+| Stats | the HK416 .22's (0.3-0.6 from 9") from a 3.3" barrel: damage 0.25-0.5, crit 22 (x3.0), HitChance 48, Aimingtime 25, RecoilDelay 9, range 16, jam 1.5 (rimfire), durability 1 in 250, StopPower 0.6, weight 0.55 (about 590 g; GoM's USP 0.74 for 780 g); sound 96 / 27 (sound_model.py's formula: .22 LR, 2 grains, against 18", no crack), the .22 LR shot `GunsOfTien_22LRShoot`, GoM's M9 handling sounds |
+| Holster | AttachmentType HolsterSmall (the Micro Uzi's, GoM's Detective .38's): the ankle holster (`HolsterAnkle`, HolsterSmall only) and every holster slot that takes Holster |
+| Parts | none. Fitted in review renders, GoM's pistol mount and sights towered over the slide, its lights and lasers hung in front of the trigger guard (the dust cover is 30 mm long) and its 9x19 cans stood taller than the slide; the .22 PPK had no rail and no threaded barrel |
+| Hold, reload | held and reloaded as GoM's pistols ("pistol_reload"); the slide on GoM's Slide_Lock / Slide_Fired swap, 22 mm (back over the web of the hand: the PPK's slide bite) |
+| Loot | as the Glock 21's kits, civilian only: an alternative in `Zombie_Civilian_Handgun_Spawner` (up to 4 magazines and 4 `GunsOfTien.22LR_Box`) and `World_Import_Pistol_Spawner` (6 and 6); found guns carry the magazine at 50. The .22 LR box and carton world loot (beside vanilla's 9mm, homes too) moved from Post-93's Loot.lua to the main mod's |
+| Casings | the Glock 21's throw from a port further forward (0.43), the HK416 .22's lighter force (0.45) |
+| Repair | RepairPack, Aiming 3 (GoM's pistols) |
+
+Model: scripts/build_ppk.py (references/ppk22, CLAUDE.md "Walther PPK").
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

@@ -2990,6 +2990,181 @@ def glock21():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# Walther PPK in .22 LR (user, 2026-11-19: "one mag only", "should fit an ankle holster"; meshes and points:
+# scripts/build_ppk.py, icons: scripts/make_ppk_art.py, registries: shared/GunsOfTien/PPK.lua). The Glock 21's pattern
+# (GoM's pistols): body + slide drawn through MarzGuns.Slide_Lock / Slide_Fired, the magazine in the gun's own space;
+# no GoM parts (build_ppk.py's docstring: they swamp a 155 mm pistol, and the .22 PPK had no rail or thread).
+PPK_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ppk_points.json')
+PPK_MAG = '22LRMagazine8_PPK'
+
+
+def ppk():
+    pts = json.load(open(PPK_POINTS))
+    prop2 = pts['_extras']['mag_prop2']
+    p2o = ' '.join('%.4f' % v for v in prop2['offset'])
+    p2r = ' '.join('%.4f' % v for v in prop2['rotate'])
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model PPK {{
+        mesh     = weapons/firearms/GunsOfTien_PPK|PPK_BODY,
+        texture  = {tex}/PPK,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'slide_fired', 'world'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append(f"""    }}
+
+    model PPK_SLIDE {{
+        mesh     = weapons/firearms/GunsOfTien_PPK|PPK_SLIDE,
+        texture  = {tex}/PPK,
+        cullFace = None,
+    }}
+
+    model {PPK_MAG} {{
+        mesh     = weapons/magazines/GunsOfTien_PPK_magazines|{PPK_MAG},
+        texture  = {tex}/{PPK_MAG},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = {p2o}, rotate = {p2r}, }}
+    }}
+}}
+""")
+    write('scripts/GunsOfTien/models_ppk.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Slide_Lock {MODULE}.PPK_SLIDE slide_Lock slide_Lock,",
+             f"{w}MarzGuns.Slide_Fired {MODULE}.PPK_SLIDE slide_fired slide_fired,",
+             f"{w}{MODULE}.{PPK_MAG} {MODULE}.{PPK_MAG} magazine magazine,"]
+    # Stats: the HK416 .22's (the main mod's .22 LR in a 9" Post-93 pistol: 0.3-0.6, crit 25 x3.0) from a 3.3" barrel
+    # (about 20 % less energy: 0.25-0.5), with GoM's pistol crit chance and a pistol's handling: lighter and quicker to
+    # aim than GoM's 9mm pistols (Aimingtime 25 against 30), a soft blowback .22 (RecoilDelay 9, GoM's pistols 11-17),
+    # short sights and barrel (HitChance 48, range 16), rimfire feeding (jam 1.5). Walther's 8 rounds (the PPK .22's
+    # magazine; the later PPK/S .22 took 10), about 590 g (GoM's USP: 0.74 for 780 g, so 0.55). Sound from the main
+    # mod's model (sound_model.py's formula: .22 LR, 2 grains, against an 18" barrel, no crack: 96 / 27 from 3.3"; the
+    # HK416 .22's 71 / 20 from 9"), the .22 LR shot every .22 gun fires, GoM's pistol gain; GoM's M9 handling sounds
+    # as its Glock 17. HolsterSmall: the Micro Uzi's and GoM's Detective .38's, so the ankle holster takes it too (every
+    # vanilla slot that takes Holster takes HolsterSmall).
+    item = f"""module {MODULE} {{
+
+    item PPK {{
+        MinDamage                    = 0.25,
+        MaxDamage                    = 0.5,
+        CriticalChance               = 22.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 3.0,
+        HitChance                    = 48,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 25,
+        RecoilDelay                  = 9,
+        MaxRange                     = 16.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 1,
+        MaxSightRange                = 8.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.05,
+        JamGunChance                 = 1.5,
+        ConditionLowerChanceOneIn    = 250,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.15,
+        StopPower                    = 0.6,
+        DoorDamage                   = 2,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = HolsterSmall,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 0.55,
+        MetalValue                   = 20.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_22lr,
+        AmmoBox                      = {Q22['box']},
+        ClipSize                     = 8,
+        MagazineType                 = {MODULE}.{PPK_MAG},
+        MaxAmmo                      = 8,
+        Reloadtime                   = 30,
+        WeaponReloadType             = handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_PPK,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Handgun,
+        WeaponSprite                 = {MODULE}.PPK,
+        AimReleaseSound              = M9AimRelease,
+        BreakSound                   = M9Break,
+        BringToBearSound             = M9BringToBear,
+        ClickSound                   = M9Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = M9Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = M9Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = GunsOfTien_22LRShoot,
+        UnequipSound                 = M9UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = 96,
+        SoundVolume                  = 27,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_handgun02,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 2,
+        SplatSize                    = 2,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = 1.0,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+
+    item {PPK_MAG} {{
+        AmmoType         = gunsoftien:bullet_22lr,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{PPK_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 8,
+        MountOn          = {MODULE}.PPK,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:pistolmagazine,
+        Weight           = 0.05,
+        WeightModifier   = 0.05,
+        StaticModel      = {MODULE}.{PPK_MAG},
+        WorldStaticModel = {MODULE}.{PPK_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_ppk.txt', item)
+    # GoM repairs its pistols with RepairPack, Aiming 3
+    write('scripts/GunsOfTien/fixing_ppk.txt', f"""module Base {{
+    fixing Fix PPK {{
+        Require = {MODULE}.PPK,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.PPK'] = 'Walther PPK'                                    # GoM's "Browning Hi-Power" style
+    names[f'{MODULE}.{PPK_MAG}'] = 'Walther PPK 8Rds .22 LR Magazine'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # GoM's MP5 family at our size (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must stand in one
 # proportion, the Uzis'). scripts/build_mp5.py scales GoM's meshes and points by one factor for the whole family and its
 # magazines (mp5_points.json, see its header); these blocks declare GoM's own model names again (module MarzGuns), so
@@ -3605,6 +3780,7 @@ if __name__ == '__main__':
     sr25()
     aug()
     glock21()
+    ppk()
     rpk()
     rpd()
     charging_handles()

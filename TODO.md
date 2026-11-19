@@ -4,6 +4,11 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
+## After the 3.16.0 upload
+
+- [ ] Put preview30 (the Walther PPK) on the Steam page by hand, and replace preview29 there with the new one (its
+      loot lines now name the PPK and the main mod's .22 LR boxes).
+
 ## After the 3.15.0 upload
 
 - [ ] Put preview27 / preview28 (3.15.0) on the Steam page by hand. The older previews still show the pre-audit

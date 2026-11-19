@@ -1,0 +1,105 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.0882,
+      -0.0205
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "slide_fired": {
+    "offset": [
+      0.0,
+      -0.0133,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0075,
+      0.0519,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's BOTTOM, +X its RIGHT; origin = the web of the grip under the tang (photo L 146.3, H 67)",
+    "magazine": "no magazine point: 22LRMagazine8_PPK is modelled in the gun's space and drawn at its origin",
+    "parts": "none: GoM's pistol mount, sights, lights, lasers and cans dwarf a 155 mm pistol whose dust cover is 30 mm long, and the .22 PPK has no rail and no threaded barrel (review renders, 2026-11-19)",
+    "slide_fired": "PPK_SLIDE back 22 mm real"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      146.3,
+      67.0
+    ],
+    "real_mm_per_game_unit": 1658.37,
+    "mag_prop2": {
+      "offset": [
+        -0.011,
+        0.0015,
+        -0.0518
+      ],
+      "rotate": [
+        7.4929,
+        -4.9199,
+        -40.7737
+      ]
+    }
+  },
+  "_bounds": {
+    "PPK_BODY": {
+      "min": [
+        -0.0075,
+        -0.0051,
+        -0.0248
+      ],
+      "max": [
+        0.0075,
+        0.0882,
+        0.0317
+      ],
+      "tris": 3008
+    },
+    "PPK_SLIDE": {
+      "min": [
+        -0.0078,
+        0.0033,
+        -0.0274
+      ],
+      "max": [
+        0.0068,
+        0.0868,
+        -0.0112
+      ],
+      "tris": 1868
+    },
+    "22LRMagazine8_PPK": {
+      "min": [
+        -0.0066,
+        0.0065,
+        -0.0141
+      ],
+      "max": [
+        0.0066,
+        0.0345,
+        0.0404
+      ],
+      "tris": 480
+    }
+  }
+}

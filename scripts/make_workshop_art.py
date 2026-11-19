@@ -13,7 +13,8 @@ and RPK-74, the same), preview18.png (1024x1024, the RPD, the same), preview16.p
 Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and Vector 9mm Pistol, the same), preview22.png (1024x1024,
 Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP, Mk 11, Grozas, the same),
 preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
-Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same)
+Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same),
+preview30.png (1024x1024, the Walther PPK, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1440,9 +1441,25 @@ def preview29(path, W=1024):
         for m, line in enumerate(lines):
             page.alpha_composite(text_layer(size, (cx, ty + u(24 + m * 15)), line, small, (60, 64, 70, 255),
                                             anchor="ma", spacing=u(1)))
-    caption(page, 434, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND", big=True)
-    # the main mod has no .22 gun: the pistol and the boxes in loot come with the add-on (its Loot.lua)
-    caption(page, 454, "POST-93 ADD-ON: THE HK416 .22 PISTOL, AND BOXES WHERE 9MM BOXES ARE")
+    caption(page, 428, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND", big=True)
+    # since 3.16.0 the main mod has the Walther PPK and spawns the boxes itself (its Loot.lua)
+    caption(page, 448, "FIRED BY THE WALTHER PPK  ·  BOXES WHERE 9MM BOXES ARE")
+    caption(page, 464, "POST-93 ADD-ON: THE HK416 .22 PISTOL")
+    save_under(page.convert("RGB"), path)
+
+
+def preview30(path, W=1024):
+    """The main mod's Walther PPK .22 LR (3.16.0), one gun on its page as preview18 / preview23: bare with its
+    magazine (render_ad_guns.py "ppk", mirrored back to the game's view: its left side, the inscriptions and the safety
+    lever), then a slot row (the gun, its magazine, the .22 LR box) and what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "WALTHER PPK", 34, "GUNS OF MARZ EXTENSION")
+    caption(page, 86, ".22 LR  ·  SEMI-AUTOMATIC", big=True)
+    single_gun(page, "ppk", 108, max_w=420, max_h=250, bottom=386)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main("PPK"), main("22LRMagazine8_PPK"), main("22LR_Box")], 256, 398, "8-ROUND MAGAZINE")
+    caption(page, 462, "FITS AN ANKLE HOLSTER")
+    caption(page, 478, "CARRIED BY CIVILIAN ZOMBIES  ·  SOLD IN GUN STORES")
     save_under(page.convert("RGB"), path)
 
 
@@ -1508,6 +1525,8 @@ if __name__ == "__main__":
         preview28(os.path.join(ROOT, "preview28.png"))   # Post-93's HK417s (3.15.0), added the same way
     if want("preview29"):
         preview29(os.path.join(ROOT, "preview29.png"))   # the main mod's .22 LR loads, added the same way
+    if want("preview30"):
+        preview30(os.path.join(ROOT, "preview30.png"))   # the Walther PPK (3.16.0), added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

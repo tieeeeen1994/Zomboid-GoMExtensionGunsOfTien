@@ -318,6 +318,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
 - **HK416 .22 Quad Rail Pistol** (Post-93, user, 2026-11-13; played 2026-11-14): Walther's .22 LR HK416, held like
   a pistol, its round shroud a plain barrel shroud (user, 2026-11-13: "Plain shroud, loud"; it was an integral
   suppressor at first); the M-LOK .22 pistol shelved. Section "HK416 .22 Quad Rail Pistol".
+- **Walther PPK** (main mod, user, 2026-11-19: "a pistol that uses .22 LR", "use several references so that the gun
+  is modeled properly", "We can use 1 mag for it only", "this one should fit an ankle holster"; built, not played):
+  the post-war Ulm PPK .22, its 8-round finger-rest magazine only, HolsterSmall, no GoM parts (they swamp it; chosen
+  after review renders, offered back to the user). Section "Walther PPK".
 - **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
   you this many times. the triggers you make are not good"): check every new gun's trigger blade against its
   measuring photo by laying the photo-scale render's outline over it, row by row, before showing the gun. GoM's AR15
@@ -644,9 +648,14 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   the sights-up bodies of the MP7s, SCARs and Vectors, which now stand up under an optic: re-rendering them needs the
   `_RD` / `_FD` bodies first.
   preview29 (2026-11-14) is the main mod's .22 LR: the four loads two by two (box icon with the round over its
-  corner, scaled up crisp; name and what it does in play centred under it), no gun (the main mod has none); the loot
-  line names the Post-93 add-on, whose Loot.lua is the only one spawning .22 LR boxes. Rebuild: `make_workshop_art.py
-  preview29` (no renders). Not yet on the Steam page.
+  corner, scaled up crisp; name and what it does in play centred under it). Its loot lines (remade 2026-11-19 for
+  3.16.0) name the Walther PPK and the main mod's boxes beside 9mm, then Post-93's HK416 .22. Rebuild:
+  `make_workshop_art.py preview29` (no renders). Not yet on the Steam page.
+  preview30 (3.16.0, 2026-11-19) is the main mod's Walther PPK alone, as preview23: render_ad_guns.py `ppk` (bare with
+  its magazine, the Glock 21's view and scale x 155 / 208, turned upright, so the left side's inscriptions and safety
+  lever read after the mirror), a slot row (gun, 8-round magazine, .22 LR box) and two lines (ankle holster, loot).
+  Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> ppk`, then
+  `make_workshop_art.py --renders <dir> preview30`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -681,7 +690,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   Foregrip radial icons, moved from post93/ on 2026-10-27); `scripts/build_rails.py` (our short Picatinny rails for
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
   or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
-  `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
+  `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_ppk.py`,
+  `render_ppk.py`, `make_ppk_art.py` (the Walther PPK, section "Walther PPK"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
   (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
   `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
@@ -1876,8 +1886,9 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   names some geometries `556x45_Round.001` (models keep the plain name), which was the "make_ammo_art.py fails in
   load_mesh" of 2026-11-03. The fix regenerates every round byte for byte.
 - **Loot** (2026-11-13, with the HK416 .22 Quad Rail Pistol): the plain box and carton beside vanilla's 9mm box /
-  carton in every loot list, homes included, from Post-93's Loot.lua (the main mod has no .22 gun); also in the
-  pistol's Anachronistic spawner alternative. The special loads never spawn.
+  carton in every loot list, homes included, from Post-93's Loot.lua until 2026-11-19, from the main mod's since
+  (its Walther PPK); also in the HK416 .22's Anachronistic spawner alternative and the PPK's kits. The special loads
+  never spawn.
 - **Shot sound** (user, 2026-11-14: "let's use trapper carbine then"): every .22 LR gun of both mods fires
   `GunsOfTien_22LRShoot` (sounds_22lr.txt), one clip playing vanilla's `Weapon/Firearm/TrapperCarbine/Shoot` event
   (the .45 Trapper carbine, vanilla's softest real gun report) at volume 1.0: its raw bang is ~1 dB under the M9's and
@@ -2670,6 +2681,51 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   mount device (5.4 cm): with GoM's flash hider, compensator or brake (3.5-4.3 cm) the flash now starts inside the
   device; suppressors turn it off (AttachmentCustomStats.lua). Left: guns under 1 cm off, the MP5K (compact stance),
   the `*_M203_Underbarrel` launcher models (CAR-15's point 19 cm ahead of its launcher, M16A2's at the rifle's).
+
+## Walther PPK (main mod, 2026-11-19; built, not played)
+
+- **What**: Carl Walther's PPK in .22 LR as the post-war Ulm gun (serial suffix "LR"), held and reloaded as GoM's
+  pistols, its own 8-round magazine with the brown finger rest only, HolsterSmall (vanilla's `HolsterAnkle` slot takes
+  HolsterSmall only; every other holster slot takes it too), no GoM parts. Design and stats: docs/design.md 4o. Files:
+  `scripts/build_ppk.py` (Blender, ~45 s: `GunsOfTien_PPK.fbx` PPK_BODY / PPK_SLIDE, `GunsOfTien_PPK_magazines.fbx`
+  22LRMagazine8_PPK, PPK.png **512**, the magazine 128, `scripts/ppk_points.json` with the magazine's hand point in
+  `_extras.mag_prop2`), `render_ppk.py -- DIR`, `make_ppk_art.py [--renders DIR --photo references/ppk22/
+  ppk22_right_110860LR.jpg --left-photo references/ppk22/ppk22_left_ulm.jpg]` (icons on the Five-seveN cameras, sheet
+  `docs/ppk_preview.png`), `gen_scripts.py ppk()` (models_ppk.txt, items_ppk.txt, fixing_ppk.txt, names),
+  `shared/GunsOfTien/PPK.lua`, `client/GunsOfTien/PPKTooltips.lua`, loot and Hot Brass in the main mod's server files.
+  Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
+- **References** (`references/ppk22/`, SOURCES.txt, contact sheets `sheet_*.png`; about 460 photos): Bing image search
+  (`www.bing.com/images/async?q=...&first=N&count=35&qft=+filterui:imagesize-large`, parse the `m="{...}"` JSON for
+  `murl` / `purl` / `t`; titles tell .22 lots from .32 / .380 ones) and Rock Island Auction's CDN, whose lot pages
+  are behind Cloudflare but whose images are not: `cdn.rockislandauction.com/dev_cdn/<auction>/<lot>.jpg` and
+  `<lot>-1.jpg`, `-2`... for the other views (lot 2079/47 has seven angles, 1042/4584 six). Measuring photo: a 3000 px
+  studio right side of Ulm PPK 110860 LR (invaluable.com), traced at Walther's 155 mm (18.34 px a mm); its height
+  from the grip's bottom edge to the rear sight then reads 96.4 against Walther's 100 with the flat base plate, so the
+  scale holds. A PPK has the wrap-around grip covering the back strap; the PPK/S (and many search hits) the PP's
+  frame with a bare steel back strap and a longer grip: check the back strap before using a photo.
+- **Left side**: from a left-side Ulm "Modell PPK Cal. 22 l.r." photo (ppk22_left_ulm.jpg, 1100 px square), mirrored and
+  fitted onto the right photo's silhouette by IoU with separate x and y scales (0.87; it is stretched 9 % vertically:
+  eye readings off it disagreed with the right side by 3 mm until registered), then rescaled on the slide's top and
+  bottom edges. The scratch tools (Bing fetch, contact sheet, mm-gridded crops, registration, warped crops, outline
+  overlay) were session scratch; trace_outline.py's `flood_background` gives the masks (no scipy on the PC).
+- **Model**: the slide is a loft of cross-sections along the bore (`loft()`, `slide_section()`: flat sides to 6 mm
+  under the top, a superellipse to a 6.4 mm top flat; the front corners rounded in plan; the rear face is the side
+  profile's slant, L 125-141), everything else slabs off the photo: frame with the nose under the slide's curved
+  front cut, the hinged trigger guard and its opening and the trigger off the trace, the wrap-around grip (bevel
+  3.2), the ring hammer (in its slot: the slide hides it when it runs back), the safety lever on the slide's left
+  (boss, ribbed arm over the grip's top, forward tab; down = safe, as both photos), the round magazine button behind
+  the guard on the left, the barrel fixed in the frame (out 2.4 mm at the muzzle; bared when the slide runs back).
+  Widths: grips 25 mm (Walther), slide 22.6, frame 21.8 (a straight rear view of a true PPK: slide 0.91 of the grip,
+  perspective allowed for). Silhouette IoU 98.0 % with the trace (opening less trigger as a hole; the trace's lanyard
+  loop is not modelled). Trigger: the render's outline laid on the photo follows the blade's front face, tip
+  (L 55.1, H 59.4) and rear face within about 0.5 mm.
+- **Paint**: PPK.png is 512 where GoM's pistols are 256: at 256 a texel is about 0.9 mm on this gun and the
+  serrations (22 at 1.45 mm) and port vanished. The kit's 3x5 font draws W as H, so the grip banner uses a 5x7 set
+  (`FONT57`, `text57`); paint masks for the slide side must exclude the lever standing off it (`|x| < W_SLIDE + 0.1`),
+  or the serrations print on the lever.
+- **GoM parts left off** (tried in renders): the Beretta mount and sights towered over the slide, the lights and
+  lasers hung in front of the guard (dust cover 30 mm), GoM's 9x19 cans stood taller than the slide. Adding them
+  back is the Glock 21's pattern (points in build_glock21.py, ModelWeaponPart lines, Glock21.lua's MountOn appends).
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

@@ -60,9 +60,8 @@
       police, SWAT and gun store lists, rarely. The special loads (4.6x30mm Subsonic, 5.7x28mm SB193 and SS197SR) never
       spawn as loot, as GoM never spawns its own (its 5.56 Hollow Point / Armor Piercing / Subsonic / Overpressured):
       they come from Ammo Maker (user, 2026-10-17).
-    - The main mod's .22 LR box and carton (its plain round; the special loads never spawn) beside vanilla's 9mm box
-      and carton in every list that has them, civilian homes included: .22 LR was the commonest round in America, and
-      it is what the HK416 .22 pistol fires. Here rather than in the main mod, which has no .22 gun.
+    - The main mod's .22 LR box and carton spawn from the main mod's Loot.lua since 2026-11-19 (it has a .22 gun of
+      its own now, the Walther PPK); they were added here before.
     - High-capacity magazines (MP7 40 and 60 drum, Five-seveN 30, UCP drum, SCAR-H 50 drum, Glock 30 / 33 / 40, the MDRx .308's D-50) also on their own, each with boxes, as
       new alternatives of GoM's MarzGuns.World_HighCap_Tactical_Magazine_Spawner (with its M92FS / M93R / MP5 drums).
     Everything that can spawn follows GoM (user, 2026-10-17: "everything needs to be lootable the same as GoM").
@@ -430,16 +429,13 @@ Events.OnInitGlobalModData.Add(addSpawners)
 -- Boxes and cartons in world containers
 -------------------------------------------------
 -- Beside vanilla's 9mm box / carton (GoM's own boxes and cartons come in place of or beside vanilla ones), only in
--- police, SWAT and gun store lists: no civilian homes (the .22 LR, marked `true`, in every list). Every loot table (procedural rooms, vehicles, bags, the top-level
--- suburbs lists), as GoM's Distribution.Insert does.
+-- police, SWAT and gun store lists: no civilian homes. Every loot table (procedural rooms, vehicles, bags, the top-level
+-- suburbs lists), as GoM's Distribution.Insert does. (An entry marked `true` in a fourth field goes in every list.)
 -- The 5.7x28mm SS190 box and carton are the main mod's loot since 2026-11-03 (its server/GunsOfTien/Loot.lua): they
--- moved there with the P90.
+-- moved there with the P90, and the .22 LR box and carton on 2026-11-19 with the Walther PPK.
 local WORLD = {
     { M .. "46x30_Box", "Base.Bullets9mmBox", 0.05 },
     { M .. "46x30_Carton", "Base.Bullets9mmCarton", 0.05 },
-    -- .22 LR everywhere vanilla's 9mm is, civilian homes too (the last field)
-    { "GunsOfTien.22LR_Box", "Base.Bullets9mmBox", 0.1, true },
-    { "GunsOfTien.22LR_Carton", "Base.Bullets9mmCarton", 0.05, true },
 }
 
 local function isWantedList(name)

@@ -54,6 +54,9 @@ from its upright body).
 3.15.0 (2026-11-14): Post-93's HK416 and HK416 .22 Quad Rail Pistol (preview27, `hk416` / `hk416qr22`, the .22
 turned upright) and HK417 Battle / Marksman Rifles (preview28, `hk417` / `hk417s`): all four one view and scale, fitted
 out, each with the sight body its optic picks.
+
+3.16.0 (2026-11-19): the main mod's Walther PPK .22 LR (preview30, `ppk`: bare with its magazine, the Glock 21's view,
+turned upright).
 """
 
 import json
@@ -138,6 +141,16 @@ G21_BARE = [(G21_FBX, "GLOCK21_BODY", os.path.join(MAIN_TEX, "GLOCK21.png"), Non
             (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_GLOCK21_magazines.fbx"),
              "45Magazine13_GLOCK21", os.path.join(MAIN_TEX, "45Magazine13_GLOCK21.png"), None)]
 G21_VIEW, G21_SCALE, G21_SIZE = (-0.8, -0.3, -0.35), 0.46, (2400, 1400)
+
+# preview30, the main mod's Walther PPK .22 LR (3.16.0, 2026-11-19): bare, its 8-round magazine in (modelled in gun
+# space, no point), turned upright like the Glock 21 and from its view, so the slide's left-side inscriptions and the
+# safety lever face the camera after make_workshop_art.py mirrors it back; scaled to its 155 mm against the Glock's 208
+PPK_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_PPK.fbx")
+PPK_BARE = [(PPK_FBX, "PPK_BODY", os.path.join(MAIN_TEX, "PPK.png"), None),
+            (PPK_FBX, "PPK_SLIDE", os.path.join(MAIN_TEX, "PPK.png"), None),
+            (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_PPK_magazines.fbx"),
+             "22LRMagazine8_PPK", os.path.join(MAIN_TEX, "22LRMagazine8_PPK.png"), None)]
+PPK_SCALE = round(G21_SCALE * 155 / 208, 3)
 
 
 # preview17, the main mod's RPK and RPK-74 (2026-11-02): GoM's AK textures on our meshes; the RPK with its 75-round
@@ -336,6 +349,8 @@ GUNS = {
                                  gom_part("suppressors", "P45_Suppressor", "canon")],
         "view": G21_VIEW, "scale": G21_SCALE, "size": G21_SIZE,
     },
+    "ppk": {"points": "ppk_points.json", "assembled": PPK_BARE, "upright": True, "centre_on_assembled": True,
+            "view": G21_VIEW, "scale": PPK_SCALE, "size": G21_SIZE},
     # the main mod's Uzis (preview10): (gun, stock folded, magazine)
     "uzi": {"uzi": ("UZI", True, "9x19Magazine32_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE, "size": UZI_SIZE},
     "miniuzi": {"uzi": ("MINIUZI", False, "9x19Magazine20_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE,

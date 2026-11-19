@@ -30,7 +30,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Special loads, not found as loot and made with Ammo Maker: Subsonic (quieter and a little weaker; must be racked after each shot in self-loading guns, not in revolvers or bolt, lever and pump actions), Hollow Point, and Hyper Velocity (hits harder, crits harder, louder, and wears the gun a little faster)
 - Every .22 LR gun fires a light, sharp report, well under a 9mm's
 - With Hot Brass its spent casings fly out like any other
-- With the Post-93 add-on, which has the first .22 LR gun (the HK416 .22 Quad Rail Pistol), plain .22 LR boxes and cartons turn up wherever 9mm boxes and cartons do, homes included
+- Fired by the Walther PPK (below) and, with the Post-93 add-on, the HK416 .22 Quad Rail Pistol
+- Plain .22 LR boxes and cartons turn up wherever 9mm boxes and cartons do, homes included
 
 ## Changes to Guns of Marz
 
@@ -150,6 +151,14 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   its .45 muzzle mount and P45 suppressor
 - Found where Guns of Marz's Glock 17 is (civilian and police handguns) and with its imported pistols in gun stores,
   with .45 boxes
+
+## Walther PPK
+
+- Walther PPK in .22 LR, the post-war West German pistol: its own 8-round magazine with the finger rest, brown
+  Walther grips, the safety lever on the slide
+- Small enough for an ankle holster
+- No attachments: no rail and no threaded barrel
+- Carried by civilian zombies and found with Guns of Marz's imported pistols in gun stores, with .22 LR boxes
 
 ## RPK and RPK-74
 

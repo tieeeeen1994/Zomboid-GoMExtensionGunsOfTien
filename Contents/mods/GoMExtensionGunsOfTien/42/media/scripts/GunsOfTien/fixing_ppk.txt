@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix PPK {
+        Require = GunsOfTien.PPK,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

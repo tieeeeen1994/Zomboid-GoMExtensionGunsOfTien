@@ -197,4 +197,15 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = 90,
         spinForce     = { 14, 20 },
     },
+    -- The Walther PPK (.22 LR): the Glock 21's throw from a port further ahead of the hand (its centre 79 mm ahead of
+    -- the grip's web against the Glock 21's 70), the HK416 .22's lighter force for the light .22 case.
+    ["GunsOfTien.PPK"] = {
+        forwardOffset = 0.43,
+        sideOffset    = 0.0,
+        heightOffset  = 0.50,
+        shellForce    = 0.45,
+        sideSpread    = 45,
+        heightSpread  = 90,
+        spinForce     = { 16, 24 },
+    },
 })

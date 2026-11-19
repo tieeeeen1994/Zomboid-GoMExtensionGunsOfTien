@@ -607,7 +607,7 @@ M-LOK pistol is shelved (docs/shelved_hk416ml22.md). Built the same day (not pla
 | Rails | all four as hidden integrated parts: optics on top, GoM's foregrips underneath (user, 2026-11-13: "let it take a foregrip", as the pistol-held MP7A2 and Vector SDP; at 330 mm, about 60 mm ahead of the curved 30), lights left, lasers right |
 | Iron sights | IronSights.Register: the rear taken off under a red dot (`HK416QR22_RD`), both under a scope (`_FD`); every GoM optic clears the body it draws (fit_audit against each state) |
 | Bolt, handle | GoM's AR15 table (HK416.lua's) |
-| Loot | an alternative in GoM's `World_Anachronistic_Spawner` (the gun, up to 3 of its 20, up to 4 .22 LR boxes); the .22 LR box (0.1) and carton (0.05) beside vanilla's 9mm box / carton in **every** list, homes included (.22 LR was America's commonest round; Post-93's Loot.lua, as the main mod has no .22 gun) |
+| Loot | an alternative in GoM's `World_Anachronistic_Spawner` (the gun, up to 3 of its 20, up to 4 .22 LR boxes); the .22 LR box (0.1) and carton (0.05) beside vanilla's 9mm box / carton in **every** list, homes included (.22 LR was America's commonest round; Post-93's Loot.lua until 2026-11-19, the main mod's since, with its Walther PPK) |
 | Hot Brass | the SDP's place, lighter (force 0.45); the main mod maps the .22 rounds to HBVCEF.22_Casing |
 
 The proposal (superseded where the decisions above say otherwise):
