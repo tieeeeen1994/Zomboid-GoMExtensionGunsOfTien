@@ -1441,10 +1441,9 @@ def preview29(path, W=1024):
         for m, line in enumerate(lines):
             page.alpha_composite(text_layer(size, (cx, ty + u(24 + m * 15)), line, small, (60, 64, 70, 255),
                                             anchor="ma", spacing=u(1)))
-    caption(page, 428, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND", big=True)
-    # since 3.16.0 the main mod has the Walther PPK and spawns the boxes itself (its Loot.lua)
-    caption(page, 448, "FIRED BY THE WALTHER PPK  ·  BOXES WHERE 9MM BOXES ARE")
-    caption(page, 464, "POST-93 ADD-ON: THE HK416 .22 PISTOL")
+    caption(page, 434, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND", big=True)
+    # the main mod has no .22 gun: the pistol and the boxes in loot come with the add-on (its Loot.lua)
+    caption(page, 454, "POST-93 ADD-ON: THE HK416 .22 PISTOL, AND BOXES WHERE 9MM BOXES ARE")
     save_under(page.convert("RGB"), path)
 
 

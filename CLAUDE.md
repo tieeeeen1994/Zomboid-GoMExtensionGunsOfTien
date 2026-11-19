@@ -648,9 +648,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   the sights-up bodies of the MP7s, SCARs and Vectors, which now stand up under an optic: re-rendering them needs the
   `_RD` / `_FD` bodies first.
   preview29 (2026-11-14) is the main mod's .22 LR: the four loads two by two (box icon with the round over its
-  corner, scaled up crisp; name and what it does in play centred under it). Its loot lines (remade 2026-11-19 for
-  3.16.0) name the Walther PPK and the main mod's boxes beside 9mm, then Post-93's HK416 .22. Rebuild:
-  `make_workshop_art.py preview29` (no renders). Not yet on the Steam page.
+  corner, scaled up crisp; name and what it does in play centred under it), no gun (the main mod had none); the loot
+  line names the Post-93 add-on, whose Loot.lua spawned the .22 LR boxes until 3.16.0 moved them to the main mod with
+  the PPK (left as it is, user 2026-11-19: no need to update it). Rebuild: `make_workshop_art.py preview29` (no
+  renders). Not yet on the Steam page.
   preview30 (3.16.0, 2026-11-19) is the main mod's Walther PPK alone, as preview23: render_ad_guns.py `ppk` (bare with
   its magazine, the Glock 21's view and scale x 155 / 208, turned upright, so the left side's inscriptions and safety
   lever read after the mirror), a slot row (gun, 8-round magazine, .22 LR box) and two lines (ankle holster, loot).

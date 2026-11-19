@@ -6,8 +6,7 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
 ## After the 3.16.0 upload
 
-- [ ] Put preview30 (the Walther PPK) on the Steam page by hand, and replace preview29 there with the new one (its
-      loot lines now name the PPK and the main mod's .22 LR boxes).
+- [ ] Put preview30 (the Walther PPK) on the Steam page by hand.
 
 ## After the 3.15.0 upload
 
