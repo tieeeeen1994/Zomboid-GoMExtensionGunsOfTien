@@ -116,6 +116,35 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- The Mk 11 Mod 0 throws its cases out of its AR port as the main mod's SR-25 (GoM's AR15's angles, a 7.62x51's
     -- force).
+    -- The SV-98 is worked by hand as GoM's M24 (its values: a bolt-action case is pulled out, not thrown).
+    ["GunsOfTienPost93.SV98"] = {
+        forwardOffset = 0.40,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.45,
+        sideSpread    = 60,
+        heightSpread  = 60,
+        spinForce     = { 8, 12 },
+    },
+    -- The SV-99s pull their .22 cases out with the toggle (the SV-98's values, lighter).
+    ["GunsOfTienPost93.SV99"] = {
+        forwardOffset = 0.40,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.30,
+        sideSpread    = 60,
+        heightSpread  = 60,
+        spinForce     = { 8, 12 },
+    },
+    ["GunsOfTienPost93.SV99P"] = {
+        forwardOffset = 0.40,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.30,
+        sideSpread    = 60,
+        heightSpread  = 60,
+        spinForce     = { 8, 12 },
+    },
     ["GunsOfTienPost93.MK11"] = {
         forwardOffset = 0.30,
         sideOffset    = 0.10,

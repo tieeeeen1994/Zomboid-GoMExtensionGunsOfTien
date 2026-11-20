@@ -46,6 +46,12 @@
     - The HK416 .22 Quad Rail Pistol (user, 2026-11-13; a civilian .22, the first in Post-93) in the Anachronistic
       spawner, an alternative of its own (the gun, up to 3 of its 20-round magazine, up to 4 .22 LR boxes), as GoM's
       other post-1993 civilian guns.
+    - The SV-98 (user, 2026-11-20; a Russian special-forces rifle of 2000, a civilian "Record" too) where GoM's SVD
+      and PSG-1 go to mercenary snipers (MarzGuns.Zombie_Mercenary_Sniper_Spawner: the gun, up to 6 of its 10-round
+      magazines, up to 8 7.62x54R boxes) and among GoM's post-1993 guns in the Anachronistic spawner (up to 3 and 3).
+    - The SV-99 (user, 2026-11-20; a .22 LR rifle, as the HK416 .22) in the Anachronistic spawner: one
+      alternative giving the green plywood or the black polymer one, up to 3 of its 5-round magazines, up to 4 .22 LR
+      boxes.
     - Direct loot entries (OnPostDistributionMerge): the Five-seveN and the UCP, each with a magazine and a box, in
       survivor and bandit zombies' late bags, at the share each gun of the Anachronistic spawner gets there (the user
       kept them in those bags).
@@ -194,6 +200,24 @@ local function hk416qr22Alternative(boxes)
     }
 end
 
+-- The SV-98 (shared/GunsOfTienPost93/SV98.lua): the gun, up to n of its 10-round magazines, up to n + 2 boxes
+local function sv98Alternative(count)
+    return {
+        { items = { M .. "SV98" }, maxAmountChance = 1 },
+        { items = { M .. "762x54Magazine10_SV98" }, maxAmountChance = count },
+        { items = { "MarzGuns.762x54_Box" }, maxAmountChance = count + 2 },
+    }
+end
+
+-- The SV-99s (shared/GunsOfTienPost93/SV99.lua): one of the two stocks, up to 3 magazines, up to n .22 LR boxes
+local function sv99Alternative(boxes)
+    return {
+        { items = { M .. "SV99", M .. "SV99P" }, maxAmountChance = 1 },
+        { items = { M .. "22LRMagazine5_SV99" }, maxAmountChance = 3 },
+        { items = { "GunsOfTien.22LR_Box" }, maxAmountChance = boxes },
+    }
+end
+
 -- The Grozas (shared/GunsOfTienPost93/Groza.lua): the gun, up to n of GoM's standard magazines of its calibre, up to n
 -- of GoM's boxes
 local function grozaAlternative(guns, mag, box)
@@ -330,6 +354,9 @@ local SPAWNERS = {
     { "MarzGuns.World_Anachronistic_Spawner", hk416qr22Alternative, 4 },
     { "MarzGuns.World_Army_Rifle_Spawner", hk417Alternative, 6 },
     { "MarzGuns.Zombie_Army_Rifle_Spawner", hk417Alternative, 4 },
+    { "MarzGuns.Zombie_Mercenary_Sniper_Spawner", sv98Alternative, 6 },
+    { "MarzGuns.World_Anachronistic_Spawner", sv98Alternative, 3 },
+    { "MarzGuns.World_Anachronistic_Spawner", sv99Alternative, 4 },
     -- the HBAR's 50 beside GoM's own 7.62x39 75 (its high-capacity Russian-calibre magazine spawner)
     { "MarzGuns.World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x39Magazine50_AUG", "MarzGuns.762x39_Box"), 0 },
 }

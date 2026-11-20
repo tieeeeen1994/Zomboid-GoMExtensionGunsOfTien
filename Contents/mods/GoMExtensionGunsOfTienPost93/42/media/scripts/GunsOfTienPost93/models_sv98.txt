@@ -1,0 +1,39 @@
+module GunsOfTienPost93 {
+
+    model SV98 {
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_BODY,
+        texture  = weapons/GunsOfTienPost93/SV98,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.5147 0.0096, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0193 0.1252 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 0.1119 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0555 0.0012, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0787 0.0209, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model SV98_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_BOLT,
+        texture  = weapons/GunsOfTienPost93/SV98,
+        cullFace = None,
+    }
+
+    model SV98_BIPOD_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_BIPOD_FOLDED,
+        texture  = weapons/GunsOfTienPost93/SV98,
+        cullFace = None,
+    }
+
+    model SV98_BIPOD_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_BIPOD_DEPLOYED,
+        texture  = weapons/GunsOfTienPost93/SV98,
+        cullFace = None,
+    }
+
+    model 762x54Magazine10_SV98 {
+        mesh     = weapons/magazines/GunsOfTienPost93_SV98_magazines|762x54Magazine10_SV98,
+        texture  = weapons/GunsOfTienPost93/762x54Magazine10_SV98,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0730 0.0595 -0.0008, rotate = -86.2737 31.4012 -93.4148, }
+    }
+}

@@ -532,6 +532,27 @@ rounds by different sources (Walther's own figure was not found); 8 is used (Wik
 
 Model: scripts/build_ppk.py (references/ppk22, CLAUDE.md "Walther PPK").
 
+## 4p. SVU (OTs-03, 1991) (2026-11-20, built, not played)
+
+User, 2026-11-20: the SV-98 "with partners", the SV-99 and the SVU picked; the SVU "use the pre-1993 model" (research:
+docs/sv98_sv99_svu_research.md), then "let's implement the new guns". Main mod: TsKIB SOO's bullpup SVD was in series
+production from 1991 (Vympel, the 106th Guards Airborne's troop trials). The semi-automatic first model, not the
+select-fire SVU-A (1993-95) or the SVU-AS with its bipod (1995); outwardly the SVU-A is the same gun, so its
+walkaround photos serve.
+
+| | |
+|---|---|
+| Item | `GunsOfTien.SVU`, "SVU Semi-Automatic Rifle" (GoM's "SVD Semi-Automatic Rifle"); GoM's `MarzGuns.762x54Magazine10_SVD`, the SVU's real magazine, profile "7.62x54mm SVU" |
+| Stats | against GoM's SVD: damage 1.15-1.9 (1.2-2.0: the 520 mm barrel), HitChance 48 (50: shorter sight radius), Aimingtime 45 (50: a 900 mm bullpup), RecoilDelay 18 (20: the brake takes up to 40 % of the recoil), range 55 (60), weight 4.4 (the MVD poster's, with its PSO-1; GoM's SVD 4.3), the rest GoM's SVD's; sound 236 / 67 (sound_model.py: 7.62x54R from 20.5"; GoM's SVD 223 / 64), GoM's SVD sounds and shot |
+| Parts | GoM's AK mount on the SVU's side rail (moved forward onto the receiver's front, as on the real gun) and every optic GoM fits its SVD; no rail under the handguard, no bipod, no muzzle parts (the brake is fixed; the SVU-AS has the bipod) |
+| Sights | folding: both raised with no optic, both folded with any of GoM's optics (`SVU_FD`, Gunworks' ConditionalModel, as Post-93's iron sights) |
+| Hold, reload | vanilla's rifle hold, the trigger where GoM's SVD has it against the hand; GoM's FAMAS reload ("famas_rifle", the bullpup one, as the AUGs) with GoM's magazine in the off hand at the gun's size (HandMagazines.lua); GoM's SVD bolt swap (carrier and handle, holds open when empty) |
+| Loot | as GoM's SVD kits: an alternative in `World_Russian_Rifle_Spawner` (gun, up to 6 magazines, up to 6 boxes) and `Zombie_Mercenary_Sniper_Spawner` (gun, 3-6 magazines, 6-10 boxes); found guns carry the magazine at 50 and GoM's SVD optics at its chances |
+| Casings | GoM's SVD's force and spread, started where GoM's FAMAS starts them (the port behind the grip) |
+| Repair | RepairPack, Aiming 3 (GoM's SVD) |
+
+Model: scripts/build_svu.py (references/svu, CLAUDE.md "SVU").
+
 ## 5. Open checks before building
 
 - Can a mod add its own StatsFactory layer (for the PBS-1 rule), or does it need a hook in the attack path?

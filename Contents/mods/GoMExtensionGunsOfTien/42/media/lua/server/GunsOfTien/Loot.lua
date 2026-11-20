@@ -60,6 +60,9 @@
     and AK-74 drum, each with up to two boxes.
     The RPD (shared/GunsOfTien/RPD.lua; user, 2026-11-02) is a third kit there beside the RPKs: the gun, up to 3 of its
     belt drums, up to 6 boxes of GoM's 7.62x39. Its drum does not come loose.
+    The SVU (shared/GunsOfTien/SVU.lua; user, 2026-11-20) goes where GoM's SVD does, packed as its kits there: one
+    more alternative in MarzGuns.World_Russian_Rifle_Spawner and in MarzGuns.Zombie_Mercenary_Sniper_Spawner (the gun,
+    GoM's SVD magazines and 7.62x54R boxes).
     The Walther PPK .22 (shared/GunsOfTien/PPK.lua; user, 2026-11-19) goes where GoM's civilian pistols do, packed as
     the Glock 21's kits there (the gun, up to 4 or 6 of its magazines, as many .22 LR boxes): one more alternative in
     MarzGuns.Zombie_Civilian_Handgun_Spawner and MarzGuns.World_Import_Pistol_Spawner (gun stores, an import); not the
@@ -173,6 +176,18 @@ UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawne
     { items = { "GunsOfTien.RPD" }, maxAmountChance = 1 },
     { items = { "GunsOfTien.762x39Drum100_RPD" }, maxAmountChance = 3 },
     { items = { "MarzGuns.762x39_Box" }, maxAmountChance = 6 },
+} }
+-- the SVU kits beside GoM's SVD kits, packed as those: the Russian rifle spawner (the gun, up to 6 magazines, up to 6
+-- boxes) and mercenary snipers (the gun, 3-6 magazines, 6-10 boxes)
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", {
+    { items = { "GunsOfTien.SVU" }, maxAmountChance = 1 },
+    { items = { "MarzGuns.762x54Magazine10_SVD" }, maxAmountChance = 6 },
+    { items = { "MarzGuns.762x54_Box" }, maxAmountChance = 6 },
+} }
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.Zombie_Mercenary_Sniper_Spawner", {
+    { items = { "GunsOfTien.SVU" } },
+    { items = { "MarzGuns.762x54Magazine10_SVD" }, minAmountChance = 3, maxAmountChance = 6 },
+    { items = { "MarzGuns.762x54_Box" }, minAmountChance = 6, maxAmountChance = 10 },
 } }
 -- the RPK's 40 and drum loose, beside GoM's 75 box and AK-74 drum in its Russian high-capacity spawner (2 boxes each)
 for _, mag in ipairs({ "GunsOfTien.762x39Magazine40_RPK", "GunsOfTien.762x39Drum75_RPK" }) do

@@ -322,6 +322,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   is modeled properly", "We can use 1 mag for it only", "this one should fit an ankle holster"; built, not played):
   the post-war Ulm PPK .22, its 8-round finger-rest magazine only, HolsterSmall, no GoM parts (they swamp it; chosen
   after review renders, offered back to the user). Section "Walther PPK".
+- **SVU** (main mod, user, 2026-11-20: the pre-1993 model; "let's implement the new guns"; built, not played): the
+  1991 semi-automatic OTs-03 on GoM's SVD, GoM's SVD magazine, folding sights in two bodies, GoM's FAMAS reload.
+  Section "SVU". The SV-98 and SV-99 are Post-93's (section "SV-98 and SV-99").
 - **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
   you this many times. the triggers you make are not good"): check every new gun's trigger blade against its
   measuring photo by laying the photo-scale render's outline over it, row by row, before showing the gun. GoM's AR15
@@ -695,7 +698,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
   or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
   `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_ppk.py`,
-  `render_ppk.py`, `make_ppk_art.py` (the Walther PPK, section "Walther PPK"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
+  `render_ppk.py`, `make_ppk_art.py` (the Walther PPK, section "Walther PPK"); `scripts/build_svu.py`, `render_svu.py`,
+  `make_svu_art.py` (the SVU, section "SVU"); Post-93's `scripts/post93/build_sv98.py`, `build_sv99.py`, their
+  render / art scripts (section "SV-98 and SV-99"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
   (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
   `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
@@ -2730,6 +2735,95 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
 - **GoM parts left off** (tried in renders): the Beretta mount and sights towered over the slide, the lights and
   lasers hung in front of the guard (dust cover 30 mm), GoM's 9x19 cans stood taller than the slide. Adding them
   back is the Glock 21's pattern (points in build_glock21.py, ModelWeaponPart lines, Glock21.lua's MountOn appends).
+
+## SVU (main mod, 2026-11-20; built, not played)
+
+- **What**: TsKIB SOO's OTs-03 of 1991, semi-automatic, on GoM's SVD (design and stats: docs/design.md 4p). Files:
+  `scripts/build_svu.py` (Blender, seconds: `GunsOfTien_SVU.fbx` SVU_BODY / SVU_FD_BODY / SVU_BOLT, `SVU.png` 512,
+  `scripts/svu_points.json`), `scripts/render_svu.py -- DIR`, `scripts/make_svu_art.py [--renders DIR]` (icon on the
+  SCARs' rifle camera, sheet `docs/svu_preview.png`: each side under its photo at 2 px a mm), `gen_scripts.py svu()`
+  (models_svu.txt, items_svu.txt, fixing_svu.txt, names), `shared/GunsOfTien/SVU.lua`,
+  `client/GunsOfTien/SVUTooltips.lua`, loot and Hot Brass in the main mod's server files. Rebuild: build, render, art,
+  then `gen_scripts.py` and `check_refs.py`.
+- **Built from GoM's SVD, not modelled**: GoM's receiver, cover, bolt, magazine catch, safety, handguards and gas
+  system stay; its thumbhole stock and tangent rear sight are deleted; its trigger moves to the photo's place and its
+  guard is shortened to the photo's 60 mm; the side scope rail (the +X plate and two pins, the gun's left) moves
+  forward `RAIL_MOVE` with GoM's `rail_up` / `scope` points; the barrel between the gas block and the front sight
+  block is squeezed so the front sight lands on the photo's; GoM's front sight tower and hood are lifted 32.5 (GoM
+  units x 0.001) onto a folding post. New: the butt, grip and cheek rest (bevelled slabs of the photo's outlines), the
+  trigger housing strip, the folding aperture rear sight on the cover's front, Bondarev's brake (a lathe profile over
+  what is left of GoM's flash hider). The whole gun then moves back (`SHIFT`) so the trigger sits where GoM's SVD has
+  it.
+- **Measuring**: Kuzmin's right side of an SVU-A (references/svu/svu_a/kuzmin2015_svua_01.jpg, 2.026 px a mm) read on
+  mm grids, registered on GoM's receiver's two ends (GoM's magazine then sits 15 mm further forward in it than the
+  photo's). The photo is taken from above at an angle and GoM draws its SVD deep: rows above the receiver's bottom are
+  scaled 1.25 (GoM's handguard 62 against the photo's 48), below 0.9 (the butt's toe level with GoM's short
+  magazine's bottom, as on the photo). GoM's PSO-1 reaches further ahead of its AK mount than the real one does, so
+  the rail sits 110 mm behind the photo's bracket to put the scope where the photo's is.
+- **Island map of GoM's SVD_BODY** (y forward, z up, GoM units): stock y -0.148..0.057 with the grip, butt plate,
+  receiver 0.016..0.214 and cover, the side rail plate x +0.008..+0.013 at 0.053..0.148 (the right side's S-shaped
+  safety parts are at -x), trigger 0.069..0.079, guard 0.056..0.109, rear sight 0.209..0.253 over z 0.042, barrel
+  0.213..0.662 (flash hider included), handguard 0.222..0.398, gas block 0.447..0.468, front sight block 0.585..0.611
+  (collar below z 0.032, tower / hood / post above 0.028). GoM's SVD is drawn at 0.6625 of real (811.6 for 1225 mm).
+- **Texture**: SVU.png is 512 with GoM's SVD.png in the top-left quarter (every GoM UV moved there); a camouflage patch
+  in GoM's stock colours bottom left (brown, black blotches: the 1991 SVU's camouflage paint) for the butt, grip and
+  cheek rest; plain steel in GoM's barrel colour top right for the new metal, with a dark band for the brake's bore.
+- **Trigger group** (user, 2026-11-20: "the trigger guard is wrong. the trigger guard's top is fully attached to the
+  gun"): GoM's SVD guard (a loop, shortened) and trigger are deleted; the guard (a band, `strip()`) and the hook-shaped
+  blade are traced off the photo at 4.05 px a mm (`GUARD_OUT` / `GUARD_IN`, `TRIGGER`): the guard leaves the grip's
+  front low down, runs forward and curves up into the housing strip, which is the opening's whole top; the blade hangs
+  from it, its back bulging rearward, its tip hooked forward. Their rows use `pz_t` (hung from GoM's handguard bottom
+  at the photo's row 88, Z_DOWN below), since pz() puts the photo's handguard higher than GoM drew it. A band built with
+  `prism()` (outer + reversed inner as one outline) filled solid: the cap's triangulation closes a concave band.
+  Check sheet: docs/sv_triggers_check.png (photo, model in the same mm window, outline on the photo for the SV-98 /
+  SV-99s).
+- **Not done**: the real SVU's trigger bar along the receiver's right side; the leaf-spring butt plate; the bayonet of
+  the MVD poster's delivery kit (GoM's SVD takes none; sources disagree whether the SVU had a lug).
+
+## SV-98 and SV-99 (Post-93, 2026-11-20; built, not played)
+
+- **What**: Izhmash's SV-98 (7.62x54R, plywood stock) and SV-99 (.22 LR) in its green plywood and black polymer stocks
+  (two items, `SV99` / `SV99P`); design and stats docs/post93_design.md "SV-98 and SV-99". Files:
+  `scripts/post93/build_sv98.py` / `build_sv99.py` (Blender, ~2 min each with the bake: FBX bodies, bolts and bipods,
+  their magazines, 512 atlases, `sv98_points.json` / `sv99_points.json`, the SV-99's with one entry per gun),
+  `render_sv98.py` / `render_sv99.py -- DIR`, `make_sv98_art.py` / `make_sv99_art.py [--renders DIR]` (icons on the
+  SCARs' rifle camera; sheets `docs/post93_sv98_preview.png`, `post93_sv99_preview.png`, each gun's outline in red on
+  its photo), `gen_post93_guns.py sv98()` / `sv99()`, `shared/GunsOfTienPost93/SV98.lua` / `SV99.lua`, loot, Hot Brass
+  and tooltip lines in Post-93's files, the "boltaction" durations in the main mod's GoMReloads.lua. Rebuild: build,
+  render, art, `gen_post93_guns.py`, `check_refs.py`.
+- **Modelled, not built on GoM**: GoM's M24 is too plain to carry the SV-98 (its look is the plywood stock), so both
+  are kit models (slabs of the photo's outlines with their holes cut, lathed metal, per-pixel paint from baked maps;
+  build_sv99.py imports build_sv98.py's plywood paint and shading). Origin from GoM's M24 (the closest GoM gun): the
+  trigger blade 57.5 mm (real) ahead of the origin, the bore 16 mm over it, so the rifles sit in the vanilla clips as
+  GoM's bolt rifles do.
+- **Measuring**: SV-98 on zonawar's studio right side (references/sv98/sv98/ru_003.jpg, 1.566 px a mm over 1200 mm),
+  read per 10 mm column (the stock's green and the metal's dark: tops, bottoms, holes); the outline overlay then
+  moved the trigger blade (thin, nearly upright, tip turned back) and the bolt shroud 15 mm forward. SV-99: the green
+  stock on zonawar's right side (green_plywood/b2_003.jpg, 1.862 px a mm), the polymer stock on Kalashnikov's left side
+  (black_polymer/kalash_SV-99_2.jpg mirrored, 1.530); the action in "action mm" (A forward of the trigger, D down
+  from the bore) from the crisp catalogue photo, each stock registered on its trigger blade and bore. The first read
+  of the green photo put the trigger 10 mm too far back and the receiver's front at A 135; the overlay showed the
+  receiver runs to A 188 (its step down to the barrel) on both photos.
+- **Triggers** (user, 2026-11-20: "SV-98 and SV-99 triggers are completely wrong"): the first blades bulged forward;
+  the real ones are thin hooks hanging from the opening's top, the back bulging rearward and the tip curled forward.
+  Re-traced off each photo (SV-98 at 6.3 px a mm, its opening too; the SV-99s' blade and steel guard per stock,
+  `STOCKS[..]['blade' / 'guard_out' / 'guard_in']`) and checked by rendering the photo crop's exact mm window and laying
+  the model's outline on it (docs/sv_triggers_check.png): within about 1 mm. The polymer stock's underside over the
+  guard was 4 mm too low and hid the blade's root. Then (user: the SV-99's still "horrendous", "these red things
+  should just be removed"; the SVU's and SV-98's approved): the red push-button safeties are gone, the guard's traced
+  edges are smoothed by Chaikin corner cutting (`smooth()`, `resample()`: a Catmull-Rom spline overshot into spikes
+  where traced points sit close) and the blade is a centre line with a width tapering from 5.6 / 3.8 mm at the root to
+  a point (`blade_outline()`), the midpoints and spans of the traced edges: the straight-segment outlines kinked and
+  their tips flared into hooks.
+- **Rails**: the receiver rail is modelled (the kit's `picatinny`) and a hidden `<GUN>_Integrated_Rail_Up` is the
+  parent of GoM's optics through `RequiredAttachment.RegisterRequired` (the Mk 11's way); the `scope` point is 3.2 x
+  0.001 under the crossbars' top (the Mk 11's relation). fit_audit 2026-11-20: GoM's optics seat within ~1 of GoM's
+  own medians, nothing flagged.
+- **SV-99 toggle lever**: GoM's Bolt part, but drawn about its pivot: the lever's node has its origin at the pivot,
+  `bolt_lock` and `bolt_fired` are both at the pivot, `bolt_fired` with rotate (-62, 0, 0) (game space, the engine's
+  translate then rotateXYZ), so the lever swings back instead of sliding.
+- **Not seen in game yet**: GoM's `*Rifle_HB.xml` magazine bolt-action nodes with a Gunworks "boltaction" profile
+  (Gunworks' Sync.lua says it supports nodes keyed on WeaponReloadType); the integrated bipods' fold.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

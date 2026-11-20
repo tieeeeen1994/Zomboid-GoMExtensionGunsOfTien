@@ -4,11 +4,13 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
-## SV-98, SV-99, SVU (research, not built)
+## SVU, SV-98, SV-99 (3.17.0, built 2026-11-20, not played)
 
-- [ ] Research done 2026-11-20 (`docs/sv98_sv99_svu_research.md`, photos in `references/sv98|sv99|svu`). Build
-      after the move: the SVU (1991 OTs-03, main mod) and the SV-98 and SV-99 (Post-93), held and reloaded with
-      GoM's animations only.
+- [ ] Play them: the SVU's FAMAS reload and folding sights, the SV-98 / SV-99 magazine bolt-action reload (GoM's
+      `*Rifle_HB.xml` nodes with a Gunworks "boltaction" profile, never used by GoM itself), the rack after every shot,
+      the SV-99's lever swing, the integrated bipods, loot.
+- [ ] Workshop: a preview for the SVU (main mod) and one for the SV-98 / SV-99 (Post-93), the change note, and the
+      variants left out (the aluminium SV-98, the SV-99's wooden stock) if wanted.
 
 ## After the 3.16.0 upload
 

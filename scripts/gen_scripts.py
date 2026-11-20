@@ -2616,6 +2616,177 @@ def rpk():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# SVU (user, 2026-11-20: the 1991 OTs-03, main mod; docs/design.md 4p; meshes and points: scripts/build_svu.py,
+# icons: scripts/make_svu_art.py, registries: shared/GunsOfTien/SVU.lua). TsKIB SOO's bullpup SVD on GoM's SVD: GoM's
+# 10-round magazine (drawn at our size, `_GoT`), GoM's SVD bolt swap (carrier and handle in one), GoM's AK mount and
+# every optic GoM fits on its SVD, and two bodies: the folding sights raised (no optic) or folded (SVU_FD, any optic).
+SVU_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'svu_points.json')
+SVU_MAG = '762x54Magazine10_SVD'
+GOM_SVD_MAG_PROP2 = {'offset': [0.0730, 0.0595, -0.0008], 'rotate': [-86.2737, 31.4012, -93.4148]}   # GoM's model
+GOM_SVD_OPTICS = ['EXPS1_Sight', 'EXPS3_Sight', 'ElcanX2_Scope', 'LR10X_Scope', 'Aimpoint_Sight', 'TA28_Scope',
+                  'LR4X_Scope', 'OKP3_Sight', 'ReflexS2_Sight', 'JS14_Sight', 'Kobra_Sight', 'TR06X_Scope', 'PSO1_Scope',
+                  'LRX12X_Scope']
+# Stats against GoM's SVD (docs/design.md 4p): the 520 mm barrel (100 mm shorter; the MVD poster still gives 830 m/s)
+# a little less damage and range, quicker to bring up (a bullpup, 900 mm against 1225: Aiming Time 45 against 50,
+# higher is slower) but a shorter sight radius and a brake (Hit 48 against 50, RecoilDelay 18 against 20: the brake
+# takes up to 40 % of the recoil), 4.4 kg with the PSO-1 (GoM's SVD 4.3, the SVD's own figure with its scope). Sound
+# from sound_model.py's model for a 20.5" 7.62x54R barrel: 236 / 67 (GoM's SVD 223 / 64 at 24.4"). GoM's SVD's
+# sounds and shot.
+SVU = {'name': 'SVU Semi-Automatic Rifle', 'min': 1.15, 'max': 1.9, 'hit': 48, 'aim': 45, 'recoil': 18, 'range': 55.0,
+       'weight': 4.4, 'sound': (236, 67)}
+
+
+def svu():
+    pts = json.load(open(SVU_POINTS))
+    scale = pts['_extras']['scale']
+    tex = 'weapons/GunsOfTien/SVU'
+    models = [f"module {MODULE} {{\n"]
+    for model, node in (('SVU', 'SVU_BODY'), ('SVU_FD', 'SVU_FD_BODY')):
+        models.append(f"""
+    model {model} {{
+        mesh     = weapons/firearms/GunsOfTien_SVU|{node},
+        texture  = {tex},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'bolt_fired', 'magazine', 'world', 'rail_up', 'scope'):
+            models.append(m249_attachment(name, pts[name]))
+        models.append("    }\n")
+    models.append(f"""
+    model SVU_BOLT {{
+        mesh     = weapons/firearms/GunsOfTien_SVU|SVU_BOLT,
+        texture  = {tex},
+        cullFace = None,
+    }}
+
+    model {SVU_MAG}_GoT {{
+        mesh     = weapons/magazines/semi_rifles|{SVU_MAG},
+        texture  = weapons/magazines/semi_rifles/{SVU_MAG},
+        cullFace = None,
+        scale    = {scale:.4f},
+{m249_attachment('Bip01_Prop2', GOM_SVD_MAG_PROP2)}    }}
+}}
+""")
+    write('scripts/GunsOfTien/models_svu.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.SVU_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.SVU_BOLT bolt_fired bolt_fired,",
+             f"{w}MarzGuns.{SVU_MAG} {MODULE}.{SVU_MAG}_GoT magazine magazine,",
+             f"{w}MarzGuns.AK_Mount MarzGuns.AK_Mount rail_up rail_up,"]
+    parts += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in GOM_SVD_OPTICS]
+    s = SVU
+    items = f"""module {MODULE} {{
+
+    item SVU {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = 30.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 10,
+        MaxSightRange                = 18.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 200,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = true,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 45.0,
+        FireMode                     = Single,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x54,
+        AmmoBox                      = MarzGuns.762x54_Box,
+        MagazineType                 = MarzGuns.{SVU_MAG},
+        MaxAmmo                      = 10,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_SVU,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.SVU,
+        AimReleaseSound              = M14AimRelease,
+        BreakSound                   = M14Break,
+        BringToBearSound             = M14BringToBear,
+        ClickSound                   = M14Jam,
+        DropSound                    = M14Drop,
+        EjectAmmoStartSound          = M14EjectAmmoStart,
+        EjectAmmoSound               = M14EjectAmmo,
+        EjectAmmoStopSound           = M14EjectAmmoStop,
+        EquipSound                   = M14Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M14InsertAmmoStart,
+        InsertAmmoSound              = M14InsertAmmo,
+        InsertAmmoStopSound          = M14InsertAmmoStop,
+        RackSound                    = M14Rack,
+        ShellFallSound               = M14CartridgeFall,
+        SwingSound                   = MSR700Shoot,
+        UnequipSound                 = M14UnEquip,
+        SoundGain                    = 2.0,
+        SoundRadius                  = {s['sound'][0]},
+        SoundVolume                  = {s['sound'][1]},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+    }}
+
+    item {SVU_MAG}_Hand {{
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = {SVU_MAG},
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = {MODULE}.{SVU_MAG}_GoT,
+        WorldStaticModel = {MODULE}.{SVU_MAG}_GoT,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_svu.txt', items)
+    # GoM repairs its SVD with Aiming=3
+    write('scripts/GunsOfTien/fixing_svu.txt', f"""module Base {{
+    fixing Fix SVU {{
+        Require = {MODULE}.SVU,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.SVU'] = s['name']                       # GoM's "SVD Semi-Automatic Rifle"
+    names[f'{MODULE}.{SVU_MAG}_Hand'] = 'SVD 10Rds 7.62x54mm Magazine'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # RPD (user, 2026-11-02: "Older RPD pls."; docs/design.md 4k; meshes and points: scripts/build_rpd.py, icons:
 # scripts/make_rpd_art.py, registries: shared/GunsOfTien/RPD.lua). Degtyaryov's first-model squad machine gun on GoM's
 # M60 pattern, as our M249: the body, the operating handle on the slide (reciprocating, so it is the gun's Bolt part on
@@ -3783,6 +3954,7 @@ if __name__ == '__main__':
     ppk()
     rpk()
     rpd()
+    svu()
     charging_handles()
     mp5_family()
     one_hand()

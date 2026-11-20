@@ -33,7 +33,12 @@
     - "m60_lmg" (GoM's M60): the M249;
     - "ak_rifle" (GoM's AKs and SVD: the handle on the right, racked with the left hand over the top): the RPK and
       RPK-74;
-    - "m203_reload" (GoM's M203, non-magazine: `nonMagazineProfile`): Post-93's GP-25 on the Groza-1.
+    - "m203_reload" (GoM's M203, non-magazine: `nonMagazineProfile`): Post-93's GP-25 on the Groza-1;
+    - "boltaction" (GoM's magazine-fed bolt-action nodes, AnimSets/player/actions/Rifle/*Rifle_HB.xml: vanilla's
+      hunting rifle reload, `Bob_Reload_Rifle_Load` and `Bob_Reload_Bolt_Rack` / `Bob_AttackRifle_AimBoltRack`, keyed
+      on the script's WeaponReloadType boltaction, which Gunworks' Sync.lua supports; no GoM gun uses them, its bolt
+      rifles load stripper clips): Post-93's SV-98 and SV-99 (user, 2026-11-20: GoM's animations only). The rack
+      after every shot comes from the script's RackAfterShoot. Not seen in game yet.
 --]]
 
 local GoMReloads = {}
@@ -55,6 +60,9 @@ local DURATIONS = {
     ar15_rifle = { unload = 2.5, load = 2.5, rack = 2.166667, rackAim = 1.666667, rackClose = 1.695455 },
     -- GoM's M203 (one grenade, its double-barrel archetype): Post-93's GP-25 on the Groza
     m203_reload = { unload = 2.0, unloadAim = 2.2, load = 2.0, loadAim = 2.2, rack = 1.1, rackAim = 1.1 },
+    -- GoM's unused magazine bolt-action nodes (vanilla's hunting rifle clips, lengths from GoM's CLIP_SECONDS):
+    -- Post-93's SV-98 and SV-99
+    boltaction = { unload = 1.733333, load = 1.733333, rack = 1.766667, rackAim = 1.666667 },
 }
 
 --- A Gunworks reload profile playing GoM's animation `animId`.

@@ -1,0 +1,40 @@
+module GunsOfTien {
+
+    model SVU {
+        mesh     = weapons/firearms/GunsOfTien_SVU|SVU_BODY,
+        texture  = weapons/GunsOfTien/SVU,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3567 0.0238, rotate = -90.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0447 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 -0.0316 0.0165, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0182 -0.0299 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0019 0.0321, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0546 0.0541, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model SVU_FD {
+        mesh     = weapons/firearms/GunsOfTien_SVU|SVU_FD_BODY,
+        texture  = weapons/GunsOfTien/SVU,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3567 0.0238, rotate = -90.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0447 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 -0.0316 0.0165, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0182 -0.0299 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment rail_up { offset = 0.0000 0.0019 0.0321, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0546 0.0541, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model SVU_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_SVU|SVU_BOLT,
+        texture  = weapons/GunsOfTien/SVU,
+        cullFace = None,
+    }
+
+    model 762x54Magazine10_SVD_GoT {
+        mesh     = weapons/magazines/semi_rifles|762x54Magazine10_SVD,
+        texture  = weapons/magazines/semi_rifles/762x54Magazine10_SVD,
+        cullFace = None,
+        scale    = 0.9102,
+        attachment Bip01_Prop2 { offset = 0.0730 0.0595 -0.0008, rotate = -86.2737 31.4012 -93.4148, }
+    }
+}

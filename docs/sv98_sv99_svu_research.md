@@ -1,4 +1,4 @@
-# SV-98, SV-99 and SVU: research (2026-11-20, nothing built)
+# SV-98, SV-99 and SVU: research (2026-11-20; all three built the same day)
 
 The user asked (2026-11-20) for the Izhmash SV-98 with partners, picked the SV-99 and the SVU, and asked for research
 only. Photos and per-file sources: `references/sv98/`, `references/sv99/`, `references/svu/` (each `SOURCES.txt`
@@ -71,7 +71,13 @@ sheet per folder), kept in git. Figures below are from those headers; where sour
   the SVD's on the right (GoM's SVD is on "svd_marz", its AKs on "ak_rifle"), to be weighed against the FAMAS rack
   when it is built.
 
-## Open questions for the build
+## Built (2026-11-20)
+
+The SVU (main mod, CLAUDE.md "SVU"), the plywood SV-98 and the SV-99 in its green plywood and black polymer stocks
+(Post-93, CLAUDE.md "SV-98 and SV-99"). Not built: the aluminium-chassis SV-98, the SV-98M, the SV-99's early wooden
+stock, the SVU-A and SVU-AS.
+
+## Open questions for the build (as they stood before it)
 
 - Which SV-98s: plywood (and aluminium as a later pair?), and which SV-99 stocks (green plywood, black polymer,
   wood) ("build every real variant").

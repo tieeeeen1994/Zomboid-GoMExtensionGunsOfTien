@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix SV98 {
+        Require = GunsOfTienPost93.SV98,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

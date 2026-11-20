@@ -3154,6 +3154,389 @@ def grozas():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# Izhmash SV-98 (user, 2026-11-20; docs/post93_design.md "SV-98 and SV-99"; meshes and points:
+# scripts/post93/build_sv98.py; registries: shared/GunsOfTienPost93/SV98.lua). The plywood-stock rifle of 1998-2000:
+# its own 10-round magazine, the rail on the receiver (modelled; a hidden integrated rail is the parent of GoM's
+# optics, the Mk 11's way), the bipod in the forend (two hidden parts drawn with their own models, GoM's M24 way),
+# GoM's bolt swap (the bolt and handle back). Stats: GoM's M24 (the closest GoM gun, its 7.62x51 from 24") with the
+# 7.62x54R's 7N1 / 7N14 a little harder (Min / Max 1.75 / 2.05), the 650 mm cold-hammered barrel steadier (Hit 57),
+# 5.8 kg (Kalashnikov's figure without optic or suppressor; GoM's M24 5.3) slower to bring up (Aiming Time 70, higher
+# is slower); GoM's M24 sounds and shot; sound 220 / 63 (the main mod's sound_model.py: 7.62x54R from 25.6").
+SV98_TEX = f'{TEX}/SV98'
+SV98_MAG = '762x54Magazine10_SV98'
+SV98_PARTS = [('SV98_Integrated_Rail_Up', 'RailUp', None), ('SV98_Integrated_Bipod_Folded', 'BipodIntegrated', None),
+              ('SV98_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.7)]
+GOM_SVD_MAG_PROP2 = {'offset': [0.0730, 0.0595, -0.0008], 'rotate': [-86.2737, 31.4012, -93.4148]}
+
+
+def sv98():
+    pts = load_points('sv98_points.json')
+    out = [f"module {M} {{\n", f"""
+    model SV98 {{
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_BODY,
+        texture  = {SV98_TEX},
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'scope'):
+        out.append(attachment(name, pts[name]))
+    out.append("    }\n")
+    for node in ('BOLT', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
+        out.append(f"""
+    model SV98_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_SV98|SV98_{node},
+        texture  = {SV98_TEX},
+        cullFace = None,
+    }}
+""")
+    out.append(f"""
+    model {SV98_MAG} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_SV98_magazines|{SV98_MAG},
+        texture  = {TEX}/{SV98_MAG},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{attachment('Bip01_Prop2', GOM_SVD_MAG_PROP2)}    }}
+}}
+""")
+    write(f'scripts/{M}/models_sv98.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    lines = [f"{w}MarzGuns.Bolt_Lock {M}.SV98_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.SV98_BOLT bolt_fired bolt_fired,",
+             f"{w}{M}.SV98_Integrated_Bipod_Folded {M}.SV98_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+             f"{w}{M}.SV98_Integrated_Bipod_Deployed {M}.SV98_BIPOD_DEPLOYED integrated_bipod integrated_bipod,",
+             f"{w}{M}.{SV98_MAG} {M}.{SV98_MAG} magazine magazine,"]
+    lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+    items = [f"module {M} {{\n", f"""
+    item SV98 {{
+        MinDamage                    = 1.75,
+        MaxDamage                    = 2.05,
+        CriticalChance               = 35.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 57,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 70,
+        RecoilDelay                  = 17,
+        MaxRange                     = 62.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 20,
+        MaxSightRange                = 28.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 20.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = true,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 5.8,
+        MetalValue                   = 45.0,
+        FireMode                     = Single,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_762x54,
+        AmmoBox                      = MarzGuns.762x54_Box,
+        MagazineType                 = {M}.{SV98_MAG},
+        MaxAmmo                      = 10,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        RackAfterShoot               = true,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_SV98,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.SV98,
+        AimReleaseSound              = MSR788AimRelease,
+        BreakSound                   = MSR788Break,
+        BringToBearSound             = MSR788BringToBear,
+        ClickSound                   = MSR788Jam,
+        DropSound                    = MSR788Drop,
+        EjectAmmoStartSound          = MSR788EjectAmmoStart,
+        EjectAmmoSound               = MSR788EjectAmmo,
+        EjectAmmoStopSound           = MSR788EjectAmmoStop,
+        EquipSound                   = MSR788Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = MSR788InsertAmmoStart,
+        InsertAmmoSound              = MSR788InsertAmmo,
+        InsertAmmoStopSound          = MSR788InsertAmmoStop,
+        RackSound                    = MSR788Rack,
+        ShellFallSound               = MSR788CartridgeFall,
+        SwingSound                   = MSR788Shoot,
+        UnequipSound                 = MSR788UnEquip,
+        SoundGain                    = 3.0,
+        SoundRadius                  = 220,
+        SoundVolume                  = 63,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_hunting_rifle,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+
+    item {SV98_MAG} {{
+        AmmoType         = swmg:bullet_762x54,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{SV98_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 10,
+        MountOn          = {M}.SV98,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = 0.15,
+        WeightModifier   = 0.15,
+        StaticModel      = {M}.{SV98_MAG},
+        WorldStaticModel = {M}.{SV98_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+"""]
+    for part, ptype, weight in SV98_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_sv98.txt', ''.join(items))
+    # GoM repairs its M24 with Aiming=3
+    write(f'scripts/{M}/fixing_sv98.txt', f"""module Base {{
+    fixing Fix SV98 {{
+        Require = {M}.SV98,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{M}.SV98'] = 'SV-98 Sniper Rifle'                   # GoM's "M24 Sniper Rifle"
+    names[f'{M}.{SV98_MAG}'] = 'SV-98 10Rds 7.62x54mm Magazine'  # GoM's "SVD 10Rds 7.62x54mm Magazine"
+    names[f'{M}.SV98_Integrated_Rail_Up'] = 'SV-98 Integrated Rail (Up)'
+    names[f'{M}.SV98_Integrated_Bipod_Folded'] = 'SV-98 Integrated Bipod (Folded)'
+    names[f'{M}.SV98_Integrated_Bipod_Deployed'] = 'SV-98 Integrated Bipod (Deployed)'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# Izhmash SV-99 (user, 2026-11-20; docs/post93_design.md "SV-98 and SV-99"; meshes and points:
+# scripts/post93/build_sv99.py; registries: shared/GunsOfTienPost93/SV99.lua): the .22 LR toggle-action rifle in its
+# two stocks, one item each (SV99 green plywood 2007-2009, SV99P black polymer 2009 on), sharing the action, its
+# 5-round magazine, the rail (hidden integrated part, the SV-98's way), the bipod parts (each gun draws its own
+# model) and the built-in suppressor (never seen without it: its quiet sound is the guns' own). The toggle lever is
+# GoM's Bolt part drawn at its pivot (`bolt_lock`) and swung back there (`bolt_fired`). Stats: the HK416 .22's from a
+# 350 mm barrel (0.35-0.65), a match rifle's steadiness (Hit 60, crits x3), slow to bring up for a .22 (Aiming Time 35)
+# and quiet: GoM's AS VAL's suppressed shot and gain, radius / volume 20 / 5 (sound_model.py's formula: .22 LR at
+# 2 grains from 13.8", subsonic as the SV-99 fires it at 345 m/s, -17 dB for the can). Weights: Kalashnikov's 3.4 kg
+# without scope or suppressor (polymer) and 4.5 with both; the plywood stock a little heavier.
+SV99_MAG = '22LRMagazine5_SV99'
+SV99_GUNS = {'SV99': {'name': 'SV-99 Sniper Rifle', 'weight': 4.0},
+             'SV99P': {'name': 'SV-99 Sniper Rifle (Polymer Stock)', 'weight': 3.8}}
+SV99_PARTS = [('SV99_Integrated_Rail_Up', 'RailUp', None), ('SV99_Integrated_Bipod_Folded', 'BipodIntegrated', None),
+              ('SV99_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.5)]
+
+
+def sv99():
+    allpts = load_points('sv99_points.json')
+    out = [f"module {M} {{\n"]
+    for gun in SV99_GUNS:
+        pts = allpts[gun]
+        out.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_SV99|{gun}_BODY,
+        texture  = {TEX}/{gun},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'world', 'magazine', 'bolt_lock', 'bolt_fired', 'scope'):
+            out.append(attachment(name, pts[name]))
+        out.append("    }\n")
+        for node in ('BOLT', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
+            out.append(f"""
+    model {gun}_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_SV99|{gun}_{node},
+        texture  = {TEX}/{gun},
+        cullFace = None,
+    }}
+""")
+    out.append(f"""
+    model {SV99_MAG} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_SV99_magazines|{SV99_MAG},
+        texture  = {TEX}/{SV99_MAG},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{attachment('Bip01_Prop2', GOM_SVD_MAG_PROP2)}    }}
+}}
+""")
+    write(f'scripts/{M}/models_sv99.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    items = [f"module {M} {{\n"]
+    for gun, g in SV99_GUNS.items():
+        lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
+                 f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,",
+                 f"{w}{M}.SV99_Integrated_Bipod_Folded {M}.{gun}_BIPOD_FOLDED integrated_bipod integrated_bipod,",
+                 f"{w}{M}.SV99_Integrated_Bipod_Deployed {M}.{gun}_BIPOD_DEPLOYED integrated_bipod integrated_bipod,",
+                 f"{w}{M}.{SV99_MAG} {M}.{SV99_MAG} magazine magazine,"]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+        items.append(f"""
+    item {gun} {{
+        MinDamage                    = 0.35,
+        MaxDamage                    = 0.65,
+        CriticalChance               = 30.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 3.0,
+        HitChance                    = 60,
+        AimingPerkHitChanceModifier  = 5,
+        Aimingtime                   = 35,
+        RecoilDelay                  = 8,
+        MaxRange                     = 30.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = 6,
+        MaxSightRange                = 16.0,
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1.0,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 0.8,
+        DoorDamage                   = 1,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {g['weight']},
+        MetalValue                   = 30.0,
+        FireMode                     = Single,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_22lr,
+        AmmoBox                      = GunsOfTien.22LR_Box,
+        MagazineType                 = {M}.{SV99_MAG},
+        MaxAmmo                      = 5,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        RackAfterShoot               = true,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = MSR788AimRelease,
+        BreakSound                   = MSR788Break,
+        BringToBearSound             = MSR788BringToBear,
+        ClickSound                   = MSR788Jam,
+        DropSound                    = MSR788Drop,
+        EjectAmmoStartSound          = MSR788EjectAmmoStart,
+        EjectAmmoSound               = MSR788EjectAmmo,
+        EjectAmmoStopSound           = MSR788EjectAmmoStop,
+        EquipSound                   = MSR788Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = MSR788InsertAmmoStart,
+        InsertAmmoSound              = MSR788InsertAmmo,
+        InsertAmmoStopSound          = MSR788InsertAmmoStop,
+        RackSound                    = MSR788Rack,
+        ShellFallSound               = MSR788CartridgeFall,
+        SwingSound                   = CapGunRevolverShoot,
+        UnequipSound                 = MSR788UnEquip,
+        SoundGain                    = 0.8,
+        SoundRadius                  = 20,
+        SoundVolume                  = 5,
+        NPCSoundBoost                = 1.0,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 1,
+        SplatSize                    = 1,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+    }}
+""")
+    items.append(f"""
+    item {SV99_MAG} {{
+        AmmoType         = gunsoftien:bullet_22lr,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{SV99_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 5,
+        MountOn          = {M}.SV99;{M}.SV99P,
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = 0.03,
+        WeightModifier   = 0.03,
+        StaticModel      = {M}.{SV99_MAG},
+        WorldStaticModel = {M}.{SV99_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in SV99_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_sv99.txt', ''.join(items))
+    write(f'scripts/{M}/fixing_sv99.txt', "module Base {\n" + ''.join(f"""    fixing Fix {gun} {{
+        Require = {M}.{gun},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for gun in SV99_GUNS) + "}\n")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for gun, g in SV99_GUNS.items():
+        names[f'{M}.{gun}'] = g['name']
+    names[f'{M}.{SV99_MAG}'] = 'SV-99 5Rds .22 LR Magazine'
+    names[f'{M}.SV99_Integrated_Rail_Up'] = 'SV-99 Integrated Rail (Up)'
+    names[f'{M}.SV99_Integrated_Bipod_Folded'] = 'SV-99 Integrated Bipod (Folded)'
+    names[f'{M}.SV99_Integrated_Bipod_Deployed'] = 'SV-99 Integrated Bipod (Deployed)'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -3302,5 +3685,7 @@ if __name__ == '__main__':
     hk416qr22()
     hk417()
     grozas()
+    sv98()
+    sv99()
     translations()
     print('written under', os.path.normpath(ROOT))

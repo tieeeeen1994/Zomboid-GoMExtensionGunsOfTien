@@ -180,6 +180,15 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - The US Subsonic round needs racking after every shot in it (no PBS-1 fits)
 - Found with the RPKs, with its drums and boxes
 
+## SVU
+
+- SVU (7.62x54mmR), the bullpup Dragunov of 1991 in its first, semi-automatic form, built on Guns of Marz's SVD: the
+  shortened barrel with its three-chamber muzzle brake, the butt behind the magazine, the grip and trigger under the
+  handguard, the cheek rest on the receiver cover
+- Folding iron sights, raised without an optic and folded down under one
+- Guns of Marz's SVD magazine, its AK mount on the SVU's side rail (moved forward, as on the real gun) and its optics
+- Found where Guns of Marz's SVD is (Russian rifles, mercenary snipers), with its magazines and boxes
+
 ## FN P90
 
 - FN P90 as FN made it from 1990: its ring sight on top, the 50-round magazine lying along the top of the gun, held
@@ -228,5 +237,7 @@ as loot the way Guns of Marz's are (scaled by Guns of Marz's own loot multiplier
 - Flip-up iron sights follow the optic on the MP7s, the SCARs and the Vectors too, as on the HK416: up with no optic, the rear folded under a red dot or holographic sight, both folded under a magnified scope (the rear taken off where an optic's mount needs its spot on the rail)
 - Knight's Mk 11 Mod 0, the SR-25 as US special forces adopted it in 2000: a 20-inch barrel, Knight's rail handguard with rails on all four sides for Guns of Marz optics (its sniper scopes need no mount), foregrips, bipods, lights and lasers, semi-automatic; takes the SR-25's 20-round magazine, Magpul's PMAGs and D-50 drum and the SOCOM762-RC suppressor; found where the SCAR-H is
 - TsKIB SOO's OTs-14 Groza bullpups of 1994, on the AKS-74U's mechanism, automatic: the Groza-1 (7.62x39mm, long barrel; Guns of Marz's AK-47 magazines and the RPK's 40 and drum; its AK muzzle mount and PBS-1, with which 7.62x39 US Subsonic cycles it; also with a GP-25 grenade launcher, switched to from Gunworks' radial menu like Guns of Marz's M16A2 with M203, firing its 40mm grenades), the compact Groza-2 Prototype (5.45x39mm, held like a pistol, Guns of Marz's AK-74 magazines) and the Groza-4 (9x39mm, Guns of Marz's AS VAL magazines, a built-in suppressor as on Guns of Marz's AS VAL); Guns of Marz's Picatinny rail fits on the carrying handle for its optics; found with Guns of Marz's post-1993 guns
+- Izhmash SV-98 (2000), the Russian 7.62x54mmR bolt-action sniper rifle in its green plywood thumbhole stock: its own 10-round magazine, a rail on the receiver for Guns of Marz optics, a bipod that folds into the forend, worked by hand after every shot; found where Guns of Marz's SVD goes to mercenary snipers and with its post-1993 guns
+- Izhmash SV-99 (1999), the quiet .22 LR sniper rifle with its straight-pull toggle lever and built-in suppressor, in its two stocks: green plywood (2007) and black polymer (2009); a 5-round magazine, a rail on the receiver for Guns of Marz optics, a folding bipod; found with Guns of Marz's post-1993 guns
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)

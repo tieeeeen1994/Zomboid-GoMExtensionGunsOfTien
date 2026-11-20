@@ -201,6 +201,8 @@
   "GunsOfTien.762x39Drum100_RPD": "RPD 100Rds 7.62x39mm Belt Drum",
   "GunsOfTien.RPD_Integrated_Bipod_Folded": "RPD Integrated Bipod (Folded)",
   "GunsOfTien.RPD_Integrated_Bipod_Deployed": "RPD Integrated Bipod (Deployed)",
+  "GunsOfTien.SVU": "SVU Semi-Automatic Rifle",
+  "GunsOfTien.762x54Magazine10_SVD_Hand": "SVD 10Rds 7.62x54mm Magazine",
   "GunsOfTien.ChargingHandle_Forward": "Charging Handle (Forward)",
   "GunsOfTien.ChargingHandle_Back": "Charging Handle (Back)",
   "MarzGuns.MP5": "MP5A3 Submachine Gun",

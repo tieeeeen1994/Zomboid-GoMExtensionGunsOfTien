@@ -141,6 +141,23 @@ lines[M .. "MK11"] = {
     "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
 }
 lines[M .. "762x51Magazine10_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+-- The SV-98 (shared/GunsOfTienPost93/SV98.lua): its rail on the receiver, its bipod in the forend
+lines[M .. "SV98"] = {
+    "Uses 7.62x54mmR rounds.",
+    "Integrated Picatinny rail: Up",
+    "Has Integrated Bipod",
+}
+lines[M .. "762x54Magazine10_SV98"] = { "Uses 7.62x54mmR rounds." }
+-- The SV-99s (shared/GunsOfTienPost93/SV99.lua): the rail, the bipod, the suppressor built in
+for _, gun in ipairs({ "SV99", "SV99P" }) do
+    lines[M .. gun] = {
+        "Uses .22 LR rounds.",
+        "Has Integrated Suppressor",
+        "Integrated Picatinny rail: Up",
+        "Has Integrated Bipod",
+    }
+end
+lines[M .. "22LRMagazine5_SV99"] = { "Uses .22 LR rounds." }
 -- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats, its flip-up iron sights
 lines[M .. "HK416"] = {
     "Uses .223/5.56x45mm NATO rounds.",

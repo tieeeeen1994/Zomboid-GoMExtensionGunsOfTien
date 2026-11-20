@@ -568,6 +568,29 @@ Sniper"); review renders render_hk417.py; icons and the magazine texture make_hk
 | Loot | one alternative in GoM's `World_Army_Rifle_Spawner` (6) and `Zombie_Army_Rifle_Spawner` (4) giving one of the two, with up to n of H&K's 20s and 7.62x51mm boxes (the SCAR-H's / Mk 11's way) | |
 | Hot Brass | the Mk 11's values | the same |
 
+## SV-98 and SV-99 (user, 2026-11-20: researched, then "let's implement the new guns"; built, not played)
+
+Research: docs/sv98_sv99_svu_research.md (photos in references/sv98, references/sv99). Both Post-93 (shown 1999-2000,
+adopted 2003-2005). GoM's animations only (user, 2026-11-20): GoM's unused magazine bolt-action nodes (vanilla's
+hunting rifle clips, keyed on WeaponReloadType boltaction; the main mod's GoMReloads.lua "boltaction"), the rack after
+every shot from the script's RackAfterShoot. Built from scratch on the kit (post93/build_mp7.py), measured off flat
+studio side views column by column and checked by overlaying the render's outline on the photo.
+
+| | SV-98 | SV-99 |
+|---|---|---|
+| Items | `GunsOfTienPost93.SV98`, "SV-98 Sniper Rifle" (GoM's "M24 Sniper Rifle") | `SV99`, "SV-99 Sniper Rifle" (green plywood, 2007-2009); `SV99P`, "SV-99 Sniper Rifle (Polymer Stock)" (2009 on); the early lacquered wooden stock (1999-2006) not built (small photos only) |
+| Magazine | its own 10-round polymer magazine, `762x54Magazine10_SV98`, flush in the stock, GoM's "7.62x54mm" family, profile "7.62x54mm SV-98" | its own 5-round plastic magazine, `22LRMagazine5_SV99`, both guns, the main mod's ".22 LR" family, profile ".22 LR SV-99" |
+| Stats | GoM's M24 with the 7N1 a little harder: damage 1.75-2.05, Hit 57, Aiming Time 70, RecoilDelay 17, range 62, sights 20-28, weight 5.8 (Kalashnikov, bare), sound 220 / 63 (sound_model.py: 7.62x54R from 25.6"), GoM's M24 sounds | the HK416 .22's from 350 mm: damage 0.35-0.65, crit 30 (x3), Hit 60, Aiming Time 35, RecoilDelay 8, range 30, weight 4.0 / 3.8; built-in suppressor: GoM's AS VAL shot and gain, 20 / 5 (sound_model.py's formula, subsonic at 345 m/s, -17 dB) |
+| Optics | the receiver's rail (modelled) as a hidden `SV98_Integrated_Rail_Up`, the parent of every GoM optic (the Mk 11's way) | the same, `SV99_Integrated_Rail_Up`; no iron sights (the real rifle has none) |
+| Bipod | folds into the forend: `SV98_Integrated_Bipod_Folded / _Deployed`, GoM's M24 way (Gunworks' folding bipod and bipod stance, no stat changes) | the same, `SV99_Integrated_Bipod_*`, each stock drawing its own |
+| Action | GoM's Bolt part: the shroud, bolt body and ball-knobbed handle back 92 mm | GoM's Bolt part: the toggle lever, modelled about its pivot, drawn at `bolt_lock` and swung back 62 degrees at `bolt_fired` |
+| Loot | GoM's `Zombie_Mercenary_Sniper_Spawner` (gun, up to 6 magazines, up to 8 boxes) and `World_Anachronistic_Spawner` (3 and 5) | `World_Anachronistic_Spawner`, one of the two stocks, up to 3 magazines, up to 4 .22 LR boxes |
+| Casings | GoM's M24's (a case pulled out by hand) | the same, lighter |
+| Repair | RepairPack, Aiming 3 | RepairPack, Aiming 3 |
+
+Not built: the SV-98's carrying handle, mirage strap, rear monopod and factory suppressor; the aluminium-chassis
+SV-98 (2016 army rifles) and the SV-98M (2023-24 prototype, no usable side view); the SV-99's wooden stock.
+
 ## H&K HK416 .22 LR pistols (user, 2026-11-13: both decided, then only Walther's built; not played)
 
 User: "Let's start with HK416 pistol", then, shown the two that were sold, "WHY NOT BOTH??? MP5 series has a lot of

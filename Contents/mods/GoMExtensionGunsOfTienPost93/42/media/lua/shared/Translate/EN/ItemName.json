@@ -145,5 +145,16 @@
   "GunsOfTienPost93.HK417_Integrated_Rail_Up": "HK417 Integrated Rail (Up)",
   "GunsOfTienPost93.HK417_Integrated_Rail_Down": "HK417 Integrated Rail (Down)",
   "GunsOfTienPost93.HK417_Integrated_Rail_Left": "HK417 Integrated Rail (Left)",
-  "GunsOfTienPost93.HK417_Integrated_Rail_Right": "HK417 Integrated Rail (Right)"
+  "GunsOfTienPost93.HK417_Integrated_Rail_Right": "HK417 Integrated Rail (Right)",
+  "GunsOfTienPost93.SV98": "SV-98 Sniper Rifle",
+  "GunsOfTienPost93.762x54Magazine10_SV98": "SV-98 10Rds 7.62x54mm Magazine",
+  "GunsOfTienPost93.SV98_Integrated_Rail_Up": "SV-98 Integrated Rail (Up)",
+  "GunsOfTienPost93.SV98_Integrated_Bipod_Folded": "SV-98 Integrated Bipod (Folded)",
+  "GunsOfTienPost93.SV98_Integrated_Bipod_Deployed": "SV-98 Integrated Bipod (Deployed)",
+  "GunsOfTienPost93.SV99": "SV-99 Sniper Rifle",
+  "GunsOfTienPost93.SV99P": "SV-99 Sniper Rifle (Polymer Stock)",
+  "GunsOfTienPost93.22LRMagazine5_SV99": "SV-99 5Rds .22 LR Magazine",
+  "GunsOfTienPost93.SV99_Integrated_Rail_Up": "SV-99 Integrated Rail (Up)",
+  "GunsOfTienPost93.SV99_Integrated_Bipod_Folded": "SV-99 Integrated Bipod (Folded)",
+  "GunsOfTienPost93.SV99_Integrated_Bipod_Deployed": "SV-99 Integrated Bipod (Deployed)"
 }

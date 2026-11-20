@@ -106,6 +106,18 @@ SpentCasingPhysics.RegisterWeaponParams({
         verticalForce = -0.05,
         spinForce     = { 24, 34 },
     },
+    -- The SVU throws its cases out of the SVD's port on the right with the SVD's force and spread, but from where
+    -- GoM's FAMAS starts them (a bullpup: the port behind the grip, beside the shooter's face).
+    ["GunsOfTien.SVU"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.08,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 90,
+        heightSpread  = { 80, 90 },
+        ejectAngle    = 65,
+        spinForce     = { 86, 122 }
+    },
     -- The RPKs eject as GoM's AKs (the same receiver and port, the grip where it is on the AKs).
     ["GunsOfTien.RPK"] = {
         forwardOffset = 0.35,
