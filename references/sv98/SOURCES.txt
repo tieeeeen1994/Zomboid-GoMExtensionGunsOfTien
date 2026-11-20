@@ -1,0 +1,1234 @@
+Izhmash / Kalashnikov SV-98 (6V10) bolt-action sniper rifle: references gathered 2026-11-20, before modelling.
+Contact sheets: contact_sheet_<folder>.png (sv98, sv98_alu, sv98m, sv338, record, magazines, docs, airsoft).
+Not in git (references/ is ignored); photos belong to their sites. Per-file sources are merged below (folder/file,
+page title, page URL and image URL); each folder also keeps its own SOURCES.txt with the same lines.
+
+ORIGIN. Designed by a team under Vladimir D. Stronskiy at Izhmash (Izhevsk) in 1998-2000 (ru.wikipedia), from the
+"Record-CISM" 300 m full-bore target rifle (Record family, 1972 lineage); the SV-98 adds a detachable 10-round
+magazine (ru.wikipedia; Kalashnikov 2017 product page: "developed on the basis of the Record-CISM"). Adopted 2003 by
+special-operations units as part of the 6S11 sniper system (rifle 6V10 + 7N14 round) (en.wikipedia; ru.wikipedia
+infobox gives service from 2003, series production from 2004). Shown publicly at the "First All-Russian spetsnaz
+rally" in Izhevsk in January (c. 2000; club.guns.ru article, written alongside ROST-99 / SV-99 pages) already in the
+green stock with carry handle, PKS-07 scope and suppressor, so the plywood-stock rifle existed by 2000.
+Bolt: rotating, three symmetrical front lugs, cadmium-plated (grey) bolt body, cocking indicator at the rear of the
+bolt, handle on the RIGHT with a ball knob, angled down. Safety: lever ("flag") on the right rear of the receiver,
+just behind the bolt handle, moved forward/back; locks trigger, sear and bolt. Magazine catch: large button; the
+magazine slides straight up along a vertical guide rod in the well (no SVD-style rock-in) (club.guns.ru,
+maksimov.su). Barrel: cold-hammer forged, free-floated, 650 mm, 4 grooves RH, twist 320 mm; early guns not
+chrome-lined (club.guns.ru c.2000), the 2017-18 Kalashnikov pages say chromed bore and chamber.
+
+1) SV-98, plywood (laminated veneer) stock, 7.62x54R. The classic look: green-stained laminated "aviation plywood"
+   thumbhole stock with long oval grooves along the forend, stippled pistol grip, skeleton butt with two windows,
+   adjustable comb (cheek piece) and rubber butt plate adjustable for length, height and cant; folding bipod in a
+   slot under the forend and a fold-down rear monopod in the butt; detachable carry handle bolted to the stock
+   (protects the scope); anti-mirage strap. Muzzle: threaded, with a conical "birdcage" muzzle device / thread
+   protector sleeve, or the factory sound suppressor (TGP-V); the front sight (hooded post) sits on a band near the
+   muzzle, rear sight is a drum (barrel-type) sight on the receiver graduated to 600 m in 100 m steps (maksimov.su).
+   Optic rail on top of the receiver (a slotted rail in close-ups, e.g. sv98/commons_SV-98-21; the c.2000 text calls
+   it an "upper mounting plank"; whether early guns had a true Picatinny is unverified). Standard optics PKS-07 (7x)
+   early, 1P69 "Hyperon" 3-10x42 later. Colour: green stock (shades vary from dark bottle green to bright teal; c.2000
+   guns darker), black metal. A fibreglass-reinforced polymer stock was also offered (en.wikipedia; sv98/ya_084.png
+   shows a black stock, unverified which).
+   Specs (Kalashnikov product page 2017, archived; same table in docs/ya_027.png): 7.62x54R, 10 rds, length 1200 mm
+   without suppressor / 1375 with, also "overall length 1270" (same figure as club.guns.ru c.2000; probably stock
+   at full length or with muzzle device; unclear), height 300, width 200, barrel 650, mass 5.8 kg without optic and
+   suppressor (5.5 "without cartridges"; club.guns.ru 6.2; ru.wikipedia 6.2), 7.8 kg with optic and suppressor,
+   820 m/s, iron sights 600 m, optic 1000 m, trigger 1.0-1.5 kgf adjustable, stock length adjustment 20 mm, comb
+   +-30 mm vertical / +-7 mm horizontal (club.guns.ru c.2000: butt plate up/down 30, left/right 7; cheek +9/-6
+   vertical, +4 horizontal; length 20; trigger 1.5-2.0 kgf).
+
+2) SV-98 with aluminium stock (no designation change, still 6V10). Prototypes 2013-2014 (Eurosatory 2014: skeleton
+   stock, black plastic adjustable butt); series production for the MoD from 2016: B95 aluminium-alloy chassis,
+   side-FOLDING skeleton butt with adjustable comb, rubber butt plate and rear monopod, separate polymer pistol grip
+   (sport style), Picatinny rail on the receiver, short forend with holes / short rail segments, same 10-round
+   polymer magazine, same muzzle threads / suppressor. Mostly black; tan/FDE and olive shown at expos. A version with
+   a detachable (non-folding) butt was made in small numbers for other agencies and on a few civilian Records.
+   Sources: Kalashnikov magazine, M. Degtyarev, 6 Aug 2024 (kalashnikov.ru "Концерн Калашников модернизирует винтовку
+   СВ-98 (СВ-98М)"); Kalashnikov 2018 product card (5.8 kg, 1200 mm, aluminium stock, Picatinny). Note: IMFDB and
+   English sources call this the "SV-98M"; Degtyarev says that is wrong (the MoD rifles stayed SV-98) and that the
+   aluminium rifles stayed in depots until 2022, so plywood rifles were the ones in troop use before that. Two
+   photos from May 2026 (sv98_alu/yb_099, yb_119; rg.ru "SVCh, SV-98 and SVDS reworked after SVO experience") show it
+   still current.
+
+3) SV-98M (the real one). Kalashnikov initiative, first prototype 2023, shown at Army-2024 as a civilian-certified
+   "Record" prototype, not adopted as of the 2024 articles. Chassis layout: complex receiver with an integral
+   SVD-type magazine well (takes SVD magazines; a polymer-bodied SVD-type magazine made for it), mount for any
+   forend at the receiver front (the prototype has a long M-LOK tube with top rail), folding-stock hinge at the
+   receiver rear, safety moved to a thumb lever on the RIGHT side of the receiver, mag catch in the trigger guard.
+   2023 prototype: SV-98-aluminium-style folding stock, experimental asymmetric muzzle brake (DTK), large
+   suppressor (PMS) on a plain M18x1 thread (the SV-98's muzzle seat is conical). Army-2024 version: slotted flash
+   hider, new folding adjustable stock, polymer forend cover, polymer SVD-type magazine. Stainless forged barrel
+   trialled. Sources: Kalashnikov magazine 6 Aug 2024 (above) and 14 Aug 2024 ("SV-98M at Army 2024").
+
+4) 7.62x51 / .308: SV-98 offered in 7.62 NATO for export (en.wikipedia; club.guns.ru lists 7.62x54 and .308 Win);
+   civilian Record-308 too. No photo shows an external difference (the magazine for the rimless round is not
+   pictured separately); treat as a calibre option, not a separate model.
+
+5) .338 Lapua: Izhmash made a .338 LM prototype in the 2000s (ru.wikipedia) and the SV-338 / SV-338M / SV-338M1
+   (en.wikipedia: scaled-up magnum actions, otherwise like the SV-98; no dimensions in any source found). Only
+   sv338/yb_081 (yaplakal, labelled CB-338, CB-338M, CB-338M1) shows the family: SV-338 = SV-98-like green stock,
+   longer barrel and brake; -338M = green stock with carry handle; -338M1 = black chassis with folding stock, like
+   the aluminium SV-98. Other sv338/ photos are attributed by their page titles only (red-bear.ru, guns.ru "SV-98M-338"
+   thread); some may be the aluminium SV-98 or the unrelated Kalashnikov VSV-338 (Army-2016 prototype, 1100 mm,
+   5.5 kg, 5 rds per modernfirearms.net), so treat sv338/ as unverified. Civilian Record-338 (KO-13 family):
+   barrel 690 mm, 6.4 kg (sport stock) / 5.6 kg (hunting stock) (Izhmash 2010 page, archived); TFB 2010: 5 rds,
+   27" barrel, 14 lb.
+
+6) Record family (record/): Record-CISM / Record-308-CISM target rifles: 650 mm barrel, 10 rds, 5.5 kg without
+   optic, 1220 x 250 x 100 mm, diopter or iron + optical sights, comb 15 / 8 mm, butt plate 30 / 7 mm (Izhmash
+   2008 page, archived). Photos (IWA 2007, record/yb_043, yb_053) show the Record-6-CISM as a classic wooden
+   (brown) target stock with diopter sight, NOT the SV-98 thumbhole shape; the wooden Record-338 does have the
+   SV-98 shape. Record-1 / Record-2 (700 / 760 mm barrels) are older wooden target rifles. The civilian KO-13
+   "Record" (low-rate from 2010 per ru.wikipedia, no suppressor mount; ads show 2007 rifles) is externally an SV-98
+   (green plywood stock, carry handle), so record/ civilian photos (guns.ru sale ads) are usable as SV-98 references
+   too, some with natural-wood or aluminium stocks.
+
+Magazine (magazines/): own 10-round double-stack, glass-fibre-reinforced nylon with metal inserts (feed lips,
+   catch), roughly rectangular, ribbed side panels, round boss low on the left side, short guide channel at the
+   front for the well's guide rod. Not interchangeable with SVD (until the SV-98M). ru3_063/065/070/075 and the
+   S&T titles are AIRSOFT replica magazines (shape copies, 1250 px product shots); maks_*, ru_024, ru_041, ru3_032,
+   ru3_069, ru3_086/088/089/091, yb_121-144 are real ones (guns.ru sale ads, maksimov.su).
+
+Variants existing by 2000: only the plywood-stock SV-98 (7.62x54R; .308 offered), with PKS-07, carry handle,
+   suppressor / muzzle sleeve. The aluminium stock is 2013+ (series 2016), the SV-98M 2023+, SV-338 2000s prototypes.
+
+Best measuring views (straight sides):
+   sv98: en3_012.jpg (2250x668, right, IMFDB "SV98.jpg", scope + bipod), ru_003.jpg (2048x729, right, carry
+   handle + PKS-07, zonawar), ru_013.jpg (2048x729, left, carry handle), commons_SV-98-04.jpg (1920, left) and
+   commons_SV-98-16.jpg (1920, right) (on cloth, slight perspective), reco_walkaround_050/051/053/054 (1280, sides),
+   ru2_032.jpg / kalA_vintovka-SV-98-6V10.jpg (1024, right, suppressor), club_sv98-1 / -2 (c.2000, right / left,
+   ~860 px), SV-98_early.jpg (IMFDB), docs/yb_180.jpg (1310x535, stock drawing with dimension lines, no numbers),
+   record/yb_051.jpg (3096x785, civilian Record, = SV-98, side) and record/yb_004 / yb_008 / yb_011 (1920 wide).
+   sv98_alu: ru2_025.jpg (3000x1110, left, suppressor, bipod), en_001.jpg / ru_056.jpg (1620x1080, right, official
+   product photo), SV-98M.jpg (IMFDB 2131x510, right; actually the aluminium SV-98), ru_017 / ru3_031 (1024, right),
+   kalA_SV-98-alyuminievaya-lozha.jpg (1024, folding stock), kalA_12612460-1.jpg (non-folding stock version).
+   sv98m: kalA_SV-98M_10.jpg (1343x600, 2023 prototype, stock folded), ru2_002.jpg, kalB_SV-98M-2024.jpg (1024x202, Army-2024 version, stock open), no high-res straight side of the final version.
+Front views: sv98/reco_walkaround_024, 025, commons_SV-98-10. Rear views: sv98/reco_walkaround_041, 042.
+3/4 views: sv98/commons_SV-98-01..03, 07, 11, 12, 17, Armourers_Day_*, Satrun_*, reco_walkaround_001-069 (101
+   RecoMonkey photos of one rifle), maks_17/19/39/40; sv98_alu/yb_106 (4096 px), ru_018, ru_031, ru_029, en_005;
+   sv98m/ru_005, yb_054, kalA_SV-98M-Armiya-2024.
+Close-ups: stock / butt / cheek piece: sv98/reco_details_076-081, commons_SV-98-18/19, ru_048, maks_30,
+   club_sv98-5, ya_029, ya_030/031 (butt plates), ya_071/073/072/077/081-085 (stock off the rifle), ru3_094;
+   receiver / bolt / safety: commons_SV-98-20..23, reco_details_082/083, maks_03/14/18/23/25/32/47, ru_035/036/051,
+   var2_001, yb_146 (bolt parts), yb_158 / ya_120 (markings "7,62x54R", "СВ-98");
+   muzzle / front sight / suppressor: maks_20/33, ru_045/046/049/050, reco_details_070/072/088/089,
+   commons_SV-98-24/25, ya_036/038/039/042, club_sv98-7; bipod: reco_details_090-093, ru_042, maks_41,
+   ya_019; mag well / magazine in rifle: maks_29, ru_058, reco_details_094/095, ru3_073/074; full kits:
+   yb_140 (1896 px, everything laid out), yb_145, ru_001, yb_023.
+   sv98_alu: ru_018 / ru_031 (butt, grip, receiver), ru2_028 (magazine in hand); sv98m: kalA_* (safety on / off,
+   mag catch, SVD magazine, DTK, PMS), ru_032, ru3_095.
+Docs (docs/): ru3_001 (Rosgvardia infographic with specs), ru3_066 (manual cover "СВ-98.РЭ", only the cover was
+   found), ya_020 / ya_021 / ya_028 / yb_030 / yb_033 (magazine and brochure pages with spec tables), ya_027.png
+   (Kalashnikov spec table), yb_180 (stock drawing with dimension lines).
+Airsoft (airsoft/): Snow Wolf, S&T, Specna Arms / CORE, Raptor replicas of the plywood SV-98 (green, olive, tan,
+   black), many clean multi-angle product shots (det_002 / det_004 2400 px, en_031 2000 px, en3_072 2400 px) and
+   their dummy suppressors (en3_109-111); proportions are close but not verified against the real rifle.
+Missing: no true straight top or bottom view of a whole rifle (closest: commons_SV-98-21 receiver from above,
+   ru3_094 stock from above, reco_walkaround_013/023); no straight front/rear of the aluminium or M versions; the
+   Army-2024 SV-98M only in exhibition 3/4 views and one 1024 px side; no SV-338 at usable resolution; no separate
+   .308 magazine; the suppressor (TGP-V) and muzzle sleeve are not measured anywhere (length unknown; overall 1375
+   vs 1200 suggests the suppressor adds ~175 mm beyond the muzzle sleeve).
+
+Per-file sources (folder/file, page title, page URL (image URL)):
+
+== sv98/ (306 files)
+sv98/SV-98_Handle_Suppressed.jpg  (source line missing)
+sv98/SV-98_early.jpg  (source line missing)
+sv98/club_sv98-1.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-1.jpg)
+sv98/club_sv98-2.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-2.jpg)
+sv98/club_sv98-3.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-3.jpg)
+sv98/club_sv98-4.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-4.jpg)
+sv98/club_sv98-5.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-5.jpg)
+sv98/club_sv98-6.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-6.jpg)
+sv98/club_sv98-7.jpg  club.guns.ru: СВ-98 - снайперская винтовка специального назначения
+    http://club.guns.ru/sv98.html (http://club.guns.ru/images/sv98/sv98-7.jpg)
+sv98/commons_Interpolitex2015part3-56.jpg  File:Interpolitex2015part3-56.jpg (2250x1458)
+    https://commons.wikimedia.org/wiki/File:Interpolitex2015part3-56.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Interpolitex2015part3-56.jpg/1920px-Interpolitex2015part3-56.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Interpolitex_2013_534-50_.jpg  File:Interpolitex 2013 (534-50).jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:Interpolitex_2013_(534-50).jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Interpolitex_2013_%28534-50%29.jpg/1920px-Interpolitex_2013_%28534-50%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Interpolitex_2013_534-51_.jpg  File:Interpolitex 2013 (534-51).jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:Interpolitex_2013_(534-51).jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Interpolitex_2013_%28534-51%29.jpg/1920px-Interpolitex_2013_%28534-51%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-01.jpg  File:SV-98-01.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98-01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/SV-98-01.jpg/1920px-SV-98-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-02.jpg  File:SV-98-02.jpg (2250x1452)
+    https://commons.wikimedia.org/wiki/File:SV-98-02.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/SV-98-02.jpg/1920px-SV-98-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-03.jpg  File:SV-98-03.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98-03.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/SV-98-03.jpg/1920px-SV-98-03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-04.jpg  File:SV-98-04.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98-04.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/SV-98-04.jpg/1920px-SV-98-04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-05.jpg  File:SV-98-05.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-05.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/SV-98-05.jpg/1920px-SV-98-05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-06.jpg  File:SV-98-06.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-06.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/SV-98-06.jpg/1920px-SV-98-06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-07.jpg  File:SV-98-07.jpg (2250x1448)
+    https://commons.wikimedia.org/wiki/File:SV-98-07.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/SV-98-07.jpg/1920px-SV-98-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-08.jpg  File:SV-98-08.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-08.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/SV-98-08.jpg/1920px-SV-98-08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-09.jpg  File:SV-98-09.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-09.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/SV-98-09.jpg/1920px-SV-98-09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-10.jpg  File:SV-98-10.jpg (2250x1446)
+    https://commons.wikimedia.org/wiki/File:SV-98-10.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/SV-98-10.jpg/1920px-SV-98-10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-11.jpg  File:SV-98-11.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-11.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/SV-98-11.jpg/1920px-SV-98-11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-12.jpg  File:SV-98-12.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-12.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/SV-98-12.jpg/1920px-SV-98-12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-13.jpg  File:SV-98-13.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-13.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/SV-98-13.jpg/1920px-SV-98-13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-14.jpg  File:SV-98-14.jpg (2250x1448)
+    https://commons.wikimedia.org/wiki/File:SV-98-14.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/SV-98-14.jpg/1920px-SV-98-14.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-15.jpg  File:SV-98-15.jpg (2250x1452)
+    https://commons.wikimedia.org/wiki/File:SV-98-15.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/SV-98-15.jpg/1920px-SV-98-15.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-16.jpg  File:SV-98-16.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-16.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/SV-98-16.jpg/1920px-SV-98-16.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-17.jpg  File:SV-98-17.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-17.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/SV-98-17.jpg/1920px-SV-98-17.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-18.jpg  File:SV-98-18.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-18.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/SV-98-18.jpg/1920px-SV-98-18.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-19.jpg  File:SV-98-19.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-19.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/SV-98-19.jpg/1920px-SV-98-19.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-20.jpg  File:SV-98-20.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-20.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/SV-98-20.jpg/1920px-SV-98-20.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-21.jpg  File:SV-98-21.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-21.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/SV-98-21.jpg/1920px-SV-98-21.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-22.jpg  File:SV-98-22.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-22.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/SV-98-22.jpg/1920px-SV-98-22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-23.jpg  File:SV-98-23.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-23.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/SV-98-23.jpg/1920px-SV-98-23.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-24.jpg  File:SV-98-24.jpg (2250x1446)
+    https://commons.wikimedia.org/wiki/File:SV-98-24.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/SV-98-24.jpg/1920px-SV-98-24.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-25.jpg  File:SV-98-25.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-25.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/SV-98-25.jpg/1920px-SV-98-25.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-26.jpg  File:SV-98-26.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-26.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/SV-98-26.jpg/1920px-SV-98-26.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-27.jpg  File:SV-98-27.jpg (2250x1449)
+    https://commons.wikimedia.org/wiki/File:SV-98-27.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/SV-98-27.jpg/1920px-SV-98-27.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-28.jpg  File:SV-98-28.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-28.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/SV-98-28.jpg/1920px-SV-98-28.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-29.jpg  File:SV-98-29.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-29.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/SV-98-29.jpg/1920px-SV-98-29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-30.jpg  File:SV-98-30.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98-30.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/SV-98-30.jpg/1920px-SV-98-30.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98-31.jpg  File:SV-98-31.jpg (2250x1452)
+    https://commons.wikimedia.org/wiki/File:SV-98-31.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/SV-98-31.jpg/1920px-SV-98-31.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_-_Interpolitekh-2009_01.jpg  File:СВ-98 - Интерполитех-2009 01.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%92-98_-_%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85-2009_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/%D0%A1%D0%92-98_-_%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85-2009_01.jpg/1920px-%D0%A1%D0%92-98_-_%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85-2009_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_4thNovSniperCompetition22.jpg  File:SV-98 4thNovSniperCompetition22.jpg (2248x1453)
+    https://commons.wikimedia.org/wiki/File:SV-98_4thNovSniperCompetition22.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/SV-98_4thNovSniperCompetition22.jpg/1920px-SV-98_4thNovSniperCompetition22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Engineering_technologies_-_2010.jpg  File:SV-98 Engineering technologies - 2010.jpg (2250x1427)
+    https://commons.wikimedia.org/wiki/File:SV-98_Engineering_technologies_-_2010.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/SV-98_Engineering_technologies_-_2010.jpg/1920px-SV-98_Engineering_technologies_-_2010.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_01.jpg  File:SV-98 Sniping competition for The Armourers Day 01.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/SV-98_Sniping_competition_for_The_Armourers_Day_01.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_02.jpg  File:SV-98 Sniping competition for The Armourers Day 02.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_02.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/SV-98_Sniping_competition_for_The_Armourers_Day_02.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_03.jpg  File:SV-98 Sniping competition for The Armourers Day 03.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_03.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/SV-98_Sniping_competition_for_The_Armourers_Day_03.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_04.jpg  File:SV-98 Sniping competition for The Armourers Day 04.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_04.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/SV-98_Sniping_competition_for_The_Armourers_Day_04.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_05.jpg  File:SV-98 Sniping competition for The Armourers Day 05.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_05.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/SV-98_Sniping_competition_for_The_Armourers_Day_05.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_06.jpg  File:SV-98 Sniping competition for The Armourers Day 06.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_06.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/SV-98_Sniping_competition_for_The_Armourers_Day_06.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_07.jpg  File:SV-98 Sniping competition for The Armourers Day 07.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_07.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/SV-98_Sniping_competition_for_The_Armourers_Day_07.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_08.jpg  File:SV-98 Sniping competition for The Armourers Day 08.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_08.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/SV-98_Sniping_competition_for_The_Armourers_Day_08.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_09.jpg  File:SV-98 Sniping competition for The Armourers Day 09.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_09.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/SV-98_Sniping_competition_for_The_Armourers_Day_09.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_10.jpg  File:SV-98 Sniping competition for The Armourers Day 10.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_10.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/SV-98_Sniping_competition_for_The_Armourers_Day_10.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_11.jpg  File:SV-98 Sniping competition for The Armourers Day 11.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_11.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/SV-98_Sniping_competition_for_The_Armourers_Day_11.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_Sniping_competition_for_The_Armourers_Day_12.jpg  File:SV-98 Sniping competition for The Armourers Day 12.jpg (2250x1450)
+    https://commons.wikimedia.org/wiki/File:SV-98_Sniping_competition_for_The_Armourers_Day_12.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/SV-98_Sniping_competition_for_The_Armourers_Day_12.jpg/1920px-SV-98_Sniping_competition_for_The_Armourers_Day_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_01.jpg  File:SV-98 at Celebration of 70th anniversary of the Victory in the Battle of Stalingrad in TSNIITOCHMASH 01.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_01.jpg/1920px-SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_02.jpg  File:SV-98 at Celebration of 70th anniversary of the Victory in the Battle of Stalingrad in TSNIITOCHMASH 02.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_02.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_02.jpg/1920px-SV-98_at_Celebration_of_70th_anniversary_of_the_Victory_in_the_Battle_of_Stalingrad_in_TSNIITOCHMASH_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_SV-98_sniper_rifle_at_Interpolitex-2016_01.jpg  File:SV-98 sniper rifle at Interpolitex-2016 01.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:SV-98_sniper_rifle_at_Interpolitex-2016_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/SV-98_sniper_rifle_at_Interpolitex-2016_01.jpg/1920px-SV-98_sniper_rifle_at_Interpolitex-2016_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_01.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 01.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_01.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_02.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 02.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_02.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_02.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_03.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 03.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_03.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_03.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_04.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 04.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_04.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_04.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_05.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 05.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_05.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_05.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_06.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 06.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_06.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_06.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_07.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 07.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_07.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_07.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Snayperskaya_vintovka_SV-98_-_OSN_Satrun_08.jpg  File:Снайперская винтовка СВ-98 - ОСН Сатрун 08.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_08.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_08.jpg/1920px-%D0%A1%D0%BD%D0%B0%D0%B9%D0%BF%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%B2%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A1%D0%92-98_-_%D0%9E%D0%A1%D0%9D_%D0%A1%D0%B0%D1%82%D1%80%D1%83%D0%BD_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_VVday2015_59.jpg  File:VVday2015 59.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:VVday2015_59.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/VVday2015_59.jpg/1920px-VVday2015_59.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/commons_Vintovki_SVDK_i_SV-98_-_TSNIITOCHMASH_01.jpg  File:Винтовки СВДК и СВ-98 - ЦНИИТОЧМАШ 01.jpg (2250x1500)
+    https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B8_%D0%A1%D0%92%D0%94%D0%9A_%D0%B8_%D0%A1%D0%92-98_-_%D0%A6%D0%9D%D0%98%D0%98%D0%A2%D0%9E%D0%A7%D0%9C%D0%90%D0%A8_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/%D0%92%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B8_%D0%A1%D0%92%D0%94%D0%9A_%D0%B8_%D0%A1%D0%92-98_-_%D0%A6%D0%9D%D0%98%D0%98%D0%A2%D0%9E%D0%A7%D0%9C%D0%90%D0%A8_01.jpg/1920px-%D0%92%D0%B8%D0%BD%D1%82%D0%BE%D0%B2%D0%BA%D0%B8_%D0%A1%D0%92%D0%94%D0%9A_%D0%B8_%D0%A1%D0%92-98_-_%D0%A6%D0%9D%D0%98%D0%98%D0%A2%D0%9E%D0%A7%D0%9C%D0%90%D0%A8_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98/en2_001.jpg  Pin on Man Stuff
+    https://www.pinterest.com/pin/544794886145376733/ (https://i.pinimg.com/originals/ca/15/f8/ca15f8eeac08e5e403e05fddba235afa.jpg)
+sv98/en2_002.jpg  SV 98 - Alchetron, The Free Social Encyclopedia
+    https://alchetron.com/SV-98 (https://alchetron.com/cdn/sv-98-7409bd43-4082-4895-bdf9-4dd517e1606-resize-750.jpg)
+sv98/en2_005.jpg  SV-98 Variant 1 - RecoMonkey
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-VRmn4mD/0/LX6tFMW3NJRfmnbcC6MCF4vX6Gzdxn7tgqJbJ53LN/XL/SV-98-20122015-019-XL.jpg)
+sv98/en3_001.jpg  L'antre du Dingo » Review Specna Arms Sv98
+    https://lantredudingo.com/index.php/2020/04/11/review-specna-arms-sv98/ (http://lantredudingo.com/wp-content/uploads/SV-98_Sniping_competition_for_The_Armourers_Day_12.jpg)
+sv98/en3_012.jpg  File:SV98.jpg - Internet Movie Firearms Database - Guns in Movies, TV ...
+    https://www.imfdb.org/index.php?title=File:SV98.jpg (https://www.imfdb.org/images/8/86/SV98.jpg)
+sv98/en3_061.jpg  Izhmash SV-98 in Österreich? - PULVERDAMPF
+    https://www.pulverdampf.com/viewtopic.php?t=12596 (http://25.media.tumblr.com/tumblr_m8el2pCani1r9khx4o1_1280.jpg)
+sv98/en3_065.jpg  Crimen Scientia: Francotirador de Elite,Rifles Izhmash SV (Capítulo 8)
+    https://crimenscientia.blogspot.com/2017/01/francotirador-de-eliterifles-izhmash-sv.html (https://4.bp.blogspot.com/-aahVdREoL2U/WHviJBNKCHI/AAAAAAAAbrY/t3Xn_uTjOl4ekUl0V91qT4_rCXtT0sTiACLcB/s1600/izhmash%2Bsv98.jpg)
+sv98/en3_070.jpg  Izhmash SV-98 in Österreich? - PULVERDAMPF
+    https://www.pulverdampf.com/viewtopic.php?t=12596 (http://world.guns.ru/userfiles/images/sniper/sn28/sv98-l.jpg)
+sv98/en3_116.jpg  Weapons news - Arsenal Advance Modpack for S.T.A.L.K.E.R. Shadow of ...
+    https://www.moddb.com/mods/arsenal-advance-mod/news/weapons19 (https://media.moddb.com/images/members/4/3169/3168170/profile/SV98.1.jpg)
+sv98/en3_123.jpg  SV-98 | Weaponsystems.net
+    https://weaponsystems.net/system/1121-SV-98 (https://photo.weaponsystems.net/image/s-carousel/n-fa_sr_sv98_p06.jpg/--/img/ws/fa_sr_sv98_p06.jpg)
+sv98/en_004.jpg  For the first time, modern SV-98 sniper rifles were delivered to the ...
+    https://vpk.name/en/482977_for-the-first-time-modern-sv-98-sniper-rifles-were-delivered-to-the-far-eastern-military-district.html (https://vpk.name/file/img/rosgvardiya_zakazala_26_snaiperskih_vintovok_sv98-a44dmsmi-1531141998.jpg)
+sv98/en_007.jpg  SV-98 | Weaponsystems.net
+    https://weaponsystems.net/system/1121-SV-98 (https://photo.weaponsystems.net/image/s-carousel/n-fa_sr_sv98_p04.jpg/--/img/ws/fa_sr_sv98_p04.jpg)
+sv98/en_008.jpg  SV-98 Sniper rifle image - Military Personnel Arms - ModDB
+    https://www.moddb.com/groups/military-personnel-arms/images/sv-98-sniper-rifle (https://media.moddb.com/images/groups/1/2/1312/Sv-98.jpg)
+sv98/en_009.jpg  SV-98 | Weaponsystems.net
+    https://weaponsystems.net/system/1121-SV-98 (https://photo.weaponsystems.net/image/s-carousel/c-640-400/n-fa_sr_sv98_p06.jpg/--/img/ws/fa_sr_sv98_p06.jpg)
+sv98/en_040.jpg  30 Sniper Weapons That Changed the Battlefield Forever - 24/7 Wall St.
+    https://247wallst.com/military/2025/12/22/30-sniper-weapons-that-changed-the-battlefield-forever/ (https://247wallst.com/wp-content/uploads/2023/08/Izhmash-SV-98-1.jpg)
+sv98/kalA_vintovka-SV-98-6V10.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/vintovka-SV-98-6V10.jpg
+sv98/maks_02.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/2.jpg)
+sv98/maks_03.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/3.jpg)
+sv98/maks_07.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/7.jpg)
+sv98/maks_11.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/11.jpg)
+sv98/maks_13.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/13.jpg)
+sv98/maks_14.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/14.jpg)
+sv98/maks_16.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/16.jpg)
+sv98/maks_17.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/17.jpg)
+sv98/maks_18.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/18.jpg)
+sv98/maks_19.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/19.jpg)
+sv98/maks_20.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/20.jpg)
+sv98/maks_23.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/23.jpg)
+sv98/maks_25.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/25.jpg)
+sv98/maks_26.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/26.jpg)
+sv98/maks_29.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/29.jpg)
+sv98/maks_30.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/30.jpg)
+sv98/maks_32.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/32.jpg)
+sv98/maks_33.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/33.jpg)
+sv98/maks_34.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/34.jpg)
+sv98/maks_35.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/35.jpg)
+sv98/maks_36.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/36.jpg)
+sv98/maks_37.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/37.jpg)
+sv98/maks_38.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/38.jpg)
+sv98/maks_39.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/39.jpg)
+sv98/maks_40.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/40.jpg)
+sv98/maks_41.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/41.jpg)
+sv98/maks_46.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/46.jpg)
+sv98/maks_47.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/47.jpg)
+sv98/reco_action_097.jpg  RecoMonkey SV-98 Variant 1 / Action (SV-98-20122015-097, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-9C3JKNX (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-9C3JKNX/0/Knc2kqxV2vGQjCjmDDg4P8LpKjxpqmxTgqQXvXm5z/X2/SV-98-20122015-097-X2.jpg)
+sv98/reco_action_098.jpg  RecoMonkey SV-98 Variant 1 / Action (SV-98-20122015-098, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-2ctD277 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-2ctD277/0/KPCg8d79grM8CM8sGDmmdHHDSLWMCpkk5ztBpnFMN/X2/SV-98-20122015-098-X2.jpg)
+sv98/reco_action_099.jpg  RecoMonkey SV-98 Variant 1 / Action (SV-98-20122015-099, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-TXwhRp2 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-TXwhRp2/0/Lt7cdXbcMxkFVrNR58PX9QS3wgP67VrQjZHPPLZTF/X2/SV-98-20122015-099-X2.jpg)
+sv98/reco_action_100.jpg  RecoMonkey SV-98 Variant 1 / Action (SV-98-20122015-100, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-8whrpvS (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-8whrpvS/0/KgtXtDWNNrvz3rqZxmkhr5jKC7B5rqhB9gQBjvP4R/X2/SV-98-20122015-100-X2.jpg)
+sv98/reco_action_101.jpg  RecoMonkey SV-98 Variant 1 / Action (SV-98-20122015-101, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-77G6dTx (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Action/i-77G6dTx/0/KSLBKRSvzfxP3rP85XQwNSRwrsWM28n7PgthZx82J/X2/SV-98-20122015-101-X2.jpg)
+sv98/reco_details_070.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-070, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-z6CGCCw (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-z6CGCCw/0/LC6JzNTLkn9bsvC6kKxSmpxt6btGpbXLwNLScg78f/X2/SV-98-20122015-070-X2.jpg)
+sv98/reco_details_071.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-071, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-LjJ8bNq (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-LjJ8bNq/0/NNJg8XBBtnQVK7qprzCFb4tJ3rn2dg6QSVP7Mzkx2/X2/SV-98-20122015-071-X2.jpg)
+sv98/reco_details_072.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-072, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-KmsrNh7 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-KmsrNh7/0/KRvT7T2skNjpVxwxzkc43BnnTP5KNP9h6dbkKBBTf/X2/SV-98-20122015-072-X2.jpg)
+sv98/reco_details_073.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-073, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-tMsmqhc (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-tMsmqhc/0/LCRSRjPQ7nsG3rhM9FkSMZPXK48T6SZxdggf48h3Q/X2/SV-98-20122015-073-X2.jpg)
+sv98/reco_details_074.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-074, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-vHW6SMP (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-vHW6SMP/0/Mg7wPsgv4xbkF4DgH2RBLJqj9Vfd7JJ5nxBCdXH7k/X2/SV-98-20122015-074-X2.jpg)
+sv98/reco_details_075.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-075, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-ng2Wnjp (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-ng2Wnjp/0/LPCbmXMW4nrDPhtdqDRSCmqpBMtHKq9kgsFgzTB2P/X2/SV-98-20122015-075-X2.jpg)
+sv98/reco_details_076.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-076, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-2FxWHjX (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-2FxWHjX/0/LFFK8cJLC37B7FkFcfrj6ZsJCXp9rkbSwRFLvxCwr/X2/SV-98-20122015-076-X2.jpg)
+sv98/reco_details_077.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-077, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-gK7JwL7 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-gK7JwL7/0/Kt3jNbxJftCFz8fbnh9DZhRchKZqLXngqbnfP2P7D/X2/SV-98-20122015-077-X2.jpg)
+sv98/reco_details_078.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-078, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-kpb46VV (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-kpb46VV/0/MCGCJJjR4XsDrZSFCLwcwjVwX2DJRbDZT6BKg4RbZ/X2/SV-98-20122015-078-X2.jpg)
+sv98/reco_details_079.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-079, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-gTSMp2F (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-gTSMp2F/0/Lzb6PWcmhdvRLpjvJBsqHLH84t7ckCWRSsmnJqJPR/X2/SV-98-20122015-079-X2.jpg)
+sv98/reco_details_080.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-080, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-HLk58D3 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-HLk58D3/0/NLPr92dcxX9FsJ6TPXVwg7FtK4XKnfW775cp2D7m5/X2/SV-98-20122015-080-X2.jpg)
+sv98/reco_details_081.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-081, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-SG9Ggng (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-SG9Ggng/0/NXST82p9b8zwKDJj7LxxRQtMS8XB2Bp2jncFhph6V/X2/SV-98-20122015-081-X2.jpg)
+sv98/reco_details_082.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-082, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-N2hKJZX (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-N2hKJZX/0/L5PVLzv4pJmprP4bfwLtZkfWNwtqSX4s3fQZpTXDD/X2/SV-98-20122015-082-X2.jpg)
+sv98/reco_details_083.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-083, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-qhWbFNv (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-qhWbFNv/0/K5fqv3mGm7RCLPK9BCbW8ZJqZv3sr3kqgTzR59KnF/X2/SV-98-20122015-083-X2.jpg)
+sv98/reco_details_084.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-084, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-FzkhZVf (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-FzkhZVf/0/KfSV8ThTzbrnCZTmnk8gmdZvHQqcZRHDJnxJ8K3Z5/X2/SV-98-20122015-084-X2.jpg)
+sv98/reco_details_085.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-085, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-6Mrjc8Z (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-6Mrjc8Z/0/MtDkCKhfCnFjRjRpzKXx2zzc3vRSzj27jF8ZQ9Hs9/X2/SV-98-20122015-085-X2.jpg)
+sv98/reco_details_086.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-086, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-tG3KBdL (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-tG3KBdL/0/LRzj8qpM2bT6zpCNqGHn3Rm6FDjdskqJzR7D3LV5Z/X2/SV-98-20122015-086-X2.jpg)
+sv98/reco_details_087.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-087, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-dRmNfmV (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-dRmNfmV/0/L4X72Kd445ThQFCzfCrnRvxLch59GVnGmt85bTwf5/X2/SV-98-20122015-087-X2.jpg)
+sv98/reco_details_088.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-088, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-mX7q3V6 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-mX7q3V6/0/LCfXjxhzJNf9dJ5C38c8NBtnDxnLrx4jrSR9Nx6SM/X2/SV-98-20122015-088-X2.jpg)
+sv98/reco_details_089.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-089, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-vtpnbSF (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-vtpnbSF/0/KjtKQG2M8Z6g2rbVxzS3PBMsXM458gkmJVRqB6wD7/X2/SV-98-20122015-089-X2.jpg)
+sv98/reco_details_090.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-090, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-HXwrDfB (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-HXwrDfB/0/K7T2g9HQzFQszKG5GRmXst49mPnv3GKKSfQvfTkWj/X2/SV-98-20122015-090-X2.jpg)
+sv98/reco_details_091.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-091, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-4twpGLJ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-4twpGLJ/0/NczNtrRdkBmNfzbtTxGC68hjK8xQ8PMpr7gw22fLT/X2/SV-98-20122015-091-X2.jpg)
+sv98/reco_details_092.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-092, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-qd7Tmmn (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-qd7Tmmn/0/M7NL7dXCDnZVWkmtc8BwtmpH8bcKfRMNmFqD4Dz3v/X2/SV-98-20122015-092-X2.jpg)
+sv98/reco_details_093.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-093, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-39SsqtZ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-39SsqtZ/0/MPwrD3D4FqnhDBNb2zMg772QBdnHh6SMH4mwjxZcd/X2/SV-98-20122015-093-X2.jpg)
+sv98/reco_details_094.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-094, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-F6Zq6Cs (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-F6Zq6Cs/0/LzwJSHw4fftWG2Kk2TW4bHVBt3fXKScZFgKJC95x2/X2/SV-98-20122015-094-X2.jpg)
+sv98/reco_details_095.jpg  RecoMonkey SV-98 Variant 1 / Details (SV-98-20122015-095, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-Cp2K9mK (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Details/i-Cp2K9mK/0/LvzTXFrdRNRcz34QZwdFWSTDsm6cQLfJbRtpFT3fZ/X2/SV-98-20122015-095-X2.jpg)
+sv98/reco_walkaround_001.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-001, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-G5XrgzF (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-G5XrgzF/0/M8XChrgLFsjJdhf68Zv8GWXzVmgvMZ2VdzBTnmq4S/X2/SV-98-20122015-001-X2.jpg)
+sv98/reco_walkaround_002.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-002, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-SSVqvw4 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-SSVqvw4/0/NdDptWm2pQpwmDGGvhGWFZKM6CS2Wsf7M74LsVTDk/X2/SV-98-20122015-002-X2.jpg)
+sv98/reco_walkaround_003.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-003, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-mvfF7FV (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-mvfF7FV/0/Kwmxmftg6CsRk26cL3t2vWDSdCjLhQrN56LpVPBzF/X2/SV-98-20122015-003-X2.jpg)
+sv98/reco_walkaround_004.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-004, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-hV5MLBV (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-hV5MLBV/0/LgdNSGFjXGjxGtnbG2xJFp7Zd4KjrR2gR4Jpjn2HR/X2/SV-98-20122015-004-X2.jpg)
+sv98/reco_walkaround_005.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-005, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-dSvSDgN (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-dSvSDgN/0/MM7V9Fv8TSCzwXgbpwzZL8pxRDVwsg3HbG8LfN6K2/X2/SV-98-20122015-005-X2.jpg)
+sv98/reco_walkaround_006.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-006, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-VqH34fN (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-VqH34fN/0/KL5GX5VWKq8ps3cXNnsr9Hjr8SWLFvmwCwGHbCKwx/X2/SV-98-20122015-006-X2.jpg)
+sv98/reco_walkaround_007.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-007, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MrHqjCG (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MrHqjCG/0/MT8xj6v6fdzJP8SVZXTRj4qFkNJM9BcnR22Z2fCZC/X2/SV-98-20122015-007-X2.jpg)
+sv98/reco_walkaround_008.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-008, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-xJ5XcST (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-xJ5XcST/0/KsvJZBrH7JRzKrP7tSZx7Wq6V89N7pMxdDNzX3pqV/X2/SV-98-20122015-008-X2.jpg)
+sv98/reco_walkaround_009.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-009, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-5m9SrGZ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-5m9SrGZ/0/MB6zp86nCtFxgNNPhbbQ7JhqfMLsZJTDd5dv32R4F/X2/SV-98-20122015-009-X2.jpg)
+sv98/reco_walkaround_010.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-010, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-P7bDZ3p (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-P7bDZ3p/0/Lq2jW7MBkrmv7GMHTHgQCt5c8chdMzt4hxPsQhCRp/X2/SV-98-20122015-010-X2.jpg)
+sv98/reco_walkaround_011.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-011, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-CRFQddW (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-CRFQddW/0/KTbCCNGJ3zKKWFpNtgPZVr54rNKxvcw5tG8vqN6q2/X2/SV-98-20122015-011-X2.jpg)
+sv98/reco_walkaround_012.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-012, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-qm8dsd2 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-qm8dsd2/0/NTkSPvpzgK6v6FZdGMNkCT9NMmgBvkrHSQn8B6DJz/X2/SV-98-20122015-012-X2.jpg)
+sv98/reco_walkaround_013.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-013, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-bZfXS2c (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-bZfXS2c/0/NGQ23T7CPSRC7DcNhXbHW6qs7mL5vK9wXxvWXrN88/X2/SV-98-20122015-013-X2.jpg)
+sv98/reco_walkaround_014.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-014, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-6rKPRsT (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-6rKPRsT/0/MDF3Tt5RhbdMvSKL23DtWM8RpTrPB2kMBHbBPRCDm/X2/SV-98-20122015-014-X2.jpg)
+sv98/reco_walkaround_015.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-015, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pd8bPxk (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pd8bPxk/0/M6nTNqwFwq93ncmHM43tHQJFnVLz9s5bhCNwBrh8d/X2/SV-98-20122015-015-X2.jpg)
+sv98/reco_walkaround_016.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-016, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-fnn7wkV (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-fnn7wkV/0/NS8V5vht7PbVXrFq5Bjk2dqffGmwsRpqnXTTdpCPH/X2/SV-98-20122015-016-X2.jpg)
+sv98/reco_walkaround_017.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-017, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-gf2gBpH (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-gf2gBpH/0/MVhTKDcbwTfsW5p5nzWKFrZVLfZRGbdBtgDcWgvp9/X2/SV-98-20122015-017-X2.jpg)
+sv98/reco_walkaround_018.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-018, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-ZnqgfMw (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-ZnqgfMw/0/LxzP259pPtncnGJMtsM88gQsdTVfsW5kQZHcPrwbQ/X2/SV-98-20122015-018-X2.jpg)
+sv98/reco_walkaround_019.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-019, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-VRmn4mD (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-VRmn4mD/0/MGTN7KWvsGS4BV6bLxXDnVCktDccFxHh9mDDfMgVN/X2/SV-98-20122015-019-X2.jpg)
+sv98/reco_walkaround_020.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-020, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BTxk47b (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BTxk47b/0/LjmW25r4JHQFmcVJtHk4kSD5JRXjSRF58W9QCXwKS/X2/SV-98-20122015-020-X2.jpg)
+sv98/reco_walkaround_021.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-021, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kcH9vdW (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kcH9vdW/0/KgCBZMn4N6Xzt3ZrQGDSJbV4MBqnBHW9wgHxRZ8vk/X2/SV-98-20122015-021-X2.jpg)
+sv98/reco_walkaround_022.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-022, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-nXQVFPP (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-nXQVFPP/0/K5L7Z2f9RLVgZq36rvj28FNrRgG4Hz3LJMmjBzBjx/X2/SV-98-20122015-022-X2.jpg)
+sv98/reco_walkaround_023.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-023, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-tPb8kng (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-tPb8kng/0/MhpbB6p5qwDRNPXXbwTzjvcwBX6wRnJvVNDDpR3MB/X2/SV-98-20122015-023-X2.jpg)
+sv98/reco_walkaround_024.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-024, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-Kh2M2R7 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-Kh2M2R7/0/KQKnDztdmG4z96zLVH2Fkb8fMV3BWFvcHJ3rMtBZS/X2/SV-98-20122015-024-X2.jpg)
+sv98/reco_walkaround_025.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-025, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-LBMqtbh (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-LBMqtbh/0/KmTHs9TD2x3PzkNPjjksjCQLQgT3xTV7ZPg2pT8Fc/X2/SV-98-20122015-025-X2.jpg)
+sv98/reco_walkaround_026.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-026, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8V4ZVRK (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8V4ZVRK/0/MKd4NFmLHM9nmwZ4gbrm7GMQH6CxpRX7XmhT8fzgc/X2/SV-98-20122015-026-X2.jpg)
+sv98/reco_walkaround_027.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-027, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-jhRGcbs (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-jhRGcbs/0/LGLHVL758mJVhLPnncw53PvQGxkhf8q8CsSvvCw59/X2/SV-98-20122015-027-X2.jpg)
+sv98/reco_walkaround_028.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-028, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MSQKvZW (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MSQKvZW/0/LCJht7qZSKRBmsqnw42sF26jzTrHS7h38fPNLPPDw/X2/SV-98-20122015-028-X2.jpg)
+sv98/reco_walkaround_029.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-029, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-jhXLpWd (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-jhXLpWd/0/MQNkNCz5c4PcXhrSTjRHcbbJTBvNkSZkS6pc5ZPsq/X2/SV-98-20122015-029-X2.jpg)
+sv98/reco_walkaround_030.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-030, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-dF98dVL (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-dF98dVL/0/LjKsg7223Lt9K8hPLqxFJSm53VTDmKXw6Frzvp2qm/X2/SV-98-20122015-030-X2.jpg)
+sv98/reco_walkaround_031.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-031, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-t3RNGZr (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-t3RNGZr/0/Lks4S2TPjD8GrgMPWRMBPjBdWPc7nqfDHMDVbXc7r/X2/SV-98-20122015-031-X2.jpg)
+sv98/reco_walkaround_032.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-032, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kNBg7pc (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kNBg7pc/0/NdKb8cNVWFKJvfbmq4r7GSmPDnXLZ2pQQBzfcbnKX/X2/SV-98-20122015-032-X2.jpg)
+sv98/reco_walkaround_033.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-033, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8KhGbz7 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8KhGbz7/0/KdzW3g6JxzDh7ZMn2LC3vp8Nxstjpcq3T33x4JCb7/X2/SV-98-20122015-033-X2.jpg)
+sv98/reco_walkaround_034.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-034, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-HCsgM4D (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-HCsgM4D/0/MD8j6dpVvFbtSr8m2FdzRqKwdSP75mwk2PHzWnsJF/X2/SV-98-20122015-034-X2.jpg)
+sv98/reco_walkaround_035.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-035, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-rBP8RNZ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-rBP8RNZ/0/LcCmGZBMcJtrszQLsPvpJ2KxsPqfn22PzkDk4xJzb/X2/SV-98-20122015-035-X2.jpg)
+sv98/reco_walkaround_036.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-036, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-ms5Sj3z (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-ms5Sj3z/0/NbzgcdGhSVjCbCdm85qtvMW44k56THpFBPpHRrDKC/X2/SV-98-20122015-036-X2.jpg)
+sv98/reco_walkaround_037.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-037, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-w8FHFDC (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-w8FHFDC/0/M4LPvw3mbdRtQ9m2Dk65sMprqS3dfq3vMhzfcJzc3/X2/SV-98-20122015-037-X2.jpg)
+sv98/reco_walkaround_038.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-038, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9NtrjZX (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9NtrjZX/0/MR9S3cJpFQrn5bXsQHzKzGhFhZWCQLBgjkZXzkwnH/X2/SV-98-20122015-038-X2.jpg)
+sv98/reco_walkaround_039.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-039, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-LXG4J2m (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-LXG4J2m/0/MMvLdjFvKRxL84rKcJLzvgHsF3Z8NPxfdv4BbqTRW/X2/SV-98-20122015-039-X2.jpg)
+sv98/reco_walkaround_040.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-040, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-DTzSK2V (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-DTzSK2V/0/LCMQDqwLgs9Gj67m7Vv86wqV4vd6BScLtJ369nJC7/X2/SV-98-20122015-040-X2.jpg)
+sv98/reco_walkaround_041.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-041, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-7R3whmK (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-7R3whmK/0/MX74jXMZ3777hDgDQtq4N82F3K4pxwvLV2Xp3LVbb/X2/SV-98-20122015-041-X2.jpg)
+sv98/reco_walkaround_042.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-042, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vGggBvZ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vGggBvZ/0/KnFXx2K5ZhCP9vK73ndr9Sqh9WgLCDVx6WsRqCtHn/X2/SV-98-20122015-042-X2.jpg)
+sv98/reco_walkaround_043.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-043, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8WqSGCG (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-8WqSGCG/0/MhTxGsPFhWsJfMQwtfS3bBsv4bjMSk9T27bQj8hnS/X2/SV-98-20122015-043-X2.jpg)
+sv98/reco_walkaround_044.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-044, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-xthSC7N (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-xthSC7N/0/L85LC682GKtGRJD5kLqJ7TTKLdNmDL3dcCwvznZkM/X2/SV-98-20122015-044-X2.jpg)
+sv98/reco_walkaround_045.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-045, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-WW3DZLJ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-WW3DZLJ/0/K8WdnwnshJk6XS96rXPwL7B72Z8BTB2kTN869BN3n/X2/SV-98-20122015-045-X2.jpg)
+sv98/reco_walkaround_046.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-046, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9NzRrx8 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9NzRrx8/0/KN3gxkmrsnvvxDMXgNsnCkPff7MBgDQvNqkH87xgT/X2/SV-98-20122015-046-X2.jpg)
+sv98/reco_walkaround_047.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-047, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pXkNnJs (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pXkNnJs/0/Lq8xH2dMDp49n8zjJxRX2pjCTZNDkDcfzN4mVPvbv/X2/SV-98-20122015-047-X2.jpg)
+sv98/reco_walkaround_048.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-048, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-CbRcPcr (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-CbRcPcr/0/KQsNj5JV36sWqPj3Mn4BzjKVM5bLSbqXsRhQSnPd9/X2/SV-98-20122015-048-X2.jpg)
+sv98/reco_walkaround_049.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-049, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-H74R6Mv (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-H74R6Mv/0/Ng8pRsg3LZ5nP8qwtGTLd5DCbnBnhtpH4GR3wwKCt/X2/SV-98-20122015-049-X2.jpg)
+sv98/reco_walkaround_050.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-050, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-6SnqVwv (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-6SnqVwv/0/NXtfnkcVMNR7jWWXpL2RjXLbd9jrLtb4bFBPGVXMp/X2/SV-98-20122015-050-X2.jpg)
+sv98/reco_walkaround_051.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-051, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-tBvf46P (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-tBvf46P/0/Lr98njfpsg6Wv3XMTMPgGNsJqtZcgZtjfJ3kN6C4t/X2/SV-98-20122015-051-X2.jpg)
+sv98/reco_walkaround_052.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-052, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-cdx2Tcm (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-cdx2Tcm/0/K5sCJ4b7mxd7F65GpmQq7PpgtMq8vhLZSBDRzppgP/X2/SV-98-20122015-052-X2.jpg)
+sv98/reco_walkaround_053.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-053, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-XmKCXKR (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-XmKCXKR/0/MVTggd2pn9pbdcqppcqNF8ZRFqDrRP8WLZ2gRLWzn/X2/SV-98-20122015-053-X2.jpg)
+sv98/reco_walkaround_054.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-054, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vB7jsSG (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vB7jsSG/0/NC2z39GgStV6h6sGBJVkWQmMRRHXJ8sTHTG522FMD/X2/SV-98-20122015-054-X2.jpg)
+sv98/reco_walkaround_055.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-055, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-99dSPNN (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-99dSPNN/0/NSHfqLKcjH3mmqZP355d75QcWrWkGJJ2hgSjZxbLF/X2/SV-98-20122015-055-X2.jpg)
+sv98/reco_walkaround_056.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-056, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-SVKcr6c (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-SVKcr6c/0/KxwhBtM6v42JMwb3rph98VNj6hJwCsfKJdMPTkVwg/X2/SV-98-20122015-056-X2.jpg)
+sv98/reco_walkaround_057.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-057, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-R6tTX8P (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-R6tTX8P/0/MwpsGRDBJMQWkXGshPcgMqKZHvB48wkVz3GsqKTxN/X2/SV-98-20122015-057-X2.jpg)
+sv98/reco_walkaround_058.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-058, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-5GBPvJr (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-5GBPvJr/0/MhLhqd4PFgDLvmw7WNvFQrFzmbwsx6RTCXHDMSSvJ/X2/SV-98-20122015-058-X2.jpg)
+sv98/reco_walkaround_059.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-059, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BtXn2wR (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BtXn2wR/0/NbDnWn6dQmWnRNG3Xw7Zf7qLmPqW2X6qZCPHLWP3T/X2/SV-98-20122015-059-X2.jpg)
+sv98/reco_walkaround_060.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-060, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MtGrrkJ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-MtGrrkJ/0/M5DDzmQ582xnSg2nQZf94sWMHjD42KvRjDPGft5g8/X2/SV-98-20122015-060-X2.jpg)
+sv98/reco_walkaround_061.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-061, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pnwBhzc (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-pnwBhzc/0/Mg3WnmdDTVDTQ3dhnGTXQVNV4QwDMTZCqS8gszZ5B/X2/SV-98-20122015-061-X2.jpg)
+sv98/reco_walkaround_062.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-062, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-XwF7zrw (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-XwF7zrw/0/MzrQVS2hpTW86sXg37NhknRffcBmfCWS5KKmm3P43/X2/SV-98-20122015-062-X2.jpg)
+sv98/reco_walkaround_063.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-063, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-JL7F3LZ (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-JL7F3LZ/0/LTMtP8xd82x56gK597Lhv4L2v5c4kSPCWMvWBjVrQ/X2/SV-98-20122015-063-X2.jpg)
+sv98/reco_walkaround_064.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-064, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BDz5C9W (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-BDz5C9W/0/Mj6TQXFWFg3jVp52mCm4HHNPqfbKXXDkPZjVRH5ZK/X2/SV-98-20122015-064-X2.jpg)
+sv98/reco_walkaround_065.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-065, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vL5NkGb (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-vL5NkGb/0/Knq9GgHp9HsxD4JwmG6ML7jx8cfCkPR24whGbchhg/X2/SV-98-20122015-065-X2.jpg)
+sv98/reco_walkaround_066.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-066, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-Qp3LstD (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-Qp3LstD/0/KxBPR7G9HtXGR58ZrwCTskKnWhGshC6SVSQfKxc92/X2/SV-98-20122015-066-X2.jpg)
+sv98/reco_walkaround_067.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-067, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9Hf4XQ8 (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-9Hf4XQ8/0/KPWqJNnRPq6m4bZ3FTcbFNRTzCNdhSShvwjJmBkqR/X2/SV-98-20122015-067-X2.jpg)
+sv98/reco_walkaround_068.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-068, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-N2csXwm (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-N2csXwm/0/KKHBKHSMvPJCgXk2QKcSvzXqRXBjsgZv9ZqmCMZbP/X2/SV-98-20122015-068-X2.jpg)
+sv98/reco_walkaround_069.jpg  RecoMonkey SV-98 Variant 1 / Walkaround (SV-98-20122015-069, original 5616x3744)
+    https://www.recomonkey.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kP9548S (https://photos.smugmug.com/Firearms/Sniper-Rifles/SV-98/SV-98-Variant-1/Walkaround/i-kP9548S/0/MjbPTnbwWtFsdg8FgnrFj3LMbKZT24Gd3fmJngLST/X2/SV-98-20122015-069-X2.jpg)
+sv98/ru2_003.jpg  Винтовки СВ-98 уже у заказчика — «Калашников» отчитался о поставке ...
+    https://www1.ru/news/2025/10/15/vintovki-sv-98-uze-u-zakazcika-kalasnikov-otcitalsia-o-postavke-krupnoi-partii.html (https://media.ixbt.site/fit-in/920x700/ixbt-data/777833/screenshot-5-68ef6668e2316.jpg)
+sv98/ru2_032.jpg  20 лет спустя. Снайперская винтовка СВ-98 для Росгвардии | Оружейный ...
+    https://www.kalashnikov.ru/20-let-spustya-snajperskaya-vintovka-sv-98-dlya-rosgvardii/ (https://www.kalashnikov.ru/wp-content/uploads/2018/07/calibr_ucoz_ru-1024x305.jpg)
+sv98/ru3_046.jpg  Винтовка СВ-98 - 19.01.23 21:49 | Пикабу
+    https://pikabu.ru/story/vintovka_sv98_9863365 (https://cs14.pikabu.ru/post_img/2023/01/19/11/1674154082116841122.jpg)
+sv98/ru3_056.jpg  В Дальневосточное ВОКУ впервые поступили современные снайперские ...
+    https://vpk.name/news/482977_v_dalnevostochnoe_voku_vpervye_postupili_sovremennye_snaiperskie_vintovki_sv-98.html (https://vpk.name/file/img/rosgvardiya_zakazala_26_snaiperskih_vintovok_sv98-a44dmsmi-1531141998.t.jpg)
+sv98/ru3_094.jpg  Ложу св-98/рекорд продам - Guns.ru Talks
+    https://forum.guns.ru/forummessage/153/1927843.html (https://forum.guns.ru/forums/icons/forum_pictures/016358/16358658.jpg)
+sv98/ru_001.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/69a/46gwokmjg0ykj6g05mnl6suz6sahnf4t/SV_983.png)
+sv98/ru_002.jpg  СВ -98 снайперская винтовка. - YouTube
+    https://www.youtube.com/watch?v=dWzg_8gnnFY (https://i.ytimg.com/vi/dWzg_8gnnFY/maxresdefault.jpg)
+sv98/ru_003.jpg  Персональный сайт - СВ-98
+    https://ctrax-com-ctrax.narod.ru/index/0-41 (http://content.foto.mail.ru/community/zonawar.ru/1854/s-1885.jpg)
+sv98/ru_006.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/iblock/733/wauzrq4wfwhce2nt3dkiz2q6i707gavl/SV_982.png)
+sv98/ru_007.jpg  СВ-98 снайперская винтовка - YouTube
+    https://www.youtube.com/watch?v=yYt38HDLhws (https://i.ytimg.com/vi/yYt38HDLhws/maxresdefault.jpg)
+sv98/ru_009.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/12.jpg)
+sv98/ru_010.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/ff7/hx8y5ryodnr63yqctwjyruwa0kp017im/SV_984.png)
+sv98/ru_013.jpg  Персональный сайт - СВ-98
+    https://ctrax-com-ctrax.narod.ru/index/0-41 (http://content.foto.mail.ru/community/zonawar.ru/1854/s-1886.jpg)
+sv98/ru_019.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/9.jpg)
+sv98/ru_023.png  Рособоронэкспорт раскрыл особенности снайперской винтовки СВ-98 от ...
+    https://www1.ru/news/2025/03/03/rosoboroneksport-raskryl-osobennosti-snaiperskoi-vintovki-sv-98-ot-kalasnikova.html (https://media.ixbt.site/fit-in/920x700/ixbt-data/666901/264-67c545929c8f5.png)
+sv98/ru_030.jpg  СВ-98 снайперская винтовка — Video by Veresk - Смотреть онлайн в поиске ...
+    https://yandex.ru/video/preview/3356376652548547735 (http://avatars.mds.yandex.net/get-vthumb/1626405/585904e52ead8dd6819f2258637542ed/800x450)
+sv98/ru_035.png  Снайперская винтовка СВ-98
+    https://vimpel-v.com/small_arms/sniper_weapon/1141-snayperskaya-vintovka-sv-98.html (https://vimpel-v.com/uploads/posts/2017-10/1509104069_sv-98_z.png)
+sv98/ru_036.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/24.jpg)
+sv98/ru_039.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/6.jpg)
+sv98/ru_042.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/22.jpg)
+sv98/ru_044.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/42.jpg)
+sv98/ru_045.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/21.jpg)
+sv98/ru_046.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/4.jpg)
+sv98/ru_047.jpg  Винтовки СВ-98 уже у заказчика — «Калашников» отчитался о поставке ...
+    https://www1.ru/news/2025/10/15/vintovki-sv-98-uze-u-zakazcika-kalasnikov-otcitalsia-o-postavke-krupnoi-partii.html (https://media.ixbt.site/1600x900/smart/ixbt-data/777834/01K7KJMSGQAPJGQ4K8GZV8P0WA.jpg)
+sv98/ru_048.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/646/0jtjfxlg1236977astz8cr553bl196ju/SV_987.png)
+sv98/ru_049.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/15.jpg)
+sv98/ru_050.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/7be/5a2qfqj30e8yak6svgmtlrwkztmztoxv/SV_989.png)
+sv98/ru_051.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/559/xb6607pu7r23olyqy8jaxqrzt3ira7tn/SV_986.png)
+sv98/ru_052.jpg  Снайперская винтовка, взгляд со стороны: СВ-98 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic1321450.html (https://s00.yaplakal.com/pics/pics_original/5/4/7/7239745.jpg)
+sv98/ru_053.jpg  Снайперская винтовка, взгляд со стороны: СВ-98 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic1321450.html (https://s00.yaplakal.com/pics/pics_original/9/0/8/7239809.jpg)
+sv98/ru_055.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/31.jpg)
+sv98/ru_058.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/8.jpg)
+sv98/var2_001.jpg  IZHMASH RECORD IZ-180.
+    https://gunprofesional.com/product/izhmash-record-iz-180/ (https://gunprofesional.com/wp-content/uploads/2026/01/53ba26d8-a384-45e5-b1e0-5790ac212f54.jpg)
+sv98/var_034.jpg  SV-98 | Weaponsystems.net
+    https://weaponsystems.net/system/1121-SV-98 (https://photo.weaponsystems.net/image/s-carousel/n-fa_sr_sv98_p01.jpg/--/img/ws/fa_sr_sv98_p01.jpg)
+sv98/var_059.jpg  SV-98（Military Firearm）_Baiduwiki
+    https://baike.baidu.com/en/item/SV-98/1421369 (https://gbaike-image.cdn.bcebos.com/d009b3de9c82d158759a893e8a0a19d8bc3e4221/d009b3de9c82d158759a893e8a0a19d8bc3e4221_16_9?x-bce-process=image/format,f_auto)
+sv98/ya_019.jpg  Фотообзор cнайперской винтовки СВ-98
+    https://zonwar.ru/fotogalerej/SV-98/sv-98_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/924/i-927.jpg)
+sv98/ya_029.jpg  В тени СВД отечественная снайперская винтовка СВ-98 (СВ-98М) ВЫЖИВАНИЕ ПО-РУССКИ Дзен
+    https://dzen.ru/a/ZIj4AEj2LCqnnFj6 (https://avatars.dzeninfra.ru/get-zen_doc/10312763/pub_6488f80048f62c2aa79c58fa_6488fb1ca696de423196352d/scale_1200)
+sv98/ya_030.jpg  ПРОДАН регулируемый затыльник СВ-98, СВ-99 и Рекорд : купля-продажа
+    https://forum.guns.ru/forum_light_message/120/1503741.html (https://i3.guns.ru/forums/icons/forum_pictures/011011/11011984.jpg)
+sv98/ya_031.jpg  ПРОДАН регулируемый затыльник СВ-98, СВ-99 и Рекорд : купля-продажа
+    https://forum.guns.ru/forum_light_message/120/1503741.html (https://i3.guns.ru/forums/icons/forum_pictures/011011/11011982.jpg)
+sv98/ya_036.jpg  Куплю для СВ-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_light_message/120/2616639.html (https://i3.guns.ru/forums/icons/forum_pictures/027811/27811320_22872.jpg)
+sv98/ya_037.jpg  Магазинная снайперская винтовка СВ-98 из Ижевска - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/magazinnaja_snajperskaja_vintovka_sv_98_iz_izhevska/7-1-0-60 (https://arma3.do.am/_pu/0/17989806.jpg)
+sv98/ya_038.jpg  Несколько слов о СВ-98. : Высокоточная Стрельба
+    https://forum.guns.ru/forum_na/forum_picture/749781.html (https://i3.guns.ru/forums/icons/forum_pictures/000749/749777.jpg)
+sv98/ya_039.jpg  Куплю для СВ-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forummessage/120/2447498.html (https://i3.guns.ru/forums/icons/forum_pictures/024797/24797786_30315.jpg)
+sv98/ya_042.jpg  Фотообзор cнайперской винтовки СВ-98
+    https://zonwar.ru/fotogalerej/SV-98/sv-98_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/924/i-942.jpg)
+sv98/ya_043.jpg  Продам ДТК НА СВ-98 : Товары для спортивной стрельбы
+    https://forum.guns.ru/forum_na/forum_picture/28281840.html (https://i3.guns.ru/forums/icons/forum_pictures/028281/28281805_11420.jpg)
+sv98/ya_044.jpg  купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/18582210.html (https://i3.guns.ru/forums/icons/forum_pictures/018582/18582210.jpg)
+sv98/ya_048.png  Снайперская винтовка СВ-98
+    https://vimpel-v.com/small_arms/sniper_weapon/1141-snayperskaya-vintovka-sv-98.html (https://vimpel-v.com/uploads/posts/2017-10/1509102725_sv98_optic.png)
+sv98/ya_071.jpg  thetaxidriver : Ложа для БИатлонки по типу св-98 : купля-продажа - зап
+    https://forum.guns.ru/forummessage/120/1782973-m42995513.html (https://i3.guns.ru/forums/icons/forum_pictures/014411/14411241.jpg)
+sv98/ya_072.jpg  ПРЕДЛАГАЮ для СВ-98, АК103, БИ-7-2КО, СОБОЛЬ, СВД, ТИГР
+    https://gunszip.org/topic/120/1505802.html (https://gunszip.org/images/g/120/orig/11056529.jpg)
+sv98/ya_073.jpg  thetaxidriver : Ложа для БИатлонки по типу св-98 : купля-продажа - зап
+    https://forum.guns.ru/forummessage/120/1782973-m42996699.html (https://i3.guns.ru/forums/icons/forum_pictures/014532/14532164.jpg)
+sv98/ya_077.jpg  Ложа для БИатлонки по типу св-98 : купля-продажа - запчасти, компл
+    https://forum.guns.ru/forummessage/120/1782973-2.html (https://i3.guns.ru/forums/icons/forum_pictures/014384/14384999.jpg)
+sv98/ya_078.jpg  Прямо в яблочко. Чем винтовка СВ-98 лучше СВД? Аргументы и Факты
+    https://aif.ru/society/army/pryamo_v_yablochko_chem_vintovka_sv-98_luchshe_svd?from_inject=1 (https://static1-repo.aif.ru/1/ca/445914/7fafa9c31f6512e1b17f4ce83e7edbbe.jpg)
+sv98/ya_081.jpg  Продам ложа на БИ-7-2КО по типу СВ-98/99, биатлонка, стоковая : купля
+    https://forum.guns.ru/forummessage/120/1872076-m44602983.html (https://i3.guns.ru/forums/icons/forum_pictures/015612/15612065.jpg)
+sv98/ya_082.jpg  СВ-98 от Raptor Airsoft - Форум
+    http://khabstrikeball.ucoz.ru/forum/11-8992-1 (http://khabstrikeball.ucoz.ru/_fr/89/s9278983.jpg)
+sv98/ya_083.jpg  Продам ложа на БИ-7-2КО по типу СВ-98/99, биатлонка, стоковая : ку
+    https://forum.guns.ru/forummessage/120/1872076.html (https://i3.guns.ru/forums/icons/forum_pictures/015612/15612063.jpg)
+sv98/ya_084.png  купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/23618302.html (https://i3.guns.ru/forums/icons/forum_pictures/023618/23618272_28384.png)
+sv98/ya_085.jpg  Ложа для БИатлонки по типу св-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/14384981.html (https://i3.guns.ru/forums/icons/forum_pictures/014384/14384991.jpg)
+sv98/ya_086.jpg  Страйкбольная снайперская винтовка S&T СВ-98 купить на OZON по низкой цене (1773778308)
+    https://www.ozon.ru/product/straykbolnaya-snayperskaya-vintovka-s-t-sv-98-1773778308/?at=6WtZqgLYjCEV4EPosKY31gJIDKJmGKh8KYAjni3zK22n (https://cdn1.ozone.ru/s3/multimedia-1-s/7215165892.jpg)
+sv98/ya_090.jpg  Ложа для БИатлонки по типу св-98 : купля-продажа - запчасти, компл
+    https://forum.guns.ru/forummessage/120/1782973-2.html (https://i3.guns.ru/forums/icons/forum_pictures/014384/14384981.jpg)
+sv98/ya_117.jpg  Рекорд 338 с оптикой продам : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/2040418.html (https://i3.guns.ru/forums/icons/forum_pictures/017994/17994273.jpg)
+sv98/ya_120.jpg  Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/1853071.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496326.jpg)
+sv98/ya_122.png  Снайперская винтовка СВ-98
+    https://vimpel-v.com/small_arms/sniper_weapon/1141-snayperskaya-vintovka-sv-98.html (https://vimpel-v.com/uploads/posts/2017-10/1509102367_sv-98-11.png)
+sv98/ya_124.jpg  Прямо в яблочко. Чем винтовка СВ-98 лучше СВД? Аргументы и Факты
+    https://aif.ru/society/army/pryamo_v_yablochko_chem_vintovka_sv-98_luchshe_svd?from_inject=1 (https://static1-repo.aif.ru/1/01/445915/e946a53b1e491c94e83a9299a7fb66a7.jpg)
+sv98/ya_148.jpg  SV-98: bolt-action sniper rifle Kalashnikov Media
+    https://en.kalashnikovgroup.ru/en/media/boevoe-strelkovoe-oruzhie/100-let-krasnoy-armii-snayperskaya-vintovka-sv-98 (https://cdn.kalashnikovgroup.ru/ogimages/3464f1b576b2fd5497301a1614167168.jpg)
+sv98/ya_159.jpg  The Latest Photos Of Russian Small Arms Слава Украине! Glory To Ukraine!
+    https://russianmilitaryphotos.wordpress.com/2012/04/21/the-latest-photos-of-russian-small-arms/ (https://russianmilitaryphotos.wordpress.com/wp-content/uploads/2012/04/sv-98-09-m.jpg)
+sv98/ya_161.jpg  SV-98 SNIPER RIFLE - Airsoft Bazaar
+    https://www.airsoftbazaar.com/en/used-airsoft/listing-l96-sniper-rifle-k0i4ho (https://cdn.airsoftbazaar.com/uploads/listings/listing-k0i4ho_1_ENKfEgFq.png)
+sv98/yb_017.jpg  Оружие: Снайперская винтовка СВ-98. Винтовка СВ-98 разработана на ИЖМАШ на базе спортивной 7.62мм.. 2026 ВКонтакте
+    https://vk.ru/wall-206954474_3111 (https://sun9-53.vkuserphoto.ru/s/v1/ig2/pjgT5xSRTB8CmxPiTDqouYg0fLcBbNLLAq9nxmaIRoCUDc3dqSqoM2qNq0wqwnHlvruq1YPoLjJZUyobjb-MrAwA.jpg?quality=95&as=32x21,48x32,72x48,108x72,160x106,240x159,360x239,480x319,540x359,640x425,700x465&from=bu&cs=640x0)
+sv98/yb_022.jpg  Cнайперская винтовка СВ-98 Армии и Солдаты - Военная энциклопедия
+    https://armedman.ru/strelkovoe-vooruzhenie/1991-2015-strelkovoe-vooruzhenie/cnayperskaya-vintovka-sv-98.html (http://armedman.ru/wp-content/uploads/2017/01/sv-98-3.jpg)
+sv98/yb_023.jpg  Магазинная снайперская винтовка СВ-98 из Ижевска - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/magazinnaja_snajperskaja_vintovka_sv_98_iz_izhevska/7-1-0-60 (https://arma3.do.am/_pu/0/42471169.jpg)
+sv98/yb_025.jpg  купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/9071615.html (https://i3.guns.ru/forums/icons/forum_pictures/009071/9071599.jpg)
+sv98/yb_026.jpg  Винтовки России
+    https://zonwar.ru/vintovki/vintovki_11.html (https://zonwar.ru/images/vintovki/rossia/imz_sv-98s.jpg)
+sv98/yb_032.jpg  СВ-98 или вооружение снайперов Российского спецназа! МУЖСКАЯ ТЕРРИТОРИЯ Дзен
+    https://dzen.ru/a/Wu4ePt0khAGq-Zg5 (https://avatars.dzeninfra.ru/get-zen_doc/99101/pub_5aee1e3edd248401aaf99839_5aee1fad5a104f06b8f92c34/scale_1200)
+sv98/yb_039.jpg  СВ-98 против СВД: спортивная винтовка на службе у спецназа Пикабу
+    https://pikabu.ru/story/sv98_protiv_svd_sportivnaya_vintovka_na_sluzhbe_u_spetsnaza_4044338 (https://cs8.pikabu.ru/post_img/2016/03/06/1/og_og_1457216529274129804.jpg)
+sv98/yb_064.jpg  2 sniper rifles Vladimir Putin’s guards use (PHOTOS) - Russia Beyond
+    https://www.rbth.com/science-and-tech/334148-2-sniper-rifles-vladimir-putins-guards (https://mf.b37mrtl.ru/rbthmedia/images/2021.08/original/612dfa0d15e9f932d13170ee.jpg)
+sv98/yb_066.jpg  Читать книгу Снайперы. Самая полная энциклопедия Семена Федосеева : онлайн чтение - страница 34
+    https://iknigi.net/avtor-semen-fedoseev/212268-snaypery-samaya-polnaya-enciklopediya-semen-fedoseev/read/page-34.html (https://iknigi.net/books_files/online_html/212268/i_163.jpg)
+sv98/yb_069.jpg  Винтовка СВ-98 Пикабу
+    https://pikabu.ru/story/vintovka_sv98_9863365 (https://cs14.pikabu.ru/post_img/2023/01/19/11/og_og_1674154158291091407.jpg)
+sv98/yb_097.jpg  СВ-98 - замена для СВД. Мифы и бред об оружии. Злой Опричник. Дзен
+    https://dzen.ru/a/W4-BwBY-_wCra0Qy (https://avatars.dzeninfra.ru/get-zen_doc/1362956/pub_5b8f81c0163eff00ab6b4432_5b8f97e4eb502200aba73812/scale_1200)
+sv98/yb_102.jpg  Cнайперская винтовка СВ-98 Армии и Солдаты - Военная энциклопедия
+    https://armedman.ru/strelkovoe-vooruzhenie/1991-2015-strelkovoe-vooruzhenie/cnayperskaya-vintovka-sv-98.html (http://armedman.ru/wp-content/uploads/2017/01/sv-98-2.jpg)
+sv98/yb_116.jpg  В Уфе полигон Росгвардии признали опасным для окружающих - Информационное агентство Деловой журнал Профиль - profile.ru
+    https://profile.ru/news/accidents/v-ufe-poligon-rosgvardii-priznali-opasnym-dlya-okruzhayushhix-179138/ (https://cdn.profile.ru/wp-content/uploads/2019/09/Poligon.jpg)
+sv98/yb_140.jpg  Продам зип СВ-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/033537/33537346_670.jpg.html (https://i3.guns.ru/forums/icons/forum_pictures/033537/33537346_670.jpg)
+sv98/yb_145.jpg  Продам. Эксклюзив СВ-98 калибр 7, 62x54R цена 500т.р г. Ростов-на-Дону
+    https://forum.guns.ru/forummessage/187/2946774.html (https://i3.guns.ru/forums/icons/forum_pictures/033274/33274703_19095.jpg)
+sv98/yb_146.jpg  СВ-98 / Вопрос по затвору : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/10175880.html (https://i3.guns.ru/forums/icons/forum_pictures/010175/10175882.jpg)
+sv98/yb_153.jpg  Снайперская винтовка СВ-98 от ASR!
+    http://granit-rzn.ru/tpost/f0fppm08d1-snaiperskaya-vintovka-sv-98-ot-asr (https://static.tildacdn.com/tild6639-6264-4936-a431-316439656235/photo_2025-07-22_14-.jpg)
+sv98/yb_158.jpg  Снайперская винтовка, взгляд со стороны: СВ-98 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic1321450.html (https://s00.yaplakal.com/pics/pics_preview/3/2/7/7239723.jpg)
+sv98/yb_160.jpg  Снайперская винтовка СВ-98, фото 7
+    https://zonwar.ru/fotogalerej/SV-98/sv-98_r7.html (http://content-12.foto.my.mail.ru/mail/photoshooter/924/i-931.jpg)
+sv98/yb_161.jpg  Глушитель на винтовку СВ-98 от компании BRT BRT - Производители ДТК Дзен
+    https://dzen.ru/video/watch/633689dc0609d92c31490ee8? (https://iv.okcdn.ru/videoPreview?id=7465468889629&type=32&idx=7&tkn=IuCEuV8H4uGkd1x-wjRTqSDr-DU)
+sv98/yb_175.jpg  (source line missing)
+sv98/yb_179.jpg  (source line missing)
+sv98/yb_181.jpg  (source line missing)
+sv98/yb_182.jpg  (source line missing)
+sv98/yb_183.jpg  (source line missing)
+
+== sv98_alu/ (41 files)
+sv98_alu/SV-98M.jpg  (source line missing)
+sv98_alu/SV98M_scope_rail.jpg  (source line missing)
+sv98_alu/commons_SV-98_sniper_rifle_at_Military-technical_forum_ARMY-2016_01.jpg  File:SV-98 sniper rifle at Military-technical forum ARMY-2016 01.jpg (2250x1455)
+    https://commons.wikimedia.org/wiki/File:SV-98_sniper_rifle_at_Military-technical_forum_ARMY-2016_01.jpg (https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/SV-98_sniper_rifle_at_Military-technical_forum_ARMY-2016_01.jpg/1920px-SV-98_sniper_rifle_at_Military-technical_forum_ARMY-2016_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail)
+sv98_alu/en3_060.jpg  SV-98M
+    https://www.armyrecognition.com/military-products/army/weapons/sniper-rifles/sv-98m-sniper-rifle-l-shni-v-sv-98m-7-62x54r-mm-caliber-technical-data-sheet-specifications-pictures-video-10612164 (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/pictures/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_002.jpg)
+sv98_alu/en3_063.jpg  SV-98M
+    https://www.armyrecognition.com/military-products/army/weapons/sniper-rifles/sv-98m-sniper-rifle-l-shni-v-sv-98m-7-62x54r-mm-caliber-technical-data-sheet-specifications-pictures-video-10612164 (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/pictures/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_003.jpg)
+sv98_alu/en3_064.jpg  SV-98M
+    https://www.armyrecognition.com/military-products/army/weapons/sniper-rifles/sv-98m-sniper-rifle-l-shni-v-sv-98m-7-62x54r-mm-caliber-technical-data-sheet-specifications-pictures-video-10612164 (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/pictures/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_004.jpg)
+sv98_alu/en3_071.jpg  SV-98M
+    https://www.armyrecognition.com/military-products/army/weapons/sniper-rifles/sv-98m-sniper-rifle-l-shni-v-sv-98m-7-62x54r-mm-caliber-technical-data-sheet-specifications-pictures-video-10612164 (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/pictures/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_001.jpg)
+sv98_alu/en3_093.webp  Kalashnikov to deliver SV-98M sniper rifles to Russian National Guard
+    https://www.armyrecognition.com/archives/archives-land-defense/land-defense-2018/kalashnikov-to-deliver-sv-98m-sniper-rifles-to-russian-national-guard (https://www.armyrecognition.com/images/stories/news/2018/July_2018/Kalashnikov_to_deliver_SV_98M_sniper_rifles_to_Russian_National_Guard.jpg)
+sv98_alu/en_001.jpg  Kalashnikov Sv-98 Sniper Rifle – WATQVT
+    https://tupivivo.org/kalashnikov-sv98-sniper-rifle/ (https://img.kalashnikovgroup.ru/2120,fit/https://cdn.kalashnikovgroup.ru/static/images/s/v/-/sv-98-1-15102-1080.jpg)
+sv98_alu/en_005.jpg  Russia sends new sniper rifles to frontline troops
+    https://defence-blog.com/russia-sends-new-sniper-rifles-to-frontline-troops/ (https://defence-blog.com/wp-content/uploads/2025/10/photo_5438466342895354329_y.jpg)
+sv98_alu/en_010.jpg  Izhmash Sv-98 Bolt-Action Sniper Rifle Specifications And Pictures – NMSMJK
+    https://munichatomchip.de/izhmash-sv98-boltaction-sniper-rifle-specifications-and-pictures/ (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_details_002.jpg)
+sv98_alu/en_015.jpg  SV-98 | Weaponsystems.net
+    https://weaponsystems.net/system/1121-SV-98 (https://photo.weaponsystems.net/image/s-carousel/n-fa_sr_sv98_p05.jpg/--/img/ws/fa_sr_sv98_p05.jpg)
+sv98_alu/kalA_12612460-1.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/12612460-1.jpg
+sv98_alu/kalA_SV-98-alyuminievaya-lozha.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98-alyuminievaya-lozha.jpg
+sv98_alu/ru2_016.jpg  Снайперские винтовки СВ-98 - российский Калашников поставил оккупантам ...
+    https://www.unian.net/weapons/snayperskie-vintovki-sv-98-rossiyskiy-kalashnikov-postavil-okkupantam-novye-vintovki-13165005.html (https://images.unian.net/photos/2025_10/thumb_files/1000_545_1760618834-9633.jpg?1)
+sv98_alu/ru2_017.png  «АК200, АК205 и СВ-98: «Калашников» полностью закрыл поставки ...
+    https://sdelanounas.ru/blogs/179242/ (https://sdelanounas.ru/uploads/3/2/3270471793879306_big.png)
+sv98_alu/ru2_018.jpg  Концерн «Калашников» поставит Росгвардии СВ-98 - Русский охотничий портал
+    https://huntportal.ru/hunting/novosti/kalashnikov-postavit-rosgvardii-sv-98 (https://huntportal.ru/assets/images/articles/novosti/kalashnikov-postavit-rosgvardii-sv-98-01.jpg)
+sv98_alu/ru2_022.jpg  SV-98M Калашников СВ-98М sniper rifle 7 62x54R mm caliber Kalachnikov ...
+    https://www.youtube.com/watch?v=KQ_8p9aOCss (https://i.ytimg.com/vi/KQ_8p9aOCss/maxresdefault.jpg)
+sv98_alu/ru2_025.jpg  День инноваций МО РФ: «Концерн «Калашников»» представил автоматы и ...
+    https://vpk.name/news/95380_den_innovacii_mo_rf_koncern_kalashnikov_predstavil_avtomaty_i_vintovki_dlya_sovremennogo_soldata.html (https://vpk.name/file/img/sv-98_modern.jpg)
+sv98_alu/ru2_028.png  СВ-98: высокоточное оружие снайпера, созданное для решения специальных ...
+    https://teletype.in/@russianguns/YbEYCnowlmRVxOvC (https://img1.teletype.in/files/4f/5d/4f5d9575-65f1-4666-9111-362a1cd658b5.png)
+sv98_alu/ru3_008.jpg  Трёхлинейка XXI века - Статьи об оружии и боеприпасах
+    https://weaponland.ru/publ/trjokhlinejka_xxi_veka/6-1-0-2418 (https://weaponland.ru/images/statyi/sniper-1/3/Three-ruler-XXI-century-6.jpg)
+sv98_alu/ru3_031.jpg  Концерн «Калашников» модернизирует винтовку СВ-98 (СВ-98М) - 01.09.24 ...
+    https://pikabu.ru/story/kontsern_kalashnikov_moderniziruet_vintovku_sv98_sv98m_11766822 (https://cs15.pikabu.ru/post_img/big/2024/09/01/12/1725223130270576374.jpg)
+sv98_alu/ru3_050.jpg  СВ-98 винтовка снайперская - характеристики, фото, ттх
+    https://www.armoury-online.ru/articles/sr/ru/sv-98/ (https://www.armoury-online.ru/usr/templates/images/1485891396818.jpg)
+sv98_alu/ru_017.jpg  Коллекция «Калашникова» в Петербурге | Оружейный журнал «КАЛАШНИКОВ»
+    https://www.kalashnikov.ru/kollektsiya-kalashnikova-v-peterburge/ (https://www.kalashnikov.ru/wp-content/uploads/2024/07/snajperskaya-vintovka-SV-98M.jpg)
+sv98_alu/ru_018.jpg  Новая партия винтовок СВ-98 передана заказчику - ANNA NEWS
+    https://anna-news.info/novaya-partiya-vintovok-sv-98-peredana-zakazchiku/ (https://anna-news.info/wp-content/uploads/2025/10/16/0900/sv-98.jpg)
+sv98_alu/ru_027.jpg  Характеристики винтовки СВ-98 и применение в зоне СВО
+    https://iz.ru/2120145/2026-06-23/snaiperskaia-vintovka-sv-98-khorosho-sebia-zarekomendovala-v-boiakh (https://cdn.iz.ru/sites/default/files/styles/900x506/public/news-2026-06/ERS01168_0.jpg?itok=Iyppz8ZO)
+sv98_alu/ru_028.jpg  Новая партия винтовок СВ-98 передана заказчику - ANNA NEWS
+    https://anna-news.info/novaya-partiya-vintovok-sv-98-peredana-zakazchiku/ (https://anna-news.info/wp-content/uploads/2025/10/16/0900/vintovka-sv-98.jpg)
+sv98_alu/ru_029.jpg  Винтовку СВ-98 и пистолет-пулемет "Витязь-СН" приняли на вооружение 20 ...
+    https://rg.ru/2025/06/24/vintovku-sv-98-i-pistolet-pulemet-vitiaz-sn-priniali-na-vooruzhenie-20-let-nazad.html (https://cdnstatic.rg.ru/uploads/images/2025/06/24/sv98_f8e.jpg)
+sv98_alu/ru_031.jpg  Крупную партию снайперских винтовок СВ-98 передали заказчику ...
+    https://rg.ru/2025/10/15/krupnuiu-partiiu-snajperskih-vintovok-sv-98-peredali-zakazchiku.html (https://cdnstatic.rg.ru/uploads/images/2025/10/15/9888_6e8.jpg)
+sv98_alu/ru_056.jpg  Снайперская винтовка СВ-98 || Группа компаний «Калашников»
+    https://kalashnikovgroup.ru/catalog/boevoe-strelkovoe-oruzhie/neavtomaticheskie-vintovki/snayperskaya-vintovka-sv-98?ysclid=mkjw7rd569138246538 (https://img.kalashnikovgroup.ru/2120,fit/https://cdn.kalashnikovgroup.ru/static/images/s/v/-/sv-98-2-15103-1080.jpg)
+sv98_alu/ru_057.jpg  Винтовка СВ-98 на выставке «Армия-2016». Фото автора [#505558 ...
+    https://vpk.name/images/i505558.html (https://vpk.name/file/img/vintovka-sv-98-na-vystavke-armiya-2016-foto-avtora-dvglaopk-1620208801.jpg)
+sv98_alu/ya_137.jpg  Dmitriy Konotopets - SV-98 Russian sniper riffle
+    https://konotdima.artstation.com/projects/R3odWD (https://cdnb.artstation.com/p/assets/images/images/036/929/067/large/dmitriy-konotopets-2.jpg?1619011731)
+sv98_alu/ya_138.jpg  Публикация #11644 - Оружейник (FxfK84YelYRhNjBi)
+    https://tgstat.ru/channel/FxfK84YelYRhNjBi/11644 (https://static41.tgcnt.ru/posts/_0/d8/d8ab563c53bb2ab1e3538ee864b01e84.jpg)
+sv98_alu/yb_012.jpg  Фантастическая точность: что представляет собой новая снайперская винтовка для спецназа
+    https://tvzvezda.ru/news/201706180845-w405.htm (https://tvzvezda.ru/storage/news_other_images/original/2017/06/19/0b17b78ace6d486bb28d1cf925b884cb.jpg)
+sv98_alu/yb_099.jpg  Модернизированные с учетом опыта СВО снайперские винтовки СВДС, СВ-98 и СВЧ - Российская газета
+    https://rg.ru/photo/2026/05/22/205ef918a16b8f7.html (https://cdnstatic.rg.ru/uploads/photoreports/2026/05/22/20260522_113320jpg_e07.jpg)
+sv98_alu/yb_106.jpg  Снайперская винтовка СВ-98 - Видео от Разведка Российской Федерации СВО Армия VK Видео
+    https://vkvideo.ru/video-151315035_456241126 (https://sun9-76.vkuserphoto.ru/Pox6acsxsqHlXV1LV1dpwLFvpxMALmBBB-6ZEA/sV3vewLwE8E.jpg)
+sv98_alu/yb_109.jpg  Фантастическая точность: что представляет собой новая снайперская винтовка для спецназа
+    https://tvzvezda.ru/news/201706180845-w405.htm (https://tvzvezda.ru/storage/news_other_images/original/2017/06/19/ca1bc13eee624a748885a8a6a6eb0fc0.jpg)
+sv98_alu/yb_111.jpg  Трёхлинейка XXI века - Альтернативная История
+    https://alternathistory.ru/tryohlinejka-xxi-veka/ (https://alternathistory.ru/wp-content/uploads/2021/07/19408-tryohlineyka-xxi-veka-06-1536x972.jpg)
+sv98_alu/yb_112.jpg  SV-98M
+    https://www.armyrecognition.com/military-products/army/weapons/sniper-rifles/sv-98m-sniper-rifle-l-shni-v-sv-98m-7-62x54r-mm-caliber-technical-data-sheet-specifications-pictures-video-10612164?highlight=WyJpbmNyZWFzZSIsIm51bWJlciIsIm9mIl0= (https://www.armyrecognition.com/images/stories/east_europe/russia/weapons/sv-98m/SV-98M_7-62x45R_caliber_sniper_rifle_Izhmash_Kalashnikov_Group_Russia_Russian_defense_industry_640_001.jpg)
+sv98_alu/yb_117.jpg  WT Live // Image by Hexogon
+    https://live.warthunder.com/post/226861/ru/?comment=898269 (https://cdn-live.warthunder.com/uploads/7a/81d2db539c82bbfb680cf659b4c66a2e7f06dc/Q2YR699aoNo.jpg)
+sv98_alu/yb_119.jpg  Снайперские винтовки СВЧ, СВ-98 и СВДС доработали с учетом опыта СВО - Российская газета
+    https://rg.ru/2026/05/22/snajperskie-vintovki-svch-sv-98-i-svds-dorabotali-s-uchetom-opyta-svo.html?lks_phjs_wait=10 (https://cdnstatic.rg.ru/uploads/images/2026/05/22/20260522_113243jpg_722_a28.jpg)
+
+== sv98m/ (17 files)
+sv98m/kalA_SV-98M-Armiya-2024.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-Armiya-2024.jpg
+sv98m/kalA_SV-98M-DTK.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-DTK.jpg
+sv98m/kalA_SV-98M-PMS.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-PMS.jpg
+sv98m/kalA_SV-98M-magazin-SVD.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-magazin-SVD.jpg
+sv98m/kalA_SV-98M-predohranitel-vklyuchyon.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-predohranitel-vklyuchyon.jpg
+sv98m/kalA_SV-98M-predohranitel-vyklyuchen.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-predohranitel-vyklyuchen.jpg
+sv98m/kalA_SV-98M-zashhyolka-magazina2.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-zashhyolka-magazina2.jpg
+sv98m/kalA_SV-98M_10.jpg  https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M_10.jpg
+sv98m/kalB_SV-98M-2024.jpg  https://www.kalashnikov.ru/snajperskaya-vintovka-sv-98m-na-vystavke-armiya-2024/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-2024.jpg
+sv98m/kalB_SV-98M-magazin-SVD-plastik.jpg  https://www.kalashnikov.ru/snajperskaya-vintovka-sv-98m-na-vystavke-armiya-2024/
+    https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-magazin-SVD-plastik.jpg
+sv98m/ru2_002.jpg  Концерн «Калашников» модернизирует винтовку СВ-98 (СВ-98М)
+    https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/ (https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M_10-1024x457.jpg)
+sv98m/ru3_095.jpg  Концерн «Калашников» модернизирует винтовку СВ-98 (СВ-98М) - 01.09.24 ...
+    https://pikabu.ru/story/kontsern_kalashnikov_moderniziruet_vintovku_sv98_sv98m_11766822 (https://cs15.pikabu.ru/post_img/2024/09/01/12/og_og_1725223571210858888.jpg)
+sv98m/ru_005.jpg  Снайперская винтовка СВ-98М на выставке «Армия 2024» | Оружейный журнал ...
+    https://www.kalashnikov.ru/snajperskaya-vintovka-sv-98m-na-vystavke-armiya-2024/ (https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M-1343.jpg)
+sv98m/ru_032.jpg  Концерн «Калашников» модернизирует винтовку СВ-98 (СВ-98М)
+    https://www.kalashnikov.ru/kontsern-kalashnikov-moderniziruet-vintovku-sv-98-sv-98m/ (https://www.kalashnikov.ru/wp-content/uploads/2024/08/SV-98M.jpg)
+sv98m/ya_123.jpg  Kalashnikov to deliver SV-98 sniper rifles to Rosgvardiya - Military & Defense - TASS
+    https://tass.com/defense/1012595 (https://cdn-media.tass.ru/width/1200_4ce85301/tass/m2/en/uploads/i/20180710/1198164.jpg)
+sv98m/yb_046.jpg  #131196 post - Военный Осведомитель (@milinfolive)
+    https://tgstat.ru/uz/channel/@milinfolive/131196 (https://static35.tgcnt.ru/posts/_0/08/08500e08a76ed04f5f3cd22e73b306e0.jpg)
+sv98m/yb_054.jpg  Kalashnikov Unveils New Rekord 06 Hunting Rifle
+    https://www.armyrecognition.com/archives/archives-land-defense/land-defense-2024/kalashnikov-unveils-new-rekord-06-hunting-rifle (https://www.armyrecognition.com/images/stories/news/2024/August/Kalashnikov_Unveils_New_Rekord_06_Hunting_Rifle_001.jpg)
+
+== sv338/ (11 files)
+sv338/yb_076.jpg  Российская снайперская винтовка СВ-338 - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/rossijskaja_snajperskaja_vintovka_sv_338/7-1-0-27 (https://arma3.do.am/_pu/0/20101131.jpg)
+sv338/yb_077.jpg  Новая снайперская винтовка РФ СВ-338 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic843810.html (https://s00.yaplakal.com/pics/pics_original/9/2/3/3462329.jpg)
+sv338/yb_078.jpg  Российская снайперская винтовка СВ-338 - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/rossijskaja_snajperskaja_vintovka_sv_338/7-1-0-27 (https://arma3.do.am/_pu/0/30709179.jpg)
+sv338/yb_079.jpg  Инструмент Огнестрельное оружие, Оружия, Оружейный
+    https://ru.pinterest.com/pin/allmulticam--226235581267324473/ (https://i.pinimg.com/736x/64/bf/12/64bf125443049c4ebc1a6f77d98e7b71.jpg)
+sv338/yb_080.jpg  Российская снайперская винтовка СВ-338 - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/rossijskaja_snajperskaja_vintovka_sv_338/7-1-0-27 (https://arma3.do.am/_pu/0/11576983.jpg)
+sv338/yb_081.jpg  Новая снайперская винтовка РФ СВ-338 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/150/topic843810.html (https://s00.yaplakal.com/pics/pics_original/6/3/6/8288636.jpg)
+sv338/yb_083.jpg  СВ-98М-338 и new СВДС(М) : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/6400069.html (https://i3.guns.ru/forums/icons/forum_pictures/006400/6400071.jpg)
+sv338/yb_084.jpg  Российская снайперская винтовка СВ-338 - Армия и вооружение - Каталог статей - Red Bear Community
+    https://www.red-bear.ru/publ/armija_i_vooruzhenie/rossijskaja_snajperskaja_vintovka_sv_338/7-1-0-27 (https://arma3.do.am/_pu/0/38564159.jpg)
+sv338/yb_085.jpg  СВ-98М-338 и new СВДС(М) : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/6400069.html (https://i3.guns.ru/forums/icons/forum_pictures/006402/6402213.jpg)
+sv338/yb_089.jpg  slesh : СВ-98М-338 и new СВДС(М) : Нарезное оружие
+    https://forum.guns.ru/forummessage/2/1024599-m26172593.html (https://i3.guns.ru/forums/icons/forum_pictures/006498/6498646.jpg)
+sv338/yb_110.jpg  Charley : СВ-98М-338 и new СВДС(М) : Нарезное оружие
+    https://forum.guns.ru/forummessage/2/1024599-m26042691.html (https://i3.guns.ru/forums/icons/forum_pictures/006411/6411104.jpg)
+
+== record/ (54 files)
+record/var2_002.jpg  Izhmash Record .338 Lapua Magnum coming to Canada | thefirearmblog.com
+    https://www.thefirearmblog.com/blog/2010/12/22/izhmash-record-338-lapua-magnum-coming-to-canada/ (https://cdn-fastly.thefirearmblog.com/media/2024/05/15/14042305/izhmash-record-338-lapua-magnum-coming-to-canada.jpg?size=1200x628)
+record/var2_012.jpg  IZHMASH RECORD IZ-180 TARGET RIFLE. - Chuck's Guns Online
+    https://chucksgunsonline.com/product/izhmash-record-iz-180-target-rifle/ (https://chucksgunsonline.com/wp-content/uploads/2020/06/iz3.jpg)
+record/var2_013.jpg  IZHMASH RECORD IZ-180 TARGET RIFLE. - Chuck's Guns Online
+    https://chucksgunsonline.com/product/izhmash-record-iz-180-target-rifle/ (https://chucksgunsonline.com/wp-content/uploads/2020/06/iz2.jpg)
+record/ya_088.jpg  Нарезное оружие
+    https://antey.club/text-nareznoe-oruzhie/ (https://antey.club/storage/system/resized/cxy_712x400/2f494fdf5cbe52043ca5a6085a02c0f6_7ec073d4.jpg)
+record/ya_094.jpg  Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/1853071.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496283.jpg)
+record/ya_097.jpg  Рекорд 338 с оптикой продам : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/2040418.html (https://i3.guns.ru/forums/icons/forum_pictures/017994/17994256.jpg)
+record/ya_098.jpg  Рекорд 338 с оптикой продам : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/2040418.html (https://i3.guns.ru/forums/icons/forum_pictures/017994/17994281.jpg)
+record/ya_100.jpg  Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/1853071.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496289.jpg)
+record/ya_101.jpg  Рекорд 338 с оптикой продам : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/2040418.html (https://i3.guns.ru/forums/icons/forum_pictures/017994/17994260.jpg)
+record/ya_103.jpg  Alex.Psix2015 : Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forummessage/187/1853071-m44263317.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496278.jpg)
+record/ya_104.jpg  Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/1853071.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496294.jpg)
+record/ya_105.jpg  Alex.Psix2015 : Рекорд 338 : купля-продажа - винтовки
+    https://forum.guns.ru/forummessage/187/1853071-m44263317.html (https://i3.guns.ru/forums/icons/forum_pictures/015496/15496305.jpg)
+record/ya_106.jpg  Отборные Тигры от Смоллета под заказ из Ижевска. Доставка по РФ спецсвязью.
+    https://gunszip.org/topic/187/373923.html (https://gunszip.org/images/g/187/orig/3122454.jpg)
+record/ya_110.jpg  Рекорд 338 LM будет?
+    https://gunszip.org/topic/294/1569639.html (https://gunszip.org/images/g/294/orig/11879538.jpg)
+record/yb_001.jpg  СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оружие
+    https://forum.guns.ru/forum_light_message/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/010882/10882953.jpg)
+record/yb_002.png  Продам Винтовка СВ-98/Рекорд, Ижевск : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/2895954.html (https://i3.guns.ru/forums/icons/forum_pictures/002895/2895954.png)
+record/yb_003.png  Фотографии Рекорд (СВ 98)
+    https://gunsbroker.ru/bigimg.php?id=577439&url=rekord-sv-98_1676887831.jpg (https://s.gunsbroker.ru/adv/rekord-sv-98_1676887831.jpg)
+record/yb_004.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://i3.guns.ru/forums/icons/forum_pictures/034216/34216715_376.jpg)
+record/yb_005.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://i3.guns.ru/forums/icons/forum_pictures/034216/34216715_32761.jpg)
+record/yb_008.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://i3.guns.ru/forums/icons/forum_pictures/034216/34216715_329.jpg)
+record/yb_010.jpg  Фотографии РЕКОРД -338 (КО-13) (СВ-98)
+    https://gunsbroker.ru/bigimg.php?id=995860&url=rekord--338-ko-13-sv-98_1786541793.jpg (https://s.gunsbroker.ru/adv/rekord--338-ko-13-sv-98_1786541793.jpg)
+record/yb_011.jpg  Сан54607 : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оруж
+    https://forum.guns.ru/forum_light_message_random/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/012497/12497244.jpg)
+record/yb_013.jpg  Продам СВ 98 он же Рекорд 98 Новосибирск калибр 7,62x54 цена 160 000
+    https://forum.guns.ru/forummessage/187/2107105.html (https://i3.guns.ru/forums/icons/forum_pictures/019034/19034771.jpg)
+record/yb_014.jpg  Сан54607 : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оруж
+    https://forum.guns.ru/forum_light_message_random/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/016171/16171126.jpg)
+record/yb_015.jpg  ПРОДАНО Рекорд КО-13 (СВ-98) 2007 г.в. + ложа ORSIS тип Т5000 для нее. : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/15540718.html (https://i3.guns.ru/forums/icons/forum_pictures/015540/15540714.jpg)
+record/yb_016.jpg  Сан54607 : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оруж
+    https://forum.guns.ru/forum_light_message_random/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/012512/12512704.jpg)
+record/yb_019.jpg  Продается охот карабин Рекорд 308 WIN (СВ-98)
+    https://gunszip.org/topic/187/757116.html (https://gunszip.org/images/g/187/orig/4253058.jpg)
+record/yb_020.jpg  minya : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оружие
+    https://forum.guns.ru/forummessage/2/1519107-m40578693.html (https://i3.guns.ru/forums/icons/forum_pictures/012922/12922815.jpg)
+record/yb_021.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://forum.guns.ru/forums/icons/forum_pictures/034216/34216715_349.jpg)
+record/yb_028.jpg  zmejy1977 : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное ору
+    https://forum.guns.ru/forummessage/2/1519107-m37616168.html (https://i3.guns.ru/forums/icons/forum_pictures/011008/11008474.jpg)
+record/yb_029.jpg  barsikisasha : Продам. Эксклюзив СВ-98 калибр 7, 62x54R цена 500т.р г.
+    https://forum.guns.ru/forummessage/187/2946774-m68834313.html (https://i3.guns.ru/forums/icons/forum_pictures/033775/33775620_13652.jpg)
+record/yb_031.jpg  Сан54607 : СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оруж
+    https://forum.guns.ru/forum_light_message_random/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/020675/20675506_3128.jpg)
+record/yb_034.jpg  Продается охот карабин Рекорд 308 WIN (СВ-98) : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/4253078.html (https://i3.guns.ru/forums/icons/forum_pictures/004253/4253052.jpg)
+record/yb_038.jpg  купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/23023336.html (https://i3.guns.ru/forums/icons/forum_pictures/023023/23023276_7620.jpg)
+record/yb_040.png  СВ-98/Рекорд + МЦ-116М гражданская. Интерес : Нарезное оружие
+    https://forum.guns.ru/forum_light_message/2/1519107.html (https://i3.guns.ru/forums/icons/forum_pictures/011002/11002392.png)
+record/yb_041.jpg  Трёхлинейка XXI века - Альтернативная История
+    https://alternathistory.ru/tryohlinejka-xxi-veka/ (https://alternathistory.ru/wp-content/uploads/2021/07/19408-tryohlineyka-xxi-veka-04-2048x891.jpg)
+record/yb_042.jpg  Сайт о гражданском оружии - Концерн Калашников Рекорд
+    https://civilweapons.ru/record (https://civilweapons.ru/Russia/Kalashnikov/Record/Record_1_308-2.jpg)
+record/yb_043.jpg  фото из выставки IWA 2007 : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/620418.html (https://i3.guns.ru/forums/icons/forum_pictures/000620/620418.jpg)
+record/yb_044.jpg  фото из выставки IWA 2007 : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/620418.html (https://i3.guns.ru/forums/icons/forum_pictures/000620/620432.jpg)
+record/yb_048.jpg  Фотографии спортивной винтовки Рекорд-1 : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/4690766.html (https://i3.guns.ru/forums/icons/forum_pictures/004690/4690766.jpg)
+record/yb_049.png  Реестр стрелкового оружия - Союз Российских Оружейников
+    https://xn----dtbiddjgjzecgtj9a2n.xn--p1ai/wreg/grazhdanskoe-oruzhie/vintovka-sportivnaya-standartnaya-krupnokalibernaya-rekord---1/ (https://xn----dtbiddjgjzecgtj9a2n.xn--p1ai/upload/iblock/b07/o3e21aq37nkq5ramcu5yaxd7x3u5d20t/record_1.png)
+record/yb_050.jpg  Продам. Рекорд - 1 калибр 7, 62x54R цена 110000 г. Иркутск : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/32957855.html (https://i3.guns.ru/forums/icons/forum_pictures/032957/32957812_15562.jpg)
+record/yb_051.jpg  Охотничий карабин-Рекорд
+    https://ohota-rybalka-kirov.ru/ohotnichij-karabin-rekord (https://ohota-rybalka-kirov.ru/wp-content/uploads/2016/03/karabin-rekord-1.jpg)
+record/yb_052.jpg  Продам. Винтовка Рекорд-1. Нижний Новгород. калибр 7, 62x54R цена
+    https://forum.guns.ru/forummessage/187/2421161-0.html (https://i3.guns.ru/forums/icons/forum_pictures/026132/26132473_22234.jpg)
+record/yb_053.jpg  volgalom : рекорд : Нарезное оружие
+    https://forum.guns.ru/forum_light_message_random/2/439846.html (https://i3.guns.ru/forums/icons/forum_pictures/001995/1995059.jpg)
+record/yb_055.jpg  ViTT : Снайперская винтовка для БП : Катастрофы и выживание в кризисны
+    https://forum.guns.ru/forummessage/151/1189913-m35498208.html (https://i3.guns.ru/forums/icons/forum_pictures/010110/10110976.jpg)
+record/yb_057.jpg  Охотничий карабин-Рекорд
+    https://ohota-rybalka-kirov.ru/ohotnichij-karabin-rekord (https://ohota-rybalka-kirov.ru/wp-content/uploads/2023/11/REKORD-11-1.jpg)
+record/yb_058.jpg  Фотографии спортивной винтовки Рекорд-1 : Нарезное оружие
+    https://forum.guns.ru/forum_na/forum_picture/4690706.html (https://i3.guns.ru/forums/icons/forum_pictures/004690/4690706.jpg)
+record/yb_059.png  Владикавказ продам рекорд -2 + шасси + прицел sightron s iii 624x50lrirmoа и кольца б : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/19345181.html (https://i3.guns.ru/forums/icons/forum_pictures/019345/19345181.png)
+record/yb_060.png  Винтовка Рекорд-2 (с оптикой)
+    https://tir-izmailovo.ru/012-rekord-2-s-optikoj-sportivnaya-krupnokalibernaya-vintovka/ (https://tir-izmailovo.ru/wp-content/uploads/2016/06/rekord-2.png)
+record/yb_063.jpg  ПродАН РЕКОРД-1 (СССР), калибр 7. 62x54, цена 120000. Ставрополь : купля-продажа - винтовки
+    https://forum.guns.ru/forum_na/forum_picture/20639106.html (https://i3.guns.ru/forums/icons/forum_pictures/020639/20639087_4144.jpg)
+record/yb_065.jpg  Рекорд 7,62х54 - первые тесты ProHunter Дзен
+    https://dzen.ru/a/ZHWkO3pJbQQGuKWm (https://avatars.dzeninfra.ru/get-zen_doc/9428717/pub_6475a43b7a496d0406b8a5a6_6475a6db740cf833168bc124/scale_1200)
+record/yb_068.jpg  CB
+    https://shooter762.narod.ru/sv98.htm (https://shooter762.narod.ru/jpg/sv9801.jpg)
+record/yb_070.jpg  Рекорд 338 с оптикой продам : купля-продажа - винтовки
+    https://forum.guns.ru/forum_light_message/187/2040418.html (https://i3.guns.ru/forums/icons/forum_pictures/017994/17994251.jpg)
+
+== magazines/ (34 files)
+magazines/maks_27.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/27.jpg)
+magazines/maks_28.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/28.jpg)
+magazines/maks_44.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/44.jpg)
+magazines/maks_45.jpg  maksimov.su: СВ-98 - Снайперская винтовка, взгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/45.jpg)
+magazines/ru3_063.jpg  Купить Магазин механический (S&T) СВ-98 (45 шаров) в интернет магазине ...
+    https://airsoftsports.ru/products/magazin-me-ani-eskiy-s-t-sv-98-45-stmag50/ (https://airsoftsports.ru/images/gallery/DSCF0222_174344_1744790068_6.jpg)
+magazines/ru3_065.jpg  Купить Магазин механический (S&T) СВ-98 (45 шаров) в интернет магазине ...
+    https://airsoftsports.ru/products/magazin-me-ani-eskiy-s-t-sv-98-45-stmag50/ (https://airsoftsports.ru/images/gallery/DSCF0219_135664_1744790060_6.jpg)
+magazines/ru3_069.jpg  Продам новый магазин СВ-98 на 10 мест новый : купля-продажа - запч ...
+    https://forum.guns.ru/forummessage/120/2973535.html (https://forum.guns.ru/forums/icons/forum_pictures/033752/33752755_21232.jpg)
+magazines/ru3_070.jpg  Купить Магазин механический (S&T) СВ-98 (45 шаров) в интернет магазине ...
+    https://airsoftsports.ru/products/magazin-me-ani-eskiy-s-t-sv-98-45-stmag50/ (https://airsoftsports.ru/images/gallery/DSCF0224_124804_1744790075_6.jpg)
+magazines/ru3_075.jpg  Купить Магазин механический (S&T) СВ-98 (45 шаров) в интернет магазине ...
+    https://airsoftsports.ru/products/magazin-me-ani-eskiy-s-t-sv-98-45-stmag50/ (https://airsoftsports.ru/images/gallery/DSCF0220_187014_1744790081_6.jpg)
+magazines/ru3_086.jpg  Продам новый магазин СВ-98 на 10 мест новый : купля-продажа - запч ...
+    https://forum.guns.ru/forummessage/120/2973535.html (https://forum.guns.ru/forums/icons/forum_pictures/033752/33752755_21272.jpg)
+magazines/ru3_088.jpg  Продам магазин св-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forummessage/120/3026768.html (https://forum.guns.ru/forums/icons/forum_pictures/034685/34685255_15991.jpg)
+magazines/ru3_089.jpg  Продам магазин св-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forummessage/120/3026768.html (https://forum.guns.ru/forums/icons/forum_pictures/034685/34685255_16037.jpg)
+magazines/ru3_091.jpg  Продам магазин св-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forummessage/120/3026768.html (https://forum.guns.ru/forums/icons/forum_pictures/034685/34685255_15968.jpg)
+magazines/ru_024.jpg  СВ-98 - Снайперская винтовка, вгляд со стороны
+    https://maksimov.su/oruzie-i-boepripasi/nareznoe-oruzie/nareznoe-oruzhie-sssr-i-rossii/157-sv-98-snayperskaya-vintovka-vglyad-so-storony.html (https://maksimov.su/gallery/narez/sv98/43.jpg)
+magazines/ru_041.png  Снайперская винтовка СВ 98 – характеристика, устройство, ттх
+    https://guns.club/lib/oruzhie/snayperskaya-vintovka-sv-98/ (https://guns.club/upload/medialibrary/d6b/ue0y1zhj7eym7f662cmql273f8y0341x/SV_988.png)
+magazines/ya_032.jpg  Снайперская винтовка, взгляд со стороны: СВ-98 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic1321450.html (https://s00.yaplakal.com/pics/pics_preview/2/9/8/7239892.jpg)
+magazines/yb_121.jpg  Магазин механический (S&T) СВ-98 (45 шаров) STMAG50
+    https://strike.by/catalog/magaziny-pid-64/drugie-proizvoditeli-pid-105/82299/?oid=82298 (https://strike.by/upload/iblock/d8a/bpip5l52te7fyqqoj8cw4g7e2dx0arzd.jpg)
+magazines/yb_122.jpg  Магазин механический ASR для винтовки СВ-98 (ASR98-MAG) - отзывы покупателей на Мегамаркет 100027648148
+    https://megamarket.ru/catalog/details/magazin-mehanicheskiy-asr-dlya-vintovki-sv-98-asr98-mag-100027648148/otzyvy/ (https://main-cdn.sbermegamarket.ru/big2/hlr-system/-3/37/69/59/55/11/20/100027648148b0.jpg)
+magazines/yb_125.jpg  Магазин для СВ-98 7.62х54 10 мест ( теги: купить продаю св98 СВ 98) купить - Москва
+    https://gunsbroker.ru/zip/726328_pm-g-right-fab-defense-dlya-pm-makarov.html (https://s.gunsbroker.ru/adv/pm-g-right-fab-defense-dlya-pm-makarov_1742298800.jpg)
+magazines/yb_126.jpg  ПРОДАНЫ магазины для СВ-98 : купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/19747013.html (https://i3.guns.ru/forums/icons/forum_pictures/019747/19747010.jpg)
+magazines/yb_127.jpg  Продам магазин для СВ 98 ( Рекорд ) на 10 мест калибр 7,62x54R цена 85
+    https://forum.guns.ru/forum_light_message/187/2981777.html (https://i3.guns.ru/forums/icons/forum_pictures/033901/33901185_11918.jpg)
+magazines/yb_129.jpg  СВ-98: высокоточное оружие снайпера, созданное для решения специальных задач! Русский ОРУЖЕЙНИК Дзен
+    https://dzen.ru/a/YbEYCnowlmRVxOvC (https://avatars.dzeninfra.ru/get-zen_doc/1887445/pub_61b1180a7a30966455c4ebc2_61e9cc338d51bf47543e2db3/scale_1200)
+magazines/yb_130.jpg  Продам магазины для СВ-98 и СВ-99.
+    https://gunszip.org/topic/254/2466936.html (https://gunszip.org/images/g/254/orig/25151060_24057.jpg)
+magazines/yb_132.jpg  Перейти на страницу с картинкой
+    http://otvaga2004.ru/kaleydoskop/kaleydoskop-inf/so-sportivnym-proshlym/attachment/otvaga2004_rifle_sv98_03/ (http://otvaga2004.ru/wp-content/uploads/2014/08/otvaga2004_rifle_sv98_03.jpg)
+magazines/yb_133.jpg  Продам магазин для СВ 98 ( Рекорд ) на 10 мест калибр 7,62x54R цена 85
+    https://forum.guns.ru/forum_light_message/187/2981777.html (https://i3.guns.ru/forums/icons/forum_pictures/033901/33901187_12013.jpg)
+magazines/yb_135.jpg  Продам магазин для СВ 98 ( Рекорд ) на 10 мест калибр 7,62x54R цена 85
+    https://forum.guns.ru/forum_light_message/187/2981777.html (https://i3.guns.ru/forums/icons/forum_pictures/033901/33901187_11972.jpg)
+magazines/yb_136.jpg  Магазин СОК-98 СБ15 (5мест) купить
+    https://bars-guns.ru/catalog/magaziny_i_oboymy_k_oruzhiyu/magaziny_5_45kh39/magazin_sok_98_sb15_5mest/ (https://bars-guns.ru/upload/iblock/92e/5bv9tlaybtcvfdgtr4jshicxkvgchjiq.jpg)
+magazines/yb_137.jpg  Снайперская винтовка, взгляд со стороны: СВ-98 - ЯПлакалъ
+    https://www.yaplakal.com/forum2/st/0/topic1321450.html (https://s00.yaplakal.com/pics/pics_preview/9/4/8/7239849.jpg)
+magazines/yb_138.jpg  Снайперская винтовка СВ-98, фото 47
+    https://zonwar.ru/fotogalerej/SV-98/sv-98_r47.html (http://content-12.foto.my.mail.ru/mail/photoshooter/924/i-2801.jpg)
+magazines/yb_139.jpg  магазин к автоматической винтовке Федорова обр. 1913 г. : История
+    https://forum.guns.ru/forummessage/36/2495028-0.html (https://i3.guns.ru/forums/icons/forum_pictures/025668/25668497_8356.jpg)
+magazines/yb_141.jpg  Замена оружия в МВД РФ. : Тактическое оружие
+    https://forum.guns.ru/forum_na/forum_picture/2482849.html (https://i3.guns.ru/forums/icons/forum_pictures/002482/2482849.jpg)
+magazines/yb_142.jpg  Куплю вставку в магазин СВ-98/Рекорд для ручной подачи патрона. : купл
+    https://forum.guns.ru/forum_light_message/120/2612617.html (https://i3.guns.ru/forums/icons/forum_pictures/027739/27739257_21952.jpg)
+magazines/yb_143.jpg  Куплю вставку в магазин СВ-98/Рекорд для ручной подачи патрона.
+    https://forum.guns.ru/forummessage/120/2612617.html (https://i3.guns.ru/forums/icons/forum_pictures/027739/27739243_21932.jpg)
+magazines/yb_144.jpg  купля-продажа - запчасти, комплектующие
+    https://forum.guns.ru/forum_na/forum_picture/20115823.html (https://i3.guns.ru/forums/icons/forum_pictures/020115/20115818.jpg)
+
+== docs/ (9 files)
+docs/ru3_001.jpg  «СВ-98» [ СНАЙПЕРСКАЯ ВИНТОВКА ] | Росгвардия | Дзен
+    https://dzen.ru/a/YPwPvNZGTFlmwFWT (https://avatars.dzeninfra.ru/get-zen_doc/5232922/pub_60fc0fbcd6464c5966c05593_60fc0fc251197c3f21c8a827/scale_1200)
+docs/ru3_066.jpg  СВ 98 | PDF
+    https://www.scribd.com/document/911153915/СВ-98 (https://imgv2-1-f.scribdassets.com/img/document/911153915/original/6a799641b9/1?v=1)
+docs/ya_020.jpg  Новый снайперский комплекс : История оружия
+    https://forum.guns.ru/forum_na/forum_picture/005010/thm/5010863.jpg.html (https://i3.guns.ru/forums/icons/forum_pictures/005010/5010865.jpg)
+docs/ya_021.jpg  Каталоги оружия : Литература по оружию
+    https://forum.guns.ru/forum_na/forum_picture/2606672.html (https://i3.guns.ru/forums/icons/forum_pictures/002606/2606543.jpg)
+docs/ya_027.png  СВ-98 - ВПК.name
+    https://vpk.name/library/f/sv-98.html? (https://vpk.name/file/img/SV_98_TTX.png)
+docs/ya_028.jpg  СВ-98, 1П69-Гиперон
+    https://gunszip.org/topic/56/88284.html (https://gunszip.org/images/g/56/orig/663443.jpg)
+docs/yb_030.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://i3.guns.ru/forums/icons/forum_pictures/034217/34217311_16315.jpg)
+docs/yb_033.jpg  Продам Рекорд (СВ-98) калибр 7, 62x54R цена 700000 г. Москва : купля-п
+    https://forum.guns.ru/forum_light_message/187/2999636.html (https://i3.guns.ru/forums/icons/forum_pictures/034217/34217311_16293.jpg)
+docs/yb_180.jpg  (source line missing)
+
+== airsoft/ (76 files)
+airsoft/det_001.jpg  SPECNA ARMS SV-98 CORE™ / SV98 / Airsoft Unboxing - YouTube
+    https://www.youtube.com/watch?v=UqHK4YJI_5Y (https://i.ytimg.com/vi/UqHK4YJI_5Y/maxresdefault.jpg)
+airsoft/det_002.jpg  WellFire SV98 Bolt Action Airsoft Sniper Rifle w/ Bipod ( Gray )
+    https://www.airsoftgi.com/product/WellFire-SV98-Bolt-Action-Airsoft-Sniper-Rifle-w-Bipod-Gray-66125/ (https://www.airsoftgi.com/images/MB4420BBIP_03.jpg)
+airsoft/det_003.webp  SV-98 Deluxe Edition Sniper Rifle Replica – airsoft, ASG, militaria
+    https://gunfire.com/en/products/sv-98-deluxe-edition-sniper-rifle-replica-1152223658.html (https://gunfire.com/hpeciai/8277f0ddab0c9d7c7596fcfe097d941c/eng_pl_SV-98-Deluxe-Edition-Sniper-Rifle-Replica-1152223658_13.webp)
+airsoft/det_004.jpg  WellFire SV98 Bolt Action Airsoft Sniper Rifle w/ Bipod ( Gray )
+    https://www.airsoftgi.com/product/WellFire-SV98-Bolt-Action-Airsoft-Sniper-Rifle-w-Bipod-Gray-66125/ (https://www.airsoftgi.com/images/MB4420BBIP_04.jpg)
+airsoft/det_005.jpg  S&T SV-98 Spring Power Bolt Action Airsoft Snniper Rifle (Green)
+    https://www.airsoftgi.com/product/ST-SV-98-Spring-Power-Bolt-Action-Airsoft-Snniper-Rifle-Green-71929/ (https://www.airsoftgi.com/images/ST-SPG25RW_3.jpg)
+airsoft/det_006.jpg  Sniper rifles : Airsoft sniper SV-98 (SW-025(TN)) spring action rifle ...
+    https://airsoftpro.cz/en/airsoft-guns/long-spring-action/airsoft-sniper-puska-sv-98-sw-025tn-celokov-manual-tan-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-sv98-sw-025-tan-7.jpg)
+airsoft/det_007.jpg  Raptor TWI SV-98 Bolt Action Airsoft Sniper Rifle (Model: Regular ...
+    https://www.evike.com/products/91646/ (https://www.evike.com/images/large/raptor-91646.jpg)
+airsoft/det_008.webp  SV-98 CORE™ sniper rifle replica with bipod, scope and sound suppressor ...
+    https://gunfire.com/en/products/sv-98-core-tm-sniper-rifle-replica-with-bipod-scope-and-sound-suppressor-russian-green-1152226943.html (https://gunfire.com/hpeciai/cb91d52c82aaf1d2b41aa482134b7b1c/eng_pl_SV-98-CORE-TM-sniper-rifle-replica-with-bipod-scope-and-sound-suppressor-russian-green-1152226943_1.webp)
+airsoft/det_009.jpg  Ostatní pušky : Airsoft sniper SV98 MB4420A - černá - AirsoftPro.cz
+    https://airsoftpro.cz/cz/airsoftove-zbrane/odstrelovaci-pusky/ostatni-odstrelovaci-pusky/airsoft-sniper-sv98-mb4420a-cerna-detail (https://airsoftpro.cz/images/stories/virtuemart/product/well-airsoft-sniper-sv98-mb4420a-black-01.jpg)
+airsoft/det_010.webp  SV-98 Regular Edition Sniper Rifle Replica – airsoft, ASG, militaria
+    https://gunfire.com/en/products/sv-98-regular-edition-sniper-rifle-replica-1152223657.html (https://gunfire.com/hpeciai/e9202411b867fd06bf118d2093716de0/eng_pl_SV-98-Regular-Edition-Sniper-Rifle-Replica-1152223657_1.webp)
+airsoft/det_011.jpg  Gunfire Instant Video: Raptor Airsoft SV-98 | Popular Airsoft: Welcome ...
+    https://www.popularairsoft.com/news/gunfire-instant-video-raptor-airsoft-sv-98 (https://www.popularairsoft.com/sites/default/files/2019-11/gunfire_raptor_sv98.jpg)
+airsoft/det_012.jpg  Odstřelovací pušky : Airsoft sniper puška SV-98 (SW-025(BK)), celokov ...
+    https://airsoftpro.cz/cz/airsoftove-zbrane/odstrelovaci-pusky/airsoft-sniper-puska-sv-98-sw-025bk-celokov-manual-cerna-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-airsoft-sniper-v98-sw025-black-1.jpg)
+airsoft/det_013.png  Well SV-98 / MB4420D Sniper Rifle Set OD | Sniper | Federdruck | 6mm ...
+    https://airsoft2go.de/waffen/6mm/federdruck/sniper/3371/sv-98/mb4420d-sniper-rifle-set-od/ (https://airsoft2go.de/media/image/f6/6b/60/29992.png)
+airsoft/det_015.jpg  Airsoft sniper pušky : Airsoft sniper puška SV-98 (SW-025(TN)), celokov ...
+    https://airsoftpro.cz/cz/airsoftove-zbrane/odstrelovaci-pusky/airsoft-sniper-puska-sv-98-sw-025tn-celokov-manual-tan-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-sv98-sw-025-tan-10.jpg)
+airsoft/det_016.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_7-1200x1200.jpg)
+airsoft/det_017.jpg  S#38;T ARMAMENT SPRING SNIPER SV-98 AIRSOFT RIFLE REAL WOOD | Arsenal ...
+    https://www.arsenalsports.com/produto/st-armament-spring-sniper-sv98-airsoft-rifle-real-wood-32535.html (https://www.arsenalsports.com/img/32535/produtos/1200/97b151aafae509263b15f661ac12e9bc.png)
+airsoft/det_018.jpg  Raptor SV-98 Bolt Action Airsoft Sniper Rifle (1 Extra Mag) | Octagon ...
+    https://www.octagonairsoft.com/product-page/raptor-twi-sv-98-air-cocking-sniper-rifle-real-wood-version-normal-set (https://static.wixstatic.com/media/a39f37_dead99880f3f42afab14195d52d9bdb9~mv2.jpg/v1/fill/w_960,h_716,al_c,q_85,enc_avif,quality_auto/a39f37_dead99880f3f42afab14195d52d9bdb9~mv2.jpg)
+airsoft/det_019.jpg  Raptor SV-98 Bolt Action Airsoft Sniper Rifle (1 Extra Mag) | Octagon ...
+    https://www.octagonairsoft.com/product-page/raptor-twi-sv-98-air-cocking-sniper-rifle-real-wood-version-normal-set (https://static.wixstatic.com/media/a39f37_292944a93c68408693b9916a8db22203~mv2.jpg/v1/fill/w_960,h_772,al_c,q_85,enc_avif,quality_auto/a39f37_292944a93c68408693b9916a8db22203~mv2.jpg)
+airsoft/det_024.jpg  SnowWolf SV-98 SIYAH Bolt Action Airsoft Sniper Tüfeği AWP AWM | Snow ...
+    https://www.izmiravmarket.com/urun/snowwolf-sv-98-siyah-bolt-action-airsoft-sniper-tufegi-awp-awm (https://cdn.izmiravmarket.com/idea/at/66/myassets/products/228/sr-sw-025-bk.jpg?revision=1746990191)
+airsoft/det_025.jpg  S&T SV-98 Spring Power Bolt Action Airsoft Snniper Rifle (Green)
+    https://www.airsoftgi.com/product/ST-SV-98-Spring-Power-Bolt-Action-Airsoft-Snniper-Rifle-Green-71929/ (https://www.airsoftgi.com/images/ST-SPG25RW_5.jpg)
+airsoft/det_026.jpg  Снайперська гвинтівка SV-98 CORE™ з оптикою і сошками - russian green ...
+    https://asg.net.ua/ua/p2003405201-snajperskaya-vintovka-core.html (https://images.prom.ua/2857953183_w640_h640_snajperskaya-vintovka-sv-98.jpg)
+airsoft/det_027.jpg  Odstřelovací pušky : Airsoft sniper puška SV-98 (SW-025(BK)), celokov ...
+    https://airsoftpro.cz/cz/airsoftove-zbrane/odstrelovaci-pusky/airsoft-sniper-puska-sv-98-sw-025bk-celokov-manual-cerna-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-airsoft-sniper-v98-sw025-black-2.jpg)
+airsoft/det_028.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_8-1200x1200.jpg)
+airsoft/det_029.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_6-1200x1200.jpg)
+airsoft/det_030.jpg  Odstřelovací pušky : Airsoft sniper puška SV-98 (SW-025(OD)), celokov ...
+    https://airsoftpro.cz/cz/airsoftove-zbrane/odstrelovaci-pusky/airsoft-sniper-puska-sv-98-sw-025od-celokov-manual-olivova-barva-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-sv98-sw-025-od-1.jpg)
+airsoft/det_031.jpg  S#38;T ARMAMENT SPRING SNIPER SV-98 AIRSOFT RIFLE REAL WOOD | Arsenal ...
+    https://www.arsenalsports.com/produto/st-armament-spring-sniper-sv98-airsoft-rifle-real-wood-32535.html (https://www.arsenalsports.com/img/32535/produtos/600/aa750453287ab10ed5e07e66f296562a.png)
+airsoft/det_033.jpg  SnowWolf SV-98 SIYAH Bolt Action Airsoft Sniper Tüfeği AWP AWM | Snow ...
+    https://www.izmiravmarket.com/urun/snowwolf-sv-98-siyah-bolt-action-airsoft-sniper-tufegi-awp-awm (https://cdn.izmiravmarket.com/idea/at/66/myassets/products/228/sr-sw-025-bk-03_min.jpg?revision=1746990191)
+airsoft/det_034.jpg  SnowWolf SV-98 SIYAH Bolt Action Airsoft Sniper Tüfeği AWP AWM | Snow ...
+    https://www.izmiravmarket.com/urun/snowwolf-sv-98-siyah-bolt-action-airsoft-sniper-tufegi-awp-awm (https://cdn.izmiravmarket.com/idea/at/66/myassets/products/228/sr-sw-025-bk-02_min.jpg?revision=1746990191)
+airsoft/det_035.webp  S&T SV-98 - Airsoft Exchange
+    https://airsoftexchange.uk/listings/st-sv-98-59kxRCzr (https://cdn.airsoftexchange.uk/listings/24/st-sv-98_SLKjLt_1759632219.webp)
+airsoft/det_038.jpg  Raptor SV-98 Bolt Action Airsoft Sniper Rifle (1 Extra Mag) | Octagon ...
+    https://www.octagonairsoft.com/product-page/raptor-twi-sv-98-air-cocking-sniper-rifle-real-wood-version-normal-set (https://static.wixstatic.com/media/a39f37_6f22145f90234152aaf1a1b49dba1b3c~mv2.jpg/v1/fill/w_542,h_960,al_c,q_85,enc_avif,quality_auto/a39f37_6f22145f90234152aaf1a1b49dba1b3c~mv2.jpg)
+airsoft/det_039.jpg  170 best Sv 98 images on Pholder | Comando Svr1986, Girlsfrontline and ...
+    https://pholder.com/sv-98 (https://i.redd.it/ixcss060vh551.jpg)
+airsoft/det_040.jpg  Sniper rifles : Airsoft sniper SV-98 (SW-025(OD)) spring action rifle ...
+    https://airsoftpro.cz/en/airsoft-guns/long-spring-action/airsoft-sniper-puska-sv-98-sw-025od-celokov-manual-olivova-barva-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-sv98-sw-025-od-7.jpg)
+airsoft/det_041.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_9-1200x1200.jpg)
+airsoft/det_044.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-2l_800x533.jpg?v=1640515838)
+airsoft/det_045.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-5L_800x533.jpg?v=1670209839)
+airsoft/det_046.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-2L_800x533.jpg?v=1670209839)
+airsoft/det_047.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-7L_800x533.jpg?v=1670209839)
+airsoft/det_048.jpg  Bone Yard - Snow Wolf SV-98 Bolt Action Airsoft Sniper Rifle (Store ...
+    https://www.evike.com/product_info.php?products_id=41371 (https://www.evike.com/images/large/snowolf-14747.jpg)
+airsoft/det_049.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-7l_800x533.jpg?v=1640515837)
+airsoft/det_050.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-9L_800x533.jpg?v=1670209839)
+airsoft/det_051.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-3e_800x533.jpg?v=1670209839)
+airsoft/det_052.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-9l_800x533.jpg?v=1640515838)
+airsoft/det_053.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-5l_800x533.jpg?v=1640515837)
+airsoft/det_054.jpg  Купить Винтовка Snow Wolf sv/98 Bolt Action Airsoft Sniper Rifle в ...
+    https://nazya.com/ebay/product/vintovka-snow-wolf-sv-98-bolt-action-airsoft-sniper-rifle_363387309150.html (https://i.ebayimg.com/00/s/ODY5WDEyNDI=/z/lY4AAOSwH9tfpOhk/$_12.JPG?set_id=880000500F)
+airsoft/det_056.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-8L_800x533.jpg?v=1670209839)
+airsoft/det_057.png  Snow Wolf Cyma SV98 Bolt-Action Spring Sniper Rifle Set 6mm - Svart
+    https://www.tacticalstore.se/airsoft/airsoftgevar/snipergevar/snow-wolf-cyma-sv98-bolt-action-spring-sniper-rifle-set-6mm-svart/ (https://www.tacticalstore.se/images/2x/normal/snow_wolf_sv98_spring_bolt-actio4.png)
+airsoft/det_058.png  Snow Wolf Cyma SV98 Bolt-Action Spring Sniper Rifle Set 6mm - Svart
+    https://www.tacticalstore.se/airsoft/airsoftgevar/snipergevar/snow-wolf-cyma-sv98-bolt-action-spring-sniper-rifle-set-6mm-svart/ (https://www.tacticalstore.se/images/2x/normal/snow_wolf_sv98_spring_bolt-actio5.png)
+airsoft/det_059.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-8l_800x533.jpg?v=1640515838)
+airsoft/det_061.jpg  Snow Wolf SV-98 Air Cocking Sniper Rifle ( SW025) | Octagon Airsoft
+    https://www.octagonairsoft.com/product-page/snow-wolf-sv-98-air-cocking-sniper-rifle-sw025 (https://static.wixstatic.com/media/53fa61_e73ea29cfb5043f78b7e7e8b153aeecd~mv2.jpg/v1/fill/w_980,h_299,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/53fa61_e73ea29cfb5043f78b7e7e8b153aeecd~mv2.jpg)
+airsoft/det_062.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-6l_800x533.jpg?v=1640515837)
+airsoft/det_063.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-6L_800x533.jpg?v=1670209839)
+airsoft/det_064.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-11L_800x533.jpg?v=1670209839)
+airsoft/det_065.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-10l_800x533.jpg?v=1640515838)
+airsoft/det_066.jpg  Snow Wolf SV-98 Bolt Action Sniper with Bipod & Scope (Tan/ SW025A ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-tan-sw025a (https://www.ehobbyasia.com/cdn/shop/products/sw-025a-sv98-tan-11l_800x533.jpg?v=1640515837)
+airsoft/det_068.jpg  Snow Wolf SV-98 Bolt Action Sniper Rifle with Bipod & Scope (OD/ SW025 ...
+    https://www.ehobbyasia.com/products/snow-wolf-sv-98-bolt-action-sniper-with-bipod-scope-od-sw025 (https://www.ehobbyasia.com/cdn/shop/products/SW-025A-SV98-OD-10L_800x533.jpg?v=1670209839)
+airsoft/en2_012.jpg  SV-98 Sniper Rifle replica with bipod and scope- Russian green - SNOW WOLF
+    http://www.snowwolftoys.com/show.asp?id=193 (http://www.snowwolftoys.com/UploadFile/month_2108/202108201404354785.jpg)
+airsoft/en2_013.jpg  SV-98 Sniper Rifle replica with bipod and scope BK - SNOW WOLF
+    http://www.snowwolftoys.com/show.asp?id=192 (http://www.snowwolftoys.com/UploadFile/month_2108/202108151206307708.jpg)
+airsoft/en2_024.jpg  SV-98 Sniper Rifle replica with bipod and scope- Russian green - SNOW WOLF
+    http://www.snowwolftoys.com/show.asp?id=193 (http://www.snowwolftoys.com/UploadFile/month_2108/202108201405114524.jpg)
+airsoft/en3_048.jpg  Mach Sakai: S&T SV-98 Real Wood Bolt Action Rifle | Popular Airsoft ...
+    https://www.popularairsoft.com/news/mach-sakai-st-sv-98-real-wood-bolt-action-rifle (https://www.popularairsoft.com/sites/default/files/2023-08/machsakai_snt_sv98_realwood.jpg)
+airsoft/en3_051.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_1-1200x1200.jpg)
+airsoft/en3_058.jpg  S&T SV-98 Spring Power Airsoft Rifle - (Real Wood/Green) | Airsoft ...
+    https://www.airsoftmegastore.com/st-spg25rw-s-and-t-sv-98-spring-power-airsoft-rifle-real-wood-green (https://www.airsoftmegastore.com/image/cache/catalog/ST-SPG25RW_5-1200x1200.jpg)
+airsoft/en3_072.jpg  Izhmash Sv-98 Bolt-Action Sniper Rifle Specifications And Pictures – NMSMJK
+    https://munichatomchip.de/izhmash-sv98-boltaction-sniper-rifle-specifications-and-pictures/ (https://www.airsoftgi.com/images/MB4420BBIP_02.jpg)
+airsoft/en3_109.jpg  Sound Suppressor for SV-98 CORE™ replicas – airsoft, ASG, militaria
+    https://gunfire.com/en/products/sound-suppressor-for-sv-98-core-tm-replicas-1152226946.html (https://static5.gunfire.com/hpeciai/cfe86962398ebad89a2a7d7bce1068bc/eng_pl_Sound-Suppressor-for-SV-98-CORE-TM-replicas-1152226946_2.jpg)
+airsoft/en3_110.jpg  SNOW WOLF DUMMY SILENCER 280mm FOR SV-98 SERIES BLACK (SW-02502 ...
+    https://www.jollysoftair.com/en/silencers/16415-snow-wolf-dummy-silencer-280mm-for-sv-98-series-black-sw-02502.html (https://www.jollysoftair.com/41003-large_default/snow-wolf-dummy-silencer-280mm-for-sv-98-series-black-sw-02502.jpg)
+airsoft/en3_111.jpg  Tlmiče s inými závitmi : Metal silencer for SV-98 (SW-025) - AirsoftPro.sk
+    https://airsoftpro.sk/sk/doplnky-k-zbraniam-popruhy/tlmice-kompenzatory-redukcia/tlmice/ostatne-tlmice/kovovy-tlumic-pro-sv-98-sw-025-detail (https://airsoftpro.sk/images/stories/virtuemart/product/snowwolf-metal-suppressor-for-sv98-sw025-3.jpg)
+airsoft/en3_112.jpg  Suppressors with other threads : Metal suppressor for SV-98 (SW-025 ...
+    https://airsoftpro.cz/en/guns-accessories/suppressors/suppressors-1/other-suppressors/kovovy-tlumic-pro-sv-98-sw-025-detail (https://airsoftpro.cz/images/stories/virtuemart/product/snowwolf-metal-suppressor-for-sv98-sw025-2.jpg)
+airsoft/en_006.jpg  Sv-98 spring sniper rifle version raptor - Softair Games - ASG Softair ...
+    https://www.softairgames.net/en/rifle-sniper-bolt-action/20851-sv-98-spring-sniper-rifle-regular-version-raptor-rpt-sv98-reg.html (https://www.softairgames.net/img/cms/Raptor-sv98-sniper-rifle-sito.jpg)
+airsoft/en_030.png  SV-98 / MB4420D Sniper Rifle Set, Olive Grün
+    https://www.softairwelt.de/SV-98-MB4420D-Sniper-Rifle-Set-Olive-Gruen (https://www.softairwelt.de/media/image/product/8572/lg/sv-98-mb4420d-sniper-rifle-set-olive-gruen.png)
+airsoft/en_031.webp  SV-98 Regular Edition sniper rifle replica (OUTLET) | Gunfire.com
+    https://gunfire.com/en/products/sv-98-regular-edition-sniper-rifle-replica-outlet-1152235635.html (https://gunfire.com/hpeciai/d14d688056416b22096954d7d4f01e77/eng_pl_SV-98-Regular-Edition-sniper-rifle-replica-OUTLET-1152235635_1.webp)
+airsoft/ru3_058.jpg  Купить Страйкбольная винтовка (RAPTOR) СВ-98 (SV-98) в интернет ...
+    https://airsoftsports.ru/products/s-raykbol-naya-vin-ovka-raptor-sv-98-sv-98/ (https://airsoftsports.ru/images/gallery/IMG_777693113_1574689117_6.jpg)
+airsoft/ru3_071.jpg  Купить Страйкбольная винтовка (S&T) СВ-98 Spring (Real Wood) в интернет ...
+    https://airsoftsports.ru/products/s-raykbol-naya-vin-ovka-s-t-sv-98-stspg25rw/ (https://airsoftsports.ru/images/gallery/DSCF0286-2_196303_1745501647_6.jpg)
+airsoft/ru3_076.jpg  S&T СВ-98
+    https://barryboot.ru/shop/tproduct/349965351232-sampt-sv-98 (https://static.tildacdn.com/stor6632-6630-4566-b930-306262633563/11671021.jpg)
+airsoft/var_071.jpg  Yahoo!オークション - SnowWolf製 SV-98
+    https://auctions.yahoo.co.jp/jp/auction/1126124510 (https://auctions.c.yimg.jp/images.auctions.yahoo.co.jp/image/dr000/auc0502/users/f1d4f1ea47f4cf21d192a3080531aab39de451f0/i-img1200x900-1708673793hiyubm7.jpg)
+airsoft/ya_158.jpg  SV-98 Sniper Rifle replica with bipod and scope OD - SNOW WOLF
+    http://snowwolftoys.com/show.asp?id=191 (http://snowwolftoys.com/UploadFile/month_2108/202108151206522179.jpg)
+airsoft/yb_024.jpg  Снайперская винтовка СВ-98 от ASR!
+    http://granit-rzn.ru/tpost/f0fppm08d1-snaiperskaya-vintovka-sv-98-ot-asr (https://static.tildacdn.com/tild6630-3136-4733-b536-623766393635/photo_2025-07-22_14-.jpg)
+airsoft/yb_147.jpg  Страйкбольная винтовка (S&T) СВ-98 Spring (Real Wood) глазами новичка
+    https://forum.guns.ru/forum_light_message/74/3023818.html (https://i3.guns.ru/forums/icons/forum_pictures/034637/34637791_13121.jpg)

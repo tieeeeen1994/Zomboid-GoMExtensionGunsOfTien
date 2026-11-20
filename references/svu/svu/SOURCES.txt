@@ -1,0 +1,7 @@
+q6_013.jpg  [q6_013.jpg] Ценные, но забытые винтовки отечественных мастеров
+    https://novate.ru/blogs/070526/76887/ (https://novate.ru/files/u41837/10_otsnvn.jpg)
+imfdb_Svu.jpg  [imfdb_Svu.jpg] IMFDB SVU section
+    https://www.imfdb.org/images/4/48/Svu.jpg (IMFDB SVU section)
+svu_mvd_poster_2048.jpg  [q21_001.jpg] СВУ - Плакаты - Галерея оружия и боеприпасов
+    https://weaponland.ru/photo/svu/6-0-81 (https://weaponland.ru/_ph/6/595532452.jpg)
+poster_crop_*.png  crops (no scaling) of svu_mvd_poster_2048.jpg: right side with folding irons up; right side with PSO-1; delivery kit incl. 6Kh-type bayonet (item 12/2); field-strip drawing

@@ -1,0 +1,293 @@
+Izhmash / Kalashnikov SV-99 (СВ-99) .22 LR sniper rifle: references gathered 2026-11-20, before modelling.
+Contact sheets: contact_sheet_green_plywood.png / _wood.png / _black_polymer.png / _civilian.png / _docs.png /
+_biathlon_relatives.png. Not in git (references/ is ignored); photos belong to their sites. The gun is rare:
+nearly every real photo online comes from a handful of sets (KardeN's green-plywood set, the guns.ru
+"новое ложа" thread, Kalashnikov's catalogue shots, museum and expo snaps), re-posted many times.
+
+FACTS (sources in brackets; [cg] club.guns.ru/sv99.html (2000 article, tied to the РОСТ-99 show),
+[gc] guns.club/lib/oruzhie/vintovka-sv-99, [wl] weaponland.ru "Малый калибр, большая польза" (Руслан Гук,
+Warspot), [ruw] ru.wikipedia СВ-99, [ao] armoury-online.ru, [gd] gundata.ru, [mf] modernfirearms.net (Popenker),
+[imfdb], [kal] Kalashnikov catalogue sheet docs/y1_033.jpg, [man] manual page docs/gunsru_p1_1524938.jpg,
+[gr] forum.guns.ru thread 248214 "Винтовка СВ-99 получила новое ложа" 2007-2009)
+- Maker: Izhevsk Machine-Building Plant (Izhmash, now Kalashnikov Concern). Team led by Vladimir Susloparov
+  (sport/hunting weapons bureau), asked informally by the Udmurt FSB [gr, cg, gc]. Action from the BI-7-2
+  biathlon rifle (Dragunov's 1979 toggle design), magazine/stock ideas from the Sobol carbine [wl, gr].
+- Years: designed late 1990s, shown 1999-2000 (name = 1999) [cg, gc, armedman]; adopted by FSB 2004, MVD 2005,
+  Internal Troops 2007 [wl]; still in Kalashnikov's catalogue (black polymer) [kal]. All after July 1993 ->
+  Post-93 add-on.
+- Users: FSB, MVD OMON / SOBR (now Rosgvardia) [wl, ruw, gc]; Armenian police (2011 decree) [ruw].
+- Calibre .22 LR (5.6 mm rimfire). Barrel 350 mm (351 mm [gc]; rifled 334 mm), 6 right-hand grooves,
+  1:420 mm, cold-forged, not chromed, free-floated [cg, gc, kal]. Muzzle thread for the suppressor
+  "Сп25,5х1,5" (M25.5x1.5) on a muzzle bush [gc; guns.ru civilian thread 2015 says the same].
+- Length 1030 mm with butt and suppressor [kal, gc, ruw]; 1000 mm in the 2000 article and [mf]/[imfdb] (early
+  gun or without suppressor, unclear); 720 mm without butt [wl, armedman]; barrelled action + forend without
+  butt and suppressor 520 mm [cg]. 890 mm without suppressor and height 240 / width 85 mm come from a fan-made
+  "technical data" card (docs/y3_022.jpg, by Ricardo Torres; it also gives a wrong 993 m/s velocity):
+  unverified. Height 195 mm [ao].
+- Weight: 3.4 kg, 4.5 kg with suppressor [kal]; 4.5 kg with scope and suppressor [man]; 3.75 kg without scope
+  [cg, mf, gd]; ru-wiki 3.35 kg without scope and suppressor, 3.75 kg with the standard scope. Sources disagree.
+- Suppressor: detachable baffle can, about 150 mm long [gc], screwed on; knurled grip band at its rear end
+  (photos). Not quick-detach (guns.ru users complain). Velocity 345 m/s [ruw, armedman].
+- Magazines: detachable plastic box, 5 rounds standard, 10 optional [cg, gc, kal, man]. Two spare magazines in
+  the butt (under a flip cover, bottom rear of the butt) [ao, ruw, gc]. No dedicated magazine photo found; small
+  ones show in the kit shots (green_plywood/y1_004, y2_005, gunsru_p1_1524531). Whether they are BI-7
+  magazines is unverified.
+- Action: straight-pull toggle (knee-joint) bolt from the BI-7-2: the lever lies along the RIGHT side of the
+  receiver and swings back/forward with finger and thumb [cg, gc, mf]. Left-hand lever to order [wl]
+  (a guns.ru user saw left-lever photos, 2009). Cylindrical receiver. Trigger adjustable 0.5-1.0 kg, two-stage.
+  Safety: push-button at the front of the trigger guard, blocks the trigger [gc, ruw, ao].
+- Sights: no iron sights. Early guns: dovetail on the receiver, PO 4x34 scope; serial guns from 2007: integral
+  Weaver/Picatinny rail, PO 3.5x17.5P scope (Minsk Vavilov plant) [gr, gc, wl, gd].
+- Stock: two-part, butt detaches with one button at the wrist; a pistol grip (wooden on early guns) can replace
+  it; symmetrical (ambidextrous). Butt: LOP +20 mm, cheek rest up 7.5 / fore-aft 6 mm, butt plate +-30 mm
+  [cg, gd]; folding rear monopod in the butt (from 2007) [gr, armedman]. Forend rail/slot for a height-adjustable
+  folding bipod [cg, ruw]. Sling swivel on the left of the forend (black photos). Carried in a hard case or a
+  Cordura soft case [gr] (docs/zonwar_i969-970).
+
+VARIANTS (how to tell them apart; all are the same barrelled action)
+1. Early wood (about 1999-2006) [ruw: varnished wood; "Мастер-ружьё" 2000/2]: reddish-brown lacquered
+   (laminated-looking) wood, thumbhole butt with a separate raised cheek board and a white-spacer hooked
+   butt plate, slim round-bottomed forend, dovetail scope base, PO4x34 or a hunting 4x scope, bipod under the
+   forend. Wooden pistol grip shown in wood/y1_010. Photos: wood/. Worth a variant at most; the shape differs
+   from the later stocks (no monopod, different butt).
+2. Green plywood (2007-2009 serial) [ruw, ao, gr 25-9-2007]: dark green laminated aviation plywood "like the
+   SV-98": SV-98-style skeleton butt with two rectangular holes and a thumbhole, adjustable cheek and hooked
+   butt plate, retractable rear monopod, stippled grip, Picatinny/Weaver on the receiver, PO3.5x17.5P scope,
+   redesigned suppressor. The 2009 factory photos (green_plywood/gunsru_p2_19464xx, b2_001/003) look
+   grey-green. Photos: green_plywood/ (best coverage of every angle: KardeN's set). The most recognisable
+   SV-99; build this one.
+3. Black polymer (2009 to now; shown at РОСТ/Interpolitex 2009) [ruw, gr p3, kal]: black plastic stock with a
+   straight-topped open skeleton butt (one large hole), box-shaped cheek riser on top, hooked (horned) butt
+   plate, rear monopod knob under the butt, slab-sided forend with left sling swivel; receiver marked "СВ-99"
+   and the Izhmash logo on the left; silver toggle lever on the right; knurled suppressor. Current catalogue gun.
+   Photos: black_polymer/ (official both-side views at 2120 px). Worth building as its own gun or a stock
+   variant (very different silhouette from the green one).
+4. Civilian relatives (not SV-99s): BI-7-2KO hunting carbine in SV-99-style stocks without suppressor: camo
+   stock at a 2012 show (civilian/gunsru_civ_6625403, label "БИ-7-2КО"), grey stock at Arms & Hunting 2017
+   (civilian/y1_016, y1_027: receiver marked "БИАТЛОН-7-2-КО", Picatinny), a black one from a guns.ru "TV-1
+   family" thread (civilian/y1_050), and an owner's black prototype (civilian/gunsru_civ_5526257, unverified).
+   Warfiles/TV1 (2017) called it a "civilian SV-99". Not worth a separate gun; at most a no-suppressor variant.
+   Many guns.ru sale posts show aftermarket "SV-99-type" plywood stocks for BI-7-2 / Sobol: those were dropped.
+
+Best measuring views:
+  black_polymer/kalash_SV-99_2.jpg (2120x1413, LEFT side, white background, rifle 1577 px long = 1030 mm,
+    about 0.65 mm/px; scope, bipod, suppressor on); black_polymer/kalash_sv-99-1-15100-1080.jpg (1620x1080,
+    RIGHT side, 1206 px long); black_polymer/b3_028.jpg (1800x618, right side, tight crop).
+  green_plywood/b2_003.jpg (2048x768, right side, white bg), b2_017.jpg (2048x839, left side), b2_001.png
+    (1000x433), gunsru_p2_1946452.png / 1946456.png (853 px, factory, right side with / without bipod),
+    gunsru_p2_1946454.png (pistol-grip configuration).
+  wood/y1_008.jpg (1307x856, brochure page: both sides + spec table), wood/b2_034.jpg, b2_036.jpg (1040 px
+    sides), b4_051.jpg (butt detached), commons_SV-99_(2).jpg.
+3/4 views: green_plywood/y1_006.jpg, y3_014.jpg (two in snow), zonwar_i977 / i978 / i982 / i983 / i975, b3_008,
+  gunsru_p1_852961 (1600x1200, two rifles); black_polymer/gunsru_p3_2676708.jpg (1920x1440, expo), b2_004.png,
+  b2_014.jpg; civilian/y1_050.jpg (1707x1280, from above-left); wood/b2_008.jpg, b2_002.png (designer holding it).
+Close-ups: green_plywood/q20_013.png (1200x1200: toggle lever, scope mount, ejection port), zonwar_i979 /
+  i981 / i985 / b1_013 / b3_005 (scope + lever), zonwar_i980 / b1_024 (butt, cheek, monopod), zonwar_i972
+  (rear view of the butt plate and monopod), zonwar_i974 (muzzle end of the suppressor), y2_005 (2048x1536) and
+  y1_004 (field-stripped: barrelled action, butt, bipod, 2 magazines, suppressor, scope), gunsru_p1_1524525 /
+  1524527 (butt off, latch), 1524529 (barrelled action), 1524531 (bipod + magazines), 1524607 / 1524621
+  (suppressor + scope); black_polymer/gunsru_p3_2079001, y1_038 / y1_043 (butt off; upscaled, soft);
+  wood/y1_010 (collage: pistol grip, magazine, receiver), b1_015 (magazine in, hands).
+  Action detail from relatives: biathlon_relatives/gunsclub_Bi_7_2KO_2.png (top view of lever + rail),
+  _3 (lever side), q18_032 (lever on a wood stock), q16_001 / q16_014 / q21_014 (toggle diagram, exploded and
+  cut-away drawings), b2_048 (biathlon-type receivers, Ukrainian custom shop, not Izhmash).
+Docs: docs/y1_033.jpg (Kalashnikov SV-99 sheet: 1030 mm, 3.4 / 4.5 kg, 5/10, 350 mm, 6 grooves),
+  gunsru_p1_1524938 (manual page with drawing and data), y3_022 (fan-made card, see above), b2_015 (kit laid out:
+  barrelled action, butt, pistol grip, bipod, scope, suppressor, 2 mags), gunsru_p2_1947976, zonwar_i969/970
+  (soft case), b2_024.
+Missing: a straight top view and underside of any SV-99; straight front / rear views of the black polymer gun;
+  a dedicated magazine photo; the suppressor off the gun with the muzzle thread; the left-hand-lever version;
+  high-res wood guns (all under 1310 px). Video: Vickers Tactical "Russian SV99" (black_polymer/q18_007,
+  youtube.com/watch?v=HbBtUjQfsOk) shows a real black SV-99 being fired: frames from it could fill top/rear views.
+
+Per-file sources (search result page title, page, image URL):
+
+[green_plywood/]
+green_plywood/b1_003.jpg                     SV-99 sniper rifle
+                                       https://zonawar.ru/rash_guns/rg_spesial_sv-99_eng.html (https://zonawar.ru/rash_guns/images/spesial/sv-99_2.jpg)
+green_plywood/b1_005.jpg                     SV-99 sniper rifle
+                                       https://zonawar.ru/rash_guns/rg_spesial_sv-99_eng.html (https://zonawar.ru/rash_guns/images/spesial/sv-99.jpg)
+green_plywood/b1_009.jpg                     Malokalibarski snajperi - SV-99
+                                       https://oruzjeonline.com/2021/05/27/malokalibarski-snajperi-sv-99/ (https://oruzjeonline.com/wp-content/uploads/2021/05/s-975.jpg)
+green_plywood/b1_013.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/2470685.jpg)
+green_plywood/b1_018.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/2470689.jpg)
+green_plywood/b1_024.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/2470683.jpg)
+green_plywood/b2_001.png                     Снайперская винтовка СВ-99 – характеристика, дальность, ттх, устройство
+                                       https://guns.club/lib/oruzhie/vintovka-sv-99/ (https://guns.club/upload/medialibrary/712/qpxytb2uubq8g23ezbojnjymycbs4a5z/SV_99_1.png)
+green_plywood/b2_003.jpg                     Персональный сайт - СВ-99
+                                       https://ctrax-com-ctrax.narod.ru/index/0-60 (http://content.foto.mail.ru/community/zonawar.ru/1854/s-1957.jpg)
+green_plywood/b2_011.png                     Снайперская винтовка СВ-99 – характеристика, дальность, ттх, устройство
+                                       https://guns.club/lib/oruzhie/vintovka-sv-99/ (https://guns.club/upload/medialibrary/c94/ob3apj48o9zlb3hgcsp07yx2dcfijeym/SV_99_5.png)
+green_plywood/b2_012.jpg                     Снайперская винтовка СВ-99 | Армии и Солдаты - Военная энциклопедия
+                                       https://armedman.ru/strelkovoe-vooruzhenie/1991-2015-strelkovoe-vooruzhenie/snayperskaya-vintovka-sv-99.html (https://armedman.ru/wp-content/uploads/2017/01/sv-99-2.jpg)
+green_plywood/b2_017.jpg                     Персональный сайт - СВ-99
+                                       https://ctrax-com-ctrax.narod.ru/index/0-60 (http://content.foto.mail.ru/community/zonawar.ru/1854/s-1956.jpg)
+green_plywood/b2_019.jpg                     Снайперская винтовка СВ-99 — характеристики, ТТХ, описание
+                                       https://www.armoury-online.ru/articles/sr/ru/sv-99/ (https://www.armoury-online.ru/usr/templates/images/1485891529758.jpg)
+green_plywood/b2_020.jpg                     Винтовки России
+                                       https://zonwar.ru/vintovki/vintovki_11.html (https://zonwar.ru/images/vintovki/rossia/imz_sv-99s.jpg)
+green_plywood/b2_026.jpg                     Снайперская Винтовка СВ-99 | SV-99 » Энциклопедия стрелкового оружия и ...
+                                       https://soldierweapons.ru/publ/sniper_rifles/sniper-rifles5/500173-snajperskaya-vintovka-sv-99-sv-99.html (https://soldierweapons.ru/Foto_5/SV99/4.jpg)
+green_plywood/b2_032.jpg                     Снайперская Винтовка СВ-99 | SV-99 » Энциклопедия стрелкового оружия и ...
+                                       https://soldierweapons.ru/publ/sniper_rifles/sniper-rifles5/500173-snajperskaya-vintovka-sv-99-sv-99.html (https://soldierweapons.ru/Foto_5/SV99/0.jpg)
+green_plywood/b2_035.png                     Снайперская винтовка СВ - 99
+                                       http://gundata.ru/vintovka_sv_99.htm (http://gundata.ru/vintovka_sv_99.png)
+green_plywood/b2_039.jpg                     СВ-99 - малокалиберная снайперская винтовка. Вне тенденций, во имя ...
+                                       https://www.youtube.com/watch?v=jZ9RJzHeWmI (https://i.ytimg.com/vi/jZ9RJzHeWmI/maxresdefault.jpg)
+green_plywood/b3_005.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/2470699.jpg)
+green_plywood/b3_008.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/2470672.jpg)
+green_plywood/b3_032.jpg                     This Sniper Rifle From the 1960s Still Sees Everyday Use in Russian ...
+                                       https://247wallst.com/military/2025/09/03/this-sniper-rifle-from-the-1960s-still-sees-everyday-use-in-russian-special-forces/ (https://247wallst.com/wp-content/uploads/2023/08/Izhmash-SV-98-1.jpg)
+green_plywood/gunsru_p1_1524525.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99" (stock off, barrelled action, bipod + 5-rd mags, suppressor, PO3.5x17.5P scope)
+green_plywood/gunsru_p1_1524527.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524529.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524531.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524607.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524615.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524617.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524619.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99"
+green_plywood/gunsru_p1_1524621.jpg          gunsru_p1_1524525..1524621.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1 (https://forum.guns.ru/forummessage/2/248214.html), Андрей К 27-9-2008 "некоторые фото СВ-99" (stock off, barrelled action, bipod + 5-rd mags, suppressor, PO3.5x17.5P scope)
+green_plywood/gunsru_p1_852961.jpg           gunsru_p1_852961/852963/852965.jpg  forum.guns.ru "Винтовка СВ-99 получила новое ложа" p1, post by Андрей К 25-9-2007 (serial green-plywood SV-99, PO3.5x17.5P scope) https://forum.guns.ru/forummessage/2/248214.html
+green_plywood/gunsru_p2_1946452.png          gunsru_p2_1946452/1946454/1946456.png  thread p2, Hooke 8-3-2009 "СВ-99" (factory white-background photos: stock, pistol grip, stock + no bipod) https://forum.guns.ru/forummessage/2/248214-2.html
+green_plywood/gunsru_p2_1946454.png          gunsru_p2_1946452/1946454/1946456.png  thread p2, Hooke 8-3-2009 "СВ-99" (factory white-background photos: stock, pistol grip, stock + no bipod) https://forum.guns.ru/forummessage/2/248214-2.html
+green_plywood/gunsru_p2_1946456.png          gunsru_p2_1946452/1946454/1946456.png  thread p2, Hooke 8-3-2009 "СВ-99" (factory white-background photos: stock, pistol grip, stock + no bipod) https://forum.guns.ru/forummessage/2/248214-2.html
+green_plywood/q11_001.png                    Малокалиберная снайперская винтовка СВ-99 - Огневая подготовка
+                                       https://bstudy.net/613646/bzhd/malokalibernaya_snayperskaya_vintovka (https://bstudy.net/htm/img/22/10264/112.png)
+green_plywood/q20_013.png                    ТВ1: «Калашников» представил гражданскую снайперскую винтовку СВ-99
+                                       https://warfiles.ru/167489-tv1-kalashnikov-predstavil-grazhdanskuyu-snayperskuyu-vintovku-sv-99.html (https://warfiles.ru/uploads/posts/2017-11/1510155536_cr-21.png)
+green_plywood/y1_004.jpg                     Мелкашка\
+                                       https://www.yaplakal.com/forum2/st/0/topic1876871.html (https://s00.yaplakal.com/pics/pics_original/7/7/0/12346077.jpg)
+green_plywood/y1_006.jpg                     Оружие специального назначения - ЯПлакалъ
+                                       https://www.yaplakal.com/forum2/topic935240.html?hl=%D0%BE%D1%80%D1%83%D0%B6%D0%B8%D0%B5 (https://s00.yaplakal.com/pics/pics_original/4/2/4/4055424.jpg)
+green_plywood/y1_014.jpg                     Малый калибр, большая польза - Альтернативная История
+                                       https://alternathistory.ru/malyj-kalibr-bolshaya-polza/ (https://alternathistory.ru/wp-content/uploads/2021/03/18843-malyy-kalibr-bolshaya-polza-08-2048x1234.jpg)
+green_plywood/y2_005.jpg                     Фотообзор cнайперской винтовки СВ-99: detonator666 - ЖЖ
+                                       https://detonator666.livejournal.com/806304.html (http://content.foto.mail.ru/mail/photoshooter/968/s-971.jpg)
+green_plywood/y3_014.jpg                     Малый калибр, большая польза - Альтернативная История
+                                       https://alternathistory.ru/malyj-kalibr-bolshaya-polza/ (https://alternathistory.ru/wp-content/uploads/2021/03/18843-malyy-kalibr-bolshaya-polza-09-2048x1309.jpg)
+green_plywood/zonwar_i972.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i974.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i975.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i976.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i977.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i978.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i979.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i980.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i981.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i982.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i983.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i984.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+green_plywood/zonwar_i985.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+
+[wood/]
+wood/b1_014.jpg                     SV-99 [#37185] - Галерея - ВПК.name
+                                       https://vpk.name/images/i37185.html (https://vpk.name/file/img/SV-99.jpg)
+wood/b1_015.jpg                     BEMIL 아카이브 - 유용원의 군사세계
+                                       https://bemil.chosun.com/nbrd/bbs/view.html?b_bbs_id=10159&pn=0&num=17990 (https://img.bemil.chosun.com/nbrd/files/BEMIL069/upload/2007/02/sv99-mag.jpg)
+wood/b1_022.jpg                     Dragon Ball: Súng trường bắn tỉa cỡ nòng nhỏ SV-99 (Nga)
+                                       https://ryydragonball.blogspot.com/2012/12/sung-truong-ban-tia-co-nong-nho-sv-99.html (http://world.guns.ru/userfiles/images/sniper/sn57/sv99-lo.jpg)
+wood/b1_023.jpg                     SV-99微声狙击步枪 ——〖枪炮世界〗
+                                       http://pewpewpew.work/russain/sr/sv99/sv99.htm (http://pewpewpew.work/russain/sr/sv99/sv99_4.jpg)
+wood/b2_002.png                     Снайперская винтовка СВ-99 – характеристика, дальность, ттх, устройство
+                                       https://guns.club/lib/oruzhie/vintovka-sv-99/ (https://guns.club/upload/medialibrary/e10/1f4um4bzhe2367owpp9v0nqg849hv1h2/SV_99_6.png)
+wood/b2_008.jpg                     На рубеже эпох: боевое стрелковое оружие «Ижмаша» в 1990–2000-е гг ...
+                                       https://weaponland.ru/publ/na_rubezhe_ehpokh_boevoe_strelkovoe_oruzhie_izhmasha_v_1990_2000_e_gg/15-1-0-2506 (https://weaponland.ru/images/statyi/arsenal-4/3/turn-izhmash-eras-1990-2000-4.jpg)
+wood/b2_034.jpg                     Снайперская винтовка - СВ-99 / БОЕВОЕ СТРЕЛКОВОЕ ОРУЖИЕ РОССИИ
+                                       http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/p76.php (http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/pic_269.jpg)
+wood/b2_036.jpg                     Снайперская винтовка - СВ-99 / БОЕВОЕ СТРЕЛКОВОЕ ОРУЖИЕ РОССИИ
+                                       http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/p76.php (http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/pic_268.jpg)
+wood/b3_001.jpg                     Izhmash SV-99 - Internet Movie Firearms Database - Guns in Movies, TV ...
+                                       https://www.imfdb.org/wiki/Izhmash_SV-99 (https://www.imfdb.org/images/6/63/SV-99.jpg)
+wood/b3_004.jpg                     Fusil Izhmash SV-99 | Armas de Fuego
+                                       https://historiadelasarmasdefuego.blogspot.com/2009/11/fusil-izhmash-sv-99.html (https://4.bp.blogspot.com/_1l-7rUoBD8Y/SwWNjQ6XH8I/AAAAAAAAJgg/ELaV6fK4f2w/s1600/sv99-l.jpg)
+wood/b4_051.jpg                     Снайперская винтовка - СВ-99 / БОЕВОЕ СТРЕЛКОВОЕ ОРУЖИЕ РОССИИ
+                                       http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/p76.php (http://www.redov.ru/tehnicheskie_nauki/boevoe_strelkovoe_oruzhie_rossii/pic_270.jpg)
+wood/commons_Izhmash_museum-24.jpg  commons_Izhmash_museum-24.jpg  Wikimedia Commons, Vyacheslav Bukharov, CC BY-SA 4.0: Izhmash museum case (wooden SV-99 at the top, Biathlon rifles, SV-98s) https://commons.wikimedia.org/wiki/File:Izhmash_museum-24.jpg
+wood/commons_SV-99.jpg              commons_SV-99.jpg / commons_SV-99_(2).jpg  Wikimedia Commons, Vyacheslav Bukharov, CC BY-SA 4.0: wooden SV-99 in the Izhmash museum (1280 px thumbnails via Special:FilePath; originals 1830x550 / 1450x500) https://commons.wikimedia.org/wiki/Category:SV-99
+wood/commons_SV-99_(2).jpg          commons_SV-99.jpg / commons_SV-99_(2).jpg  Wikimedia Commons, Vyacheslav Bukharov, CC BY-SA 4.0: wooden SV-99 in the Izhmash museum (1280 px thumbnails via Special:FilePath; originals 1830x550 / 1450x500) https://commons.wikimedia.org/wiki/Category:SV-99
+wood/gunsru_p1_852971.jpg           gunsru_p1_852971/852975.jpg  forum.guns.ru thread 248214 p1, Андрей К 25-9-2007 post, "Ранний вариант СВ-99" (early wooden stock)
+wood/gunsru_p1_852975.jpg           gunsru_p1_852971/852975.jpg  forum.guns.ru thread 248214 p1, Андрей К 25-9-2007 post, "Ранний вариант СВ-99" (early wooden stock)
+wood/y1_008.jpg                     Оружие точного боя
+                                       https://cleper.ru/articles-cat/kat-22/art-430 (https://cleper.ru/articles/430/430-5.jpg)
+wood/y1_010.jpg                     Малый калибр, большая польза - Альтернативная История
+                                       https://alternathistory.ru/malyj-kalibr-bolshaya-polza/ (https://alternathistory.ru/wp-content/uploads/2021/03/18843-malyy-kalibr-bolshaya-polza-07.jpg)
+
+[black_polymer/]
+black_polymer/b2_004.png                     Снайперская винтовка СВ-99 – характеристика, дальность, ттх, устройство
+                                       https://guns.club/lib/oruzhie/vintovka-sv-99/ (https://guns.club/upload/medialibrary/eef/6udp2pbp0wcuofv0jyq1y7mdn3p7fqbo/SV_99_2.png)
+black_polymer/b2_010.png                     Снайперская винтовка СВ - 99
+                                       http://gundata.ru/vintovka_sv_99.htm (http://gundata.ru/vintovka_sv_99_new.png)
+black_polymer/b2_014.jpg                     Снайперская винтовка СВ-99 | Армии и Солдаты - Военная энциклопедия
+                                       https://armedman.ru/strelkovoe-vooruzhenie/1991-2015-strelkovoe-vooruzhenie/snayperskaya-vintovka-sv-99.html (https://armedman.ru/wp-content/uploads/2017/01/sv-99-5.jpg)
+black_polymer/b3_028.jpg                     File:SV-99 modern.jpg - Internet Movie Firearms Database - Guns in ...
+                                       https://www.imfdb.org/wiki/File:SV-99_modern.jpg (https://www.imfdb.org/images/f/fe/SV-99_modern.jpg)
+black_polymer/gunsru_p3_2079001.jpg          gunsru_p3_2078997/2078999/2079001.jpg  thread p3, Андрей К 20-4-2009 "Новинка!" black polymer stock https://forum.guns.ru/forummessage/2/248214-3.html
+black_polymer/gunsru_p3_2676708.jpg          gunsru_p3_2676708.jpg  thread p3, Тибет 18-11-2009 "Качественное фото СВ-99 в пластмассе", taken at РОСТ-2009 (Interpolitex) exhibition
+black_polymer/kalash_SV-99_2.jpg             kalash_SV-99.jpg / kalash_SV-99_2.jpg  Kalashnikov Group catalogue, SV-99 (black polymer), via image proxy img.kalashnikovgroup.ru/2120,fit/https://kalashnikovgroup.ru/uploads/i/646/SV-99.jpg and .../uploads/i/80d/SV-99_2.jpg (found through Yandex images)
+black_polymer/kalash_sv-99-1-15100-1080.jpg  kalash_sv-99-1-15100-1080.jpg / kalash_sv-99-2-15101-1080.jpg  Kalashnikov Group CDN https://cdn.kalashnikovgroup.ru/static/images/s/v/-/sv-99-1-15100-1080.jpg / sv-99-2-15101-1080.jpg
+black_polymer/q18_007.jpg                    Russian SV99 - YouTube
+                                       https://www.youtube.com/watch?v=HbBtUjQfsOk (https://i.ytimg.com/vi/HbBtUjQfsOk/maxresdefault.jpg)
+black_polymer/y1_025.png                     Soviet scud missile range Soviet tactical nuclear missile, Russian cruise missile blueprin
+                                       https://kr.pinterest.com/pin/soviet-scud-missile-range--613967361724336806/ (https://i.pinimg.com/originals/e4/00/af/e400af5224f600a483a9e30a8f856c11.png)
+black_polymer/y1_038.png                     купля-продажа - запчасти, комплектующие
+                                       https://forum.guns.ru/forum_na/forum_picture/23618302.html (https://i3.guns.ru/forums/icons/forum_pictures/023618/23618272_28384.png)
+black_polymer/y1_043.png                     купля-продажа - запчасти, комплектующие
+                                       https://forum.guns.ru/forum_na/forum_picture/23618302.html (https://i3.guns.ru/forums/icons/forum_pictures/023618/23618272_28388.png)
+
+[civilian/]
+civilian/gunsru_civ_5526257.jpg         gunsru_civ_6625403.jpg / gunsru_civ_5526257.jpg  forum.guns.ru 'Гражданский вариант СВ-99 когда будет в продаже?' (woodcutter 19-9-2012, Izhmash rep Sigurd: integrated Picatinny on the receiver; 2015 posts: muzzle thread 25.5x1.5 on a muzzle bush as on the SV-99) https://forum.guns.ru/forummessage/396/1987494.html
+civilian/gunsru_civ_6625403.jpg         gunsru_civ_6625403.jpg / gunsru_civ_5526257.jpg  forum.guns.ru 'Гражданский вариант СВ-99 когда будет в продаже?' (woodcutter 19-9-2012, Izhmash rep Sigurd: integrated Picatinny on the receiver; 2015 posts: muzzle thread 25.5x1.5 on a muzzle bush as on the SV-99) https://forum.guns.ru/forummessage/396/1987494.html
+civilian/y1_016.jpg                     mpopenker : Гражданский вариант СВ-99 когда будет в продаже? : Концерн
+                                       https://forum.guns.ru/forum_light_message_reverse/396/1987494.html (https://i3.guns.ru/forums/icons/forum_pictures/016378/16378824.jpg)
+civilian/y1_027.jpg                     mpopenker : Гражданский вариант СВ-99 когда будет в продаже? : Концерн
+                                       https://forum.guns.ru/forum_light_message_reverse/396/1987494.html (https://i3.guns.ru/forums/icons/forum_pictures/016378/16378832.jpg)
+civilian/y1_050.jpg                     Семейство малокалиберных винтовок TB-1 : Концерн \
+                                       https://forum.guns.ru/forum_na/forum_picture/20055217.html (https://i3.guns.ru/forums/icons/forum_pictures/020055/20055217.jpg)
+
+[docs/]
+docs/b2_015.png                     Снайперская винтовка СВ-99 – характеристика, дальность, ттх, устройство
+                                       https://guns.club/lib/oruzhie/vintovka-sv-99/ (https://guns.club/upload/medialibrary/a84/5lxz0an8bap5wcuhfvq9zwxyfxzpu48j/SV_99_3.png)
+docs/b2_024.jpg                     Снайперская Винтовка СВ-99 | SV-99 » Энциклопедия стрелкового оружия и ...
+                                       https://soldierweapons.ru/publ/sniper_rifles/sniper-rifles5/500173-snajperskaya-vintovka-sv-99-sv-99.html (https://soldierweapons.ru/Foto_5/SV99/88.jpg)
+docs/gunsru_p1_1524938.jpg          gunsru_p1_1524938.jpg  forum.guns.ru thread 248214 p1, Андрей К 27-9-2008 post: manual page, "Рисунок 1 - Винтовка снайперская СВ-99" + 1.2 technical data
+docs/gunsru_p2_1947976.jpg          gunsru_p2_1947976.jpg  thread p2, Hooke 9-3-2009: text "приклад выполнили съемным, вместо него может ставиться деревянная пистолетная рукоятка"
+docs/y1_033.jpg                     Sniper rifle
+                                       https://ru.pinterest.com/adrianvetov/sniper-rifle/ (https://i.pinimg.com/originals/e7/e0/e3/e7e0e35ef60ddd742b07b8798a1ae31f.jpg)
+docs/y3_022.jpg                     sniper
+                                       https://www.pinterest.com/fkhal5120/sniper/ (https://i.pinimg.com/originals/e8/60/0c/e8600c155b429786e1f6049531a06c1e.jpg)
+docs/zonwar_i969.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+docs/zonwar_i970.jpg                zonwar_i969..i985.jpg  zonwar.ru "Фотообзор cнайперской винтовки СВ-99" (photos by KardeN, MVD special unit), https://zonwar.ru/fotogalerej/SV-99/sv-99_menu.html (http://content-12.foto.my.mail.ru/mail/photoshooter/968/i-NNN.jpg)
+
+[biathlon_relatives/]
+biathlon_relatives/b2_048.jpg                     Винтовка СВ-99 получила новое ложа. стр 2
+                                       https://forum.guns.ru/forummessage/2/248214-2.html (https://forum.guns.ru/forums/icons/forum_pictures/001533/1533173.jpg)
+biathlon_relatives/gunsclub_Bi_7_2KO_1.png        gunsclub_Bi_7_2KO_1.png  guns.club 'Карабин БИ-7-2КО' https://guns.club/lib/oruzhie/karabin-bi-7-2ko/ (https://guns.club/upload/medialibrary/c9d/k34k4l9j8qwmh9ug2upt69vn98upjiny/Bi_7_2KO_1.png)
+biathlon_relatives/gunsclub_Bi_7_2KO_2.png        gunsclub_Bi_7_2KO_2.png  guns.club 'Карабин БИ-7-2КО' https://guns.club/lib/oruzhie/karabin-bi-7-2ko/ (https://guns.club/upload/medialibrary/712/ibzfjs4aa77khin6j91n94qgx3fqsgef/Bi_7_2KO_2.png)
+biathlon_relatives/gunsclub_Bi_7_2KO_3.png        gunsclub_Bi_7_2KO_3.png  guns.club 'Карабин БИ-7-2КО' https://guns.club/lib/oruzhie/karabin-bi-7-2ko/ (https://guns.club/upload/medialibrary/e4d/t81ikw4nweh74tvrmeqqnu357unvgyng/Bi_7_2KO_3.png)
+biathlon_relatives/gunsclub_Bi_7_2KO_4.png        gunsclub_Bi_7_2KO_4.png  guns.club 'Карабин БИ-7-2КО' https://guns.club/lib/oruzhie/karabin-bi-7-2ko/ (https://guns.club/upload/medialibrary/560/uar0w5sq309xp86fk7eyns8hhnmwio7i/Bi_7_2KO_4.png)
+biathlon_relatives/gunsclub_Bi_7_2KO_5.png        gunsclub_Bi_7_2KO_5.png  guns.club 'Карабин БИ-7-2КО' https://guns.club/lib/oruzhie/karabin-bi-7-2ko/ (https://guns.club/upload/medialibrary/9f1/5d7ar13bvrlb7svp5i6skuueacsegw9j/Bi_7_2KO_5.png)
+biathlon_relatives/q12_001.jpg                    Продам-Снайперская ложа на БИ-7-2 по типу св-98/99, добавил спортивную ...
+                                       https://gunszip.org/topic/153/1843223.html (https://gunszip.org/images/g/153/orig/15222053.jpg)
+biathlon_relatives/q12_003.jpg                    Продам-Снайперская ложа на БИ-7-2 по типу св-98/99, добавил спортивную ...
+                                       https://gunszip.org/topic/153/1843223.html (https://gunszip.org/images/g/153/orig/15222310.jpg)
+biathlon_relatives/q16_001.jpg                    Сайт о гражданском оружии - Концерн Калашников Биатлон-7
+                                       https://civilweapons.ru/biatlon_7 (https://civilweapons.ru/Russia/Kalashnikov/BI_7/Biathlon-7-2_02.jpg)
+biathlon_relatives/q16_002.jpg                    Юбилей оружейника - Статьи об оружии и боеприпасах
+                                       https://weaponland.ru/publ/jubilej_oruzhejnika/11-1-0-2149 (https://weaponland.ru/images/statyi/orugeyniki-2/4/Ubiley-orugeynika-Degtarev-5.jpg)
+biathlon_relatives/q16_003.jpg                    БИ-7-2: легенда отечественного биатлона
+                                       https://kalashnikov.club/a/bi-7-2-legenda-otechestvennogo-biatlona (https://kalashnikov.club/uploads/i/471/gud3gnr2llw3jrsx70klo89qq85rxjaj/bi_7_2_legenda_otechestvennogo_biatlona_kalashnikov_klub.jpg)
+biathlon_relatives/q16_009.jpg                    Сайт о гражданском оружии - Концерн Калашников Биатлон-7
+                                       https://civilweapons.ru/biatlon_7 (https://civilweapons.ru/Russia/Kalashnikov/BI_7/Biathlon-7-2_01.jpg)
+biathlon_relatives/q16_014.jpg                    Винтовка спортивная "Биатлон-7", БИ-7.
+                                       https://iz-article.ru/article/725/vintovka-sportivnaya-biatlon-7-bi-7 (https://openocean.dumk.in/static/43/f8/43f8e533-9d3e-4089-98be-25e3c6d33237.jpg)
+biathlon_relatives/q16_015.jpg                    Винтовка спортивная "Биатлон-7-2", "Биатлон-7-3", "Биатлон-7-4 ...
+                                       https://iz-article.ru/article/726/vintovka-sportivnaya-biatlon-7-2-biatlon-7-3biatlon-7-4-biatlon-7-5 (https://openocean.dumk.in/static/3b/b1/3bb1e730-cb3a-482e-a2fe-47dbc052f4a2.jpg)
+biathlon_relatives/q18_032.jpg                    Why does the SV-99 micro-sniper rifle use .22 caliber?So small caliber ...
+                                       https://inf.news/en/military/4dba31b5be17513690c1440bd750bc94.html (https://p1-tt.byteimg.com/origin/tos-cn-i-qvj2lq49k0/dc99f9412f3043d7a50bc2f0d1974a0a.jpg)
+biathlon_relatives/q21_014.jpg                    История отечественных биатлонных винтовок
+                                       https://ruweapons.ru/articles/otechestvennye-biatlonnye-vintovki/ (https://ruweapons.ru/img/832x0/f770252d98503f18745d5284f963fa3a.jpg)

@@ -1,0 +1,92 @@
+SVU (OTs-03) family - reference set, gathered 2026-11-20
+==========================================================
+Per-file source lines (title, page, image URL) are kept in each subfolder's own SOURCES.txt
+(svu/, svu_a/, svu_as/, ots03_later/, docs/, magazines/, replicas/). contact_<folder>.png = labelled contact sheet.
+The build target is the ORIGINAL semi-auto SVU (OTs-03, 1991). Everything else is kept apart.
+
+FACTS (sources at the end of each line; [W] weapon.at.ua 2011 archive, [P] Popenker modernfirearms.net/world.guns.ru,
+[RW] ru.wikipedia "Снайперская винтовка укороченная", [EW] en.wikipedia "Dragunov SVU", [WP] weaponplace.ru/svu.php
+(early-1990s magazine article), [POS] MVD training poster docs/svu_mvd_poster_2048.jpg, [IM] IMFDB "SVD Dragunov",
+[TS] TsKIB SOO site 2014 archive, [K] Vitaly V. Kuzmin photos on Wikimedia Commons)
+
+SVU / OTs-03 (base, semi-automatic) - THE ONE TO BUILD
+- Maker: TsKIB SOO, Tula (later a branch of KBP). Designer L. V. Bondarev [RW][WP]. Bullpup conversion of the SVD.
+- Dates: work began 1975-77 for the VDV; demonstration samples shown to VDV units 1979, not adopted [W][RW][WP].
+  Series production started 1991 (at the request of the "Vympel" special unit [W]; first rifles to the 106th Guards
+  Airborne Division for troop trials [RW, citing Soldat Udachi 1/2001]). Adopted by the MVD in the early 1990s [RW][P].
+  IMFDB: "introduced 1991, entered service three years later" (i.e. 1994) [IM]; en.wiki: design 1990, production
+  1994-, first seen in the First Chechen War [EW]. Popenker: production "mid-1990s" [P].
+  => existed (series production) by July 1993 in every source that gives 1991; main mod is fine.
+- Users: MVD special units (OMON/SOBR), FSB; VDV trials; Belarus (unsourced); Yemen (SVU-A seen 2018) [RW][EW].
+- Dimensions: length 900 mm [POS][P] (870 mm in [W]/[RW]/en.wiki, citing TsKIB; 980 mm on the 2014 TsKIB page [TS] is
+  the later 620 mm-barrel OTs-03 - ignore). Barrel 520 mm, i.e. SVD barrel cut by 100 mm, gas chamber moved back [W][P].
+  Weight 4.4 kg with empty magazine and PSO-1 [POS][W][P]. Poster also gives: height with open sight 229 mm, width 50 mm,
+  iron sight radius 423 mm, 830 m/s, 10-round magazine, 30 rds/min practical [POS].
+- Magazine: standard SVD 10-round steel magazine [W][P][RW]. (20/30-rounders were made for the SVU-A/AS; Popenker says
+  apparently never in quantity.)
+- Muzzle device: Bondarev's three-chamber combined brake / flash hider / "sound moderator" (cuts up to 40 % of recoil,
+  adds forward weight) [W][WP]. Same cylindrical can on all variants in the photos; estimated ~145-150 mm long and
+  ~40-45 mm diameter from Kuzmin's flat right side view (svu_a/kuzmin2015_svua_01.jpg, scaled to 900 mm) - ESTIMATE.
+- Sights: folding diopter rear (100-1300 m drum) and hooded front post, both on folding posts; SVD-type side rail on the
+  left of the receiver, moved forward and up; PSO-1 (1P43) normal, NSPU night sights possible; the scope doubles as a
+  carry handle [W][WP][P].
+- Furniture: SVD polymer handguards (left one notched for the forward scope mount), pistol grip near the centre of
+  gravity with an enlarged guard for gloves, fixed cheek rest on the receiver cover, butt (shoulder piece) held on a
+  leaf spring that rocks forward on recoil [W][WP]. "Butt, receiver, pistol grip and handguard are usually given
+  camouflage paint" [W][WP] - the IMFDB SVU photo (svu/imfdb_Svu.jpg) is red-brown/black camo; Kuzmin's 1994 rifles have
+  worn camo-painted WOODEN pistol grips and wooden cheek pieces.
+- Bayonet: the MVD poster's delivery kit lists a bayonet (штык-нож, items 2/12) [POS]; en.wiki: "a bayonet may be fitted
+  under the forestock" [EW]; weaponplace says no bayonet mount [WP]. CONFLICT - poster is primary, so the SVU took one.
+- Safety: the poster lists a "предохранитель" (safety) whose flag is lowered to fire [POS].
+
+SVU-A / OTs-03A (select-fire) - LATER, keep separate
+- Developed on MVD demand: 1991 (Sytin 2012 via [RW]; [WP] says MVD asked in 1991), "developed and adopted in 1993" [W],
+  "introduced in 1995" [IM]. Borderline for the July 1993 cut; most likely Post-93 or exactly 1993. Kuzmin's SVU-A
+  receivers are stamped 1994 (svu_a/kuzmin2014_svua_1994_06.jpg: "1994", serial 39771).
+- Same gun externally. Auto by long trigger pull; a travel-limiting selector in the trigger guard [W][P].
+- Tell in photos: the right-side receiver lever (S-shaped, behind the magazine) has 3 stamped positions "ПР" / "АВ" /
+  (ОД) - see svu_a/kuzmin2014_svua_1994_06.jpg and kuzmin2015_svua_01.jpg ("ПР", "АВ" readable). IMFDB: "note 3-position
+  fire selector". The SVU-AS seen by "Kardell" also has a ribbed slide tab marked "О" above the trigger, right side
+  (svu_as/q6_038.jpg, q6_040.jpg). A base SVU should show no "АВ" stamp (UNVERIFIED: no close-up of a confirmed base
+  SVU's right side was found; the poster photos are too small to read).
+- Popenker and IMFDB label the SAME right-side studio photo differently (svu_a/imfdb_SVU-A.jpg: IMFDB "SVU-A",
+  modernfirearms "basic SVU with open sights raised") - not usable as a variant proof.
+- Weight 4.4 kg, magazines 10/20/30, 650 rds/min cyclic [W][P].
+
+SVU-AS / OTs-03AS (select-fire + bipod) - POST-93
+- Developed and adopted 1995 after Chechnya [W]; ru.wiki also says "2001" (that is the Soldat Udachi article date) [RW].
+- Bipod on a separate horizontal bar fixed to the front of the receiver under the handguard (barrel free-floated),
+  telescopic legs with 4 heights (max 320 mm), swivel 90 deg either side; 5.5 kg with PSO-1 and bipod [W][P].
+- Tell: the bar / folded bipod under the handguard (obvious in every photo).
+
+LATER OTs-03 (2009+ TsKIB catalogue, expo rifles): 620 mm barrel, 980 mm, 7.62x51 option, top and side rails, DS5 day/
+night sight, 5.9-6.1 kg [TS][RW]. ots03_later/ only.
+
+HOW TO SORT PHOTOS: bipod bar under the handguard = SVU-AS. No bar + "АВ" on the right lever = SVU-A. No bar and
+neither visible = SVU or SVU-A (externally identical; build geometry from either). Black polymer grip/cheek, rails or a
+long barrel = later production.
+
+BEST MEASURING VIEWS (flat-ish side views)
+- Base SVU: svu/svu_mvd_poster_2048.jpg (crops svu/poster_crop_right_irons_up.png, poster_crop_right_pso1.png - right side,
+  low detail); svu/imfdb_Svu.jpg (left, 500 px, camo, PSO-1).
+- Same body, sharp: svu_a/kuzmin2015_svua_01.jpg (right, 1920), kuzmin2015_svua_18.jpg (left, scope on),
+  svu_a/imfdb_SVU-A.jpg (right, studio, 650 px), svu_a/q2_005.jpg (2250 px original of Kuzmin #19, 3/4).
+- SVU-AS: svu_as/q22_012_zonwar_right_2048.jpg (right, studio, bipod folded), svu_as/q8_012.jpg, q22_007_zonwar_right.jpg,
+  imfdb_Svu-a_2.jpg (right, studio).
+TOP / FRONT / REAR: svu_a/kuzmin2015_svua_21.jpg (top-down: receiver cover, cheek rest, PSO-1 offset to the left) and
+  _04.jpg (similar, from the other end), _15.jpg (looking down on the receiver at an angle, close),
+  _38.jpg (muzzle end-on), _34.jpg / _36.jpg (butt pad from behind / below), _41.jpg (receiver top, cover off).
+3/4 VIEWS: svu_a/kuzmin2015_svua_02/03/19/20.jpg, kuzmin2014_svua_1994_01-05.jpg, svu_a/q3_010.jpg (RecoMonkey).
+CLOSE-UPS (svu_a/kuzmin2015_svua_NN): muzzle device 05-09, 22-24; front sight 07, 23; gas block / bayonet-lug area
+  25-26; handguard 10-11, 28; grip and trigger 12 (right), 29 and 37 (left); PSO-1 and side mount 13, 27, 30, 39-40;
+  receiver left with trigger bar and cheek rest 14, 31; magazine and well 16, 32; butt and leaf-spring butt plate 17,
+  33-36; recoil spring 42. Selector markings: kuzmin2014_svua_1994_06.jpg. SVU-AS details (Kardell): svu_as/q6_037-054,
+  q5_012/013/019/036/040 (rear sight drum q6_044, front sight q6_039/q6_051, bipod q6_031/q6_045).
+DOCS: docs/svu_mvd_poster_2048.jpg (MVD poster: specs, field strip, delivery kit), docs/prototype_drawing_nnre_pic_26/27
+  (two prototypes with different butts and grips - pre-1991 shapes, do not build from them).
+MISSING: a sharp, close photo set of a confirmed base SVU (semi-only) - only the poster and IMFDB's 500 px camo photo;
+  a straight underside view; a straight rear view; the 1991 camo paint scheme in colour beyond IMFDB's image; real
+  20/30-round magazines (magazines/q5_056.jpg is an unlabelled lineup). Bing image search started timing out mid-session,
+  so the "Chechnya", "museum", "left side" and "1990s" searches never ran.
+REPLICAS: replicas/ = airsoft (Cyma CM057 / JG / ASP / A&K SVU-AS AEGs, Bear Paw OTs-03 SVU GBB - semi, no bipod, the
+  closest replica of the base SVU) and civilian SVD-to-SVU conversion kits; shapes approximate only.
