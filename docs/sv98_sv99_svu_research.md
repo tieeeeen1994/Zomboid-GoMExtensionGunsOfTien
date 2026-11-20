@@ -3,8 +3,7 @@
 The user asked (2026-11-20) for the Izhmash SV-98 with partners, picked the SV-99 and the SVU, and asked for research
 only. Photos and per-file sources: `references/sv98/`, `references/sv99/`, `references/svu/` (each `SOURCES.txt`
 opens with a facts summary per variant, the best measuring / 3/4 / close-up files and the missing angles; a contact
-sheet per folder). The photos are committed only for the user's move to a new PC and are to be deleted again
-(TODO.md). Figures below are from those headers; where sources disagree both are given.
+sheet per folder), kept in git. Figures below are from those headers; where sources disagree both are given.
 
 ## Where each goes
 

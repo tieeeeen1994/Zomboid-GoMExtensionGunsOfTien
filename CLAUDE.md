@@ -337,6 +337,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   you to gather MANY images of different angles of the gun?"): every new gun starts with an image hunt, not a model:
   both sides, top, front, 3/4 views from both ends and close-ups (rail, sights, stock, grip, receiver) of that exact
   variant, saved in `references/<gun>/` with SOURCES.txt and a contact sheet, landmarks read off them, then the model.
+  The photos are committed and kept in git (user, 2026-11-20: "i don't think we should delete them"; `references/`
+  was git-ignored until then, and twelve folders that never reached git are lost: aug, aug_variants, glock21,
+  groza, hk417, mdr, ppk22, rpd, rpk, steyr_tmp, uzi, vector).
   Sources that worked for the HK416: IMFDB images (`curl` with a browser user agent fetches /images/...), the maker's
   operator's manual PDF (images out with PyMuPDF), licensed airsoft replica listings (airsoft.ch, Redwolf galleries;
   Evike is behind Cloudflare), Commons categories (mostly field photos).

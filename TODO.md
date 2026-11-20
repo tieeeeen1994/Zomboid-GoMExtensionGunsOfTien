@@ -4,14 +4,6 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
-## Reference photos in git (temporary, for the move to a new PC)
-
-- [ ] Delete every reference photo from the repo once the move is done (user, 2026-11-20): `references/` is in
-      .gitignore but `references/hk416`, `hk416_22`, `p90`, `ps90` (commit a0f0bc6, 309 files) and `sv98`, `sv99`,
-      `svu` (the 2026-11-20 research commit) are tracked and pushed to the public GitHub repo. `git rm -r --cached
-      references` only drops them from new commits; they stay in history (and the repo's size) unless history is
-      rewritten (git filter-repo + force push). Ask the user which.
-
 ## SV-98, SV-99, SVU (research, not built)
 
 - [ ] Research done 2026-11-20 (`docs/sv98_sv99_svu_research.md`, photos in `references/sv98|sv99|svu`). Build
