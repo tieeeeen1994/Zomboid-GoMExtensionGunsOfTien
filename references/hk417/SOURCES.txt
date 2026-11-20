@@ -1,0 +1,17 @@
+HK417 references (gathered 2026-11-13, before modelling; contact_sheet.png shows the main ones)
+
+Measuring
+- bing/b_028.jpg   H&K's own press photo of a 16" HK417 from its left (2000 px, serial 89-141008, sights folded,
+                   10-round magazine, stock part way out); 2.08 px a mm (build_hk417.py)
+- imfdb/HK417_20MOD.jpg   IMFDB, the 20" with Leupold scope and Harris bipod from its left: the Sniper's rail and barrel
+
+Other side views: imfdb/HK417_12.jpg, HK417_12MOD.jpg, HK417_16.jpg (16", sights removed), HK417A2_*.jpg (the later A2,
+not built), G28_standard / HKG28; bing/b_035, b_182, b_097, b_070, b_064 / b_065 (licensed VFC HK417D, both sides).
+Close-ups: bing/b_001, b_074, b_087, b_088 (receiver markings), b_006, b_095, b_204, b_208 (H&K stock), b_007, b_136,
+b_145, b_191 (front sight, flash hider), b_295, b_296, b_309, b_311, b_334, b_342, b_345 (rail systems, 16" and 20"
+kits), b_009, b_360, b_363, b_374, b_389, b_394, b_396 (magazines), b_100 (a line drawing).
+Sources: IMFDB "Heckler & Koch HK417" (curl with a browser user agent fetches /images/...); Bing image search
+(www.bing.com/images/async?q=...&first=N&count=35) for "HK417 D16RS", "HK417 16 inch rifle left side", "HK417 Recce
+rifle", "VFC HK417 16 inch airsoft", "Umarex HK417 D airsoft", "HK417 20 inch sniper", "HK417 magazine 20 round",
+"HK417 10 round magazine", "HK417 rail system top view", "HK417 receiver close up", "HK417 stock", "HK417 D20RS"
+(bing/candidates.json lists every hit). Specs: Wikipedia "Heckler & Koch HK417", modernfirearms.net.

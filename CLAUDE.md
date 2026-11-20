@@ -2809,7 +2809,13 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   GoM's bolt rifles do.
 - **Measuring**: SV-98 on zonawar's studio right side (references/sv98/sv98/ru_003.jpg, 1.566 px a mm over 1200 mm),
   read per 10 mm column (the stock's green and the metal's dark: tops, bottoms, holes); the outline overlay then
-  moved the trigger blade (thin, nearly upright, tip turned back) and the bolt shroud 15 mm forward. SV-99: the stock
+  moved the trigger blade (thin, nearly upright, tip turned back) and the bolt shroud 15 mm forward. The photo frame:
+  x = 53 + 1.566 L, y = 281.1 + 1.566 R (281.1 centres the photo's barrel, 8..31 at L 950-1100, on BORE_R 24; 288
+  draws every outline 4.4 mm off). Behind the grip the stock was re-traced in that frame off 5-10x crops on 2026-11-21
+  (user: the notch above the thumbhole "looks ugly", "make it exactly as the reference"): the comb support is one
+  concave curve from the riser block's foot (L 236.5) to the wrist top (it was a sloped wall 8 mm ahead of the block),
+  the thumbhole the photo's egg (outer edge of its dark rounded rim), windows 3 mm deeper, comb pad, butt pad,
+  crescent adjuster and its bracket over the stock's rear end (`ADJUSTER_BRACKET`). The bipod too, the same day (user: "seems like it's detached": a box hung under the forend's tip with a gap): `BIPOD_BAR` plugged into the forend's nose (which ended 6 mm past the photo's), `BIPOD_YOKE` ahead of it, the legs from `BIPOD_PIN`. SV-99: the stock
   on Kalashnikov's left side (black_polymer/kalash_SV-99_2.jpg mirrored, 1.530 px a mm), the lever, port, magazine and
   plywood off zonawar's right side of the green one (green_plywood/b2_003.jpg, 1.862); the action in "action mm" (A
   forward of the trigger, D down from the bore) from the crisp catalogue photo, registered on the trigger blade and bore. The first read

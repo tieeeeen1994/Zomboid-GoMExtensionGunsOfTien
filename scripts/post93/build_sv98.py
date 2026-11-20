@@ -17,7 +17,8 @@ windows, an adjustable comb on two posts and a rubber butt plate on its adjuster
 top (modelled; a hidden integrated rail part is the parent of GoM's optics, as on Post-93's Mk 11), the bolt with its
 ball knob on the right, the 650 mm free-floated barrel, the hooded front sight on its band, the conical muzzle sleeve,
 the drum rear sight on the receiver's front, its own 10-round polymer magazine (only its floor shows under the stock)
-and the bipod that folds back into the forend's slot (two nodes, as the RPK's). Not modelled: the detachable carrying
+and the bipod, its mount plugged into the forend's nose under the barrel, its legs hinged on a yoke in front of the
+nose and folded back under the forend (two nodes, as the RPK's). Not modelled: the detachable carrying
 handle, the mirage strap, the rear monopod, the suppressor.
 
 Built on the kit of post93/build_mp7.py, as build_ppk.py builds the PPK: slabs of the side outline (holes cut),
@@ -83,12 +84,6 @@ def slab(b, outline, holes=(), half=10.0, bevel=1.0, res=0, mat="wood", x0=0.0):
     return kit.slab(b, PL(outline), [PL(h) for h in holes], half, bevel, res, mat, x0)
 
 
-def ellipse(cL, cR, a, b, rot=0.0, n=28):
-    c, s = math.cos(math.radians(rot)), math.sin(math.radians(rot))
-    return [(cL + a * math.cos(t) * c - b * math.sin(t) * s, cR + a * math.cos(t) * s + b * math.sin(t) * c)
-            for t in (2 * math.pi * k / n for k in range(n))]
-
-
 def rounded_rect(La, Lb, Ra, Rb, r, n=4):
     pts = []
     for cL, cR, a0 in ((Lb - r, Ra + r, 270.0), (Lb - r, Rb - r, 0.0), (La + r, Rb - r, 90.0), (La + r, Ra + r, 180.0)):
@@ -104,26 +99,45 @@ def rounded_rect(La, Lb, Ra, Rb, r, n=4):
 
 # The stock body: the top behind the comb, the wrist rising to the receiver, the forend's top under the barrel to the
 # rounded tip, its bottom back to the trigger opening, the grip's front and bottom, the lower bar back to the butt.
-STOCK = [(66, 80), (245, 80), (250, 62), (258, 53), (330, 51), (345, 46), (360, 41.5), (380, 37), (400, 36.5),
-         (450, 35.8), (560, 34), (580, 33.2), (720, 31.3), (820, 30.0), (868, 30.0), (880, 34), (886, 45), (886, 56),
-         (882, 64), (875, 72), (860, 77), (850, 82), (840, 87), (820, 90), (800, 92.6), (760, 97), (700, 98.3),
+# Everything behind the grip was re-traced on 2026-11-21 off ru_003.jpg zoomed 5-10x, with the photo's R row 0 at
+# y 281.1 (the frame in which the photo's barrel is centred on BORE_R): the comb support rises from the riser block's
+# foot in one concave curve to the wrist's top (it had a sloped wall 8 mm ahead of the block, leaving a notch; user:
+# "this one looks ugly", "make it exactly as the reference"), the thumbhole is the photo's egg (the outer edge of its
+# dark rounded rim), the windows, comb pad, butt pad, adjuster and its upper bracket as on the photo.
+STOCK = [(69.5, 77), (236.5, 74.5), (236.7, 70.5), (238.6, 67.8), (241.8, 65.2), (244.4, 61.2), (246.9, 58.2),
+         (250.1, 55), (253.3, 52.5), (256.5, 51.6), (262, 51.2), (330, 51), (345, 46), (360, 41.5), (380, 37), (400, 36.5),
+         (450, 35.8), (560, 34), (580, 33.2), (720, 31.3), (820, 30.0), (868, 30.0), (874.6, 33), (878.5, 39.6), (879.6, 49.5),
+         (878.5, 59.4), (875.7, 66), (870.2, 72), (863.6, 77), (857, 80.3), (850.4, 82), (840, 87), (820, 90), (800, 92.6), (760, 97), (700, 98.3),
          (650, 99), (580, 100), (560, 103), (540, 106), (520, 110.5), (500, 117.5), (470, 125), (450, 130),
          (430, 137), (410, 140), (398, 139), (388, 136), (378, 132), (368, 126), (360, 124), (357, 140), (354, 170),
          (351, 190), (345, 197), (330, 197.3), (310, 193.5), (290, 186.5), (280, 179.4), (270, 171), (260, 166),
          (250, 169), (240, 172.4), (230, 177), (220, 180), (210, 182.6), (200, 184.5), (190, 187), (160, 187),
-         (152, 193), (140, 196), (100, 198), (66, 198)]
-THUMBHOLE = ellipse(266.0, 106.0, 31.0, 38.0, -28.0)
-WINDOWS = [rounded_rect(99, 159, 100, 154, 7), rounded_rect(179, 215, 100, 153, 7)]
+         (152, 193), (140, 196), (100, 198), (69.5, 198)]
+THUMBHOLE = [(267.6, 72.8), (278.2, 73.0), (289.0, 72.0), (299.5, 71.7), (308.0, 73.3), (313.3, 79.1), (317.6, 87.7),
+             (318.4, 95.0), (315.4, 104.7), (309.0, 115.3), (301.6, 126.0), (293.0, 136.6), (285.6, 145.1),
+             (280.3, 150.4), (269.7, 153.6), (256.9, 152.6), (246.3, 147.2), (237.8, 138.7), (233.0, 128.0),
+             (231.4, 115.3), (231.9, 102.6), (234.0, 91.9), (238.8, 83.4), (246.3, 77.0), (256.9, 73.3)]
+WINDOWS = [rounded_rect(100, 160.5, 99.5, 157.5, 6), rounded_rect(179.4, 217.7, 99, 156.3, 6)]
 # the trigger opening, traced off the photo (ru_003.jpg x 560-760, y 330-520 at 6.3 px a mm; user, 2026-11-20: the
 # trigger was "completely wrong"): a flat top, a rounded rear, the front and bottom fuller
 TRIGGER_OPENING = [(378.0, 100.6), (379.9, 95.0), (384.4, 91.3), (392.4, 89.1), (403.6, 87.5), (413.2, 87.0),
                    (422.7, 87.8), (429.1, 91.8), (433.1, 99.0), (433.6, 107.0), (431.5, 114.9), (425.9, 121.3),
                    (417.9, 124.5), (406.8, 125.3), (395.6, 124.5), (386.0, 122.1), (379.9, 116.5), (377.7, 108.6)]
-COMB = [(72, 50), (72, 32), (78, 27), (240, 26), (255, 28), (250, 40), (242, 50)]
-COMB_BLOCK = [(105, 82), (105, 50), (238, 50), (238, 82)]
-PAD = [(8, 77), (28, 75), (31, 213), (12, 215), (4, 205), (1, 160), (1, 110), (3, 90)]
-ADJUSTER = [(30, 62), (66, 58), (68, 200), (30, 202)]
-GRIP_STIPPLE = [(292, 92), (346, 92), (352, 130), (346, 190), (300, 187), (276, 160), (272, 125)]
+# the comb pad (its underside seen a little from below at the back), the riser block under it to the comb support
+COMB = [(72.5, 51), (71.5, 47), (71.5, 31), (73.5, 28.3), (77, 27), (248, 24.8), (252.5, 24.8), (253.3, 27),
+        (252, 33), (250.4, 39.5), (246, 46), (242.5, 49.8), (239, 50.3), (105, 54.5), (76, 54.5)]
+COMB_BLOCK = [(105, 80), (105, 49), (236.5, 49), (236.5, 80)]
+# the butt pad (its back hollow under the top horn), the crescent adjuster ahead of it (taller than the pad at the top,
+# as deep at the bottom), and the adjuster's bracket over the stock's rear end (narrower than the stock: only its top
+# and a lip under the bottom show)
+PAD = [(1.5, 78.5), (4, 76.3), (28, 74.5), (29.5, 76), (31, 213.5), (10, 213.5), (8.5, 200), (9.5, 180), (10.5, 140),
+       (8.5, 106), (4, 88), (1, 81)]
+ADJUSTER = [(30, 79), (35, 77), (37.1, 71.5), (39.9, 63.5), (42.3, 58.4), (45, 57.6), (65, 57.6), (67, 59.5), (68, 63),
+            (68, 196), (63, 203), (56, 212.5), (46, 213), (31, 213.5), (30, 200)]
+ADJUSTER_BRACKET = [(68.5, 62.5), (70, 61.5), (76, 61.5), (78.5, 62.8), (79.6, 65.5), (80, 68), (80, 190), (74, 199.5),
+                    (68.5, 200)]
+GRIP_STIPPLE = [(318, 84), (359, 84), (357, 120), (352, 130), (352, 186), (344, 191), (296, 181), (282, 165),
+                (282, 150), (293, 138), (309, 117), (318, 98)]
 FOREND_GROOVES = [(452, 550), (595, 700), (735, 820)]
 GROOVE_R = (54.0, 68.0)
 # the blade, traced off the same crop: a thin hook hanging from the opening's top (its root inside the stock), its
@@ -150,8 +164,13 @@ SHROUD = (377.0, 391.0, 11.5)
 SAFETY = (386.0, 397.0, 29.0, 35.0)                # the safety lever behind the handle (right side)
 MAG_BOX = (440.0, 532.0, 40.0, 113.0, 15.0)        # L from, to, R top (feed lips), R floor (flush with the stock
                                                    # at the well's front: the floor sits recessed in the well), half width
-# the bipod: its head under the forend's tip, legs back in the forend's slot or down and splayed
-BIPOD_HEAD = (868.0, 80.0)
+# the bipod, off the photo (user, 2026-11-21: it hung under the forend's tip with a gap, "seems like it's detached"):
+# a bar plugged into the forend's nose under the barrel (clear of it), the hinge yoke ahead of the nose, the pin, and
+# the legs from the pin back under the forend (into it: the slot is not modelled) or down and splayed
+BIPOD_BAR = (874.0, 912.0, 44.5, 57.0)             # L from (inside the nose), to, R top, R bottom
+BIPOD_YOKE = (889.0, 915.0, 56.0, 88.5)
+BIPOD_PIN = (901.0, 74.0)
+BIPOD_FOLD_R = 80.5                                # the folded legs' axis (the photo shows them under the nose)
 BIPOD_LEG = 215.0
 BIPOD_SPLAY, BIPOD_RAKE = 12.0, 6.0
 
@@ -167,6 +186,7 @@ def build_body():
     slab(b, COMB_BLOCK, half=11.0, bevel=1.0, mat="rubber")
     slab(b, PAD, half=W_STOCK - 0.5, bevel=4.0, res=1, mat="rubber")
     slab(b, ADJUSTER, half=W_STOCK - 2.0, bevel=1.5, mat="rubber")
+    slab(b, ADJUSTER_BRACKET, half=W_STOCK - 3.0, bevel=1.5, mat="rubber")
     slab(b, TRIGGER, half=2.4, bevel=0.4, mat="metal")
     # the receiver and barrel, round on the bore; the drum sight; the front sight on its band; the muzzle sleeve
     y_bore, z_bore = P(0.0, BORE_R)
@@ -240,15 +260,21 @@ def build_bolt():
 
 def build_bipod(deployed):
     b = kit.Builder()
-    hL, hR = BIPOD_HEAD
-    head = Vector((0.0, *P(hL, hR)))
-    gbox(b, hL - 12, hL + 12, hR + 8, hR - 4, -12.0, 12.0, mat="metal", bevel=1.0)
+    La, Lb, Ra, Rb = BIPOD_BAR
+    gbox(b, La, Lb, Ra, Rb, -11.0, 11.0, mat="metal", bevel=2.0)
+    La, Lb, Ra, Rb = BIPOD_YOKE
+    gbox(b, La, Lb, Ra, Rb, -12.5, 12.5, mat="metal", bevel=3.0)
+    pin = Vector((0.0, *P(*BIPOD_PIN)))
+    b.lathe("x", tuple(pin), [(-14.0, 0.0), (-14.0, 3.5), (14.0, 3.5), (14.0, 0.0)], seg=10, mat="silver")
     for s in (-1, 1):
-        top = head + Vector((s * 8.0, 0.0, -6.0))
+        if deployed:
+            top = pin + Vector((s * 8.0, 0.0, 0.0))
+        else:
+            top = Vector((s * 8.0, *P(BIPOD_PIN[0], BIPOD_FOLD_R)))
         if deployed:
             d = Vector((s * math.sin(math.radians(BIPOD_SPLAY)), math.sin(math.radians(BIPOD_RAKE)), -1.0)).normalized()
         else:
-            d = Vector((s * 0.02, -1.0, -0.04)).normalized()
+            d = Vector((s * 0.02, -1.0, 0.0)).normalized()
         foot = top + d * BIPOD_LEG
         xf = Matrix.Translation(top) @ d.to_track_quat('Y', 'Z').to_matrix().to_4x4()
         b.lathe("y", (0.0, 0.0, 0.0), [(0.0, 0.0), (0.0, 5.0), (BIPOD_LEG * 0.55, 5.0), (BIPOD_LEG * 0.55, 4.0),

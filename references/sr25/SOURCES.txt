@@ -1,0 +1,1 @@
+imfdb_mk11mod0_right.jpg  https://www.imfdb.org/images/c/c2/SR25.jpg (IMFDB "Knight's Armament SR-25": a Mk 11 Mod 0, right side, 4798 px; the trigger audit's measuring photo, 3.71 px a mm, crop (1080, 520) of it in build_sr25.py's notes)
