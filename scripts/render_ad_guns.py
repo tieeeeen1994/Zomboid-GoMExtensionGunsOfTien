@@ -57,6 +57,10 @@ out, each with the sight body its optic picks.
 
 3.16.0 (2026-11-19): the main mod's Walther PPK .22 LR (preview30, `ppk`: bare with its magazine, the Glock 21's view,
 turned upright).
+
+3.17.0 (2026-11-20): the main mod's SVU (preview31, `svu`: its folded-sights body under GoM's AK mount and PSO-1, GoM's
+SVD magazine at our size) and Post-93's SV-98 / SV-99 (preview32, `sv98`: PSO-1; `sv99` / `sv99p`: LR4X and TA28),
+bipods folded, the three at one view and scale.
 """
 
 import json
@@ -248,7 +252,44 @@ SCARH_MUZZLE = [(SCAR_PARTS, n, os.path.join(TEX, n + ".png"), "canon")
                 for n in ("SCARH_Muzzle_Mount_Device", "SCARH_Suppressor")]
 
 
+# 3.17.0 (2026-11-20): the SVU (preview31) and the SV-98 / SV-99 (preview32). The SVU draws its sights-folded body
+# under an optic (SVU.lua), GoM's SVD magazine through its `_GoT` model (scale 0.9102) and GoM's AK mount on
+# `rail_up`; the SV-98's and SV-99's rails are part of their bodies, their bolts at the origin / at `bolt_lock`.
+SVU_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_SVU.fbx")
+SVU_TEX = os.path.join(MAIN_TEX, "SVU.png")
+SV98_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_SV98.fbx")
+SV99_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_SV99.fbx")
+SV_SCALE, SV_SIZE = 0.98, (2400, 1000)
+
+
+def sv99(prefix, scope):
+    tex = os.path.join(TEX, prefix + ".png")
+    return [(SV99_FBX, prefix + "_BODY", tex, None), (SV99_FBX, prefix + "_BOLT", tex, "bolt_lock"),
+            (SV99_FBX, prefix + "_BIPOD_FOLDED", tex, None),
+            (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV99_magazines.fbx"),
+             "22LRMagazine5_SV99", os.path.join(TEX, "22LRMagazine5_SV99.png"), "magazine"),
+            gom_part("scopes", scope, "scope")]
+
+
 GUNS = {
+    "svu": {"points": "svu_points.json",
+            "assembled": [(SVU_FBX, "SVU_FD_BODY", SVU_TEX, None), (SVU_FBX, "SVU_BOLT", SVU_TEX, None),
+                          (os.path.join(GOM, "models_X/weapons/magazines/semi_rifles.fbx"), "762x54Magazine10_SVD",
+                           os.path.join(GOM, "textures/weapons/magazines/semi_rifles/762x54Magazine10_SVD.png"),
+                           "magazine", 0.9102),
+                          gom_part("rails", "AK_Mount", "rail_up"), gom_part("scopes", "PSO1_Scope", "scope")],
+            "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "sv98": {"points": "post93/sv98_points.json",
+             "assembled": [(SV98_FBX, n, os.path.join(TEX, "SV98.png"), None)
+                           for n in ("SV98_BODY", "SV98_BOLT", "SV98_BIPOD_FOLDED")] + [
+                 (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazines.fbx"),
+                  "762x54Magazine10_SV98", os.path.join(TEX, "762x54Magazine10_SV98.png"), "magazine"),
+                 gom_part("scopes", "PSO1_Scope", "scope")],
+             "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
+    "sv99": {"points": "post93/sv99_points.json", "points_key": "SV99", "assembled": sv99("SV99", "LR4X_Scope"),
+             "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
+    "sv99p": {"points": "post93/sv99_points.json", "points_key": "SV99P", "assembled": sv99("SV99P", "TA28_Scope"),
+              "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
     # preview27: the HK416 with an EXPS3 (rear sight folded), MKC foregrip, AimRight laser, AR mount + MKI and a
     # STANAG 30; the HK417 Battle Rifle with an Aimpoint, MKC and AimRight; the Sniper with an LR10X (both sights
     # folded), bipod and the SCAR-H's mount + SOCOM762-RC; both HK417s with H&K's 20; lasers on the right rail, the side this view shows (game space: -x)

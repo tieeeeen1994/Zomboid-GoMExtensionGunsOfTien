@@ -663,6 +663,13 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   lever read after the mirror), a slot row (gun, 8-round magazine, .22 LR box) and two lines (ankle holster, loot).
   Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> ppk`, then
   `make_workshop_art.py --renders <dir> preview30`. Not yet on the Steam page.
+  preview31-32 (3.17.0, 2026-11-20): the main mod's SVU (preview31, as preview23: render_ad_guns.py `svu`, its
+  sights-folded body under GoM's AK mount and PSO-1, GoM's SVD magazine at 0.9102) and Post-93's SV-98 and SV-99s
+  (preview32, through `gun_pair` with three guns: `sv98` PSO-1, `sv99` LR4X, `sv99p` TA28, all bipods folded, since a
+  deployed one made the three a third smaller; one view and scale, `SV_SCALE`; `gun_pair` takes `bottom`, `slot_y`,
+  `gap` so a line fits under the slot row; the polymer row is labelled "SV-99 · POLYMER STOCK", a longer label ran off
+  the page). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> svu sv98 sv99 sv99p`,
+  then `make_workshop_art.py --renders <dir> preview31 preview32`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),

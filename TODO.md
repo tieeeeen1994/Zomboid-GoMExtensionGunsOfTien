@@ -9,8 +9,17 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 - [ ] Play them: the SVU's FAMAS reload and folding sights, the SV-98 / SV-99 magazine bolt-action reload (GoM's
       `*Rifle_HB.xml` nodes with a Gunworks "boltaction" profile, never used by GoM itself), the rack after every shot,
       the SV-99's lever swing, the integrated bipods, loot.
-- [ ] Workshop: a preview for the SVU (main mod) and one for the SV-98 / SV-99 (Post-93), the change note, and the
-      variants left out (the aluminium SV-98, the SV-99's wooden stock) if wanted.
+- [ ] After the 3.17.0 upload: put preview31 (the SVU) and preview32 (the SV-98 / SV-99) on the Steam page by hand.
+- [ ] The variants left out (the aluminium SV-98, the SV-99's wooden stock), if wanted.
+
+## Post-93 loot: use the spawners that fit each gun
+
+- [ ] (user, 2026-11-20) Post-93's guns should go into the existing loot spawners that fit each of them, instead of
+      mostly being added to one shared list. Today most of them (SV-98, SV-99, MDRx, Grozas, HK416 .22, the A3, and the
+      UMPs / Vectors / MP7 / P90 alongside the police SMG spawner) are alternatives in GoM's
+      `MarzGuns.World_Anachronistic_Spawner`, which they share with about 20 guns, so each is roughly 1 in 20 there
+      (Post-93 `Loot.lua`). How to do it is still open: which existing spawner each gun belongs in (police / SWAT, army,
+      gun stores, mercenaries, civilian homes...), and whether some take a vanilla or GoM spawner of their own.
 
 ## After the 3.16.0 upload
 

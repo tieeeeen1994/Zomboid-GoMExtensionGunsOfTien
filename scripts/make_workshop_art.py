@@ -14,7 +14,8 @@ Glock 21, the same), preview21.png (1024x1024, Post-93's Vector .45 Carbine and 
 Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP, Mk 11, Grozas, the same),
 preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
 Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same),
-preview30.png (1024x1024, the Walther PPK, the same)
+preview30.png (1024x1024, the Walther PPK, the same), preview31.png (1024x1024, the SVU, the same), preview32.png
+(1024x1024, Post-93's SV-98 and SV-99, the same)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1311,8 +1312,8 @@ def mod_icon(path, item, W=128):
     print("wrote", path)
 
 
-def gun_pair(path, guns, slots, slot_label, lines, W=1024):
-    """Two guns laid out like preview6 (no big title, the add-on line on top): both fitted out at one scale (their
+def gun_pair(path, guns, slots, slot_label, lines, W=1024, bottom=396, slot_y=414, gap=22):
+    """Two (or more) guns laid out like preview6 (no big title, the add-on line on top): both fitted out at one scale (their
     render_ad_guns.py renders, mirrored back), each centred, under its name, calibre and rate; then a slot
     row and what plays. guns = ((render name, label, sub-label), ...)."""
     size = (W, W)
@@ -1328,8 +1329,8 @@ def gun_pair(path, guns, slots, slot_label, lines, W=1024):
     for name, _, _ in guns:
         im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
         ims[name] = im.crop(im.getchannel("A").getbbox())
-    label_h, gap, top, bottom = u(24), u(22), u(64), u(396)
-    s = min((bottom - top - 2 * label_h - gap) / sum(im.height for im in ims.values()),
+    label_h, gap, top, bottom = u(24), u(gap), u(64), u(bottom)
+    s = min((bottom - top - len(guns) * label_h - (len(guns) - 1) * gap) / sum(im.height for im in ims.values()),
             u(468) / max(im.width for im in ims.values()))
     x0 = (W - round(max(im.width for im in ims.values()) * s)) // 2
     big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
@@ -1343,7 +1344,7 @@ def gun_pair(path, guns, slots, slot_label, lines, W=1024):
                                         (60, 64, 70, 255), spacing=u(1)))
         paste_with_shadow(page, placed(size, im, (x0, y + label_h)), (0, u(6)), u(6), 160)
         y += label_h + im.height + gap
-    slot_row(page, slots, 256, 414, slot_label)
+    slot_row(page, slots, 256, slot_y, slot_label)
     for n, line in enumerate(lines):
         caption(page, 462 + n * 16, line)
     save_under(page.convert("RGB"), path)
@@ -1462,6 +1463,37 @@ def preview30(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def preview31(path, W=1024):
+    """The main mod's SVU (3.17.0), one gun on its page as preview23: its sights folded under Guns of Marz's AK mount
+    and PSO-1, GoM's SVD magazine (render_ad_guns.py "svu"), then a slot row and what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "SVU", 34, "GUNS OF MARZ EXTENSION")
+    caption(page, 86, "7.62X54MMR  ·  SEMI-AUTOMATIC  ·  BULLPUP", big=True)
+    single_gun(page, "svu", 104, max_h=240, bottom=386)
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    slot_row(page, [main("SVU"), gom("762x54Magazine10_SVD"), gom("762x54_Box"), gom("AK_Mount"), gom("PSO1_Scope")],
+             256, 398, "GUNS OF MARZ SVD MAGAZINES AND OPTICS")
+    caption(page, 462, "FOLDING IRON SIGHTS  ·  OPTICS ON THE AK MOUNT")
+    caption(page, 478, "FOUND WHERE GUNS OF MARZ'S SVD IS")
+    save_under(page.convert("RGB"), path)
+
+
+def preview32(path, W=1024):
+    """Post-93's SV-98 and SV-99 (3.17.0), as gun_pair with three guns at one scale: the SV-98 with a PSO-1, bipod
+    folded ("sv98"); the SV-99 in plywood with an LR4X ("sv99") and in polymer with a TA28 ("sv99p"), the same (a
+    deployed bipod made all three a third smaller)."""
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    gun_pair(path, (("sv98", "SV-98", "7.62X54MMR  ·  BOLT-ACTION"),
+                    ("sv99", "SV-99", ".22 LR  ·  STRAIGHT-PULL  ·  SUPPRESSED"),
+                    ("sv99p", "SV-99", "POLYMER STOCK")),
+             [post("SV98"), post("SV99"), post("SV99P"), post("762x54Magazine10_SV98"), post("22LRMagazine5_SV99"),
+              gom("762x54_Box"), os.path.join(MAIN, "item_GunsOfTien_22LR_Box.png")],
+             "10 AND 5-ROUND MAGAZINES",
+             ("FOLDING BIPODS  ·  RAILS FOR GUNS OF MARZ OPTICS",), W, bottom=384, slot_y=398, gap=14)
+
+
 if __name__ == "__main__":
     def want(name):
         return not ONLY or name in ONLY
@@ -1526,6 +1558,10 @@ if __name__ == "__main__":
         preview29(os.path.join(ROOT, "preview29.png"))   # the main mod's .22 LR loads, added the same way
     if want("preview30"):
         preview30(os.path.join(ROOT, "preview30.png"))   # the Walther PPK (3.16.0), added the same way
+    if want("preview31"):
+        preview31(os.path.join(ROOT, "preview31.png"))   # the SVU (3.17.0), added the same way
+    if want("preview32"):
+        preview32(os.path.join(ROOT, "preview32.png"))   # Post-93's SV-98 and SV-99 (3.17.0), added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):
