@@ -155,5 +155,11 @@
   "GunsOfTienPost93.22LRMagazine5_SV99": "SV-99 5Rds .22 LR Magazine",
   "GunsOfTienPost93.SV99_Integrated_Rail_Up": "SV-99 Integrated Rail (Up)",
   "GunsOfTienPost93.SV99_Integrated_Bipod_Folded": "SV-99 Integrated Bipod (Folded)",
-  "GunsOfTienPost93.SV99_Integrated_Bipod_Deployed": "SV-99 Integrated Bipod (Deployed)"
+  "GunsOfTienPost93.SV99_Integrated_Bipod_Deployed": "SV-99 Integrated Bipod (Deployed)",
+  "GunsOfTienPost93.Zombie_SWAT_PDW_Spawner": "Spawner",
+  "GunsOfTienPost93.World_Modern_Army_Rifle_Spawner": "Spawner",
+  "GunsOfTienPost93.Zombie_Modern_Army_Rifle_Spawner": "Spawner",
+  "GunsOfTienPost93.World_Modern_Sporting_Rifle_Spawner": "Spawner",
+  "GunsOfTienPost93.World_Modern_Pistol_Spawner": "Spawner",
+  "GunsOfTienPost93.World_Post_Soviet_Spawner": "Spawner"
 }

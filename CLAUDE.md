@@ -445,6 +445,18 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   part box itself (ammomaker_itemDistribution.lua, at container fill). Ours follow the same routes; the special
   loads (main mod's 12, Post-93's 4.6x30 Subsonic and 5.7x28 SB193 / SS197SR) never spawn, as GoM's own do not. Its icons reuse the Five-seveN's Glock-fitted
   cameras. The Five-seveN and the UCP have no optic rail of their own: GoM's pistol sights need its Beretta mount.
+- **Post-93's own spawners** (2026-11-21; design: docs/post93_design.md, "Spawners of our own"): GoM's
+  `MarzGuns_OnCreate.SelectItem` resolves any item whose full type is a key of `ItemSpawnerMap` (`ItemSpawner.lua`
+  `resolveItem`, and `ZombieAttachmentReplacer.lua` for zombies' attached items and their inventory at death), picking
+  an alternative with `r:random(#entry)` (even); an empty list resolves to nothing, so a spawner belongs to the mod
+  that owns its guns. So a spawner of ours = an item script (`ItemType = base:weapon`, that OnCreate) + a map entry
+  + insertions into vanilla lists (OnPreDistributionMerge, as GoM's ItemInsertion.lua) + vanilla
+  `AttachedWeaponDefinitions[slot].weapons` entries (a slot also picks evenly). GoM places
+  `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late` 5, `SurvivorBag_Late` 2,
+  `BanditBag_Late` 1 (no gun store, no zombie), and puts no gun spawner in `SWATStorageGuns`. Post-93 `Loot.lua` has
+  five (SWAT PDW, modern army rifle world / zombie, modern sporting rifle, modern pistol, post-Soviet), each at the
+  weights GoM gives its spawner of the same kind of gun; checked with lupa against GoM's real ItemSpawnerTable
+  (2026-11-21).
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the
   user's photo) in FDE, select fire, standard side-folding stock; the SCAR-L on GoM's 5.56 family and STANAG
   magazines, the SCAR-H on its 7.62x51 family with its own 20 / 10-round magazines and its own SOCOM762-RC suppressor +
@@ -3960,7 +3972,8 @@ Full report kept in the session; the essentials, all `require`-able public Gunwo
 - **Spawns**: `require("MarzWeapons/OnCreate/ItemSpawnerTable").ItemSpawnerMap`: insert a new alternative (gun + its
   magazines + box) into `MarzGuns.Zombie_Police_SMG_Spawner` (SWAT zombies, police bags, prison riot, SWAT trucks),
   `World_Short_SMG_Spawner` (gun stores, bandits) or `World_Anachronistic_Spawner` (post-1993 guns: G36, Benelli M4,
-  AA-12...; in FirearmWeapons_Late, SafehouseBin_Late). GoM's `addItem` is local.
+  AA-12...; only in FirearmWeapons_Late, SafehouseBin_Late, SurvivorBag_Late, BanditBag_Late). GoM's `addItem` is
+  local. Post-93's guns have spawners of their own since 2026-11-21 (see "Post-93's own spawners").
 - **Tooltips**: `require("MarzWeapons/ItemTooltipsTable").tooltipsPergun[gun] = { "Uses ...", "Available Picatinny
   Slots: ..." }`. Hot Brass `RegisterWeaponParams` by gun full type; Hot Brass already ships `HBVCEF.46x30_Casing`
   and `57x28_Casing` and P90 (downward: forward 0.35, side 0.10, height 0.50, shellForce 0.10, sideSpread 10,

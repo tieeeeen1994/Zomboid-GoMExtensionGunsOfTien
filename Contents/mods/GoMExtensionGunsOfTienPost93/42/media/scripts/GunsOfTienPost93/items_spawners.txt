@@ -1,0 +1,36 @@
+module GunsOfTienPost93 {
+
+    /* Loot spawners of our own, resolved by Guns of Marz's MarzGuns_OnCreate.SelectItem like its own spawners:
+       Loot.lua puts their alternatives in GoM's ItemSpawnerMap, places them in vanilla loot lists and zombie
+       attachment slots. */
+
+    item Zombie_SWAT_PDW_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+
+    item World_Modern_Army_Rifle_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+
+    item Zombie_Modern_Army_Rifle_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+
+    item World_Modern_Sporting_Rifle_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+
+    item World_Modern_Pistol_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+
+    item World_Post_Soviet_Spawner {
+        ItemType = base:weapon,
+        OnCreate = MarzGuns_OnCreate.SelectItem,
+    }
+}

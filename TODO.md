@@ -12,15 +12,6 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 - [ ] After the 3.17.0 upload: put preview31 (the SVU) and preview32 (the SV-98 / SV-99) on the Steam page by hand.
 - [ ] The variant left out (the aluminium SV-98), if wanted. The SV-99 stays one gun (user, 2026-11-20).
 
-## Post-93 loot: use the spawners that fit each gun
-
-- [ ] (user, 2026-11-20) Post-93's guns should go into the existing loot spawners that fit each of them, instead of
-      mostly being added to one shared list. Today most of them (SV-98, SV-99, MDRx, Grozas, HK416 .22, the A3, and the
-      UMPs / Vectors / MP7 / P90 alongside the police SMG spawner) are alternatives in GoM's
-      `MarzGuns.World_Anachronistic_Spawner`, which they share with about 20 guns, so each is roughly 1 in 20 there
-      (Post-93 `Loot.lua`). How to do it is still open: which existing spawner each gun belongs in (police / SWAT, army,
-      gun stores, mercenaries, civilian homes...), and whether some take a vanilla or GoM spawner of their own.
-
 ## After the 3.16.0 upload
 
 - [ ] Put preview30 (the Walther PPK) on the Steam page by hand.
