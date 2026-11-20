@@ -136,15 +136,6 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = 60,
         spinForce     = { 8, 12 },
     },
-    ["GunsOfTienPost93.SV99P"] = {
-        forwardOffset = 0.40,
-        sideOffset    = 0.10,
-        heightOffset  = 0.45,
-        shellForce    = 0.30,
-        sideSpread    = 60,
-        heightSpread  = 60,
-        spinForce     = { 8, 12 },
-    },
     ["GunsOfTienPost93.MK11"] = {
         forwardOffset = 0.30,
         sideOffset    = 0.10,

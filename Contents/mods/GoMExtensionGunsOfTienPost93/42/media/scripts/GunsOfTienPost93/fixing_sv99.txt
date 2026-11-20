@@ -3,8 +3,4 @@ module Base {
         Require = GunsOfTienPost93.SV99,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
-    fixing Fix SV99P {
-        Require = GunsOfTienPost93.SV99P,
-        Fixer   = MarzGuns.RepairPack; Aiming=3,
-    }
 }

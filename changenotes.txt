@@ -12,7 +12,7 @@ Post-93 add-on
 - SV-98 (7.62x54mmR), the Russian bolt-action sniper rifle of 2000 in its green plywood thumbhole stock: its own
   10-round magazine, a rail on the receiver for Guns of Marz optics, a bipod that folds into the forend, worked by
   hand after every shot. Found with mercenary snipers and with Guns of Marz's post-1993 guns.
-- SV-99 (.22 LR), the quiet sniper rifle with its straight-pull toggle lever and built-in suppressor, in two stocks:
-  green plywood and black polymer. 5-round magazine, a rail for Guns of Marz optics, a folding bipod. Found with
-  Guns of Marz's post-1993 guns.
+- SV-99 (.22 LR), the quiet sniper rifle with its straight-pull toggle lever and built-in suppressor, in green
+  plywood with the open butt of its 2009 stock. 5-round magazine, a rail for Guns of Marz optics, a folding bipod.
+  Found with Guns of Marz's post-1993 guns.
 - The SV-98 and SV-99 reload with Guns of Marz's magazine bolt-action animation.

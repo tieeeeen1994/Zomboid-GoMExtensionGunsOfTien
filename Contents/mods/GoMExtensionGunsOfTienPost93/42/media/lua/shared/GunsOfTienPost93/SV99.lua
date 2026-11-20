@@ -1,10 +1,10 @@
 --[[
-    Guns of Tien - Post-93 -- the Izhmash SV-99 in its green plywood and black polymer stocks (user, 2026-11-20;
+    Guns of Tien - Post-93 -- the Izhmash SV-99, its polymer stock's shape in green plywood (user, 2026-11-20;
     docs/post93_design.md "SV-98 and SV-99") in Gunworks' and Guns of Marz's registries.
 
-    Izhmash's .22 LR sniper rifle (shown 1999, FSB 2004, MVD 2005), two items on one barrelled action
-    (scripts/post93/build_sv99.py; items_sv99.txt), registered as the SV-98 (SV98.lua):
-    - its own 5-round magazine, shared by both, in the main mod's ".22 LR" family (the plain round and its Subsonic,
+    Izhmash's .22 LR sniper rifle (shown 1999, FSB 2004, MVD 2005), one item (scripts/post93/build_sv99.py;
+    items_sv99.txt; a second, black-stocked item was dropped the day it was built), registered as the SV-98 (SV98.lua):
+    - its own 5-round magazine, in the main mod's ".22 LR" family (the plain round and its Subsonic,
       Hollow Point and Hyper Velocity loads);
     - the straight-pull toggle lever (GoM's Bolt part, drawn about its pivot and swung back), worked after every shot
       (the script's RackAfterShoot): a manual action, so the main mod's subsonic rack rule for self-loaders has
@@ -12,7 +12,7 @@
     - reload: GoM's magazine bolt-action nodes (the main mod's GoMReloads.lua "boltaction"), as the SV-98;
     - the rail on the receiver: a hidden integrated rail, the parent of GoM's optics; no iron sights (the real rifle
       has none);
-    - the bipod under the forend: two hidden parts each gun draws with its own model, folded on a found gun, Gunworks'
+    - the bipod under the forend: two hidden parts drawn with their own models, folded on a found gun, Gunworks'
       bipod stance when deployed (GoM's M24 way);
     - the suppressor is built in (the SV-99 is not seen without its can): the quiet sound is in the guns' own stats,
       and no muzzle part fits.
@@ -34,7 +34,7 @@ for _, file in ipairs({ "Ammunition", "Magazines", "ReloadsAndAnims/ReloadAnims"
 end
 
 local M = "GunsOfTienPost93."
-local GUNS = { M .. "SV99", M .. "SV99P" }
+local GUNS = { M .. "SV99" }
 local MAG = M .. "22LRMagazine5_SV99"
 local RAIL_UP = M .. "SV99_Integrated_Rail_Up"
 local FOLDED = M .. "SV99_Integrated_Bipod_Folded"

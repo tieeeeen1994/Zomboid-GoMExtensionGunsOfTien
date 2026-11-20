@@ -59,8 +59,8 @@ out, each with the sight body its optic picks.
 turned upright).
 
 3.17.0 (2026-11-20): the main mod's SVU (preview31, `svu`: its folded-sights body under GoM's AK mount and PSO-1, GoM's
-SVD magazine at our size) and Post-93's SV-98 / SV-99 (preview32, `sv98`: PSO-1; `sv99` / `sv99p`: LR4X and TA28),
-bipods folded, the three at one view and scale.
+SVD magazine at our size) and Post-93's SV-98 / SV-99 (preview32, `sv98`: PSO-1, bipod deployed; `sv99`: LR4X,
+bipod folded), one view and scale.
 """
 
 import json
@@ -281,15 +281,13 @@ GUNS = {
             "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
     "sv98": {"points": "post93/sv98_points.json",
              "assembled": [(SV98_FBX, n, os.path.join(TEX, "SV98.png"), None)
-                           for n in ("SV98_BODY", "SV98_BOLT", "SV98_BIPOD_FOLDED")] + [
+                           for n in ("SV98_BODY", "SV98_BOLT", "SV98_BIPOD_DEPLOYED")] + [
                  (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazines.fbx"),
                   "762x54Magazine10_SV98", os.path.join(TEX, "762x54Magazine10_SV98.png"), "magazine"),
                  gom_part("scopes", "PSO1_Scope", "scope")],
              "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
     "sv99": {"points": "post93/sv99_points.json", "points_key": "SV99", "assembled": sv99("SV99", "LR4X_Scope"),
              "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
-    "sv99p": {"points": "post93/sv99_points.json", "points_key": "SV99P", "assembled": sv99("SV99P", "TA28_Scope"),
-              "view": RIFLE_VIEW, "scale": SV_SCALE, "size": SV_SIZE},
     # preview27: the HK416 with an EXPS3 (rear sight folded), MKC foregrip, AimRight laser, AR mount + MKI and a
     # STANAG 30; the HK417 Battle Rifle with an Aimpoint, MKC and AimRight; the Sniper with an LR10X (both sights
     # folded), bipod and the SCAR-H's mount + SOCOM762-RC; both HK417s with H&K's 20; lasers on the right rail, the side this view shows (game space: -x)

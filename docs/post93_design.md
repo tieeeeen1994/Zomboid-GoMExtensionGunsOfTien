@@ -578,13 +578,13 @@ studio side views column by column and checked by overlaying the render's outlin
 
 | | SV-98 | SV-99 |
 |---|---|---|
-| Items | `GunsOfTienPost93.SV98`, "SV-98 Sniper Rifle" (GoM's "M24 Sniper Rifle") | `SV99`, "SV-99 Sniper Rifle" (green plywood, 2007-2009); `SV99P`, "SV-99 Sniper Rifle (Polymer Stock)" (2009 on); the early lacquered wooden stock (1999-2006) not built (small photos only) |
-| Magazine | its own 10-round polymer magazine, `762x54Magazine10_SV98`, flush in the stock, GoM's "7.62x54mm" family, profile "7.62x54mm SV-98" | its own 5-round plastic magazine, `22LRMagazine5_SV99`, both guns, the main mod's ".22 LR" family, profile ".22 LR SV-99" |
+| Items | `GunsOfTienPost93.SV98`, "SV-98 Sniper Rifle" (GoM's "M24 Sniper Rifle") | `SV99`, "SV-99 Sniper Rifle": one gun (user, 2026-11-20: "choose only one SV-99"), the 2009 polymer stock's shape in the green plywood of 2007-2009 (a black item and the plywood stock's own shape were built and dropped the same day); the early lacquered wooden stock (1999-2006) not built (small photos only) |
+| Magazine | its own 10-round polymer magazine, `762x54Magazine10_SV98`, flush in the stock, GoM's "7.62x54mm" family, profile "7.62x54mm SV-98" | its own 5-round plastic magazine, `22LRMagazine5_SV99`, the main mod's ".22 LR" family, profile ".22 LR SV-99" |
 | Stats | GoM's M24 with the 7N1 a little harder: damage 1.75-2.05, Hit 57, Aiming Time 70, RecoilDelay 17, range 62, sights 20-28, weight 5.8 (Kalashnikov, bare), sound 220 / 63 (sound_model.py: 7.62x54R from 25.6"), GoM's M24 sounds | the HK416 .22's from 350 mm: damage 0.35-0.65, crit 30 (x3), Hit 60, Aiming Time 35, RecoilDelay 8, range 30, weight 4.0 / 3.8; built-in suppressor: GoM's AS VAL shot and gain, 20 / 5 (sound_model.py's formula, subsonic at 345 m/s, -17 dB) |
 | Optics | the receiver's rail (modelled) as a hidden `SV98_Integrated_Rail_Up`, the parent of every GoM optic (the Mk 11's way) | the same, `SV99_Integrated_Rail_Up`; no iron sights (the real rifle has none) |
-| Bipod | folds into the forend: `SV98_Integrated_Bipod_Folded / _Deployed`, GoM's M24 way (Gunworks' folding bipod and bipod stance, no stat changes) | the same, `SV99_Integrated_Bipod_*`, each stock drawing its own |
+| Bipod | folds into the forend: `SV98_Integrated_Bipod_Folded / _Deployed`, GoM's M24 way (Gunworks' folding bipod and bipod stance, no stat changes) | the same, `SV99_Integrated_Bipod_*` |
 | Action | GoM's Bolt part: the shroud, bolt body and ball-knobbed handle back 92 mm | GoM's Bolt part: the toggle lever, modelled about its pivot, drawn at `bolt_lock` and swung back 62 degrees at `bolt_fired` |
-| Loot | GoM's `Zombie_Mercenary_Sniper_Spawner` (gun, up to 6 magazines, up to 8 boxes) and `World_Anachronistic_Spawner` (3 and 5) | `World_Anachronistic_Spawner`, one of the two stocks, up to 3 magazines, up to 4 .22 LR boxes |
+| Loot | GoM's `Zombie_Mercenary_Sniper_Spawner` (gun, up to 6 magazines, up to 8 boxes) and `World_Anachronistic_Spawner` (3 and 5) | `World_Anachronistic_Spawner`, up to 3 magazines, up to 4 .22 LR boxes |
 | Casings | GoM's M24's (a case pulled out by hand) | the same, lighter |
 | Repair | RepairPack, Aiming 3 | RepairPack, Aiming 3 |
 

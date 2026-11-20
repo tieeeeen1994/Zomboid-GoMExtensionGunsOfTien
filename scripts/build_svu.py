@@ -109,7 +109,13 @@ GRIP = [(340, 90), (400, 90), (399, 118), (390, 130), (380, 145), (372, 162), (3
 GRIP_HW = 0.0105
 CHEEK = (75.0, 215.0)           # the cheek rest along the cover (mm from the butt)
 CHEEK_Z, CHEEK_T, CHEEK_HW = 0.0442, 0.0042, 0.0112
-HOUSING = (330.0, 455.0, 0.0085, 0.0085)            # the trigger housing's strip: from, to (photo mm), top z, hw
+HOUSING = (330.0, 450.0, 0.0085, 0.0085)            # the trigger housing's strip: from, to (photo mm), top z, hw
+# The strip's top over the handguard's rear (user, 2026-11-20, a crop of the preview: a flat plate standing off the
+# handguard, "that gap in the top of the trigger guard"): GoM's handguard underside rises from 0.0088 to 0.0122 there
+# while the strip stayed flat at 0.0085 and ran 5 mm past the guard's top. Measured on the export by rays up from the
+# strip (final game y, the handguard's underside + 0.4 mm), and the strip now ends where the guard runs into it.
+HOUSING_TOP = [(0.043, 0.0090), (0.044, 0.0092), (0.050, 0.0100), (0.056, 0.0108), (0.062, 0.0115), (0.068, 0.0119),
+               (0.076, 0.0123), (0.086, 0.0125), (0.094, 0.0126)]
 REAR_SIGHT = 321.0              # the rear sight's base (photo mm), on the cover's front
 COVER_TOP = 0.0442
 # Bondarev's muzzle brake: (photo mm, radius in GoM's mm), revolved about the bore
@@ -542,7 +548,12 @@ def main():
     for faces, origin in camo:
         paint_camo(bm, faces, origin)
     h0, h1, hz1, hhw = HOUSING
-    paint_steel(bm, cuboid(bm, -hhw, hhw, py(h0), py(h1), pz_t(HOUSING_ROW), hz1))
+    yb, split, ye = pz_t(HOUSING_ROW), HOUSING_TOP[0][0] - SHIFT, py(h1)
+    paint_steel(bm, cuboid(bm, -hhw, hhw, py(h0), split, yb, hz1))
+    top = [(y - SHIFT, z) for y, z in HOUSING_TOP if y - SHIFT < ye]
+    (ya, za), (yc, zc) = top[-1], next((y - SHIFT, z) for y, z in HOUSING_TOP if y - SHIFT >= ye)
+    top.append((ye, za + (zc - za) * (ye - ya) / (yc - ya)))
+    paint_steel(bm, prism(bm, [(split, yb)] + top + [(ye, yb)], hhw, 0.0002))
     paint_steel(bm, strip(bm, [(py(L), pz_t(r)) for L, r in GUARD_OUT], [(py(L), pz_t(r)) for L, r in GUARD_IN],
                           GUARD_HW))
     paint_steel(bm, prism(bm, [(py(L), pz_t(r)) for L, r in TRIGGER], TRIGGER_HW, 0.0003))

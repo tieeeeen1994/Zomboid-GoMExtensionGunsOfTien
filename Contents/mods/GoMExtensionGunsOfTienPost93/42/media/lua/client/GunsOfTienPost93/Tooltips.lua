@@ -148,15 +148,13 @@ lines[M .. "SV98"] = {
     "Has Integrated Bipod",
 }
 lines[M .. "762x54Magazine10_SV98"] = { "Uses 7.62x54mmR rounds." }
--- The SV-99s (shared/GunsOfTienPost93/SV99.lua): the rail, the bipod, the suppressor built in
-for _, gun in ipairs({ "SV99", "SV99P" }) do
-    lines[M .. gun] = {
-        "Uses .22 LR rounds.",
-        "Has Integrated Suppressor",
-        "Integrated Picatinny rail: Up",
-        "Has Integrated Bipod",
-    }
-end
+-- The SV-99 (shared/GunsOfTienPost93/SV99.lua): the rail, the bipod, the suppressor built in
+lines[M .. "SV99"] = {
+    "Uses .22 LR rounds.",
+    "Has Integrated Suppressor",
+    "Integrated Picatinny rail: Up",
+    "Has Integrated Bipod",
+}
 lines[M .. "22LRMagazine5_SV99"] = { "Uses .22 LR rounds." }
 -- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats, its flip-up iron sights
 lines[M .. "HK416"] = {

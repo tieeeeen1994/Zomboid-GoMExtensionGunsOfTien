@@ -1,30 +1,31 @@
-"""Izhmash SV-99 (.22 LR) in its green plywood and black polymer stocks, for Guns of Tien - Post-93 (Blender 5.2).
+"""Izhmash SV-99 (.22 LR), the polymer stock's shape in green plywood, for Guns of Tien - Post-93 (Blender 5.2).
 
     blender -b --factory-startup -P scripts/post93/build_sv99.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    M/models_X/weapons/firearms/GunsOfTienPost93_SV99.fbx   SV99_BODY, SV99_BOLT, SV99_BIPOD_FOLDED / _DEPLOYED (green
-                                                            plywood) and SV99P_BODY, SV99P_BOLT, SV99P_BIPOD_* (polymer)
+    M/models_X/weapons/firearms/GunsOfTienPost93_SV99.fbx   SV99_BODY, SV99_BOLT, SV99_BIPOD_FOLDED / _DEPLOYED
     M/models_X/weapons/magazines/GunsOfTienPost93_SV99_magazines.fbx   22LRMagazine5_SV99
-    M/textures/weapons/GunsOfTienPost93/SV99.png, SV99P.png     512 atlases (stock and metal)
+    M/textures/weapons/GunsOfTienPost93/SV99.png                512 atlas (stock and metal)
     M/textures/weapons/GunsOfTienPost93/22LRMagazine5_SV99.png  128
-    scripts/post93/sv99_points.json                             attachment points of both guns (game space)
+    scripts/post93/sv99_points.json                             attachment points (game space)
 
 User, 2026-11-20 (docs/sv98_sv99_svu_research.md, docs/post93_design.md "SV-98 and SV-99"): Izhmash's .22 LR sniper
 rifle (shown 1999, FSB 2004, MVD 2005), Post-93: the BI-7-2 biathlon rifle's straight-pull toggle action with its
 lever on the right, a 350 mm barrel, the factory baffle suppressor (built in: the SV-99 is never seen without it), a
 small 5-round magazine standing out under the stock, a two-stage trigger in a metal guard (the push-button safety
-at its front is left off: user, 2026-11-20), a rail on the receiver (no iron sights), a folding bipod under the forend. Two stocks of the
-same barrelled action: the green laminated plywood one of 2007-2009 (the SV-98's stock made shorter: thumbhole, a
-skeleton butt with two windows, a comb on posts, a hooked butt plate) and the black polymer one of 2009 on (an open
-butt frame with one large opening and a slot, a box cheek riser, a horned butt plate, a slab-sided forend). The early
-lacquered wooden stock (1999-2006) is not built: its photos are all small.
+at its front is left off: user, 2026-11-20), a rail on the receiver (no iron sights), a folding bipod under the forend.
+One gun (user, 2026-11-20: "choose only one SV-99", "use the polymer stock style for SV-99 but use the green
+plywood"): the black polymer stock's shape of 2009 on (an open butt frame with one large opening and a slot, a box
+cheek riser, a horned butt plate, a slab-sided forend) in the green laminated plywood of 2007-2009. The green plywood
+stock's own shape (the SV-98's made shorter: thumbhole, a skeleton butt with two windows, a comb on posts) and the
+black item were built first and dropped the same day (commit 97d420f has both); the early lacquered wooden stock
+(1999-2006) was never built: its photos are all small.
 
-References (references/sv99): green: zonawar's studio right side, green_plywood/b2_003.jpg (2048 px, 1.862 px a mm over
-its 1030 mm, butt plate to suppressor); polymer: Kalashnikov's catalogue left side, black_polymer/kalash_SV-99_2.jpg
-(2120 px, mirrored, 1.530 px a mm). Read column by column (the stock's green or black, their tops, bottoms and holes)
-and on mm grids. Each stock's outline is in its photo's (L, R) mm (L forward from the butt's rear, R down); both are
-registered on the trigger blade (T) and the bore's row, so the action, barrel and suppressor are one set of numbers in
+References (references/sv99): the stock off Kalashnikov's catalogue left side, black_polymer/kalash_SV-99_2.jpg
+(2120 px, mirrored, 1.530 px a mm); the lever, port, magazine and the plywood's look off zonawar's studio right side
+of the green one, green_plywood/b2_003.jpg (2048 px, 1.862 px a mm over its 1030 mm, butt plate to suppressor). Read
+column by column (the stock's outline, top, bottom and holes) and on mm grids. The stock's outline is in its photo's
+(L, R) mm (L forward from the butt's rear, R down), registered on the trigger blade (T) and the bore's row, so the action, barrel and suppressor are one set of numbers in
 action mm (A forward of the trigger, D down from the bore). Origin as the SV-98's (GoM's M24's against its trigger
 and bore): the trigger 57.5 mm ahead of it, the bore 16 mm over it.
 """
@@ -66,9 +67,16 @@ BARREL = (188.0, 472.0, 9.0)
 CAN = [(470, 0.0), (470, 12.0), (476, 14.0), (510, 14.0), (512, 16.5), (637, 16.5), (640, 14.5), (640, 6.0),
        (634, 3.5), (634, 0.0)]           # the baffle can: its knurled rear band, the body, the front cap's bore
 LEVER_PIVOT = (-8.0, -6.0)               # the toggle lever's pivot on the receiver's right (A, D)
-LEVER = [(-16.0, -11.0), (0.0, -11.0), (0.0, 48.0), (-4.0, 51.0), (-12.0, 51.0), (-16.0, 47.0)]
+# the lever re-read off the green photo (x 620-1020, y 180-480; user, 2026-11-20: the handles were "off and terrible",
+# it was a pale plate with a pivot disc): a narrow dark steel bar hanging from the toggle strip to below the stock's
+# top, its front half a bright face, a small step at its foot; no pivot disc shows
+LEVER = [(-13.0, -12.0), (0.0, -12.0), (1.0, -8.0), (1.0, 49.0), (-1.0, 52.5), (-10.0, 52.5), (-13.0, 49.5)]
+LEVER_FACE = [(-6.5, -9.0), (0.0, -9.0), (0.0, 48.0), (-6.5, 48.0)]
+LEVER_X = (-22.0, 1.8)                   # the pivot's x (game: the gun's right) and the bar's half thickness
 LEVER_SWING = -62.0                      # degrees about x: the lever's end back (bolt_fired)
-PORT = (-10.0, 84.0, -11.5, -2.5)        # the bright bolt / port strip along the receiver's right
+# the bright steel along the receiver's right (painted): the toggle's wide link from the receiver's rear to past the
+# lever, then the narrower bolt strip in the port
+PORTS = [(-36.0, 20.0, -11.5, 1.0), (20.0, 84.0, -9.5, -2.5)]
 MAG = (98.0, 130.0, 25.0, 96.5, 7.0)     # A from, to, D top (lips), D floor, half width
 
 
@@ -79,38 +87,8 @@ def A_to_game(A, D):
 # ---------------------------------------------------------------------------------------------- the stocks
 # Each in its photo's (L, R) mm. T = the trigger blade's middle, BORE = the bore's row.
 STOCKS = {
-    "SV99": {   # green plywood, green_plywood/b2_003.jpg (right side)
-        "T": 387.0, "BORE": 51.5, "mat": "wood", "half": 21.0, "joint": [(330, 55), (366, 55), (366, 118), (330, 118)],
-        "body": [(58, 65), (330, 65), (345, 58), (360, 56), (520, 55.5), (700, 56.5), (835, 57.5), (845, 64),
-                 (846, 78), (840, 87.5), (820, 90), (810, 97.2), (700, 102.6), (600, 108), (500, 112.8),
-                 (420, 116), (395, 110), (360, 108), (342, 117), (336, 150), (332, 205), (320, 211), (300, 212),
-                 (290, 210), (280, 206), (270, 200), (260, 191), (250, 184), (240, 181.5), (230, 184), (220, 185.3),
-                 (210, 188.5), (200, 190), (190, 192.8), (180, 195), (170, 197), (140, 198), (130, 203), (58, 203)],
-        "holes": [("circle", 241.0, 110.0, 29.0), ("rect", 82, 136, 94, 161, 8), ("rect", 147, 190, 94, 161, 8)],
-        "comb": [(56, 54), (56, 42), (62, 38), (220, 38), (233, 42), (226, 54)], "comb_half": 17.0,
-        "posts": [(108, 122), (160, 174)], "posts_r": (54, 65),
-        "pad": [(5, 40), (45, 38), (48, 46), (30, 52), (26, 60), (24, 175), (18, 182), (8, 180), (2, 170), (10, 60),
-                (3, 48)],
-        "adjuster": [(24, 52), (58, 48), (60, 203), (26, 205)],
-        "stipple": [(256, 118), (322, 118), (330, 150), (326, 204), (290, 208), (262, 192), (252, 150)],
-        "bipod": (790.0, 97.0),
-        "photo": "references/sv99/green_plywood/b2_003.jpg",
-        # the trigger group traced off the photo (x 660-880, y 330-480 at 7.4 px a mm; user, 2026-11-20: "completely
-        # wrong"): the steel guard's outer and inner edges from the stock down round and up into it (smoothed by
-        # corner cutting at build time), the blade a hook from the stock's bottom (its root inside), its back
-        # bulging rearward and its tip forward
-        "guard_out": [(365.5, 106.0), (366.8, 114.1), (368.8, 126.2), (373.5, 136.9), (380.2, 142.3), (391.0, 144.3),
-                      (403.1, 143.7), (412.5, 139.6), (419.2, 131.6), (421.2, 122.2), (422.1, 115.5), (422.5, 108.0)],
-        "guard_in": [(373.5, 106.0), (373.5, 114.1), (372.9, 123.5), (375.5, 132.9), (381.6, 138.3), (391.0, 140.3),
-                     (401.7, 139.6), (409.8, 136.3), (415.1, 130.2), (417.8, 122.2), (418.5, 116.1), (418.5, 108.0)],
-        # the blade as a centre line from its root (inside the stock) to the tip, with its width (L, R, width mm):
-        # the midpoints and spans of the traced front and back edges, a broad crescent tapering to a point
-        "blade": [(393.0, 104.0, 5.6), (388.6, 113.6, 4.8), (385.2, 118.8, 4.0), (384.0, 125.5, 2.8), (385.0, 131.9, 1.9),
-                  (387.4, 136.2, 1.0), (388.5, 137.4, 0.3)],
-        "trigger_mat": "silver",
-    },
-    "SV99P": {  # black polymer, black_polymer/kalash_SV-99_2.jpg (left side, mirrored)
-        "T": 395.0, "BORE": 46.0, "mat": "poly", "half": 20.0, "joint": [(333, 52), (369, 52), (369, 111), (333, 111)],
+    "SV99": {   # the polymer stock's shape, black_polymer/kalash_SV-99_2.jpg (left side, mirrored), in green plywood
+        "T": 395.0, "BORE": 46.0, "mat": "wood", "half": 20.0, "joint": [(333, 52), (369, 52), (369, 111), (333, 111)],
         "body": [(72, 66), (260, 66), (270, 72), (300, 74), (320, 70), (345, 62), (370, 56), (440, 40),
                  (830, 37), (836, 46), (834, 70), (826, 80), (780, 83.6), (700, 88), (600, 94), (500, 105),
                  (445, 107), (350, 104.5), (343, 110), (338, 195), (300, 194), (265, 190), (150, 190), (142, 200),
@@ -132,7 +110,7 @@ STOCKS = {
                      (404.5, 132.6), (409.2, 131.4), (415.7, 126.8), (418.3, 117.6), (417.0, 108.5), (415.7, 103.0)],
         "blade": [(400.0, 100.0, 3.8), (395.2, 108.8, 3.2), (391.6, 116.3, 2.6), (391.4, 123.5, 1.9), (393.0, 128.5, 1.1),
                   (394.8, 130.5, 0.3)],
-        "trigger_mat": "metal",
+        "trigger_mat": "silver",
     },
 }
 
@@ -244,7 +222,7 @@ def build_body(name):
             Ra, Rb = s["posts_r"]
             kit.slab(b, P([(La, Ra), (Lb, Ra), (Lb, Rb), (La, Rb)]), (), 5.0, 1.0, 0, "rubber", 0.0)
     if "riser" in s:
-        kit.slab(b, P(s["riser"]), (), s["riser_half"], 2.0, 1, "poly", 0.0)
+        kit.slab(b, P(s["riser"]), (), s["riser_half"], 2.0, 1, s["mat"], 0.0)
     kit.slab(b, P(s["pad"]), (), s["half"] - 1.0, 2.5, 1, "rubber", 0.0)
     for horn in s.get("horns", []):
         kit.slab(b, P(horn), (), s["half"] - 4.0, 1.0, 0, "rubber", 0.0)
@@ -272,7 +250,7 @@ def build_body(name):
 
 def lever_pivot_game():
     py, pz = A_to_game(*LEVER_PIVOT)
-    return Vector((-24.0, py, pz))                  # outside the stock's right side (half widths 20-21)
+    return Vector((LEVER_X[0], py, pz))             # against the stock's right side (half width 20)
 
 
 def build_bolt(name):
@@ -280,9 +258,10 @@ def build_bolt(name):
     `bolt_fired`, both points at the pivot. The bright bolt in the port is painted on the receiver."""
     b = kit.Builder()
     piv = lever_pivot_game()
-    pts = [(A_to_game(A, D)[0] - piv.y, A_to_game(A, D)[1] - piv.z) for A, D in LEVER]
-    kit.slab(b, pts, (), 2.0, 0.6, 0, "silver", -2.0)
-    b.lathe("x", (-3.0, 0.0, 0.0), [(-2.5, 0.0), (-2.5, 4.5), (2.5, 4.5), (2.5, 0.0)], seg=10, mat="metal")
+    rel = lambda pts: [(A_to_game(A, D)[0] - piv.y, A_to_game(A, D)[1] - piv.z) for A, D in pts]
+    hw = LEVER_X[1]
+    kit.slab(b, rel(LEVER), (), hw, 0.6, 0, "metal", -hw)
+    kit.slab(b, rel(LEVER_FACE), (), 0.3, 0.1, 0, "silver", -2.0 * hw - 0.1)
     return b.to_object(name + "_BOLT")
 
 
@@ -353,9 +332,9 @@ def paint(maps, kind, name):
         col[poly] *= (0.9 + 0.2 * kit.vnoise(p, 0.7, 13))[poly][..., None]
         metal = mat == MATS.index("metal")
         right = n[..., 0] < -0.3
-        a0, a1, d0, d1 = PORT
-        port = metal & right & (A > a0) & (A < a1) & (D > d0) & (D < d1)
-        col[port] = np.array(BASE["silver"]) * (0.8 + 0.25 * kit.vnoise(p, 2.0, 12))[port][..., None]
+        for a0, a1, d0, d1 in PORTS:
+            port = metal & right & (A > a0) & (A < a1) & (D > d0) & (D < d1)
+            col[port] = np.array(BASE["silver"]) * (0.8 + 0.25 * kit.vnoise(p, 2.0, 12))[port][..., None]
         # the suppressor's knurled rear band and the front cap's bore
         knurl = metal & (A > 476) & (A < 510) & (np.abs(n[..., 1]) < 0.5)
         col[knurl] *= (0.75 + 0.35 * (kit.vnoise(p, 0.6, 14) > 0.5))[knurl][..., None]

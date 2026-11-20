@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SV-99 (both stocks) inventory icons, FBX check and the review sheet (Python 3 + Pillow).
+"""SV-99 inventory icons, FBX check and the review sheet (Python 3 + Pillow).
 
     py scripts/post93/make_sv99_art.py [--renders DIR]
 
@@ -7,10 +7,10 @@ Icons (32x32 RGBA, textures/item_GunsOfTienPost93_<name>.png) rendered from the 
 make_mp7_art.py's renderer: each gun on the SCARs' rifle camera and light (scar_icon_cameras.json, fitted on GoM's
 item_M4A1.png), bipod folded, no optic; the magazine on make_aug_art.py's magazine camera.
 
---renders DIR (render_sv99.py's output) also writes docs/post93_sv99_preview.png: each gun over its measuring photo
-(green: references/sv99/green_plywood/b2_003.jpg, 1.862 px a mm, right side; polymer: black_polymer/kalash_SV-99_2.jpg,
-1.530 px a mm, left side mirrored) with the render's outline in red, fitted out, the 3/4 views, the toggle lever
-forward and swung back, and the icons beside GoM's M24's.
+--renders DIR (render_sv99.py's output) also writes docs/post93_sv99_preview.png: the gun over the stock's measuring
+photo (black_polymer/kalash_SV-99_2.jpg, 1.530 px a mm, left side mirrored) with the render's outline in red, its right
+side under the green one's photo (green_plywood/b2_003.jpg: the lever and port), fitted out, the 3/4 views, the toggle
+lever forward and swung back, and the icons beside GoM's M24's.
 """
 
 import json
@@ -40,17 +40,16 @@ MAG = "22LRMagazine5_SV99"
 MTEX = TEXD + MAG + ".png"
 RIFLE_CAMERAS = os.path.join(HERE, "scar_icon_cameras.json")
 # gun: (photo, px a mm, butt x, mirror the photo, mirror the render, crop)
-PHOTOS = {"SV99": (os.path.join(ROOT, "references/sv99/green_plywood/b2_003.jpg"), 1.862, 27, False, True,
-                   (0, 150, 2048, 700)),
-          "SV99P": (os.path.join(ROOT, "references/sv99/black_polymer/kalash_SV-99_2.jpg"), 1.530, 270, True, False,
-                    (200, 380, 1900, 1000))}
+PHOTOS = {"SV99": (os.path.join(ROOT, "references/sv99/black_polymer/kalash_SV-99_2.jpg"), 1.530, 270, True, False,
+                   (200, 380, 1900, 1000))}
+GREEN_PHOTO = os.path.join(ROOT, "references/sv99/green_plywood/b2_003.jpg")
 RENDER_PPM = 1.862
 
 
 def make_icons():
     rifle = json.load(open(RIFLE_CAMERAS))["rifle"]
     made = {}
-    for gun in ("SV99", "SV99P"):
+    for gun in ("SV99",):
         objs = [(A.load_game(FBX_GUN, gun + n), 0) for n in ("_BODY", "_BIPOD_FOLDED")]
         objs.append((A.attach(A.load_game(FBX_GUN, gun + "_BOLT"), PTS[gun]["bolt_lock"]), 0))
         objs.append((A.attach(A.load_game(FBX_MAGS, MAG), PTS[gun]["magazine"]), 1))
@@ -95,10 +94,7 @@ def overlay(gun, render):
     a = np.array(r)[..., 3] > 0
     xs = np.nonzero(a.max(0))[0]
     im = np.array(ph).astype(int)
-    if gun == "SV99":
-        fg = ((im[..., 1] > im[..., 0] + 20) & (im[..., 1] > 60)) | (im.sum(-1) < 330)
-    else:
-        fg = im.sum(-1) < 300
+    fg = im.sum(-1) < 300
     ox = butt - xs.min()
     best = None
     for dy in range(-300, 600, 2):
@@ -121,27 +117,26 @@ def overlay(gun, render):
 
 
 def sheet(renders, icons):
-    p = B.Page(renders, 2100, 4300, "SV-99, GunsOfTienPost93.SV99 (green plywood) / SV99P (black polymer): Workbench "
-                                    "renders of the exported FBX (red: the render's outline on each measuring photo)")
+    p = B.Page(renders, 2100, 3900, "SV-99, GunsOfTienPost93.SV99 (the polymer stock's shape in green plywood): "
+                                    "Workbench renders of the exported FBX (red: the render's outline on the photo)")
     r = lambda n: Image.open(os.path.join(renders, n + ".png"))
     y = 70
-    for gun, view, flip, label in (("SV99", "SV99_right", True, "green plywood, zonawar's studio right side"),
-                                   ("SV99P", "SV99P_left", False, "black polymer, Kalashnikov's left side (mirrored)")):
-        if os.path.exists(PHOTOS[gun][0]):
-            y += p.put(None, 20, y, 2040, label + ", the render's outline in red",
-                       im=overlay(gun, os.path.join(renders, view + ".png"))) + 10
-        im = r(view)
-        y += p.put(None, 20, y, 2040, "the render", im=on_white(ImageOps.mirror(im) if flip else im)) + 20
-    for gun in ("SV99", "SV99P"):
-        p.put(None, 20, y, 1010, gun + ": GoM's PSO-1 on the rail, bipod deployed (game view)",
-              im=on_white(ImageOps.mirror(r(gun + "_right_deployed_pso1"))))
-        y += p.put(None, 1050, y, 1010, gun + ": 3/4 from the front", im=on_white(r(gun + "_q"))) + 10
+    if os.path.exists(PHOTOS["SV99"][0]):
+        y += p.put(None, 20, y, 2040, "the stock: Kalashnikov's left side (mirrored), the render's outline in red",
+                   im=overlay("SV99", os.path.join(renders, "SV99_left.png"))) + 10
+    y += p.put(None, 20, y, 2040, "the render, left side", im=on_white(r("SV99_left"))) + 20
+    if os.path.exists(GREEN_PHOTO):
+        y += p.put(None, 20, y, 2040, "the green one's right side (lever, port, plywood)",
+                   im=Image.open(GREEN_PHOTO).convert("RGBA").crop((0, 150, 2048, 700))) + 10
+    y += p.put(None, 20, y, 2040, "the render, right side (game view)", im=on_white(ImageOps.mirror(r("SV99_right")))) + 20
+    p.put(None, 20, y, 1010, "GoM's PSO-1 on the rail, bipod deployed (game view)",
+          im=on_white(ImageOps.mirror(r("SV99_right_deployed_pso1"))))
+    y += p.put(None, 1050, y, 1010, "3/4 from the front", im=on_white(r("SV99_q"))) + 10
     p.put(None, 20, y, 680, "toggle lever forward", im=on_white(ImageOps.mirror(r("SV99_lever_closed"))))
     p.put(None, 710, y, 680, "lever swung back (bolt_fired)", im=on_white(ImageOps.mirror(r("SV99_lever_open"))))
-    y += p.put(None, 1400, y, 660, "3/4 from behind (polymer)", im=on_white(r("SV99P_q_back"))) + 20
+    y += p.put(None, 1400, y, 660, "3/4 from behind", im=on_white(r("SV99_q_back"))) + 20
     gom = Image.open(os.path.join(A.G, "textures", "item_M24.png")).convert("RGBA")
-    p.icons(20, y, [(gom, "M24 (GoM)"), (icons["SV99"], "SV-99"), (icons["SV99P"], "SV-99 polymer"),
-                    (icons[MAG], "SV-99 5Rds")])
+    p.icons(20, y, [(gom, "M24 (GoM)"), (icons["SV99"], "SV-99"), (icons[MAG], "SV-99 5Rds")])
     p.save(PREVIEW)
 
 

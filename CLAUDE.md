@@ -664,11 +664,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> ppk`, then
   `make_workshop_art.py --renders <dir> preview30`. Not yet on the Steam page.
   preview31-32 (3.17.0, 2026-11-20): the main mod's SVU (preview31, as preview23: render_ad_guns.py `svu`, its
-  sights-folded body under GoM's AK mount and PSO-1, GoM's SVD magazine at 0.9102) and Post-93's SV-98 and SV-99s
-  (preview32, through `gun_pair` with three guns: `sv98` PSO-1, `sv99` LR4X, `sv99p` TA28, all bipods folded, since a
-  deployed one made the three a third smaller; one view and scale, `SV_SCALE`; `gun_pair` takes `bottom`, `slot_y`,
-  `gap` so a line fits under the slot row; the polymer row is labelled "SV-99 · POLYMER STOCK", a longer label ran off
-  the page). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> svu sv98 sv99 sv99p`,
+  sights-folded body under GoM's AK mount and PSO-1, GoM's SVD magazine at 0.9102) and Post-93's SV-98 and SV-99
+  (preview32, `gun_pair`: `sv98` PSO-1 and bipod deployed, `sv99` LR4X and bipod folded; one view and scale,
+  `SV_SCALE`; `gun_pair` takes `bottom`, `slot_y`, `gap` so a line fits under the slot row, and lays out any number of
+  guns). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> svu sv98 sv99`,
   then `make_workshop_art.py --renders <dir> preview31 preview32`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
@@ -2779,7 +2778,10 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   gun"): GoM's SVD guard (a loop, shortened) and trigger are deleted; the guard (a band, `strip()`) and the hook-shaped
   blade are traced off the photo at 4.05 px a mm (`GUARD_OUT` / `GUARD_IN`, `TRIGGER`): the guard leaves the grip's
   front low down, runs forward and curves up into the housing strip, which is the opening's whole top; the blade hangs
-  from it, its back bulging rearward, its tip hooked forward. Their rows use `pz_t` (hung from GoM's handguard bottom
+  from it, its back bulging rearward, its tip hooked forward. The strip's top follows GoM's handguard underside
+  (`HOUSING_TOP`, measured on the export by rays up from the strip: it rises 0.0088 to 0.0122 over the trigger) and the
+  strip ends where the guard runs into it (user, 2026-11-20, on preview31: a flat plate standing off the handguard and
+  running past the guard, "that gap in the top of the trigger guard"). Their rows use `pz_t` (hung from GoM's handguard bottom
   at the photo's row 88, Z_DOWN below), since pz() puts the photo's handguard higher than GoM drew it. A band built with
   `prism()` (outer + reversed inner as one outline) filled solid: the cap's triangulation closes a concave band.
   Check sheet: docs/sv_triggers_check.png (photo, model in the same mm window, outline on the photo for the SV-98 /
@@ -2789,10 +2791,12 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
 
 ## SV-98 and SV-99 (Post-93, 2026-11-20; built, not played)
 
-- **What**: Izhmash's SV-98 (7.62x54R, plywood stock) and SV-99 (.22 LR) in its green plywood and black polymer stocks
-  (two items, `SV99` / `SV99P`); design and stats docs/post93_design.md "SV-98 and SV-99". Files:
+- **What**: Izhmash's SV-98 (7.62x54R, plywood stock) and SV-99 (.22 LR), one item `SV99` (user, 2026-11-20: "choose
+  only one SV-99", "use the polymer stock style for SV-99 but use the green plywood": the 2009 polymer stock's shape
+  in green plywood; the black `SV99P` and the plywood stock's own skeleton shape were built first and dropped the same
+  day, commit 97d420f has both); design and stats docs/post93_design.md "SV-98 and SV-99". Files:
   `scripts/post93/build_sv98.py` / `build_sv99.py` (Blender, ~2 min each with the bake: FBX bodies, bolts and bipods,
-  their magazines, 512 atlases, `sv98_points.json` / `sv99_points.json`, the SV-99's with one entry per gun),
+  their magazines, 512 atlases, `sv98_points.json` / `sv99_points.json`, the SV-99's keyed `SV99`),
   `render_sv98.py` / `render_sv99.py -- DIR`, `make_sv98_art.py` / `make_sv99_art.py [--renders DIR]` (icons on the
   SCARs' rifle camera; sheets `docs/post93_sv98_preview.png`, `post93_sv99_preview.png`, each gun's outline in red on
   its photo), `gen_post93_guns.py sv98()` / `sv99()`, `shared/GunsOfTienPost93/SV98.lua` / `SV99.lua`, loot, Hot Brass
@@ -2805,10 +2809,10 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   GoM's bolt rifles do.
 - **Measuring**: SV-98 on zonawar's studio right side (references/sv98/sv98/ru_003.jpg, 1.566 px a mm over 1200 mm),
   read per 10 mm column (the stock's green and the metal's dark: tops, bottoms, holes); the outline overlay then
-  moved the trigger blade (thin, nearly upright, tip turned back) and the bolt shroud 15 mm forward. SV-99: the green
-  stock on zonawar's right side (green_plywood/b2_003.jpg, 1.862 px a mm), the polymer stock on Kalashnikov's left side
-  (black_polymer/kalash_SV-99_2.jpg mirrored, 1.530); the action in "action mm" (A forward of the trigger, D down
-  from the bore) from the crisp catalogue photo, each stock registered on its trigger blade and bore. The first read
+  moved the trigger blade (thin, nearly upright, tip turned back) and the bolt shroud 15 mm forward. SV-99: the stock
+  on Kalashnikov's left side (black_polymer/kalash_SV-99_2.jpg mirrored, 1.530 px a mm), the lever, port, magazine and
+  plywood off zonawar's right side of the green one (green_plywood/b2_003.jpg, 1.862); the action in "action mm" (A
+  forward of the trigger, D down from the bore) from the crisp catalogue photo, registered on the trigger blade and bore. The first read
   of the green photo put the trigger 10 mm too far back and the receiver's front at A 135; the overlay showed the
   receiver runs to A 188 (its step down to the barrel) on both photos.
 - **Triggers** (user, 2026-11-20: "SV-98 and SV-99 triggers are completely wrong"): the first blades bulged forward;
@@ -2829,6 +2833,12 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
 - **SV-99 toggle lever**: GoM's Bolt part, but drawn about its pivot: the lever's node has its origin at the pivot,
   `bolt_lock` and `bolt_fired` are both at the pivot, `bolt_fired` with rotate (-62, 0, 0) (game space, the engine's
   translate then rotateXYZ), so the lever swings back instead of sliding.
+- **Handles** (user, 2026-11-20: the SV-98's and SV-99's "seem to be off and terrible"), re-read off the right-side
+  photos. SV-98: a flat bar (8.5 mm wide, wider at the root; a unit lathe squashed in a frame whose width runs along
+  the gun) hanging almost straight down from the bolt's root lug at the receiver's rear (`ROOT_LUG`, L 397-411) to an
+  11 mm black ball; it had been a thin round rod leaning back from a root 15 mm too far forward. SV-99: the lever is a
+  narrow dark steel bar with a bright front face (`LEVER`, `LEVER_FACE`, against the stock at x -22), no pivot disc,
+  under the bright toggle strip painted from the receiver's rear (`PORTS`); it had been a pale plate with a disc.
 - **Not seen in game yet**: GoM's `*Rifle_HB.xml` magazine bolt-action nodes with a Gunworks "boltaction" profile
   (Gunworks' Sync.lua says it supports nodes keyed on WeaponReloadType); the integrated bipods' fold.
 

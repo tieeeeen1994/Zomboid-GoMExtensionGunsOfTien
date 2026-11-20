@@ -1,8 +1,8 @@
-"""Review renders of the exported SV-99s (green plywood and black polymer), read back from the FBX files (Blender 5.2, headless).
+"""Review renders of the exported SV-99 (the polymer stock's shape in green plywood), read back from the FBX files (Blender 5.2, headless).
 
     blender -b --factory-startup -P scripts/post93/render_sv99.py -- OUT_DIR
 
-Imports what build_sv99.py wrote with SV99.png / SV99P.png, the magazine on `magazine`, GoM's PSO-1 / LR10X on `scope`
+Imports what build_sv99.py wrote with SV99.png, the magazine on `magazine`, GoM's PSO-1 / LR10X on `scope`
 for the fitted views, the toggle lever at `bolt_lock` / `bolt_fired`, places parts at sv99_points.json the way the engine does (offset,
 then rotateXYZ in degrees, game space) and renders orthographic Workbench views into OUT_DIR at PX_PER_MM real.
 Game space is Blender world space, the mirror image of what the game shows: the camera at +X shows the gun's left.
@@ -120,7 +120,7 @@ def main():
     fit = load(GOM + "/models_X/weapons/parts/scopes.fbx",
                {"PSO1_Scope": GOM + "/textures/weapons/parts/scopes/PSO1_Scope.png",
                 "LR4X_Scope": GOM + "/textures/weapons/parts/scopes/LR4X_Scope.png"})
-    for gun in ("SV99", "SV99P"):
+    for gun in ("SV99",):
         pts = PTS[gun]
         nodes = [gun + "_" + n for n in ("BODY", "BOLT", "BIPOD_FOLDED", "BIPOD_DEPLOYED")]
         g = load(GUN_FBX, {n: TEXD + gun + ".png" for n in nodes})

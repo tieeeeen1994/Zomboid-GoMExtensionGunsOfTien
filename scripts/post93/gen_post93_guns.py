@@ -3344,18 +3344,17 @@ def sv98():
 
 
 # Izhmash SV-99 (user, 2026-11-20; docs/post93_design.md "SV-98 and SV-99"; meshes and points:
-# scripts/post93/build_sv99.py; registries: shared/GunsOfTienPost93/SV99.lua): the .22 LR toggle-action rifle in its
-# two stocks, one item each (SV99 green plywood 2007-2009, SV99P black polymer 2009 on), sharing the action, its
-# 5-round magazine, the rail (hidden integrated part, the SV-98's way), the bipod parts (each gun draws its own
-# model) and the built-in suppressor (never seen without it: its quiet sound is the guns' own). The toggle lever is
+# scripts/post93/build_sv99.py; registries: shared/GunsOfTienPost93/SV99.lua): the .22 LR toggle-action rifle, one
+# item (user, 2026-11-20: "choose only one SV-99"; the polymer stock's shape in green plywood; a second item for the
+# black stock was dropped), its 5-round magazine, the rail (hidden integrated part, the SV-98's way), the bipod parts
+# and the built-in suppressor (never seen without it: its quiet sound is the guns' own). The toggle lever is
 # GoM's Bolt part drawn at its pivot (`bolt_lock`) and swung back there (`bolt_fired`). Stats: the HK416 .22's from a
 # 350 mm barrel (0.35-0.65), a match rifle's steadiness (Hit 60, crits x3), slow to bring up for a .22 (Aiming Time 35)
 # and quiet: GoM's AS VAL's suppressed shot and gain, radius / volume 20 / 5 (sound_model.py's formula: .22 LR at
 # 2 grains from 13.8", subsonic as the SV-99 fires it at 345 m/s, -17 dB for the can). Weights: Kalashnikov's 3.4 kg
-# without scope or suppressor (polymer) and 4.5 with both; the plywood stock a little heavier.
+# without scope or suppressor (polymer) and 4.5 with both; plywood a little heavier.
 SV99_MAG = '22LRMagazine5_SV99'
-SV99_GUNS = {'SV99': {'name': 'SV-99 Sniper Rifle', 'weight': 4.0},
-             'SV99P': {'name': 'SV-99 Sniper Rifle (Polymer Stock)', 'weight': 3.8}}
+SV99_GUNS = {'SV99': {'name': 'SV-99 Sniper Rifle', 'weight': 4.0}}
 SV99_PARTS = [('SV99_Integrated_Rail_Up', 'RailUp', None), ('SV99_Integrated_Bipod_Folded', 'BipodIntegrated', None),
               ('SV99_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.5)]
 
@@ -3495,7 +3494,7 @@ def sv99():
         Icon             = GunsOfTienPost93_{SV99_MAG},
         ItemType         = base:weaponpart,
         MaxAmmo          = 5,
-        MountOn          = {M}.SV99;{M}.SV99P,
+        MountOn          = {M}.SV99,
         PartType         = Clip,
         Tags             = base:riflemagazine,
         Weight           = 0.03,

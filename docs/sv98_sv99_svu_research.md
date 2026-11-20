@@ -73,7 +73,7 @@ sheet per folder), kept in git. Figures below are from those headers; where sour
 
 ## Built (2026-11-20)
 
-The SVU (main mod, CLAUDE.md "SVU"), the plywood SV-98 and the SV-99 in its green plywood and black polymer stocks
+The SVU (main mod, CLAUDE.md "SVU"), the plywood SV-98 and one SV-99, the polymer stock's shape in green plywood
 (Post-93, CLAUDE.md "SV-98 and SV-99"). Not built: the aluminium-chassis SV-98, the SV-98M, the SV-99's early wooden
 stock, the SVU-A and SVU-AS.
 

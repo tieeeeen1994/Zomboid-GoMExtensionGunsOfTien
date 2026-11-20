@@ -138,8 +138,14 @@ FRONT_POST = (1145.0, 1160.0, -6.0, 10.0)          # L, L, R top, R bottom (the 
 HOOD = (1143.0, 1162.0, -14.0, -6.0)
 REAR_SIGHT = (564.0, 584.0, 2.0, 12.0)             # the drum sight's block on the receiver's front
 RAIL = (398.0, 556.0)                              # the receiver's rail (L), over the ejection port as on the photo
-KNOB = (401.0, 66.0, 9.0)                          # L, R, radius of the bolt's ball
-HANDLE_ROOT = (419.0, BORE_R)
+# the handle, re-read off the photo (x 480-800, y 200-460; user, 2026-11-20: the handles were "off and terrible", it
+# was a thin round rod leaning back from a root 15 mm too far forward): a flat bar (8.5 mm wide, wider at its root)
+# hanging almost straight down from the bolt's root lug at the receiver's rear to a big black ball
+KNOB = (401.0, 66.0, 11.0)                         # L, R, radius of the bolt's ball
+KNOB_X = -33.0                                     # the ball's centre (game x: the gun's right), clear of the stock
+HANDLE_ROOT = (404.0, 26.0)
+HANDLE_W, HANDLE_T = 8.5, 4.6                      # the bar's width (along the gun) and thickness
+ROOT_LUG = (397.0, 411.0, 15.0, 30.0)              # the bolt's root lug: L, L, R, R (right side, out of the receiver)
 SHROUD = (377.0, 391.0, 11.5)
 SAFETY = (386.0, 397.0, 29.0, 35.0)                # the safety lever behind the handle (right side)
 MAG_BOX = (440.0, 532.0, 40.0, 113.0, 15.0)        # L from, to, R top (feed lips), R floor (flush with the stock
@@ -206,16 +212,23 @@ def build_bolt():
     # the bolt body (bright, cadmium-plated): inside the receiver when closed, bridging the gap behind it when open
     b.lathe("y", (0.0, 0.0, z_bore), [(s1 - L0, 0.0), (s1 - L0, 9.0), (s1 - L0 + BOLT_TRAVEL + 4.0, 9.0),
                                        (s1 - L0 + BOLT_TRAVEL + 4.0, 0.0)], seg=12, mat="silver")
-    root = Vector((-RECEIVER[2] + 2.0, *P(*HANDLE_ROOT)))
+    # the root lug: a block standing out of the receiver's right side at its rear
+    La, Lb, Ra, Rb = ROOT_LUG
+    gbox(b, La, Lb, Ra, Rb, -RECEIVER[2] - 3.5, -RECEIVER[2] + 3.0, mat="silver", bevel=1.0)
+    root = Vector((-RECEIVER[2] - 1.5, *P(*HANDLE_ROOT)))
     kL, kR, kr = KNOB
-    knob = Vector((-30.0, *P(kL, kR)))
+    knob = Vector((KNOB_X, *P(kL, kR)))
     d = knob - root
     n = d.normalized()
-    # the handle: a rod from the bolt body out and down to the ball (game x negative = the gun's right)
-    length = d.length - kr * 0.7
-    xf = Matrix.Translation(root) @ n.to_track_quat('Y', 'Z').to_matrix().to_4x4()
-    b.lathe("y", (0.0, 0.0, 0.0), [(0.0, 0.0), (0.0, 4.2), (length, 3.4), (length, 0.0)], seg=10, mat="silver",
-            xf=xf)
+    # the handle: a flat bar out of the lug, out and down to the ball (game x negative = the gun's right), its width
+    # along the gun (a unit lathe squashed to the bar's section in a frame: width forward, length down the bar)
+    w = (Vector((0.0, 1.0, 0.0)) - n * n.y).normalized()
+    frame = Matrix((w, n, w.cross(n))).transposed().to_4x4()
+    length = d.length - kr * 0.6
+    xf = (Matrix.Translation(root) @ frame
+          @ Matrix.Diagonal((HANDLE_W / 2.0, 1.0, HANDLE_T / 2.0, 1.0)))
+    b.lathe("y", (0.0, 0.0, 0.0), [(0.0, 0.0), (0.0, 1.45), (length * 0.3, 1.0), (length, 0.9), (length, 0.0)],
+            seg=12, mat="silver", xf=xf)
     prof = [(-kr, 0.0)] + [(kr * math.sin(math.radians(a)), kr * math.cos(math.radians(a)))
                            for a in range(-80, 90, 20)] + [(kr, 0.0)]
     b.lathe("y", tuple(knob), prof, seg=14, mat="rubber")

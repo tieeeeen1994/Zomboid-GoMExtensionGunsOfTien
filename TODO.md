@@ -10,7 +10,7 @@ Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
       `*Rifle_HB.xml` nodes with a Gunworks "boltaction" profile, never used by GoM itself), the rack after every shot,
       the SV-99's lever swing, the integrated bipods, loot.
 - [ ] After the 3.17.0 upload: put preview31 (the SVU) and preview32 (the SV-98 / SV-99) on the Steam page by hand.
-- [ ] The variants left out (the aluminium SV-98, the SV-99's wooden stock), if wanted.
+- [ ] The variant left out (the aluminium SV-98), if wanted. The SV-99 stays one gun (user, 2026-11-20).
 
 ## Post-93 loot: use the spawners that fit each gun
 

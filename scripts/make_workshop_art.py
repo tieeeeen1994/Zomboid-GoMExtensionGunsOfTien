@@ -1480,15 +1480,13 @@ def preview31(path, W=1024):
 
 
 def preview32(path, W=1024):
-    """Post-93's SV-98 and SV-99 (3.17.0), as gun_pair with three guns at one scale: the SV-98 with a PSO-1, bipod
-    folded ("sv98"); the SV-99 in plywood with an LR4X ("sv99") and in polymer with a TA28 ("sv99p"), the same (a
-    deployed bipod made all three a third smaller)."""
+    """Post-93's SV-98 and SV-99 (3.17.0), as gun_pair: the SV-98 with a PSO-1, bipod deployed ("sv98"); the SV-99
+    with an LR4X, bipod folded ("sv99"). One SV-99 (user, 2026-11-20: "I only want three guns")."""
     post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
     gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
     gun_pair(path, (("sv98", "SV-98", "7.62X54MMR  ·  BOLT-ACTION"),
-                    ("sv99", "SV-99", ".22 LR  ·  STRAIGHT-PULL  ·  SUPPRESSED"),
-                    ("sv99p", "SV-99", "POLYMER STOCK")),
-             [post("SV98"), post("SV99"), post("SV99P"), post("762x54Magazine10_SV98"), post("22LRMagazine5_SV99"),
+                    ("sv99", "SV-99", ".22 LR  ·  STRAIGHT-PULL  ·  SUPPRESSED")),
+             [post("SV98"), post("SV99"), post("762x54Magazine10_SV98"), post("22LRMagazine5_SV99"),
               gom("762x54_Box"), os.path.join(MAIN, "item_GunsOfTien_22LR_Box.png")],
              "10 AND 5-ROUND MAGAZINES",
              ("FOLDING BIPODS  ·  RAILS FOR GUNS OF MARZ OPTICS",), W, bottom=384, slot_y=398, gap=14)
