@@ -476,7 +476,11 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   list: generic path, sandbox `ChanceOfAttachedWeapon` (6 in the presets) then one slot among all generic ones and
   theirs, so about 1 soldier in 55 carries a gun; the option makes custom lists of their own slots (88% / Ghillie's
   rifle always) and removes them when off. Vanilla's `rifleOnBackGhillie` has `id = "huntingRifleOnBack"` (a label
-  only: the Java keys generic slots by the Lua key and uses `id` only inside custom lists and for sorting). GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
+  only: the Java keys generic slots by the Lua key and uses `id` only inside custom lists and for sorting; the
+  shoulder holster's is `"handgunHolster"` too). Bandits (custom lists 50 / 50 / 60 / 70; the plain Bandit's holster
+  is commented out) carry a gun about 6 / 20 / 39 / 48% (Early / Mid / Late); the option makes their lists roll at
+  100 with both holsters and `gunOnBackCrime` (outfit list widened to the bandits): about 45 / 74 / 93 / 98%. Odds
+  for every outfit: a Python port of `addRandomAttachedWeapon` over vanilla's file plus GoM's additions (2026-11-21). GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
   5, `SurvivorBag_Late` 2, `BanditBag_Late` 1 (no gun store, no zombie), and puts no gun spawner in
   `SWATStorageGuns`. Checked with lupa against GoM's real ItemSpawnerTable with both mods' Loot.lua (2026-11-21).
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the

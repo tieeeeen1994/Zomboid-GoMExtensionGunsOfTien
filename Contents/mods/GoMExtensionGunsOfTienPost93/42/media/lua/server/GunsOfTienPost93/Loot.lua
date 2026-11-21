@@ -49,7 +49,8 @@
       viable"): EXTENDED below. Armed officers (the police outfits' weapon lists always roll, user: "we do notice
       officers don't have guns on them"; vanilla arms about 1 police zombie in 4), armed soldiers (custom lists for
       ArmyCamoGreen / ArmyCamoDesert / Ghillie, which vanilla leaves on the generic path: about 1 in 55 armed with
-      the presets' 6% Chance of Attached Weapon), regular police with SMGs (police
+      the presets' 6% Chance of Attached Weapon), armed bandits (their lists always roll and hold both holsters and
+      the criminals' back rifle slot; user: "maybe criminals should have them too"), regular police with SMGs (police
       SMG spawner in PoliceStorageGuns 3, police cars 4 / 3, the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
       robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
       survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
@@ -272,6 +273,21 @@ local EXTENDED_SLOTS = {
 -- items: a handgun about 65% of the time and some gun about 88% (vanilla about 19% and 28%).
 local EXTENDED_OUTFIT_CHANCES = {
     Police = 100, PoliceState = 100, PoliceRiot = 100, Police_SWAT = 100, Sheriff_Deputy = 100,
+    Bandit = 100, Bandit_Early = 100, Bandit_Mid = 100, Bandit_Late = 100,
+}
+-- Armed bandits: vanilla commented the holster out of the plain Bandit's list (a gun about 6% of the time; early /
+-- mid / late bandits 20 / 39 / 48%). With the option their lists always roll and every bandit list also holds the two
+-- handgun holsters (whose outfit lists already name the bandits) and the criminals' back rifle slot (GoM's crime rifle
+-- spawner: FNC / AKs / AS VAL, plus the Grozas, UMP45 and Vector 9mm under this option), whose outfit list gets the
+-- bandits for as long as the option is on.
+local EXTENDED_OUTFIT_SLOTS = {
+    { "Bandit", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
+    { "Bandit_Early", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
+    { "Bandit_Mid", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
+    { "Bandit_Late", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
+}
+local EXTENDED_SLOT_OUTFITS = {
+    { "gunOnBackCrime", { "Bandit", "Bandit_Early", "Bandit_Mid", "Bandit_Late" } },
 }
 local vanillaOutfitChances = {}
 -- Armed soldiers: vanilla gives the army outfits no custom list, so they take the generic path: one roll at the
@@ -405,6 +421,35 @@ local function addSpawners()
             if type(outfit) == "table" then
                 if vanillaOutfitChances[name] == nil then vanillaOutfitChances[name] = outfit.chance end
                 outfit.chance = extend and chance or vanillaOutfitChances[name]
+            end
+        end
+        if extend then
+            for _, entry in ipairs(EXTENDED_OUTFIT_SLOTS) do
+                local outfit = outfits[entry[1]]
+                local weapons = type(outfit) == "table" and outfit.weapons
+                if type(weapons) == "table" then
+                    for _, slot in ipairs(entry[2]) do
+                        local definition = AttachedWeaponDefinitions[slot]
+                        local present = false
+                        for _, weapon in ipairs(weapons) do
+                            if weapon == definition then present = true end
+                        end
+                        if type(definition) == "table" and not present then addTo(weapons, definition) end
+                    end
+                end
+            end
+            for _, entry in ipairs(EXTENDED_SLOT_OUTFITS) do
+                local definition = AttachedWeaponDefinitions[entry[1]]
+                local names = type(definition) == "table" and definition.outfit
+                if type(names) == "table" then
+                    for _, name in ipairs(entry[2]) do
+                        local present = false
+                        for _, existing in ipairs(names) do
+                            if existing == name then present = true end
+                        end
+                        if not present then addTo(names, name) end
+                    end
+                end
             end
         end
         for name, list in pairs(EXTENDED_OUTFIT_LISTS) do

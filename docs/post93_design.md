@@ -180,8 +180,10 @@ police and SWAT always), armed soldiers (vanilla has no custom list for the army
 generic path: one roll at Chance of Attached Weapon, 6% in the presets, then one slot among every generic one and
 theirs, about 1 soldier in 55 with a gun; custom lists that always roll are made for ArmyCamoGreen / ArmyCamoDesert
 with two of rifle / holster / belt / bedroll, some gun about 88%, the rifle about 55%, and Ghillie with all three of
-rifle / belt / bedroll; the generic knives no longer come with them; a list another mod made is left alone),
-regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
+rifle / belt / bedroll; the generic knives no longer come with them; a list another mod made is left alone), armed bandits (vanilla commented the holster out of the plain
+Bandit's list: Bandit / Early / Mid / Late carry a gun about 6 / 20 / 39 / 48% of the time; their lists always roll
+and get both handgun holsters and the criminals' back rifle slot `gunOnBackCrime`, whose outfit list gets the bandits
+while the option is on: about 45 / 74 / 93 / 98%), regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
 `PoliceTruckBed` 4, `PoliceSeatRear` 3 and the `shotgunPolice` slot), criminals with the Grozas, UMP45 and Vector 9mm
 (GoM's crime rifle spawner: bank robbers, bandit bags, stashes, special pawn shops), survivalists with the SCAR-L,
 HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the
