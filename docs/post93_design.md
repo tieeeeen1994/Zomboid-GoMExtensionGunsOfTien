@@ -159,9 +159,28 @@ New placements put GoM's own spawners where GoM has none of that kind and the gu
 SPAS-12 and M24) gets the police SMG spawner (10, GoM's police shotgun weight in `PoliceStorageGuns`) and the police
 rifle spawner (6, GoM's police SMG weight on a SWAT van's rear seat). Vanilla has `SWATStorageGuns` only in
 `policeswat` rooms, so police stations' `PoliceStorageGuns` (`policegunstorage`, `policestorage`, the captain's
-office; `security` rooms share the list) get the police rifle spawner (6) and the police SMG spawner (3) too (user:
-"make the area wider"), under GoM's police shotgun there (10). Considered and left out: garages and the early
-survivor bags for the civilian rifles (GoM's civilian rifle and hunting spawners already cover them).
+office; `security` rooms share the list) get the police rifle spawner (6) too (user: "make the area wider"),
+under GoM's police shotgun there (10).
+
+More places where reality puts these guns (user, 2026-11-21: "for lore accuracy, implement them"):
+
+| Where | What | Why |
+|---|---|---|
+| Police car trunks (`PoliceTruckBed` 6) and rear seats (`PoliceSeatRear` 4) | GoM's police rifle spawner | Patrol rifles in the trunk became standard after 1997; GoM only puts shotguns there (10 / 6) |
+| Police zombies' back slot `shotgunPolice` (Police, PoliceState, PoliceRiot, Sheriff_Deputy, PrivateMilitia) | GoM's police rifle spawner | The same, on the officers |
+| GoM's army sniper spawner (`Zombie_Army_SemiRifle_Spawner`, Ghillie zombies) | Mk 11, HK417 Marksman (4 magazines, 4 boxes) | The Mk 11 was the US Army's and SOCOM's marksman rifle |
+| Survivalist zombies' `meleeInBackBag`, `_Mid`, `_Late` slots (the only gun slots their outfits use; vanilla commented `gunOnBackBagSurvivalist` out) | GoM's import rifle spawner | Preppers buy these rifles |
+| Ordinary pawn shops (`PawnShopGuns` 3) | GoM's import rifle spawner | As GoM's `PawnShopGunsSpecial` |
+
+Sandbox **Extend Loot Areas** (`GunsOfTien.ExtendLootAreas`, main mod's page, off by default; user: "lore
+inaccuracies but still viable"): regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
+`PoliceTruckBed` 4, `PoliceSeatRear` 3 and the `shotgunPolice` slot), criminals with the Grozas, UMP45 and Vector 9mm
+(GoM's crime rifle spawner: bank robbers, bandit bags, stashes, special pawn shops), survivalists with the SCAR-L,
+HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the
+Five-seveN and Vector SDP (its civilian handgun spawner: civilian holsters, homes, pawn shops, stashes, pistol cases),
+and the civilian rifles among GoM's replacements for vanilla's `Base.JS14_Rifle` (wherever vanilla spawns it, homes
+included; only with GoM's VanillaWeaponReplacement). Considered and left out even there: garages (GoM's hunting and
+surplus rifles cover them), prison armouries, security guards, officers' personal lockers.
 
 Reality: the UCP was never sold, so it is police and SWAT only. GoM's Anachronistic spawner gets nothing: its G36 /
 G36C, Benelli M4, AA-12, Rhino and MP-412 REX are alone in it again. The main mod's guns (1993 and older) were

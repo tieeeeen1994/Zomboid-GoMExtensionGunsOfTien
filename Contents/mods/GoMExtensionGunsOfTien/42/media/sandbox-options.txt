@@ -61,3 +61,10 @@ option GunsOfTien.FixedBayonets {
     page        = GunsOfTien,
     translation = GunsOfTien_FixedBayonets,
 }
+
+option GunsOfTien.ExtendLootAreas {
+    type        = boolean,
+    default     = false,
+    page        = GunsOfTien,
+    translation = GunsOfTien_ExtendLootAreas,
+}

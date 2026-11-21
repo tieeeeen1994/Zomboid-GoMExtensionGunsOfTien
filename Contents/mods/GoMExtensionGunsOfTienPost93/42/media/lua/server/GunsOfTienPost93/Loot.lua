@@ -34,12 +34,30 @@
       the SWAT armoury holds SWAT SMGs and carbines, GoM's MP5s and CAR-15s among them. Vanilla has SWATStorageGuns
       only in `policeswat` rooms, so (user: "make the area wider") police stations' PoliceStorageGuns
       (`policegunstorage`, `policestorage`, the captain's office locker; also `security` rooms, which share the list)
-      get the police rifle spawner at 6 and the police SMG spawner at 3, under GoM's police shotgun there (10) and
-      vanilla's pistols and shotguns (patrol rifles were common in US police armouries after 1997, SMGs less so).
+      get the police rifle spawner at 6, under GoM's police shotgun there (10) and vanilla's pistols and shotguns
+      (patrol rifles were common in US police armouries after 1997; SMGs were SWAT's, so the police SMG spawner goes
+      there only with Extend Loot Areas).
+    - More places where reality puts these guns (user, 2026-11-21: "for lore accuracy, implement them"): patrol
+      rifles (GoM's police rifle spawner) in police cars' trunks (6) and rear seats (4) and on police zombies' back
+      slot (`shotgunPolice`: Police, PoliceState, PoliceRiot, Sheriff_Deputy, PrivateMilitia outfits); the Mk 11 and
+      the HK417 Marksman beside the M24 in GoM's army sniper spawner (`Zombie_Army_SemiRifle_Spawner`, the Ghillie
+      outfit's back slot); the civilian rifles on survivalist zombies (GoM's import rifle spawner in the
+      `meleeInBackBag`, `_Mid`, `_Late` slots, the only gun slots the Survivalist outfits use: vanilla commented
+      `gunOnBackBagSurvivalist` out of them) and in ordinary pawn shops (`PawnShopGuns` 3, as GoM's
+      `PawnShopGunsSpecial`).
+    - Sandbox GunsOfTien.ExtendLootAreas (main mod's page, off by default; user: "lore inaccuracies but still
+      viable"): EXTENDED below. Regular police with SMGs (police SMG spawner in PoliceStorageGuns 3, police cars 4 / 3,
+      the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
+      robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
+      survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
+      (its civilian handgun spawner: civilian holsters, homes, pawn shops, stashes, pistol cases), and the civilian
+      rifles among GoM's replacements for vanilla's JS-2000 / AR-type `Base.JS14_Rifle` (homes, closets, garages,
+      police storage; only with GoM's sandbox VanillaWeaponReplacement on; its entries count `amountChance` 0..n).
+      Read at OnInitGlobalModData and OnPreDistributionMerge, so a change takes effect at the next world load.
     - GoM's Anachronistic spawner gets nothing back: its five guns (G36 / G36C, Benelli M4, AA-12, Rhino, MP-412 REX)
       are its own again.
-    - Each alternative added to a GoM spawner is taken out again before the next world adds it (Lua is not always
-      reloaded).
+    - Everything added to a GoM list (spawner alternatives, slot entries, replacements) is taken out again before the
+      next world adds it (Lua is not always reloaded).
     - Suppressors and mount devices join the item lists of GoM's MarzGuns.World_Suppressor_Spawner (SWAT gun storage,
       police evidence, drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and
       army storage): each spawn picks one entry of the list, so ours are more equal choices in each. The mount
@@ -58,6 +76,7 @@
 require("Items/ProceduralDistributions")
 require("Vehicles/VehicleDistributions")
 require("Items/Distribution_BagsAndContainers")
+require("Definitions/AttachedWeaponDefinitions")
 
 local M = "GunsOfTienPost93."
 
@@ -76,7 +95,7 @@ end
 -------------------------------------------------
 -- Alternatives (the gun, then its magazines and boxes)
 -------------------------------------------------
--- A count is a number (exactly up to it, as GoM's maxAmountChance) or { min, max }.
+-- A count is a number (1 to it, as GoM's maxAmountChance without a minimum) or { min, max }.
 local function group(items, count)
     if type(count) == "table" then
         return { items = items, minAmountChance = count[1], maxAmountChance = count[2] }
@@ -110,6 +129,7 @@ local scarh = kit({ M .. "SCARH" }, { M .. "762x51Magazine20_SCARH" }, { "MarzGu
 local hk416 = kit({ M .. "HK416" }, { "MarzGuns.556x45Magazine30_STANAG" }, { "MarzGuns.556x45_Box" })
 local hk417 = kit({ M .. "HK417", M .. "HK417S" }, { M .. "762x51Magazine20_HK417" }, { "MarzGuns.762x51_Box" })
 local mk11 = kit({ M .. "MK11" }, { "GunsOfTien.762x51Magazine20_SR25" }, { "MarzGuns.762x51_Box" })
+local hk417s = kit({ M .. "HK417S" }, { M .. "762x51Magazine20_HK417" }, { "MarzGuns.762x51_Box" })     -- the Marksman alone
 
 -- Civilian rifles (civilian boxes: .223 and .308 where the gun takes them)
 local mdr223 = kit({ M .. "MDR223" }, { "MarzGuns.556x45Magazine30_STANAG" }, { "MarzGuns.223_Box" })
@@ -153,6 +173,10 @@ local MERC_RIFLE = G .. "Zombie_Mercenary_Rifles_Spawner"   -- AKs: 2-4 / 4-8, 4
 local MERC_SNIPER = G .. "Zombie_Mercenary_Sniper_Spawner"  -- SVD: 3-6, 6-10
 local POLICE_HANDGUN = G .. "Zombie_Police_Handgun_Spawner"
 local SWAT_HANDGUN = G .. "Zombie_SWAT_Handgun_Spawner"
+local ARMY_SNIPER = G .. "Zombie_Army_SemiRifle_Spawner"    -- M24 / Remington 700: 4 boxes
+local CRIME_RIFLE = G .. "Zombie_Crime_Rifle_Spawner"       -- FNC / AKs / AS VAL: 2-4, 2-4
+local SURVIVALIST_RIFLE = G .. "Zombie_Survivalist_Rifle_Spawner" -- AKs: 4, 4
+local CIVILIAN_HANDGUN = G .. "Zombie_Civilian_Handgun_Spawner"   -- M92FS / Glock 17 / M1911 / Hi-Power: 2-4, 3
 local RANGE = { 3, 6 }
 
 local GUNS = {
@@ -166,6 +190,8 @@ local GUNS = {
     { ARMY_WORLD, mk11, 6, 6 },
     { ARMY_ZOMBIE, scarl, 4, 4 }, { ARMY_ZOMBIE, scarh, 4, 4 }, { ARMY_ZOMBIE, hk416, 4, 4 },
     { ARMY_ZOMBIE, hk417, 4, 4 }, { ARMY_ZOMBIE, mk11, 4, 4 },
+    -- the army's marksman rifles beside the M24 (Ghillie zombies)
+    { ARMY_SNIPER, mk11, 4, 4 }, { ARMY_SNIPER, hk417s, 4, 4 },
     -- civilian rifles, the AUG A3 and HBAR beside the main mod's AUG A1
     { IMPORT_RIFLE, mdr223, RANGE, RANGE }, { IMPORT_RIFLE, mdr308, RANGE, RANGE }, { IMPORT_RIFLE, augA3, RANGE, RANGE },
     { IMPORT_RIFLE, augHbar, RANGE, RANGE }, { IMPORT_RIFLE, ps90, RANGE, RANGE }, { IMPORT_RIFLE, vectorCrb, RANGE, RANGE },
@@ -199,11 +225,62 @@ local GUNS = {
 local PLACES = {
     { POLICE_SMG, "pd", "SWATStorageGuns", 10 },
     { POLICE_RIFLE, "pd", "SWATStorageGuns", 6 },
-    -- police stations' gun storage (policegunstorage, policestorage, the captain's office; vanilla also uses the list
-    -- for security rooms): patrol rifles more often than SMGs, both under GoM's police shotgun there (10)
+    -- patrol rifles: police stations' gun storage (policegunstorage, policestorage, the captain's office; vanilla also
+    -- uses the list for security rooms), under GoM's police shotgun there (10), and police cars (GoM's police shotgun
+    -- is 10 in the trunk, 6 on the rear seat)
     { POLICE_RIFLE, "pd", "PoliceStorageGuns", 6 },
-    { POLICE_SMG, "pd", "PoliceStorageGuns", 3 },
+    { POLICE_RIFLE, "vd", "PoliceTruckBed", 6 },
+    { POLICE_RIFLE, "vd", "PoliceSeatRear", 4 },
+    -- civilian rifles in ordinary pawn shops too (GoM: PawnShopGunsSpecial 3)
+    { IMPORT_RIFLE, "pd", "PawnShopGuns", 3 },
 }
+
+-- Zombie attachment slots: { slot, spawner } (a slot picks one of its weapons evenly, as GoM's additions do).
+local SLOTS = {
+    -- patrol rifles on police zombies' backs (Police, PoliceState, PoliceRiot, Sheriff_Deputy, PrivateMilitia)
+    { "shotgunPolice", POLICE_RIFLE },
+    -- civilian rifles on survivalists (the only gun slots their outfits use)
+    { "meleeInBackBag", IMPORT_RIFLE }, { "meleeInBackBag_Mid", IMPORT_RIFLE }, { "meleeInBackBag_Late", IMPORT_RIFLE },
+}
+
+-- Sandbox GunsOfTien.ExtendLootAreas: places that bend reality but still make sense in game.
+local EXTENDED_GUNS = {
+    -- criminals with Grozas and SMGs
+    { CRIME_RIFLE, groza1, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, groza2, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, ump45, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, vector9, { 2, 4 }, { 2, 4 } },
+    -- survivalists with military and Russian rifles
+    { SURVIVALIST_RIFLE, scarl, 4, 4 }, { SURVIVALIST_RIFLE, hk416, 4, 4 }, { SURVIVALIST_RIFLE, groza1, 4, 4 },
+    -- civilians with the modern pistols
+    { CIVILIAN_HANDGUN, fiveseven, { 2, 4 }, 3 }, { CIVILIAN_HANDGUN, vectorSdp, { 2, 4 }, 3 },
+}
+local EXTENDED_PLACES = {
+    -- regular police with SMGs (under the patrol rifles)
+    { POLICE_SMG, "pd", "PoliceStorageGuns", 3 },
+    { POLICE_SMG, "vd", "PoliceTruckBed", 4 },
+    { POLICE_SMG, "vd", "PoliceSeatRear", 3 },
+}
+local EXTENDED_SLOTS = {
+    { "shotgunPolice", POLICE_SMG },
+}
+-- The civilian rifles among GoM's replacements for vanilla's AR-type rifle (homes, closets, garages, police storage),
+-- in the replacement table's own form: { items, amountChance } with 0..amountChance of each later group.
+local EXTENDED_REPLACEMENTS = {
+    { "Base.JS14_Rifle", { mdr223, mdr308, augA3, augHbar, ps90, vectorCrb, hk416qr22 }, 4, 4 },
+}
+
+local function extendLootAreas()
+    local vars = SandboxVars and SandboxVars.GunsOfTien
+    return vars ~= nil and vars.ExtendLootAreas == true
+end
+
+local function asReplacement(alternative)
+    local entry = {}
+    for _, option in ipairs(alternative) do
+        entry[#entry + 1] = { items = option.items, amountChance = option.maxAmountChance or 1 }
+    end
+    return entry
+end
 
 -- Parts added to the item list of a GoM spawner's first alternative.
 local PART_SPAWNERS = {
@@ -259,6 +336,30 @@ local function addParts(list, label, parts)
     end
 end
 
+local function addTo(list, value)
+    list[#list + 1] = value
+    added[#added + 1] = { list, value }
+end
+
+local function addGuns(map, guns)
+    for _, entry in ipairs(guns) do
+        local list = map[entry[1]]
+        if type(list) == "table" then
+            addTo(list, entry[2](entry[3], entry[4]))
+        else
+            print("[GunsOfTienPost93] " .. entry[1] .. " not found, some Post-93 loot will not spawn there")
+        end
+    end
+end
+
+local function addSlots(slots)
+    for _, entry in ipairs(slots) do
+        local definition = AttachedWeaponDefinitions and AttachedWeaponDefinitions[entry[1]]
+        local weapons = type(definition) == "table" and definition.weapons
+        if type(weapons) == "table" then addTo(weapons, entry[2]) end
+    end
+end
+
 local function addSpawners()
     removeAdded()
     local map = spawnerMap()
@@ -266,15 +367,12 @@ local function addSpawners()
         print("[GunsOfTienPost93] Guns of Marz spawner table not found, the Post-93 guns will not spawn")
         return
     end
-    for _, entry in ipairs(GUNS) do
-        local list = map[entry[1]]
-        if type(list) == "table" then
-            local alternative = entry[2](entry[3], entry[4])
-            list[#list + 1] = alternative
-            added[#added + 1] = { list, alternative }
-        else
-            print("[GunsOfTienPost93] " .. entry[1] .. " not found, some Post-93 loot will not spawn there")
-        end
+    local extend = extendLootAreas()
+    addGuns(map, GUNS)
+    addSlots(SLOTS)
+    if extend then
+        addGuns(map, EXTENDED_GUNS)
+        addSlots(EXTENDED_SLOTS)
     end
     for _, entry in ipairs(PART_SPAWNERS) do
         addParts(map[entry[1]], entry[1], entry[2])
@@ -284,6 +382,17 @@ local function addSpawners()
     for _, entry in ipairs(VANILLA_ATTACHMENTS) do
         addParts(type(attachments) == "table" and attachments[entry[1]], "Guns of Marz's " .. entry[1] .. " replacement",
             entry[2])
+    end
+    local weapons = okR and type(replacer) == "table" and replacer.VanillaWeaponMap
+    if extend then
+        for _, entry in ipairs(EXTENDED_REPLACEMENTS) do
+            local list = type(weapons) == "table" and weapons[entry[1]]
+            if type(list) == "table" then
+                for _, gun in ipairs(entry[2]) do addTo(list, asReplacement(gun(entry[3], entry[4]))) end
+            else
+                print("[GunsOfTienPost93] Guns of Marz's " .. entry[1] .. " replacement not found, Extend Loot Areas leaves it")
+            end
+        end
     end
 end
 
@@ -297,13 +406,17 @@ local function addSpawnerLoot()
     local multiplier = lootMultiplier()
     if multiplier <= 0 then return end
     local distributions = { pd = ProceduralDistributions.list, vd = VehicleDistributions, bd = BagsAndContainers }
-    for _, entry in ipairs(PLACES) do
-        local list = distributions[entry[2]] and distributions[entry[2]][entry[3]]
-        if type(list) == "table" and type(list.items) == "table" then
-            list.items[#list.items + 1] = entry[1]
-            list.items[#list.items + 1] = entry[4] * multiplier
+    local function place(places)
+        for _, entry in ipairs(places) do
+            local list = distributions[entry[2]] and distributions[entry[2]][entry[3]]
+            if type(list) == "table" and type(list.items) == "table" then
+                list.items[#list.items + 1] = entry[1]
+                list.items[#list.items + 1] = entry[4] * multiplier
+            end
         end
     end
+    place(PLACES)
+    if extendLootAreas() then place(EXTENDED_PLACES) end
 end
 
 Events.OnPreDistributionMerge.Add(addSpawnerLoot)
