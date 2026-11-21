@@ -183,7 +183,11 @@ with two of rifle / holster / belt / bedroll, some gun about 88%, the rifle abou
 rifle / belt / bedroll; the generic knives no longer come with them; a list another mod made is left alone), armed bandits (vanilla commented the holster out of the plain
 Bandit's list: Bandit / Early / Mid / Late carry a gun about 6 / 20 / 39 / 48% of the time; their lists always roll
 and get both handgun holsters and the criminals' back rifle slot `gunOnBackCrime`, whose outfit list gets the bandits
-while the option is on: about 45 / 74 / 93 / 98%), regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
+while the option is on: about 45 / 74 / 93 / 98%), armed hunters and park rangers (generic in vanilla, about 2%:
+custom lists rolling at 90, hunters two of back rifle / ranger holster / shoulder holster, rangers one of ranger
+holster / police long gun; about 90%), survivalists and private militia (lists always roll; vanilla's holster outfit
+lists name only the early survivalists, so the mid / late names are added while the option is on: early about 77%,
+mid and late always, militia about 94%; vanilla 25 / 8 / 6 / 34%), regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
 `PoliceTruckBed` 4, `PoliceSeatRear` 3 and the `shotgunPolice` slot), criminals with the Grozas, UMP45 and Vector 9mm
 (GoM's crime rifle spawner: bank robbers, bandit bags, stashes, special pawn shops), survivalists with the SCAR-L,
 HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the

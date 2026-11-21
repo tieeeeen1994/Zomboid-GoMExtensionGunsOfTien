@@ -50,7 +50,9 @@
       officers don't have guns on them"; vanilla arms about 1 police zombie in 4), armed soldiers (custom lists for
       ArmyCamoGreen / ArmyCamoDesert / Ghillie, which vanilla leaves on the generic path: about 1 in 55 armed with
       the presets' 6% Chance of Attached Weapon), armed bandits (their lists always roll and hold both holsters and
-      the criminals' back rifle slot; user: "maybe criminals should have them too"), regular police with SMGs (police
+      the criminals' back rifle slot; user: "maybe criminals should have them too"), armed hunters, park rangers,
+      survivalists and private militia (user: "do it" after a survey of every outfit with gun slots), regular
+      police with SMGs (police
       SMG spawner in PoliceStorageGuns 3, police cars 4 / 3, the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
       robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
       survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
@@ -274,6 +276,8 @@ local EXTENDED_SLOTS = {
 local EXTENDED_OUTFIT_CHANCES = {
     Police = 100, PoliceState = 100, PoliceRiot = 100, Police_SWAT = 100, Sheriff_Deputy = 100,
     Bandit = 100, Bandit_Early = 100, Bandit_Mid = 100, Bandit_Late = 100,
+    -- (Survivalist02..05 and their _Mid / _Late are the same tables as these three, so only these are named)
+    Survivalist = 100, Survivalist_Mid = 100, Survivalist_Late = 100, PrivateMilitia = 100,
 }
 -- Armed bandits: vanilla commented the holster out of the plain Bandit's list (a gun about 6% of the time; early /
 -- mid / late bandits 20 / 39 / 48%). With the option their lists always roll and every bandit list also holds the two
@@ -286,8 +290,18 @@ local EXTENDED_OUTFIT_SLOTS = {
     { "Bandit_Mid", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
     { "Bandit_Late", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
 }
+-- Armed survivalists and militia: their lists always roll (vanilla 50 / 60; early survivalists a gun about 25% of the
+-- time, mid and late 8 / 6%, militia 34%). The mid and late survivalist lists hold both holsters but vanilla's holster
+-- outfit lists name only the early ones, so the holsters were never picked; the option adds the mid / late names.
+-- Then: early survivalists about 77%, mid and late always, militia about 94%.
+local SURVIVALIST_LATER = {
+    "Survivalist_Mid", "Survivalist02_Mid", "Survivalist03_Mid", "Survivalist04_Mid", "Survivalist05_Mid",
+    "Survivalist_Late", "Survivalist02_Late", "Survivalist03_Late", "Survivalist04_Late", "Survivalist05_Late",
+}
 local EXTENDED_SLOT_OUTFITS = {
     { "gunOnBackCrime", { "Bandit", "Bandit_Early", "Bandit_Mid", "Bandit_Late" } },
+    { "handgunHolster", SURVIVALIST_LATER },
+    { "handgunHolsterShoulder", SURVIVALIST_LATER },
 }
 local vanillaOutfitChances = {}
 -- Armed soldiers: vanilla gives the army outfits no custom list, so they take the generic path: one roll at the
@@ -295,11 +309,16 @@ local vanillaOutfitChances = {}
 -- a gun about 1 time in 55. With the option, custom lists of their own slots that always roll: camouflage soldiers
 -- two items among rifle 50 / holster 50 / belt 30 / bedroll 50 (some gun about 88%, the rifle about 55%), Ghillie
 -- snipers all three of rifle / belt / bedroll (the rifle always). The generic knives no longer come with them.
+-- Armed hunters and park rangers, generic in vanilla too (about 2%): hunters two of back rifle 30 / ranger holster 50 /
+-- shoulder holster 50, rangers one of ranger holster 50 / police long gun 30 (shotgun, or a patrol rifle), each list
+-- rolling at 90, so about 9 in 10 carry a gun (hunters the rifle about half of the time).
 -- Only made where no custom list exists; another mod's list is left alone.
 local EXTENDED_OUTFIT_LISTS = {
-    ArmyCamoGreen = { maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyGreenBedroll" } },
-    ArmyCamoDesert = { maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyDesertBedroll" } },
-    Ghillie = { maxitem = 3, slots = { "rifleOnBackGhillie", "armyBelt", "armyGreenBedroll" } },
+    ArmyCamoGreen = { chance = 100, maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyGreenBedroll" } },
+    ArmyCamoDesert = { chance = 100, maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyDesertBedroll" } },
+    Ghillie = { chance = 100, maxitem = 3, slots = { "rifleOnBackGhillie", "armyBelt", "armyGreenBedroll" } },
+    Hunter = { chance = 90, maxitem = 2, slots = { "gunOnBackHunter", "handgunHolsterRanger", "handgunHolsterShoulder" } },
+    Ranger = { chance = 90, maxitem = 1, slots = { "handgunHolsterRanger", "shotgunPolice" } },
 }
 local madeOutfitLists = {}
 -- The civilian rifles among GoM's replacements for vanilla's AR-type rifle (homes, closets, garages, police storage),
@@ -462,7 +481,7 @@ local function addSpawners()
                     if type(definition) == "table" then weapons[#weapons + 1] = definition end
                 end
                 if #weapons > 0 then
-                    local made = { chance = 100, maxitem = list.maxitem, weapons = weapons }
+                    local made = { chance = list.chance, maxitem = list.maxitem, weapons = weapons }
                     outfits[name] = made
                     madeOutfitLists[name] = made
                 end
