@@ -461,9 +461,15 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `GunsOfTien.ExtendLootAreas` (main mod's page, off by default) the `EXTENDED_*` tables, incl. alternatives in GoM's
   `VanillaReplacerTable.VanillaWeaponMap["Base.JS14_Rifle"]`, whose groups count `amountChance` (0..n, its own
   `rollOptionItems`) instead of min / maxAmountChance. GoM's own `AttachedWeaponDefinitions.lua` loops its
-  additions with `pairs` and **returns** at the first slot that does not exist (Undead Survivors' and HECU's slots
-  without those mods), so which of its zombie slot additions apply depends on table order (seen in lupa, 2026-11-21:
-  runs differed); ours are added to each slot directly. GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
+  additions with `pairs` and **returns** at the first slot that does not exist, which is harmless in game: Kahlua
+  tables are `LinkedHashMap`s (`J2SEPlatform.newTable`; `KahluaTableImpl.iterator` walks `keySet`), so `pairs`
+  follows the constructor's order, and every vanilla slot comes before the mod-only ones (Undead Survivors',
+  HECU's), which are last (checked 2026-11-21; lupa's own table order differs and made it look random). Zombie
+  weapons (Java `AttachedWeaponDefinitions.addRandomAttachedWeapon`, 42.22): an outfit with a custom list rolls its
+  `chance` once (else no weapon at all), picks a slot weighted by the slots' `chance` among those whose `outfit` lists
+  the zombie's, then keeps going up to `maxitem` only while each further roll is under `chance` again; the slot's
+  `weapons` entry is picked evenly. So a vanilla Police zombie (custom 40, maxitem 2; holster 50, nightstick 30,
+  radio 30, shotgunPolice 30) carries any gun about 28% of the time and a handgun about 19%. GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
   5, `SurvivorBag_Late` 2, `BanditBag_Late` 1 (no gun store, no zombie), and puts no gun spawner in
   `SWATStorageGuns`. Checked with lupa against GoM's real ItemSpawnerTable with both mods' Loot.lua (2026-11-21).
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the
