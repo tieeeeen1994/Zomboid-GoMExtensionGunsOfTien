@@ -1,10 +1,12 @@
-Post-93 loot reworked: its guns are found more often, in the places that fit them, without making Guns of Marz's own guns rarer.
+Post-93 loot reworked: its guns are found in the places that fit them, not only late in homes and bags.
 
-Until now most Post-93 guns were packed into Guns of Marz's spawner for its post-1993 guns, which shares one slot among about 20 guns and only turns up in late-game homes and survivor or bandit bags; the SMGs and the military rifles also crowded Guns of Marz's police SMG and army rifle spawners. Post-93 now has five loot spawners of its own, each placed where Guns of Marz places its spawner for the same kind of gun, at the same rate (scaled by Guns of Marz's loot multiplier):
-- SWAT submachine guns (MP7s, P90 TR, UMPs, Vector .45 and 9mm, AUG Para): SWAT storage and vehicles, police bags, prison riot storage, and on SWAT zombies
-- Modern military rifles (SCARs, HK416, HK417s, Mk 11): army storage, the bunker, army trucks and packs, military rifle cases, late bandit bags, and on army zombies
-- Civilian rifles (MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22, and Guns of Marz's Benelli M4): gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes and late survivor and bandit bags
-- Pistols (Five-seveN, Vector SDP, and Guns of Marz's Rhino): gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars, late survivor and bandit bags
-- Russian guns (Grozas, SV-98, SV-99, and Guns of Marz's MP-412 REX): drug labs, police evidence, survivalists' and bandits' vehicles, late homes, and mercenary zombies with Undead Survivors
-The Five-seveN and the UCP are still carried by police and SWAT, and the SV-98 by mercenary snipers. The UCP, a prototype that was never sold, no longer turns up in survivor and bandit bags.
+Until now most Post-93 guns shared Guns of Marz's spawner for its post-1993 guns, which picks one of about 20 guns and only turns up in late-game homes and survivor or bandit bags. Each gun now joins the Guns of Marz spawner for its kind of gun, packed the same way, and turns up wherever Guns of Marz's guns of that kind do:
+- SWAT submachine guns (the MP7s, P90 TR, UMPs, Vector .45 and 9mm, AUG Para), with Guns of Marz's MP5s: SWAT vehicles, police bags, prison riot storage, and on SWAT zombies
+- Modern military rifles (the SCARs, HK416, HK417s, Mk 11), with Guns of Marz's M16s and M14: army storage, the bunker, army trucks and packs, military rifle cases, late homes and late bandit bags, and on army zombies; the HK416 and SCAR-L also on SWAT zombies
+- Civilian rifles (the MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22), with Guns of Marz's imported rifles and the AUG A1: gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes
+- Pistols (the Five-seveN, Vector SDP), with Guns of Marz's imported pistols: gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars
+- Russian guns (the Grozas, SV-98, SV-99), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Undead Survivors the Grozas also with its mercenaries and the SV-98 and SV-99 with its mercenary snipers
+SWAT gun storage, where Guns of Marz placed no guns of its own, now holds SWAT submachine guns and SWAT carbines, Guns of Marz's MP5s and CAR-15s among them.
+Guns of Marz's post-1993 spawner holds only its own five guns again (G36, Benelli M4, AA-12, Rhino, MP-412 REX), so they are found more often.
+The UCP, a prototype that was never sold, no longer turns up in survivor and bandit bags; police and SWAT still carry it.
 Applies to containers and zombies that have not been looted or spawned yet.

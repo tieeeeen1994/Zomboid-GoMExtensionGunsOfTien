@@ -131,33 +131,39 @@ rounds come from boxes; and every special load (4.6x30mm Subsonic, 5.7x28mm SB19
 mod's rounds), since GoM never spawns its own special loads: only the standard 4.6x30mm DM11 and 5.7x28mm SS190 boxes
 and cartons are loot. The Five-seveN, the UCP and their ammunition never spawn in civilian homes.
 
-### Spawners of our own (user, 2026-11-21: "we can do both B and A"; "whatever suits reality")
+### Into GoM's spawners, new places only where GoM has none (user, 2026-11-21)
 
-GoM's spawner picks one alternative **evenly**, so an alternative added to a GoM spawner adds no guns, it splits
-that spawner's slot once more. By 2026-11-20 most Post-93 guns sat in GoM's `World_Anachronistic_Spawner` (21
-alternatives, and GoM places that spawner only in `FirearmWeapons_Late`, `SafehouseBin_Late`, `SurvivorBag_Late`,
-`BanditBag_Late`, on no zombie), its police SMG spawner (10) and army rifle spawners (9 / 11). Now each gun goes
-into a spawner of ours (`scripts/GunsOfTienPost93/items_spawners.txt`, resolved by GoM's `SelectItem` through its
-`ItemSpawnerMap`), placed where GoM places its spawner for the same kind of gun, at GoM's weight there:
+GoM's spawner picks one alternative **evenly**, so an alternative added to a GoM spawner adds no guns, it shares
+that spawner's spawns. By 2026-11-20 most Post-93 guns sat in GoM's `World_Anachronistic_Spawner` (21
+alternatives, placed only in `FirearmWeapons_Late`, `SafehouseBin_Late`, `SurvivorBag_Late`, `BanditBag_Late`, on no
+zombie), so they were rare and only found late. The 3.18.0 build first gave them five spawners of their own placed
+where GoM's spawner of the same kind is, which only doubled the gun rolls in those places (user: "why duplicate a
+spawner when a GoM spawner is in the same place already"; then "add spawners to places where we think it can be
+applicable, AND if GoM doesn't add a spawner to"). So each gun joins the GoM spawner of its kind, packed as that
+spawner packs its own guns (`Loot.lua` `GUNS`):
 
-| Spawner | Guns | Placed as GoM's | Zombie slot |
-|---|---|---|---|
-| `Zombie_SWAT_PDW_Spawner` | MP7s, P90 TR, UMP45, UMP9, Vector .45, Vector 9mm, AUG Para | police SMG spawner, plus `SWATStorageGuns` (10; GoM puts no gun spawner there) | `gunOnBackSWAT` |
-| `World_` / `Zombie_Modern_Army_Rifle_Spawner` | SCAR-L, SCAR-H, HK416, HK417s, Mk 11 | army rifle spawners, without `FirearmWeapons_Late` (homes) | `assaultRifleArmyOnBack` |
-| `World_Modern_Sporting_Rifle_Spawner` | MDRx .223 / .308, AUG A3, AUG HBAR (with the A3: user, "in line with AUG family"), PS90, Vector CRB, HK416 .22, GoM's Benelli M4 | import rifle spawner, plus the Anachronistic spawner's four late lists | `gunOnBackBagSurvivalist` |
-| `World_Modern_Pistol_Spawner` | Five-seveN, Vector SDP, GoM's Chiappa Rhino | import pistol spawner, plus the late survivor / bandit bags (replace the old direct bag entries) | none |
-| `World_Post_Soviet_Spawner` | Groza-1 / GL, Groza-2, Groza-4, SV-98, SV-99, GoM's MP-412 REX | Russian rifle spawner | Undead Survivors' mercenary slots (`AmazonaSpear`, `StalkerKnife`) |
+| GoM spawner | Post-93 guns | Packing |
+|---|---|---|
+| `Zombie_Police_SMG_Spawner` | MP7s, P90 TR, UMP45, UMP9, Vector .45, Vector 9mm, AUG Para | 4 magazines, 4 boxes |
+| `Zombie_Police_Rifle_Spawner` (SWAT zombies' back slot) | HK416, SCAR-L | 4, 4 |
+| `World_` / `Zombie_Army_Rifle_Spawner` | SCAR-L, SCAR-H, HK416, HK417s, Mk 11 | 6, 6 / 4, 4 |
+| `World_Import_Rifle_Spawner` | MDRx .223 / .308, AUG A3, AUG HBAR (beside the main mod's AUG A1: user, "in line with AUG family"), PS90, Vector CRB, HK416 .22 | 3-6, 3-6 |
+| `World_Import_Pistol_Spawner` | Five-seveN, Vector SDP | 3-6, 3-6 |
+| `Zombie_Police_` / `Zombie_SWAT_Handgun_Spawner` | Five-seveN, UCP | 4, 4 |
+| `World_Russian_Rifle_Spawner` | Groza-1 / GL, Groza-2, Groza-4, SV-98, SV-99 | 6, 6 |
+| `Zombie_Mercenary_Rifles_Spawner` (Undead Survivors) | the Grozas | 2-4, 4-8 |
+| `Zombie_Mercenary_Sniper_Spawner` (Undead Survivors) | SV-98, SV-99 | 3-6, 6-10 |
 
-Reality decides the split: guns sold to US civilians (MDRx, AUG A3 M1, PS90, Vector CRB / SDP, Walther's HK416 .22,
-Five-seveN, Benelli M4, Rhino) reach homes through the late lists; select-fire police and military guns do not;
-Russian guns never sold in the US (Grozas, SV-98, SV-99, MP-412) come the way GoM's Russian rifles do. The UCP was
-never sold, so it is police and SWAT only (GoM's handgun spawners, with the Five-seveN). GoM's G36 / G36C and AA-12
-stay only in GoM's Anachronistic spawner (no US police, army or civilian use in our setting). GoM's guns in our
-spawners are its own alternatives, looked up in its Anachronistic list by gun, so their packing follows GoM.
-Still in GoM's spawners: the Five-seveN and UCP (police / SWAT handguns), the SV-98 (mercenary sniper), high-capacity
-magazines, suppressors and mount devices. The main mod's guns (1993 and older) keep GoM's spawners; a main-mod
-spawner of its own is worth it only when a theme GoM lacks gets several guns (a .22 rimfire one, once there are more
-than the PPK).
+New placements put GoM's own spawners where GoM has none of that kind and the guns belong (`Loot.lua` `PLACES`):
+`SWATStorageGuns` (GoM puts only part spawners there; its guns there come from vanilla's replaced pistols, M16s,
+SPAS-12 and M24) gets the police SMG spawner (10, GoM's police shotgun weight in `PoliceStorageGuns`) and the police
+rifle spawner (6, GoM's police SMG weight on a SWAT van's rear seat). Considered and left out: police gun storage
+(GoM gives police SMGs to SWAT only), garages and the early survivor bags for the civilian rifles (GoM's civilian
+rifle and hunting spawners already cover them).
+
+Reality: the UCP was never sold, so it is police and SWAT only. GoM's Anachronistic spawner gets nothing: its G36 /
+G36C, Benelli M4, AA-12, Rhino and MP-412 REX are alone in it again. The main mod's guns (1993 and older) were
+already in GoM's spawners.
 
 ## FN SCAR-L and SCAR-H (user, 2026-10-20; built)
 

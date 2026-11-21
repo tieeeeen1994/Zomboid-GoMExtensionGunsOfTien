@@ -176,15 +176,15 @@ Enable [i]GoM Extension: Guns of Tien - Post-93[/i] as well.
 [*]4.6x30mm DM11, Subsonic
 [*]5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
 [/list]
-[b]Where Post-93's guns are found:[/b] its guns come in five loot spawners of its own, each placed where Guns of Marz places its spawner for the same kind of gun, so they are found beside Guns of Marz's guns instead of making them rarer (scaled by Guns of Marz's loot multiplier):
+[b]Where Post-93's guns are found:[/b] each gun joins the Guns of Marz loot spawner for its kind of gun, packed the same way, so it turns up wherever Guns of Marz's guns of that kind do (scaled by Guns of Marz's loot multiplier):
 [list]
-[*]SWAT submachine guns (the MP7s, P90 TR, UMPs, Vector .45 and 9mm, AUG Para): SWAT storage and vehicles, police bags, prison riot storage, and on SWAT zombies
-[*]Modern military rifles (the SCARs, HK416, HK417s, Mk 11): army storage, the bunker, army trucks and packs, military rifle cases, late bandit bags, and on army zombies
-[*]Civilian rifles (the MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22, and Guns of Marz's Benelli M4): gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes and late survivor and bandit bags
-[*]Pistols (the Five-seveN, Vector SDP, and Guns of Marz's Rhino): gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars, late survivor and bandit bags
-[*]Russian guns (the Grozas, SV-98, SV-99, and Guns of Marz's MP-412 REX): drug labs, police evidence, survivalists' and bandits' vehicles, late homes, and mercenary zombies with Undead Survivors
+[*]SWAT submachine guns (the MP7s, P90 TR, UMPs, Vector .45 and 9mm, AUG Para), with Guns of Marz's MP5s: SWAT vehicles, police bags, prison riot storage, and on SWAT zombies
+[*]Modern military rifles (the SCARs, HK416, HK417s, Mk 11), with Guns of Marz's M16s and M14: army storage, the bunker, army trucks and packs, military rifle cases, late homes and late bandit bags, and on army zombies; the HK416 and SCAR-L also on SWAT zombies
+[*]Civilian rifles (the MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22), with Guns of Marz's imported rifles and the AUG A1: gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes
+[*]Pistols (the Five-seveN, Vector SDP), with Guns of Marz's imported pistols: gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars
+[*]Russian guns (the Grozas, SV-98, SV-99), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Undead Survivors the Grozas also with its mercenaries and the SV-98 and SV-99 with its mercenary snipers
 [/list]
-The Five-seveN and the UCP are also carried by police and SWAT with Guns of Marz's police handguns, and the SV-98 by its mercenary snipers; long magazines, suppressors and mount devices turn up with Guns of Marz's, the 4.6x30mm boxes beside 9mm boxes in police, SWAT and gun store storage. Special loads only come from Ammo Maker.
+SWAT gun storage, where Guns of Marz places no guns of its own, also holds SWAT submachine guns and SWAT carbines, Guns of Marz's MP5s and CAR-15s among them. The Five-seveN and the UCP are also carried by police and SWAT with Guns of Marz's police handguns; long magazines, suppressors and mount devices turn up with Guns of Marz's, the 4.6x30mm boxes beside 9mm boxes in police, SWAT and gun store storage. Special loads only come from Ammo Maker.
 
 [h2]Sandbox options[/h2]
 On the [b]Guns of Tien[/b] page of the sandbox settings.
