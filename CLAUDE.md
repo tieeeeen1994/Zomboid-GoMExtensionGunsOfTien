@@ -469,7 +469,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `chance` once (else no weapon at all), picks a slot weighted by the slots' `chance` among those whose `outfit` lists
   the zombie's, then keeps going up to `maxitem` only while each further roll is under `chance` again; the slot's
   `weapons` entry is picked evenly. So a vanilla Police zombie (custom 40, maxitem 2; holster 50, nightstick 30,
-  radio 30, shotgunPolice 30) carries any gun about 28% of the time and a handgun about 19%. GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
+  radio 30, shotgunPolice 30) carries any gun about 28% of the time and a handgun about 19%. Java reads the Lua table
+  once (`checkDirty`, at the first zombie dressed) and again only after a Lua file loads (`LuaManager.RunLua` sets
+  `dirty`), so edits at OnInitGlobalModData land before it. Extend Loot Areas sets the five police outfits' chance to
+  100 (88% / 65%), putting vanilla's back when off. GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
   5, `SurvivorBag_Late` 2, `BanditBag_Late` 1 (no gun store, no zombie), and puts no gun spawner in
   `SWATStorageGuns`. Checked with lupa against GoM's real ItemSpawnerTable with both mods' Loot.lua (2026-11-21).
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the

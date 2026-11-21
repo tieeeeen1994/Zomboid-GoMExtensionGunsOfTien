@@ -46,8 +46,9 @@
       `gunOnBackBagSurvivalist` out of them) and in ordinary pawn shops (`PawnShopGuns` 3, as GoM's
       `PawnShopGunsSpecial`).
     - Sandbox GunsOfTien.ExtendLootAreas (main mod's page, off by default; user: "lore inaccuracies but still
-      viable"): EXTENDED below. Regular police with SMGs (police SMG spawner in PoliceStorageGuns 3, police cars 4 / 3,
-      the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
+      viable"): EXTENDED below. Armed officers (the police outfits' weapon lists always roll, user: "we do notice
+      officers don't have guns on them"; vanilla arms about 1 police zombie in 4), regular police with SMGs (police
+      SMG spawner in PoliceStorageGuns 3, police cars 4 / 3, the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
       robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
       survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
       (its civilian handgun spawner: civilian holsters, homes, pawn shops, stashes, pistol cases), and the civilian
@@ -263,6 +264,14 @@ local EXTENDED_PLACES = {
 local EXTENDED_SLOTS = {
     { "shotgunPolice", POLICE_SMG },
 }
+-- Armed officers: the police outfits' custom weapon lists always roll (vanilla 40 / 50 / 60, "reduced as Police zombies
+-- are quite commonplace"). Java (AttachedWeaponDefinitions.addRandomAttachedWeapon) rolls an outfit's `chance` once to
+-- give it anything and again before each further item up to `maxitem`, so at 100 a Police zombie always gets two
+-- items: a handgun about 65% of the time and some gun about 88% (vanilla about 19% and 28%).
+local EXTENDED_OUTFIT_CHANCES = {
+    Police = 100, PoliceState = 100, PoliceRiot = 100, Police_SWAT = 100, Sheriff_Deputy = 100,
+}
+local vanillaOutfitChances = {}
 -- The civilian rifles among GoM's replacements for vanilla's AR-type rifle (homes, closets, garages, police storage),
 -- in the replacement table's own form: { items, amountChance } with 0..amountChance of each later group.
 local EXTENDED_REPLACEMENTS = {
@@ -373,6 +382,17 @@ local function addSpawners()
     if extend then
         addGuns(map, EXTENDED_GUNS)
         addSlots(EXTENDED_SLOTS)
+    end
+    -- the police outfits' chances: vanilla's kept the first time, put back when the option is off
+    local outfits = AttachedWeaponDefinitions and AttachedWeaponDefinitions.attachedWeaponCustomOutfit
+    if type(outfits) == "table" then
+        for name, chance in pairs(EXTENDED_OUTFIT_CHANCES) do
+            local outfit = outfits[name]
+            if type(outfit) == "table" then
+                if vanillaOutfitChances[name] == nil then vanillaOutfitChances[name] = outfit.chance end
+                outfit.chance = extend and chance or vanillaOutfitChances[name]
+            end
+        end
     end
     for _, entry in ipairs(PART_SPAWNERS) do
         addParts(map[entry[1]], entry[1], entry[2])

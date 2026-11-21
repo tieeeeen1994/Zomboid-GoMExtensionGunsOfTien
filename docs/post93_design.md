@@ -173,7 +173,10 @@ More places where reality puts these guns (user, 2026-11-21: "for lore accuracy,
 | Ordinary pawn shops (`PawnShopGuns` 3) | GoM's import rifle spawner | As GoM's `PawnShopGunsSpecial` |
 
 Sandbox **Extend Loot Areas** (`GunsOfTien.ExtendLootAreas`, main mod's page, off by default; user: "lore
-inaccuracies but still viable"): regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
+inaccuracies but still viable"): armed officers (user: "we do notice officers don't have guns on them"; the Police,
+PoliceState, PoliceRiot, Police_SWAT and Sheriff_Deputy custom weapon lists' `chance` 40 / 50 / 60 / 60 / 50 set to
+100, so a Police zombie carries a handgun about 65% of the time and some gun about 88%, vanilla about 19% / 28%; riot
+police and SWAT always), regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
 `PoliceTruckBed` 4, `PoliceSeatRear` 3 and the `shotgunPolice` slot), criminals with the Grozas, UMP45 and Vector 9mm
 (GoM's crime rifle spawner: bank robbers, bandit bags, stashes, special pawn shops), survivalists with the SCAR-L,
 HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the
