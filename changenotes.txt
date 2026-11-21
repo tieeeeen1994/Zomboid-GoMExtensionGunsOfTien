@@ -1,2 +1,0 @@
-With Ammo Maker, its part boxes can be packed into cartons and crates: 15 boxes or bags of one kind of part (bullets, casings, fired casings and hulls, primers, hulls, slugs, pellets or filler) make a carton and 5 cartons a crate, and they open back up. Made by players only, never found as loot.
-New sandbox option Ammo Maker Part Cartons and Crates (Guns of Tien page, on by default): off = no packing, cartons and crates already packed can still be opened. Takes effect the next time the game is loaded.
