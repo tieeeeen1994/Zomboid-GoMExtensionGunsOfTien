@@ -4,6 +4,10 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
+## Loot (3.18.0, built 2026-11-21, not played)
+
+- [ ] After the 3.18.0 upload: put preview33-37 (where the guns are found) on the Steam page by hand.
+
 ## SVU, SV-98, SV-99 (3.17.0, built 2026-11-20, not played)
 
 - [ ] Play them: the SVU's FAMAS reload and folding sights, the SV-98 / SV-99 magazine bolt-action reload (GoM's

@@ -706,6 +706,17 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   lever read after the mirror), a slot row (gun, 8-round magazine, .22 LR box) and two lines (ankle holster, loot).
   Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> ppk`, then
   `make_workshop_art.py --renders <dir> preview30`. Not yet on the Steam page.
+  preview33-37 (3.18.0, 2026-11-21; user: "list every spawner and their guns in each preview. we can make the image
+  big if needed"): "WHERE THE GUNS ARE FOUND", one tall 1024-wide page per family (law enforcement, military,
+  civilian, criminal / Russian / collectors', and GoM's replacements for the game's own guns in two columns), no
+  renders: each spawner a block with its name, where it turns up (GoM's places and zombies, then Post-93's in teal,
+  then Extend Loot Areas' in dark amber) and its guns as inventory slots (the item's icon at 2x, the name with the
+  type word the title already says dropped), slot borders by mod (GoM grey, Guns of Tien amber, Post-93 teal; GoM's
+  Five-seveN counts as Post-93's, which brings it) and an EXT badge on guns only that option adds; the footnote is
+  one line (user). Gun lists come from the live tables: `py scripts/loot/build.py <lupa dir> <out dir>` (both
+  mods' Loot.lua and ExtendLootAreas.lua over GoM's tables in lupa, option off and on), then
+  `py scripts/make_loot_previews.py <out dir>/spawners.json`; the place texts are written by hand in that script,
+  so a loot change means editing them too. Not yet on the Steam page.
   preview31-32 (3.17.0, 2026-11-20): the main mod's SVU (preview31, as preview23: render_ad_guns.py `svu`, its
   sights-folded body under GoM's AK mount and PSO-1, GoM's SVD magazine at 0.9102) and Post-93's SV-98 and SV-99
   (preview32, `gun_pair`: `sv98` PSO-1 and bipod deployed, `sv99` LR4X and bipod folded; one view and scale,
