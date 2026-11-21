@@ -385,10 +385,12 @@ local RARE_WEIGHTS = {
 
 local function raiseRareWeights()
     if not extendLootAreas() then return end
+    local seen = {}                 -- several bag lists share one items array: raise each array once
     for _, distribution in ipairs({ ProceduralDistributions.list, VehicleDistributions, BagsAndContainers }) do
         for _, list in pairs(distribution) do
             local items = type(list) == "table" and list.items
-            if type(items) == "table" then
+            if type(items) == "table" and not seen[items] then
+                seen[items] = true
                 for i = 1, #items - 1, 2 do
                     local factor = RARE_WEIGHTS[items[i]]
                     if factor and type(items[i + 1]) == "number" then items[i + 1] = items[i + 1] * factor end

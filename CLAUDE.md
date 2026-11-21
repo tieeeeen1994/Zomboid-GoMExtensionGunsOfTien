@@ -481,7 +481,16 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   OnPostDistributionMerge before SandboxOptions.load and ItemPickerJava.Parse, both before GlobalModData.init
   (OnInitGlobalModData): loot lists are fixed before any spawner addition exists, so RARE_WEIGHTS are offline
   factors, and in single player a continued save may still hold the previous session's sandbox values at the
-  merge (GoM's LootMultiplier too; a dedicated server has its own loaded). Kit splits run at OnLoadMapZones. Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
+  merge (GoM's LootMultiplier too; a dedicated server has its own loaded). Kit splits run at OnLoadMapZones.
+  Several bag lists (BanditBag and its _Early / _Mid, SurvivorBag_Mid...) share one `items` array, so a pass
+  over the lists by name must touch each array once (RARE_WEIGHTS and GunLoot.lua do). Gun Loot (%) (sandbox
+  `GunsOfTien.GunLootPercent`, main mod `server/GunsOfTien/GunLoot.lua`, 2026-11-21): gun entries = GoM gun spawners
+  or items whose script `isRanged()` (not DisplayCategory Memento, the cap guns); containers scaled at
+  OnPostDistributionMerge (exact: 0 / 0.5 / 1 / 2x), zombies by the gun slots' chance, gun entries in mixed slots and
+  the weapon-list outfits' chance by the square root (about 0.47x at 50, 1.9x at 200 with Extend off; with it on,
+  outfits already roll every time and 200 gives about 1.2x); OutfitRNG.Next(0) = 0 (LocationRNG), so all-zero slot
+  weights give no weapon; CreateItem of an unknown type logs "Couldn't find item", so no dummy entries. Applied at
+  OnLoadMapZones, undone at OnPreDistributionMerge (before every other file's OnInitGlobalModData undo). Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
   list: generic path, sandbox `ChanceOfAttachedWeapon` (6 in the presets) then one slot among all generic ones and
   theirs, so about 1 soldier in 55 carries a gun; the option makes custom lists of their own slots (88% / Ghillie's
   rifle always) and removes them when off. Vanilla's `rifleOnBackGhillie` has `id = "huntingRifleOnBack"` (a label

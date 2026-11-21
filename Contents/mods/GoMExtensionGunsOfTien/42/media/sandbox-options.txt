@@ -68,3 +68,12 @@ option GunsOfTien.ExtendLootAreas {
     page        = GunsOfTien,
     translation = GunsOfTien_ExtendLootAreas,
 }
+
+option GunsOfTien.GunLootPercent {
+    type        = integer,
+    min         = 0,
+    max         = 200,
+    default     = 100,
+    page        = GunsOfTien,
+    translation = GunsOfTien_GunLootPercent,
+}
