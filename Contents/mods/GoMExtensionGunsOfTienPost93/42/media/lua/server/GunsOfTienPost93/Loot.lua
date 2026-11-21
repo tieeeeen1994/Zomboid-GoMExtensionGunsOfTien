@@ -31,7 +31,11 @@
       place GoM's own spawner: SWATStorageGuns (GoM puts only part spawners there; its guns come from vanilla's
       replaced pistols, M16s, SPAS-12 and M24) gets the police SMG spawner (at 10, GoM's police shotgun weight in
       PoliceStorageGuns) and the police rifle spawner (at 6, GoM's police SMG weight on a SWAT van's rear seat), so
-      the SWAT armoury holds SWAT SMGs and carbines, GoM's MP5s and CAR-15s among them.
+      the SWAT armoury holds SWAT SMGs and carbines, GoM's MP5s and CAR-15s among them. Vanilla has SWATStorageGuns
+      only in `policeswat` rooms, so (user: "make the area wider") police stations' PoliceStorageGuns
+      (`policegunstorage`, `policestorage`, the captain's office locker; also `security` rooms, which share the list)
+      get the police rifle spawner at 6 and the police SMG spawner at 3, under GoM's police shotgun there (10) and
+      vanilla's pistols and shotguns (patrol rifles were common in US police armouries after 1997, SMGs less so).
     - GoM's Anachronistic spawner gets nothing back: its five guns (G36 / G36C, Benelli M4, AA-12, Rhino, MP-412 REX)
       are its own again.
     - Each alternative added to a GoM spawner is taken out again before the next world adds it (Lua is not always
@@ -195,6 +199,10 @@ local GUNS = {
 local PLACES = {
     { POLICE_SMG, "pd", "SWATStorageGuns", 10 },
     { POLICE_RIFLE, "pd", "SWATStorageGuns", 6 },
+    -- police stations' gun storage (policegunstorage, policestorage, the captain's office; vanilla also uses the list
+    -- for security rooms): patrol rifles more often than SMGs, both under GoM's police shotgun there (10)
+    { POLICE_RIFLE, "pd", "PoliceStorageGuns", 6 },
+    { POLICE_SMG, "pd", "PoliceStorageGuns", 3 },
 }
 
 -- Parts added to the item list of a GoM spawner's first alternative.

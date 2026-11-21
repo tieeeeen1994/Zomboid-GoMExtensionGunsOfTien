@@ -157,9 +157,11 @@ spawner packs its own guns (`Loot.lua` `GUNS`):
 New placements put GoM's own spawners where GoM has none of that kind and the guns belong (`Loot.lua` `PLACES`):
 `SWATStorageGuns` (GoM puts only part spawners there; its guns there come from vanilla's replaced pistols, M16s,
 SPAS-12 and M24) gets the police SMG spawner (10, GoM's police shotgun weight in `PoliceStorageGuns`) and the police
-rifle spawner (6, GoM's police SMG weight on a SWAT van's rear seat). Considered and left out: police gun storage
-(GoM gives police SMGs to SWAT only), garages and the early survivor bags for the civilian rifles (GoM's civilian
-rifle and hunting spawners already cover them).
+rifle spawner (6, GoM's police SMG weight on a SWAT van's rear seat). Vanilla has `SWATStorageGuns` only in
+`policeswat` rooms, so police stations' `PoliceStorageGuns` (`policegunstorage`, `policestorage`, the captain's
+office; `security` rooms share the list) get the police rifle spawner (6) and the police SMG spawner (3) too (user:
+"make the area wider"), under GoM's police shotgun there (10). Considered and left out: garages and the early
+survivor bags for the civilian rifles (GoM's civilian rifle and hunting spawners already cover them).
 
 Reality: the UCP was never sold, so it is police and SWAT only. GoM's Anachronistic spawner gets nothing: its G36 /
 G36C, Benelli M4, AA-12, Rhino and MP-412 REX are alone in it again. The main mod's guns (1993 and older) were
