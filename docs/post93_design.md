@@ -194,7 +194,12 @@ mid and late always, militia about 94%; vanilla 25 / 8 / 6 / 34%), regular polic
 HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the
 Five-seveN and Vector SDP (its civilian handgun spawner: civilian holsters, homes, pawn shops, stashes, pistol cases),
 and the civilian rifles among GoM's replacements for vanilla's `Base.JS14_Rifle` (wherever vanilla spawns it, homes
-included; only with GoM's VanillaWeaponReplacement). Considered and left out even there: garages (GoM's hunting and
+included; only with GoM's VanillaWeaponReplacement). Rare guns (user: "some guns are still rare and hard to find. Like Vector
+.45"): scripts/loot/audit.py scores every gun (containers: rolls x weight x share summed over lists; zombies: chance
+per outfit); under the option the main mod splits GoM alternatives that share a slot among several guns, raises
+the weights of spawners whose guns sat below the median (RARE_WEIGHTS, up to 3.8x for the police SMGs) and gives
+the zombie-rare families more back slots, so no gun is below the old median in containers (the Vector .45 went
+from 11 to 42) and every gun reaches zombies. Considered and left out even there: garages (GoM's hunting and
 surplus rifles cover them), prison armouries, security guards, officers' personal lockers.
 
 Reality: the UCP was never sold, so it is police and SWAT only. GoM's Anachronistic spawner gets nothing: its G36 /

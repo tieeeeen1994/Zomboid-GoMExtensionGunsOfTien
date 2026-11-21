@@ -474,7 +474,14 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `dirty`), so edits at OnInitGlobalModData land before it. Extend Loot Areas (main mod's `server/GunsOfTien/ExtendLootAreas.lua` since the user asked to "expose ALL
   guns", 2026-11-21: zombie outfits, GoM's spawners in new places and on new slots, GoM's post-1993 kits copied into
   spawners of their kind; Post-93's Loot.lua keeps its own guns' extras) sets the five police outfits' chance to
-  100 (88% / 65%), putting vanilla's back when off. Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
+  100 (88% / 65%), putting vanilla's back when off. Rare guns (2026-11-21, `scripts/loot/audit.py`, which runs
+  vanilla's loot tables, GoM's ItemInsertion and both mods in lupa): ItemPickerJava rolls each item of a list on its
+  own every roll (`Rand.Next(10000) < getActualSpawnChance`, which grows with its weight), so a gun's container
+  score is rolls x weight x its share of the entry summed over lists. IsoWorld.init fires OnPreDistributionMerge /
+  OnPostDistributionMerge before SandboxOptions.load and ItemPickerJava.Parse, both before GlobalModData.init
+  (OnInitGlobalModData): loot lists are fixed before any spawner addition exists, so RARE_WEIGHTS are offline
+  factors, and in single player a continued save may still hold the previous session's sandbox values at the
+  merge (GoM's LootMultiplier too; a dedicated server has its own loaded). Kit splits run at OnLoadMapZones. Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
   list: generic path, sandbox `ChanceOfAttachedWeapon` (6 in the presets) then one slot among all generic ones and
   theirs, so about 1 soldier in 55 carries a gun; the option makes custom lists of their own slots (88% / Ghillie's
   rifle always) and removes them when off. Vanilla's `rifleOnBackGhillie` has `id = "huntingRifleOnBack"` (a label

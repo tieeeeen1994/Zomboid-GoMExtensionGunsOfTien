@@ -135,6 +135,34 @@ local EXTENDED_SLOTS = {
     { "meleeInBackBag_Late", G .. "World_Russian_Rifle_Spawner" },
     { "assaultRifleArmyOnBack", G .. "World_Army_Heavy_Spawner" },
     { "gunOnBackHunter", G .. "World_Big_Game_Rifle_Spawner" },
+    -- zombie-rare families (scripts/loot/audit.py): long guns onto back slots that outfits really use
+    { "assaultRifleOnBack", G .. "Zombie_Army_Rifle_Spawner" },          -- private militia
+    { "assaultRifleOnBack", G .. "World_Import_Rifle_Spawner" },
+    { "huntingRifleOnBack", G .. "World_Russian_Rifle_Spawner" },
+    { "gunOnBackBountyHunter", G .. "World_Import_Rifle_Spawner" },
+    { "gunOnBackBountyHunter", G .. "World_Russian_Rifle_Spawner" },
+    { "gunOnBackBountyHunter", G .. "Zombie_Oldies_Spawner" },
+    { "meleeInBackBag_Late", G .. "Zombie_Oldies_Spawner" },
+    { "meleeInBackBag_Late", G .. "Zombie_Army_Rifle_Spawner" },
+    { "meleeInBackBag", G .. "Zombie_Civilian_SemiRifle_Spawner" },       -- GoM put it only on the unused
+    { "gunOnBackHunter", G .. "Zombie_Civilian_SemiRifle_Spawner" },      -- gunOnBackBagSurvivalist slot
+}
+
+-- { slot, spawner, extra entries }: a slot picks one of its weapons evenly, so another entry of a spawner already there
+-- raises its share (the police and SWAT SMGs, ten kits sharing one entry, on police and SWAT backs)
+local EXTENDED_SLOT_COPIES = {
+    { "shotgunPolice", G .. "Zombie_Police_SMG_Spawner", 1 },
+    { "gunOnBackSWAT", G .. "Zombie_Police_SMG_Spawner", 1 },
+    { "assaultRifleArmyOnBack", G .. "Zombie_Army_Rifle_Spawner", 1 },
+    { "meleeInBackBag", G .. "World_Import_Rifle_Spawner", 2 },
+    { "meleeInBackBag_Mid", G .. "World_Import_Rifle_Spawner", 2 },
+    { "meleeInBackBag_Late", G .. "World_Import_Rifle_Spawner", 2 },
+    { "meleeInBackBag_Mid", G .. "World_Russian_Rifle_Spawner", 2 },
+    { "meleeInBackBag_Late", G .. "World_Russian_Rifle_Spawner", 2 },
+    { "gunOnBackCrime", G .. "World_Russian_Rifle_Spawner", 1 },
+    { "meleeInBackBag_Late", G .. "Zombie_Army_Rifle_Spawner", 1 },
+    { "meleeInBackBag", G .. "Zombie_Civilian_SemiRifle_Spawner", 1 },
+    { "gunOnBackHunter", G .. "World_Big_Game_Rifle_Spawner", 1 },
 }
 
 -- GoM's own kits copied into a spawner of their kind, so guns of a spawner that cannot go on a zombie slot (its
@@ -223,6 +251,16 @@ local function applyZombies()
         local definition = defs[entry[1]]
         if type(definition) == "table" and type(definition.weapons) == "table" then addTo(definition.weapons, entry[2]) end
     end
+    for _, entry in ipairs(EXTENDED_SLOT_COPIES) do
+        local definition = defs[entry[1]]
+        local weapons = type(definition) == "table" and definition.weapons
+        if type(weapons) == "table" then
+            for _ = 1, entry[3] do
+                weapons[#weapons + 1] = entry[2]
+                added[#added + 1] = { weapons, entry[2] }
+            end
+        end
+    end
     local ok, spawnerTable = pcall(require, "MarzWeapons/OnCreate/ItemSpawnerTable")
     local map = ok and type(spawnerTable) == "table" and spawnerTable.ItemSpawnerMap
     if type(map) ~= "table" then return end
@@ -261,3 +299,103 @@ local function applyPlaces()
 end
 
 Events.OnPreDistributionMerge.Add(applyPlaces)
+
+-------------------------------------------------
+-- Rare guns (user, 2026-11-21: "audit each gun spawns and if they're considered still rare, expose them more")
+-------------------------------------------------
+-- Audited by scripts/loot/audit.py: a gun's container score is the sum over every loot list of rolls x the weight of
+-- each entry that can give it x its share of that entry (a GoM spawner picks an alternative evenly, then one gun of
+-- the alternative's list evenly; a vanilla gun stands for GoM's replacements of it). ItemPickerJava rolls every
+-- item of a list on its own each roll (Rand.Next(10000) < its spawn chance, which grows with its weight), so weights
+-- add up across lists. Two things kept guns far below the median: alternatives that share one slot among several guns
+-- (GoM's M16A2 / M16A3 / M203 / CAR-15 / M4A1 kit gives an M4A1 a fifth of one slot) and spawners crowded by both
+-- mods (the police SMG spawner holds ten kits).
+-- 1. Shared kits split: every gun spawner alternative whose gun list holds several guns gets a copy per extra gun, so
+--    each gun has the share of an alternative of its own. At OnLoadMapZones, after both mods' OnInitGlobalModData
+--    additions; the copies are taken out again at the next load.
+-- 2. Spawner weights raised (RARE_WEIGHTS, at OnPostDistributionMerge, after GoM's and our insertions): each factor
+--    is the one the audit found lifting the spawner's guns to the median gun's container score (after the splits),
+--    capped at 4. The loot lists are read into Java (ItemPickerJava.Parse) right after the merge, before any event
+--    that sees the spawner additions, so the factors are worked out offline: rerun the audit after a loot change.
+local NOT_GUN_SPAWNERS = { "Magazine", "Optic", "Muzzle", "Suppressor", "Foregrip", "Light", "Bayonet", "Attachment",
+    "Ordnance" }
+
+local function isGunSpawner(name)
+    if type(name) ~= "string" then return false end
+    for _, word in ipairs(NOT_GUN_SPAWNERS) do
+        if string.find(name, word, 1, true) then return false end
+    end
+    return true
+end
+
+local splitCopies = {}
+
+local function splitSharedKits()
+    for i = #splitCopies, 1, -1 do
+        local list, copy = splitCopies[i][1], splitCopies[i][2]
+        for j = #list, 1, -1 do
+            if list[j] == copy then
+                table.remove(list, j)
+                break
+            end
+        end
+    end
+    splitCopies = {}
+    if not extendLootAreas() then return end
+    local ok, spawnerTable = pcall(require, "MarzWeapons/OnCreate/ItemSpawnerTable")
+    local map = ok and type(spawnerTable) == "table" and spawnerTable.ItemSpawnerMap
+    if type(map) ~= "table" then return end
+    for name, list in pairs(map) do
+        if isGunSpawner(name) and type(list) == "table" then
+            for i = 1, #list do
+                local alternative = list[i]
+                local first = type(alternative) == "table" and alternative[1]
+                local guns = type(first) == "table" and type(first.items) == "table" and #first.items or 0
+                for _ = 2, guns do
+                    local copy = {}
+                    for k, group in ipairs(alternative) do copy[k] = group end
+                    list[#list + 1] = copy
+                    splitCopies[#splitCopies + 1] = { list, copy }
+                end
+            end
+        end
+    end
+end
+
+Events.OnLoadMapZones.Add(splitSharedKits)
+
+-- (audit of 2026-11-21: median gun 42.2 at LootMultiplier 1; every gun reaches it with these)
+local RARE_WEIGHTS = {
+    [G .. "Zombie_Police_SMG_Spawner"] = 3.8,       -- MP5s, Uzi, P90s, MP7s, UMPs, Vectors, AUG Para
+    [G .. "World_Import_Pistol_Spawner"] = 3.8,     -- M93R, Hi-Power, PPK, Vector SDP...
+    [G .. "Zombie_Police_Handgun_Spawner"] = 3.7,   -- P226, VP70M, UCP...
+    [G .. "Zombie_Police_Rifle_Spawner"] = 3.1,     -- CAR-15, XM177, HK416, SCAR-L, G36s
+    [G .. "World_Import_Rifle_Spawner"] = 3.0,      -- AUG A1, SR-25, FAMAS, PSG-1, FNC...
+    [G .. "Zombie_Cowboy_Rifles_Spawner"] = 2.8,    -- Winchester 1887...
+    [G .. "World_Army_Heavy_Spawner"] = 2.7,        -- M79, M60, M249
+    [G .. "World_Army_Rifle_Spawner"] = 2.5,        -- M16A3, M4A1, M203, HK417s, SCAR-H, Mk 11...
+    [G .. "World_Russian_Rifle_Spawner"] = 1.9,     -- RPKs, RPD, SVD, SVU, SV-98 / 99, Grozas...
+    [G .. "Zombie_Civilian_Handgun_Spawner"] = 1.9,
+    [G .. "World_Anachronistic_Spawner"] = 1.8,     -- G36s, Benelli M4, AA-12, Rhino, MP-412
+    [G .. "Zombie_Civilian_Shotgun_Spawner"] = 1.7, -- TOZ-34...
+    [G .. "World_Big_Game_Rifle_Spawner"] = 1.4,    -- Double Deuce
+    [G .. "World_Short_SMG_Spawner"] = 1.2,         -- Uzis, TMP, MP5K, TEC-9, MAC-10
+    [G .. "Zombie_Army_Handgun_Spawner"] = 1.1,
+}
+
+local function raiseRareWeights()
+    if not extendLootAreas() then return end
+    for _, distribution in ipairs({ ProceduralDistributions.list, VehicleDistributions, BagsAndContainers }) do
+        for _, list in pairs(distribution) do
+            local items = type(list) == "table" and list.items
+            if type(items) == "table" then
+                for i = 1, #items - 1, 2 do
+                    local factor = RARE_WEIGHTS[items[i]]
+                    if factor and type(items[i + 1]) == "number" then items[i + 1] = items[i + 1] * factor end
+                end
+            end
+        end
+    end
+end
+
+Events.OnPostDistributionMerge.Add(raiseRareWeights)

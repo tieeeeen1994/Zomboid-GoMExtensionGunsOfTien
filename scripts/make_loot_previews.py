@@ -127,7 +127,7 @@ PAGES = {
          "Army gun storage and the bunker, army trucks, ALICE packs, military rifle cases, late homes, late bandit bags",
          "", ""),
         ("Zombie_Army_Rifle_Spawner", "ARMY RIFLES ON SOLDIERS", "Zombies: soldiers in camouflage", "",
-         "Most soldiers carry a gun"),
+         "Most soldiers carry a gun; also private militia and late survivalists"),
         ("World_Army_Heavy_Spawner", "HEAVY ARMY WEAPONS", "Army gun storage, heavy army trucks", "",
          "The bunker, light army trucks, soldiers' backs"),
         ("Zombie_Army_Handgun_Spawner", "ARMY HANDGUNS",
@@ -150,7 +150,8 @@ PAGES = {
         ("Zombie_Civilian_Rifle_Spawner", "CIVILIAN RIFLES",
          "Mid-game homes, survivor bags. Zombies: private militia, bounty hunters, bandits, survivalists", "", ""),
         ("Zombie_Civilian_SemiRifle_Spawner", "CIVILIAN HUNTING RIFLES",
-         "Homes' gun cabinets, gun store rifles, park ranger storage, rifle cases", "", ""),
+         "Homes' gun cabinets, gun store rifles, park ranger storage, rifle cases", "",
+         "Zombies: hunters, early survivalists"),
         ("Zombie_Hunter_SemiRifles_Spawner", "HUNTERS' RIFLES",
          "Hunting lockers, garages, camping stores, hunters' and park rangers' trucks and storage, prison gun storage, "
          "mid-game homes, rifle cases. Zombies: hunters, private militia, bandits, survivalists", "",
@@ -163,7 +164,7 @@ PAGES = {
          "", "Zombies' holsters: bandits, bank robbers, bikers, bounty hunters, hunters, survivalists, private militia"),
         ("World_Import_Rifle_Spawner", "IMPORTED RIFLES",
          "Gun stores, special pawn shop guns, police evidence, survivalists' trucks, rifle cases, late homes",
-         "Ordinary pawn shops; survivalist zombies", ""),
+         "Ordinary pawn shops; survivalist zombies", "Zombies: private militia, bounty hunters, more survivalists"),
         ("World_Short_SMG_Spawner", "SHORT SUBMACHINE GUNS",
          "Gun stores, special pawn shop guns, survivalists' glove boxes, bandit bags, mid-game homes", "",
          "Drug labs and shacks, plank stashes; zombies' shoulder holsters (bandits, bank robbers, bikers, bounty "
@@ -177,7 +178,8 @@ PAGES = {
          "Survivor bags, survivalists' glove boxes and truck beds", "", ""),
         ("World_Russian_Rifle_Spawner", "RUSSIAN RIFLES",
          "Drug labs, drug money stashes and shacks, police evidence, survivalists' and bandits' vehicles, late homes and "
-         "safehouse bins, plank stashes", "", "Zombies: bank robbers and bandits, mid and late survivalists"),
+         "safehouse bins, plank stashes", "",
+         "Zombies: bank robbers and bandits, mid and late survivalists, private militia, bounty hunters"),
         ("World_Anachronistic_Spawner", "POST-1993 GUNS",
          "Late homes and safehouse bins, late survivor and bandit bags", "",
          "Gun stores, special pawn shop guns, SWAT gun storage; the G36s, Benelli, Rhino and MP-412 also with police, "
@@ -186,7 +188,7 @@ PAGES = {
          "Army surplus stores, garages, gun store rifles, pawn shops, hunters' and trappers' homes", "", ""),
         ("World_Oldies_Spawner", "WORLD WAR GUNS",
          "Gun store cases and rifles, pawn shops, safehouse bins, mid-game homes. Zombies: private militia, hunters", "",
-         ""),
+         "Zombies: bounty hunters, late survivalists"),
         ("World_Big_Game_Rifle_Spawner", "BIG GAME RIFLE",
          "Adventurers' cars, hunting lockers, gun store rifles, special pawn shop guns, antique shops, rarely classy "
          "wardrobes", "", "Hunters' backs"),
@@ -352,9 +354,23 @@ def render(path, subtitle, blocks, columns=1, intro=None, note=NOTE):
     save_under(page.convert("RGB"), path)
 
 
+def rare_spawners():
+    """The spawners ExtendLootAreas.lua's RARE_WEIGHTS raise."""
+    src = open(os.path.join(MODS, "GoMExtensionGunsOfTien/42/media/lua/server/GunsOfTien/ExtendLootAreas.lua"),
+               encoding="utf-8").read()
+    block = src[src.index("local RARE_WEIGHTS = {"):]
+    block = block[:block.index("\n}")]
+    return set(re.findall(r'\[G \.\. "(\w+)"\]', block))
+
+
+RARE = rare_spawners()
+
+
 def spawner_blocks(data, entries):
     blocks = []
     for key, title_text, where, post, extend in entries:
+        if key in RARE:
+            extend = "Turns up more often" + ("; " + extend[0].lower() + extend[1:] if extend else "")
         d = data[S + key]
         guns = d["guns"] + d["ext_guns"]
         blocks.append((title_text, guns, set(d["ext_guns"]), where, post, extend))
