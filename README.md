@@ -256,3 +256,37 @@ Each gun joins the Guns of Marz loot spawner for its kind of gun, packed the sam
 SWAT gun storage, where Guns of Marz places no rifles or submachine guns of its own, also holds SWAT submachine guns and carbines, Guns of Marz's MP5s and CAR-15s among them; police stations' gun storage, police cars and police zombies carry patrol rifles (Guns of Marz's CAR-15s, the HK416 and SCAR-L). The Five-seveN and the UCP are also carried by police and SWAT with Guns of Marz's police handguns; long magazines, suppressors and mount devices turn up with Guns of Marz's, the 4.6x30mm boxes beside 9mm boxes in police, SWAT and gun store storage. Special loads only come from Ammo Maker.
 
 With Extend Loot Areas (sandbox option, off by default) they go further still: regular police with submachine guns, criminals with Grozas, UMP45s and Vector 9mms, survivalists with SCAR-Ls, HK416s and Groza-1s, civilians with Five-seveNs and Vector SDPs, and the civilian rifles in place of the game's own semi-automatic rifle wherever it spawns, homes included (while Guns of Marz's vanilla weapon replacement is on).
+
+## Where the guns are found
+
+Every loot spawner, the guns it gives (marked by mod: Guns of Marz, Guns of Tien, the Post-93 add-on) and where it turns up, with what the Post-93 add-on and Extend Loot Areas add, one picture per family:
+
+### Law enforcement
+
+Police and SWAT handguns, revolvers, shotguns, rifles, marksman rifles and submachine guns.
+
+![Law enforcement](preview33.png)
+
+### Military
+
+Army rifles, heavy weapons, handguns and sniper rifles, mercenary rifles and sniper rifles.
+
+![Military](preview34.png)
+
+### Civilian
+
+Civilian handguns, revolvers, rifles, hunting rifles and shotguns, hunters' rifles, imported pistols and rifles, short submachine guns.
+
+![Civilian](preview35.png)
+
+### Criminal, Russian and collectors'
+
+Criminals' guns, survivalists' and Russian rifles, post-1993 guns, surplus, World War, big game and cowboy guns.
+
+![Criminal, Russian and collectors'](preview36.png)
+
+### In place of the game's own guns
+
+What Guns of Marz turns each of the game's guns into.
+
+![In place of the game's own guns](preview37.png)
