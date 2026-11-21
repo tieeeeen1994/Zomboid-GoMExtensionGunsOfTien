@@ -4,6 +4,10 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
+## Ammo Maker part cartons (3.19.0, built 2026-11-21, not played)
+
+- [ ] After the 3.19.0 upload: put preview38 (part cartons and crates) on the Steam page by hand.
+
 ## Loot (3.18.0, built 2026-11-21, not played)
 
 - [ ] After the 3.18.0 upload: put preview33-37 (where the guns are found) on the Steam page by hand.

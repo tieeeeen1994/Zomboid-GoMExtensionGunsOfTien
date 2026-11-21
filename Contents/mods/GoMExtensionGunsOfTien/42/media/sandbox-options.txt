@@ -29,6 +29,13 @@ option GunsOfTien.BeltLinks {
     translation = GunsOfTien_BeltLinks,
 }
 
+option GunsOfTien.AmmoPartCartons {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_AmmoPartCartons,
+}
+
 option GunsOfTien.FirearmCritRule {
     type        = enum,
     numValues   = 3,

@@ -208,6 +208,10 @@ Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be
 - Recipes for every new round
 - Soft point bullets: Make Soft Point Bullet
 - Birdshot pellets: Pour Birdshot Pellets
+- Ammo part cartons and crates (sandbox option, on by default): 15 boxes or bags of one kind of Ammo Maker part
+  (bullets, casings, fired casings and hulls, primers, hulls, slugs, pellets or filler) pack into a carton and 5
+  cartons into a crate, and back (Place Ammo Part Boxes in Carton / Crate, Open Carton / Crate of Ammo Part Boxes).
+  Made by players only, never found. Off = no packing, those already packed can still be opened
 
 Removing Ammo Maker from an existing save deletes Ammo Maker's own items (gunpowder, casings, bullets, tools) as
 players log in and areas load, as for any removed mod. Guns of Tien's rounds stay.

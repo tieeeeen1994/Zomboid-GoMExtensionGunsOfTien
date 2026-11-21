@@ -593,8 +593,10 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   last upload, for subscribers.
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
-  `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`), `lua/shared/GunsOfTien/`
-  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `ChargingHandle.lua`: the non-reciprocating
+  `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`, `items_ammomaker_cartons.txt`,
+  `recipes_ammomaker_cartons.txt`), `lua/shared/GunsOfTien/`
+  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `AmmoPartCartons.lua` +
+  `AmmoPartCartonsTable.lua`, `ChargingHandle.lua`: the non-reciprocating
   handles of the AUGs and MP7s, with `scripts/GunsOfTien/items_handles.txt`; `FixedBayonet.lua` with its server and
   client `FixedBayonetMenu.lua` halves and `items_fixedbayonet.txt`, section "Fixed bayonets"), `lua/server/GunsOfTien/HotBrass.lua` (no
   loot: see "Loot: none"), `lua/client/GunsOfTien/Tooltips.lua`, `lua/client/GunsOfTien/SlotTurns.lua` (our guns'
@@ -3806,6 +3808,24 @@ HB = `W/3610677934/mods/Hot_Brass_Visible_Casing_Ejection_Framework/42.15/media`
   casing shape, `magazineLearnedRecipes` in its recipeManager) and the reloading press parts (one manual). Round
   assembly (`Make<type>` / `Produce<type>`) and bullets / shot (`MakeBalls00`...) need no book; ours match
   (`NeedToBeLearn = False` everywhere), and each new type keeps its calibre's casing, so the casing gate applies.
+- **Permission** (2026-11-21): Ammo Maker's file headers forbid extending it, or sharing its code with AI tools,
+  without its author's (STIMP_TM's) permission; the user has it.
+- **Part cartons and crates** (user, 2026-11-21; built, not played; 3.19.0): Ammo Maker packs 25 parts into a box
+  or bag (its generated `PackAmmoParts` / `UnpackAmmoParts`: `item 25 [<parts>] flags[IsFull;ItemCount;IsExclusive]`
+  from every active part's `boxType` / `bagType`) and stops there. Ours: 15 boxes or bags of one kind = a carton,
+  5 cartons = a crate (user's numbers), both ways, player-made only, never loot. Every part box and bag of Ammo
+  Maker 42.20 (42 boxes + 12 bags of fired casings / hulls) plus our three, 114 items `GunsOfTien.<box type
+  without "ammomaker_">_Carton / _Crate`, named in Ammo Maker's style ("Carton Bullets Rifle S", "Crate Bags Casings
+  Bottleneck S Old"), weights 0.8 x contents per step (GoM's ammo rule; the heaviest, Balls 00 and birdshot, are 12
+  a carton and 48 a crate), vanilla's mail parcels as art (user: carton = `Base.Parcel_Medium`'s icon `Parcel5` /
+  model `Parcel4`, crate = `Parcel_ExtraLarge`'s `Parcel1` / `Parcel1`; vanilla crosses the numbers, so never
+  guess one from the other), so they never look like ammo cartons or crates (gen_scripts.py `ammomaker_part_cartons()`, which also
+  writes `AmmoPartCartonsTable.lua`). The four recipes are empty placeholders `AmmoPartCartons.lua` fills at
+  OnInitGlobalModData with the boxes whose scripts exist, only with Ammo Maker (an itemMapper naming a missing item
+  breaks every later recipe); without it all four are hidden. Sandbox `GunsOfTien.AmmoPartCartons` (default on,
+  read at world load) exists because Ammo Maker's author plans the same feature: off hides only the two packing
+  recipes, so packed ones can still be opened. Checked in lupa with mocked recipes (on / off / no Ammo Maker,
+  a missing box skipped, a second load adds nothing).
 
 ## Firearm crits per target (42.22.2, built 2026-11-11, not played)
 

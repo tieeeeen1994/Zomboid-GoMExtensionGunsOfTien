@@ -471,6 +471,162 @@ module Base {
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tooltips, indent=2) + '\n')
 
 
+# Cartons and crates of Ammo Maker's part boxes and bags (user, 2026-11-21, with Ammo Maker's author's permission;
+# he plans the same in Ammo Maker, so sandbox option GunsOfTien.AmmoPartCartons can switch ours off). Its boxes and
+# bags hold 25 parts each (its generated PackAmmoParts / UnpackAmmoParts); 15 boxes make a carton and 5 cartons a
+# crate (user). Made by players only, never loot. Each packing step is 0.8 x the weight it holds, Guns of Marz's rule
+# for its ammunition cartons and crates. (full type, Ammo Maker's English name, weight) from its 42.20 scripts and
+# ItemName.json; this mod's own part boxes last. The recipes' inputs, outputs and mappers name Ammo Maker's items,
+# so they are placeholders here, filled by shared/GunsOfTien/AmmoPartCartons.lua only with Ammo Maker (an itemMapper
+# naming a missing item throws and stops every recipe after it).
+PART_BOXES_PER_CARTON = 15
+PART_CARTONS_PER_CRATE = 5
+AMMOMAKER_PART_BOXES = [(f"ammomaker.ammomaker_{t}", n, w) for t, n, w in (
+    ('BoxBulletsRifleS', 'Box Bullets Rifle S', 0.075), ('BoxBulletsRifleSAP', 'Box Bullets Rifle S AP', 0.075),
+    ('BoxBulletsRifleSHP', 'Box Bullets Rifle S HP', 0.075), ('BoxBulletsRifleSTR', 'Box Bullets Rifle S TR', 0.075),
+    ('BoxBulletsRifleM', 'Box Bullets Rifle M', 0.15), ('BoxBulletsRifleMAP', 'Box Bullets Rifle M AP', 0.15),
+    ('BoxBulletsRifleMHP', 'Box Bullets Rifle M HP', 0.15), ('BoxBulletsRifleMTR', 'Box Bullets Rifle M TR', 0.15),
+    ('BoxBulletsRifleL', 'Box Bullets Rifle L', 0.75), ('BoxBulletsRifleLAP', 'Box Bullets Rifle L AP', 0.75),
+    ('BoxBulletsRifleLHP', 'Box Bullets Rifle L HP', 0.75), ('BoxBulletsRifleLTR', 'Box Bullets Rifle L TR', 0.75),
+    ('BoxBulletsHandgunS', 'Box Bullets Handgun S', 0.075),
+    ('BoxBulletsHandgunSAP', 'Box Bullets Handgun S AP', 0.075),
+    ('BoxBulletsHandgunSHP', 'Box Bullets Handgun S HP', 0.075),
+    ('BoxBulletsHandgunSTR', 'Box Bullets Handgun S TR', 0.075),
+    ('BoxBulletsHandgunM', 'Box Bullets Handgun M', 0.15), ('BoxBulletsHandgunMAP', 'Box Bullets Handgun M AP', 0.15),
+    ('BoxBulletsHandgunMHP', 'Box Bullets Handgun M HP', 0.15),
+    ('BoxBulletsHandgunMTR', 'Box Bullets Handgun M TR', 0.15),
+    ('BoxBulletsHandgunL', 'Box Bullets Handgun L', 0.3), ('BoxBulletsHandgunLAP', 'Box Bullets Handgun L AP', 0.3),
+    ('BoxBulletsHandgunLHP', 'Box Bullets Handgun L HP', 0.3), ('BoxBulletsHandgunLTR', 'Box Bullets Handgun L TR', 0.3),
+    ('BoxBalls00', 'Box Balls 00', 1.0), ('BoxPyroFiller12', 'Box Pyro Filler 12', 0.2),
+    ('BoxSlugs12', 'Box Slugs 12', 0.5),
+    ('BoxCasingsBottleneckS', 'Box Casings Bottleneck S', 0.075),
+    ('BoxCasingsBottleneckM', 'Box Casings Bottleneck M', 0.15),
+    ('BoxCasingsBottleneckL', 'Box Casings Bottleneck L', 0.3),
+    ('BoxCasingsBottleneckMRim', 'Box Casings Bottleneck M Rim', 0.18),
+    ('BoxCasingsStraightS', 'Box Casings Straight S', 0.03), ('BoxCasingsStraightM', 'Box Casings Straight M', 0.075),
+    ('BoxCasingsStraightL', 'Box Casings Straight L', 0.15),
+    ('BoxCasingsStraightSRim', 'Box Casings Straight S Rim', 0.045),
+    ('BoxCasingsStraightMRim', 'Box Casings Straight M Rim', 0.09),
+    ('BoxCasingsStraightLRim', 'Box Casings Straight L Rim', 0.18),
+    ('BoxHullsShotgunS', 'Box Hulls Shotgun S', 0.195), ('BoxHullsShotgunL', 'Box Hulls Shotgun L', 0.39),
+    ('BoxPrimerS', 'Box Primer S', 0.025), ('BoxPrimerM', 'Box Primer M', 0.05), ('BoxPrimerL', 'Box Primer L', 0.1),
+    ('BagCasingsBottleneckSOld', 'Bag Casings Bottleneck S Old', 0.075),
+    ('BagCasingsBottleneckMOld', 'Bag Casings Bottleneck M Old', 0.15),
+    ('BagCasingsBottleneckLOld', 'Bag Casings Bottleneck L Old', 0.3),
+    ('BagCasingsBottleneckMRimOld', 'Bag Casings Bottleneck M Rim Old', 0.18),
+    ('BagCasingsStraightSOld', 'Bag Casings Straight S Old', 0.03),
+    ('BagCasingsStraightMOld', 'Bag Casings Straight M Old', 0.075),
+    ('BagCasingsStraightLOld', 'Bag Casings Straight L Old', 0.15),
+    ('BagCasingsStraightSRimOld', 'Bag Casings Straight S Rim Old', 0.045),
+    ('BagCasingsStraightMRimOld', 'Bag Casings Straight M Rim Old', 0.09),
+    ('BagCasingsStraightLRimOld', 'Bag Casings Straight L Rim Old', 0.18),
+    ('BagHullsFiredShotgunS', 'Bag Hulls Fired Shotgun S', 0.195),
+    ('BagHullsFiredShotgunL', 'Bag Hulls Fired Shotgun L', 0.39),
+)] + [
+    (f"{MODULE}.BoxBulletsRifleSSP", 'Box Bullets Rifle S SP', 0.075),
+    (f"{MODULE}.BoxBulletsRifleMSP", 'Box Bullets Rifle M SP', 0.15),
+    (f"{MODULE}.BoxBirdshot", 'Box Birdshot Pellets', 1.0),
+]
+PART_CARTON_RECIPES = (
+    # name, timed action, time, tags
+    ('GunsOfTien_PlaceAmmoPartBoxesInCarton', 'PackingBox', 50, 'InHandCraft'),
+    ('GunsOfTien_OpenCartonOfAmmoPartBoxes', 'UnPackBox', 50, 'InHandCraft;CanBeDoneInDark'),
+    ('GunsOfTien_PlaceAmmoPartBoxesInCrate', 'PackingBox', 100, 'InHandCraft'),
+    ('GunsOfTien_OpenCrateOfAmmoPartBoxes', 'UnPackBox', 100, 'InHandCraft;CanBeDoneInDark'),
+)
+
+
+def part_carton_id(box):
+    """GunsOfTien.<box type without Ammo Maker's prefix>_Carton / _Crate"""
+    return box.split('.', 1)[1].replace('ammomaker_', '')
+
+
+def ammomaker_part_cartons():
+    items_out = ["/* Cartons and crates of Ammo Maker's part boxes and bags, packed and opened by the recipes in\n"
+                 "   recipes_ammomaker_cartons.txt (filled by shared/GunsOfTien/AmmoPartCartons.lua). Generated by\n"
+                 "   scripts/gen_scripts.py ammomaker_part_cartons(). */\n\n"
+                 f"module {MODULE} {{\n    imports {{ Base }}\n"]
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    tips_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Tooltip.json')
+    tips = json.load(open(tips_path))
+    per_crate = PART_BOXES_PER_CARTON * PART_CARTONS_PER_CRATE
+    for box, box_name, box_w in AMMOMAKER_PART_BOXES:
+        short = part_carton_id(box)
+        carton_w = round(box_w * PART_BOXES_PER_CARTON * 0.8, 3)
+        crate_w = round(carton_w * PART_CARTONS_PER_CRATE * 0.8, 3)
+        kind, parts = box_name.split(' ', 1)
+        holder = 'bags' if kind == 'Bag' else 'boxes'
+        label = f"Bags {parts}" if kind == 'Bag' else parts
+        # Vanilla's mail parcels (user, 2026-11-21), so they never look like an ammunition carton or crate:
+        # Base.Parcel_Medium's icon and model for a carton, Base.Parcel_ExtraLarge's for a crate.
+        for sfx, weight, icon, model, recipe, count, of in (
+                ('Carton', carton_w, 'Parcel5', 'Parcel4',
+                 'GunsOfTien_OpenCartonOfAmmoPartBoxes', PART_BOXES_PER_CARTON, holder),
+                ('Crate', crate_w, 'Parcel1', 'Parcel1',
+                 'GunsOfTien_OpenCrateOfAmmoPartBoxes', PART_CARTONS_PER_CRATE, 'cartons')):
+            item = f"{short}_{sfx}"
+            items_out.append(f"""
+    item {item} {{
+        DisplayCategory    = AmmoParts,
+        ItemType           = base:normal,
+        Weight             = {weight:g},
+        Icon               = {icon},
+        WorldStaticModel   = {model},
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        DoubleClickRecipe  = {recipe},
+        ToolTip            = Tooltip_Item_{MODULE}_{item},
+    }}
+""")
+            names[f"{MODULE}.{item}"] = f"{sfx} {label}"
+            total = 25 * PART_BOXES_PER_CARTON * (PART_CARTONS_PER_CRATE if sfx == 'Crate' else 1)
+            tips[f"Tooltip_Item_{MODULE}_{item}"] = f"{sfx} of {count} {of} ({total} {parts})"
+    items_out.append("}\n")
+    write('scripts/GunsOfTien/items_ammomaker_cartons.txt', ''.join(items_out))
+
+    recipes_out = ["/* Packing Ammo Maker's part boxes and bags into cartons and crates and opening them. Placeholders: their\n"
+                   "   inputs, outputs and mappers name Ammo Maker's items, so shared/GunsOfTien/AmmoPartCartons.lua\n"
+                   "   loads them only with Ammo Maker and hides them without it (or the packing ones while sandbox\n"
+                   "   option GunsOfTien.AmmoPartCartons is off). Generated by scripts/gen_scripts.py. */\n\nmodule Base {\n"]
+    for name, action, time, tags in PART_CARTON_RECIPES:
+        recipes_out.append(f"""
+\tcraftRecipe {name}
+\t{{
+\t\ttimedAction = {action},
+\t\tTime = {time},
+\t\tTags = {tags};CanBeDoneWhileWalking,
+\t\tcanWalk = true,
+\t\tNeedToBeLearn = False,
+\t\tcategory = Packing,
+\t\tinputs {{}}
+\t\toutputs {{}}
+\t}}
+""")
+    recipes_out.append("}\n")
+    write('scripts/GunsOfTien/recipes_ammomaker_cartons.txt', ''.join(recipes_out))
+
+    recipes_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    recipes_tr = json.load(open(recipes_path))
+    recipes_tr.update({
+        'GunsOfTien_PlaceAmmoPartBoxesInCarton': 'Place Ammo Part Boxes in Carton',
+        'GunsOfTien_OpenCartonOfAmmoPartBoxes': 'Open Carton of Ammo Part Boxes',
+        'GunsOfTien_PlaceAmmoPartBoxesInCrate': 'Place Ammo Part Boxes in Crate',
+        'GunsOfTien_OpenCrateOfAmmoPartBoxes': 'Open Crate of Ammo Part Boxes',
+    })
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(recipes_tr, indent=2) + '\n')
+    write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
+
+    # The Lua table AmmoPartCartons.lua reads: box -> carton -> crate.
+    rows = ''.join(f'    {{ "{box}", "{MODULE}.{part_carton_id(box)}_Carton", "{MODULE}.{part_carton_id(box)}_Crate" }},\n'
+                   for box, _, _ in AMMOMAKER_PART_BOXES)
+    write('lua/shared/GunsOfTien/AmmoPartCartonsTable.lua',
+          "-- Generated by scripts/gen_scripts.py ammomaker_part_cartons(): { part box or bag, carton, crate }.\n"
+          f"GunsOfTien_AmmoPartCartons = {{\n    boxesPerCarton = {PART_BOXES_PER_CARTON},\n"
+          f"    cartonsPerCrate = {PART_CARTONS_PER_CRATE},\n{rows}}}\n")
+
+
 # The lit laser's beam (shared/GunsOfTien/Lasers.lua, scripts/make_laser_beam.py): one hidden weapon part per GoM
 # laser, fitted while it is lit and drawn by the engine at the gun's mount point for that laser (GoM's
 # ModelWeaponPart lines: its rifle lasers on laser_right, its pistol lasers on underbarrel), then moved by the beam
@@ -3940,6 +4096,7 @@ if __name__ == '__main__':
     ammo_22lr()
     p90()
     ammomaker()
+    ammomaker_part_cartons()
     lasers()
     sawn_stocks()
     smg_suppressor()

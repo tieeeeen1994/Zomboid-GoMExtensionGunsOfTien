@@ -15,7 +15,8 @@ Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP,
 preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
 Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same),
 preview30.png (1024x1024, the Walther PPK, the same), preview31.png (1024x1024, the SVU, the same), preview32.png
-(1024x1024, Post-93's SV-98 and SV-99, the same)
+(1024x1024, Post-93's SV-98 and SV-99, the same), preview38.png (1024x1024, the Ammo Maker part cartons and crates,
+the same; previews 33-37 are scripts/make_loot_previews.py's)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
 tmp/ad); preview11's posed figures from scripts/anim/render_stance_ad.py (Blender, same folder); the ammo boxes are the mods' own 32 px inventory icons, scaled up without smoothing.
@@ -1492,6 +1493,77 @@ def preview32(path, W=1024):
              ("FOLDING BIPODS  ·  RAILS FOR GUNS OF MARZ OPTICS",), W, bottom=384, slot_y=398, gap=14)
 
 
+AMMO_MAKER_TEXTURES = next((p for p in (
+    os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/2788256295/mods/"
+                       "AmmoMaker/common/media/textures"),
+    "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/2788256295/mods/AmmoMaker/common/media/textures")
+    if os.path.isdir(p)), None)
+PZ_MEDIA = next((p for p in (
+    os.path.expanduser("~/Library/Application Support/Steam/steamapps/common/ProjectZomboid/Project Zomboid.app/"
+                       "Contents/Java/media"),
+    "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media") if os.path.isdir(p)), None)
+
+
+def vanilla_icon(name, px):
+    """A vanilla inventory icon (Item_<name>) out of media/texturepacks/UI2.pack, scaled up crisp. The pack is a run
+    of entries (int32 name length, name, eight int32s x, y, w, h, offsetX, offsetY, originalW, originalH), each
+    page's entries followed by that page's PNG atlas (the reader of TienInspectWeapon's make_art.py)."""
+    import io
+    import re
+    import struct
+    blob = open(os.path.join(PZ_MEDIA, "texturepacks", "UI2.pack"), "rb").read()
+    want = ("Item_" + name).encode()
+    at = blob.find(struct.pack("<i", len(want)) + want)
+    if at < 0:
+        raise SystemExit("no %s in UI2.pack" % want.decode())
+    x, y, w, h, ox, oy, ow, oh = struct.unpack_from("<8i", blob, at + 4 + len(want))
+    start = blob.find(b"\x89PNG\r\n\x1a\n", at)
+    end = blob.find(b"IEND\xaeB`\x82", start) + 8
+    sheet = Image.open(io.BytesIO(blob[start:end])).convert("RGBA")
+    im = Image.new("RGBA", (ow, oh), (0, 0, 0, 0))
+    im.paste(sheet.crop((x, y, x + w, y + h)), (ox, oy))
+    return im.resize((px, px), Image.NEAREST)
+
+
+def preview38(path, W=1024):
+    """The main mod's Ammo Maker part cartons and crates (3.19.0): three rows of Ammo Maker part box -> carton ->
+    crate (its 64 px icons and vanilla's mail parcels Parcel5 / Parcel1, scaled up crisp), then what plays."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    page = background(size).convert("RGBA")
+    title(page, "AMMO MAKER PARTS", 40, "GUNS OF MARZ EXTENSION")
+    caption(page, 92, "PACKED INTO CARTONS AND CRATES", big=True)
+    px = u(64)
+    carton, crate = vanilla_icon("Parcel5", px), vanilla_icon("Parcel1", px)
+    am = lambda n: icon(os.path.join(AMMO_MAKER_TEXTURES, "Item_ammomaker_%s.png" % n), px)
+    rows = (("BoxBulletsRifleM", "BULLETS"), ("BoxCasingsBottleneckM", "CASINGS"), ("BoxPrimerM", "PRIMERS"))
+    big, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(11), b"Bold")
+    ink, soft = (28, 30, 34, 255), (60, 64, 70, 255)
+    cols = (110, 256, 402)
+    for n, (box, name) in enumerate(rows):
+        top = 118 + 92 * n
+        for cx, im in zip(cols, (am(box), carton, crate)):
+            paste_with_shadow(page, placed(size, im, (u(cx) - px // 2, u(top))), (0, u(4)), u(4), 190)
+        for cx, label in zip(cols, (name, "CARTON", "CRATE")):
+            page.alpha_composite(text_layer(size, (u(cx), u(top + 68)), label, small, soft, anchor="ma",
+                                            spacing=u(1)))
+        for cx, count in ((183, "15"), (329, "5")):
+            mid = u(top + 32)
+            page.alpha_composite(text_layer(size, (u(cx), mid - u(6)), count + " \u00d7", big, ink, anchor="mb"))
+            d = ImageDraw.Draw(page)
+            d.line([(u(cx - 22), mid + u(4)), (u(cx + 16), mid + u(4))], fill=ink, width=u(3))
+            d.polygon([(u(cx + 24), mid + u(4)), (u(cx + 14), mid - u(2)), (u(cx + 14), mid + u(10))], fill=ink)
+    caption(page, 400, "15 BOXES OR BAGS MAKE A CARTON  ·  5 CARTONS A CRATE", big=True)
+    caption(page, 422, "BULLETS, CASINGS, FIRED BRASS, PRIMERS, HULLS, SLUGS, PELLETS, FILLER")
+    caption(page, 440, "THEY OPEN BACK UP  ·  MADE BY PLAYERS, NEVER FOUND")
+    caption(page, 458, "SANDBOX OPTION, ON BY DEFAULT")
+    save_under(page.convert("RGB"), path)
+
+
 if __name__ == "__main__":
     def want(name):
         return not ONLY or name in ONLY
@@ -1558,6 +1630,8 @@ if __name__ == "__main__":
         preview30(os.path.join(ROOT, "preview30.png"))   # the Walther PPK (3.16.0), added the same way
     if want("preview31"):
         preview31(os.path.join(ROOT, "preview31.png"))   # the SVU (3.17.0), added the same way
+    if want("preview38"):
+        preview38(os.path.join(ROOT, "preview38.png"))   # Ammo Maker part cartons (3.19.0), added the same way
     if want("preview32"):
         preview32(os.path.join(ROOT, "preview32.png"))   # Post-93's SV-98 and SV-99 (3.17.0), added the same way
     if want("preview"):

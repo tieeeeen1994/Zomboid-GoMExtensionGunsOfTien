@@ -148,6 +148,7 @@ Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be
 [*]Recipes for every new round
 [*]Soft point bullets: Make Soft Point Bullet
 [*]Birdshot pellets: Pour Birdshot Pellets
+[*]Ammo part cartons and crates (sandbox option): 15 boxes or bags of one kind of Ammo Maker part (bullets, casings, fired casings and hulls, primers, hulls, slugs, pellets or filler) pack into a carton and 5 cartons into a crate, and back. Made by players only, never found
 [/list]
 Removing Ammo Maker from an existing save deletes Ammo Maker's own items (gunpowder, casings, bullets, tools) as players log in and areas load, as for any removed mod. Guns of Tien's rounds stay.
 
@@ -206,6 +207,7 @@ On the [b]Guns of Tien[/b] page of the sandbox settings.
 [*][i]Upright Guns in Modded Attachment Slots[/i] (on by default): guns held like a pistol hang upright on other mods' rifle slots, sawn-off shotguns in their holster slots. Takes effect the next time the game is loaded
 [*][i]7.62x39mm US Subsonic Cycling[/i]: always rack after every shot, rack unless a PBS-1 is fitted (default), or never rack
 [*][i]Belt-Fed Guns Need Links[/i] (on by default): the M249's and M60's belt boxes take one link per round. Off = they load like any magazine, no link boxes are found and the link recipes are hidden. Takes effect the next time the game is loaded
+[*][i]Ammo Maker Part Cartons and Crates[/i] (on by default): with Ammo Maker, 15 boxes or bags of one kind of ammunition part pack into a carton and 5 cartons into a crate. Off = no packing, cartons and crates already packed can still be opened. Takes effect the next time the game is loaded
 [*][i]Gun Critical Hits[/i]: when one shot hits several targets, Default (the game's rule since Build 42.22: one roll per shot decides every target), Old (as before Build 42.22: every target rolls at its own chance) or Enhanced (every target rolls, led by the trigger pull: a critical pull raises the other targets' chance, a plain one lowers it, and on average each target still crits at its own chance). A shot that hits one target is the same under every choice
 [*][i]Trigger Pull Lead for Gun Critical Hits[/i] (50 by default): how strongly the trigger pull leads under Enhanced, from 0 (each target rolls on its own) to 100 (every target copies the trigger pull). At 50, a target with a 30% chance crits at 65% after a critical pull and at 15% after a plain one
 [*][i]Minimum Firearm Damage (%)[/i] (0 by default): how much damage a gun's failed hit roll on a zombie still does, as a share of the same hit landed. 0 = the game's rule since Build 42.22 (a stagger for no damage). 100 = every hit that reaches a zombie does full damage, as in Build 42.21, where it was a bug. Players and animals are not changed, nothing changes while Firearms Use Damage Chance is Disabled, and such hits still give Aiming experience
