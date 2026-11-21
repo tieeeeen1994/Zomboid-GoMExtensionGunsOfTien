@@ -46,13 +46,8 @@
       `gunOnBackBagSurvivalist` out of them) and in ordinary pawn shops (`PawnShopGuns` 3, as GoM's
       `PawnShopGunsSpecial`).
     - Sandbox GunsOfTien.ExtendLootAreas (main mod's page, off by default; user: "lore inaccuracies but still
-      viable"): EXTENDED below. Armed officers (the police outfits' weapon lists always roll, user: "we do notice
-      officers don't have guns on them"; vanilla arms about 1 police zombie in 4), armed soldiers (custom lists for
-      ArmyCamoGreen / ArmyCamoDesert / Ghillie, which vanilla leaves on the generic path: about 1 in 55 armed with
-      the presets' 6% Chance of Attached Weapon), armed bandits (their lists always roll and hold both holsters and
-      the criminals' back rifle slot; user: "maybe criminals should have them too"), armed hunters, park rangers,
-      survivalists and private militia (user: "do it" after a survey of every outfit with gun slots), regular
-      police with SMGs (police
+      viable"): EXTENDED below. (Arming the zombie outfits and GoM's spawners in new places are the main mod's
+      server/GunsOfTien/ExtendLootAreas.lua, since they hand out GoM's guns too.) Regular police with SMGs (police
       SMG spawner in PoliceStorageGuns 3, police cars 4 / 3, the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
       robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
       survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
@@ -269,58 +264,6 @@ local EXTENDED_PLACES = {
 local EXTENDED_SLOTS = {
     { "shotgunPolice", POLICE_SMG },
 }
--- Armed officers: the police outfits' custom weapon lists always roll (vanilla 40 / 50 / 60, "reduced as Police zombies
--- are quite commonplace"). Java (AttachedWeaponDefinitions.addRandomAttachedWeapon) rolls an outfit's `chance` once to
--- give it anything and again before each further item up to `maxitem`, so at 100 a Police zombie always gets two
--- items: a handgun about 65% of the time and some gun about 88% (vanilla about 19% and 28%).
-local EXTENDED_OUTFIT_CHANCES = {
-    Police = 100, PoliceState = 100, PoliceRiot = 100, Police_SWAT = 100, Sheriff_Deputy = 100,
-    Bandit = 100, Bandit_Early = 100, Bandit_Mid = 100, Bandit_Late = 100,
-    -- (Survivalist02..05 and their _Mid / _Late are the same tables as these three, so only these are named)
-    Survivalist = 100, Survivalist_Mid = 100, Survivalist_Late = 100, PrivateMilitia = 100,
-}
--- Armed bandits: vanilla commented the holster out of the plain Bandit's list (a gun about 6% of the time; early /
--- mid / late bandits 20 / 39 / 48%). With the option their lists always roll and every bandit list also holds the two
--- handgun holsters (whose outfit lists already name the bandits) and the criminals' back rifle slot (GoM's crime rifle
--- spawner: FNC / AKs / AS VAL, plus the Grozas, UMP45 and Vector 9mm under this option), whose outfit list gets the
--- bandits for as long as the option is on.
-local EXTENDED_OUTFIT_SLOTS = {
-    { "Bandit", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
-    { "Bandit_Early", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
-    { "Bandit_Mid", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
-    { "Bandit_Late", { "handgunHolster", "handgunHolsterShoulder", "gunOnBackCrime" } },
-}
--- Armed survivalists and militia: their lists always roll (vanilla 50 / 60; early survivalists a gun about 25% of the
--- time, mid and late 8 / 6%, militia 34%). The mid and late survivalist lists hold both holsters but vanilla's holster
--- outfit lists name only the early ones, so the holsters were never picked; the option adds the mid / late names.
--- Then: early survivalists about 77%, mid and late always, militia about 94%.
-local SURVIVALIST_LATER = {
-    "Survivalist_Mid", "Survivalist02_Mid", "Survivalist03_Mid", "Survivalist04_Mid", "Survivalist05_Mid",
-    "Survivalist_Late", "Survivalist02_Late", "Survivalist03_Late", "Survivalist04_Late", "Survivalist05_Late",
-}
-local EXTENDED_SLOT_OUTFITS = {
-    { "gunOnBackCrime", { "Bandit", "Bandit_Early", "Bandit_Mid", "Bandit_Late" } },
-    { "handgunHolster", SURVIVALIST_LATER },
-    { "handgunHolsterShoulder", SURVIVALIST_LATER },
-}
-local vanillaOutfitChances = {}
--- Armed soldiers: vanilla gives the army outfits no custom list, so they take the generic path: one roll at the
--- sandbox's Chance of Attached Weapon (6% in the presets), then one slot among every generic one (knives...) and theirs,
--- a gun about 1 time in 55. With the option, custom lists of their own slots that always roll: camouflage soldiers
--- two items among rifle 50 / holster 50 / belt 30 / bedroll 50 (some gun about 88%, the rifle about 55%), Ghillie
--- snipers all three of rifle / belt / bedroll (the rifle always). The generic knives no longer come with them.
--- Armed hunters and park rangers, generic in vanilla too (about 2%): hunters two of back rifle 30 / ranger holster 50 /
--- shoulder holster 50, rangers one of ranger holster 50 / police long gun 30 (shotgun, or a patrol rifle), each list
--- rolling at 90, so about 9 in 10 carry a gun (hunters the rifle about half of the time).
--- Only made where no custom list exists; another mod's list is left alone.
-local EXTENDED_OUTFIT_LISTS = {
-    ArmyCamoGreen = { chance = 100, maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyGreenBedroll" } },
-    ArmyCamoDesert = { chance = 100, maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyDesertBedroll" } },
-    Ghillie = { chance = 100, maxitem = 3, slots = { "rifleOnBackGhillie", "armyBelt", "armyGreenBedroll" } },
-    Hunter = { chance = 90, maxitem = 2, slots = { "gunOnBackHunter", "handgunHolsterRanger", "handgunHolsterShoulder" } },
-    Ranger = { chance = 90, maxitem = 1, slots = { "handgunHolsterRanger", "shotgunPolice" } },
-}
-local madeOutfitLists = {}
 -- The civilian rifles among GoM's replacements for vanilla's AR-type rifle (homes, closets, garages, police storage),
 -- in the replacement table's own form: { items, amountChance } with 0..amountChance of each later group.
 local EXTENDED_REPLACEMENTS = {
@@ -431,62 +374,6 @@ local function addSpawners()
     if extend then
         addGuns(map, EXTENDED_GUNS)
         addSlots(EXTENDED_SLOTS)
-    end
-    -- the police outfits' chances: vanilla's kept the first time, put back when the option is off
-    local outfits = AttachedWeaponDefinitions and AttachedWeaponDefinitions.attachedWeaponCustomOutfit
-    if type(outfits) == "table" then
-        for name, chance in pairs(EXTENDED_OUTFIT_CHANCES) do
-            local outfit = outfits[name]
-            if type(outfit) == "table" then
-                if vanillaOutfitChances[name] == nil then vanillaOutfitChances[name] = outfit.chance end
-                outfit.chance = extend and chance or vanillaOutfitChances[name]
-            end
-        end
-        if extend then
-            for _, entry in ipairs(EXTENDED_OUTFIT_SLOTS) do
-                local outfit = outfits[entry[1]]
-                local weapons = type(outfit) == "table" and outfit.weapons
-                if type(weapons) == "table" then
-                    for _, slot in ipairs(entry[2]) do
-                        local definition = AttachedWeaponDefinitions[slot]
-                        local present = false
-                        for _, weapon in ipairs(weapons) do
-                            if weapon == definition then present = true end
-                        end
-                        if type(definition) == "table" and not present then addTo(weapons, definition) end
-                    end
-                end
-            end
-            for _, entry in ipairs(EXTENDED_SLOT_OUTFITS) do
-                local definition = AttachedWeaponDefinitions[entry[1]]
-                local names = type(definition) == "table" and definition.outfit
-                if type(names) == "table" then
-                    for _, name in ipairs(entry[2]) do
-                        local present = false
-                        for _, existing in ipairs(names) do
-                            if existing == name then present = true end
-                        end
-                        if not present then addTo(names, name) end
-                    end
-                end
-            end
-        end
-        for name, list in pairs(EXTENDED_OUTFIT_LISTS) do
-            if madeOutfitLists[name] and outfits[name] == madeOutfitLists[name] then outfits[name] = nil end
-            madeOutfitLists[name] = nil
-            if extend and outfits[name] == nil then
-                local weapons = {}
-                for _, slot in ipairs(list.slots) do
-                    local definition = AttachedWeaponDefinitions[slot]
-                    if type(definition) == "table" then weapons[#weapons + 1] = definition end
-                end
-                if #weapons > 0 then
-                    local made = { chance = list.chance, maxitem = list.maxitem, weapons = weapons }
-                    outfits[name] = made
-                    madeOutfitLists[name] = made
-                end
-            end
-        end
     end
     for _, entry in ipairs(PART_SPAWNERS) do
         addParts(map[entry[1]], entry[1], entry[2])

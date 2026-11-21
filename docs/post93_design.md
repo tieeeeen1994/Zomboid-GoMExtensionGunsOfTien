@@ -173,7 +173,8 @@ More places where reality puts these guns (user, 2026-11-21: "for lore accuracy,
 | Ordinary pawn shops (`PawnShopGuns` 3) | GoM's import rifle spawner | As GoM's `PawnShopGunsSpecial` |
 
 Sandbox **Extend Loot Areas** (`GunsOfTien.ExtendLootAreas`, main mod's page, off by default; user: "lore
-inaccuracies but still viable"): armed officers (user: "we do notice officers don't have guns on them"; the Police,
+inaccuracies but still viable"; the zombie outfits and GoM's spawners in new places moved to the main mod's
+`server/GunsOfTien/ExtendLootAreas.lua` when the user asked to "expose ALL guns", GoM's included): armed officers (user: "we do notice officers don't have guns on them"; the Police,
 PoliceState, PoliceRiot, Police_SWAT and Sheriff_Deputy custom weapon lists' `chance` 40 / 50 / 60 / 60 / 50 set to
 100, so a Police zombie carries a handgun about 65% of the time and some gun about 88%, vanilla about 19% / 28%; riot
 police and SWAT always), armed soldiers (vanilla has no custom list for the army outfits, so they take the

@@ -471,7 +471,9 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `weapons` entry is picked evenly. So a vanilla Police zombie (custom 40, maxitem 2; holster 50, nightstick 30,
   radio 30, shotgunPolice 30) carries any gun about 28% of the time and a handgun about 19%. Java reads the Lua table
   once (`checkDirty`, at the first zombie dressed) and again only after a Lua file loads (`LuaManager.RunLua` sets
-  `dirty`), so edits at OnInitGlobalModData land before it. Extend Loot Areas sets the five police outfits' chance to
+  `dirty`), so edits at OnInitGlobalModData land before it. Extend Loot Areas (main mod's `server/GunsOfTien/ExtendLootAreas.lua` since the user asked to "expose ALL
+  guns", 2026-11-21: zombie outfits, GoM's spawners in new places and on new slots, GoM's post-1993 kits copied into
+  spawners of their kind; Post-93's Loot.lua keeps its own guns' extras) sets the five police outfits' chance to
   100 (88% / 65%), putting vanilla's back when off. Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
   list: generic path, sandbox `ChanceOfAttachedWeapon` (6 in the presets) then one slot among all generic ones and
   theirs, so about 1 soldier in 55 carries a gun; the option makes custom lists of their own slots (88% / Ghillie's
