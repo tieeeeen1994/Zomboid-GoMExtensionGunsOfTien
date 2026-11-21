@@ -176,7 +176,12 @@ Sandbox **Extend Loot Areas** (`GunsOfTien.ExtendLootAreas`, main mod's page, of
 inaccuracies but still viable"): armed officers (user: "we do notice officers don't have guns on them"; the Police,
 PoliceState, PoliceRiot, Police_SWAT and Sheriff_Deputy custom weapon lists' `chance` 40 / 50 / 60 / 60 / 50 set to
 100, so a Police zombie carries a handgun about 65% of the time and some gun about 88%, vanilla about 19% / 28%; riot
-police and SWAT always), regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
+police and SWAT always), armed soldiers (vanilla has no custom list for the army outfits, so they take the
+generic path: one roll at Chance of Attached Weapon, 6% in the presets, then one slot among every generic one and
+theirs, about 1 soldier in 55 with a gun; custom lists that always roll are made for ArmyCamoGreen / ArmyCamoDesert
+with two of rifle / holster / belt / bedroll, some gun about 88%, the rifle about 55%, and Ghillie with all three of
+rifle / belt / bedroll; the generic knives no longer come with them; a list another mod made is left alone),
+regular police with SMGs (GoM's police SMG spawner in `PoliceStorageGuns` 3,
 `PoliceTruckBed` 4, `PoliceSeatRear` 3 and the `shotgunPolice` slot), criminals with the Grozas, UMP45 and Vector 9mm
 (GoM's crime rifle spawner: bank robbers, bandit bags, stashes, special pawn shops), survivalists with the SCAR-L,
 HK416 and Groza-1 (its survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with the

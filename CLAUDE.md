@@ -472,7 +472,11 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   radio 30, shotgunPolice 30) carries any gun about 28% of the time and a handgun about 19%. Java reads the Lua table
   once (`checkDirty`, at the first zombie dressed) and again only after a Lua file loads (`LuaManager.RunLua` sets
   `dirty`), so edits at OnInitGlobalModData land before it. Extend Loot Areas sets the five police outfits' chance to
-  100 (88% / 65%), putting vanilla's back when off. GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
+  100 (88% / 65%), putting vanilla's back when off. Army outfits (ArmyCamoGreen / Desert, Ghillie) have no custom
+  list: generic path, sandbox `ChanceOfAttachedWeapon` (6 in the presets) then one slot among all generic ones and
+  theirs, so about 1 soldier in 55 carries a gun; the option makes custom lists of their own slots (88% / Ghillie's
+  rifle always) and removes them when off. Vanilla's `rifleOnBackGhillie` has `id = "huntingRifleOnBack"` (a label
+  only: the Java keys generic slots by the Lua key and uses `id` only inside custom lists and for sorting). GoM places `World_Anachronistic_Spawner` only in `FirearmWeapons_Late` 5, `SafehouseBin_Late`
   5, `SurvivorBag_Late` 2, `BanditBag_Late` 1 (no gun store, no zombie), and puts no gun spawner in
   `SWATStorageGuns`. Checked with lupa against GoM's real ItemSpawnerTable with both mods' Loot.lua (2026-11-21).
 - **FN SCAR-L and SCAR-H** (user, 2026-10-20): Mk 16 STD and Mk 17 LB (20" barrel, chosen over the TPRS of the

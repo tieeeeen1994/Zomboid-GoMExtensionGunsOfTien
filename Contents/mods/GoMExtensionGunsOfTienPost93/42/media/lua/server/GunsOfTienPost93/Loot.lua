@@ -47,7 +47,9 @@
       `PawnShopGunsSpecial`).
     - Sandbox GunsOfTien.ExtendLootAreas (main mod's page, off by default; user: "lore inaccuracies but still
       viable"): EXTENDED below. Armed officers (the police outfits' weapon lists always roll, user: "we do notice
-      officers don't have guns on them"; vanilla arms about 1 police zombie in 4), regular police with SMGs (police
+      officers don't have guns on them"; vanilla arms about 1 police zombie in 4), armed soldiers (custom lists for
+      ArmyCamoGreen / ArmyCamoDesert / Ghillie, which vanilla leaves on the generic path: about 1 in 55 armed with
+      the presets' 6% Chance of Attached Weapon), regular police with SMGs (police
       SMG spawner in PoliceStorageGuns 3, police cars 4 / 3, the `shotgunPolice` slot), criminals with Grozas, UMP45s and Vector 9mms (GoM's crime rifle spawner: bank
       robbers, bandit bags, stashes, the special pawn shop list), survivalists with SCAR-Ls, HK416s and Groza-1s (its
       survivalist rifle spawner: survivor bags, survivalists' vehicles), civilians with Five-seveNs and Vector SDPs
@@ -272,6 +274,18 @@ local EXTENDED_OUTFIT_CHANCES = {
     Police = 100, PoliceState = 100, PoliceRiot = 100, Police_SWAT = 100, Sheriff_Deputy = 100,
 }
 local vanillaOutfitChances = {}
+-- Armed soldiers: vanilla gives the army outfits no custom list, so they take the generic path: one roll at the
+-- sandbox's Chance of Attached Weapon (6% in the presets), then one slot among every generic one (knives...) and theirs,
+-- a gun about 1 time in 55. With the option, custom lists of their own slots that always roll: camouflage soldiers
+-- two items among rifle 50 / holster 50 / belt 30 / bedroll 50 (some gun about 88%, the rifle about 55%), Ghillie
+-- snipers all three of rifle / belt / bedroll (the rifle always). The generic knives no longer come with them.
+-- Only made where no custom list exists; another mod's list is left alone.
+local EXTENDED_OUTFIT_LISTS = {
+    ArmyCamoGreen = { maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyGreenBedroll" } },
+    ArmyCamoDesert = { maxitem = 2, slots = { "assaultRifleArmyOnBack", "handgunHolsterArmy", "armyBelt", "armyDesertBedroll" } },
+    Ghillie = { maxitem = 3, slots = { "rifleOnBackGhillie", "armyBelt", "armyGreenBedroll" } },
+}
+local madeOutfitLists = {}
 -- The civilian rifles among GoM's replacements for vanilla's AR-type rifle (homes, closets, garages, police storage),
 -- in the replacement table's own form: { items, amountChance } with 0..amountChance of each later group.
 local EXTENDED_REPLACEMENTS = {
@@ -391,6 +405,22 @@ local function addSpawners()
             if type(outfit) == "table" then
                 if vanillaOutfitChances[name] == nil then vanillaOutfitChances[name] = outfit.chance end
                 outfit.chance = extend and chance or vanillaOutfitChances[name]
+            end
+        end
+        for name, list in pairs(EXTENDED_OUTFIT_LISTS) do
+            if madeOutfitLists[name] and outfits[name] == madeOutfitLists[name] then outfits[name] = nil end
+            madeOutfitLists[name] = nil
+            if extend and outfits[name] == nil then
+                local weapons = {}
+                for _, slot in ipairs(list.slots) do
+                    local definition = AttachedWeaponDefinitions[slot]
+                    if type(definition) == "table" then weapons[#weapons + 1] = definition end
+                end
+                if #weapons > 0 then
+                    local made = { chance = 100, maxitem = list.maxitem, weapons = weapons }
+                    outfits[name] = made
+                    madeOutfitLists[name] = made
+                end
             end
         end
     end
