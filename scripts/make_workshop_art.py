@@ -1564,6 +1564,108 @@ def preview38(path, W=1024):
     save_under(page.convert("RGB"), path)
 
 
+def device_scale(nodes, width_px):
+    """One scale for a page of muzzle devices: the longest render (cropped) `width_px` wide, the rest at the same
+    scale, so they keep their real sizes against each other."""
+    widest = 0
+    for node in nodes:
+        im = Image.open(os.path.join(RENDERS, "ad_dev_%s.png" % node))
+        box = im.getchannel("A").getbbox()
+        widest = max(widest, box[2] - box[0])
+    return width_px / widest
+
+
+def wrapped(words, f, width, sep="  ·  ", spacing=0):
+    """Words joined by `sep`, broken into lines no wider than `width` px (text_layer's letter spacing included)."""
+    measure = ImageDraw.Draw(Image.new("L", (1, 1)))
+    lines, line = [], ""
+    for w in words:
+        trial = w if not line else line + sep + w
+        if line and measure.textlength(trial, font=f) + len(trial) * spacing > width:
+            lines.append(line)
+            line = w
+        else:
+            line = trial
+    return lines + [line]
+
+
+def device_cells(page, cells, top, cell_w, scale, img_h):
+    """Muzzle devices in a row (512-grid units): each render (render_ad_guns.py `dev_<node>`, mirrored back to the
+    game's view, at `scale` from device_scale) bottom-aligned in its cell, then its name, the guns it fits (both
+    wrapped to the cell) and what it does. `cells` = [(node, name, guns, effect)], centred on the page."""
+    W = page.size[0]
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    name_f, small = font(BOLD, u(11), b"Bold"), font(BOLD, u(9), b"Bold")
+    ink, soft = (28, 30, 34, 255), (60, 64, 70, 255)
+    x0 = 256 - cell_w * len(cells) / 2
+    for n, (node, name, guns, effect) in enumerate(cells):
+        cx = x0 + cell_w * (n + 0.5)
+        im = gun("dev_" + node, scale, flip=True)
+        paste_with_shadow(page, placed(page.size, im, (u(cx) - im.width // 2, u(top + img_h) - im.height)),
+                          (0, u(4)), u(4), 190)
+        y = top + img_h + 8
+        for text in wrapped(name.split(" "), name_f, u(cell_w - 8), " ", u(0.5)):
+            page.alpha_composite(text_layer(page.size, (u(cx), u(y)), text, name_f, ink, anchor="ma",
+                                            spacing=u(0.5)))
+            y += 14
+        y += 2
+        for text in wrapped(guns, small, u(cell_w - 8), spacing=u(0.5)) + [effect]:
+            page.alpha_composite(text_layer(page.size, (u(cx), u(y)), text, small,
+                                            soft if text is not effect else ink, anchor="ma", spacing=u(0.5)))
+            y += 12
+
+
+def preview39(path, W=1024):
+    """The main mod's real muzzle devices (3.20.0): the seven devices at their real sizes (render_ad_guns.py
+    `dev_<node>`), each with the guns it fits and what it does, four over three; then what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "MUZZLE DEVICES", 40, "GUNS OF MARZ EXTENSION")
+    caption(page, 92, "REAL FLASH HIDERS, COMPENSATORS AND BRAKES", big=True)
+    comp, hider, brake = "NO FLASH  ·  10% QUIETER", "NO FLASH  ·  5% QUIETER", "NO FLASH  ·  5% QUIETER"
+    scale = device_scale(["AKM_Slant_Compensator", "AK74_Muzzle_Brake", "AKS74U_Muzzle_Booster", "MP5_Flash_Hider",
+                          "Clark_Compensator_9mm", "Cutts_Compensator", "Clark_Compensator_45"], round(W * 100 / 512))
+    device_cells(page, [
+        ("AKM_Slant_Compensator", "AKM SLANT COMPENSATOR", ["AK-47", "RPK", "SKS"], comp),
+        ("AK74_Muzzle_Brake", "AK-74 MUZZLE BRAKE", ["AK-74", "AKS-74U", "RPK-74"], brake),
+        ("AKS74U_Muzzle_Booster", "AKS-74U MUZZLE BOOSTER", ["AK-74", "AKS-74U", "RPK-74"], hider),
+        ("MP5_Flash_Hider", "H&K THREE-LUG FLASH HIDER", ["MP5A3", "MP5A2"], hider),
+    ], 112, 124, scale, 60)
+    device_cells(page, [
+        ("Clark_Compensator_9mm", "CLARK COMPENSATOR 9MM", ["BERETTA 92FS", "HI-POWER", "P226"], comp),
+        ("Cutts_Compensator", "CUTTS COMPENSATOR", ["THOMPSON"], comp),
+        ("Clark_Compensator_45", "CLARK COMPENSATOR .45", ["M1911"], comp),
+    ], 254, 150, scale, 60)
+    caption(page, 410, "EACH FITS ONLY THE GUNS THE REAL ONE WAS MADE FOR", big=True)
+    caption(page, 432, "ON ITS CALIBRE'S MUZZLE MOUNT, AS GUNS OF MARZ'S OWN")
+    caption(page, 450, "FOUND WHERE GUNS OF MARZ'S MUZZLE DEVICES ARE")
+    caption(page, 468, "POST-93 ADD-ON: THE GROZAS TAKE THE AK ONES")
+    save_under(page.convert("RGB"), path)
+
+
+def preview40(path, W=1024):
+    """Post-93's SureFire muzzle devices (3.20.0): the three at their real sizes, each with the guns it fits."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "SUREFIRE MUZZLE DEVICES", 34, "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION")
+    caption(page, 86, "7.62X51MM  ·  ON THE SCAR-H'S MUZZLE MOUNT", big=True)
+    nato = ["FN SCAR-H", "G3", "HK417 BATTLE", "HK417 MARKSMAN", "M24", "MDRX .308", "MK 11", "PSG-1",
+            "REMINGTON 700", "SR-25"]
+    scale = device_scale(["SF3P_Flash_Hider", "SFMB_Muzzle_Brake", "WarComp_Flash_Hider"], round(W * 150 / 512))
+    device_cells(page, [
+        ("SF3P_Flash_Hider", "SF3P FLASH HIDER", ["FN FAL"] + nato[:2] + nato[2:4] + ["M14"] + nato[4:],
+         "NO FLASH  ·  5% QUIETER"),
+        ("SFMB_Muzzle_Brake", "SFMB MUZZLE BRAKE", nato, "NO FLASH  ·  5% QUIETER"),
+        ("WarComp_Flash_Hider", "WARCOMP FLASH HIDER", nato, "NO FLASH  ·  10% QUIETER"),
+    ], 128, 164, scale, 126)
+    caption(page, 392, "EACH FITS ONLY THE GUNS THE REAL ONE WAS MADE FOR", big=True)
+    caption(page, 414, "ON THE MUZZLE MOUNT THE SOCOM762-RC SUPPRESSOR USES")
+    caption(page, 432, "FOUND WHERE GUNS OF MARZ'S MUZZLE DEVICES ARE")
+    save_under(page.convert("RGB"), path)
+
+
 if __name__ == "__main__":
     def want(name):
         return not ONLY or name in ONLY
@@ -1632,6 +1734,10 @@ if __name__ == "__main__":
         preview31(os.path.join(ROOT, "preview31.png"))   # the SVU (3.17.0), added the same way
     if want("preview38"):
         preview38(os.path.join(ROOT, "preview38.png"))   # Ammo Maker part cartons (3.19.0), added the same way
+    if want("preview39"):
+        preview39(os.path.join(ROOT, "preview39.png"))   # the real muzzle devices (3.20.0), added the same way
+    if want("preview40"):
+        preview40(os.path.join(ROOT, "preview40.png"))   # Post-93's SureFire devices (3.20.0), added the same way
     if want("preview32"):
         preview32(os.path.join(ROOT, "preview32.png"))   # Post-93's SV-98 and SV-99 (3.17.0), added the same way
     if want("preview"):

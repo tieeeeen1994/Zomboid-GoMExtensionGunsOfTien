@@ -818,6 +818,19 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   mods' Loot.lua and ExtendLootAreas.lua over GoM's tables in lupa, option off and on), then
   `py scripts/make_loot_previews.py <out dir>/spawners.json`; the place texts are written by hand in that script,
   so a loot change means editing them too. Not yet on the Steam page.
+  preview39-40 (3.20.0, 2026-11-23): the real muzzle devices, one page per mod (preview39 the main mod's seven, four
+  over three; preview40 Post-93's three SureFire devices): render_ad_guns.py `dev_<node>` (each device alone, scaled
+  back to real mm, one view, mirrored back so the front is right), laid out by `device_cells` at one scale per page
+  (`device_scale`: the longest device a fixed width), each with its name, the guns it fits by name and its effect.
+  Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> dev_AKM_Slant_Compensator ...`
+  (every `dev_` name), then `make_workshop_art.py --renders <dir> preview39 preview40`. Not yet on the Steam page.
+  preview41 (3.20.0, 2026-11-23; user: "a preview of being able to attach suppressors to most guns"): one tall page,
+  a block per calibre family (its cans' icons by the title, the mount, what Post-93 adds) and one for the guns with
+  one built in, each gun a slot bordered by mod as on the loot pages; the header counts the guns that take one
+  (launcher items and the Uzi's two-handed hold left out: 42 of 84, 77 of 113 with Post-93 on 2026-11-23). The lists
+  come from the audit harness, which counts a can only where its mount fits too: `py scripts/attachment_audit.py
+  --suppressors <dir>/suppressors.json > <dir>/audit.md`, then `py scripts/make_suppressor_preview.py
+  <dir>/suppressors.json`; the "POST-93 ADD-ON" lines are written by hand in that script. Not yet on the Steam page.
   preview31-32 (3.17.0, 2026-11-20): the main mod's SVU (preview31, as preview23: render_ad_guns.py `svu`, its
   sights-folded body under GoM's AK mount and PSO-1, GoM's SVD magazine at 0.9102) and Post-93's SV-98 and SV-99
   (preview32, `gun_pair`: `sv98` PSO-1 and bipod deployed, `sv99` LR4X and bipod folded; one view and scale,

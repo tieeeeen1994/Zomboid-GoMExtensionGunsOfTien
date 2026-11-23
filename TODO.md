@@ -49,6 +49,9 @@ Picked by the user from their wish list. Releases ship two or more guns each.
       saved on an M4A1 / MP5 comes off beside the gun; gun and magazine tooltips read as GunLines.lua writes them.
 - [ ] Update Parts on Saved Guns off: nothing is swapped or taken off; on again: the next load does it.
 
+- [ ] After the 3.20.0 upload: put preview39 (muzzle devices), preview40 (SureFire devices) and preview41
+      (suppressors) on the Steam page by hand.
+
 ## Ammo Maker part cartons (3.19.0, built 2026-11-21, not played)
 
 - [ ] After the 3.19.0 upload: put preview38 (part cartons and crates) on the Steam page by hand.

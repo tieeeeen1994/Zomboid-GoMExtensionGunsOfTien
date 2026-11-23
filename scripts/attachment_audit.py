@@ -540,5 +540,17 @@ for part in sorted(tooltips, key=name):
         w("- %s (`%s`): %s" % (name(part), part, " / ".join(tooltips[part])))
 
 sys.stdout.write("\n".join(out) + "\n")
+if "--suppressors" in sys.argv:
+    # preview41 (make_suppressor_preview.py): every suppressor -> the guns it can really be fitted on (its mount
+    # device included), every gun with one built in, and every gun the page counts
+    cans = defaultdict(list)
+    for gun in guns:
+        for p in report[gun]["fittable"]:
+            if "suppressor" in p.lower():
+                cans[p].append(gun)
+    integrated = {g: sorted(lua_list(v)) for g, v in lua_table(G.GunsOfTien_GunLines.INTEGRATED).items()}
+    json.dump({"cans": cans, "names": {g: name(g) for g in guns}, "guns": guns,
+               "built_in": sorted(g for g, parts in integrated.items() if "suppressor" in parts and g in report)},
+              open(sys.argv[sys.argv.index("--suppressors") + 1], "w"), indent=1)
 if "--json" in sys.argv:
     json.dump(report, open(sys.argv[sys.argv.index("--json") + 1], "w"), indent=1, default=list)

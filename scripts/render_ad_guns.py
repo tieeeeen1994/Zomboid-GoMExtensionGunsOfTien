@@ -61,6 +61,10 @@ turned upright).
 3.17.0 (2026-11-20): the main mod's SVU (preview31, `svu`: its folded-sights body under GoM's AK mount and PSO-1, GoM's
 SVD magazine at our size) and Post-93's SV-98 / SV-99 (preview32, `sv98`: PSO-1, bipod deployed; `sv99`: LR4X,
 bipod folded), one view and scale.
+
+3.20.0 (2026-11-23): every real muzzle device alone (`dev_<node>`, scripts/muzzle_devices.py), its mesh scaled back
+to real millimetres so all share one view and scale, for preview39 (the main mod's seven) and preview40 (Post-93's
+SureFire three).
 """
 
 import json
@@ -70,6 +74,10 @@ import sys
 
 import bpy
 from mathutils import Matrix, Vector
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.dont_write_bytecode = True
+import muzzle_devices as MD          # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
@@ -702,6 +710,15 @@ GUNS = {
 }
 
 
+# the real muzzle devices alone (preview39 / preview40): `dev_<node>`, one view and scale (metres), real sizes
+# (seen so the rear face, the end that screws on, is on the right: make_workshop_art.py mirrors it back to the game's
+# view, front to the right as on the guns)
+DEVICE_VIEW, DEVICE_SCALE, DEVICE_SIZE = (0.75, -0.45, -0.5), 0.11, (1100, 700)
+for _d in MD.DEVICES:
+    GUNS["dev_" + _d["node"]] = {"device": (_d["mod"], _d["node"]), "view": DEVICE_VIEW, "scale": DEVICE_SCALE,
+                                 "size": DEVICE_SIZE}
+
+
 def load(path, texture, keep):
     before = set(bpy.data.objects)
     bpy.ops.import_scene.fbx(filepath=path)
@@ -803,7 +820,22 @@ def uzi(gun, folded, mag):
     return objs
 
 
+def device(mod, node):
+    """One real muzzle device alone (preview39 / preview40), its mesh scaled back from game units to metres
+    (scripts/muzzle_devices.py `scale` is game units per mm), so every device shares one ortho scale at its real size.
+    The mesh runs along +Y from its rear face (origin)."""
+    d = next(d for d in MD.DEVICES if d["node"] == node)
+    media = MAIN_MEDIA if mod == "main" else MEDIA
+    folder = "GunsOfTien" if mod == "main" else "GunsOfTienPost93"
+    o = load(os.path.join(media, "models_X/weapons/parts/%s_muzzle_devices.fbx" % folder),
+             os.path.join(media, "textures/weapons/%s/%s.png" % (folder, node)), node)
+    place(o, upright=False, scale=0.001 / d["scale"])
+    return [o]
+
+
 def build(spec):
+    if "device" in spec:
+        return device(*spec["device"])
     if "uzi" in spec:
         return uzi(*spec["uzi"])
     if "m249" in spec:
