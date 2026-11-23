@@ -976,7 +976,7 @@ UMP_GUN_MAGS = {'UMP45': UMP_MAGS[1:], 'UMP9': UMP_MAGS[:1]}
 def ump_parts(gun):
     """GoM's MP5 accessories on the UMPs' integral rails (their points in ump_points.json): its optics, foregrips,
     lasers and lights, no bipods; at canon the UMP45 GoM's .45 mount device and P45 suppressor, as its MAC-10, the UMP9
-    the main mod's 9x19mm SMG mount device and AWC Mk9 (user, 2026-10-22; GoM's 9mm suppressors fit its pistols only);
+    the 9x19mm mount device, AWC Mk9 and GoM's M&P and Shh9 (every 9mm can on every 9mm gun since 2026-11-23);
     the shared folding stock and charging handle; each gun's own magazines."""
     w = "        ModelWeaponPart              = "
     lines = [f"{w}MarzGuns.Bolt_Lock {M}.UMP_BOLT bolt_lock bolt_lock,",
@@ -990,9 +990,11 @@ def ump_parts(gun):
         lines += [f"{w}MarzGuns.45_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                   f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
     else:
-        # the main mod's Mk9 at our size (its `_GoT` models; GoM's MP5s draw the GoM-sized ones)
+        # the 9mm cans at our size (their `_GoT` models)
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
                   f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.M&P_Suppressor GunsOfTien.M&P_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Shh9_Suppressor GunsOfTien.Shh9_Suppressor_GoT canon canon,",
                   f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     lines += [f"{w}MarzGuns.{o} {(M + '.' + o + '_UMP') if o in UMP_OPTIC_OFFSET else 'MarzGuns.' + o} scope scope,"
               for o in OPTICS]
@@ -1245,6 +1247,8 @@ def vector_parts(gun):
     else:
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
                   f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.M&P_Suppressor GunsOfTien.M&P_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Shh9_Suppressor GunsOfTien.Shh9_Suppressor_GoT canon canon,",
                   f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
@@ -1458,6 +1462,8 @@ def aug3_parts(gun):
     elif gun == 'AUGPARA':
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
                   f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.M&P_Suppressor GunsOfTien.M&P_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Shh9_Suppressor GunsOfTien.Shh9_Suppressor_GoT canon canon,",
                   f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     else:
         lines += [f"{w}{M}.AUGHBAR_Integrated_Bipod_Folded {M}.AUGHBAR_BIPOD_FOLDED integrated_bipod integrated_bipod,",

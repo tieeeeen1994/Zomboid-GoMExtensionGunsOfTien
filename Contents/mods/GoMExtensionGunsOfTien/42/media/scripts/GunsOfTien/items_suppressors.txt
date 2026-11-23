@@ -6,7 +6,7 @@ module GunsOfTien {
         Icon             = GunsOfTien_Mk9_Suppressor,
         Weight           = 1.2,
         WeightModifier   = 1.2,
-        MountOn          = MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;GunsOfTien.TMP,
+        MountOn          = MarzGuns.M92FS;MarzGuns.M93R;MarzGuns.HIPOWER;MarzGuns.P226;MarzGuns.GLOCK17;MarzGuns.VP70M;MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;GunsOfTien.TMP,
         PartType         = Canon,
         WorldStaticModel = GunsOfTien.Mk9_Suppressor,
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,

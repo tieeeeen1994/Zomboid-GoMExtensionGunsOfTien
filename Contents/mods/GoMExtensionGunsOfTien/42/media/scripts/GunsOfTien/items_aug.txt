@@ -98,6 +98,12 @@ module GunsOfTien {
         ModelWeaponPart              = GunsOfTien.LaserBeam_LRX7_Laser GunsOfTien.LaserBeam_LRX7_Laser laser_right laser_right,
         ModelWeaponPart              = MarzGuns.BrightPoint-5_Light MarzGuns.BrightPoint-5_Light light_left light_left,
         ModelWeaponPart              = MarzGuns.SR7_Light MarzGuns.SR7_Light light_left light_left,
+        ModelWeaponPart              = MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,
+        ModelWeaponPart              = MarzGuns.LR2_Compensator MarzGuns.LR2_Compensator canon canon,
+        ModelWeaponPart              = MarzGuns.LX_Flashhider MarzGuns.LX_Flashhider canon canon,
+        ModelWeaponPart              = MarzGuns.Trix42_Muzzlebreak MarzGuns.Trix42_Muzzlebreak canon canon,
+        ModelWeaponPart              = MarzGuns.MKI_Suppressor MarzGuns.MKI_Suppressor canon canon,
+        ModelWeaponPart              = MarzGuns.NDR_Suppressor MarzGuns.NDR_Suppressor canon canon,
         KnockBackOnNoDeath           = true,
     }
 

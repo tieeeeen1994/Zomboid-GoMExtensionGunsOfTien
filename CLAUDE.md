@@ -223,7 +223,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
     (gen_scripts.py `NINE_MOUNT_NAME`, ItemName.json; translations merge by key), its MountOn appended with every 9mm
     SMG (Suppressors.lua: the main mod's and GoM's MP5s; Post-93's Guns.lua / AUG.lua / Vector.lua: UMP9, AUG Para,
     Vector 9mm and SDP), drawn on the SMGs with our adapter (`SMG9_Muzzle_Mount_Device_GoT`: the guns' scripts, the
-    MP5s' lines in Suppressors.lua). Cans unchanged: M&P / Shh9 pistols, Mk9 SMGs (the Mk9 is any-of both mounts).
+    MP5s' lines in Suppressors.lua). Cans: every 9mm can on every 9mm gun since the same day ("Every gun takes..." below).
   - **Migration**: an item type cannot be renamed in a save (`InventoryItem.loadItem`: an unknown registry ID gives a
     null item, dropped, fitted parts too), so `GunsOfTien.SMG9_Muzzle_Mount_Device` stays defined, looking and
     working as GoM's (same name, GoM's icon and floor model, every 9mm gun in its MountOn, drawn as GoM's mount on the
@@ -240,10 +240,33 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   - **Tooltips** of every can and mount in GoM's wording: "Requires <family> Muzzle Mount", effects, "Can be mounted
     on ...", the wrench line; mounts "Enables <family> Muzzle Attachments". The main mod's Tooltips.lua sets the 9mm
     ones and PBS-1 (with the RPKs), Post-93's Tooltips.lua (which requires the main one first) its own cans, PBS-1
-    (Grozas added) and P45 (Vector .45 Carbine). GunLines' `joinNames` lists a name once (two items share it).
-  - Left as decided before: RPD (the PBS-1 never fits it, docs/design.md 4k), XM177 (GoM's mesh has its moderator
-    built in and GoM gives it no muzzle lines), GoM's AR mount listing a nonexistent `MarzGuns.M4` (harmless, may be
-    Marz's), TEC-9, MP5K, AUG A1 / HBAR, M249, SR-25.
+    (Grozas, SKS and AUG HBAR added); the main one also P45 ("pistols, SMGs and carbines"). GunLines' `joinNames`
+    lists a name once (two items share it). GoM's AR mount lists a nonexistent `MarzGuns.M4` (harmless, may be Marz's).
+- **Every gun takes its calibre family's muzzle parts** (2026-11-23, after the audit; user: "I want every gun to have a
+  muzzle device so that they can attach stuff here so long as our current muzzle device family supports it in that
+  calibre. The suppressors on the other hand need real life checking"). `shared/GunsOfTien/MuzzleFamilies.lua` (feeds
+  GoMAttachments.lua's POINTS / LINES / MOUNT_ADD, so GoM's guns get `canon` and their model lines at run time; our
+  guns' points and lines are in gen_scripts.py `CANON` / `canon_lines` and gen_post93_guns.py). The mount, and in the
+  AR family the LR2 / LX / Trix42, go on every gun of the family; a can only where the real gun takes one: factory
+  threads, a known adapter, or routine gunsmith threading of a rifle or carbine (sources in the file's header,
+  researched 2026-11-23). New: AUG A1, Model 70, XM177 (moderator screwed on 1/2-28) all AR parts; M249 the AR mount
+  and devices but no rifle can (real M249 cans are machine-gun cans); FNC and Mini-14 the devices GoM left off; SKS
+  the AK mount and PBS-1 (its kits cut the AK's 14x1 LH thread); Thompson and Camp Carbine the .45 mount and P45; TEC-9 the 9x19mm mount (drawn
+  as our adapter at the shroud's front), every 9mm can (the Mk9 on the MAC's 3/4x10 thread); SR-25, FAL, G3, M14,
+  M24, PSG-1 and Remington 700 Post-93's 7.62x51mm mount and SOCOM762-RC (lines and MountOn are no-ops without
+  Post-93). **No mount where nothing of the family fits** (a mount that enables nothing): RPD and M60 (belt fed, no
+  machine-gun can in either family), AUG HBAR (an AUG, not an AK: no AK thread; first given the AK family by mistake), Colt SAA (cylinder gap), MP5K (flush barrel, only the K-N had threads), MP5SD
+  (integral). **9mm cans unified** (user: "opening the pistol suppressors to SMGs can introduce a bad balance", then "change the
+  9mm suppressor to also take into pistols and SMGs... make the Mk9 the same as the others", then "make it the
+  same"): every GoM can has the same stats (sound and volume x0.3, damage x0.9, no flash; only the
+  shot sound and weight differ); the Mk9 lost its Aiming Time x1.1 and has them too; the MP5SD (25 / 6) stays
+  quieter than the MP5 with any can (28 / 8). All three fit every 9mm gun with
+  the mount (the Mk9 on tilting-barrel pistols too, by the user's choice), named "(9mm Weapons)"; GoM's two are
+  drawn on our Uzi-proportion guns through `M&P_Suppressor_GoT` / `Shh9_Suppressor_GoT` (gen_scripts.py). `canon` = where the real device screws on:
+  the rear of the gun's own flash hider (FAL, G3, M14 ahead of its front sight, XM177 moderator, M249), else
+  the bore's front, on the bore axis, from muzzle_audit.py's bore front and the barrel's vertex rings; a short mount
+  on a long built-in hider (FAL 9 cm) leaves the hider showing ahead of the mount until a can covers it. Tooltips:
+  SOCOM762-RC "7.62x51mm rifles", Mk9 "9x19mm SMGs and the TEC-9". attachment_audit.py: 0 ISSUE lines.
 - **M249 Light Machine Gun** (user, 2026-10-22; building): the main mod's first gun (adopted 1982, so it is 1993
   material). The PIP gun ("M249E2", the user's word for it), its own 200-round box plus every GoM STANAG in one
   profile (STANAG jam x2), two Auto rates 750 / 1000 (the original gas regulator, the user's choice over the PIP's one
@@ -258,7 +281,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
 - **Steyr AUG A1** (user, 2026-10-27; built): main mod (1977; the AUG/SA was imported to the US until 1989). Steyr
   green, held as a rifle like GoM's FAMAS, its own 30 / 42 magazines (no STANAG), the integral 1.5x scope as a hidden
   required part, the folding front grip as Post-93's MP7A1's (the fold code moved to the main mod for both), no
-  muzzle parts, rails or bayonet (user's choice), GoM's FAMAS reload on vanilla's rifle hold (its own bullpup set until
+  rails or bayonet (user's choice; GoM's AR muzzle parts since 2026-11-23, "Every gun takes..."), GoM's FAMAS reload on vanilla's rifle hold (its own bullpup set until
   2026-10-29, section "Bullpup set"), loot in GoM's import rifle spawner.
   Design: docs/design.md 4g; build notes: "Steyr AUG A1" below.
 - **RPK, RPK-74 and RPD** (user, 2026-11-02; the RPKs built the same day, "Yes do it" for both; the RPD planned):
@@ -1269,7 +1292,8 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   Post-93 adds the UMP9 (`appendMountOn` in Guns.lua, its own ModelWeaponPart lines from gen_post93_guns.py, its
   tooltip line). Display names "Mk9 Suppressor (9mm SMGs)" and "9x19mm SMG Family Muzzle Mounting Device" (GoM's
   pattern; the mount merged into GoM's renamed 9mm one on 2026-11-23, "Muzzle parts audit"); weights 1.2 / 0.5 (GoM's biggest cans / every mount); stats GoM's 9mm cans' (sound ×0.3, damage ×0.9, no
-  flash) plus Aiming Time ×1.1 (GoM's deployed bipod / LR4X: 24 oz on a 12" tube at the muzzle).
+  flash) plus Aiming Time ×1.1 (GoM's deployed bipod / LR4X: 24 oz on a 12" tube at the muzzle); since 2026-11-23
+  no aiming penalty (GoM's 9mm cans' stats), on every 9mm gun ("9mm cans unified").
 - **The MP5SD stays the better quiet gun** (user, 2026-10-22: "make it so that MP5SD is better than the MP5 with
   silencer option"): before, the MP5 + Mk9 was 28 / 8 against the SD's 33 / 9 and hit harder (0.9-1.44 against
   0.8-1.3), so the SD lost on everything but weight. Now sound_model.py drops the SD's supersonic crack (ported barrel,

@@ -210,7 +210,7 @@ local function appendAll()
         appendMountOn(part, { A3 })
     end
     for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
-        "GunsOfTien.Mk9_Suppressor" }) do
+        "GunsOfTien.Mk9_Suppressor", "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) do
         appendMountOn(part, { PARA })
     end
 end

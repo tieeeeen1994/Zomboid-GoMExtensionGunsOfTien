@@ -62,10 +62,17 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   every gun's lines, Guns of Marz's included, follow one format written from what the gun really takes (calibre,
   built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet), so none of them
   can promise a rail the gun does not have; every magazine lists the guns it fits
-- AWC Mk9 suppressor for 9mm submachine guns: fits the MP5, MP5A2 and this mod's Uzis and TMP (Guns of Marz's 9mm
-  suppressors fit only its pistols), found where Guns of Marz's suppressors are. All 9mm guns share one muzzle mount,
+- AWC Mk9 suppressor, with the stats of Guns of Marz's 9mm suppressors, found where Guns of Marz's suppressors are. Every 9mm suppressor fits every 9mm pistol and submachine gun
+  that takes the mount. All 9mm guns share one muzzle mount,
   Guns of Marz's pistol mount renamed "9x19mm Family Muzzle Mounting Device"; mounts of the old 9mm SMG kind in a
   world become that one by themselves
+- Every gun takes its calibre's muzzle mount wherever something of that family fits it: Guns of Marz's flash hider,
+  compensator and muzzle brake on every 5.56mm gun with the AR mount (the FN FNC, Mini-14, Model 70, XM177, AUG A1 and
+  M249 too), and suppressors only where the real gun takes one: the 5.56mm suppressors on the Model 70, XM177 and AUG
+  A1 (not the M249: real ones are machine-gun suppressors), the PBS-1 on the SKS, the P45 on the Thompson and Camp
+  Carbine, every 9mm suppressor on the TEC-9, and with the Post-93 add-on the SOCOM762-RC on
+  the SR-25, FN FAL, G3, M14, M24, PSG-1 and Remington 700. No mount on the RPD, M60, AUG HBAR, Colt Single Action Army, MP5K or
+  MP5SD, where nothing would fit
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
   proportion, so the Mk9 sits on them as it does on the Uzis; Guns of Marz's MP5 is named for what it is, the MP5A3
   (retractable stock)
@@ -101,6 +108,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   integrated bipod; found where Guns of Marz's M60 is (army zombies, army storage, heavy army trucks), with its boxes
 - Guns of Marz's Picatinny rails fit all four sides, on the feed cover and round the handguard: its optics (all but
   the four longest scopes, which would reach the carrying handle), foregrips, lights and lasers
+- Guns of Marz's AR muzzle mount with its flash hider, compensator and muzzle brake (no suppressor)
 - Belt links: filling the M249's 200-round box or Guns of Marz's M60 100-round box now takes one belt link per round
   (M27 links for the M249, M13 for the M60). Unloading a round gives its link back; a fired round's link comes out with
   its casing and goes wherever the casing goes: with Hot Brass it flies out of the gun and lands like the casing
@@ -119,7 +127,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   metal stock folding under the receiver, the Mini and Micro fit a holster (the Micro also an ankle holster), their
   stocks folding along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
-- The AWC Mk9 suppressor fits all three on the 9x19mm muzzle mount
+- Every 9mm suppressor (the AWC Mk9, Guns of Marz's M&P and Shh9) fits all three on the 9x19mm muzzle mount
 - Guns of Marz's Picatinny rails fit the Uzi and Mini Uzi as short clamp-on rails: on the top cover for red dots (the
   Mini Uzi only the Reflex S2, the others reach its cocking knob), under the handguard for foregrips and on its left
   for lights; none on the Micro Uzi
@@ -132,7 +140,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Steyr TMP, the Austrian polymer machine pistol of 1992, held one-handed like the MP5K and MAC-10 and fitting a
   holster, its front grip moulded in: automatic at 900 rounds a minute, or single shots
 - Its own 15 and 30-round magazines (the 15 flush with the grip)
-- The AWC Mk9 suppressor fits it on the 9x19mm muzzle mount
+- Every 9mm suppressor (the AWC Mk9, Guns of Marz's M&P and Shh9) fits it on the 9x19mm muzzle mount
 - Guns of Marz's optional Picatinny rails on top (its red dots), left (lights) and right (lasers), drawn as short rails sized to the gun
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits)
 
@@ -142,7 +150,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   in a free-float tube, semi-automatic, on Guns of Marz's AR-15 receiver
 - Its own 3.5-10x scope and a folding bipod built in (deployed, it steadies aim and
   rests the rifle on low walls and tables)
-- Knight's 20-round magazine; with the Post-93 add-on, Magpul's PMAGs and D-50 drum fit it too
+- Knight's 20-round magazine; with the Post-93 add-on, Magpul's PMAGs and D-50 drum fit it too, and the SCAR-H's
+  7.62x51mm muzzle mount and SOCOM762-RC suppressor
 - Found where Guns of Marz's PSG-1 is (mercenary snipers, imported rifles), with its magazines and boxes
 
 ## Steyr AUG A1
@@ -153,6 +162,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Its own translucent 30 and 42-round magazines
 - Guns of Marz's Picatinny Rail fits as a short rail on either side of the receiver: lights on the left, lasers on the
   right (no top rail: the integral scope is the optic)
+- Guns of Marz's AR muzzle parts: its muzzle mount, flash hider, compensator, muzzle brake and 5.56mm suppressors
 - Found with Guns of Marz's imported rifles (gun stores, pawn shops, police evidence, survivalists, rifle cases), with
   .223 boxes; the 42-round magazine with its high-capacity magazines
 

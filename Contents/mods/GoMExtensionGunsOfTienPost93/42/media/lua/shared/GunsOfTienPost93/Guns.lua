@@ -21,7 +21,7 @@
     and 9x19mm families, Ammunition.lua), select fire with H&K's two-round burst, GoM's MP5 reload, the shared
     side-folding stock with GoM's G36C stock stats, four integral rails as parents of GoM's MP5 accessories (optics,
     foregrips, lights, lasers). The UMP45 takes GoM's .45 mount device and P45 suppressor, as its MAC-10 does, the
-    UMP9 the 9x19mm mount device (GoM's, renamed) and the main mod's AWC Mk9 (GoM's 9mm cans fit its pistols only). The charging
+    UMP9 the 9x19mm mount device (GoM's, renamed) and every 9mm can (the main mod's AWC Mk9, GoM's M&P and Shh9). The charging
     handle animated as GoM animates its MP5's.
 
     The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
@@ -527,7 +527,7 @@ local function appendAll()
     for _, part in ipairs(FOREGRIPS) do appendMountOn(part, { MP7A2 }) end
     -- the UMPs: GoM's MP5 accessories (optics, foregrips, lights, lasers); the UMP45 also its MAC-10's .45 mount
     -- device and P45 suppressor, the UMP9 the 9x19mm mount device (GoM's, renamed; the main mod's old one
-    -- for worlds that have it) and the main mod's Mk9 (GoM's 9mm cans fit its pistols only)
+    -- for worlds that have it) and every 9mm can (the main mod's Mk9, GoM's M&P and Shh9)
     for _, list in ipairs({ OPTICS, LIGHTS, LASERS, FOREGRIPS }) do
         for _, part in ipairs(list) do appendMountOn(part, UMPS) end
     end
@@ -535,7 +535,7 @@ local function appendAll()
         appendMountOn(part, { UMP45 })
     end
     for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
-        "GunsOfTien.Mk9_Suppressor" }) do
+        "GunsOfTien.Mk9_Suppressor", "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) do
         appendMountOn(part, { UMP9 })
     end
     for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end

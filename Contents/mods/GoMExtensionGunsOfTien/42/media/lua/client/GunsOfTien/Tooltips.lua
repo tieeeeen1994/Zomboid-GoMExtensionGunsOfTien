@@ -83,7 +83,7 @@ for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) 
         "Sound Radius and Volume reduced by 70%",
         "Damage reduced by 10%",
         "Removes Muzzle Flash",
-        "Can be mounted on 9x19mm pistols",
+        "Can be mounted on 9x19mm pistols and SMGs",
         "Needs Wrench to install or remove.",
     }
 end
@@ -91,18 +91,27 @@ lines["GunsOfTien.Mk9_Suppressor"] = {
     "Requires 9x19mm Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
-    "Aiming Time increased by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on 9x19mm SMGs",
+    "Can be mounted on 9x19mm pistols and SMGs",
     "Needs Wrench to install or remove.",
 }
--- GoM's AK can on the main mod's RPKs too (RPK.lua; Post-93's Tooltips.lua adds its Grozas)
+-- GoM's AK can on the main mod's RPKs and GoM's SKS too (RPK.lua, MuzzleFamilies.lua; Post-93's Tooltips.lua adds
+-- its Grozas and AUG HBAR)
 lines["MarzGuns.PBS-1_Suppressor"] = {
     "Requires AK Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on AK-47, AK-74, AKS-74U, RPK and RPK-74",
+    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74 and SKS",
+    "Needs Wrench to install or remove.",
+}
+-- GoM's .45 can on its Camp Carbine too (MuzzleFamilies.lua) and Post-93's Vector .45 Carbine
+lines["MarzGuns.P45_Suppressor"] = {
+    "Requires .45 Muzzle Mount",
+    "Sound Radius and Volume reduced by 70%",
+    "Damage reduced by 10%",
+    "Removes Muzzle Flash",
+    "Can be mounted on .45 pistols, SMGs and carbines",
     "Needs Wrench to install or remove.",
 }
 local FITS_HOLSTER = "Fits a holster"

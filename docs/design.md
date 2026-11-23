@@ -141,7 +141,8 @@ real barrels take one (user: "only if supported", "no pistol"):
   MP5SD (integral can) or the TEC-9 (user's choice, though its threaded barrel would take one).
 - The can: AWC's Mk9 (user), AWC's SMG can for the Uzi, MAC and MP5, made in the 1980s, 12" x 2", fitted to the MP5's
   lugs with Tim Bixler's adapter (1988), which is the mount device. Big; the user kept it over the shorter options.
-- GoM's 9mm cans' stats (sound and volume ×0.3, damage ×0.9, no muzzle flash) plus Aiming Time ×1.1 (a 24 oz can
+- (Since 2026-11-23: no aiming penalty (GoM's 9mm cans' stats), every 9mm can on every 9mm gun; CLAUDE.md "9mm cans
+  unified".) GoM's 9mm cans' stats (sound and volume ×0.3, damage ×0.9, no muzzle flash) plus Aiming Time ×1.1 (a 24 oz can
   out at the muzzle), weights 1.2 / 0.5 as GoM's.
 - The MP5SD stays the better quiet gun (user): 25 / 6 (no crack, see section 3; set by the user over the model's
   23 / 7, so that the 147gr gives 17 / 4) against the suppressed MP5's 28 / 8,
@@ -275,7 +276,7 @@ Micro 20:30, 25:20, 32:5.
 
 Steyr's bullpup, adopted by the Austrian Army in 1977 as the StG 77; Gun South imported the semi-automatic AUG/SA
 into the US from the 1980s until the 1989 import ban, so a Kentucky gun owner could have one in July 1993 (user,
-2026-10-27: "Implement gun AUG A1"; finish Steyr green, a Commons photo as reference, no muzzle parts). Main mod,
+2026-10-27: "Implement gun AUG A1"; finish Steyr green, a Commons photo as reference, no muzzle parts; GoM's AR muzzle parts since 2026-11-23). Main mod,
 module `GunsOfTien`. Reference: the Commons photo "Steyr AUG 5,56 mm" (MoserB, public domain; an Austrian StG 77, left
 side, front grip down, magazine out), kept out of the repo in references/aug, traced at Steyr's 790 mm.
 
@@ -457,7 +458,7 @@ the MDRx .308's). Either:
 | Fire | Single only (no FireModePossibilities, as GoM's AR-15 / M14 and the MDRx) |
 | Stats | between GoM's M14 and PSG1 (the SR-25 was sold as a 1 MOA rifle), numbers set while building; the integrated 3.5-10x scope has GoM's LR10X stats (user, 2026-11-12) |
 | Sound | sound_model.py, 7.62x51 from 24" |
-| Parts | **integrated scope and integrated bipod** (user, 2026-11-11: "sr-25 should have integrated scope, integrated bipod", replacing GoM's optics and bipod): the listing's Leupold Vari-X III 3.5-10x with high target knobs on a B-Square base and rings, in the body's mesh (a hidden required part with the scope's stats, the AUG A1's way), and a Harris 1A2-BR on the sling stud, folded forward under the barrel or deployed (BipodIntegrated, Gunworks' FoldingBipod, the AUG HBAR's way); no foregrip, no muzzle parts (the match barrel was plain) |
+| Parts | **integrated scope and integrated bipod** (user, 2026-11-11: "sr-25 should have integrated scope, integrated bipod", replacing GoM's optics and bipod): the listing's Leupold Vari-X III 3.5-10x with high target knobs on a B-Square base and rings, in the body's mesh (a hidden required part with the scope's stats, the AUG A1's way), and a Harris 1A2-BR on the sling stud, folded forward under the barrel or deployed (BipodIntegrated, Gunworks' FoldingBipod, the AUG HBAR's way); no foregrip, no muzzle parts (the match barrel was plain; since 2026-11-23 Post-93's 7.62x51mm mount and SOCOM762-RC, CLAUDE.md "Every gun takes...") |
 | Hold, reload | rifle clips, GoM's "ar15_rifle" (the AR T-handle at the rear); the carrier in the port on GoM's swap, the T-handle only while racked (our ChargingHandle part, as GoM does its AR-15s) |
 | Colour | black (parkerized steel, black furniture) |
 | Loot | as GoM's PSG-1 (user, 2026-11-12): beside it in its spawners (`Zombie_Mercenary_Sniper_Spawner`, `World_Import_Rifle_Spawner`), gun + up to 3 magazines + GoM's `308_Box` |

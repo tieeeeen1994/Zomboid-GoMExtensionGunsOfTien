@@ -11,16 +11,19 @@
     Micro Uzi take it too (user, 2026-10-23; the real Mk9 took the place of the Uzi's barrel nut), and the Steyr TMP
     (user, 2026-11-11; its barrel is threaded for a can): the parts' MountOn and the guns' lines are in their own
     scripts, the `canon` point in their models.
-    Stats are GoM's for its 9mm cans, plus Aiming Time x1.1 (GoM's deployed bipod and LR4X scope): 24 oz on a 12" tube
-    out at the muzzle. So the MP5SD stays the better quiet gun (user, 2026-10-22: "make it so that MP5SD is better than
-    the MP5 with silencer option"): sound_model.py gives it no supersonic crack (its ported barrel slows standard
-    rounds below the speed of sound; the Mk9 on a plain MP5 keeps the crack; the user later set it to 25 / 6),
-    against the suppressed MP5's 28 / 8, and it is far lighter (2.1 against 2.0 + 1.2 + 0.5) and quicker to bring up; the MP5 keeps its harder hits
-    and longer range, as the real SD's slower bullets give up.
+    Every 9mm can fits every 9mm gun that takes the mount, pistols and SMGs alike (user, 2026-11-23: "change the 9mm
+    suppressor to also take into pistols and SMGs... unify their stats", then "make it the same"): GoM's M&P and Shh9
+    join the SMGs (here, Post-93's files and MuzzleFamilies.lua; drawn through `_GoT` models on the guns at our size),
+    the Mk9 the pistols (its script). Stats: GoM's for its 9mm cans, the same on all three (sound and volume x0.3,
+    damage x0.9, no flash; the Mk9 slowed aiming x1.1 until then). The MP5SD stays the better quiet gun (user,
+    2026-10-22: "make it so that MP5SD is better than the MP5 with silencer option"): the MP5's 93 / 27 gives 28 / 8
+    with any can against the SD's 25 / 6 (sound_model.py gives the SD no supersonic crack: its ported barrel slows
+    standard rounds below the speed of sound; the user set it to 25 / 6). The SD is also far lighter
+    (2.1 against 2.0 + 1.2 + 0.5); the MP5 keeps its harder hits and longer range, as the real SD's slower bullets give
+    up.
 
     One mount device per calibre, as every other family (.45, 4.6x30mm, 5.7x28mm, 7.62x51mm, AR, AK): GoM's Pistol
-    mount, renamed "9x19mm Family Muzzle Mounting Device" (ItemName.json), carries the M&P and Shh9 on the pistols and
-    the Mk9 on the SMGs; which can fits which gun is unchanged. Its MountOn gets the main mod's SMGs and GoM's MP5s here
+    mount, renamed "9x19mm Family Muzzle Mounting Device" (ItemName.json), carries all three cans. Its MountOn gets the main mod's SMGs and GoM's MP5s here
     (Post-93 appends its UMP9, AUG Para and 9mm Vectors), and every SMG draws it with our adapter
     (`SMG9_Muzzle_Mount_Device_GoT`, Tim Bixler's three-lug adapter: the guns' scripts, the MP5s' lines below).
     The main mod's own mount, GunsOfTien.SMG9_Muzzle_Mount_Device ("9x19mm SMG Family" until 2026-11-23), stays
@@ -54,22 +57,26 @@ local PISTOL_CANS = { "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }
 GunsOfTien_ReplacedParts = GunsOfTien_ReplacedParts or {}
 GunsOfTien_ReplacedParts[OLD_MOUNT] = MOUNT
 
--- the main mod's SMGs and GoM's MP5s: on GoM's mount's MountOn (the Mk9's and the old mount's are in their scripts)
+-- the main mod's SMGs and GoM's MP5s: on GoM's mount's and pistol cans' MountOn (the Mk9's and the old mount's are
+-- in their scripts)
 local SMGS = { "MarzGuns.MP5", "MarzGuns.MP5A2", "GunsOfTien.UZI", "GunsOfTien.MINIUZI", "GunsOfTien.MICROUZI",
     "GunsOfTien.UZI_2H", "GunsOfTien.TMP" }
 -- gun -> { part, the model it is drawn with }: GoM's MP5s (their `canon` point is in our MP5 models; the parts' own
--- size scaled to the guns'), and GoM's 9mm pistols for the old mount (GoM's own mount model, as on its pistols)
+-- size scaled to the guns'), and GoM's 9mm pistols for the old mount (GoM's own mount model, as on its pistols) and
+-- the Mk9 (at GoM's size, as built)
 local LINES = {}
 for _, gun in ipairs({ "MarzGuns.MP5", "MarzGuns.MP5A2" }) do
     LINES[gun] = {
         { OLD_MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_GoT" },
         { MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_GoT" },
         { SUPPRESSOR, "GunsOfTien.Mk9_Suppressor_GoT" },
+        { PISTOL_CANS[1], "GunsOfTien.M&P_Suppressor_GoT" },
+        { PISTOL_CANS[2], "GunsOfTien.Shh9_Suppressor_GoT" },
     }
 end
 for _, gun in ipairs({ "MarzGuns.M92FS", "MarzGuns.M93R", "MarzGuns.HIPOWER", "MarzGuns.P226", "MarzGuns.GLOCK17",
     "MarzGuns.VP70M" }) do
-    LINES[gun] = { { OLD_MOUNT, "MarzGuns.Muzzle_Mount_Device" } }
+    LINES[gun] = { { OLD_MOUNT, "MarzGuns.Muzzle_Mount_Device" }, { SUPPRESSOR, SUPPRESSOR } }
 end
 
 CSA.RegisterMultipleParts({
@@ -78,7 +85,6 @@ CSA.RegisterMultipleParts({
         SF.Multiply("SoundVolume", 0.3),
         SF.Multiply("MaxDamage", 0.9),
         SF.Multiply("MinDamage", 0.9),
-        SF.Multiply("AimingTime", 1.1),
         SF.Set("SwingSound", "CapGunRifleShoot"),
         SF.Set("MuzzleFlashModelKey", nil),
     },
@@ -117,6 +123,7 @@ local patched = {}       -- gun item scripts given their lines (scripts are new 
 
 local function patchScripts()
     appendMountOn(MOUNT, SMGS)
+    for _, can in ipairs(PISTOL_CANS) do appendMountOn(can, SMGS) end
     local manager = ScriptManager.instance
     for gun, lines in pairs(LINES) do
         local item = manager:getItem(gun)

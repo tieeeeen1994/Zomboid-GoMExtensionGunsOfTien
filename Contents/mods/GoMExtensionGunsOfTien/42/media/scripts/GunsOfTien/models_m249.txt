@@ -22,6 +22,7 @@ module GunsOfTien {
         attachment foregrip { offset = 0.0000 0.1800 -0.0094, rotate = 0.0000 0.0000 0.0000, }
         attachment light_left { offset = 0.0254 0.1800 0.0211, rotate = 0.0000 0.0000 0.0000, }
         attachment laser_right { offset = -0.0265 0.1800 0.0203, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.3963 0.0422, rotate = 0.0000 0.0000 0.0000, }
         attachment cover_10 { offset = 0.0000 0.1369 0.0609, rotate = -10.0000 0.0000 0.0000, }
         attachment cover_20 { offset = 0.0000 0.1369 0.0609, rotate = -20.0000 0.0000 0.0000, }
         attachment cover_30 { offset = 0.0000 0.1369 0.0609, rotate = -30.0000 0.0000 0.0000, }

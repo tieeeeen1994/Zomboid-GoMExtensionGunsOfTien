@@ -215,7 +215,7 @@ local function appendAll()
         appendMountOn(part, { VECTOR45, VECTORCRB })
     end
     for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
-        "GunsOfTien.Mk9_Suppressor", GLOCK17_17 }) do
+        "GunsOfTien.Mk9_Suppressor", "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor", GLOCK17_17 }) do
         appendMountOn(part, { VECTOR9, VECTORSDP })
     end
     for pistol, lines in pairs(PISTOL_PARTS) do

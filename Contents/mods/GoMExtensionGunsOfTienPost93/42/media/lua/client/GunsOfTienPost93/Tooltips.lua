@@ -155,7 +155,7 @@ for part, can in pairs({
     MP7_Suppressor = { "4.6x30mm", "MP7A1, MP7A2 and UCP" },
     P90_Suppressor = { "5.7x28mm", "P90, P90 TR and PS90" },
     FIVESEVEN_Suppressor = { "5.7x28mm", "Five-SeveN" },
-    SCARH_Suppressor = { "7.62x51mm", "SCAR-H, HK417, HK417 Marksman, Mk 11 and MDRx .308" },
+    SCARH_Suppressor = { "7.62x51mm", "7.62x51mm rifles" },     -- every one but the M60 (MuzzleFamilies.lua)
 }) do
     lines[M .. part] = {
         "Requires " .. can[1] .. " Muzzle Mount",
@@ -174,22 +174,14 @@ for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mo
         "Needs Wrench to install or remove.",
     }
 end
--- GoM's AK and .45 cans on Post-93's guns too (Groza.lua, Vector.lua): the main mod's PBS-1 line with the Grozas,
--- GoM's P45 line with the Vector carbine
+-- GoM's AK can on Post-93's guns too (Groza.lua, the main mod's MuzzleFamilies.lua): the main mod's PBS-1 line with
+-- the Grozas (its P45 line already says carbines, for the Vector .45 Carbine)
 lines["MarzGuns.PBS-1_Suppressor"] = {
     "Requires AK Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74, Groza-1 and Groza-2",
-    "Needs Wrench to install or remove.",
-}
-lines["MarzGuns.P45_Suppressor"] = {
-    "Requires .45 Muzzle Mount",
-    "Sound Radius and Volume reduced by 70%",
-    "Damage reduced by 10%",
-    "Removes Muzzle Flash",
-    "Can be mounted on .45 pistols, SMGs and the Vector .45 Carbine",
+    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74, SKS, Groza-1 and Groza-2",
     "Needs Wrench to install or remove.",
 }
 

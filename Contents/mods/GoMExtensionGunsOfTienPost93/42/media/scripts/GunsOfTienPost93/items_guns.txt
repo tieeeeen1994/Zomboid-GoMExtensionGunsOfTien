@@ -1376,6 +1376,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = GunsOfTienPost93.9x19Magazine30_UMP GunsOfTienPost93.9x19Magazine30_UMP magazine magazine,
         ModelWeaponPart              = GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,
         ModelWeaponPart              = GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,
+        ModelWeaponPart              = MarzGuns.M&P_Suppressor GunsOfTien.M&P_Suppressor_GoT canon canon,
+        ModelWeaponPart              = MarzGuns.Shh9_Suppressor GunsOfTien.Shh9_Suppressor_GoT canon canon,
         ModelWeaponPart              = MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,
         ModelWeaponPart              = MarzGuns.EXPS1_Sight MarzGuns.EXPS1_Sight scope scope,
         ModelWeaponPart              = MarzGuns.EXPS3_Sight MarzGuns.EXPS3_Sight scope scope,

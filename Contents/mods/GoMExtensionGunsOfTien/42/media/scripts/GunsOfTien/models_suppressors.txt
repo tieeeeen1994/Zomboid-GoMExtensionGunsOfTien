@@ -23,4 +23,18 @@ module GunsOfTien {
         texture  = weapons/GunsOfTien/SMG9_Muzzle_Mount_Device,
         scale    = 0.8375,
     }
+
+    model M&P_Suppressor_GoT {
+        mesh     = weapons/parts/suppressors|M&P_Suppressor,
+        texture  = weapons/parts/suppressors/M&P_Suppressor,
+        cullFace = None,
+        scale    = 0.8375,
+    }
+
+    model Shh9_Suppressor_GoT {
+        mesh     = weapons/parts/suppressors|Shh9_Suppressor,
+        texture  = weapons/parts/suppressors/Shh9_Suppressor,
+        cullFace = None,
+        scale    = 0.8375,
+    }
 }

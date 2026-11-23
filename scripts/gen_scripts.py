@@ -734,14 +734,14 @@ def lasers():
 # The 9x19mm SMG suppressor (user, 2026-10-22): GoM's 9mm cans (M&P, Shh9 on its Pistol mount) fit its pistols only.
 # AWC's Mk9 (12.0" x 2.0", AWC's can for the Uzi, MAC and MP5) on its own mount device (Tim Bixler's three-lug adapter),
 # for the 9mm SMGs whose real barrels take a can: GoM's MP5 and MP5A2 (three-lug barrel) here, the UMP9 (threaded)
-# appended by Post-93. Not the MP5K (flush end cap), the MP5SD (integral can) or the TEC-9 (user). Mesh and textures:
+# appended by Post-93 (and every 9mm pistol since 2026-11-23, below). Not the MP5K (flush end cap) or the MP5SD
+# (integral can); the TEC-9 since 2026-11-23 (MuzzleFamilies.lua). Mesh and textures:
 # scripts/build_mk9.py; icons: scripts/make_mk9_art.py; GoM's guns get the `canon` point and their ModelWeaponPart
 # lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
 # The main mod's Uzis take it too (user, 2026-10-23: the real Mk9 took the Uzi barrel nut's place), listed in their
 # own scripts (uzi() below).
 # One 9mm mount (user, 2026-11-23: "let's merge mounting device of 9mm", named like the other families): GoM's Pistol
-# mount, renamed "9x19mm Family Muzzle Mounting Device" (NINE_MOUNT_NAME), carries the Mk9 on the SMGs as it carries
-# the M&P and Shh9 on the pistols; the guns draw it with our adapter (`SMG9_Muzzle_Mount_Device_GoT`), and its MountOn
+# mount, renamed "9x19mm Family Muzzle Mounting Device" (NINE_MOUNT_NAME), carries all three 9mm cans; the SMGs draw it with our adapter (`SMG9_Muzzle_Mount_Device_GoT`), and its MountOn
 # gets the SMGs at run time (Suppressors.lua). Our own SMG9_Muzzle_Mount_Device stays defined for worlds that have
 # one: same name, GoM's icon and floor model, every 9mm gun in its MountOn, accepted by all three cans, never spawned.
 NINE_MOUNT = 'MarzGuns.Pistol_Muzzle_Mount_Device'
@@ -749,7 +749,14 @@ NINE_MOUNT_NAME = '9x19mm Family Muzzle Mounting Device'
 SMG9_GUNS = ('MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;'
              'GunsOfTien.TMP')
 GOM_9MM_PISTOLS = ('MarzGuns.M92FS;MarzGuns.M93R;MarzGuns.HIPOWER;MarzGuns.P226;MarzGuns.GLOCK17;MarzGuns.VP70M')
-SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
+# Every 9mm can on every 9mm gun (user, 2026-11-23: "change the 9mm suppressor to also take into pistols and SMGs"): the
+# Mk9 on GoM's pistols too (its MountOn; the TEC-9 in MuzzleFamilies.lua), GoM's M&P and Shh9 on the SMGs
+# (Suppressors.lua, Post-93's files) through `<can>_GoT` models of GoM's meshes at our guns' size, and the three named
+# "(9mm Weapons)" as GoM's P45 is "(.45 ACP Weapons)".
+NINE_CAN_NAMES = {'MarzGuns.M&P_Suppressor': 'M&P Suppressor (9mm Weapons)',
+                  'MarzGuns.Shh9_Suppressor': 'Shh9 Suppressor (9mm Weapons)'}
+GOM_9MM_CANS = ('M&P_Suppressor', 'Shh9_Suppressor')
+SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm Weapons)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, NINE_MOUNT_NAME)]
 SMG9_LEGACY = 'SMG9_Muzzle_Mount_Device'
 # Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
@@ -827,7 +834,7 @@ def smg_suppressor():
         scale    = {GOT_PART_SCALE:.4f},
     }}
 """)
-        legacy = part == SMG9_LEGACY      # looks like GoM's mount, fits every 9mm gun it or the Mk9 fits
+        legacy = part == SMG9_LEGACY      # looks like GoM's mount
         items.append(f"""
     item {part} {{
         DisplayCategory  = WeaponPart,
@@ -835,11 +842,20 @@ def smg_suppressor():
         Icon             = {'Muzzle_Mount_Device' if legacy else f'GunsOfTien_{part}'},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {GOM_9MM_PISTOLS + ';' + SMG9_GUNS if legacy else SMG9_GUNS},
+        MountOn          = {GOM_9MM_PISTOLS + ';' + SMG9_GUNS},
         PartType         = {ptype},
         WorldStaticModel = {'MarzGuns.Muzzle_Mount_Device' if legacy else f'{MODULE}.{part}'},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
         CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+    for can in GOM_9MM_CANS:
+        models.append(f"""
+    model {can}_GoT {{
+        mesh     = weapons/parts/suppressors|{can},
+        texture  = weapons/parts/suppressors/{can},
+        cullFace = None,
+        scale    = {GOT_PART_SCALE:.4f},
     }}
 """)
     models.append("}\n")
@@ -851,6 +867,7 @@ def smg_suppressor():
     for part, _, _, name in SMG9_PARTS:
         names[f'{MODULE}.{part}'] = name
     names[NINE_MOUNT] = NINE_MOUNT_NAME          # GoM's, renamed (translations merge by key, the later mod wins)
+    names.update(NINE_CAN_NAMES)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -1210,6 +1227,23 @@ def m249_attachment(name, point):
             f"rotate = {r[0]:.4f} {r[1]:.4f} {r[2]:.4f}, }}\n")
 
 
+# `canon` of the guns given their calibre family's muzzle parts on 2026-11-23 (shared/GunsOfTien/MuzzleFamilies.lua,
+# which appends them to the parts' MountOn): the rear of the gun's own flash hider (M249), else the bore's front
+# (SR-25), on the bore axis, from muzzle_audit.py's bore front and the barrel's vertex rings. The AUG A1 has the A3's
+# barrel and point.
+CANON = {'AUG': [0.0, 0.2557, 0.0262], 'M249': [0.0, 0.3963, 0.0422], 'SR25': [0.0, 0.5017, 0.0271]}
+AR_MUZZLE_LINES = ["MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device"] + \
+    [f"MarzGuns.{p} MarzGuns.{p}" for p in ('LR2_Compensator', 'LX_Flashhider', 'Trix42_Muzzlebreak')]
+
+
+def canon_point(gun):
+    return m249_attachment('canon', dict(offset=CANON[gun], rotate=[0.0, 0.0, 0.0]))
+
+
+def canon_lines(w, pairs):
+    return [f"{w}{p} canon canon," for p in pairs]
+
+
 # The off hand's magazine (Bip01_Prop2): GoM's load / unload nodes for its FAMAS (the AUGs' "famas_rifle") and M60 (the
 # M249's "m60_lmg") show the magazine in the off hand through Gunworks' attachToHand, placed by the magazine model's
 # own point of that name (CLAUDE.md "The off hand's point on magazines"). GoM's way: one rotate per animation,
@@ -1260,6 +1294,7 @@ def m249():
     for name in ('muzzle', 'world', 'magazine', 'box', 'belt', 'cover', 'cover_open', 'integrated_bipod', 'bolt_fired',
                  'handle_back') + tuple(RAIL_POINTS.values()) + ('scope', 'foregrip', 'light_left', 'laser_right'):
         out.append(m249_attachment(name, pts[name]))
+    out.append(canon_point('M249'))
     for d in M249_COVER_STEPS:
         out.append(m249_attachment('cover_%d' % d, dict(offset=pts['cover']['offset'], rotate=[-float(d), 0.0, 0.0])))
     out.append("    }\n")
@@ -1310,6 +1345,8 @@ def m249():
     # GoM's optional rails, its own models, on the feed cover and round the handguard (build_m249.py RAIL_UP / RAIL_HG)
     parts += rail_parts({s: f'MarzGuns.Picatinny_Rail_{s}' for s in RAIL_POINTS}, M249_OPTICS, foregrips=True,
                         lights=True, lasers=True)
+    # GoM's AR muzzle mount and devices, no rifle can (MuzzleFamilies.lua)
+    parts += canon_lines(w, AR_MUZZLE_LINES)
     items = [f"module {MODULE} {{\n", f"""
     item M249 {{
         MinDamage                    = 1.0,
@@ -1660,6 +1697,7 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    parts += [f"{w}MarzGuns.{c} {MODULE}.{c}_GoT canon canon," for c in GOM_9MM_CANS]
     parts += [f"{w}{NINE_MOUNT} {MODULE}.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     if base in UZI_RAILS:
         # GoM's optional rails drawn as our short ones (build_rails.py): its red dots, foregrips and lights on them
@@ -1932,6 +1970,7 @@ def tmp():
              f"{w}{MODULE}.ChargingHandle_Back {MODULE}.TMP_HANDLE handle_back handle_back,"]
     parts += [f"{w}{MODULE}.{tmp_mag(r)} {MODULE}.{tmp_mag(r)} magazine magazine," for r, _ in TMP_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    parts += [f"{w}MarzGuns.{c} {MODULE}.{c}_GoT canon canon," for c in GOM_9MM_CANS]
     parts += [f"{w}{NINE_MOUNT} {MODULE}.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     # GoM's rails (top: red dots, as the Uzi's; left: lights; right: lasers)
     parts += rail_parts({s: f'{MODULE}.TMP_RAIL_{s.upper()}' for s in ('Up', 'Left', 'Right')}, RED_DOTS,
@@ -2092,6 +2131,7 @@ def sr25():
 """]
     for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'charging_handle_open', 'integrated_bipod'):
         models.append(m249_attachment(name, pts[name]))
+    models.append(canon_point('SR25'))
     models.append("    }\n")
     for node in ('BOLT', 'CHARGING_HANDLE', 'BIPOD_FOLDED', 'BIPOD_DEPLOYED'):
         models.append(f"""
@@ -2125,6 +2165,9 @@ def sr25():
     # attached, so harmless without Post-93.
     parts += [f"{w}GunsOfTienPost93.762x51Magazine{n}_PMAG GunsOfTienPost93.762x51Magazine{n}_PMAG magazine magazine,"
               for n in (10, 20, 25, 50)]
+    # Post-93's 7.62x51mm mount device and SOCOM762-RC (MuzzleFamilies.lua), likewise only strings without it
+    parts += canon_lines(w, [f"GunsOfTienPost93.{p} GunsOfTienPost93.{p}"
+                             for p in ('SCARH_Muzzle_Mount_Device', 'SCARH_Suppressor')])
     parts += [f"{w}{MODULE}.SR25_Integrated_Bipod_Folded {MODULE}.SR25_BIPOD_FOLDED integrated_bipod integrated_bipod,",
              f"{w}{MODULE}.SR25_Integrated_Bipod_Deployed {MODULE}.SR25_BIPOD_DEPLOYED integrated_bipod "
              f"integrated_bipod,"]
@@ -2328,6 +2371,7 @@ def aug():
     for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'handle_back', 'foregrip_deployed',
                  'foregrip_folded', 'rail_left', 'light_left', 'rail_right', 'laser_right'):
         models.append(m249_attachment(name, pts[name]))
+    models.append(canon_point('AUG'))
     models.append("    }\n")
     # AUG_BOLT = the bolt carrier in the ejection port, AUG_HANDLE = the charging handle (moved only while racked)
     for node in ('BOLT', 'HANDLE', 'FOREGRIP'):
@@ -2362,6 +2406,9 @@ def aug():
     parts += [f"{w}{MODULE}.{aug_mag(r)} {MODULE}.{aug_mag(r)} magazine magazine," for r, _ in AUG_MAGS]
     parts += rail_parts({'Left': f'{MODULE}.AUG_RAIL_LEFT', 'Right': f'{MODULE}.AUG_RAIL_RIGHT'}, lights=True,
                         lasers=True)
+    # GoM's AR muzzle family, as the A3 (MuzzleFamilies.lua)
+    parts += canon_lines(w, AR_MUZZLE_LINES + [f"MarzGuns.{p} MarzGuns.{p}" for p in ('MKI_Suppressor',
+                                                                                    'NDR_Suppressor')])
     # Stats (docs/design.md 4g): GoM's M16A1 damage (the same round from the same 20" barrel), between its FAMAS and
     # M16A1 in handling, GoM's FNC's reliability; 3.6 kg as GoM gives its FAMAS its real weight; sound 175 / 50 from
     # sound_model.py's model (5.56 from 20", the M16's own figure; the main mod's SoundTable is for GoM's guns only).

@@ -165,6 +165,8 @@ end
 Events.OnGameBoot.Add(apply)
 Events.OnInitGlobalModData.Add(apply)
 
+-- MuzzleFamilies.lua adds its muzzle parts to these three before the events fire
 GoMAttachments.POINTS = POINTS
 GoMAttachments.LINES = LINES
+GoMAttachments.MOUNT_ADD = MOUNT_ADD
 return GoMAttachments

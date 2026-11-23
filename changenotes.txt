@@ -3,7 +3,7 @@ Attachments, tooltips and muzzle parts audit (3.20.0).
 Tooltips
 - Every gun's information lines, Guns of Marz's included, now follow one format written from what the gun really takes: calibre, built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet. No tooltip promises a rail the gun does not have any more (the AR-15, Mini-14, G36C and CAR-15 did), and every magazine lists the guns it fits.
 - Lines with no effect in game are gone from this mod's guns (barrel lengths, case ejection and the like).
-- Every suppressor and muzzle mount tooltip in Guns of Marz's wording: which mount it needs, its effects, which guns it fits, and the wrench. The PBS-1 and P45 tooltips list the guns this mod adds.
+- Every suppressor and muzzle mount tooltip in Guns of Marz's wording: which mount it needs, its effects, which guns it fits, and the wrench. The suppressor tooltips list the guns they now fit.
 
 Guns of Marz fixes
 - The AA-12's side rails, lights and lasers and the G36's bipod are drawn (they could be fitted but were invisible).
@@ -11,7 +11,11 @@ Guns of Marz fixes
 - The bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had no room). A bipod already fitted on one comes off and lies beside the gun.
 
 Muzzle parts
-- One muzzle mount for every 9mm gun: Guns of Marz's pistol mount is now the "9x19mm Family Muzzle Mounting Device" and carries the Mk9 on the submachine guns as it carries the M&P and Shh9 on the pistols (which suppressor fits which gun is unchanged). The old 9mm SMG mount is no longer found. In a world that has some, each one becomes the new mount by itself, on guns and loose, and works the same until then.
+- Every gun takes its calibre's muzzle mount wherever something of that family fits it. Guns of Marz's flash hider, compensator and muzzle brake fit every 5.56mm gun with the AR mount, now also the FN FNC, Mini-14, Model 70, XM177, AUG A1 and M249.
+- Suppressors only where the real gun takes one: the 5.56mm suppressors on the Model 70, XM177 and AUG A1 (not the M249: real ones are machine-gun suppressors), the PBS-1 on the SKS, the P45 on the Thompson and Camp Carbine, every 9mm suppressor on the TEC-9, and with the Post-93 add-on the SOCOM762-RC on the SR-25, FN FAL, G3, M14, M24, PSG-1 and Remington 700.
+- No mount on the RPD, M60, AUG HBAR, Colt Single Action Army, MP5K or MP5SD: nothing of their family would fit them.
+- One muzzle mount for every 9mm gun: Guns of Marz's pistol mount is now the "9x19mm Family Muzzle Mounting Device". The old 9mm SMG mount is no longer found. In a world that has some, each one becomes the new mount by itself, on guns and loose, and works the same until then.
+- Every 9mm suppressor fits every 9mm pistol and submachine gun that takes the mount: the Mk9 on the pistols, Guns of Marz's M&P and Shh9 on the submachine guns. All three are named "(9mm Weapons)". The Mk9 no longer slows aiming: all three have the same stats, and the MP5SD stays quieter than any suppressed MP5.
 - The Groza-2 Prototype takes Guns of Marz's AK muzzle mount and PBS-1 suppressor, as the Groza-1 does.
 - Found guns no longer come with a muzzle mount device, as Guns of Marz's guns never do.
 
