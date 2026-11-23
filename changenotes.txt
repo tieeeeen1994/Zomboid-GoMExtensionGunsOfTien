@@ -11,7 +11,12 @@ Balance, as Guns of Marz
 - Every semi-automatic and bolt gun fires one shot per click.
 - Suppressors wear out and come off broken; repair them with a Repair Pack or a second suppressor of the same kind. A found suppressor or muzzle device comes with its mount.
 - Muzzle devices lower the sound by Guns of Marz's flat amounts.
+- Suppressor tooltips give Guns of Marz's new flat numbers for each calibre's usual gun (the PBS-1: Sound Radius reduced by 140 and Volume by 28), this mod's and the Post-93 add-on's suppressors too. The suppressors themselves are unchanged.
+- The sawn-off stocks and the Mosin's sawn-off barrel give flat values. Sawn-off stock: Aiming Time -10, Hit Chance -8%, Recoil Delay +9, so the gun is again slower between shots and slower to steady, which had stopped working since Guns of Marz's update. The Mosin's sawn-off stock alone now aims in a little slower than before.
 - Suppressors, muzzle devices, scopes, lasers, lights, foregrips and bipods need no tool once their mount is on. Tooltips no longer ask for a wrench there.
+
+Muzzle devices do their real job
+- Every flash hider, compensator and muzzle brake now does more than lower the sound, Guns of Marz's LR2, LX and Trix42 included: compensators Aiming Time -3 and automatic fire spread -10%, muzzle brakes Aiming Time -5 and spread -5%, flash hiders Hit Chance +2%. Their tooltips list it.
 
 New from Guns of Marz and Gunworks
 - The AUG's and MP7A1's front grips fold with Gunworks' Swap in the gun's menu and the firearm radial.

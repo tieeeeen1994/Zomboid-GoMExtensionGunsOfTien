@@ -29,12 +29,12 @@ local lines = tooltips.tooltipsPergun
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 local STATES = GunsOfTien_TooltipStates
 
--- the sawn-off stock (SawnStock.HANDLING)
+-- the sawn-off stock (SawnStock.HANDLING, flat as GoM's attachments since November 2026)
 local SAWN = {
     "Sawn-off stock:",
-    "Aiming Time reduced by 25%",
-    "Hit Chance reduced by 13%",
-    "Recoil Delay increased by 30%",
+    "Aiming Time reduced by 10",
+    "Hit Chance reduced by 8%",
+    "Recoil Delay increased by 9",
 }
 for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34", "MOSIN" }) do
     STATES["GunsOfTien." .. gun .. "_Stock_Sawnoff"] = SAWN
@@ -43,13 +43,13 @@ end
 STATES["GunsOfTien.MOSIN_Barrel_Sawnoff"] = function(item)
     return {
         "Sawn-off barrel:",
-        "Damage reduced by 15%",
-        "Hit Chance reduced by 17%",
-        "Aiming Time reduced by 36%",
-        "Recoil Delay increased by 20%",
+        "Min Damage reduced by 0.3 and Max Damage by 0.35",
+        "Hit Chance reduced by 10%",
+        "Aiming Time reduced by 25",
+        "Recoil Delay increased by 4",
         SawnStock and SawnStock.IsSawn(item) and "Sight Range reduced to 2-9 tiles" or "Sight Range reduced to 4-13 tiles",
-        "Range reduced by 50%",
-        "Sound Radius and Volume increased by 35%",
+        "Range reduced by 30 tiles",
+        "Sound Radius increased by 75 and Volume by 90",
         "Larger Muzzle Flash",
     }
 end
@@ -57,10 +57,10 @@ end
 -- SawnStock.lua's copy on the other two: Aiming Time 30, Hit Chance 70, spread 2.0, range 15 against the guns'
 -- 40 / 65 / 0.6 / 20. GoM gives these parts no lines of its own.
 local SAWN_BARRELS = {
-    "Aiming Time reduced by 25%",
-    "Hit Chance increased by 8%",
-    "Pellet spread increased by 233%",
-    "Range reduced by 25%",
+    "Aiming Time reduced by 10",
+    "Hit Chance increased by 5%",
+    "Pellet spread increased by 1.4",
+    "Range reduced by 5 tiles",
 }
 for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
     for _, side in ipairs({ "Close", "Open" }) do
@@ -79,35 +79,31 @@ local NINE_MOUNT = {
 }
 lines["MarzGuns.Pistol_Muzzle_Mount_Device"] = NINE_MOUNT
 lines["GunsOfTien.SMG9_Muzzle_Mount_Device"] = NINE_MOUNT
-for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) do
+-- Effects in GoM's November 2026 wording: flat numbers for the calibre's usual gun (GoM's own lines; the stats stay
+-- x0.3 sound, x0.9 damage, so the cut is that size on a gun as loud as the usual one). The Mk9 has the same stats
+-- as GoM's 9mm cans (user, 2026-11-23), so it takes their lines.
+for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor", "GunsOfTien.Mk9_Suppressor" }) do
     lines[can] = {
         "Requires 9x19mm Muzzle Mount",
-        "Sound Radius and Volume reduced by 70%",
-        "Damage reduced by 10%",
+        "Sound Radius reduced by 70 and Volume by 20",
+        "Min Damage reduced by 0.05 and Max Damage by 0.1",
         "Removes Muzzle Flash",
         "Can be mounted on",
     }
 end
-lines["GunsOfTien.Mk9_Suppressor"] = {
-    "Requires 9x19mm Muzzle Mount",
-    "Sound Radius and Volume reduced by 70%",
-    "Damage reduced by 10%",
-    "Removes Muzzle Flash",
-    "Can be mounted on",
-}
 -- GoM's AK can on the main mod's RPKs and GoM's SKS too (RPK.lua, MuzzleFamilies.lua), and Post-93's Grozas
 lines["MarzGuns.PBS-1_Suppressor"] = {
     "Requires AK Muzzle Mount",
-    "Sound Radius and Volume reduced by 70%",
-    "Damage reduced by 10%",
+    "Sound Radius reduced by 140 and Volume by 28",
+    "Min Damage reduced by 0.15 and Max Damage by 0.2",
     "Removes Muzzle Flash",
     "Can be mounted on",
 }
 -- GoM's .45 can on its Camp Carbine too (MuzzleFamilies.lua) and Post-93's Vector .45 Carbine
 lines["MarzGuns.P45_Suppressor"] = {
     "Requires .45 Muzzle Mount",
-    "Sound Radius and Volume reduced by 70%",
-    "Damage reduced by 10%",
+    "Sound Radius reduced by 80 and Volume by 25",
+    "Damage reduced by 0.1",
     "Removes Muzzle Flash",
     "Can be mounted on",
 }
@@ -115,23 +111,22 @@ lines["MarzGuns.P45_Suppressor"] = {
 -- GoM's three AR devices the same way (it gives them only the effect). Since GoM's November 2026 update a can or
 -- device needs no tool once its mount is on (OnCreate/AttachAndDetach.lua: part type Canon has none; CanonMount, the
 -- mount devices, keep the wrench), and its effects are flat (GoM's own wording)
+-- Each kind's bonus (MuzzleDeviceKinds.lua, user 2026-11-24) follows the sound line, in GoM's order and wording.
+local KINDS = require("GunsOfTien/MuzzleDeviceKinds")
+local function deviceLines(family, effect, kind)
+    local out = { "Requires " .. family .. " Muzzle Mount", effect }
+    for _, line in ipairs(KINDS[kind].lines) do out[#out + 1] = line end
+    out[#out + 1] = "Removes Muzzle Flash"
+    out[#out + 1] = "Can be mounted on"
+    return out
+end
 for device, d in pairs(require("GunsOfTien/MuzzleDevicesTable")) do
-    lines[device] = {
-        "Requires " .. d.family .. " Muzzle Mount",
-        d.effect,
-        "Removes Muzzle Flash",
-        "Can be mounted on",
-    }
+    lines[device] = deviceLines(d.family, d.effect, d.kind)
 end
 for device, effect in pairs({ ["MarzGuns.LR2_Compensator"] = "Sound Radius reduced by 15 and Volume by 4",
     ["MarzGuns.LX_Flashhider"] = "Sound Radius reduced by 10 and Volume by 2",
     ["MarzGuns.Trix42_Muzzlebreak"] = "Sound Radius reduced by 10 and Volume by 2" }) do
-    lines[device] = {
-        "Requires AR Muzzle Mount",
-        effect,
-        "Removes Muzzle Flash",
-        "Can be mounted on",
-    }
+    lines[device] = deviceLines("AR", effect, KINDS.gom[device])
 end
 local FITS_HOLSTER = "Fits a holster"
 local NEEDS_BARRELS = "Fits a holster if barrels are sawed off"

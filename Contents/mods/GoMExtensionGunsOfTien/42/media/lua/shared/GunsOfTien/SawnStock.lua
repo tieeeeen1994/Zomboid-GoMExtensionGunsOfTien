@@ -24,11 +24,17 @@
       gun) from its parts on every ReapplyAllModifiers: <GUN>_SAWNSTOCK_SHORT with GoM's sawn-off barrels (muzzle point
       at their end), <GUN>_SAWNSTOCK with full ones. Barrels are parts drawn at the gun's origin, so both fit.
     - Handling: a layer of our own after GoM's CustomStatsAttachments (whose sawn-off barrel Sets AimingTime 30 and
-      HitChance 70 on the Double Barrel): AimingTime x0.75, quicker to aim in like GoM's sawn-off barrels (40 to 30;
-      user, 2026-10-19: "aiming in should be faster like a sawn off barrel"), so both together give 22; Hit Chance
-      x0.87 and Recoil Delay x1.3 (no shoulder to steady it or take the kick; the longer recoil also adds more aiming
-      delay per shot). The
-      sawn-off part weighs -0.5 (HandWeapon.getActualWeight adds every part's WeightModifier).
+      HitChance 70 on the Double Barrel): Aiming Time -10, quicker to aim in like GoM's sawn-off barrels (40 to 30;
+      user, 2026-10-19: "aiming in should be faster like a sawn off barrel"), so both together give 20; Hit Chance -8
+      and Recoil Delay +9 (no shoulder to steady it or take the kick). Recoil Delay (traced 2026-11-24): Gunworks'
+      RateOfFire layer Sets it to 1 in its Real fire modes and this layer comes after it, so the gun has 10;
+      HandWeapon.getRecoilDelay(owner) scales that by Aiming / Strength and cuts it to an int (8 at Aiming 5, where an
+      unsawn gun's 1 is already 0), the shooter's recoil timer starts there after each shot (IsoGameCharacter drains it
+      0.625 x multiplier an update; IsoPlayer fires again only at 0, and the aim does not steady until it is nearly 0),
+      and a quarter of it joins the aiming delay per shot (CombatManager.setAimingDelay). Flat since 2026-11-24, as GoM's attachments are since its November 2026 update (user: "let's also do flat
+      rather than percents"); the numbers are the old x0.75 / x0.87 / x1.3 on the shotguns' 40 / 65 / 30, so the
+      Mosin's stock cut alone moves it a little less (Aiming Time 70 -> 60, was 52.5). The sawn-off part weighs -0.5
+      (HandWeapon.getActualWeight adds every part's WeightModifier).
     - Sawn-off barrels: GoM gives stats only to the Double Barrel's (AttachmentCustomStats.lua: Aiming Time 30, Hit
       Chance 70, spread 2.0, range 15, against 40 / 65 / 0.6 / 20 on all three guns); the Stevens 555's and TOZ-34's
       only got lighter. They get the same entry (user, 2026-10-19: "give the same stats to the sawn off barrels and
@@ -55,11 +61,12 @@
       upper band, the front sight moved back onto it, muzzle point there) and MOSIN_OBREZ (both, with holster points).
     - Offcuts: the stock cut hands over MOSIN_StockOffcut (0.5, wood); the barrel cut MOSIN_BarrelOffcut (0.6, small
       steel to smelt) and MOSIN_ForendOffcut (0.3, wood). The gun loses what they weigh (part WeightModifiers).
-    - Barrel cut (the Obrez's real numbers: ~27 cm barrel, about half the energy, a .50 AE's): damage x0.85, Hit Chance
-      60 -> 50 and Aiming Time 70 -> 45 (rear sight only, lighter), sights 4-12 (GoM's short carbines) and 2-9 with
-      the stock sawn off too (GoM's magnum revolvers: no shoulder), range x0.5, Recoil Delay x1.2, sound x1.35 (the
-      mod's sound model, sound_model.py: +3 dB per halving of the 28.7" barrel, 10.5" left) and vanilla's sawn-off
-      shotgun flash. The stock cut adds the shotguns' handling layer on top. Sight ranges are the gun's own, so a fitted
+    - Barrel cut (the Obrez's real numbers: ~27 cm barrel, about half the energy, a .50 AE's): damage -0.3 / -0.35
+      (15% of GoM's 1.9-2.2), Hit Chance 60 -> 50 and Aiming Time 70 -> 45 (rear sight only, lighter), sights 4-13
+      (GoM's short carbines) and 2-9 with the stock sawn off too (GoM's magnum revolvers: no shoulder), range -30 (half
+      of 60), Recoil Delay +4 (5 on the gun, as the stock's above), sound radius +75 and volume +90 (35% of 220 / 250: the mod's sound model,
+      sound_model.py: +3 dB per halving of the 28.7" barrel, 10.5" left) and vanilla's sawn-off shotgun flash. Flat
+      values (GoM's style since November 2026), worked out from the Mosin's own numbers. The stock cut adds the shotguns' handling layer on top. Sight ranges are the gun's own, so a fitted
       scope keeps its own pair.
     - Bayonet: the lug goes with the barrel, so the barrel cut takes a fitted bayonet off into the inventory, and a
       sawn-off barrel refuses one. Two registries: UpgradeExclusives hides the bayonet parts' Upgrade options, and
@@ -189,9 +196,9 @@ for gun, entry in pairs(SawnStock.GUNS) do
 end
 
 SawnStock.HANDLING = {
-    StatsFactory.Multiply("AimingTime", 0.75),
-    StatsFactory.Multiply("HitChance", 0.87),
-    StatsFactory.Multiply("RecoilDelay", 1.3),
+    StatsFactory.Adjust("AimingTime", -10),
+    StatsFactory.Adjust("HitChance", -8),
+    StatsFactory.Adjust("RecoilDelay", 9),
 }
 
 --- Vanilla's sawn-off shotgun flash, unless something before (a suppressor) changed the gun's own.
@@ -212,16 +219,17 @@ local function bigFlash(weapon, base)
     end
 end
 
--- The Mosin's barrel cut, before the stock's handling (multipliers on GoM's 60 / 70 / 18 / 60 / 1.9-2.2).
+-- The Mosin's barrel cut, before the stock's handling: flat, from GoM's Hit Chance 60, Aiming Time 70, Recoil Delay
+-- 18, range 60, damage 1.9-2.2, sound 220 / 250
 SawnStock.BARREL_HANDLING = {
-    StatsFactory.Multiply("MinDamage", 0.85),
-    StatsFactory.Multiply("MaxDamage", 0.85),
-    StatsFactory.Multiply("HitChance", 50 / 60),
-    StatsFactory.Multiply("AimingTime", 45 / 70),
-    StatsFactory.Multiply("RecoilDelay", 1.2),
-    StatsFactory.Multiply("MaxRange", 0.5),
-    StatsFactory.Multiply("SoundRadius", 1.35),
-    StatsFactory.Multiply("SoundVolume", 1.35),
+    StatsFactory.Adjust("MinDamage", -0.3),
+    StatsFactory.Adjust("MaxDamage", -0.35),
+    StatsFactory.Adjust("HitChance", -10),
+    StatsFactory.Adjust("AimingTime", -25),
+    StatsFactory.Adjust("RecoilDelay", 4),
+    StatsFactory.Adjust("MaxRange", -30),
+    StatsFactory.Adjust("SoundRadius", 75),
+    StatsFactory.Adjust("SoundVolume", 90),
     bigFlash,
 }
 -- GoM's sight windows (November 2026): the cut-down barrel a short carbine's (its W1873 Carbine, AKS-74U: 4-13), the

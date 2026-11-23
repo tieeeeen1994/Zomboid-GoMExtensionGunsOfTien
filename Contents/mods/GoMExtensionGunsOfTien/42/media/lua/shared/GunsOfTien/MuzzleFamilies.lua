@@ -114,14 +114,36 @@ local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
 local SF = require("WeaponSystems/Utils/StatsFactory")
 local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
 local DEVICES = require("GunsOfTien/MuzzleDevicesTable")
+-- Each kind's bonus on top (user, 2026-11-24, scripts/muzzle_devices.py BONUS): compensator Aiming Time -3 and
+-- automatic fire spread x0.9, brake Aiming Time -5 and spread x0.95, flash hider Hit Chance +2; on GoM's LR2 / LX /
+-- Trix42 too, appended to GoM's own entries (so their sound follows GoM). Not Recoil Delay: Gunworks' RateOfFire layer
+-- sets it to 1 on every registered gun in its Real fire modes, which the Aiming skill already brings to an effective 0.
+local KINDS = require("GunsOfTien/MuzzleDeviceKinds")
+local RateOfFire = require("WeaponSystems/Utils/RateOfFire")
+
+local function bonusOf(kind)
+    local b, mods = KINDS[kind], {}
+    if b.aim then mods[#mods + 1] = SF.Adjust("AimingTime", b.aim) end
+    if b.hit then mods[#mods + 1] = SF.Adjust("HitChance", b.hit) end
+    return mods
+end
+
+local function addBonus(device, kind, mods)
+    for _, mod in ipairs(bonusOf(kind)) do mods[#mods + 1] = mod end
+    local spread = KINDS[kind].spread
+    if spread then
+        RateOfFire.RegisterSpreadPartModifier(device, { sustainedSpreadMult = spread, maxSpreadMult = spread })
+    end
+    return mods
+end
 
 local stats = {}
 for device, d in pairs(DEVICES) do
-    stats[device] = {
+    stats[device] = addBonus(device, d.kind, {
         SF.Adjust("SoundRadius", d.radius),
         SF.Adjust("SoundVolume", d.volume),
         SF.Set("MuzzleFlashModelKey", nil),
-    }
+    })
     RequiredAttachment.RegisterRequired({ device }, d.mounts)
     for _, gun in ipairs(d.guns) do
         if string.sub(gun, 1, 9) == "MarzGuns." then
@@ -129,5 +151,17 @@ for device, d in pairs(DEVICES) do
             table.insert(GoMAttachments.LINES[gun], { device, device, "canon" })
         end
     end
+end
+-- GoM's three: its registration (AttachmentCustomStats.lua, loaded before ours) plus the bonus; GoM's numbers if absent
+local GOM_SOUND = { comp = { -15, -4 }, hider = { -10, -2 }, brake = { -10, -2 } }
+for device, kind in pairs(KINDS.gom) do
+    local entry, mods = CSA.RegisteredParts[device], {}
+    if entry and entry.modifiers then
+        for _, mod in ipairs(entry.modifiers) do mods[#mods + 1] = mod end
+    else
+        mods = { SF.Adjust("SoundRadius", GOM_SOUND[kind][1]), SF.Adjust("SoundVolume", GOM_SOUND[kind][2]),
+            SF.Set("MuzzleFlashModelKey", nil) }
+    end
+    stats[device] = addBonus(device, kind, mods)
 end
 CSA.RegisterMultipleParts(stats)

@@ -14,7 +14,9 @@
     fitted (3.5-4.3 cm long) the flash now starts inside the device instead of 1-2 cm ahead of it. The point is one
     per model, not per gun, so it is placed for the bare barrel. GoM moved the M14's and the M16A2 M203's points to
     the bore itself on 2026-11-03 (re-measured 2026-11-04: every other point here still as before), so those two
-    are no longer set here. Left alone: guns under 1 cm off, GoM's MP5K (in our
+    are no longer set here; its November 2026 update did the same for the AR-15 (0.4430) and P226 (0.1326), within
+    0.05 cm of ours, so those two went too (re-checked 2026-11-24: every other point here still GoM's old one). Left
+    alone: guns under 1 cm off, GoM's MP5K (in our
     compact stance, which reads its point), and the M203 launcher models (`*_M203_Underbarrel`, drawn while the
     grenade launcher is selected). The MP5 family is GoM's own again since 2026-11-23 (our resized copies dropped),
     re-measured on the meshes of GoM's November 2026 update: the MP5, MP5A2 and MP5K points sit within 0.3 cm of the
@@ -28,7 +30,6 @@
 -- model script -> the `muzzle` point's distance along the barrel (y), the bore's front
 local MUZZLE_Y = {
     ["MarzGuns.AK47"] = 0.4130,           -- was 0.4336 (+2.1)
-    ["MarzGuns.AR15"] = 0.4426,           -- was 0.4966 (+5.4)
     ["MarzGuns.ASVAL"] = 0.3893,          -- was 0.4455 (+5.6)
     ["MarzGuns.DETECTIVE_38"] = 0.1491,   -- was 0.2038 (+5.5)
     ["MarzGuns.FAL"] = 0.5512,            -- was 0.5023 (-4.9)
@@ -39,7 +40,6 @@ local MUZZLE_Y = {
     ["MarzGuns.M93R"] = 0.1619,           -- was 0.1433 (-1.9)
     ["MarzGuns.MODEL_70"] = 0.4700,       -- was 0.5100 (+4.0)
     ["MarzGuns.MP5SD"] = 0.2964,          -- was 0.2422 (-5.4)
-    ["MarzGuns.P226"] = 0.1325,           -- was 0.1433 (+1.1)
     ["MarzGuns.PSG1"] = 0.5344,           -- was 0.5149 (-2.0)
     ["MarzGuns.REMINGTON_870"] = 0.4996,  -- was 0.4785 (-2.1)
     ["MarzGuns.RHINO"] = 0.1861,          -- was 0.1744 (-1.2)

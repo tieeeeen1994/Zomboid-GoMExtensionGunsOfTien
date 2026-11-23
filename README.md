@@ -80,7 +80,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   G3, HK417, M14, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25), SFMB muzzle brake and WarComp (FN SCAR-H, G3,
   HK417, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25); the Grozas take the AK ones. Each removes the muzzle flash
   and lowers the sound a little (compensators Sound Radius by 15 and Volume by 4, hiders and brakes by 10 and 2, as
-  Guns of Marz's own), and is found
+  Guns of Marz's own), and does its real job: compensators Aiming Time -3 and automatic fire spread -10%, muzzle
+  brakes Aiming Time -5 and spread -5%, flash hiders Hit Chance +2%, Guns of Marz's LR2, LX and Trix42 included. Found
   where Guns of Marz's muzzle devices are
 - Guns of Marz's MP5 is named for what it is, the MP5A3 (retractable stock)
 - Follows Guns of Marz's November 2026 update on every gun of this mod and the Post-93 add-on: each gun has its

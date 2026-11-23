@@ -193,6 +193,35 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   Trix42 -10 / -2 (`muzzle_devices.py KINDS`, MuzzleFamilies.lua `SF.Adjust`). Suppressors stay `SF.Multiply` 0.3 as
   GoM's. Tooltips say it in GoM's wording ("Aiming Time reduced by 10", "Hit Chance increased by 8%", "Optimal Range
   starts 1 tile and ends 2 tiles further"); gen_handling_tooltips.py reads `SF.Adjust` the same way.
+  **Re-audit 2026-11-24** (user: "let's also do flat rather than percents"): GoM's update also rewrote its cans'
+  tooltips from "reduced by 70%" to flat numbers for the calibre's usual gun (stats still x0.3 / x0.9): about 70% of
+  its sound radius (to 5) and volume, 10% of its damage (to 0.05), e.g. the PBS-1's "Sound Radius reduced by 140 and
+  Volume by 28" / "Min Damage reduced by 0.15 and Max Damage by 0.2" = the AK-47's 200 / 40, 1.5-1.8. Ours now use
+  GoM's lines for PBS-1, P45, M&P, Shh9 and the Mk9 (the M&P's), and the same rule on their own gun for Post-93's
+  Rotex-II (MP7A1: 80 / 23, 0.1 / 0.15), SP90 (P90: 85 / 24, 0.1 / 0.15), SFN-57 (Five-seveN: 105 / 29, 0.05 /
+  0.1) and SOCOM762-RC (SCAR-H: 150 / 43, 0.15 / 0.2). The sawn-off parts went flat the same day (`SawnStock.lua`:
+  stock Aiming Time -10, Hit -8, Recoil Delay +9; Mosin barrel damage -0.3 / -0.35, Hit -10, Aiming -25, Recoil +4,
+  range -30, sound +75 / +90), and their lines (GoM's sawn-off barrels: Aiming -10, Hit +5%, spread +1.4, range -5
+  tiles). attachment_audit.py: 0 ISSUE lines; GoM's update moved the AR-15 and P226 muzzle points onto the bore
+  itself, so MuzzlePoints.lua no longer sets them; no GoM gun gained a `canon` point.
+  **Muzzle device bonuses** (same day; user: "can we also buff these?", real roles, GoM's three included): each kind
+  adds to its GoM sound cut and flash removal (`muzzle_devices.py BONUS` -> generated `MuzzleDeviceKinds.lua`,
+  applied in MuzzleFamilies.lua, lines in Tooltips.lua): compensator Aiming Time -3 and automatic fire spread x0.9,
+  brake Aiming Time -5 and spread x0.95, flash hider Hit Chance +2% (first -1 / -2, raised the same day: user,
+  "correct the values so that the values matter"; sized like GoM's lasers and foregrips). GoM's LR2 / LX / Trix42 keep GoM's own entry
+  (copied from `CSA.RegisteredParts`, GoM's shared files load first) with the bonus appended; spread goes through
+  Gunworks' `RateOfFire.RegisterSpreadPartModifier` (by part full type, multiplied with a foregrip's, automatic fire
+  only). **Recoil Delay is no stat to give or take** (traced 2026-11-24): `HandWeapon.recoilDelay` is an `int`
+  (`setRecoilDelay(I)V`), and Gunworks' RateOfFire layer `Set`s it to 1 on every registered gun (all GoM's and ours)
+  in RealSingle / RealAuto / RealBurst, and `getRecoilDelay(owner)` = int(value x (1 - Aiming / 40) x (1 - (2 x
+  Strength - 10) / 40) x 1.3 with something else in the off hand), so that 1 is already 0 from Aiming 1: nothing to
+  cut, and fractions round away. What it drives when it is above 0: the shooter's recoil timer (set at each shot,
+  drained 0.625 x multiplier an update; IsoPlayer fires only at 0, aiming delay recovers only once it is under
+  value x Aiming / 30) and the per-shot aiming delay (`CombatConfigKey` POST_SHOT_AIMING_DELAY_RECOIL_MODIFIER 0.25
+  x it + AIMING_MODIFIER 0.05 x Aiming Time, capped at Aiming Time). A layer registered after Gunworks' does add to
+  the 1: the sawn-off stock's flat +9 makes it 10 (8 at Aiming 5; the old x1.3 left it 1, i.e. 0).
+  CSA restores only `RegisterRestoreStats` names (GoM's list has no RecoilDelay), so an Adjust of an unlisted stat
+  would pile up on every reapply.
 - **Sight windows by class**: each gun takes the Min/MaxSightRange of its closest GoM gun, read from GoM's script at
   every run (`gom_data.sight`, `GOM_EQUIVALENT` in gen_scripts.py and gen_post93_guns.py; the table there is the
   record). The SV-99 (.22 LR, range 30) has no GoM equal and takes the carbines' 5-14; the SV-98 GoM's M24 14-28; the

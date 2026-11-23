@@ -121,9 +121,9 @@ the gun kept). Permanent. A shell holder (it sits on the stock) comes off into t
   "<gun> Barrel Offcuts" ("Double Barrel Offcuts"; 2.0, GoM's barrels 3.0 -> 1.0; scrap steel tagged large for
   smelting, 4 crucible uses = one Steel Bar). One item per gun: the models are the pieces cut off GoM's own meshes,
   with that gun's texture.
-- Handling: Aiming Time x0.75 (quicker to bring up, like the sawn-off barrels; both: 40 to 22); Hit Chance x0.87,
-  Recoil Delay x1.3 (no shoulder to steady it or take the kick, so it also settles slower after a shot); 0.5
-  lighter.
+- Handling (flat since 2026-11-24, as GoM's attachments): Aiming Time -10 (quicker to bring up, like the sawn-off
+  barrels; both: 40 to 20); Hit Chance -8, Recoil Delay +9 (no shoulder to steady it or take the kick, so it also
+  settles slower after a shot); 0.5 lighter.
 - Carry: with the sawn-off barrels too (or no barrel) the gun fits vanilla's belt and shoulder holsters; a sawn-off
   stock with full barrels stays on the back. Held two-handed as before.
 - Shown: the stockless body (GoM's mesh cut behind the grip) while the sawn-off stock is fitted; its muzzle point at

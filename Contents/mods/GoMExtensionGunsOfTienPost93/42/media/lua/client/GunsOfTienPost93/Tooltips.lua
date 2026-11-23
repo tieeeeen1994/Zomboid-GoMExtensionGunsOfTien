@@ -144,18 +144,30 @@ for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magaz
 end
 -- the P90's magazine, mount device and SP90 and the SS190 round: the main mod's client/GunsOfTien/P90Tooltips.lua
 
--- suppressors and mount devices in GoM's own wording (its MKI / PBS-1 / P45 and their mounts): can -> calibre; the
--- guns each fits are filled into "Can be mounted on" by the main mod's GunLines.lua, from its MountOn
-for part, calibre in pairs({
-    MP7_Suppressor = "4.6x30mm",
-    P90_Suppressor = "5.7x28mm",
-    FIVESEVEN_Suppressor = "5.7x28mm",
-    SCARH_Suppressor = "7.62x51mm",
+-- suppressors and mount devices in GoM's own wording (its MKI / PBS-1 / P45 and their mounts); the guns each fits are
+-- filled into "Can be mounted on" by the main mod's GunLines.lua, from its MountOn. Effects as GoM writes them since
+-- its November 2026 update: flat numbers for the can's own gun, ~70% of its sound radius and volume (radius to 5) and
+-- 10% of its damage (to 0.05), the way GoM's PBS-1 line is the AK-47's 200 / 40 and 1.5-1.8; the stats stay x0.3
+-- sound, x0.9 damage (Guns.lua). MP7A1 114 / 33, 0.9-1.4; P90 118 / 34, 1.0-1.5; Five-seveN 148 / 42, 0.6-1.0;
+-- SCAR-H 216 / 62, 1.3-1.8.
+for part, can in pairs({
+    MP7_Suppressor = { "4.6x30mm",
+        "Sound Radius reduced by 80 and Volume by 23",
+        "Min Damage reduced by 0.1 and Max Damage by 0.15" },
+    P90_Suppressor = { "5.7x28mm",
+        "Sound Radius reduced by 85 and Volume by 24",
+        "Min Damage reduced by 0.1 and Max Damage by 0.15" },
+    FIVESEVEN_Suppressor = { "5.7x28mm",
+        "Sound Radius reduced by 105 and Volume by 29",
+        "Min Damage reduced by 0.05 and Max Damage by 0.1" },
+    SCARH_Suppressor = { "7.62x51mm",
+        "Sound Radius reduced by 150 and Volume by 43",
+        "Min Damage reduced by 0.15 and Max Damage by 0.2" },
 }) do
     lines[M .. part] = {
-        "Requires " .. calibre .. " Muzzle Mount",
-        "Sound Radius and Volume reduced by 70%",
-        "Damage reduced by 10%",
+        "Requires " .. can[1] .. " Muzzle Mount",
+        can[2],
+        can[3],
         "Removes Muzzle Flash",
         "Can be mounted on",
     }

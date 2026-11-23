@@ -956,6 +956,7 @@ def muzzle_devices():
     write('scripts/GunsOfTien/items_muzzle_devices.txt', ''.join(items))
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
     write('lua/shared/GunsOfTien/MuzzleDevicesTable.lua', MD.lua_table())
+    write('lua/shared/GunsOfTien/MuzzleDeviceKinds.lua', MD.lua_kinds())
 
 
 # Sawn-off stocks (shared/GunsOfTien/SawnStock.lua, scripts/build_sawn_stocks.py): GoM's three break-action shotguns,
