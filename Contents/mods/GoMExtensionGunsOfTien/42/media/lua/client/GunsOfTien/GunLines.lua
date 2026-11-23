@@ -27,8 +27,9 @@
     Each magazine in a Gunworks magazine profile gets "Fits: <guns>" (every gun registered to a profile it is in,
     short names, one line) after its own "Uses" line, in place of the old "Fits the ..." lines. The lines of the
     part states fitted on a gun (stocks, bipods, selectors) are added under the gun's when its tooltip renders
-    (Tooltips.lua). Every list is read from the live registries and item scripts, so a line cannot claim what the gun
-    cannot do.
+    (Tooltips.lua). Each suppressor's and muzzle device's "Can be mounted on" line (written empty by Tooltips.lua
+    and Post-93's) gets every loaded gun its MountOn lists, short names, comma-separated. Every list is read from the
+    live registries and item scripts, so a line cannot claim what the gun cannot do.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -371,6 +372,47 @@ local function buildMagazines()
 end
 
 -------------------------------------------------
+-- Muzzle parts
+-------------------------------------------------
+GunLines.MOUNTS_LINE = "Can be mounted on"
+
+--- every part line "Can be mounted on" (the suppressors and muzzle devices: Tooltips.lua, Post-93's Tooltips.lua)
+--- gets the guns its MountOn lists, by short name, comma-separated (user, 2026-11-23: no "7.62x51mm rifles except
+--- the FAL and M14"; list the guns by name). Guns of a mod that is not loaded are left out; a part no loaded gun
+--- takes loses the line.
+local function buildMountLines()
+    local prefix = "^" .. GunLines.MOUNTS_LINE
+    local parts = {}
+    for part, list in pairs(lines) do
+        if type(list) == "table" then
+            for _, line in ipairs(list) do
+                if type(line) == "string" and line:find(prefix) then
+                    parts[#parts + 1] = part
+                    break
+                end
+            end
+        end
+    end
+    for _, part in ipairs(parts) do
+        local set = {}
+        for gun in pairs(mountOn(part)) do
+            if isGun(gun) then set[shortName(gun)] = true end
+        end
+        local names = keys(set)
+        table.sort(names)
+        local list = {}
+        for _, line in ipairs(lines[part]) do
+            if type(line) == "string" and line:find(prefix) then
+                if #names > 0 then list[#list + 1] = GunLines.MOUNTS_LINE .. " " .. table.concat(names, ", ") end
+            else
+                list[#list + 1] = line
+            end
+        end
+        lines[part] = list
+    end
+end
+
+-------------------------------------------------
 -- Every gun of the three modules
 -------------------------------------------------
 function GunLines.Build()
@@ -395,6 +437,7 @@ function GunLines.Build()
         if #built > 0 then lines[gun] = built end
     end
     buildMagazines()
+    buildMountLines()
 end
 
 return GunLines

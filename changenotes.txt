@@ -3,7 +3,7 @@ Attachments, tooltips and muzzle parts audit (3.20.0).
 Tooltips
 - Every gun's information lines, Guns of Marz's included, now follow one format written from what the gun really takes: calibre, built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet. No tooltip promises a rail the gun does not have any more (the AR-15, Mini-14, G36C and CAR-15 did), and every magazine lists the guns it fits.
 - Lines with no effect in game are gone from this mod's guns (barrel lengths, case ejection and the like).
-- Every suppressor and muzzle mount tooltip in Guns of Marz's wording: which mount it needs, its effects, which guns it fits, and the wrench. The suppressor tooltips list the guns they now fit.
+- Every suppressor and muzzle mount tooltip in Guns of Marz's wording: which mount it needs, its effects, which guns it fits, and the wrench. Every suppressor and muzzle device tooltip names each gun it fits.
 
 Guns of Marz fixes
 - The AA-12's side rails, lights and lasers and the G36's bipod are drawn (they could be fitted but were invisible).
@@ -17,7 +17,7 @@ Muzzle parts
 - One muzzle mount for every 9mm gun: Guns of Marz's pistol mount is now the "9x19mm Family Muzzle Mounting Device". The old 9mm SMG mount is no longer found. In a world that has some, each one becomes the new mount by itself, on guns and loose, and works the same until then.
 - Every 9mm suppressor fits every 9mm pistol and submachine gun that takes the mount: the Mk9 on the pistols, Guns of Marz's M&P and Shh9 on the submachine guns. All three are named "(9mm Weapons)". The Mk9 no longer slows aiming: all three have the same stats, and the MP5SD stays quieter than any suppressed MP5.
 - The Groza-2 Prototype takes Guns of Marz's AK muzzle mount and PBS-1 suppressor, as the Groza-1 does.
-- New real muzzle devices, each fitting only the guns the real one was made for, on its calibre's muzzle mount: the AKM slant compensator (AK-47, RPK, SKS), the AK-74 muzzle brake and AKS-74U muzzle booster (AK-74, AKS-74U, RPK-74), H&K's three-lug flash hider (MP5A3, MP5A2), Clark race compensators for 9mm pistols (Beretta 92FS, Hi-Power, P226) and the M1911, and the Thompson's Cutts compensator; with the Post-93 add-on SureFire's SF3P flash hider, SFMB muzzle brake and WarComp for the 7.62x51mm rifles (and the Grozas take the AK ones). Each removes the muzzle flash and lowers the sound a little (compensators by 10%, hiders and brakes by 5%, as Guns of Marz's own), and is found where Guns of Marz's muzzle devices are.
+- New real muzzle devices, each fitting only the guns the real one was made for, on its calibre's muzzle mount: the AKM slant compensator (AK-47, RPK, SKS), the AK-74 muzzle brake and AKS-74U muzzle booster (AK-74, AKS-74U, RPK-74), H&K's three-lug flash hider (MP5A3, MP5A2), Clark race compensators for 9mm pistols (Beretta 92FS, Hi-Power, P226) and the M1911, and the Thompson's Cutts compensator; with the Post-93 add-on SureFire's SF3P flash hider (FN FAL, FN SCAR-H, G3, HK417, M14, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25), SFMB muzzle brake and WarComp (FN SCAR-H, G3, HK417, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25); the Grozas take the AK ones. Each removes the muzzle flash and lowers the sound a little (compensators by 10%, hiders and brakes by 5%, as Guns of Marz's own), and is found where Guns of Marz's muzzle devices are.
 - Found guns no longer come with a muzzle mount device, as Guns of Marz's guns never do.
 
 New sandbox option

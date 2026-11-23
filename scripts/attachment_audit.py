@@ -534,6 +534,11 @@ for mag in sorted(tooltips, key=name):
     if any(line.startswith("Fits: ") for line in tooltips[mag]):
         w("- %s (`%s`): %s" % (name(mag), mag, " / ".join(tooltips[mag])))
 
+w("\n## Suppressors and muzzle devices (Information lines)\n")
+for part in sorted(tooltips, key=name):
+    if any(line.startswith("Can be mounted on") for line in tooltips[part]):
+        w("- %s (`%s`): %s" % (name(part), part, " / ".join(tooltips[part])))
+
 sys.stdout.write("\n".join(out) + "\n")
 if "--json" in sys.argv:
     json.dump(report, open(sys.argv[sys.argv.index("--json") + 1], "w"), indent=1, default=list)

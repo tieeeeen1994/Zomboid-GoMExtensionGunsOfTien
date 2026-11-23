@@ -74,10 +74,11 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   the SR-25, FN FAL, G3, M14, M24, PSG-1 and Remington 700. No mount on the RPD, M60, AUG HBAR, Colt Single Action Army, MP5K or
   MP5SD, where nothing would fit
 - Real muzzle devices, each fitting only the guns the real one was made for, on its calibre's muzzle mount: the AKM
-  slant compensator (AK-47, RPK, SKS), the AK-74 muzzle brake and AKS-74U muzzle booster (AK-74, AKS-74U, RPK-74),
-  H&K's three-lug flash hider (MP5A3, MP5A2), Clark race compensators for 9mm pistols (Beretta 92FS, Hi-Power, P226)
-  and the M1911, and the Thompson's Cutts compensator; with the Post-93 add-on SureFire's SF3P flash hider, SFMB
-  muzzle brake and WarComp for the 7.62x51mm rifles (and the Grozas take the AK ones). Each removes the muzzle flash
+  slant compensator (AK-47, RPK, SKS), the AK-74 muzzle brake and AKS-74U muzzle booster (AK-74, AKS-74U, RPK-74), H&K's
+  three-lug flash hider (MP5A3, MP5A2), Clark race compensators for 9mm pistols (Beretta 92FS, Hi-Power, P226) and the
+  M1911, and the Thompson's Cutts compensator; with the Post-93 add-on SureFire's SF3P flash hider (FN FAL, FN SCAR-H,
+  G3, HK417, M14, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25), SFMB muzzle brake and WarComp (FN SCAR-H, G3,
+  HK417, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25); the Grozas take the AK ones. Each removes the muzzle flash
   and lowers the sound a little (compensators by 10%, hiders and brakes by 5%, as Guns of Marz's own), and is found
   where Guns of Marz's muzzle devices are
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'

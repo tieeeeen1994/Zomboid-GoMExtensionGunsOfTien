@@ -149,20 +149,20 @@ for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magaz
 end
 -- the P90's magazine, mount device and SP90 and the SS190 round: the main mod's client/GunsOfTien/P90Tooltips.lua
 
--- suppressors and mount devices in GoM's own wording (its MKI / PBS-1 / P45 and their mounts): can -> { calibre,
--- the guns it fits } (each MountOn in items_guns.txt)
-for part, can in pairs({
-    MP7_Suppressor = { "4.6x30mm", "MP7A1, MP7A2 and UCP" },
-    P90_Suppressor = { "5.7x28mm", "P90, P90 TR and PS90" },
-    FIVESEVEN_Suppressor = { "5.7x28mm", "Five-SeveN" },
-    SCARH_Suppressor = { "7.62x51mm", "7.62x51mm rifles" },     -- every one but the M60 (MuzzleFamilies.lua)
+-- suppressors and mount devices in GoM's own wording (its MKI / PBS-1 / P45 and their mounts): can -> calibre; the
+-- guns each fits are filled into "Can be mounted on" by the main mod's GunLines.lua, from its MountOn
+for part, calibre in pairs({
+    MP7_Suppressor = "4.6x30mm",
+    P90_Suppressor = "5.7x28mm",
+    FIVESEVEN_Suppressor = "5.7x28mm",
+    SCARH_Suppressor = "7.62x51mm",
 }) do
     lines[M .. part] = {
-        "Requires " .. can[1] .. " Muzzle Mount",
+        "Requires " .. calibre .. " Muzzle Mount",
         "Sound Radius and Volume reduced by 70%",
         "Damage reduced by 10%",
         "Removes Muzzle Flash",
-        "Can be mounted on " .. can[2],
+        "Can be mounted on",
         "Needs Wrench to install or remove.",
     }
 end
@@ -174,16 +174,8 @@ for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mo
         "Needs Wrench to install or remove.",
     }
 end
--- GoM's AK can on Post-93's guns too (Groza.lua, the main mod's MuzzleFamilies.lua): the main mod's PBS-1 line with
--- the Grozas (its P45 line already says carbines, for the Vector .45 Carbine)
-lines["MarzGuns.PBS-1_Suppressor"] = {
-    "Requires AK Muzzle Mount",
-    "Sound Radius and Volume reduced by 70%",
-    "Damage reduced by 10%",
-    "Removes Muzzle Flash",
-    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74, SKS, Groza-1 and Groza-2",
-    "Needs Wrench to install or remove.",
-}
+-- GoM's AK can on Post-93's Grozas too (Groza.lua, the main mod's MuzzleFamilies.lua): the main mod's PBS-1 line
+-- names them by itself (GunLines.lua reads its MountOn)
 
 lines[M .. "46x30_Bullet"] = { "DM11 solid copper-plated steel bullet", "Piercing targets", "Able to hit up to 2 targets" }
 for round, damage in pairs({ ["46x30_Bullet_Subsonic"] = "40%", ["57x28_Bullet_SB193"] = "30%" }) do

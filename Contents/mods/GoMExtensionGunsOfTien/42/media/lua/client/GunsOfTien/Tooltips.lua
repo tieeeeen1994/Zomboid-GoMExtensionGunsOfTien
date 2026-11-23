@@ -67,6 +67,8 @@ for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
         lines["MarzGuns." .. gun .. "_Barrel_Sawnoff_" .. side] = SAWN_BARRELS
     end
 end
+-- Every "Can be mounted on" line below is left empty here: GunLines.lua fills it with the guns the part's MountOn
+-- really lists, by name.
 -- The 9mm muzzle parts (shared/GunsOfTien/Suppressors.lua) in GoM's own wording: one 9x19mm mount device (GoM's
 -- Pistol mount renamed, and the main mod's old one, the same item for worlds that have it) for GoM's pistol cans and
 -- AWC's Mk9; the guns that take them get their "Compatible Muzzle Device" line from GunLines.lua
@@ -83,7 +85,7 @@ for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) 
         "Sound Radius and Volume reduced by 70%",
         "Damage reduced by 10%",
         "Removes Muzzle Flash",
-        "Can be mounted on 9x19mm pistols and SMGs",
+        "Can be mounted on",
         "Needs Wrench to install or remove.",
     }
 end
@@ -92,17 +94,16 @@ lines["GunsOfTien.Mk9_Suppressor"] = {
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on 9x19mm pistols and SMGs",
+    "Can be mounted on",
     "Needs Wrench to install or remove.",
 }
--- GoM's AK can on the main mod's RPKs and GoM's SKS too (RPK.lua, MuzzleFamilies.lua; Post-93's Tooltips.lua adds
--- its Grozas and AUG HBAR)
+-- GoM's AK can on the main mod's RPKs and GoM's SKS too (RPK.lua, MuzzleFamilies.lua), and Post-93's Grozas
 lines["MarzGuns.PBS-1_Suppressor"] = {
     "Requires AK Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74 and SKS",
+    "Can be mounted on",
     "Needs Wrench to install or remove.",
 }
 -- GoM's .45 can on its Camp Carbine too (MuzzleFamilies.lua) and Post-93's Vector .45 Carbine
@@ -111,7 +112,7 @@ lines["MarzGuns.P45_Suppressor"] = {
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
-    "Can be mounted on .45 pistols, SMGs and carbines",
+    "Can be mounted on",
     "Needs Wrench to install or remove.",
 }
 -- The real muzzle devices (shared/GunsOfTien/MuzzleFamilies.lua, MuzzleDevicesTable.lua) in the cans' wording, and
@@ -121,7 +122,7 @@ for device, d in pairs(require("GunsOfTien/MuzzleDevicesTable")) do
         "Requires " .. d.family .. " Muzzle Mount",
         d.effect,
         "Removes Muzzle Flash",
-        "Can be mounted on " .. d.fits,
+        "Can be mounted on",
         "Needs Wrench to install or remove.",
     }
 end
@@ -132,7 +133,7 @@ for device, effect in pairs({ ["MarzGuns.LR2_Compensator"] = "Sound Radius and V
         "Requires AR Muzzle Mount",
         effect,
         "Removes Muzzle Flash",
-        "Can be mounted on 5.56mm rifles and the M249",
+        "Can be mounted on",
         "Needs Wrench to install or remove.",
     }
 end
