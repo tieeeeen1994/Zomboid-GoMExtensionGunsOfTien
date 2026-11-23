@@ -1,0 +1,13 @@
+VSK-94 references (gathered 2026-11-24 for Post-93's VSK-94; scripts/post93/build_9a91.py reads them)
+
+imfdb/VSK-94.jpg  https://www.imfdb.org/images/a/aa/VSK-94.jpg  IMFDB VSK-94 (2516x896, right side, PSO-1). THE
+    MEASURING PHOTO for the stock, grip and handguard: 2.56 px a mm (butt to can front 932 mm, Wikipedia; its can
+    reads 312 mm against the 9A-91's 307, the same can).
+imfdb/VSK94.jpg  https://www.imfdb.org/images/e/e0/VSK94.jpg  IMFDB (599x185).
+modernfirearms/vsk94-l.jpg, vsk94-r.jpg, vsk94-rec.jpg  https://modernfirearms.net/userfiles/images/sniper/sn58/
+    (c) 2003 Maxim R. Popenker: left side (the PSO-1's bracket on the left side rail), right side, the receiver.
+commons/  Wikimedia Commons category "VSK-94" (Vitaly V. Kuzmin's museum and OSN Saturn photos, CC BY-SA 4.0; one
+    public domain, one CC0); see commons/SOURCES.txt.
+Specs: Wikipedia "VSK-94" (932 mm, 2.8 kg, 230 mm barrel, 700 rpm, 20-round 9A-91 magazine, PSO-1 on a dovetail side
+    mount; "unlike the VSS, the suppressor of the VSK-94 is not an integrated design"; the threaded barrel takes a
+    specially designed suppressor).

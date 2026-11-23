@@ -68,4 +68,10 @@ module Base {
         Fixer   = GunsOfTienPost93.SCARH_Suppressor; MetalWelding=2,
     }
 
+    fixing Fix A91_Suppressor {
+        Require = GunsOfTienPost93.A91_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTienPost93.A91_Suppressor; MetalWelding=2,
+    }
+
 }

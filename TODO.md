@@ -22,13 +22,19 @@ Picked by the user from their wish list. Releases ship two or more guns each.
 - [ ] **PPSh-41**: its 71-round drum and 35-round box magazine, held as a rifle, GoM's Thompson reload
       (`thompson_marz`). Loot with GoM's Russian guns (to design).
 
-### 2. 9x39 release (Post-93, both on GoM's 9x39 and our SP-6)
+### 2. 9x39 release: 9A-91 and VSK-94 (3.23.0, built 2026-11-24 overnight, not played)
 
-- [ ] **9A-91** (1994), the compact Russian police carbine: its own 20-round magazine (check whether GoM's AS VAL
-      magazine fits it, real or not), held as a rifle, GoM's AK reload (`ak_rifle`, as its AKS-74U and AS VAL). Its
-      detachable suppressor: own can or none, ask.
-- [ ] **VSK-94** (1995), the 9A-91's sniper version on the same receiver and magazines: built-in suppressor, skeleton
-      stock, optic mount for GoM's optics.
+Built end to end (model, scripts, Lua, loot, Hot Brass, tooltips, icons, docs); review sheet
+`docs/post93_9a91_preview.png`, design and reasons in docs/post93_design.md "KBP 9A-91 and VSK-94".
+- [ ] Review the model on the sheet (both guns' outlines on their photos, the trigger zooms, every view).
+- [ ] Confirm the decisions taken while you slept: the 9A-91 has its own can (the TODO said "ask"); the VSK-94 takes
+      the same **detachable** can, because the real one is not integral (the TODO said built-in); the current
+      9A-91 with its left rail, not the 1994 first model; the ribbed handguard on the 9A-91, the diamond one on the
+      VSK-94; one 20-round magazine only (GoM's AS VAL magazines do not fit the real gun).
+- [ ] Play them: GoM's AK reload with our magazine in the off hand, the bolt and handle moving, the 9A-91's stock
+      folding (Gunworks' radial / menu), GoM's AK mount and optics on the left rail, the can on its mount and its
+      wear, Auto / Single at 700 rpm, the found-gun parts, loot (GoM's Russian rifle spawner).
+- [ ] A Workshop preview (preview42) once the model is approved.
 
 ### 3. Bizon family (Post-93, later: waits for more rounds)
 

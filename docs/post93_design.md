@@ -740,3 +740,43 @@ The proposal (superseded where the decisions above say otherwise):
   end cap added), the HK416's traced H&K grip and selector labels; gen 1 the HK416's front sight and diopter on a
   short quad rail and the shroud; gen 2 a new A5-style handguard, polymer flip-ups and flash hider. Exported turned
   (pistol-held) like the Vector SDP.
+
+## KBP 9A-91 and VSK-94 (TODO "9x39 release", built overnight 2026-11-24 while the user slept; not played, model for review)
+
+User, 2026-11-24: "Can we do these in guns of tien and implement new guns? ... make sure to have a working gun end to
+end ... bring in lots of references and have a review sheet prepared ... use the new rules and new standards GoM has
+set in their latest update." Both are Post-93 (9A-91 made from 1994, VSK-94 designed 1995).
+
+| | `GunsOfTienPost93.A91` "9A-91 Assault Rifle" | `GunsOfTienPost93.VSK94` "VSK-94 Sniper Rifle" |
+|---|---|---|
+| Real | KBP's compact assault rifle for the MVD police, 594 / 373 mm (stock out / folded), 1.8 kg empty, 600-800 rpm, 200 mm barrel | KBP's DMR on the 9A-91's receiver, 932 mm with the can, 2.8 kg, 700 rpm, 230 mm barrel |
+| Variant built | the current production gun (Wikipedia: selector on the right, a sight rail on the left, the charging handle folding up on the carrier); ribbed handguard as IMFDB's measuring photo | its polymer skeleton stock with the pistol grip, the diamond-pattern handguard, as IMFDB's photo |
+| Magazine | its own 20-round steel box `9x39Magazine20_A91` "9A-91 20Rds 9x39mm Magazine": sources agree the 9A-91's are not interchangeable with the AS / VSS / SR-3 family, so GoM's AS VAL magazines do not fit | the 9A-91's (Wikipedia) |
+| Fire | Auto / Single, 700 rpm, spread 0.18 / 3.3 (livelier than GoM's AS VAL 0.12 / 3.0) | Auto / Single, 700 rpm, 0.12 / 2.8 |
+| Stats | GoM's AS VAL's round: 0.7-1.4, crit 20 x4.5, Hit 45, Aiming Time 30, range 38, 1.9 kg; sight window GoM's AS VAL's (short carbines) | 0.75-1.45, crit 30 x5, Hit 55, Aiming Time 45, range 45, 2.8 kg; GoM's SVD's window (marksman) |
+| Stock | folds over the receiver: Gunworks' folding stock, GoM's AKS-74U stock (+8 Hit, -4 Aiming Time, spread x0.75 / 0.85) | fixed skeleton stock (the body) |
+| Sound | sound_model.py's formula, 9x39 subsonic: 106 / 30 bare (7.9"), GoM's AKS-74U shot | 102 / 29 (9.1") |
+
+Both: GoM's AK reload ("ak_rifle", as its AKS-74U and AS VAL), GoM's AK bolt swap with the RPKs' close-on-empty wrapper,
+our magazine in the off hand (its own model and Bip01_Prop2: GoM's AS VAL 20's point moved by the meshes' centres);
+GoM's AK side mount (`MarzGuns.AK_Mount`) on the left dovetail rail and every GoM optic on it (MountOn appended, the
+SVU's way; found guns ":AM"); the detachable can **"9A-91 Suppressor (9x39mm Weapons)"** on the new **"9x39mm Family
+Muzzle Mounting Device"** (GoM's way: a can needs its mount; stats GoM's PBS-1 x0.3 / x0.9 / no flash /
+CapGunRevolverShoot; wear 75 / 1 in 10 and repairs as the PBS-1; tooltip "Sound Radius reduced by 75 and Volume by 21",
+"Min Damage reduced by 0.05 and Max Damage by 0.15", the 9A-91's 106 / 30 and 0.7-1.4). No muzzle devices (none exist
+for 9x39), no Picatinny rails, no foregrips, no grip stance (GoM's AKs have none). Loot: GoM's Russian rifle spawner
+(6 / 6), Undead Survivors' mercenary rifles (9A-91) and snipers (VSK-94), with Extend Loot Areas the crime rifle spawner
+(9A-91); the can and mount as one alternative in GoM's suppressor spawner, the mount in GoM's choke tube replacement.
+Hot Brass: GoM's AKS-74U / AS VAL values.
+
+**Decisions taken without the user (asleep), to confirm**:
+- The TODO asked "own can or none, ask" for the 9A-91: built **its own can**, shared with the VSK-94.
+- The TODO said the VSK-94 has a **built-in** suppressor; the sources say it does not ("unlike the VSS, the suppressor
+  of the VSK-94 is not an integrated design", Wikipedia; Modern Firearms' photos show it fitted and off). Built as the
+  real one: the same detachable can. Making it integral instead (the Groza-4's way: quiet stats on the gun, a hidden
+  CannotBeRemoved part) is small.
+- Current-production 9A-91 (left rail, which GoM's optics need), not the 1994 first model (no rail, selector on the
+  left, a different muzzle and front sight).
+- The 9A-91's ribbed handguard (the measuring photo's); Kuzmin's 45 photos show the diamond-pattern one the VSK-94
+  wears. Swapping is a paint and outline change in build_9a91.py.
+- One magazine (20). Some sources give the VSK-94 a 10-round one too; not built.

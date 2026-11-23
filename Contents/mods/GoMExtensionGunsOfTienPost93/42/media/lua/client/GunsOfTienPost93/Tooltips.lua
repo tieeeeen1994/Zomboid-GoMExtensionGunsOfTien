@@ -121,6 +121,12 @@ for gun, uses in pairs({ GROZA1 = "Uses 7.62x39mm rounds", GROZAGL = "Uses 7.62x
     lines[M .. gun] = { uses }
 end
 lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
+-- The 9A-91 and VSK-94 (shared/GunsOfTienPost93/A91.lua): the 9A-91's folding stock with GoM's AKS-74U stock stats
+-- (the UMP's lines: the same values and spread)
+lines[M .. "A91"] = { "Uses 9x39mm rounds" }
+lines[M .. "VSK94"] = { "Uses 9x39mm rounds" }
+lines[M .. "9x39Magazine20_A91"] = { "Uses 9x39mm rounds." }
+GunsOfTien_TooltipStates[M .. "A91_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
 
 for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm rounds", P90TR = "Uses 5.7x28mm rounds",
     PS90 = "Uses 5.7x28mm rounds", MDR223 = "Uses .223/5.56x45mm NATO rounds",
@@ -163,6 +169,10 @@ for part, can in pairs({
     SCARH_Suppressor = { "7.62x51mm",
         "Sound Radius reduced by 150 and Volume by 43",
         "Min Damage reduced by 0.15 and Max Damage by 0.2" },
+    -- the 9A-91's 106 / 30, 0.7-1.4
+    A91_Suppressor = { "9x39mm",
+        "Sound Radius reduced by 75 and Volume by 21",
+        "Min Damage reduced by 0.05 and Max Damage by 0.15" },
 }) do
     lines[M .. part] = {
         "Requires " .. can[1] .. " Muzzle Mount",
@@ -175,7 +185,7 @@ end
 -- the mount devices keep the wrench (part type CanonMount); a can fitted on one needs no tool (GoM's November 2026
 -- update, its OnCreate/AttachAndDetach.lua)
 for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mount_Device = "5.7x28mm",
-    SCARH_Muzzle_Mount_Device = "7.62x51mm" }) do
+    SCARH_Muzzle_Mount_Device = "7.62x51mm", A91_Muzzle_Mount_Device = "9x39mm" }) do
     lines[M .. part] = {
         "No Direct Stat Changes",
         "Enables " .. calibre .. " Muzzle Attachments",

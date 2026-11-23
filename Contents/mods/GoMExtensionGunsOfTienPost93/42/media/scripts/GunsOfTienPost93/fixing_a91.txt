@@ -1,0 +1,10 @@
+module Base {
+    fixing Fix A91 {
+        Require = GunsOfTienPost93.A91,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix VSK94 {
+        Require = GunsOfTienPost93.VSK94,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

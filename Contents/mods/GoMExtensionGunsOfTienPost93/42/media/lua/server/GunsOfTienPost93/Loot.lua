@@ -156,6 +156,9 @@ local groza2 = kit({ M .. "GROZA2" }, { "MarzGuns.545x39Magazine30_Bakelite" }, 
 local groza4 = kit({ M .. "GROZA4" }, { "MarzGuns.9x39Magazine20" }, { "MarzGuns.9x39_Box" })
 local sv98 = kit({ M .. "SV98" }, { M .. "762x54Magazine10_SV98" }, { "MarzGuns.762x54_Box" })
 local sv99 = kit({ M .. "SV99" }, { M .. "22LRMagazine5_SV99" }, { "GunsOfTien.22LR_Box" })
+-- the 9A-91 and VSK-94 with their own magazine and GoM's 9x39 box, as the Groza-4
+local a91 = kit({ M .. "A91" }, { M .. "9x39Magazine20_A91" }, { "MarzGuns.9x39_Box" })
+local vsk94 = kit({ M .. "VSK94" }, { M .. "9x39Magazine20_A91" }, { "MarzGuns.9x39_Box" })
 
 -- High-capacity magazines on their own, as GoM's in its high-capacity magazine spawners (its M92FS 50, M93R 60, MP5
 -- 60 / 100 drums: the magazine and up to two boxes; only with GoM's sandbox SpawnHighCapMags on, which places them).
@@ -210,6 +213,8 @@ local GUNS = {
     { MERC_RIFLE, groza1, { 2, 4 }, { 4, 8 } }, { MERC_RIFLE, groza2, { 2, 4 }, { 4, 8 } },
     { MERC_RIFLE, groza4, { 2, 4 }, { 4, 8 } },
     { MERC_SNIPER, sv98, { 3, 6 }, { 6, 10 } }, { MERC_SNIPER, sv99, { 3, 6 }, { 6, 10 } },
+    { RUSSIAN_RIFLE, a91, 6, 6 }, { RUSSIAN_RIFLE, vsk94, 6, 6 },
+    { MERC_RIFLE, a91, { 2, 4 }, { 4, 8 } }, { MERC_SNIPER, vsk94, { 3, 6 }, { 6, 10 } },
     -- high-capacity magazines
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_MP7", M .. "46x30_Box"), nil, 2 },
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), nil, 2 },
@@ -251,7 +256,8 @@ local SLOTS = {
 local EXTENDED_GUNS = {
     -- criminals with Grozas and SMGs
     { CRIME_RIFLE, groza1, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, groza2, { 2, 4 }, { 2, 4 } },
-    { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, ump45, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, ump45, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, vector9, { 2, 4 }, { 2, 4 } },
     -- survivalists with military and Russian rifles
     { SURVIVALIST_RIFLE, scarl, 4, 4 }, { SURVIVALIST_RIFLE, hk416, 4, 4 }, { SURVIVALIST_RIFLE, groza1, 4, 4 },
@@ -292,6 +298,7 @@ local PART_ALTERNATIVES = {
     { "MarzGuns.World_Suppressor_Spawner", { M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor" },
         M .. "P90_Muzzle_Mount_Device" },
     { "MarzGuns.World_Suppressor_Spawner", { M .. "SCARH_Suppressor" }, M .. "SCARH_Muzzle_Mount_Device" },
+    { "MarzGuns.World_Suppressor_Spawner", { M .. "A91_Suppressor" }, M .. "A91_Muzzle_Mount_Device" },
     { "MarzGuns.World_Muzzle_Device_Spawner",
         { M .. "SF3P_Flash_Hider", M .. "SFMB_Muzzle_Brake", M .. "WarComp_Flash_Hider" }, M .. "SCARH_Muzzle_Mount_Device" },
 }
@@ -299,7 +306,7 @@ local PART_ALTERNATIVES = {
 -- Parts added to the item list of a GoM vanilla attachment replacement's first alternative.
 local VANILLA_ATTACHMENTS = {
     { "Base.ChokeTubeImproved", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device",
-        M .. "SCARH_Muzzle_Mount_Device" } },
+        M .. "SCARH_Muzzle_Mount_Device", M .. "A91_Muzzle_Mount_Device" } },
 }
 
 local added = {}

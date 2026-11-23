@@ -750,6 +750,9 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   PMAG drum for .308; the user first wrote "no D-50, PMAG drum", then confirmed the D-50). Model the **MDRx** (2020
   shell): reference photos in `references/mdr/` (SOURCES.txt: Desert Tech galleries, CC BY-SA Commons photos of a
   20" .308, retail sides; no straight top / front / rear view, so width from the specs: 57.4 mm SE, 59.2 mm FE).
+- **KBP 9A-91 and VSK-94** (user, 2026-11-24, TODO "9x39 release"; built overnight, not played): their own 20-round
+  magazine, GoM's AK reload and AK side mount, one detachable can on a 9x39mm mount; section "9A-91 and VSK-94" and
+  docs/post93_design.md (the decisions taken while the user slept are listed there to confirm).
 - Other post-1993 ideas offered but not chosen: 5.56 Mk 262 / M855A1, 5.45 7N22, 7.62x51 M993, 9x39 PAB-9, modern
   9mm HST, 12 ga Flite Control; .300 Blackout would need a new gun.
 
@@ -976,7 +979,8 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   `make_svu_art.py` (the SVU, section "SVU"); Post-93's `scripts/post93/build_sv98.py`, `build_sv99.py`, their
   render / art scripts (section "SV-98 and SV-99"); `scripts/build_rpk.py`, `render_rpk.py`, `make_rpk_art.py`
   (the RPK and RPK-74 from GoM's AKs, section "RPK and RPK-74"); `scripts/build_rpd.py`, `render_rpd.py`,
-  `make_rpd_art.py` (the RPD, section "RPD"); Post-93's
+  `make_rpd_art.py` (the RPD, section "RPD"); Post-93's `scripts/post93/build_9a91.py`, `render_9a91.py`,
+  `make_9a91_art.py` (the 9A-91 and VSK-94, section "9A-91 and VSK-94"); Post-93's
   `scripts/post93/build_vector.py`, `render_vector.py`, `make_vector_art.py` (the Vectors, section "KRISS Vector .45
   and 9mm"), `scripts/post93/build_vectorcrb.py` / `build_vectorsdp.py` (the Vector CRB and SDP, sections "Vector CRB" and
   "Vector SDP"); `scripts/post93/build_ps90.py`, `render_ps90.py`, `make_ps90_art.py` (section "PS90 Carbine"); `scripts/build_p90std.py`,
@@ -3174,6 +3178,39 @@ adds bloat"), no full stops.
   under the bright toggle strip painted from the receiver's rear (`PORTS`); it had been a pale plate with a disc.
 - **Not seen in game yet**: GoM's `*Rifle_HB.xml` magazine bolt-action nodes with a Gunworks "boltaction" profile
   (Gunworks' Sync.lua says it supports nodes keyed on WeaponReloadType); the integrated bipods' fold.
+
+## 9A-91 and VSK-94 (Post-93, 2026-11-24; built, not played; model for review)
+
+- **What**: KBP's 9A-91 (current production: left dovetail rail, selector right, folding charging handle) and VSK-94 on
+  one receiver, 9x39mm, design and decisions in docs/post93_design.md "KBP 9A-91 and VSK-94". Files:
+  `scripts/post93/build_9a91.py` (Blender, ~2 min: `GunsOfTienPost93_9A91.fbx` A91_BODY / A91_STOCK_DEPLOYED /
+  A91_STOCK_FOLDED / VSK94_BODY / A91_BOLT, `_9A91_magazines.fbx` 9x39Magazine20_A91, `_9A91_parts.fbx`
+  A91_Suppressor / A91_Muzzle_Mount_Device, `A91.png` 512, magazine and can 128, `a91_points.json` keyed `A91` /
+  `VSK94` plus `_mag_prop2`), `render_9a91.py -- DIR`, `make_9a91_art.py [--renders DIR]` (icons; review sheet
+  `docs/post93_9a91_preview.png`), `gen_post93_guns.py a91()` (models_a91.txt, items_a91.txt, fixing_a91.txt, the
+  can in CAN_DURABILITY / fixing_guns.txt, names), `shared/GunsOfTienPost93/A91.lua`, lines in Post-93's
+  Tooltips.lua, Loot.lua, HotBrass.lua. Rebuild: build, render, art, `gen_post93_guns.py`, `check_refs.py`,
+  `attachment_audit.py`, `fit_audit.py`.
+- **Measuring**: IMFDB's 9A-91silenced.jpg (2500 px studio right side, references/9a91/imfdb) at 2.785 px a mm: butt to
+  muzzle 594 and receiver rear to muzzle 373 (Wikipedia) agree within 0.1 % once the muzzle under the can is placed
+  0.31 of the handguard's length past it (KardeN's can-off photo); the height reads 192 against 190. Profiles are in
+  that photo's pixels (`P(x, y)`), read on 10 px gridded crops; the VSK-94's stock, grip and handguard in IMFDB's
+  VSK-94.jpg pixels at 2.56 (`PV`), registered on the trigger blade and bore; its receiver is the 9A-91's (the VSK
+  photo's receiver reads 5 % longer, so its handguard, barrel and can start at our receiver's front: the gun is 919 mm
+  with the can against 932). Origin as GoM's AKS-74U against trigger and bore (blade 0.066 ahead, bore 0.0148 up,
+  measured on AKS74U_BODY), so both sit in the rifle clips as GoM's AKs.
+- **Overlay check** (`make_9a91_art.overlay`): the photo's foreground must exclude the studio photos' soft grey drop
+  shadow (`max(rgb) < 150`, not `min < 200`): counting it pulled the registration 10 px (3.6 mm) down and made the
+  trigger guard look low. With it right: 9A-91 IoU 0.855, VSK-94 0.821 (below the optics), the trigger blade, guard
+  and magazine catch within about 1 mm of the photo's.
+- **GoM's AK side mount on our rail**: `AK_Mount` (parts/rails.fbx) clamps with its inner face at x +0.0155 of its
+  origin, z -0.022..-0.004, y -0.044..+0.0335; GoM's AKS-74U puts it at `rail_up` (0, 0.0764, 0.0225) and its optics'
+  `scope` at rail_up + (0, 0.0140, 0.0246). Our dovetail's outer face is at 22 mm real (0.0133), so `rail_up` x is
+  -0.0022 (the optic sits 3.7 mm off the bore's plane, unseen); clamp centred on the rail's height and on the
+  receiver's middle (photo x 950). fit_audit: GoM's optics sit 1.6-3.0 in, GoM's own medians 1.1-1.6, none flagged.
+- **Not done**: a Workshop preview (render_ad_guns.py / make_workshop_art.py specs); the 9A-91's diamond handguard
+  (Kuzmin's gun) as an alternative look; the VSK-94's 10-round magazine; the folded stock is a simple channel on the
+  cover with the butt at its front (Kuzmin 01 / 15), not the real stamped strut turned over.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

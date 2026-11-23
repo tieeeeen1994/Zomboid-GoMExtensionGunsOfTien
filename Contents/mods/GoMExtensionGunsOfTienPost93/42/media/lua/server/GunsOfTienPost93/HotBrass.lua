@@ -210,6 +210,28 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 45,
         spinForce     = { 64, 128 },
     },
+    -- The 9A-91 and VSK-94 eject to the right from the AK-type port: GoM's AKS-74U's and AS VAL's values (the same
+    -- 9x39 round as the AS VAL; the VSK-94's port as far ahead of the grip)
+    ["GunsOfTienPost93.A91"] = {
+        forwardOffset = 0.35,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 64, 128 },
+    },
+    ["GunsOfTienPost93.VSK94"] = {
+        forwardOffset = 0.35,
+        sideOffset    = 0.09,
+        heightOffset  = 0.47,
+        shellForce    = 0.90,
+        sideSpread    = 60,
+        heightSpread  = 75,
+        ejectAngle    = 45,
+        spinForce     = { 64, 128 },
+    },
     -- The UMPs eject to the right like GoM's MP5 (its values).
     ["GunsOfTienPost93.UMP45"] = {
         forwardOffset = 0.332,

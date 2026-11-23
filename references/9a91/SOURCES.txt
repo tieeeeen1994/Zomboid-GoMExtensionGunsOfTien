@@ -1,0 +1,18 @@
+9A-91 references (gathered 2026-11-24 for Post-93's 9A-91; scripts/post93/build_9a91.py reads them)
+
+imfdb/9A-91silenced.jpg  https://www.imfdb.org/images/b/bf/9A-91silenced.jpg  IMFDB 9A-91 page: "current production
+    model with attached suppressor and Kobra red dot sight" (2500x825, studio right side). THE MEASURING PHOTO:
+    2.785 px a mm (butt to muzzle 594 mm and receiver rear to muzzle 373 mm, Wikipedia, both agree within 0.1 %).
+imfdb/9a91.jpg  https://www.imfdb.org/images/8/83/9a91.jpg  IMFDB: "old model" (600x211, right side, no rail, early
+    flash hider and front sight).
+modernfirearms/9a-91_1.jpg .. _3.jpg, 9a91.jpg  https://modernfirearms.net/userfiles/images/assault/as64/  Modern
+    Firearms (Maxim Popenker; KardeN's photos): left side with Kobra, right side, the left side with the can off (the
+    barrel's collar and thread out of the handguard: 0.31 of the handguard's length), the old model.
+commons/  Vitaly V. Kuzmin's "9mm KBP 9A-91 compact assault rifle - 01..45" (CC BY-SA 4.0) and others: every angle
+    and close-up; see commons/SOURCES.txt. Used: 06 (left side: the dovetail rail), 25 (the folding charging handle),
+    27 (the selector and its red dots), 01 / 15 (stock folded on the receiver), 32 / 35 (front and top).
+Specs: Wikipedia "9A-91" (594 / 373 mm, 1.8 kg empty, 600-800 rpm, 20-round box; current production guns have the
+    selector on the right, a sight rail on the left and a charging handle that folds up). Magazines: the 9A-91's are
+    its own (stamped steel, double feed), not interchangeable with the AS / VSS / SR-3 family (web search,
+    2026-11-24: Russian references quoted by guns.fandom, IMFDB talk pages).
+contact_sheet_commons.png  the Commons photos.

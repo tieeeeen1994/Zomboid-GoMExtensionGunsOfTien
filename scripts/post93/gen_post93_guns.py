@@ -32,10 +32,11 @@ GOM_EQUIVALENT = {
     'MP7A1': 'MP5K', 'VECTORSDP': 'MP5K', 'HK416QR22': 'TEC9',                         # short SMGs 2-10
     'P90TR': 'MP5', 'UMP45': 'MP5', 'UMP9': 'MP5', 'VECTOR45': 'MP5', 'VECTOR9': 'MP5', 'AUGPARA': 'MP5',  # SMGs 3-11
     'VECTORCRB': 'CAMP_CARBINE', 'PS90': 'CAMP_CARBINE', 'GROZA2': 'AKS74U', 'GROZA4': 'ASVAL',  # short carbines 4-13
+    'A91': 'ASVAL',
     'SCARL': 'M4A1', 'HK416': 'M4A1', 'SV99': 'M4A1',                                  # carbines 5-14
     'AUGA3': 'FAMAS', 'MDR223': 'M16A1', 'GROZA1': 'AK47',                             # assault rifles 7-17 (AK 6-16)
     'SCARH': 'FAL', 'MDR308': 'FAL', 'HK417': 'FAL', 'AUGHBAR': 'M60',                 # battle rifles and LMGs 9-20
-    'MK11': 'SVD', 'HK417S': 'SVD',                                                    # marksman rifles 11-23
+    'MK11': 'SVD', 'HK417S': 'SVD', 'VSK94': 'SVD',                                    # marksman rifles 11-23
     'SV98': 'M24',                                                                     # bolt-action sniper 14-28
     'GROZAGL_GP25': 'M203_Weapon',                                                     # the launcher, as GoM's M203
 }
@@ -791,7 +792,7 @@ STANAG_MODEL = {s['item']: s['model'] for s in GOM_STANAGS}
 # (fixing_guns.txt, GoM's fixing.txt numbers). Each by GoM's can of its class: the pistol-calibre cans as its M&P
 # (100 / 15), the 7.62x51mm SOCOM762-RC as its MKI (60 / 15). The Groza-4's integral can is part of the gun.
 CAN_DURABILITY = {'MP7_Suppressor': (100, 15), 'P90_Suppressor': (100, 15), 'FIVESEVEN_Suppressor': (100, 15),
-                  'SCARH_Suppressor': (60, 15)}
+                  'SCARH_Suppressor': (60, 15), 'A91_Suppressor': (75, 10)}      # the 9x39mm can as GoM's PBS-1
 
 
 def can_durability(part):
@@ -3622,6 +3623,253 @@ def sv99():
 
 # SureFire's muzzle devices for the 7.62x51mm mount (the main mod's scripts/muzzle_devices.py has the table; meshes:
 # scripts/build_muzzle_devices.py, icons: scripts/make_muzzle_device_art.py): items, models, names.
+# KBP 9A-91 and VSK-94 (user, 2026-11-24, TODO.md "9x39 release"; docs/post93_design.md "9A-91 and VSK-94"; meshes and
+# points: scripts/post93/build_9a91.py; registries: shared/GunsOfTienPost93/A91.lua). The current 9A-91 (left sight
+# rail, selector on the right, folding charging handle) and its 1995 sniper version on the same receiver; both on
+# 9x39mm (GoM's SP-5, the main mod's SP-6), their own 20-round steel magazine (sources agree it is not the AS VAL's),
+# select fire at 700 rpm (9A-91 600-800, VSK-94 700), GoM's AK reload, GoM's AK side mount on the left rail and GoM's
+# optics on it, and the same detachable can on the threaded barrel (the VSK-94's is not integral, unlike the VSS's)
+# behind a 9x39mm mount device, GoM's way (the can's wear and repairs: CAN_DURABILITY, fixing_guns.txt). Stats from
+# GoM's AS VAL (the same round from a 200 / 230 mm barrel): the 9A-91 lighter and quicker (1.9 kg, Aiming Time 30)
+# but less steady (Hit 45, its short sight base); the VSK-94 a marksman's (Hit 55, crits 30 x5, Aiming Time 45,
+# range 45; GoM's SVD's sight window). Sounds by sound_model.py's formula: 9x39 from 7.9" = 106 / 30, from 9.1" =
+# 102 / 29 (no supersonic crack); the can x0.3 as GoM's. Bare: GoM's AKS-74U's shot (GoM has no unsuppressed 9x39
+# gun); with the can GoM's rifle cans' (CapGunRevolverShoot, A91.lua).
+A91_TEX = f'{TEX}/A91'
+A91_MAG = '9x39Magazine20_A91'
+A91_GUNS = {
+    'A91': dict(body='A91_BODY', name='9A-91 Assault Rifle', min=0.7, max=1.4, crit=20.0, critmult=4.5, hit=45,
+                aim=30, recoil=13, range=38.0, jam=1.0, cond=250, cmax=15, weight=1.9, radius=106, volume=30,
+                gain=1.8, stock=True),
+    'VSK94': dict(body='VSK94_BODY', name='VSK-94 Sniper Rifle', min=0.75, max=1.45, crit=30.0, critmult=5.0, hit=55,
+                  aim=45, recoil=14, range=45.0, jam=1.0, cond=250, cmax=15, weight=2.8, radius=102, volume=29,
+                  gain=1.8, stock=False),
+}
+A91_PARTS = [('A91_Integrated_Stock_Folded', 'StockIntegrated', None),
+             ('A91_Integrated_Stock_Deployed', 'StockIntegrated', 0.2)]
+
+
+def a91():
+    allpts = load_points('a91_points.json')
+    prop2 = allpts['_mag_prop2']
+    out = [f"module {M} {{\n"]
+    for gun, g in A91_GUNS.items():
+        pts = allpts[gun]
+        out.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_9A91|{g['body']},
+        texture  = {A91_TEX},
+        cullFace = None,
+""")
+        for name in ('muzzle', 'world', 'magazine', 'bolt_fired', 'rail_up', 'scope', 'canon'):
+            out.append(attachment(name, pts[name]))
+        out.append("    }\n")
+    for node in ('A91_BOLT', 'A91_STOCK_FOLDED', 'A91_STOCK_DEPLOYED'):
+        out.append(f"""
+    model {node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_9A91|{node},
+        texture  = {A91_TEX},
+        cullFace = None,
+    }}
+""")
+    out.append(f"""
+    model {A91_MAG} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_9A91_magazines|{A91_MAG},
+        texture  = {TEX}/{A91_MAG},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{attachment('Bip01_Prop2', prop2)}    }}
+""")
+    for node in ('A91_Suppressor', 'A91_Muzzle_Mount_Device'):
+        out.append(f"""
+    model {node} {{
+        mesh     = weapons/parts/GunsOfTienPost93_9A91_parts|{node},
+        texture  = {TEX}/A91_Suppressor,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_a91.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    guns = ';'.join(f'{M}.{gun}' for gun in A91_GUNS)
+    items = [f"module {M} {{\n"]
+    for gun, g in A91_GUNS.items():
+        lines = [f"{w}MarzGuns.Bolt_Lock {M}.A91_BOLT bolt_lock bolt_lock,",
+                 f"{w}MarzGuns.Bolt_Fired {M}.A91_BOLT bolt_fired bolt_fired,"]
+        if g['stock']:
+            lines += [f"{w}{M}.A91_Integrated_Stock_Folded {M}.A91_STOCK_FOLDED stock stock,",
+                      f"{w}{M}.A91_Integrated_Stock_Deployed {M}.A91_STOCK_DEPLOYED stock stock,"]
+        lines += [f"{w}{M}.{A91_MAG} {M}.{A91_MAG} magazine magazine,",
+                  f"{w}{M}.A91_Muzzle_Mount_Device {M}.A91_Muzzle_Mount_Device canon canon,",
+                  f"{w}{M}.A91_Suppressor {M}.A91_Suppressor canon canon,",
+                  f"{w}MarzGuns.AK_Mount MarzGuns.AK_Mount rail_up rail_up,"]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+        items.append(f"""
+    item {gun} {{
+        MinDamage                    = {g['min']},
+        MaxDamage                    = {g['max']},
+        CriticalChance               = {g['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = {g['critmult']},
+        HitChance                    = {g['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {g['aim']},
+        RecoilDelay                  = {g['recoil']},
+        MaxRange                     = {g['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {SIGHT[gun][0]},
+        MaxSightRange                = {SIGHT[gun][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = {g['jam']},
+        ConditionLowerChanceOneIn    = {g['cond']},
+        ConditionMax                 = {g['cmax']},
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitCount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {g['weight']},
+        MetalValue                   = 40.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = swmg:bullet_9x39,
+        AmmoBox                      = MarzGuns.9x39_Box,
+        MagazineType                 = {M}.{A91_MAG},
+        MaxAmmo                      = 20,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = JS14Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = {g['gain']},
+        SoundRadius                  = {g['radius']},
+        SoundVolume                  = {g['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+""")
+    items.append(f"""
+    item {A91_MAG} {{
+        AmmoType         = swmg:bullet_9x39,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{A91_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 20,
+        MountOn          = {guns},
+        PartType         = Clip,
+        Tags             = base:riflemagazine,
+        Weight           = 0.25,
+        WeightModifier   = 0.25,
+        StaticModel      = {M}.{A91_MAG},
+        WorldStaticModel = {M}.{A91_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+
+    item A91_Suppressor {{{can_durability('A91_Suppressor')}
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_A91_Suppressor,
+        Weight           = 0.9,
+        WeightModifier   = 0.9,
+        MountOn          = {guns},
+        PartType         = Canon,
+        WorldStaticModel = {M}.A91_Suppressor,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+
+    item A91_Muzzle_Mount_Device {{
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_A91_Muzzle_Mount_Device,
+        Weight           = 0.3,
+        WeightModifier   = 0.3,
+        MountOn          = {guns},
+        PartType         = CanonMount,
+        WorldStaticModel = {M}.A91_Muzzle_Mount_Device,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+    for part, ptype, weight in A91_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_a91.txt', ''.join(items))
+    # GoM repairs its AKs and SVD with Aiming=3 (the can's repairs are in fixing_guns.txt, can_fixing())
+    write(f'scripts/{M}/fixing_a91.txt', "module Base {\n" + "".join(f"""    fixing Fix {gun} {{
+        Require = {M}.{gun},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for gun in A91_GUNS) + "}\n")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for gun, g in A91_GUNS.items():
+        names[f'{M}.{gun}'] = g['name']                     # GoM's "AS VAL Assault Rifle", "M24 Sniper Rifle"
+    names[f'{M}.{A91_MAG}'] = '9A-91 20Rds 9x39mm Magazine'  # GoM's "M14 20Rds 7.62x51mm Magazine"
+    names[f'{M}.A91_Suppressor'] = '9A-91 Suppressor (9x39mm Weapons)'
+    names[f'{M}.A91_Muzzle_Mount_Device'] = '9x39mm Family Muzzle Mounting Device'
+    names[f'{M}.A91_Integrated_Stock_Folded'] = '9A-91 Integrated Stock (Folded)'
+    names[f'{M}.A91_Integrated_Stock_Deployed'] = '9A-91 Integrated Stock (Deployed)'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 def muzzle_devices():
     models = [f"module {M} {{\n"]
     items = [f"module {M} {{\n"]
@@ -3809,6 +4057,7 @@ if __name__ == '__main__':
     grozas()
     sv98()
     sv99()
+    a91()
     muzzle_devices()
     translations()
     print('written under', os.path.normpath(ROOT))
