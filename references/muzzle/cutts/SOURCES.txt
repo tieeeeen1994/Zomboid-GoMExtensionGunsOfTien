@@ -1,0 +1,6 @@
+file	image url	page
+cutts_00.jpg	https://d2j6dbq0eux0bg.cloudfront.net/images/15999406/products/597103917/3932567020.jpg	https://www.phoenixweaponry.com/store/1928-Thompson-Cutts-Compensator-p597103917
+cutts_05.jpg	http://www.ima-usa.com/cdn/shop/products/XU1651_grande.jpg?v=1600909032	https://ima-usa.com/products/thompson-m1928a1-smg-cutts-compensator
+cutts_06.jpg	http://www.ima-usa.com/cdn/shop/products/XU1651_1_grande.jpg?v=1602350319	https://ima-usa.com/products/thompson-m1928a1-smg-cutts-compensator
+cutts_07.jpg	http://www.ima-usa.com/cdn/shop/products/XU1651-1_grande.jpg?v=1599570676	https://ima-usa.com/products/thompson-m1928a1-smg-cutts-compensator
+cutts_08.jpg	https://www.ima-usa.com/cdn/shop/products/XU1651_grande.jpg?v=1600909032	https://ima-usa.com/products/thompson-m1928a1-smg-cutts-compensator

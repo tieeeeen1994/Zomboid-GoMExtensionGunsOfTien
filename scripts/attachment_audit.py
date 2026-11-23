@@ -374,7 +374,7 @@ OPTICS_PARENTS = deps_any.get("MarzGuns.Aimpoint_Sight", set())
 def category(part):
     pt = (items.get(part, {}).get("parttype") or "")
     p = part.lower()
-    if "suppressor" in p or "muzzle" in p or "compensator" in p or "flashhider" in p or "muzzlebreak" in p:
+    if pt in ("Canon", "CanonMount") or any(k in p for k in ("suppressor", "muzzle", "compensator", "flash")):
         return "muzzle"
     if "bayonet" in p:
         return "bayonet"

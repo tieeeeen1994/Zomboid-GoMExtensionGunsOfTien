@@ -25,7 +25,7 @@
     thread, which no AUG has), Colt Single Action Army (the cylinder gap), MP5K (its barrel ends
     flush, only the MP5K-N had threads) and MP5SD (integral can).
 
-    `canon` sits where the real device would screw on: the rear of the gun's own flash hider (FAL, G3, M14 ahead of
+    `canon` sits where the real device would screw on: the rear of the gun's own flash hider (G3, M14 ahead of
     its front sight, XM177's moderator, M249, as GoM's AR-15 birdcage and our HK417) or the TEC-9's barrel
     shroud, else the bore's front, on the bore axis;
     measured from muzzle_audit.py's bore front and the barrel's vertex rings (game units). Our own guns (AUG A1,
@@ -77,7 +77,9 @@ local GUNS = {
     ["MarzGuns.CAMP_CARBINE"] = { parts = ACP45, canon = { 0.0, 0.4466, 0.0151 } },
     ["MarzGuns.TEC9"] = { parts = join(NINE_MOUNTS, NINE_CANS), canon = { 0.0, 0.2088, -0.0405 } },  -- shroud's front
     ["GunsOfTien.SR25"] = { parts = NATO762 },
-    ["MarzGuns.FAL"] = { parts = NATO762, canon = { 0.0, 0.4617, 0.0259 } },      -- the flash hider's rear
+    -- the FAL's own hider is 9 cm long: from its rear a 4 cm SureFire device left 5 cm of it sticking out ahead, so
+    -- `canon` sits 3.98 cm (the SF3P's length) behind the bore's front and the devices cover its front instead
+    ["MarzGuns.FAL"] = { parts = NATO762, canon = { 0.0, 0.5114, 0.0259 } },
     ["MarzGuns.G3"] = { parts = NATO762, canon = { 0.0, 0.4277, 0.0362 } },       -- the flash hider's rear
     ["MarzGuns.M14"] = { parts = NATO762, canon = { 0.0, 0.4962, 0.0288 } },      -- the flash suppressor's rear
     ["MarzGuns.M24"] = { parts = NATO762, canon = { 0.0, 0.5043, 0.0137 } },
@@ -101,3 +103,31 @@ for gun, entry in pairs(GUNS) do
         GoMAttachments.POINTS[gun] = { canon = entry.canon }        -- GoM's gun models are named as their items
     end
 end
+
+-- The real muzzle devices (user, 2026-11-23: "Option A", "Real fit only"; scripts/muzzle_devices.py, generated into
+-- MuzzleDevicesTable.lua): flash hiders, compensators and brakes per family, each fitting the guns the real one was made
+-- for (MountOn in the devices' own scripts, the main mod's and Post-93's). Stats are GoM's by kind (its LX / Trix42
+-- sound and volume x0.95, its LR2 x0.90, all remove the flash), each needs its family's mount, and GoM's guns get their
+-- model lines here (ours have them in their scripts). A device built into a gun's mesh (the AK-74's brake, the
+-- AR-15's birdcage) stays cosmetic, as GoM has it: the bare gun's stats, the fitted device's full effect (user).
+local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
+local SF = require("WeaponSystems/Utils/StatsFactory")
+local RequiredAttachment = require("WeaponSystems/Utils/RequiredAttachment")
+local DEVICES = require("GunsOfTien/MuzzleDevicesTable")
+
+local stats = {}
+for device, d in pairs(DEVICES) do
+    stats[device] = {
+        SF.Multiply("SoundRadius", d.sound),
+        SF.Multiply("SoundVolume", d.sound),
+        SF.Set("MuzzleFlashModelKey", nil),
+    }
+    RequiredAttachment.RegisterRequired({ device }, d.mounts)
+    for _, gun in ipairs(d.guns) do
+        if string.sub(gun, 1, 9) == "MarzGuns." then
+            GoMAttachments.LINES[gun] = GoMAttachments.LINES[gun] or {}
+            table.insert(GoMAttachments.LINES[gun], { device, device, "canon" })
+        end
+    end
+end
+CSA.RegisterMultipleParts(stats)

@@ -114,6 +114,28 @@ lines["MarzGuns.P45_Suppressor"] = {
     "Can be mounted on .45 pistols, SMGs and carbines",
     "Needs Wrench to install or remove.",
 }
+-- The real muzzle devices (shared/GunsOfTien/MuzzleFamilies.lua, MuzzleDevicesTable.lua) in the cans' wording, and
+-- GoM's three AR devices the same way (it gives them only the effect and the wrench)
+for device, d in pairs(require("GunsOfTien/MuzzleDevicesTable")) do
+    lines[device] = {
+        "Requires " .. d.family .. " Muzzle Mount",
+        d.effect,
+        "Removes Muzzle Flash",
+        "Can be mounted on " .. d.fits,
+        "Needs Wrench to install or remove.",
+    }
+end
+for device, effect in pairs({ ["MarzGuns.LR2_Compensator"] = "Sound Radius and Volume reduced by 10%",
+    ["MarzGuns.LX_Flashhider"] = "Sound Radius and Volume reduced by 5%",
+    ["MarzGuns.Trix42_Muzzlebreak"] = "Sound Radius and Volume reduced by 5%" }) do
+    lines[device] = {
+        "Requires AR Muzzle Mount",
+        effect,
+        "Removes Muzzle Flash",
+        "Can be mounted on 5.56mm rifles and the M249",
+        "Needs Wrench to install or remove.",
+    }
+end
 local FITS_HOLSTER = "Fits a holster"
 local NEEDS_BARRELS = "Fits a holster if barrels are sawed off"
 local NEEDS_BARREL = "Fits a holster if the barrel is sawed off"

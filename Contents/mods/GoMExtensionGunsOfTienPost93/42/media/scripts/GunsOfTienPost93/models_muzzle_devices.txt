@@ -1,0 +1,20 @@
+module GunsOfTienPost93 {
+
+    model SF3P_Flash_Hider {
+        mesh     = weapons/parts/GunsOfTienPost93_muzzle_devices|SF3P_Flash_Hider,
+        texture  = weapons/GunsOfTienPost93/SF3P_Flash_Hider,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model SFMB_Muzzle_Brake {
+        mesh     = weapons/parts/GunsOfTienPost93_muzzle_devices|SFMB_Muzzle_Brake,
+        texture  = weapons/GunsOfTienPost93/SFMB_Muzzle_Brake,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model WarComp_Flash_Hider {
+        mesh     = weapons/parts/GunsOfTienPost93_muzzle_devices|WarComp_Flash_Hider,
+        texture  = weapons/GunsOfTienPost93/WarComp_Flash_Hider,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

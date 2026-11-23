@@ -107,6 +107,7 @@ module GunsOfTien {
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,
         ModelWeaponPart              = MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,
+        ModelWeaponPart              = GunsOfTien.AKM_Slant_Compensator GunsOfTien.AKM_Slant_Compensator canon canon,
         KnockBackOnNoDeath           = true,
     }
 
@@ -217,6 +218,8 @@ module GunsOfTien {
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,
         ModelWeaponPart              = MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,
+        ModelWeaponPart              = GunsOfTien.AK74_Muzzle_Brake GunsOfTien.AK74_Muzzle_Brake canon canon,
+        ModelWeaponPart              = GunsOfTien.AKS74U_Muzzle_Booster GunsOfTien.AKS74U_Muzzle_Booster canon canon,
         KnockBackOnNoDeath           = true,
     }
 

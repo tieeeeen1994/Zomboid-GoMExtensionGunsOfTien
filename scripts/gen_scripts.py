@@ -6,6 +6,10 @@ and the Lua profiles use the same full types.
 import json
 import math
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import muzzle_devices as MD  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Contents', 'mods', 'GoMExtensionGunsOfTien',
                     '42', 'media')
@@ -869,6 +873,47 @@ def smg_suppressor():
     names[NINE_MOUNT] = NINE_MOUNT_NAME          # GoM's, renamed (translations merge by key, the later mod wins)
     names.update(NINE_CAN_NAMES)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# The real muzzle devices (scripts/muzzle_devices.py, one table for every tool): the main mod's items and models (the
+# SureFire ones are Post-93's, post93/gen_post93_guns.py), their names, and the Lua table MuzzleFamilies.lua and
+# Tooltips.lua read. Meshes and textures: scripts/build_muzzle_devices.py; icons: scripts/make_muzzle_device_art.py.
+def muzzle_devices():
+    models = [f"module {MODULE} {{\n"]
+    items = [f"module {MODULE} {{\n"]
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    for d in MD.of_mod('main'):
+        node = d['node']
+        weight = MD.KINDS[d['kind']][0]
+        models.append(f"""
+    model {node} {{
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|{node},
+        texture  = weapons/GunsOfTien/{node},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+        items.append(f"""
+    item {node} {{
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_{node},
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        MountOn          = {';'.join(d['guns'])},
+        PartType         = Canon,
+        WorldStaticModel = {MODULE}.{node},
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+        names[MD.full_type(d)] = d['name']
+    models.append("}\n")
+    items.append("}\n")
+    write('scripts/GunsOfTien/models_muzzle_devices.txt', ''.join(models))
+    write('scripts/GunsOfTien/items_muzzle_devices.txt', ''.join(items))
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    write('lua/shared/GunsOfTien/MuzzleDevicesTable.lua', MD.lua_table())
 
 
 # Sawn-off stocks (shared/GunsOfTien/SawnStock.lua, scripts/build_sawn_stocks.py): GoM's three break-action shotguns,
@@ -2168,6 +2213,7 @@ def sr25():
     # Post-93's 7.62x51mm mount device and SOCOM762-RC (MuzzleFamilies.lua), likewise only strings without it
     parts += canon_lines(w, [f"GunsOfTienPost93.{p} GunsOfTienPost93.{p}"
                              for p in ('SCARH_Muzzle_Mount_Device', 'SCARH_Suppressor')])
+    parts += MD.model_lines(w, f"{MODULE}.SR25")             # SureFire's devices (Post-93), strings without it
     parts += [f"{w}{MODULE}.SR25_Integrated_Bipod_Folded {MODULE}.SR25_BIPOD_FOLDED integrated_bipod integrated_bipod,",
              f"{w}{MODULE}.SR25_Integrated_Bipod_Deployed {MODULE}.SR25_BIPOD_DEPLOYED integrated_bipod "
              f"integrated_bipod,"]
@@ -2676,6 +2722,7 @@ def rpk():
         parts += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in GOM_AK_OPTICS]
         parts += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                   f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
+        parts += MD.model_lines(w, f"{MODULE}.{gun}")
         mag = s['mag'] if '.' in s['mag'] else f"{MODULE}.{s['mag']}"
         maxammo = 40 if gun == 'RPK' else 45
         items.append(f"""
@@ -4160,6 +4207,7 @@ if __name__ == '__main__':
     lasers()
     sawn_stocks()
     smg_suppressor()
+    muzzle_devices()
     stanag_got()
     m249()
     belt_links()

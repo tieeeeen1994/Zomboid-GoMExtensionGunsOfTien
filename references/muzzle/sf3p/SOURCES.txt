@@ -1,0 +1,8 @@
+file	image url	page
+sf3p_00.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/products/870/images/739/SF3P-762-1-2-28-BK-isoL__34104.1709145052.500.750.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_03.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/images/stencil/380x380/products/1004/887/FH556-1-2-28-iso_L_FR__45197.1709145035.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_05.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/images/stencil/380x380/products/904/749/WARCOMP-260-5-8-24-BK-isoL__95319.1616780803.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_06.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/images/stencil/380x380/products/904/1269/WARCOMP-762-5-8-24-BK-profileR__19547.1783530827.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_07.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/images/stencil/380x380/products/600/868/SF3P-50BMG_Angle_FL__15058.1616781394.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_08.jpg	https://cdn11.bigcommerce.com/s-fecqh2764q/images/stencil/600x600/products/870/739/SF3P-762-1-2-28-BK-isoL__34104.1709145052.jpg?c=2	https://www.surefire.com/socom-3-prong-flash-hider
+sf3p_10.jpg	https://www.midwestgunworks.com/mm5/graphics/00000001/SF3P-762-58-24.jpg	https://www.midwestgunworks.com/page/mgwi/prod/SF3P-762-SR25

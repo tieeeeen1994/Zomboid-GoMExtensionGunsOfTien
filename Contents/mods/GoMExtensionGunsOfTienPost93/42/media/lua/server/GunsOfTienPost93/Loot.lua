@@ -288,7 +288,7 @@ local PART_SPAWNERS = {
     { "MarzGuns.World_Suppressor_Spawner",
         { M .. "MP7_Suppressor", M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor", M .. "SCARH_Suppressor" } },
     { "MarzGuns.World_Muzzle_Device_Spawner", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device",
-        M .. "SCARH_Muzzle_Mount_Device" } },
+        M .. "SCARH_Muzzle_Mount_Device", M .. "SF3P_Flash_Hider", M .. "SFMB_Muzzle_Brake", M .. "WarComp_Flash_Hider" } },
 }
 
 -- Parts added to the item list of a GoM vanilla attachment replacement's first alternative.

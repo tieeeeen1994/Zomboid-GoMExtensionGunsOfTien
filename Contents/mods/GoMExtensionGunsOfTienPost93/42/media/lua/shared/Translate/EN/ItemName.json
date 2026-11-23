@@ -155,5 +155,8 @@
   "GunsOfTienPost93.22LRMagazine5_SV99": "SV-99 5Rds .22 LR Magazine",
   "GunsOfTienPost93.SV99_Integrated_Rail_Up": "SV-99 Integrated Rail (Up)",
   "GunsOfTienPost93.SV99_Integrated_Bipod_Folded": "SV-99 Integrated Bipod (Folded)",
-  "GunsOfTienPost93.SV99_Integrated_Bipod_Deployed": "SV-99 Integrated Bipod (Deployed)"
+  "GunsOfTienPost93.SV99_Integrated_Bipod_Deployed": "SV-99 Integrated Bipod (Deployed)",
+  "GunsOfTienPost93.SF3P_Flash_Hider": "SF3P Flash Hider (7.62x51mm Weapons)",
+  "GunsOfTienPost93.SFMB_Muzzle_Brake": "SFMB Muzzle Brake (7.62x51mm Weapons)",
+  "GunsOfTienPost93.WarComp_Flash_Hider": "WarComp Flash Hider (7.62x51mm Weapons)"
 }

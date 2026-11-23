@@ -1,0 +1,44 @@
+module GunsOfTien {
+
+    model AKM_Slant_Compensator {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|AKM_Slant_Compensator,
+        texture  = weapons/GunsOfTien/AKM_Slant_Compensator,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model AK74_Muzzle_Brake {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|AK74_Muzzle_Brake,
+        texture  = weapons/GunsOfTien/AK74_Muzzle_Brake,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model AKS74U_Muzzle_Booster {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|AKS74U_Muzzle_Booster,
+        texture  = weapons/GunsOfTien/AKS74U_Muzzle_Booster,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model MP5_Flash_Hider {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|MP5_Flash_Hider,
+        texture  = weapons/GunsOfTien/MP5_Flash_Hider,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model Clark_Compensator_9mm {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|Clark_Compensator_9mm,
+        texture  = weapons/GunsOfTien/Clark_Compensator_9mm,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model Cutts_Compensator {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|Cutts_Compensator,
+        texture  = weapons/GunsOfTien/Cutts_Compensator,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model Clark_Compensator_45 {
+        mesh     = weapons/parts/GunsOfTien_muzzle_devices|Clark_Compensator_45,
+        texture  = weapons/GunsOfTien/Clark_Compensator_45,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

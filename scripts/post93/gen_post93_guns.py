@@ -14,8 +14,11 @@ Icons are item_GunsOfTienPost93_<name>.png (prefixed, so another mod's MP7 or P9
 """
 import json
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(HERE))
+import muzzle_devices as MD  # noqa: E402
 ROOT = os.path.join(HERE, '..', '..', 'Contents', 'mods', 'GoMExtensionGunsOfTienPost93', '42', 'media')
 M = 'GunsOfTienPost93'
 TEX = 'weapons/GunsOfTienPost93'
@@ -778,6 +781,7 @@ def scar_parts(gun):
         lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m in SCARH_MAGS]
         lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
                   f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+        lines += MD.model_lines(w, f"{M}.{gun}")
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
@@ -1786,6 +1790,7 @@ def mdr_parts(gun):
         lines += [f"{w}GunsOfTien.762x51Magazine20_SR25 GunsOfTien.762x51Magazine20_SR25 magazine magazine,"]
         lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
                   f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+        lines += MD.model_lines(w, f"{M}.{gun}")
         lines += [f"{w}{M}.MDR308_Integrated_Bipod_Folded {M}.MDR308_BIPOD_FOLDED integrated_bipod integrated_bipod,",
                   f"{w}{M}.MDR308_Integrated_Bipod_Deployed {M}.MDR308_BIPOD_DEPLOYED integrated_bipod "
                   f"integrated_bipod,"]
@@ -2016,6 +2021,7 @@ def mk11():
     lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in PMAGS]
     lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
               f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += MD.model_lines(w, f"{M}.MK11")
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
@@ -2409,6 +2415,7 @@ def hk417():
     lines += [f"{w}{M}.{m} {M}.{m} magazine magazine," for m, _, _ in HK417_MAGS]
     lines += [f"{w}{M}.SCARH_Muzzle_Mount_Device {M}.SCARH_Muzzle_Mount_Device canon canon,",
               f"{w}{M}.SCARH_Suppressor {M}.SCARH_Suppressor canon canon,"]
+    lines += MD.model_lines(w, f"{M}.HK417")
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.{b} MarzGuns.{b} bipod bipod," for b in ('Bipod_Deployed', 'Bipod_Folded')]
@@ -2923,6 +2930,7 @@ def grozas():
         if g['canon'] in ('long', 'compact'):
             lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                       f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
+            lines += MD.model_lines(w, f"{M}.{gun}")
         elif g['canon'] == 'integral':
             lines += [f"{w}{M}.GROZA4_Integrated_Suppressor {M}.GROZA_Suppressor canon canon,"]
         if gun == 'GROZAGL':
@@ -3552,6 +3560,45 @@ def sv99():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# SureFire's muzzle devices for the 7.62x51mm mount (the main mod's scripts/muzzle_devices.py has the table; meshes:
+# scripts/build_muzzle_devices.py, icons: scripts/make_muzzle_device_art.py): items, models, names.
+def muzzle_devices():
+    models = [f"module {M} {{\n"]
+    items = [f"module {M} {{\n"]
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path)) if os.path.exists(path) else {}
+    for d in MD.of_mod('post93'):
+        node = d['node']
+        weight = MD.KINDS[d['kind']][0]
+        models.append(f"""
+    model {node} {{
+        mesh     = weapons/parts/GunsOfTienPost93_muzzle_devices|{node},
+        texture  = {TEX}/{node},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+        items.append(f"""
+    item {node} {{
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_{node},
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        MountOn          = {';'.join(d['guns'])},
+        PartType         = Canon,
+        WorldStaticModel = {M}.{node},
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }}
+""")
+        names[MD.full_type(d)] = d['name']
+    models.append("}\n")
+    items.append("}\n")
+    write(f'scripts/{M}/models_muzzle_devices.txt', ''.join(models))
+    write(f'scripts/{M}/items_muzzle_devices.txt', ''.join(items))
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 def translations():
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path)) if os.path.exists(path) else {}
@@ -3702,5 +3749,6 @@ if __name__ == '__main__':
     grozas()
     sv98()
     sv99()
+    muzzle_devices()
     translations()
     print('written under', os.path.normpath(ROOT))

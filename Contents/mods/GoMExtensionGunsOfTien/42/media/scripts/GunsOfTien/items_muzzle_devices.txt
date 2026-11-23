@@ -1,0 +1,93 @@
+module GunsOfTien {
+
+    item AKM_Slant_Compensator {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_AKM_Slant_Compensator,
+        Weight           = 1.0,
+        WeightModifier   = 1.0,
+        MountOn          = MarzGuns.AK47;GunsOfTien.RPK;MarzGuns.SKS;GunsOfTienPost93.GROZA1;GunsOfTienPost93.GROZAGL,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.AKM_Slant_Compensator,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item AK74_Muzzle_Brake {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_AK74_Muzzle_Brake,
+        Weight           = 1.2,
+        WeightModifier   = 1.2,
+        MountOn          = MarzGuns.AK74;MarzGuns.AKS74U;GunsOfTien.RPK74;GunsOfTienPost93.GROZA2,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.AK74_Muzzle_Brake,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item AKS74U_Muzzle_Booster {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_AKS74U_Muzzle_Booster,
+        Weight           = 0.9,
+        WeightModifier   = 0.9,
+        MountOn          = MarzGuns.AK74;MarzGuns.AKS74U;GunsOfTien.RPK74;GunsOfTienPost93.GROZA2,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.AKS74U_Muzzle_Booster,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item MP5_Flash_Hider {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_MP5_Flash_Hider,
+        Weight           = 0.9,
+        WeightModifier   = 0.9,
+        MountOn          = MarzGuns.MP5;MarzGuns.MP5A2,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.MP5_Flash_Hider,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item Clark_Compensator_9mm {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_Clark_Compensator_9mm,
+        Weight           = 1.0,
+        WeightModifier   = 1.0,
+        MountOn          = MarzGuns.M92FS;MarzGuns.HIPOWER;MarzGuns.P226,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.Clark_Compensator_9mm,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item Cutts_Compensator {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_Cutts_Compensator,
+        Weight           = 1.0,
+        WeightModifier   = 1.0,
+        MountOn          = MarzGuns.THOMPSON,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.Cutts_Compensator,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item Clark_Compensator_45 {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTien_Clark_Compensator_45,
+        Weight           = 1.0,
+        WeightModifier   = 1.0,
+        MountOn          = MarzGuns.M1911,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTien.Clark_Compensator_45,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+}

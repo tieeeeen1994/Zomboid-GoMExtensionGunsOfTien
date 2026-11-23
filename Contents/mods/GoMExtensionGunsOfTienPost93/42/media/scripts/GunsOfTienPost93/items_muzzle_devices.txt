@@ -1,0 +1,41 @@
+module GunsOfTienPost93 {
+
+    item SF3P_Flash_Hider {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_SF3P_Flash_Hider,
+        Weight           = 0.9,
+        WeightModifier   = 0.9,
+        MountOn          = GunsOfTien.SR25;GunsOfTienPost93.SCARH;GunsOfTienPost93.HK417;GunsOfTienPost93.HK417S;GunsOfTienPost93.MK11;GunsOfTienPost93.MDR308;MarzGuns.G3;MarzGuns.M24;MarzGuns.PSG1;MarzGuns.REMINGTON_700;MarzGuns.FAL;MarzGuns.M14,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTienPost93.SF3P_Flash_Hider,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item SFMB_Muzzle_Brake {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_SFMB_Muzzle_Brake,
+        Weight           = 1.2,
+        WeightModifier   = 1.2,
+        MountOn          = GunsOfTien.SR25;GunsOfTienPost93.SCARH;GunsOfTienPost93.HK417;GunsOfTienPost93.HK417S;GunsOfTienPost93.MK11;GunsOfTienPost93.MDR308;MarzGuns.G3;MarzGuns.M24;MarzGuns.PSG1;MarzGuns.REMINGTON_700,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTienPost93.SFMB_Muzzle_Brake,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+
+    item WarComp_Flash_Hider {
+        DisplayCategory  = WeaponPart,
+        ItemType         = base:weaponpart,
+        Icon             = GunsOfTienPost93_WarComp_Flash_Hider,
+        Weight           = 1.0,
+        WeightModifier   = 1.0,
+        MountOn          = GunsOfTien.SR25;GunsOfTienPost93.SCARH;GunsOfTienPost93.HK417;GunsOfTienPost93.HK417S;GunsOfTienPost93.MK11;GunsOfTienPost93.MDR308;MarzGuns.G3;MarzGuns.M24;MarzGuns.PSG1;MarzGuns.REMINGTON_700,
+        PartType         = Canon,
+        WorldStaticModel = GunsOfTienPost93.WarComp_Flash_Hider,
+        CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
+        CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
+    }
+}

@@ -1,0 +1,2 @@
+file	image url	page
+aks74u_booster_03.jpg	https://upload.wikimedia.org/wikipedia/commons/5/50/AKS74U_%28noBG%29.jpg	https://commons.wikimedia.org/wiki/File:AKS74U_(noBG).jpg

@@ -1,0 +1,5 @@
+file	image url	page
+akm_slant_00.jpg	https://blog.roninsgrips.com/wp-content/uploads/2025/07/20250714_172727_DxO.jpg	https://blog.roninsgrips.com/pragmatism-at-work-an-analysis-of-the-soviet-ak-47-slant-compensator/
+akm_slant_01.jpg	https://blog.roninsgrips.com/wp-content/uploads/2025/07/20250714_172727_DxO-672x372.jpg	https://blog.roninsgrips.com/pragmatism-at-work-an-analysis-of-the-soviet-ak-47-slant-compensator/
+akm_slant_02.jpg	https://blog.roninsgrips.com/wp-content/uploads/2025/07/PSX_20250720_043622.jpg	https://blog.roninsgrips.com/pragmatism-at-work-an-analysis-of-the-soviet-ak-47-slant-compensator/
+akm_slant_03.jpg	https://blog.roninsgrips.com/wp-content/uploads/2025/07/PSX_20250720_043622-1024x726.jpg	https://blog.roninsgrips.com/pragmatism-at-work-an-analysis-of-the-soviet-ak-47-slant-compensator/

@@ -84,6 +84,11 @@ local LISTS = {
         { "GunsOfTien.Mk9_Suppressor" } },
     { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_HighCap_AR_Magazine_Spawner",
         { "GunsOfTien.556x45Magazine42_AUG" } },
+    -- the real muzzle devices (MuzzleFamilies.lua), each one more equal choice beside GoM's own three
+    { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_Muzzle_Device_Spawner",
+        { "GunsOfTien.AKM_Slant_Compensator", "GunsOfTien.AK74_Muzzle_Brake", "GunsOfTien.AKS74U_Muzzle_Booster",
+          "GunsOfTien.MP5_Flash_Hider", "GunsOfTien.Clark_Compensator_9mm", "GunsOfTien.Cutts_Compensator",
+          "GunsOfTien.Clark_Compensator_45" } },
 }
 
 -- M249 kits, GoM's M60 kits in the same spawners: { spawner, belt boxes }

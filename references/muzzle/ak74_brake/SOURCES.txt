@@ -1,0 +1,10 @@
+file	image url	page
+ak74_brake_00.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-4.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_01.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-4-1400x788.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_02.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-4-1024x576.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_03.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-3.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_04.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-3-1400x788.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_05.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-5.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_06.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-5-1400x788.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_07.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-2.jpg	https://arsenalinc.com/usa/ak-141b
+ak74_brake_08.jpg	https://www.arsenalinc.com/usa/wp-content/uploads/2019/05/AK-141B-2-1400x788.jpg	https://arsenalinc.com/usa/ak-141b

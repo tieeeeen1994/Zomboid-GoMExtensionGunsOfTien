@@ -1,0 +1,14 @@
+file	image url	page
+clark_comp_00.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/CLK-164_Main.png	https://clarkcustomguns.com/?p=4403
+clark_comp_01.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/CLK-164_Main-600x600.png	https://clarkcustomguns.com/?p=4403
+clark_comp_02.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/IMG_0103-1.jpg	https://clarkcustomguns.com/?p=4403
+clark_comp_03.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/IMG_0103-1-600x450.jpg	https://clarkcustomguns.com/?p=4403
+clark_comp_05.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/p_181165000_1-300x300.jpg	https://clarkcustomguns.com/?p=4403
+clark_comp_07.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/CLK-165-460-1-300x300.png	https://clarkcustomguns.com/?p=4403
+clark_comp_08.jpg	https://clarkcustomguns.com/wp-content/uploads/2018/02/CLK-165-460-1.png	https://clarkcustomguns.com/?p=4403
+clark_comp_18.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/Plaxco-compensator-compared-to-DR-Middlebrooks-compensator.jpg.webp	https://www.thearmorylife.com/mike-plaxco-custom-1911/
+clark_comp_19.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/Plaxco-compensator-compared-to-DR-Middlebrooks-compensator.jpg	https://www.thearmorylife.com/mike-plaxco-custom-1911/
+clark_comp_20.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/Plaxco-compensator-installed-on-a-Springfield-Armory-1911-pistol.jpg.webp	https://www.thearmorylife.com/mike-plaxco-custom-1911/
+clark_comp_21.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/Plaxco-compensator-installed-on-a-Springfield-Armory-1911-pistol.jpg	https://www.thearmorylife.com/mike-plaxco-custom-1911/
+clark_comp_22.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/top-view-of-Plaxco-compensator-and-Middlebrooks-comp.jpg.webp	https://www.thearmorylife.com/mike-plaxco-custom-1911/
+clark_comp_23.jpg	https://www.thearmorylife.com/wp-content/uploads/2026/11/top-view-of-Plaxco-compensator-and-Middlebrooks-comp.jpg	https://www.thearmorylife.com/mike-plaxco-custom-1911/

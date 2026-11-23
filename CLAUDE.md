@@ -263,10 +263,38 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   quieter than the MP5 with any can (28 / 8). All three fit every 9mm gun with
   the mount (the Mk9 on tilting-barrel pistols too, by the user's choice), named "(9mm Weapons)"; GoM's two are
   drawn on our Uzi-proportion guns through `M&P_Suppressor_GoT` / `Shh9_Suppressor_GoT` (gen_scripts.py). `canon` = where the real device screws on:
-  the rear of the gun's own flash hider (FAL, G3, M14 ahead of its front sight, XM177 moderator, M249), else
-  the bore's front, on the bore axis, from muzzle_audit.py's bore front and the barrel's vertex rings; a short mount
-  on a long built-in hider (FAL 9 cm) leaves the hider showing ahead of the mount until a can covers it. Tooltips:
-  SOCOM762-RC "7.62x51mm rifles", Mk9 "9x19mm SMGs and the TEC-9". attachment_audit.py: 0 ISSUE lines.
+  the rear of the gun's own flash hider (G3, M14 ahead of its front sight, XM177 moderator, M249), else
+  the bore's front, on the bore axis, from muzzle_audit.py's bore front and the barrel's vertex rings. The FAL's 9 cm
+  hider is the exception: from its rear a 4 cm SureFire device left 5 cm of it sticking out ahead, so its `canon` is
+  the SF3P's length behind the bore's front (the devices cover the hider's front). Tooltips: SOCOM762-RC "7.62x51mm
+  rifles", 9mm cans "9x19mm pistols and SMGs". attachment_audit.py: 0 ISSUE lines.
+- **Real muzzle devices** (2026-11-23; user: "Option A" = real devices built from scratch, over GoM's three AR devices
+  rescaled per calibre; "Real fit only"; built-in devices "Cosmetic, GoM's way"). Ten, one table for every tool in
+  `scripts/muzzle_devices.py` (names, kinds, mounts, fit lists, the "Can be mounted on" text, each one's scale):
+  AKM slant compensator (7.62x39 AKs, 14x1 LH: AK-47, RPK, SKS, Groza-1), AK-74 muzzle brake and AKS-74U muzzle
+  booster (5.45 AKs, 24x1.5 RH: AK-74, AKS-74U, RPK-74, Groza-2), H&K three-lug flash hider (MP5A3, MP5A2), Clark
+  race compensator in 9mm (92FS, Hi-Power, P226) and .45 (M1911), Cutts compensator (Thompson), and in Post-93
+  SureFire's SF3P flash hider (every 7.62x51 gun with the mount), SFMB brake and WarComp (the same but the FAL and
+  M14, whose SureFire versions are the SF3P's only). Research by a subagent from manufacturer, retailer and
+  collector pages (threads, years: the AKM slant 1959, AK-74 brake 1974, booster ~1979, Cutts 1927, Clark 1980s,
+  SureFire 2011-2016); the RPK-74's own flash hider, the 93R's comp (integral), Glock / VP70 / TEC-9 / Uzi devices
+  and anything for 5.7x28 / 4.6x30 were left out (undocumented, post-1993, or built into the guns). Stats GoM's by
+  kind (hider / brake sound x0.95, compensator x0.90, all remove the flash; weights LX 0.9 / LR2 1.0 / Trix42 1.2);
+  each needs its family's mount. A device built into a gun's mesh (AK-74 brake, AKS-74U booster, AR birdcage) stays
+  cosmetic: GoM gives those guns the bare barrel's stats and lets a fitted device act in full (its LX on the AR-15).
+  Files: `scripts/build_muzzle_devices.py` (Blender, ~80 s: lathes plus Boolean cuts in real mm, origin at the rear
+  face on the bore axis, then x `scale`: AKs 0.00064, MP5s and SureFire 0.000603, 9mm pistols 0.00072, M1911 0.0007,
+  Thompson 0.00066; `GunsOfTien_muzzle_devices.fbx` / `GunsOfTienPost93_muzzle_devices.fbx`, 128 px textures),
+  `scripts/make_muzzle_device_art.py` (icons on the MP7 mount camera), gen_scripts.py `muzzle_devices()` (main items,
+  models, names and the generated `lua/shared/GunsOfTien/MuzzleDevicesTable.lua`), gen_post93_guns.py
+  `muzzle_devices()` (SureFire items), `MD.model_lines` in every generator for our guns' lines, MuzzleFamilies.lua
+  (stats, mount rule, GoM's guns' lines from the table), Tooltips.lua (lines from the table, and GoM's LR2 / LX /
+  Trix42 given the same "Requires AR Muzzle Mount" / "Can be mounted on 5.56mm rifles and the M249" lines), Loot.lua
+  of both mods (GoM's World_Muzzle_Device_Spawner). References: `references/muzzle/<device>/` (SOURCES.txt, sheet);
+  the booster from one Commons photo (Wikimedia rate-limited the rest) and GoM's AKS-74U mesh, the Clark comps from
+  Clark's own photo, dimensions not published for the Soviet, H&K and Cutts parts, so measured on photos against one
+  assumed size (AK-74 brake OD 26.5 mm, HK collar 30 mm, Cutts body 24 mm). attachment_audit.py classifies every
+  Canon / CanonMount part as muzzle now (it missed "Flash_Hider"). Not seen in game yet.
 - **M249 Light Machine Gun** (user, 2026-10-22; building): the main mod's first gun (adopted 1982, so it is 1993
   material). The PIP gun ("M249E2", the user's word for it), its own 200-round box plus every GoM STANAG in one
   profile (STANAG jam x2), two Auto rates 750 / 1000 (the original gas regulator, the user's choice over the PIP's one
