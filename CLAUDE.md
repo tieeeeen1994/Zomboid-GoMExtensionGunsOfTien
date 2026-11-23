@@ -2769,6 +2769,62 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   device; suppressors turn it off (AttachmentCustomStats.lua). Left: guns under 1 cm off, the MP5K (compact stance),
   the `*_M203_Underbarrel` launcher models (CAR-15's point 19 cm ahead of its launcher, M16A2's at the rifle's).
 
+## Gun lines and GoM attachment fixes (2026-11-23; built, not played)
+
+Audit and decisions in `docs/attachments_audit.md`. **Rule (user: "I want the mod to be consistent. I don't want it to
+keep inventing new information bloat and formats")**: a gun's Information lines are never hand-written again. Only
+facts the game acts on, no flavour (barrel length, ejection, "prototype", iron sights folding: "remove flavor as it
+adds bloat"), no full stops.
+- `client/GunsOfTien/GunLines.lua` rebuilds, on the first tick (called from Tooltips.lua `install()` before its render
+  wrappers and `dropAllSubjectStops`), the tooltipsPergun entry of every ranged gun of MarzGuns / GunsOfTien /
+  GunsOfTienPost93, in this order: the gun's own `Uses ... rounds` line (the only line the per-gun files and Post-93's
+  Tooltips.lua still write for a gun), `Integrated: <parts>` (GunLines.INTEGRATED for sights and cans, plus Gunworks
+  FoldingBipod, an Underbarrel attachment in the spawn table's "required", an integrated bayonet),
+  `Integrated Picatinny Rails: <sides>` (rail parts in GoM's spawn table "required"), `Available Picatinny Slots:
+  <sides>` (Picatinny_Rail_<side> fittable), `Compatible Optics: ...` (only when the gun refuses some optics its
+  rail / mount carries: "Red dots only", "Red dots, <names>", "<name> only"), `Compatible Mounting Device: <item
+  names>` (optic parents that are not rails), `Compatible Muzzle Device: <item names>` (`*Muzzle_Mount_Device` in
+  MountOn), `Can attach a bayonet` (Gunworks registry), then GunLines.RULES (M249 STANAG jam, PPK holster,
+  speedloaders, stripper clip). Sides always Up, Down, Left, Right. `Integrated M-LOK Slots: <sides>` (after the
+  Picatinny line) for the integrated rail parts in GunLines.MLOK, which stand in for an M-LOK handguard with no rail on
+  the model (PS90 bottom and sides, MDRx .223 bottom; user asked "how about the MLOK?" when it was first folded into
+  "Integrated Picatinny Rails"); rail sections bolted onto M-LOK (the MDRx's sides) are GoM's Picatinny Rail upgrades
+  and stay "Available Picatinny Slots"; the Vector CRB's handguard carries a real bottom rail. Fittable = in the part's MountOn (Java `WeaponPart.canAttach`) with a required parent (Gunworks
+  RequiredAttachment, all of `Dependencies`, one of `AnyDependencies`) integrated or fittable.
+- Magazines: every magazine in a Gunworks profile, and the one `MagazineType` of a gun with no profile (read from an
+  instance: the Item script has no getter), gets `Fits: <short gun names>` (display name minus its kind, " with ...",
+  "(Two-Handed)"); old "Fits the ..." lines are dropped, "Uses" lines lose their full stop, other lines (belt links)
+  stay.
+- gen_handling_tooltips.py's gun rows in HandlingTooltips.lua (bayonet, speedloader, "Has Integrated ..." lines) are
+  now overwritten by GunLines; its part rows and state lines still count.
+- `shared/GunsOfTien/GoMAttachments.lua` (no sandbox option, as GoMFixes.lua): points added to GoM's loaded
+  ModelScripts (`ModelAttachment.new` + `addAttachment`, MuzzlePoints.lua's way) and model lines appended with
+  DoParam once per script object: AA-12 `rail_left` (17.3, 208.4, 20.0) / `rail_right` (-18.0, ...) on the shroud's
+  sides at the bottom rail's distance (rail sunk 1.1 as GoM sinks its rails), `light_left` / `laser_right` at the
+  M16A2's offsets from its rails (clear of the shroud); G36 `bipod` (0, 288.1, -0.5), as on the M16A2 from the rail's
+  front (game units x 1000; `scripts/gom_points.py` measures all of it in Blender with fit_audit.py's code: the AA-12
+  shroud is a box with few vertices, so its sides are found by ray casts). MountOn: AimRight laser + M16A2 (its spawn
+  table fits one); bipods out of the G36C (too short, user), M4A1, XM177, MP5, MP5A2, MP5SD (overlap the foregrips by
+  15 mm placed as on the M16A2: user, "if you find yourself needing to overlap from the foregrip, let's drop the bipod
+  support"); foregrips out of the CAR-15 (its integrated M203 is under the barrel: no bottom rail ever). Loads before
+  Lasers.lua, so the M16A2 gets the AimRight beam line.
+- `GunsOfTien_RemovedParts` (gun -> parts it no longer takes; GoMAttachments.lua fills it) drives
+  `server/GunsOfTien/RemovedParts.lua` (user: "force existing guns whose attachment slots are taken away to uninstall
+  itself from the gun and place it beside the gun in that container"): on LoadChunk (objects' containers, corpses,
+  floor items and bags in them, via `containsTypeRecurse` / `getAllTypeRecurse` per gun type; nothing sent, the chunk
+  is on no client yet; a floor gun's part goes on its square at its offsets, `AddWorldInventoryItem(..., false)`),
+  players 10 s after first seen (`syncHandWeaponFields` + `sendAddItemToContainer`; SyncHandWeaponFieldsPacket finds
+  the gun through its own container's ContainerID and updates it in place, hands included) and vehicles once loaded
+  (`sendReplaceItemInContainer` + `sendAddItemToContainer`), then `StatsFactory.ReapplyAllModifiers`. Kahlua has no
+  `next()`. Test: `tests/removed_parts_test.py` (lupa, mocks; all pass).
+- `scripts/attachment_audit.py` (lupa): loads every Lua file of Gunworks, GoM and both mods in load order (each mod's
+  registries.lua first; unknown globals are stubs, globals with "_" nil as in game, missing vanilla modules stubs),
+  fires the load events and the first ticks (so GunLines runs), and prints per gun: rails (integrated / rail /
+  universal mismatch), mounts, every fittable part by kind, magazines, the final tooltip, and ISSUE lines (rail with
+  nothing for it, part in MountOn never fittable, fittable part with no ModelWeaponPart line, spawn entry that cannot
+  fit), then every magazine's lines. Run it after any attachment or tooltip change; 0 ISSUE lines on 2026-11-23.
+  `list_tooltips.py` (the TODO review list) never read the per-gun tooltip files.
+
 ## Walther PPK (main mod, 2026-11-19; built, not played)
 
 - **What**: Carl Walther's PPK in .22 LR as the post-war Ulm gun (serial suffix "LR"), held and reloaded as GoM's

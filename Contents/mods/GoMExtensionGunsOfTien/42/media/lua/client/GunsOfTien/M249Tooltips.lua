@@ -3,6 +3,7 @@
     links both belt boxes take (GoM's tooltipsPergun table, read at render time, hard-coded English like GoM's own
     entries), and its bipod's lines, shown under the gun while that state is fitted (Tooltips.lua; stats in shared/GunsOfTien/M249.lua, GoM's M60
     bipod's, worded as HandlingTooltips.lua words the M60's).
+    The gun's other lines (rails, mounts, built-in parts, magazines) are written by GunLines.lua from the registries.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -10,12 +11,7 @@ if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "tabl
 
 local lines = tooltips.tooltipsPergun
 
-lines["GunsOfTien.M249"] = {
-    "Uses .223/5.56x45mm NATO rounds.",
-    "Compatible Magazines: M249 200Rds Box, STANAG",
-    "Jam Chance doubled with STANAG magazines",
-    "Available Picatinny Slots: Up, Down, Left, Right.",
-}
+lines["GunsOfTien.M249"] = { "Uses .223/5.56x45mm NATO rounds" }
 lines["GunsOfTien.556x45Box200_M249"] = { "Uses .223/5.56x45mm NATO rounds." }
 
 -- The link line of each belt box (GoM's M60 box is a belt too: its own lines, then ours), only while the sandbox

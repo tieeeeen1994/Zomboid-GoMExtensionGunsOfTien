@@ -15,7 +15,8 @@
     nothing.
 
     The wrappers go on the first tick after the game starts, on top of every mod's tooltip render (theirs are
-    installed at file load or OnGameStart), so the lines are set before any of them reads the table. Vanilla hands a
+    installed at file load or OnGameStart), so the lines are set before any of them reads the table. The guns' and
+    magazines' own lines are rebuilt there first (GunLines.lua), once every mod's tooltip file has loaded. Vanilla hands a
     tooltip its item with ISToolTipInv:new(item) as well as setItem, so render is the one sure place.
 --]]
 
@@ -67,7 +68,7 @@ for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
     end
 end
 -- AWC's Mk9 and its mount device (shared/GunsOfTien/Suppressors.lua), worded as GoM words its 9mm and .45 ones; the
--- guns that take them get GoM's "Compatible Muzzle Device" line (Post-93's Tooltips.lua for the UMP9)
+-- guns that take them get their "Compatible Muzzle Device" line from GunLines.lua
 lines["GunsOfTien.Mk9_Suppressor"] = {
     "Requires 9x19mm SMG Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
@@ -82,14 +83,9 @@ lines["GunsOfTien.SMG9_Muzzle_Mount_Device"] = {
     "Enables 9x19mm SMG Muzzle Attachments",
     "Needs Wrench to install or remove.",
 }
-for _, gun in ipairs({ "MarzGuns.MP5", "MarzGuns.MP5A2" }) do
-    if type(lines[gun]) == "table" then
-        table.insert(lines[gun], "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount")
-    end
-end
-local FITS_HOLSTER = "Fits a holster."
-local NEEDS_BARRELS = "Fits a holster if barrels are sawed off."
-local NEEDS_BARREL = "Fits a holster if the barrel is sawed off."
+local FITS_HOLSTER = "Fits a holster"
+local NEEDS_BARRELS = "Fits a holster if barrels are sawed off"
+local NEEDS_BARREL = "Fits a holster if the barrel is sawed off"
 
 local base = {}        -- gun type -> GoM's own lines, taken the first time a gun of that type has state lines
 
@@ -167,6 +163,8 @@ end
 
 local function install()
     Events.OnTick.Remove(install)
+    -- every gun's and magazine's own lines, from the live registries (GunLines.lua), before anything reads them
+    if GunsOfTien_GunLines and GunsOfTien_GunLines.Build then GunsOfTien_GunLines.Build() end
     dropAllSubjectStops()
     wrap(ISToolTipInv)
     wrap(ISToolTipItemSlot)

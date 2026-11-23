@@ -3,6 +3,7 @@
     magazines (GoM's tooltipsPergun table, read at render time, hard-coded English like GoM's own entries), and their
     stocks' lines, shown under a gun while its stock is deployed (Tooltips.lua; stats in shared/GunsOfTien/Uzi.lua:
     GoM's MP5 stock on the Uzi, its MAC-10 stock on the Mini and Micro, worded as HandlingTooltips.lua words those).
+    The gun's other lines (rails, mounts, built-in parts, magazines) are written by GunLines.lua from the registries.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -11,15 +12,7 @@ if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "tabl
 local lines = tooltips.tooltipsPergun
 
 for _, gun in ipairs({ "UZI", "MINIUZI", "MICROUZI", "UZI_2H" }) do
-    lines["GunsOfTien." .. gun] = {
-        "Uses 9x19mm rounds.",
-        "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
-    }
-end
--- GoM's optional rails (shared/GunsOfTien/Rails.lua), GoM's wording; red dots only on top, the Mini's Reflex S2 only
-for gun, optics in pairs({ UZI = "red dots only", MINIUZI = "Reflex S2 Sight only", UZI_2H = "red dots only" }) do
-    table.insert(lines["GunsOfTien." .. gun], "Available Picatinny Slots: Up, Down, Left.")
-    table.insert(lines["GunsOfTien." .. gun], "Compatible Optics: " .. optics)
+    lines["GunsOfTien." .. gun] = { "Uses 9x19mm rounds" }
 end
 for _, n in ipairs({ 20, 25, 32, 40, 50 }) do
     lines["GunsOfTien.9x19Magazine" .. n .. "_UZI"] = { "Uses 9x19mm rounds." }

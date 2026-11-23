@@ -3,6 +3,7 @@
     tooltipsPergun table, read at render time, hard-coded English like GoM's own entries), and its bipod's lines, shown
     under the gun while that state is fitted (Tooltips.lua; stats in shared/GunsOfTien/RPD.lua, GoM's M60 bipod's,
     worded as M249Tooltips.lua words them).
+    The gun's other lines (rails, mounts, built-in parts, magazines) are written by GunLines.lua from the registries.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -11,10 +12,7 @@ if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "tabl
 local lines = tooltips.tooltipsPergun
 local M = "GunsOfTien."
 
-lines[M .. "RPD"] = {
-    "Uses 7.62x39mm rounds.",
-    "Compatible Magazines: RPD 100Rds Belt Drum",
-}
+lines[M .. "RPD"] = { "Uses 7.62x39mm rounds" }
 lines[M .. "762x39Drum100_RPD"] = { "Uses 7.62x39mm rounds." }
 
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}

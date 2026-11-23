@@ -58,7 +58,10 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   sprint no longer stabs (sandbox option Toggle Bayonet Usage, off by default)
 - Clear tooltips: stock and bipod lines state what deploying them does; part rows that showed raw keys are named;
   every round's lines are written from its real stats (Guns of Marz's had wrong wear numbers and left critical changes
-  out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do
+  out); bayonets, the shell holder, the Picatinny Rail, speedloaders, slings and guns that had no lines say what they do;
+  every gun's lines, Guns of Marz's included, follow one format written from what the gun really takes (calibre,
+  built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet), so none of them
+  can promise a rail the gun does not have; every magazine lists the guns it fits
 - AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis and TMP
   (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
@@ -69,7 +72,10 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   (they started a little ahead of it or inside it); opening and packing ammo boxes, cartons and crates can be done
   while walking again (since 42.22 the game ignores the old walking setting Guns of Marz's recipes use); on a server,
   racking after a reload no longer leaves the gun saying "Chamber is open" with a round chambered (a Gunworks timing
-  bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs)
+  bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs); the AA-12's side rails,
+  lights and lasers and the G36's bipod are drawn (they were fitted invisibly), the M16A2 takes the AimRight laser its
+  loot already gave it; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
+  no room), and a bipod already fitted on one comes off and lies beside the gun
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
   off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept

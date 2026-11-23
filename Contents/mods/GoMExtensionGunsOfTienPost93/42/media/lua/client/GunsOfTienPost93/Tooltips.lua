@@ -2,7 +2,8 @@
     Guns of Tien - Post-93 -- "Information" lines in Guns of Marz's item tooltips for the MP7A1, the P90 TR, the
     Five-seveN, the UCP, the SCAR-L and SCAR-H, the UMP45 and UMP9, the Steyr AUG A3, Para and HBAR, the KRISS Vector
     .45, 9mm, CRB and SDP, the PS90, the MDRx .223 and .308, the Mk 11, the HK416, the HK416 .22 pistol, the HK417s, the Grozas, their magazines, suppressors and rounds (GoM's tooltipsPergun table, read at render time, hard-coded English like
-    GoM's own entries).
+    GoM's own entries). Every gun's other lines (rails, mounts, built-in parts) and every magazine's "Fits:" line are
+    written by the main mod's client/GunsOfTien/GunLines.lua from the registries.
 --]]
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
@@ -42,16 +43,8 @@ GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"] = {
     "Automatic fire spread reduced by 25%",
 }
 
-lines[M .. "UMP45"] = {
-    "Uses .45 rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: .45 Muzzle Mount",
-}
-lines[M .. "UMP9"] = {
-    "Uses 9x19mm rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
-}
+lines[M .. "UMP45"] = { "Uses .45 rounds" }
+lines[M .. "UMP9"] = { "Uses 9x19mm rounds" }
 for _, mag in ipairs({ "45Magazine25_UMP", "45Magazine20_UMP", "45Magazine10_UMP" }) do
     lines[M .. mag] = { "Uses .45 rounds." }
 end
@@ -61,55 +54,21 @@ lines[M .. "9x19Magazine30_UMP"] = { "Uses 9x19mm rounds." }
 -- on both sides (KRISS's side rails), the side-folding stock with the UMPs' stats; Glock's magazines, ours fitting
 -- the Glock 21 / GoM's Glock 17 too
 GunsOfTien_TooltipStates[M .. "VECTOR_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
-lines[M .. "VECTOR45"] = {
-    "Uses .45 rounds.",
-    "Takes Glock 21 magazines.",
-    "Integrated Picatinny rails: Up, Down",
-    "Available Picatinny Slots: Left, Right",
-    "Compatible Muzzle Device: .45 Muzzle Mount",
-}
-lines[M .. "VECTORCRB"] = {
-    "Uses .45 rounds.",
-    "16-inch barrel",
-    "Takes Glock 21 magazines.",
-    "Integrated Picatinny rails: Up, Down",
-    "Available Picatinny Slots: Left, Right",
-    "Compatible Muzzle Device: .45 Muzzle Mount",
-}
-lines[M .. "VECTOR9"] = {
-    "Uses 9x19mm rounds.",
-    "Takes Glock 17 magazines.",
-    "Integrated Picatinny rails: Up, Down",
-    "Available Picatinny Slots: Left, Right",
-    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
-}
-lines[M .. "VECTORSDP"] = {
-    "Uses 9x19mm rounds.",
-    "No stock",
-    "Takes Glock 17 magazines.",
-    "Integrated Picatinny rails: Up, Down",
-    "Available Picatinny Slots: Left, Right",
-    "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount",
-}
-lines[M .. "45Magazine30_GLOCK21"] = { "Uses .45 rounds.", "Fits the Glock-21 and the .45 Vectors." }
+for gun, uses in pairs({ VECTOR45 = "Uses .45 rounds", VECTORCRB = "Uses .45 rounds", VECTOR9 = "Uses 9x19mm rounds",
+    VECTORSDP = "Uses 9x19mm rounds" }) do
+    lines[M .. gun] = { uses }
+end
+lines[M .. "45Magazine30_GLOCK21"] = { "Uses .45 rounds" }
 for _, mag in ipairs({ "9x19Magazine33_GLOCK", "9x19Magazine40_GLOCK" }) do
-    lines[M .. mag] = { "Uses 9x19mm rounds.", "Fits the Glock-17 and the 9mm Vectors." }
+    lines[M .. mag] = { "Uses 9x19mm rounds" }
 end
 
--- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): integral top and right rails, GoM's Picatinny Rail upgrade on the
--- left ("Available Picatinny Slots", GoM's wording for its rail upgrades); the folding grip's state lines are the main
--- mod's (the same parts as its A1); the HBAR's bipod states as the main mod words GoM's bipods'.
-for gun, first in pairs({ AUGA3 = "Uses .223/5.56x45mm NATO rounds.", AUGPARA = "Uses 9x19mm rounds.",
-    AUGHBAR = "Uses 7.62x39mm rounds." }) do
-    lines[M .. gun] = {
-        first,
-        "Integrated Picatinny rails: Up, Right",
-        "Available Picatinny Slots: Left",
-    }
+-- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): the folding grip's state lines are the main mod's (the same
+-- parts as its A1); the HBAR's bipod states as the main mod words GoM's bipods'.
+for gun, uses in pairs({ AUGA3 = "Uses .223/5.56x45mm NATO rounds", AUGPARA = "Uses 9x19mm rounds",
+    AUGHBAR = "Uses 7.62x39mm rounds" }) do
+    lines[M .. gun] = { uses }
 end
-table.insert(lines[M .. "AUGA3"], "Compatible Muzzle Device: AR Muzzle Mount")
-table.insert(lines[M .. "AUGPARA"], "Compatible Muzzle Device: 9x19mm SMG Muzzle Mount")
-table.insert(lines[M .. "AUGHBAR"], "Heavy barrel with an integrated folding bipod.")
 for _, mag in ipairs({ "9x19Magazine25_AUG", "9x19Magazine32_AUG" }) do
     lines[M .. mag] = { "Uses 9x19mm rounds." }
 end
@@ -123,59 +82,25 @@ GunsOfTien_TooltipStates[M .. "AUGHBAR_Integrated_Bipod_Deployed"] = {
     "Automatic fire spread reduced by 35%",
 }
 
-lines[M .. "SCARL"] = {
-    "Uses .223/5.56x45mm NATO rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: AR Muzzle Mount",
-}
-lines[M .. "SCARH"] = {
-    "Uses .308/7.62x51mm NATO rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
-}
+lines[M .. "SCARL"] = { "Uses .223/5.56x45mm NATO rounds" }
+lines[M .. "SCARH"] = { "Uses .308/7.62x51mm NATO rounds" }
 lines[M .. "762x51Magazine20_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
-lines[M .. "MK11"] = {
-    "Uses .308/7.62x51mm NATO rounds.",
-    "Takes SR-25 pattern magazines.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
-}
+lines[M .. "MK11"] = { "Uses .308/7.62x51mm NATO rounds" }
 lines[M .. "762x51Magazine10_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
--- The SV-98 (shared/GunsOfTienPost93/SV98.lua): its rail on the receiver, its bipod in the forend
-lines[M .. "SV98"] = {
-    "Uses 7.62x54mmR rounds.",
-    "Integrated Picatinny rail: Up",
-    "Has Integrated Bipod",
-}
+lines[M .. "SV98"] = { "Uses 7.62x54mmR rounds" }
 lines[M .. "762x54Magazine10_SV98"] = { "Uses 7.62x54mmR rounds." }
--- The SV-99 (shared/GunsOfTienPost93/SV99.lua): the rail, the bipod, the suppressor built in
-lines[M .. "SV99"] = {
-    "Uses .22 LR rounds.",
-    "Has Integrated Suppressor",
-    "Integrated Picatinny rail: Up",
-    "Has Integrated Bipod",
-}
+lines[M .. "SV99"] = { "Uses .22 LR rounds" }
 lines[M .. "22LRMagazine5_SV99"] = { "Uses .22 LR rounds." }
--- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats, its flip-up iron sights
-lines[M .. "HK416"] = {
-    "Uses .223/5.56x45mm NATO rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Compatible Muzzle Device: AR Muzzle Mount",
-    "Iron sights fold under an optic.",
-}
+-- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats
+lines[M .. "HK416"] = { "Uses .223/5.56x45mm NATO rounds" }
 GunsOfTien_TooltipStates[M .. "HK416_Integrated_Stock_Deployed"] = {
     "Collapsible stock deployed:",
     "Aiming Time reduced by 15%",
     "Hit Chance increased by 15%",
 }
--- The HK417s (shared/GunsOfTienPost93/HK417.lua): the HK416's stock and iron sights, the SCAR-H's mount device
+-- The HK417s (shared/GunsOfTienPost93/HK417.lua): the HK416's stock
 for _, gun in ipairs({ "HK417", "HK417S" }) do
-    lines[M .. gun] = {
-        "Uses .308/7.62x51mm NATO rounds.",
-        "Integrated Picatinny rails: Up, Down, Left, Right",
-        "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
-        "Iron sights fold under an optic.",
-    }
+    lines[M .. gun] = { "Uses .308/7.62x51mm NATO rounds" }
 end
 for _, n in ipairs({ 10, 20 }) do
     lines[M .. "762x51Magazine" .. n .. "_HK417"] = { "Uses .308/7.62x51mm NATO rounds." }
@@ -185,87 +110,23 @@ GunsOfTien_TooltipStates[M .. "HK417_Integrated_Stock_Deployed"] = {
     "Aiming Time reduced by 15%",
     "Hit Chance increased by 15%",
 }
--- The HK416 .22 Quad Rail Pistol (shared/GunsOfTienPost93/HK416_22.lua): its clamped-on iron sights taken off under
--- an optic
-lines[M .. "HK416QR22"] = {
-    "Uses .22 LR rounds.",
-    "Integrated Picatinny rails: Up, Down, Left, Right",
-    "Iron sights come off under an optic.",
-}
+lines[M .. "HK416QR22"] = { "Uses .22 LR rounds" }
 for _, n in ipairs({ 10, 20, 30 }) do
     lines[M .. "22LRMagazine" .. n .. "_HK416"] = { "Uses .22 LR rounds." }
 end
--- The Grozas (shared/GunsOfTienPost93/Groza.lua): GoM's Picatinny Rail upgrade on the carrying handle, in GoM's
--- wording for its rail upgrades and AK muzzle parts
-lines[M .. "GROZA1"] = {
-    "Uses 7.62x39mm rounds.",
-    "Available Picatinny Slots: Up.",
-    "Compatible Muzzle Device: AK Muzzle Mount.",
-}
-lines[M .. "GROZAGL"] = {
-    "Uses 7.62x39mm rounds.",
-    "Available Picatinny Slots: Up.",
-    "Compatible Muzzle Device: AK Muzzle Mount.",
-    "Integrated GP-25 grenade launcher.",
-}
-lines[M .. "GROZAGL_GP25"] = { "Uses 40mm grenades." }
-lines[M .. "GROZA2"] = {
-    "Uses 5.45x39mm rounds.",
-    "Available Picatinny Slots: Up.",
-}
-lines[M .. "GROZA4"] = {
-    "Uses 9x39mm rounds.",
-    "Available Picatinny Slots: Up.",
-    "Integrated suppressor.",
-}
+-- The Grozas (shared/GunsOfTienPost93/Groza.lua); the GP-25 worded as GoM's M79
+for gun, uses in pairs({ GROZA1 = "Uses 7.62x39mm rounds", GROZAGL = "Uses 7.62x39mm rounds",
+    GROZAGL_GP25 = "Uses 40mm rounds", GROZA2 = "Uses 5.45x39mm rounds", GROZA4 = "Uses 9x39mm rounds" }) do
+    lines[M .. gun] = { uses }
+end
 lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
 
-lines[M .. "MP7A1"] = {
-    "Uses 4.6x30mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
-lines[M .. "MP7A2"] = {
-    "Uses 4.6x30mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right, Down",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
-lines[M .. "P90TR"] = {
-    "Uses 5.7x28mm rounds.",
-    "Integrated Picatinny rails: Up, Left, Right",
-    "50-round magazine on top. Ejects spent cases downward.",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
-lines[M .. "PS90"] = {
-    "Uses 5.7x28mm rounds.",
-    "16-inch barrel",
-    "Integrated Picatinny rail: Up",
-    "M-LOK handguard: Left, Right, Down",
-    "50-round magazine on top. Ejects spent cases downward.",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
--- The MDRx rifles (shared/GunsOfTienPost93/MDR.lua): the top rail, GoM's Picatinny Rail upgrades on both sides (our
--- M-LOK rail sections), the .223's foregrips under its M-LOK handguard; the .308's ALX bipod handguard (its bipod
--- states worded as the HBAR's, without the automatic fire line) and SR-25-pattern PMAGs
-lines[M .. "MDR223"] = {
-    "Uses .223/5.56x45mm NATO rounds.",
-    "16-inch barrel",
-    "Integrated Picatinny rail: Up",
-    "M-LOK handguard: Down",
-    "Available Picatinny Slots: Left, Right",
-    "Ejects spent cases to the right.",
-    "Compatible Muzzle Device: AR Muzzle Mount",
-}
-lines[M .. "MDR308"] = {
-    "Uses .308/7.62x51mm NATO rounds.",
-    "20-inch barrel",
-    "Takes SR-25 pattern magazines.",
-    "Integrated Picatinny rail: Up",
-    "Available Picatinny Slots: Left, Right",
-    "ALX handguard with an integrated folding bipod.",
-    "Ejects spent cases forward.",
-    "Compatible Muzzle Device: 7.62x51mm Muzzle Mount",
-}
+for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm rounds", P90TR = "Uses 5.7x28mm rounds",
+    PS90 = "Uses 5.7x28mm rounds", MDR223 = "Uses .223/5.56x45mm NATO rounds",
+    MDR308 = "Uses .308/7.62x51mm NATO rounds" }) do
+    lines[M .. gun] = { uses }
+end
+-- the MDRx .308's ALX bipod handguard: its bipod states worded as the HBAR's, without the automatic fire line
 GunsOfTien_TooltipStates[M .. "MDR308_Integrated_Bipod_Deployed"] = {
     "Folding bipod deployed:",
     "Aiming Time increased by 10%",
@@ -276,21 +137,10 @@ for _, mag in ipairs({ "762x51Magazine10_PMAG", "762x51Magazine20_PMAG", "762x51
     lines[M .. mag] = { "Uses .308/7.62x51mm NATO rounds." }
 end
 
-lines["MarzGuns.FIVESEVEN"] = {
-    "Uses 5.7x28mm rounds.",
-    "Compatible Mounting Device: Beretta Mount",
-    "Compatible Muzzle Device: 5.7x28mm Muzzle Mount",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
+lines["MarzGuns.FIVESEVEN"] = { "Uses 5.7x28mm rounds" }
 lines[M .. "57x28Magazine20_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
 lines[M .. "57x28Magazine30_FIVESEVEN"] = { "Uses 5.7x28mm rounds." }
-lines[M .. "UCP"] = {
-    "Uses 4.6x30mm rounds.",
-    "H&K prototype",
-    "Compatible Mounting Device: Beretta Mount",
-    "Compatible Muzzle Device: 4.6x30mm Muzzle Mount",
-    "Standard rounds pierce and can hit up to 2 targets.",
-}
+lines[M .. "UCP"] = { "Uses 4.6x30mm rounds" }
 lines[M .. "46x30Magazine20_UCP"] = { "Uses 4.6x30mm rounds." }
 lines[M .. "46x30Magazine40_UCP"] = { "Uses 4.6x30mm rounds." }
 for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magazine40_MP7", "46x30Magazine60_MP7" }) do
