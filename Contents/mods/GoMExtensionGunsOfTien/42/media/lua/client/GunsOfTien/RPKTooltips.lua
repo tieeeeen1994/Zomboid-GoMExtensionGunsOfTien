@@ -20,7 +20,5 @@ lines[M .. "762x39Drum75_RPK"] = { "Uses 7.62x39mm rounds" }
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 GunsOfTien_TooltipStates[M .. "RPK_Integrated_Bipod_Deployed"] = {
     "Folding bipod deployed:",
-    "Aiming Time increased by 10%",
-    "Critical and Hit Chance increased by 15%",
     "Automatic fire spread reduced by 35%",
 }

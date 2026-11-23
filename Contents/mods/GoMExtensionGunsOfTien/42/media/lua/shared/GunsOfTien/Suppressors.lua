@@ -35,10 +35,11 @@
     the same name, GoM's icon and floor model, every 9mm gun in its MountOn (its script), drawn as GoM's mount on the
     pistols (lines below), accepted by all three cans (RequiredAttachment's any-of lists), never spawned (Loot.lua).
 
-    The MP5 and MP5A2 are drawn with Guns of Tien's MP5 models (scripts/build_mp5.py, models_mp5.txt: GoM's meshes at
-    the Uzis' proportion), which carry the `canon` point (the front face of the front sight housing on the bore axis,
-    measured on GoM's meshes by scripts/build_mk9.py, scaled with the gun). At that size the parts are drawn through
-    their `_GoT` models (models_suppressors.txt), as on the Uzis and the UMP9, so the Mk9 is one size on every gun. The
+    The MP5 and MP5A2 are GoM's own models again (user, 2026-11-23: our resized copies dropped when GoM's November 2026
+    update rescaled them to 0.779 of their former size). Their `canon` point (the front face of the front sight
+    housing on the bore axis, measured on GoM's current meshes in Blender, 2026-11-23) is added to GoM's model scripts
+    by GoMAttachments.lua, and the parts are drawn there through `<part>_MP5` models (models_suppressors.txt: the same
+    meshes at the MP5s' size, gen_scripts.py MP5_PART_SCALE); our Uzis and the UMP9 draw the `_GoT` ones. The
     guns' ModelWeaponPart lines are appended with Item.DoParam (it appends even when the part type is already listed,
     so each script is patched once, as Lasers.lua does). MountOn is replaced by DoParam, so it is read and written back
     whole (as Glock21.lua does). Scripts are rebuilt on leaving a game, so it runs again at every world load.
@@ -61,17 +62,17 @@ GunsOfTien_ReplacedParts[OLD_MOUNT] = MOUNT
 -- in their scripts)
 local SMGS = { "MarzGuns.MP5", "MarzGuns.MP5A2", "GunsOfTien.UZI", "GunsOfTien.MINIUZI", "GunsOfTien.MICROUZI",
     "GunsOfTien.UZI_2H", "GunsOfTien.TMP" }
--- gun -> { part, the model it is drawn with }: GoM's MP5s (their `canon` point is in our MP5 models; the parts' own
--- size scaled to the guns'), and GoM's 9mm pistols for the old mount (GoM's own mount model, as on its pistols) and
+-- gun -> { part, the model it is drawn with }: GoM's MP5s (their `canon` point from GoMAttachments.lua; the parts at
+-- the guns' size), and GoM's 9mm pistols for the old mount (GoM's own mount model, as on its pistols) and
 -- the Mk9 (at GoM's size, as built)
 local LINES = {}
 for _, gun in ipairs({ "MarzGuns.MP5", "MarzGuns.MP5A2" }) do
     LINES[gun] = {
-        { OLD_MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_GoT" },
-        { MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_GoT" },
-        { SUPPRESSOR, "GunsOfTien.Mk9_Suppressor_GoT" },
-        { PISTOL_CANS[1], "GunsOfTien.M&P_Suppressor_GoT" },
-        { PISTOL_CANS[2], "GunsOfTien.Shh9_Suppressor_GoT" },
+        { OLD_MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_MP5" },
+        { MOUNT, "GunsOfTien.SMG9_Muzzle_Mount_Device_MP5" },
+        { SUPPRESSOR, "GunsOfTien.Mk9_Suppressor_MP5" },
+        { PISTOL_CANS[1], "GunsOfTien.M&P_Suppressor_MP5" },
+        { PISTOL_CANS[2], "GunsOfTien.Shh9_Suppressor_MP5" },
     }
 end
 for _, gun in ipairs({ "MarzGuns.M92FS", "MarzGuns.M93R", "MarzGuns.HIPOWER", "MarzGuns.P226", "MarzGuns.GLOCK17",
@@ -92,6 +93,9 @@ CSA.RegisterMultipleParts({
 -- lists are any-of: either mount carries any 9mm can (GoM's own rule for its cans names its mount the same way)
 RequiredAttachment.RegisterRequired({ SUPPRESSOR }, { MOUNT, OLD_MOUNT })
 RequiredAttachment.RegisterRequired(PISTOL_CANS, { MOUNT, OLD_MOUNT })
+-- the Mk9 wears and breaks as GoM's cans since its November 2026 update (its Registries/AttachmentsDurability.lua):
+-- ConditionMax and its chance per shot in items_suppressors.txt, repairs in fixing_suppressors.txt
+require("WeaponSystems/Utils/AttachmentsDurability").RegisterAttachment({ SUPPRESSOR })
 
 local function appendMountOn(partType, guns)
     local script = ScriptManager.instance:getItem(partType)

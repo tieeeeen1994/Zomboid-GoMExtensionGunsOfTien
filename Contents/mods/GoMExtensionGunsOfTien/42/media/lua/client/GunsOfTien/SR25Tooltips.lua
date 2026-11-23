@@ -1,8 +1,8 @@
 --[[
     Guns of Tien -- "Information" lines in Guns of Marz's item tooltips for the SR-25 and KAC's 20 (GoM's
     tooltipsPergun table, read at render time, hard-coded English like GoM's own entries, worded as RPKTooltips.lua),
-    and the integrated bipod's lines, shown under the gun while it is deployed (Tooltips.lua; stats in
-    shared/GunsOfTien/SR25.lua, GoM's rail bipod's without its spread line: the SR-25 is semi-automatic).
+    and none for the integrated bipod (GoM's bipods change no stats since its November 2026 update, and the
+    SR-25 is semi-automatic, so it has no spread line either).
     The gun's other lines (rails, mounts, built-in parts, magazines) are written by GunLines.lua from the registries.
 --]]
 
@@ -15,9 +15,5 @@ local M = "GunsOfTien."
 lines[M .. "SR25"] = { "Uses .308/7.62x51mm NATO rounds" }
 lines[M .. "762x51Magazine20_SR25"] = { "Uses .308/7.62x51mm NATO rounds." }
 
-GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
-GunsOfTien_TooltipStates[M .. "SR25_Integrated_Bipod_Deployed"] = {
-    "Folding bipod deployed:",
-    "Aiming Time increased by 10%",
-    "Critical and Hit Chance increased by 15%",
-}
+-- GoM's bipods change no stats since its November 2026 update (the M60's, BAR's and M24's, its rail bipod but for
+-- its spread), so this bipod's states show no lines (Tooltips.lua shows nothing for a state without effects)

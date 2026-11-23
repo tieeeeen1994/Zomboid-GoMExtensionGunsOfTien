@@ -21,13 +21,13 @@ end
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 GunsOfTien_TooltipStates["GunsOfTien.UZI_Integrated_Stock_Deployed"] = {
     "Folding stock deployed:",
-    "Aiming Time reduced by 25%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 10",
+    "Hit Chance increased by 8%",
 }
 for _, gun in ipairs({ "MINIUZI", "MICROUZI" }) do
     GunsOfTien_TooltipStates["GunsOfTien." .. gun .. "_Integrated_Stock_Deployed"] = {
         "Folding stock deployed:",
-        "Aiming Time reduced by 10%",
-        "Hit Chance increased by 10%",
+        "Aiming Time reduced by 3",
+        "Hit Chance increased by 4%",
     }
 end

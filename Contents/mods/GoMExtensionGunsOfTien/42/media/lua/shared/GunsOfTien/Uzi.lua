@@ -95,7 +95,8 @@ end
 ReloadAnim.RegisterWeapon(UZI_2H, GoMReloads.profile("MP5"))      -- the unused two-handed Uzi: GoM's MP5's
 
 -------------------------------------------------
--- Folding stocks: the Uzi's with GoM's MP5 stock stats, the Mini's and Micro's with its MAC-10's
+-- Folding stocks: the Uzi's with GoM's MP5 stock stats, the Mini's and Micro's with its MAC-10's (flat values, as
+-- GoM's since its November 2026 update)
 -------------------------------------------------
 for _, gun in ipairs(ALL) do
     local name = gun == UZI_2H and "UZI" or gun:sub(#M + 1)
@@ -111,18 +112,18 @@ end
 CSA.RegisterMultipleParts({
     [M .. "UZI_Integrated_Stock_Folded"] = {},
     [M .. "UZI_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.75),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -10),
     },
     [M .. "MINIUZI_Integrated_Stock_Folded"] = {},
     [M .. "MINIUZI_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.1),
-        SF.Multiply("AimingTime", 0.9),
+        SF.Adjust("HitChance", 4),
+        SF.Adjust("AimingTime", -3),
     },
     [M .. "MICROUZI_Integrated_Stock_Folded"] = {},
     [M .. "MICROUZI_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.1),
-        SF.Multiply("AimingTime", 0.9),
+        SF.Adjust("HitChance", 4),
+        SF.Adjust("AimingTime", -3),
     },
 })
 

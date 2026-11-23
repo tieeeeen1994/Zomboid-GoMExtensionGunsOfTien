@@ -113,8 +113,8 @@ end
 CSA.RegisterMultipleParts({
     [STOCK_FOLDED] = {},
     [STOCK_DEPLOYED] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.75),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -4),
     },
 })
 

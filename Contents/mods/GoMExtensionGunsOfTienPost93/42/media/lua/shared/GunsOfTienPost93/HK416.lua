@@ -13,7 +13,7 @@
       the Kobra's, the Elcan's or the TR06X's mount sits on its spot (HK416_RDX / HK416_FDX). The bodies share every
       attachment point. Registered with the other guns' in IronSights.lua; optics from other mods leave the sights up;
     - H&K's six-position stock (HK416_Integrated_Stock_Folded / _Deployed, Gunworks' FoldingStock as GoM's M4A1), with
-      GoM's CAR-15 / our SCARs' stock stats when out;
+      GoM's CAR-15 stock stats when out;
     - magazines: GoM's STANAG profile (GoM's own magazines and models, as its M4A1); muzzle: GoM's AR mount device and
       its suppressors, compensator, flash hider and muzzle brake (GoM's own rule: a can needs the mount);
     - GoM's AR bolt and charging handle as on its AR15 (its table repeated, as MK11.lua), GoM's AR15 reload with its
@@ -83,8 +83,8 @@ FoldingStock.RegisterWeapon(HK416, {
 CSA.RegisterMultipleParts({
     [STOCK_FOLDED] = {},
     [STOCK_DEPLOYED] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.85),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -3),
     },
 })
 
@@ -101,10 +101,8 @@ local FOREGRIPS = { "MarzGuns.Stub_Foregrip", "MarzGuns.MKC_Foregrip", "MarzGuns
 local BIPODS = { "MarzGuns.Bipod_Deployed", "MarzGuns.Bipod_Folded" }
 local LIGHTS = { "MarzGuns.BrightPoint-5_Light", "MarzGuns.SR7_Light" }
 local LASERS = { "MarzGuns.AimRight_Laser", "MarzGuns.LRX-7_Laser" }
-local STANAGS = {}
-for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
-    STANAGS[#STANAGS + 1] = "MarzGuns.556x45Magazine" .. n .. "_STANAG"
-end
+-- GoM's STANAG magazines, read from its "STANAG" profile (both sides of the jungle pair included)
+local STANAGS = require("GunsOfTien/HandMagazines").gomProfile("STANAG")
 local AR_MUZZLE = { "MarzGuns.AR_Muzzle_Mount_Device", "MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor",
     "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }
 RequiredAttachment.RegisterRequired(OPTICS, { RAIL_UP })

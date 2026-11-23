@@ -11,7 +11,7 @@
       ... back and forth during firing", Small Arms Review), so it is the gun's Bolt part on GoM's swap (RPD_BOLT),
       no ChargingHandle part. It fires from an open bolt; Gunworks' states are kept (back after each shot and while
       empty, the M249's and Uzis' rule, user 2026-10-30);
-    - the folding bipod: GoM's M60 bipod stats (deployed steadier, folded costs endurance and Hit), as the M249;
+    - the folding bipod as GoM's M60's (no stat changes since GoM's November 2026 update), as the M249;
     - reload: GoM's M60 reload (GoMReloads.lua), the drum in the off hand at its own size (it is our model).
 --]]
 
@@ -58,7 +58,7 @@ Animations.RegisterWeaponWithAnimatedParts(RPD, {
 })
 
 -------------------------------------------------
--- Integrated bipod: GoM's M60 bipod and its stats
+-- Integrated bipod: GoM's M60 bipod (no stat changes, as GoM's)
 -------------------------------------------------
 FoldingBipod.RegisterWeapon(RPD, {
     attachments = { partType = "BipodIntegrated", folded = FOLDED, deployed = DEPLOYED },
@@ -67,16 +67,8 @@ FoldingBipod.RegisterWeapon(RPD, {
 -- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
 BipodSystem.RegisterBipod(DEPLOYED)
 CSA.RegisterMultipleParts({
-    [DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.3),
-        SF.Multiply("CriticalChance", 1.1),
-        SF.Multiply("HitChance", 1.1),
-    },
-    [FOLDED] = {
-        SF.Set("UseEndurance", true),
-        SF.Set("EnduranceMod", 0.3),
-        SF.Multiply("HitChance", 0.8),
-    },
+    [DEPLOYED] = {},
+    [FOLDED] = {},
 })
 
 -------------------------------------------------

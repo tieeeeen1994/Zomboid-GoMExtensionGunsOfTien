@@ -33,7 +33,7 @@ module GunsOfTien {
     item 556x45Magazine50_STANAG_Hand {
         DisplayCategory  = WeaponMagazine,
         ItemType         = base:normal,
-        Icon             = 556x45Magazine50_STANAG,
+        Icon             = 556x45Magazine60_STANAG,
         Weight           = 0.0,
         Hidden           = true,
         StaticModel      = GunsOfTien.556x45Magazine50_STANAG_GoT,
@@ -43,17 +43,27 @@ module GunsOfTien {
     item 556x45Magazine60_STANAG_Hand {
         DisplayCategory  = WeaponMagazine,
         ItemType         = base:normal,
-        Icon             = 556x45Magazine60_STANAG,
+        Icon             = 556x45Magazine30_STANAG_STACKED,
         Weight           = 0.0,
         Hidden           = true,
         StaticModel      = GunsOfTien.556x45Magazine60_STANAG_GoT,
         WorldStaticModel = GunsOfTien.556x45Magazine60_STANAG_GoT,
     }
 
+    item 556x45Magazine60_STANAG_2_Hand {
+        DisplayCategory  = WeaponMagazine,
+        ItemType         = base:normal,
+        Icon             = 556x45Magazine30_STANAG_STACKED,
+        Weight           = 0.0,
+        Hidden           = true,
+        StaticModel      = GunsOfTien.556x45Magazine60_STANAG_2_GoT,
+        WorldStaticModel = GunsOfTien.556x45Magazine60_STANAG_2_GoT,
+    }
+
     item 556x45Magazine75_STANAG_Hand {
         DisplayCategory  = WeaponMagazine,
         ItemType         = base:normal,
-        Icon             = 556x45Magazine75_STANAG,
+        Icon             = 556x45Magazine60_PMAG,
         Weight           = 0.0,
         Hidden           = true,
         StaticModel      = GunsOfTien.556x45Magazine75_STANAG_GoT,
@@ -73,7 +83,7 @@ module GunsOfTien {
     item 556x45Magazine150_STANAG_Hand {
         DisplayCategory  = WeaponMagazine,
         ItemType         = base:normal,
-        Icon             = 556x45Magazine150_STANAG,
+        Icon             = 556x45Magazine100_CMAG,
         Weight           = 0.0,
         Hidden           = true,
         StaticModel      = GunsOfTien.556x45Magazine150_STANAG_GoT,

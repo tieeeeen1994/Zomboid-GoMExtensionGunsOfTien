@@ -12,8 +12,8 @@
       handle is on the carrier, so no ChargingHandle part);
     - GoM's AK reload ("ak_rifle", GoMReloads.lua), GoM's magazines in the off hand at the guns' size
       (HandMagazines.lua);
-    - the folding bipod: two hidden parts each gun draws with its own model, GoM's rail bipod stats and spread when
-      deployed, nothing when folded (folded on a found gun);
+    - the folding bipod: two hidden parts each gun draws with its own model, GoM's rail bipod's spread when deployed
+      (no stat changes, as GoM's bipods since its November 2026 update; folded on a found gun);
     - GoM's AK parts: the AK mount and every optic GoM fits on its AK-47 (they need the mount, GoM's
       AttachmentsRequiredParts.lua), the AK muzzle mount device and the PBS-1, appended to their MountOn. With the
       PBS-1 fitted, 7.62x39 US Subsonic cycles the RPK as it does the AKs (Ammunition.lua).
@@ -120,7 +120,7 @@ for _, gun in ipairs(GUNS) do
 end
 
 -------------------------------------------------
--- The folding bipod: GoM's rail bipod (Bipod_Deployed) stats and spread
+-- The folding bipod: GoM's rail bipod (Bipod_Deployed) spread, no stat changes (as GoM's)
 -------------------------------------------------
 for _, gun in ipairs(GUNS) do
     FoldingBipod.RegisterWeapon(gun, {
@@ -131,11 +131,7 @@ end
 -- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
 BipodSystem.RegisterBipod(DEPLOYED)
 CSA.RegisterMultipleParts({
-    [DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.1),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
-    },
+    [DEPLOYED] = {},
     [FOLDED] = {},
 })
 RateOfFire.RegisterSpreadPartModifier(DEPLOYED, { sustainedSpreadMult = 0.65, maxSpreadMult = 0.65 })

@@ -37,15 +37,5 @@ end
 
 Events.OnGameStart.Add(setLinkLines)
 
-GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
-GunsOfTien_TooltipStates["GunsOfTien.M249_Integrated_Bipod_Deployed"] = {
-    "Folding bipod deployed:",
-    "Aiming Time increased by 30%",
-    "Critical and Hit Chance increased by 10%",
-    "No endurance used to fire",
-}
-GunsOfTien_TooltipStates["GunsOfTien.M249_Integrated_Bipod_Folded"] = {
-    "Folding bipod folded:",
-    "Hit Chance reduced by 20%",
-    "Firing uses endurance",
-}
+-- GoM's bipods change no stats since its November 2026 update (the M60's, BAR's and M24's, its rail bipod but for
+-- its spread), so this bipod's states show no lines (Tooltips.lua shows nothing for a state without effects)

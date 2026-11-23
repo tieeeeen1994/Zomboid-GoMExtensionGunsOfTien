@@ -1,11 +1,14 @@
 --[[
     Guns of Tien -- loot for AWC's Mk9 suppressor (shared/GunsOfTien/Suppressors.lua) and the M249
 
-    The Mk9 joins the item list of Guns of Marz's MarzGuns.World_Suppressor_Spawner (SWAT gun storage, police evidence,
-    drug labs, drug shacks), as Post-93's suppressors do: each spawn picks one entry of the list, so ours is one more
-    equal choice. Its mount is GoM's 9mm one (renamed "9x19mm Family Muzzle Mounting Device", user, 2026-11-23), which
-    GoM already spawns in its MarzGuns.World_Muzzle_Device_Spawner and in place of vanilla's Improved Choke Tube; the
-    main mod's old 9x19mm SMG mount device is no longer spawned. Found guns come without a mount device or a can, as
+    The Mk9 joins Guns of Marz's MarzGuns.World_Suppressor_Spawner (SWAT gun storage, police evidence, drug labs, drug
+    shacks) in GoM's 9mm alternative, one more equal choice beside its M&P and Shh9: since GoM's November 2026 update
+    each alternative there is a can and its family's mount device ("Ensure a muzzle mount device per suppressor
+    spawn"), so a found Mk9 comes with GoM's 9mm mount (renamed "9x19mm Family Muzzle Mounting Device", user,
+    2026-11-23), which GoM also spawns in place of vanilla's Improved Choke Tube; the main mod's old 9x19mm SMG mount
+    device is no longer spawned. The real muzzle devices go into MarzGuns.World_Muzzle_Device_Spawner the same way,
+    GoM's AR devices being one alternative with the AR mount: one alternative per family, the devices with their
+    family's mount (AK, 9x19mm, .45). Found guns come without a mount device or a can, as
     GoM's guns come without them. Everything follows GoM's own loot and its
     LootMultiplier, which scales how often GoM places these spawners. The items are taken out again before the next
     world adds them (Lua is not always reloaded).
@@ -78,18 +81,39 @@
 
 require("Items/ProceduralDistributions")
 
--- { GoM table module, map field, key, our items }: each goes into the first alternative's first item list
+-- { GoM table module, map field, key, our items[, an item of the alternative to join] }: each goes into the first
+-- item list of the first alternative, or of the alternative whose first list holds that item
 local LISTS = {
     { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_Suppressor_Spawner",
-        { "GunsOfTien.Mk9_Suppressor" } },
+        { "GunsOfTien.Mk9_Suppressor" }, "MarzGuns.M&P_Suppressor" },
     { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_HighCap_AR_Magazine_Spawner",
         { "GunsOfTien.556x45Magazine42_AUG" } },
-    -- the real muzzle devices (MuzzleFamilies.lua), each one more equal choice beside GoM's own three
-    { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_Muzzle_Device_Spawner",
-        { "GunsOfTien.AKM_Slant_Compensator", "GunsOfTien.AK74_Muzzle_Brake", "GunsOfTien.AKS74U_Muzzle_Booster",
-          "GunsOfTien.MP5_Flash_Hider", "GunsOfTien.Clark_Compensator_9mm", "GunsOfTien.Cutts_Compensator",
-          "GunsOfTien.Clark_Compensator_45" } },
 }
+
+-- the real muzzle devices (MuzzleFamilies.lua): one alternative per family in GoM's muzzle device spawner, the
+-- devices and their family's mount, as GoM's AR devices with the AR mount (the main mod's devices; Post-93's own)
+local DEVICE_ALTERNATIVES = {}
+do
+    local byMount, order = {}, {}
+    for device, d in pairs(require("GunsOfTien/MuzzleDevicesTable")) do
+        if device:sub(1, 11) == "GunsOfTien." and d.mounts[1] then
+            local mount = d.mounts[1]
+            if not byMount[mount] then
+                byMount[mount] = {}
+                order[#order + 1] = mount
+            end
+            table.insert(byMount[mount], device)
+        end
+    end
+    table.sort(order)
+    for _, mount in ipairs(order) do
+        table.sort(byMount[mount])
+        DEVICE_ALTERNATIVES[#DEVICE_ALTERNATIVES + 1] = { "MarzGuns.World_Muzzle_Device_Spawner", {
+            { items = byMount[mount], maxAmountChance = 1 },
+            { items = { mount }, maxAmountChance = 1 },
+        } }
+    end
+end
 
 -- M249 kits, GoM's M60 kits in the same spawners: { spawner, belt boxes }
 local M249_SPAWNERS = {
@@ -284,7 +308,7 @@ local function addLoot()
         local ok, module = pcall(require, entry[1])
         local map = ok and type(module) == "table" and module[entry[2]]
         local list = type(map) == "table" and map[entry[3]]
-        local first = type(list) == "table" and list[1]
+        local first = type(list) == "table" and (entry[5] and alternativeWith(list, entry[5]) or list[1])
         local group = type(first) == "table" and first[1]
         local items = type(group) == "table" and group.items
         if type(items) == "table" then
@@ -306,6 +330,15 @@ local function addLoot()
             addedAlternatives[#addedAlternatives + 1] = { list, alternative }
         else
             print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, the M249 will not spawn there")
+        end
+    end
+    for _, entry in ipairs(DEVICE_ALTERNATIVES) do
+        local list = type(map) == "table" and map[entry[1]]
+        if type(list) == "table" then
+            list[#list + 1] = entry[2]
+            addedAlternatives[#addedAlternatives + 1] = { list, entry[2] }
+        else
+            print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, our muzzle devices will not spawn there")
         end
     end
     for _, entry in ipairs(UZI_ALTERNATIVES) do

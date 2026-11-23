@@ -19,9 +19,27 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 import muzzle_devices as MD  # noqa: E402
+import gom_data  # noqa: E402
 ROOT = os.path.join(HERE, '..', '..', 'Contents', 'mods', 'GoMExtensionGunsOfTienPost93', '42', 'media')
 M = 'GunsOfTienPost93'
 TEX = 'weapons/GunsOfTienPost93'
+
+# Sight windows: GoM's November 2026 update gave each class of gun its own optimal range (gom_data.py). Each of our guns
+# takes the window of its closest GoM gun, read from GoM's script at every run. The SV-99 (.22 LR, range 30) has no
+# GoM equal: it takes the carbines' window, not the bolt-action rifles' 13-27.
+GOM_EQUIVALENT = {
+    'FIVESEVEN': 'M92FS',                                                              # pistols 2-8 (the UCP too)
+    'MP7A1': 'MP5K', 'VECTORSDP': 'MP5K', 'HK416QR22': 'TEC9',                         # short SMGs 2-10
+    'P90TR': 'MP5', 'UMP45': 'MP5', 'UMP9': 'MP5', 'VECTOR45': 'MP5', 'VECTOR9': 'MP5', 'AUGPARA': 'MP5',  # SMGs 3-11
+    'VECTORCRB': 'CAMP_CARBINE', 'PS90': 'CAMP_CARBINE', 'GROZA2': 'AKS74U', 'GROZA4': 'ASVAL',  # short carbines 4-13
+    'SCARL': 'M4A1', 'HK416': 'M4A1', 'SV99': 'M4A1',                                  # carbines 5-14
+    'AUGA3': 'FAMAS', 'MDR223': 'M16A1', 'GROZA1': 'AK47',                             # assault rifles 7-17 (AK 6-16)
+    'SCARH': 'FAL', 'MDR308': 'FAL', 'HK417': 'FAL', 'AUGHBAR': 'M60',                 # battle rifles and LMGs 9-20
+    'MK11': 'SVD', 'HK417S': 'SVD',                                                    # marksman rifles 11-23
+    'SV98': 'M24',                                                                     # bolt-action sniper 14-28
+    'GROZAGL_GP25': 'M203_Weapon',                                                     # the launcher, as GoM's M203
+}
+SIGHT = {gun: gom_data.sight(gom) for gun, gom in GOM_EQUIVALENT.items()}
 
 # GoM accessories the guns can carry, drawn at the gun's points (same lists as the MP5's ModelWeaponPart lines).
 # optic -> how far the UMPs draw it forward and raised (its own `scope` point): the PSO-1's side bracket went into the
@@ -390,11 +408,13 @@ def fiveseven_item():
         RecoilDelay                 = 9,
         MaxRange                    = 22.0,
         AimingPerkRangeModifier     = 0,
-        MinSightRange               = 1,
-        MaxSightRange               = 10.0,
+        MinSightRange               = {SIGHT['FIVESEVEN'][0]},
+        MaxSightRange               = {SIGHT['FIVESEVEN'][1]},
         MinRange                    = 0.61,
         MinAngle                    = 0.95,
         AimingPerkMinAngleModifier  = 0.05,
+        FireMode                    = Single,
+        FireModePossibilities       = Single,
         JamGunChance                = 1.0,
         ConditionLowerChanceOneIn   = 230,
         ConditionMax                = 10,
@@ -539,8 +559,8 @@ def mp7_item(name):
         RecoilDelay                  = 12,
         MaxRange                     = 28.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 3,
-        MaxSightRange                = 12.0,
+        MinSightRange                = {SIGHT['MP7A1'][0]},
+        MaxSightRange                = {SIGHT['MP7A1'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -583,8 +603,8 @@ def items(mp7, p90):
         RecoilDelay                  = 12,
         MaxRange                     = 32.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 4,
-        MaxSightRange                = 14.0,
+        MinSightRange                = {SIGHT['P90TR'][0]},
+        MaxSightRange                = {SIGHT['P90TR'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -688,7 +708,7 @@ def items(mp7, p90):
                                      ('P90_Muzzle_Mount_Device', 'CanonMount', 0.5,
                                       f'{M}.P90TR;MarzGuns.FIVESEVEN;{M}.PS90;GunsOfTien.P90')]:
         out.append(f"""
-    item {part} {{
+    item {part} {{{can_durability(part)}
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
         Icon             = GunsOfTienPost93_{part},
@@ -751,6 +771,7 @@ def items(mp7, p90):
         Require = {M}.UMP9,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }}
+{can_fixing()}
 }}
 """)
 
@@ -759,7 +780,39 @@ def items(mp7, p90):
 # FN SCAR-L (Mk 16 STD) and SCAR-H (Mk 17 LB), user 2026-10-20 (build_scar.py)
 # ==================================================================================================
 
-STANAGS = ['556x45Magazine%s_STANAG' % n for n in (20, 25, 30, 50, 60, 75, 100, 150)]
+# GoM's "STANAG" profile, read from GoM (gom_data.py): its items, and the model GoM draws each with (the HK416 is
+# drawn at GoM's size and names GoM's model; the SCAR-L and MDRx .223 draw the main mod's `<item>_GoT` copies)
+GOM_STANAGS = gom_data.stanags()
+STANAGS = [s['item'] for s in GOM_STANAGS]
+STANAG_MODEL = {s['item']: s['model'] for s in GOM_STANAGS}
+# Suppressors wear and break as GoM's since its November 2026 update (its items/attachments/suppressors.txt): a
+# ConditionMax and a 1 in N chance per shot to lose a point (Gunworks' AttachmentsDurability, registered in Guns.lua:
+# a broken can comes off into the inventory), repaired with GoM's Repair Pack or a second can of the same kind
+# (fixing_guns.txt, GoM's fixing.txt numbers). Each by GoM's can of its class: the pistol-calibre cans as its M&P
+# (100 / 15), the 7.62x51mm SOCOM762-RC as its MKI (60 / 15). The Groza-4's integral can is part of the gun.
+CAN_DURABILITY = {'MP7_Suppressor': (100, 15), 'P90_Suppressor': (100, 15), 'FIVESEVEN_Suppressor': (100, 15),
+                  'SCARH_Suppressor': (60, 15)}
+
+
+def can_durability(part):
+    """The durability lines of a suppressor item ("" for any other part)."""
+    if part not in CAN_DURABILITY:
+        return ''
+    cmax, chance = CAN_DURABILITY[part]
+    return (f"\n        ConditionMax              = {cmax},"
+            f"\n        ConditionLowerChanceOneIn = {chance},")
+
+
+def can_fixing():
+    """GoM's suppressor repairs (its fixing.txt) for our cans."""
+    return ''.join(f"""
+    fixing Fix {part} {{
+        Require = {M}.{part},
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = {M}.{part}; MetalWelding=2,
+    }}
+""" for part in CAN_DURABILITY)
+
 AR_MUZZLE = ['MKI_Suppressor', 'NDR_Suppressor', 'LR2_Compensator', 'LX_Flashhider', 'Trix42_Muzzlebreak']
 SCARH_MAGS = ['762x51Magazine20_SCARH', '762x51Magazine10_SCARH', '762x51Magazine50_SCARH']
 
@@ -899,12 +952,12 @@ def scar_items():
     same damage and range) but lighter and quicker to aim (3.9 kg against 4.25, folding stock, pistol grip). Both
     select fire (Auto / Single, no burst); weights at the real kilograms as GoM's rifles."""
     out = [scar_item('SCARL', dict(min=1.0, max=1.4, crit=18.0, critmult=3.5, hit=52, hitmod=5, aim=15, recoil=12,
-                                   range=40.0, minsight=6, maxsight=14.0, minangle=0.965, jam=0.75, cond=250,
+                                   range=40.0, minsight=SIGHT['SCARL'][0], maxsight=SIGHT['SCARL'][1], minangle=0.965, jam=0.75, cond=250,
                                    stop=1.8, door=3, weight=3.3, metal=30.0, firemode='Auto',
                                    ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30,
                                    mag='MarzGuns.556x45Magazine30_STANAG')),
            scar_item('SCARH', dict(min=1.3, max=1.8, crit=30.0, critmult=5.0, hit=52, hitmod=4, aim=50, recoil=15,
-                                   range=60.0, minsight=10, maxsight=18.0, minangle=0.95, jam=0.5, cond=240,
+                                   range=60.0, minsight=SIGHT['SCARH'][0], maxsight=SIGHT['SCARH'][1], minangle=0.95, jam=0.5, cond=240,
                                    stop=2.0, door=6, weight=3.9, metal=40.0, firemode='Single',
                                    ammo='swmg:bullet_762x51', box='MarzGuns.762x51_Box', clip=20,
                                    mag=f'{M}.762x51Magazine20_SCARH'))]
@@ -952,7 +1005,7 @@ def scar_items():
     # takes both (5/8x24, as the SCAR-H; user, 2026-11-04).
     for part, ptype, weight in (('SCARH_Suppressor', 'Canon', 1.2), ('SCARH_Muzzle_Mount_Device', 'CanonMount', 0.5)):
         out.append(f"""
-    item {part} {{
+    item {part} {{{can_durability(part)}
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
         Icon             = GunsOfTienPost93_{part},
@@ -1039,8 +1092,8 @@ def ump_item(gun):
         RecoilDelay                  = {s['recoil']},
         MaxRange                     = {s['range']},
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 4,
-        MaxSightRange                = 12.0,
+        MinSightRange                = {SIGHT['UMP45'][0]},
+        MaxSightRange                = {SIGHT['UMP45'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -1218,7 +1271,7 @@ VECTOR_STATS = {
     # (16.5", 1.0-1.3, hit 55, range 30) is semi-automatic. Sound: sound_model.py's .45 from 16" = 57 / 16.
     'VECTORCRB': dict(min=1.1, max=1.8, crit=22.0, hit=57, aim=40, recoil=11, range=32.0, stop=2.5, weight=2.7,
                       clip=13, ammo='swmg:bullet_45', box='MarzGuns.45_Box', shoot='M1911Shoot', radius=57, volume=16,
-                      minsight=5, maxsight=16.0),
+                      minsight=SIGHT['VECTORCRB'][0], maxsight=SIGHT['VECTORCRB'][1]),
     # The SDP: the Vector 9mm's 5.5" barrel (its damage and sound) without a stock: the SMG with its stock folded
     # (hit 52, aim 35) a little less steady, lighter and quicker to bring up, shorter-ranged; 5.9 lb (2.7 kg, the
     # SMG's weight less its 0.2 stock part).
@@ -1278,8 +1331,8 @@ def vector_item(gun):
                        ('MagazineType', VECTOR_MAGS[gun][0][0]), ('MaxAmmo', s['clip']),
                        ('Icon', f'GunsOfTienPost93_{gun}'), ('WeaponSprite', f'{M}.{gun}'),
                        ('SwingSound', s['shoot']), ('SoundRadius', s['radius']), ('SoundVolume', s['volume']),
-                       ('ConditionLowerChanceOneIn', 200), ('MinSightRange', s.get('minsight', 4)),
-                       ('MaxSightRange', s.get('maxsight', 12.0))):
+                       ('ConditionLowerChanceOneIn', 200), ('MinSightRange', s.get('minsight', SIGHT[gun][0])),
+                       ('MaxSightRange', s.get('maxsight', SIGHT[gun][1]))):
         lines = tail.split('\n')
         hits = [i for i, l in enumerate(lines) if l.split('=')[0].strip() == key]
         assert len(hits) == 1, key
@@ -1430,15 +1483,15 @@ AUG3_OWN_MAGS = [('9x19Magazine25_AUG', 25, 0.15, 'swmg:bullet_9x19', 'AUGPARA')
 # its AK-47's JS14Shoot).
 AUG3_STATS = {
     'AUGA3': dict(min=1.0, max=1.8, crit=25.0, critmult=4.2, hit=45, hitmod=5, aim=45, recoil=15, range=50.0,
-                  minsight=8, maxsight=16.0, jam=0.8, cond=200, condmax=10, stop=2.0, door=6, weight=3.6, metal=50.0,
+                  minsight=SIGHT['AUGA3'][0], maxsight=SIGHT['AUGA3'][1], jam=0.8, cond=200, condmax=10, stop=2.0, door=6, weight=3.6, metal=50.0,
                   ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30, shoot='M16Shoot', gain=2.2,
                   radius=175, volume=50),
     'AUGPARA': dict(min=1.0, max=1.7, crit=20.0, critmult=4.0, hit=52, hitmod=4, aim=40, recoil=13, range=35.0,
-                    minsight=4, maxsight=12.0, jam=0.8, cond=200, condmax=10, stop=2.0, door=5, weight=3.3,
+                    minsight=SIGHT['AUGPARA'][0], maxsight=SIGHT['AUGPARA'][1], jam=0.8, cond=200, condmax=10, stop=2.0, door=5, weight=3.3,
                     metal=40.0, ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', clip=25, shoot='M9Shoot', gain=2.0,
                     radius=77, volume=22),
     'AUGHBAR': dict(min=1.6, max=1.9, crit=25.0, critmult=6.0, hit=55, hitmod=4, aim=65, recoil=13, range=60.0,
-                    minsight=8, maxsight=16.0, jam=0.8, cond=220, condmax=15, stop=2.0, door=6, weight=4.9,
+                    minsight=SIGHT['AUGHBAR'][0], maxsight=SIGHT['AUGHBAR'][1], jam=0.8, cond=220, condmax=15, stop=2.0, door=6, weight=4.9,
                     metal=60.0, ammo='swmg:bullet_762x39', box='MarzGuns.762x39_Box', clip=30, shoot='JS14Shoot',
                     gain=2.0, radius=155, volume=44),
 }
@@ -1657,7 +1710,7 @@ def augs():
 # 850 m/s against 715 (~40% more energy), so more damage and range; two hands and 3.3 kg steady it (2.6 = GoM's SMG
 # weight ratio ~0.78), and it comes up slower. Sound: the main mod's model, the 5.7x28mm's barrel 263 -> 407 mm =
 # -1.9 dB (118 / 34 -> 104 / 30).
-PS90_STATS = dict(min=1.1, max=1.7, hit=57, aim=40, recoil=11, range=40.0, minsight=5, maxsight=16.0, weight=2.6,
+PS90_STATS = dict(min=1.1, max=1.7, hit=57, aim=40, recoil=11, range=40.0, minsight=SIGHT['PS90'][0], maxsight=SIGHT['PS90'][1], weight=2.6,
                   radius=104, volume=30)
 
 
@@ -1748,7 +1801,8 @@ MDRS = ['MDR223', 'MDR308']
 # steel, so a polymer 20 0.15; the SCAR-H drum 0.5)
 PMAGS = [('762x51Magazine10_PMAG', 10, 0.1), ('762x51Magazine20_PMAG', 20, 0.15),
          ('762x51Magazine25_PMAG', 25, 0.18), ('762x51Magazine50_PMAG', 50, 0.5)]
-# Semi-automatic only (user, 2026-11-04), as GoM's AR-15 and M14: FireMode Single, no FireModePossibilities.
+# Semi-automatic only (user, 2026-11-04), as GoM's AR-15 and M14: FireMode and FireModePossibilities Single (GoM's
+# since its November 2026 update; Gunworks' real single fire through RealSingleFire.lua).
 # The .223 from GoM's AR-15 (the same round from a 16" barrel against its 20": its damage), steadier and slower to
 # come up (a 3.7 kg bullpup); the .308 from GoM's M14 (22" against the MDR's 20": a little less top damage), quicker to
 # aim. Sounds from sound_model.py (5.56 from 16" = 187 / 53, 7.62x51 from 20" = 216 / 62, the SCAR-H's); GoM's AR-15
@@ -1757,12 +1811,12 @@ PMAGS = [('762x51Magazine10_PMAG', 10, 0.1), ('762x51Magazine20_PMAG', 20, 0.15)
 # 2026-11-11: fire faster, so 13 -> 10 and 16 -> 12 (about a third quicker than GoM's AR-15 / M14).
 MDR_STATS = {
     'MDR223': dict(min=0.8, max=1.6, crit=20.0, critmult=3.5, hit=52, hitmod=4, aim=35, recoil=10, range=50.0,
-                   minsight=8, maxsight=16.0, minangle=0.965, jam=1.0, cond=220, condmax=15, stop=2.0, door=4,
+                   minsight=SIGHT['MDR223'][0], maxsight=SIGHT['MDR223'][1], minangle=0.965, jam=1.0, cond=220, condmax=15, stop=2.0, door=4,
                    weight=3.7, metal=45.0, ammo='swmg:bullet_556x45', box='MarzGuns.556x45_Box', clip=30,
                    mag='MarzGuns.556x45Magazine30_STANAG', prefix='M16', shoot='M16Shoot', gain=2.0, radius=187,
                    volume=53),
     'MDR308': dict(min=1.2, max=2.1, crit=40.0, critmult=4.5, hit=52, hitmod=5, aim=50, recoil=12, range=60.0,
-                   minsight=10, maxsight=18.0, minangle=0.95, jam=1.0, cond=240, condmax=10, stop=2.0, door=5,
+                   minsight=SIGHT['MDR308'][0], maxsight=SIGHT['MDR308'][1], minangle=0.95, jam=1.0, cond=240, condmax=10, stop=2.0, door=5,
                    weight=4.1, metal=55.0, ammo='swmg:bullet_762x51', box='MarzGuns.762x51_Box', clip=20,
                    mag=f'{M}.762x51Magazine20_PMAG', prefix='M14', shoot='MSR788Shoot', gain=2.5, radius=216,
                    volume=62),
@@ -1844,6 +1898,7 @@ def mdr_item(gun):
         Weight                       = {s['weight']},
         MetalValue                   = {s['metal']},
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,
@@ -2042,8 +2097,8 @@ def mk11():
         RecoilDelay                  = 14,
         MaxRange                     = 60.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 10,
-        MaxSightRange                = 18.0,
+        MinSightRange                = {SIGHT['MK11'][0]},
+        MaxSightRange                = {SIGHT['MK11'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2064,6 +2119,7 @@ def mk11():
         Weight                       = 4.5,
         MetalValue                   = 55.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,
@@ -2205,7 +2261,7 @@ def hk416():
              f"{w}{M}.HK416_Integrated_Stock_Folded {M}.HK416_STOCK stock_folded stock_folded,",
              f"{w}{M}.HK416_Integrated_Stock_Deployed {M}.HK416_STOCK stock stock,",
              f"{w}{M}.HK416_Integrated_Rail_Left {M}.HK416_MARKINGS markings markings,"]
-    lines += [f"{w}MarzGuns.{m} MarzGuns.{m} magazine magazine," for m in STANAGS]
+    lines += [f"{w}MarzGuns.{m} MarzGuns.{STANAG_MODEL[m]} magazine magazine," for m in STANAGS]
     lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
     lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
@@ -2228,8 +2284,8 @@ def hk416():
         RecoilDelay                  = 13,
         MaxRange                     = 40.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 6,
-        MaxSightRange                = 14.0,
+        MinSightRange                = {SIGHT['HK416'][0]},
+        MaxSightRange                = {SIGHT['HK416'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2349,9 +2405,9 @@ def hk416():
 # Mk 11's shot (MSR788Shoot at gain 2.5), GoM's M16 handling sounds.
 HK417_GUNS = {
     'HK417': dict(name='HK417 Battle Rifle', min=1.3, max=1.8, crit=30.0, critmult=5.0, hit=53, aim=50, recoil=15,
-                  range=60.0, sight=(10, 18.0), cond=250, weight=4.1, radius=231, volume=66),
+                  range=60.0, sight=SIGHT['HK417'], cond=250, weight=4.1, radius=231, volume=66),
     'HK417S': dict(name='HK417 Marksman Rifle', min=1.3, max=2.1, crit=40.0, critmult=5.0, hit=56, aim=55, recoil=15,
-                   range=65.0, sight=(10, 20.0), cond=260, weight=4.3, radius=216, volume=62),
+                   range=65.0, sight=SIGHT['HK417S'], cond=260, weight=4.3, radius=216, volume=62),
 }
 HK417_STATES = ['', '_RD', '_FD']
 HK417_MAGS = [('762x51Magazine20_HK417', 20, 0.15), ('762x51Magazine10_HK417', 10, 0.1)]
@@ -2664,8 +2720,8 @@ def hk416qr22():
         RecoilDelay                  = 6,
         MaxRange                     = 22.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 4,
-        MaxSightRange                = 12.0,
+        MinSightRange                = {SIGHT['HK416QR22'][0]},
+        MaxSightRange                = {SIGHT['HK416QR22'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2686,6 +2742,7 @@ def hk416qr22():
         Weight                       = 2.2,
         MetalValue                   = 25.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,
@@ -2812,17 +2869,17 @@ def hk416qr22():
 GROZAS = {
     'GROZA1': dict(body='GROZA_BODY', mag_point='magazine_762x39', muzzle='muzzle_long', canon='long',
                    name='Groza-1 Assault Rifle', min=1.5, max=1.8, crit=25.0, critmult=6.0, hit=52, aim=50,
-                   range=50.0, sight=(8, 16.0), jam=0.5, cond=300, weight=3.0, ammo='swmg:bullet_762x39',
+                   range=50.0, sight=SIGHT['GROZA1'], jam=0.5, cond=300, weight=3.0, ammo='swmg:bullet_762x39',
                    box='MarzGuns.762x39_Box', mag='MarzGuns.762x39Magazine30', clip=30, shoot='JS14Shoot', gain=2.0,
                    radius=175, volume=50),
     'GROZA2': dict(body='GROZA2_HELD', held=True, mag_point='magazine_545x39', muzzle='muzzle_compact', canon='compact',
                    name='Groza-2 Prototype Assault Rifle', min=1.0, max=1.6, crit=25.0, critmult=3.0, hit=35, aim=25,
-                   range=40.0, sight=(6, 14.0), jam=0.5, cond=250, weight=2.6, ammo='swmg:bullet_545x39',
+                   range=40.0, sight=SIGHT['GROZA2'], jam=0.5, cond=250, weight=2.6, ammo='swmg:bullet_545x39',
                    box='MarzGuns.545x39_Box', mag='MarzGuns.545x39Magazine30_Bakelite', clip=30, shoot='JS14Shoot',
                    gain=2.0, radius=205, volume=59),
     'GROZA4': dict(body='GROZA4_BODY', mag_point='magazine', muzzle='muzzle', canon='integral', flash=False,
                    name='Groza-4 Assault Rifle', min=0.7, max=1.4, crit=20.0, critmult=4.5, hit=52, aim=35,
-                   range=45.0, sight=(6, 14.0), jam=1.0, cond=250, weight=2.7, ammo='swmg:bullet_9x39',
+                   range=45.0, sight=SIGHT['GROZA4'], jam=1.0, cond=250, weight=2.7, ammo='swmg:bullet_9x39',
                    box='MarzGuns.9x39_Box', mag='MarzGuns.9x39Magazine20', clip=20, shoot='CapGunRevolverShoot',
                    gain=0.8, radius=24, volume=6),
 }
@@ -3051,8 +3108,8 @@ def grozas():
         AimingMod                    = 2.0,
         Aimingtime                   = 40,
         MaxRange                     = 10.0,
-        MinSightRange                = 3,
-        MaxSightRange                = 8.0,
+        MinSightRange                = {SIGHT['GROZAGL_GP25'][0]},
+        MaxSightRange                = {SIGHT['GROZAGL_GP25'][1]},
         MinRange                     = 0.67,
         MinAngle                     = 0.9,
         JamGunChance                 = 0,
@@ -3070,6 +3127,7 @@ def grozas():
         Weight                       = {GROZAS['GROZAGL']['weight']},
         MetalValue                   = 80.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         IsAimedFirearm               = true,
         IsAimedHandWeapon            = true,
         AmmoType                     = swmg:round_40mm_buckshot,
@@ -3243,8 +3301,8 @@ def sv98():
         RecoilDelay                  = 17,
         MaxRange                     = 62.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 20,
-        MaxSightRange                = 28.0,
+        MinSightRange                = {SIGHT['SV98'][0]},
+        MaxSightRange                = {SIGHT['SV98'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.01,
@@ -3265,6 +3323,7 @@ def sv98():
         Weight                       = 5.8,
         MetalValue                   = 45.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         IsAimedFirearm               = true,
         Ranged                       = true,
         AmmoType                     = swmg:bullet_762x54,
@@ -3438,8 +3497,8 @@ def sv99():
         RecoilDelay                  = 8,
         MaxRange                     = 30.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 6,
-        MaxSightRange                = 16.0,
+        MinSightRange                = {SIGHT['SV99'][0]},
+        MaxSightRange                = {SIGHT['SV99'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.01,
@@ -3460,6 +3519,7 @@ def sv99():
         Weight                       = {g['weight']},
         MetalValue                   = 30.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         IsAimedFirearm               = true,
         Ranged                       = true,
         AmmoType                     = gunsoftien:bullet_22lr,

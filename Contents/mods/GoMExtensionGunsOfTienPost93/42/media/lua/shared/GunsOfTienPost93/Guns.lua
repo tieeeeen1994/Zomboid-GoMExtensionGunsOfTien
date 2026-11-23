@@ -8,7 +8,7 @@
 
     Everything a GoM gun goes through, done for ours (CLAUDE.md, "Gun data and registries in GoM"): magazine
     profiles, rate of fire (required for Gunworks' real auto fire), the animated bolt, reload animations, the MP7's
-    collapsible stock and the stats of its folding front grip (the fold itself is Foregrip.lua), integrated rails as parents of GoM's optics / lights / lasers, the suppressors and their mount
+    collapsible stock and the stats of its folding front grip (the fold itself is Foregrip.lua, Gunworks' swap pair), integrated rails as parents of GoM's optics / lights / lasers, the suppressors and their mount
     devices, parts that cannot be removed, spawn-time parts and magazines, and GoM parts allowed on our guns
     (MountOn appended; DoParam replaces the list, so it is read and written back whole).
 
@@ -72,10 +72,8 @@ local UMP9 = M .. "UMP9"
 local UMPS = { UMP45, UMP9 }
 local UMP45_MAGS = { M .. "45Magazine25_UMP", M .. "45Magazine20_UMP", M .. "45Magazine10_UMP" }
 local UMP9_MAGS = { M .. "9x19Magazine30_UMP" }
-local STANAGS = {}
-for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
-    STANAGS[#STANAGS + 1] = "MarzGuns.556x45Magazine" .. n .. "_STANAG"
-end
+-- GoM's STANAG magazines, read from its "STANAG" profile (both sides of the jungle pair included)
+local STANAGS = require("GunsOfTien/HandMagazines").gomProfile("STANAG")
 
 -------------------------------------------------
 -- Magazines
@@ -210,16 +208,17 @@ end
 
 CSA.RegisterMultipleParts({
     [M .. "MP7A1_Integrated_Stock_Folded"] = {},
+    -- MP7A1 stock deployed: GoM's MP5 stock (flat values, as GoM's attachments since its November 2026 update)
     [M .. "MP7A1_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.75),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -10),
     },
-    -- MP7A1 integral front grip (Foregrip.lua swaps the parts): unfolded, GoM's Stub Foregrip stats
+    -- MP7A1 integral front grip (Foregrip.lua: Gunworks' swap pair): unfolded, GoM's Stub Foregrip stats
     [M .. "MP7A1_Integrated_Foregrip_Folded"] = {},
     [M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
-        SF.Multiply("AimingTime", 0.8),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
+        SF.Adjust("AimingTime", -10),
+        SF.Adjust("CriticalChance", 4),
+        SF.Adjust("HitChance", 7),
     },
     -- GoM's suppressor stats (its pistol suppressors' sound).
     [M .. "MP7_Suppressor"] = {
@@ -233,14 +232,14 @@ CSA.RegisterMultipleParts({
     -- SCAR stock deployed: GoM's G36 stock (another side-folding polymer stock)
     [M .. "SCAR_Integrated_Stock_Folded"] = {},
     [M .. "SCAR_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.85),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -2),
     },
     -- UMP stock deployed: GoM's G36C stock (another side-folding polymer stock on a short gun)
     [M .. "UMP_Integrated_Stock_Folded"] = {},
     [M .. "UMP_Integrated_Stock_Deployed"] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.75),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -4),
     },
     -- GoM's rifle suppressors' stats (MKI / NDR), with their rifle swing sound
     [M .. "SCARH_Suppressor"] = {
@@ -296,6 +295,10 @@ RequiredAttachment.RegisterRequired(LASERS, { M .. "UMP_Integrated_Rail_Right" }
 RequiredAttachment.RegisterRequired(FOREGRIPS, { M .. "UMP_Integrated_Rail_Down" })
 RequiredAttachment.RegisterRequired({ M .. "SCARH_Suppressor" }, { M .. "SCARH_Muzzle_Mount_Device" })
 RequiredAttachment.RegisterRequired({ M .. "MP7_Suppressor" }, { M .. "MP7_Muzzle_Mount_Device" })
+-- the cans wear and break as GoM's since its November 2026 update (its Registries/AttachmentsDurability.lua):
+-- ConditionMax and the chance per shot in items_guns.txt (gen_post93_guns.py CAN_DURABILITY), repairs in fixing_guns.txt
+require("WeaponSystems/Utils/AttachmentsDurability").RegisterAttachment({ M .. "MP7_Suppressor", M .. "P90_Suppressor",
+    M .. "FIVESEVEN_Suppressor", M .. "SCARH_Suppressor" })
 -- appended to GoM's own rule (Picatinny_Rail_Down or the G36C's rail): any one of them will do
 RequiredAttachment.RegisterRequired(FOREGRIPS, { M .. "MP7A2_Integrated_Rail_Down" })
 RequiredAttachment.RegisterRequired({ M .. "P90_Suppressor" }, { M .. "P90_Muzzle_Mount_Device" })

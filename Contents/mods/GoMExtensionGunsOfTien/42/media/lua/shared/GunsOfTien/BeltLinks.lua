@@ -273,13 +273,16 @@ local function install()
     end
     local addCasingToVehicle = HB.addCasingToVehicle
     if addCasingToVehicle and not wrapped[addCasingToVehicle] then
-        HB.addCasingToVehicle = wrap(function(vehicle, player, item)
-            addCasingToVehicle(vehicle, player, item)
+        -- Hot Brass's 4th argument (ignoreDespawn: keep the casing whatever PermanentCasings says, Tactical Reload's
+        -- magazine drop) and any it adds later are passed through, to the item and to its link alike
+        HB.addCasingToVehicle = wrap(function(vehicle, player, item, ...)
+            local result = addCasingToVehicle(vehicle, player, item, ...)
             local link = follow
             if link then
                 follow = nil
-                addCasingToVehicle(vehicle, player, link)
+                addCasingToVehicle(vehicle, player, link, ...)
             end
+            return result
         end)
     end
     -- a link thrown by Hot Brass for Ammo Maker flies on its own launch values, not the casing's

@@ -14,33 +14,35 @@ local lines = tooltips.tooltipsPergun
 local M = "GunsOfTienPost93."
 
 -- The stock's and front grip's lines, shown under an MP7 while that state is fitted (the main mod's
--- client/GunsOfTien/Tooltips.lua; stats in shared/GunsOfTienPost93/Guns.lua). The A2 has the A1's stock.
+-- client/GunsOfTien/Tooltips.lua; stats in shared/GunsOfTienPost93/Guns.lua). The A2 has the A1's stock. Every
+-- stock and grip here is GoM's flat numbers (its November 2026 update), worded as GoM's own part tooltips.
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Stock_Deployed"] = {
     "Collapsible stock deployed:",
-    "Aiming Time reduced by 25%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 10",
+    "Hit Chance increased by 8%",
 }
 GunsOfTien_TooltipStates[M .. "MP7A1_Integrated_Foregrip_Deployed"] = {
     "Folding front grip unfolded:",
-    "Aiming Time reduced by 20%",
-    "Critical and Hit Chance increased by 15%",
+    "Aiming Time reduced by 10",
+    "Critical Chance increased by 4%",
+    "Hit Chance increased by 7%",
     "Automatic fire spread reduced by 15%",
 }
 
 -- The SCARs' side-folding stock (GoM's G36 stats, shared/GunsOfTienPost93/Guns.lua)
 GunsOfTien_TooltipStates[M .. "SCAR_Integrated_Stock_Deployed"] = {
     "Folding stock deployed:",
-    "Aiming Time reduced by 15%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 2",
+    "Hit Chance increased by 8%",
 }
 
 -- The UMPs' side-folding stock (GoM's G36C stats and spread, shared/GunsOfTienPost93/Guns.lua), worded as the main
 -- mod words the G36C's
 GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"] = {
     "Folding stock deployed:",
-    "Aiming Time reduced by 25%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 4",
+    "Hit Chance increased by 8%",
     "Automatic fire spread reduced by 25%",
 }
 
@@ -65,7 +67,7 @@ for _, mag in ipairs({ "9x19Magazine33_GLOCK", "9x19Magazine40_GLOCK" }) do
 end
 
 -- The Steyr AUGs (shared/GunsOfTienPost93/AUG.lua): the folding grip's state lines are the main mod's (the same
--- parts as its A1); the HBAR's bipod states as the main mod words GoM's bipods'.
+-- parts as its A1); the HBAR's bipod deployed: only GoM's rail bipod spread (GoM's bipods change no stats).
 for gun, uses in pairs({ AUGA3 = "Uses .223/5.56x45mm NATO rounds", AUGPARA = "Uses 9x19mm rounds",
     AUGHBAR = "Uses 7.62x39mm rounds" }) do
     lines[M .. gun] = { uses }
@@ -78,8 +80,6 @@ for _, mag in ipairs({ "762x39Magazine30_AUG", "762x39Magazine50_AUG" }) do
 end
 GunsOfTien_TooltipStates[M .. "AUGHBAR_Integrated_Bipod_Deployed"] = {
     "Folding bipod deployed:",
-    "Aiming Time increased by 10%",
-    "Critical and Hit Chance increased by 15%",
     "Automatic fire spread reduced by 35%",
 }
 
@@ -92,12 +92,12 @@ lines[M .. "SV98"] = { "Uses 7.62x54mmR rounds" }
 lines[M .. "762x54Magazine10_SV98"] = { "Uses 7.62x54mmR rounds." }
 lines[M .. "SV99"] = { "Uses .22 LR rounds" }
 lines[M .. "22LRMagazine5_SV99"] = { "Uses .22 LR rounds." }
--- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with the SCARs' stats
+-- The HK416 (shared/GunsOfTienPost93/HK416.lua): its stock with GoM's CAR-15 stock stats
 lines[M .. "HK416"] = { "Uses .223/5.56x45mm NATO rounds" }
 GunsOfTien_TooltipStates[M .. "HK416_Integrated_Stock_Deployed"] = {
     "Collapsible stock deployed:",
-    "Aiming Time reduced by 15%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 3",
+    "Hit Chance increased by 8%",
 }
 -- The HK417s (shared/GunsOfTienPost93/HK417.lua): the HK416's stock
 for _, gun in ipairs({ "HK417", "HK417S" }) do
@@ -108,8 +108,8 @@ for _, n in ipairs({ 10, 20 }) do
 end
 GunsOfTien_TooltipStates[M .. "HK417_Integrated_Stock_Deployed"] = {
     "Collapsible stock deployed:",
-    "Aiming Time reduced by 15%",
-    "Hit Chance increased by 15%",
+    "Aiming Time reduced by 3",
+    "Hit Chance increased by 8%",
 }
 lines[M .. "HK416QR22"] = { "Uses .22 LR rounds" }
 for _, n in ipairs({ 10, 20, 30 }) do
@@ -127,12 +127,7 @@ for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm 
     MDR308 = "Uses .308/7.62x51mm NATO rounds" }) do
     lines[M .. gun] = { uses }
 end
--- the MDRx .308's ALX bipod handguard: its bipod states worded as the HBAR's, without the automatic fire line
-GunsOfTien_TooltipStates[M .. "MDR308_Integrated_Bipod_Deployed"] = {
-    "Folding bipod deployed:",
-    "Aiming Time increased by 10%",
-    "Critical and Hit Chance increased by 15%",
-}
+-- the MDRx .308's ALX bipod handguard: no lines (GoM's bipods change no stats, and it fires semi-automatic only)
 for _, mag in ipairs({ "762x51Magazine10_PMAG", "762x51Magazine20_PMAG", "762x51Magazine25_PMAG",
     "762x51Magazine50_PMAG" }) do
     lines[M .. mag] = { "Uses .308/7.62x51mm NATO rounds." }
@@ -163,9 +158,10 @@ for part, calibre in pairs({
         "Damage reduced by 10%",
         "Removes Muzzle Flash",
         "Can be mounted on",
-        "Needs Wrench to install or remove.",
     }
 end
+-- the mount devices keep the wrench (part type CanonMount); a can fitted on one needs no tool (GoM's November 2026
+-- update, its OnCreate/AttachAndDetach.lua)
 for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mount_Device = "5.7x28mm",
     SCARH_Muzzle_Mount_Device = "7.62x51mm" }) do
     lines[M .. part] = {

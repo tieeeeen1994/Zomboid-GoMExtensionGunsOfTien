@@ -11,7 +11,7 @@ AttachmentCustomStats.lua with its DA.RegisterPair selector pairs, RPM.lua's Reg
 OnCreate/AttachAndDetach.lua's tools per part type, the item scripts for base stats and modifiers) and writes
 Contents/mods/GoMExtensionGunsOfTien/42/media/lua/client/GunsOfTien/HandlingTooltips.lua:
 - for every integrated stock, bipod and mode selector state with effects, its lines in the style of GoM's part
-  tooltips: a heading ("Collapsible stock deployed:") and one effect per line ("Aiming Time reduced by 25%"), into
+  tooltips: a heading ("Collapsible stock deployed:") and one effect per line, into
   the global GunsOfTien_TooltipStates (keyed by the part); client/GunsOfTien/Tooltips.lua shows them under a gun
   while that part is fitted, so only the current state's stats show. GoM's vague "Has Integrated Stock / Bipod"
   lines are removed;
@@ -24,6 +24,11 @@ Contents/mods/GoMExtensionGunsOfTien/42/media/lua/client/GunsOfTien/HandlingTool
   rounds." / mounting and muzzle device lines for the magazines and guns GoM gave none (copied from items with the
   same round or part). Compact, in GoM's own form (user, 2026-10-19: "do not overexplain"): one fact per line, the
   number where GoM left it out.
+Wording (GoM's November 2026 update made attachment stats flat, `SF.Adjust`): a flat change is written as GoM's own
+part tooltips write it, "Aiming Time reduced by 10", "Hit Chance increased by 8%" (chances are percentage points),
+"Optimal Range starts 1 tile and ends 2 tiles further"; a multiplier (`SF.Multiply`) as before, "... by 25%". Tool
+lines follow OnCreate/AttachAndDetach.lua, where only mounts, rails, barrels, stocks and pistol underbarrel parts
+need a tool since that update.
 The rounds' lines are gen_round_tooltips.py's. Run again after a GoM update; never hand-edit the output.
 """
 
@@ -47,6 +52,8 @@ FOLDING = {"MarzGuns.AKS74U", "MarzGuns.ASVAL", "MarzGuns.FNC", "MarzGuns.G36C",
 VAGUE = {"stock": "Has Integrated Stock", "bipod": "Has Integrated Bipod"}
 LABEL = {"AimingTime": "Aiming Time", "HitChance": "Hit Chance", "CriticalChance": "Critical Chance",
          "RecoilDelay": "Recoil Delay", "JamGunChance": "Jam Chance"}
+# stats whose flat changes GoM writes as percentage points ("Hit Chance increased by 7%")
+POINTS = {"HitChance", "CriticalChance", "JamGunChance"}
 # item script modifier -> the stat it changes (vanilla adds the part's value to the gun's)
 SCRIPT_MODS = {"AimingTimeModifier": "Aiming Time", "HitChanceModifier": "Hit Chance"}
 
@@ -116,6 +123,22 @@ def change(stat, f):
     return "%s %s by %d%%" % (label(stat), "reduced" if f < 1 else "increased", pct(f))
 
 
+def flat(stat, v):
+    """GoM's wording of a flat change (`SF.Adjust`): "Aiming Time reduced by 10", "Hit Chance increased by 7%"."""
+    return "%s %s by %g%s" % (label(stat), "reduced" if v < 0 else "increased", abs(v), "%" if stat in POINTS else "")
+
+
+def tiles(n):
+    return "%g tile%s" % (n, "" if n == 1 else "s")
+
+
+def sight_text(lo, hi):
+    """GoM's wording of a sight's range shift: "Optimal Range starts 1 tile and ends 2 tiles further"."""
+    if lo and hi:
+        return "Optimal Range starts %s and ends %s further" % (tiles(lo), tiles(hi))
+    return "Optimal Range extended %s further" % tiles(hi or lo)
+
+
 def spread_text(s):
     sustained = s[0]
     return "Automatic fire spread %s by %d%%" % ("reduced" if sustained < 1 else "increased", pct(sustained))
@@ -125,28 +148,42 @@ def effects(ops, base=None, spread=None):
     """GoM's part-tooltip wording: Aiming Time first, Critical and Hit Chance merged when equal, then the rest; Set /
     Adjust are given against the gun's own value (`base`, lower-cased script keys)."""
     base = base or {}
-    rel = {}
+    rel, add = {}, {}
     for op, stat, v in ops:
         if op == "Multiply":
             rel[stat] = float(v)
-        elif op in ("Set", "Adjust") and stat in LABEL:
+        elif op == "Adjust":
+            add[stat] = float(v)
+        elif op == "Set" and stat in LABEL:
             b = float(base.get(stat.lower(), "nan"))
-            new = float(v) if op == "Set" else b + float(v)
             if b == b and b != 0:
-                rel[stat] = new / b
+                rel[stat] = float(v) / b
     sets = {stat: v for op, stat, v in ops if op == "Set"}
     out = []
-    if "AimingTime" in rel:
-        out.append(change("AimingTime", rel.pop("AimingTime")))
-    crit, hit = rel.pop("CriticalChance", None), rel.pop("HitChance", None)
+
+    def one(stat):
+        if stat in add:
+            out.append(flat(stat, add.pop(stat)))
+        elif stat in rel:
+            out.append(change(stat, rel.pop(stat)))
+
+    one("AimingTime")
+    crit, hit = add.get("CriticalChance"), add.get("HitChance")
+    rcrit, rhit = rel.get("CriticalChance"), rel.get("HitChance")
     if crit is not None and crit == hit:
-        out.append("Critical and Hit Chance %s by %d%%" % ("reduced" if crit < 1 else "increased", pct(crit)))
-    else:
-        for stat, f in (("CriticalChance", crit), ("HitChance", hit)):
-            if f is not None:
-                out.append(change(stat, f))
-    for stat, f in sorted(rel.items()):
-        out.append(change(stat, f))
+        out.append("Critical and Hit Chance %s by %g%%" % ("reduced" if crit < 0 else "increased", abs(crit)))
+        add.pop("CriticalChance"), add.pop("HitChance")
+    elif rcrit is not None and rcrit == rhit:
+        out.append("Critical and Hit Chance %s by %d%%" % ("reduced" if rcrit < 1 else "increased", pct(rcrit)))
+        rel.pop("CriticalChance"), rel.pop("HitChance")
+    one("CriticalChance")
+    one("HitChance")
+    lo, hi = add.pop("MinSightRange", 0), add.pop("MaxSightRange", 0)
+    for stat in sorted(set(add) | set(rel)):
+        if stat in LABEL:
+            one(stat)
+    if lo or hi:
+        out.append(sight_text(lo, hi))
     if spread:
         out.append(spread_text(spread)[0].lower() + spread_text(spread)[1:])
     if sets.get("RackAfterShot") == "true":

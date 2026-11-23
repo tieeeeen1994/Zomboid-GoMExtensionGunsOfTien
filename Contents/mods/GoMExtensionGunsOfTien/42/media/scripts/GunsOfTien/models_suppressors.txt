@@ -12,6 +12,12 @@ module GunsOfTien {
         scale    = 0.8375,
     }
 
+    model Mk9_Suppressor_MP5 {
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|Mk9_Suppressor,
+        texture  = weapons/GunsOfTien/Mk9_Suppressor,
+        scale    = 0.7790,
+    }
+
     model SMG9_Muzzle_Mount_Device {
         mesh     = weapons/parts/GunsOfTien_SMG9_parts|SMG9_Muzzle_Mount_Device,
         texture  = weapons/GunsOfTien/SMG9_Muzzle_Mount_Device,
@@ -24,6 +30,12 @@ module GunsOfTien {
         scale    = 0.8375,
     }
 
+    model SMG9_Muzzle_Mount_Device_MP5 {
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|SMG9_Muzzle_Mount_Device,
+        texture  = weapons/GunsOfTien/SMG9_Muzzle_Mount_Device,
+        scale    = 0.7790,
+    }
+
     model M&P_Suppressor_GoT {
         mesh     = weapons/parts/suppressors|M&P_Suppressor,
         texture  = weapons/parts/suppressors/M&P_Suppressor,
@@ -31,10 +43,24 @@ module GunsOfTien {
         scale    = 0.8375,
     }
 
+    model M&P_Suppressor_MP5 {
+        mesh     = weapons/parts/suppressors|M&P_Suppressor,
+        texture  = weapons/parts/suppressors/M&P_Suppressor,
+        cullFace = None,
+        scale    = 0.7790,
+    }
+
     model Shh9_Suppressor_GoT {
         mesh     = weapons/parts/suppressors|Shh9_Suppressor,
         texture  = weapons/parts/suppressors/Shh9_Suppressor,
         cullFace = None,
         scale    = 0.8375,
+    }
+
+    model Shh9_Suppressor_MP5 {
+        mesh     = weapons/parts/suppressors|Shh9_Suppressor,
+        texture  = weapons/parts/suppressors/Shh9_Suppressor,
+        cullFace = None,
+        scale    = 0.7790,
     }
 }

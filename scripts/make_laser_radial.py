@@ -1,5 +1,6 @@
 """Radial menu icons for switching a laser on and off, in Gunworks' radial icon style (GunworksRadial_FoldStock /
-UnfoldBipod: 32x32 olive pixel art, black outline, pure red accents), as scripts/post93/make_foregrip_radial.py.
+UnfoldBipod: 32x32 olive pixel art, black outline, pure red accents), as the foregrip fold icons were (make_foregrip_radial.py, removed
+2026-11-23 with our fold action: the grips use Gunworks' swap pair and its icon).
 They replace vanilla's vehicle headlight icons (user, 2026-10-18: "the icon... is ugly... let's make our own").
 
     py scripts/make_laser_radial.py

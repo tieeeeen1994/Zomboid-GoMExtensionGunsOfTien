@@ -163,7 +163,7 @@ until FN's M249S in 2015): military loot only.
 | | `GunsOfTien.M249` "M249 Light Machine Gun" |
 |---|---|
 | Real | 5.56x45 (M855), 465 mm barrel, 1038 mm, 7.4 kg empty (PIP), gas operated, open bolt, full auto only |
-| Feed | Its own 200-round box, `GunsOfTien.556x45Box200_M249` "M249 200Rds 5.56x45mm Box" (olive drab plastic, clipped under the receiver, the belt rising into the feed tray on the left; stencil "200 CARTRIDGES / 5.56 MM / 4 M855 - 1 M856 / M27 / FOR MG M249"), **plus every GoM STANAG** (20 to 150) in the M249's own magazine profile (user, 2026-10-22). A STANAG sits in the left-side well, tilted about 45 degrees down. |
+| Feed | Its own 200-round box, `GunsOfTien.556x45Box200_M249` "M249 200Rds 5.56x45mm Box" (olive drab plastic, clipped under the receiver, the belt rising into the feed tray on the left; stencil "200 CARTRIDGES / 5.56 MM / 4 M855 - 1 M856 / M27 / FOR MG M249"), **plus every GoM STANAG** (20 to 100 rounds, both sides of the jungle-taped pair included; read from GoM's "STANAG" profile since GoM's November 2026 update) in the M249's own magazine profile (user, 2026-10-22). A STANAG sits in the left-side well, tilted about 45 degrees down. |
 | Belt | Nine visible belt rounds from the box to the feed tray, shortening one a shot under nine rounds (GoM's M60 way), shown only while the box is fitted |
 | STANAG feed | Jam chance x2 while a STANAG is fitted (user, 2026-10-22: the manual's "will increase the chance of stoppages") |
 | Family | `5.56x45mm` (the box joins it): GoM's 5.56 and its AP / HP / [+P] / Subsonic, .223, `Base.556Bullets` |

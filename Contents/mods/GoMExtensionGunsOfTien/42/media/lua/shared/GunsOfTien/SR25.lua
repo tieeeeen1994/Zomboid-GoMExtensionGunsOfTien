@@ -12,7 +12,8 @@
       "boltCatchAfterEmptyInsert" rule);
     - integrated: the Leupold Vari-X III 3.5-10x (user, 2026-11-11 "integrated scope", GoM's LR10X stats, user
       2026-11-12) as a hidden Scope part; the Harris bipod on the handguard's stud as Gunworks' FoldingBipod (found
-      folded) with GoM's rail bipod stats deployed (no spread modifier: semi-automatic) and Gunworks' bipod stance.
+      folded) as GoM's rail bipod (no stat changes since GoM's November 2026 update; no spread modifier:
+      semi-automatic) with Gunworks' bipod stance. The scope's numbers are GoM's LR10X's flat values.
     No muzzle parts or rails (the match rifle had none); no optics, its scope is fixed.
 --]]
 
@@ -68,7 +69,7 @@ Animations.RegisterWeaponWithAnimatedParts(SR25, BOLT_AR15)
 ReloadAnim.RegisterWeapon(SR25, GoMReloads.profile("ar15_rifle", { rules = "boltCatchAfterEmptyInsert" }))
 
 -------------------------------------------------
--- The integrated scope (GoM's LR10X) and bipod (GoM's rail bipod, semi-automatic: no spread modifier)
+-- The integrated scope (GoM's LR10X) and bipod (GoM's rail bipod: no stats; semi-automatic, no spread modifier)
 -------------------------------------------------
 FoldingBipod.RegisterWeapon(SR25, {
     attachments = { partType = "BipodIntegrated", folded = FOLDED, deployed = DEPLOYED },
@@ -77,18 +78,14 @@ FoldingBipod.RegisterWeapon(SR25, {
 BipodSystem.RegisterBipod(DEPLOYED)
 CSA.RegisterMultipleParts({
     [SCOPE] = {
-        SF.Multiply("AimingTime", 1.35),
-        SF.Multiply("CriticalChance", 1.3),
-        SF.Multiply("HitChance", 1.3),
-        SF.Multiply("MaxSightRange", 1.7),
-        SF.Multiply("MinSightRange", 1.7),
+        SF.Adjust("AimingTime", 15),
+        SF.Adjust("CriticalChance", 10),
+        SF.Adjust("HitChance", 15),
+        SF.Adjust("MaxSightRange", 9),
+        SF.Adjust("MinSightRange", 5),
     },
     [FOLDED] = {},
-    [DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.1),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
-    },
+    [DEPLOYED] = {},
 })
 
 PreventRemoval.Register({ MAG, SCOPE })

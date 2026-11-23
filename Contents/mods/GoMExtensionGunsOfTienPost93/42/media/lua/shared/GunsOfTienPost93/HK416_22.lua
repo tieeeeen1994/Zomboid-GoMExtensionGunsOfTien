@@ -6,8 +6,9 @@
     (scripts/post93/build_hk416_22.py). H&K USA's later M-LOK pistol was shelved (user: "let's use walther's").
     - held like a pistol (the Vector SDP's way: turned model, GoM's MP5K reload "handgun2"), back slot, never a holster;
     - semi-automatic only, as the real pistol (user, 2026-11-14: "make HK416 pistol semi automatic"; it was select
-      fire Auto / Single at 900 rpm): FireMode Single, no FireModePossibilities and no RateOfFire registration, as the
-      MDRs, so its pace is RecoilDelay 6 alone (about 5 shots a second at most; GoM's pistols 11-17);
+      fire Auto / Single at 900 rpm): FireMode and FireModePossibilities Single, registered at GoM's 600 rpm for
+      Gunworks' real single fire (one shot per click) as GoM's semi-automatic guns since its November 2026 update
+      (RealSingleFire.lua); its pace is RecoilDelay 6 (GoM's pistols 11-17);
     - H&K's polymer .22 magazines, 10 straight, 20 and 30 curved: a profile of their own, ".22 LR HK416", in the main
       mod's ".22 LR" family (its plain round and the Subsonic, Hollow Point and Hyper Velocity loads);
     - the long round barrel shroud is only a shroud, as on the real gun (user, 2026-11-13: "Plain shroud, loud"; it

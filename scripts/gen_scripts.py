@@ -10,6 +10,20 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import muzzle_devices as MD  # noqa: E402
+import gom_data  # noqa: E402
+
+GOM_STANAGS = gom_data.stanags()
+
+# Sight windows: GoM's November 2026 update gave each class of gun its own optimal range (gom_data.py). Each of our guns
+# takes the window of its closest GoM gun, read from GoM's script at every run.
+GOM_EQUIVALENT = {
+    'UZI': 'MP5', 'MINIUZI': 'MAC10', 'MICROUZI': 'MAC10', 'TMP': 'MAC10', 'P90': 'MP5',  # SMGs 3-11, short 2-10
+    'AUG': 'FAMAS',                                                                    # assault rifle 7-17
+    'M249': 'M60', 'RPD': 'M60', 'RPK': 'M60',                                         # LMGs 9-20
+    'SR25': 'SVD', 'SVU': 'SVD',                                                       # marksman rifles 11-23
+    'GLOCK21': 'M1911', 'PPK': 'GLOCK17',                                              # pistols 2-8
+}
+SIGHT = {gun: gom_data.sight(gom) for gun, gom in GOM_EQUIVALENT.items()}
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Contents', 'mods', 'GoMExtensionGunsOfTien',
                     '42', 'media')
@@ -763,6 +777,10 @@ GOM_9MM_CANS = ('M&P_Suppressor', 'Shh9_Suppressor')
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm Weapons)'),
               ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, NINE_MOUNT_NAME)]
 SMG9_LEGACY = 'SMG9_Muzzle_Mount_Device'
+# The Mk9 wears and breaks as GoM's cans since its November 2026 update (items/attachments/suppressors.txt): GoM's
+# M&P's ConditionMax 100, 1 in 15 per shot (Gunworks' AttachmentsDurability, registered in Suppressors.lua), repaired
+# with GoM's Repair Pack or a second Mk9 (fixing_suppressors.txt, GoM's fixing.txt numbers).
+MK9_DURABILITY = (100, 15)
 # Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
 # (0.603, user 2026-10-26): every gun that takes them (our Uzis, the UMP9, and since 2026-10-27 GoM's MP5 and MP5A2 on
 # our MP5 models, Suppressors.lua) draws them through a second model of the same mesh, `<part>_GoT`, scaled down by as
@@ -771,49 +789,45 @@ GOT_PART_SCALE = round(0.000603 / 0.00072, 4)
 
 
 # GoM's STANAG magazines at our size (user, 2026-10-26: "i want those with their own sizes"). GoM built them at 0.65
-# of real size, as its rifles, and draws them so in its own ARs; our SCAR-L (Post-93) and M249, drawn at the M16A2's
-# 0.603, draw them through `<magazine>_GoT`: GoM's mesh and texture with `scale` = 0.603 / 0.65 (a part model's own
-# scale, about its origin: the feed lips at the gun's `magazine` point). `<magazine>_Hand` is a hidden item with that
-# model, which shared/GunsOfTien/HandMagazines.lua puts in the off hand during those guns' reloads in place of GoM's
-# (Gunworks puts an item of the magazine's type there, drawn with its own model, placed by the model's own
-# `Bip01_Prop2`: GoM's, kept unscaled, so the feed lips sit where GoM's do). GoM's guns keep GoM's models.
+# of real size, as its rifles, and draws them so in its own ARs; our SCAR-L and MDRx .223 (Post-93) and M249, drawn at
+# the M16A2's 0.603, draw them through `<magazine>_GoT`: the mesh and texture GoM draws that item with now, with
+# `scale` = 0.603 / 0.65 (a part model's own scale, about its origin: the feed lips at the gun's `magazine` point).
+# `<magazine>_Hand` is a hidden item with that model, which shared/GunsOfTien/HandMagazines.lua puts in the off hand
+# during those guns' reloads in place of GoM's (Gunworks puts an item of the magazine's type there, drawn with its own
+# model, placed by the model's own `Bip01_Prop2`: GoM's, kept unscaled, so the feed lips sit where GoM's do). GoM's
+# guns keep GoM's models. The magazines, their models, icons and names are read from GoM (gom_data.py), so a GoM
+# update needs only a new run (its November 2026 one drew the 50 / 75 / 150 with other models and added the jungle
+# pair's second side, 556x45Magazine60_STANAG_2).
 STANAG_GOT_SCALE = round(0.000603 / 0.00065, 4)
-STANAG_TEXTURE = {25: 20}           # GoM's 25-round magazine uses the 20-round's texture
-STANAG_SIZES = (20, 25, 30, 50, 60, 75, 100, 150)
 
 
 def stanag_got():
-    gom_names = {20: 'STANAG 20Rds 5.56x45mm Magazine', 25: 'STANAG 25Rds 5.56x45mm Magazine',
-                 30: 'STANAG 30Rds 5.56x45mm Magazine', 50: 'STANAG 50Rds 5.56x45mm Magazine',
-                 60: 'STANAG 60Rds Jungle-Style 5.56x45mm Magazine', 75: 'STANAG 75Rds 5.56x45mm Magazine',
-                 100: 'STANAG 100Rds 5.56x45mm Magazine', 150: 'STANAG 150Rds 5.56x45mm Magazine'}
     models = [f"module {MODULE} {{\n"]
     items = [f"module {MODULE} {{\n"]
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
-    for n in STANAG_SIZES:
-        mag = f'556x45Magazine{n}_STANAG'
-        tex = f'556x45Magazine{STANAG_TEXTURE.get(n, n)}_STANAG'
+    for s in GOM_STANAGS:
+        mag = s['item']
         models.append(f"""
     model {mag}_GoT {{
-        mesh     = weapons/magazines/assault_rifles|{mag},
-        texture  = weapons/magazines/assault_rifles/{tex},
+        mesh     = {s['mesh']},
+        texture  = {s['texture']},
         cullFace = None,
         scale    = {STANAG_GOT_SCALE:.4f},
-{m249_attachment('Bip01_Prop2', GOM_STANAG_PROP2)}    }}
+{m249_attachment('Bip01_Prop2', s['prop2'] or GOM_STANAG_PROP2)}    }}
 """)
         items.append(f"""
     item {mag}_Hand {{
         DisplayCategory  = WeaponMagazine,
         ItemType         = base:normal,
-        Icon             = {mag},
+        Icon             = {s['icon']},
         Weight           = 0.0,
         Hidden           = true,
         StaticModel      = {MODULE}.{mag}_GoT,
         WorldStaticModel = {MODULE}.{mag}_GoT,
     }}
 """)
-        names[f'{MODULE}.{mag}_Hand'] = gom_names[n]
+        names[f'{MODULE}.{mag}_Hand'] = s['name']
     models.append("}\n")
     items.append("}\n")
     write('scripts/GunsOfTien/models_stanag.txt', ''.join(models))
@@ -837,10 +851,21 @@ def smg_suppressor():
         texture  = weapons/GunsOfTien/{part},
         scale    = {GOT_PART_SCALE:.4f},
     }}
+
+    model {part}_MP5 {{
+        mesh     = weapons/parts/GunsOfTien_SMG9_parts|{part},
+        texture  = weapons/GunsOfTien/{part},
+        scale    = {MP5_PART_SCALE:.4f},
+    }}
 """)
         legacy = part == SMG9_LEGACY      # looks like GoM's mount
+        wear = ''
+        if ptype == 'Canon':
+            cmax, chance = MK9_DURABILITY
+            wear = (f"\n        ConditionMax              = {cmax},"
+                    f"\n        ConditionLowerChanceOneIn = {chance},")
         items.append(f"""
-    item {part} {{
+    item {part} {{{wear}
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
         Icon             = {'Muzzle_Mount_Device' if legacy else f'GunsOfTien_{part}'},
@@ -861,11 +886,26 @@ def smg_suppressor():
         cullFace = None,
         scale    = {GOT_PART_SCALE:.4f},
     }}
+
+    model {can}_MP5 {{
+        mesh     = weapons/parts/suppressors|{can},
+        texture  = weapons/parts/suppressors/{can},
+        cullFace = None,
+        scale    = {MP5_PART_SCALE:.4f},
+    }}
 """)
     models.append("}\n")
     items.append("}\n")
     write('scripts/GunsOfTien/models_suppressors.txt', ''.join(models))
     write('scripts/GunsOfTien/items_suppressors.txt', ''.join(items))
+    write('scripts/GunsOfTien/fixing_suppressors.txt', f"""module Base {{
+    fixing Fix Mk9_Suppressor {{
+        Require = {MODULE}.Mk9_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = {MODULE}.Mk9_Suppressor; MetalWelding=2,
+    }}
+}}
+""")
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
     for part, _, _, name in SMG9_PARTS:
@@ -886,10 +926,12 @@ def muzzle_devices():
     for d in MD.of_mod('main'):
         node = d['node']
         weight = MD.KINDS[d['kind']][0]
+        # a device drawn at another proportion than it was built (`drawn`, game units per mm)
+        scale = (f"\n        scale    = {round(d['drawn'] / d['scale'], 4):.4f}," if d.get('drawn') else '')
         models.append(f"""
     model {node} {{
         mesh     = weapons/parts/GunsOfTien_muzzle_devices|{node},
-        texture  = weapons/GunsOfTien/{node},
+        texture  = weapons/GunsOfTien/{node},{scale}
         attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
     }}
 """)
@@ -1253,7 +1295,7 @@ module Base {
 # our round models), the feed cover as a part (closed, or open while reloading), GoM's M60 stats pattern.
 M249_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'm249_points.json')
 M249_BOX = '556x45Box200_M249'
-M249_STANAGS = ['556x45Magazine%s_STANAG' % n for n in (20, 25, 30, 50, 60, 75, 100, 150)]
+M249_STANAGS = [s['item'] for s in GOM_STANAGS]   # GoM's "STANAG" profile, read from GoM (gom_data.py)
 # The feed cover swings open and shut in the reload clips one of these steps a frame (m249_reload.py's COVER_STEP, the
 # clip's gotFeedCover events): hinged where `cover` is, turned up `d` degrees (cover_open is 70).
 M249_COVER_STEPS = (10, 20, 30, 40, 50, 60)
@@ -1405,8 +1447,8 @@ def m249():
         RecoilDelay                  = 15,
         MaxRange                     = 55.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 10,
-        MaxSightRange                = 18.0,
+        MinSightRange                = {SIGHT['M249'][0]},
+        MaxSightRange                = {SIGHT['M249'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -1703,11 +1745,11 @@ UZI_NAMES = {'UZI': 'Uzi Submachine Gun', 'MINIUZI': 'Mini Uzi Submachine Gun',
 # sound_model.py's model (9mm from a 10.2" / 7.8" / 4.6" barrel; the main mod's SoundTable is for GoM's guns only).
 UZI_STATS = {
     'UZI': dict(min=1.0, max=1.6, crit=20.0, hit=50, aim=40, recoil=15, range=30.0, stop=2.0, weight=2.7,
-                radius=89, volume=25, sight=(4, 12.0), angle=(0.965, 0.01), knock=4.0, mag=32),
+                radius=89, volume=25, sight=SIGHT['UZI'], angle=(0.965, 0.01), knock=4.0, mag=32),
     'MINIUZI': dict(min=0.9, max=1.4, crit=20.0, hit=48, aim=30, recoil=13, range=27.0, stop=3.0, weight=2.1,
-                    radius=97, volume=28, sight=(3, 11.0), angle=(0.96, 0.03), knock=3.0, mag=20),
+                    radius=97, volume=28, sight=SIGHT['MINIUZI'], angle=(0.96, 0.03), knock=3.0, mag=20),
     'MICROUZI': dict(min=0.6, max=1.0, crit=25.0, hit=45, aim=25, recoil=12, range=25.0, stop=4.0, weight=1.5,
-                     radius=113, volume=32, sight=(2, 10.0), angle=(0.95, 0.05), knock=2.0, mag=20),
+                     radius=113, volume=32, sight=SIGHT['MICROUZI'], angle=(0.95, 0.05), knock=2.0, mag=20),
 }
 UZI_STATS['UZI_2H'] = UZI_STATS['UZI']
 UZI_PARTS = [  # hidden integrated stocks: (item, part type, weight, English name); GoM's MAC-10 stock weighs 0.2
@@ -1964,7 +2006,7 @@ def uzi():
 TMP_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tmp_points.json')
 TMP_MAGS = [(15, 0.07), (30, 0.12)]      # Steyr's polymer magazines; GoM's MP5 20 / 30: 0.08 / 0.18 (steel)
 TMP_STATS = dict(min=0.7, max=1.1, crit=25.0, hit=46, aim=25, recoil=12, range=25.0, stop=3.5, weight=1.0,
-                 radius=110, volume=31, sight=(2, 10.0), angle=(0.955, 0.04), knock=2.5, mag=30)
+                 radius=110, volume=31, sight=SIGHT['TMP'], angle=(0.955, 0.04), knock=2.5, mag=30)
 
 
 def tmp_mag(rounds):
@@ -2230,8 +2272,8 @@ def sr25():
         RecoilDelay                  = 16,
         MaxRange                     = 60.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 10,
-        MaxSightRange                = 18.0,
+        MinSightRange                = {SIGHT['SR25'][0]},
+        MaxSightRange                = {SIGHT['SR25'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2252,6 +2294,7 @@ def sr25():
         Weight                       = 4.9,
         MetalValue                   = 55.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         CyclicRateMultiplier         = 1.0,
         IsAimedFirearm               = true,
         Ranged                       = true,
@@ -2471,8 +2514,8 @@ def aug():
         RecoilDelay                  = 15,
         MaxRange                     = 50.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 8,
-        MaxSightRange                = 16.0,
+        MinSightRange                = {SIGHT['AUG'][0]},
+        MaxSightRange                = {SIGHT['AUG'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2738,8 +2781,8 @@ def rpk():
         RecoilDelay                  = 15,
         MaxRange                     = {s['range']},
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 8,
-        MaxSightRange                = 16.0,
+        MinSightRange                = {SIGHT['RPK'][0]},
+        MaxSightRange                = {SIGHT['RPK'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2952,8 +2995,8 @@ def svu():
         RecoilDelay                  = {s['recoil']},
         MaxRange                     = {s['range']},
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 10,
-        MaxSightRange                = 18.0,
+        MinSightRange                = {SIGHT['SVU'][0]},
+        MaxSightRange                = {SIGHT['SVU'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.01,
@@ -2974,6 +3017,7 @@ def svu():
         Weight                       = {s['weight']},
         MetalValue                   = 45.0,
         FireMode                     = Single,
+        FireModePossibilities        = Single,
         IsAimedFirearm               = true,
         Ranged                       = true,
         AmmoType                     = swmg:bullet_762x54,
@@ -3118,8 +3162,8 @@ def rpd():
         RecoilDelay                  = 15,
         MaxRange                     = 55.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 10,
-        MaxSightRange                = 18.0,
+        MinSightRange                = {SIGHT['RPD'][0]},
+        MaxSightRange                = {SIGHT['RPD'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -3316,11 +3360,13 @@ def glock21():
         RecoilDelay                  = 15,
         MaxRange                     = 20.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 1,
-        MaxSightRange                = 9.0,
+        MinSightRange                = {SIGHT['GLOCK21'][0]},
+        MaxSightRange                = {SIGHT['GLOCK21'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.05,
+        FireMode                     = Single,
+        FireModePossibilities        = Single,
         JamGunChance                 = 1,
         ConditionLowerChanceOneIn    = 230,
         ConditionMax                 = 10,
@@ -3491,11 +3537,13 @@ def ppk():
         RecoilDelay                  = 9,
         MaxRange                     = 16.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 1,
-        MaxSightRange                = 8.0,
+        MinSightRange                = {SIGHT['PPK'][0]},
+        MaxSightRange                = {SIGHT['PPK'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.95,
         AimingPerkMinAngleModifier   = 0.05,
+        FireMode                     = Single,
+        FireModePossibilities        = Single,
         JamGunChance                 = 1.5,
         ConditionLowerChanceOneIn    = 250,
         ConditionMax                 = 10,
@@ -3599,47 +3647,23 @@ def ppk():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
-# GoM's MP5 family at our size (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must stand in one
-# proportion, the Uzis'). scripts/build_mp5.py scales GoM's meshes and points by one factor for the whole family and its
-# magazines (mp5_points.json, see its header); these blocks declare GoM's own model names again (module MarzGuns), so
-# GoM's items and their ModelWeaponPart lines draw our meshes with GoM's textures. A later block resets GoM's mesh,
-# texture and scale but keeps its points (ModelScript.reset), so every point is written here. GoM's MP5 is shown as the
-# MP5A3 it is (retractable stock; the MP5A1 has none), next to GoM's own "MP5A2 Submachine Gun".
-MP5_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mp5_points.json')
+# GoM's MP5 family as GoM draws it (user, 2026-11-23: drop our MP5 resize). From 2026-10-27 to 2026-11-23 this mod
+# declared GoM's MP5 / MP5SD / MP5A2 / MP5K and magazine models again (zz_GunsOfTien/models_mp5.txt) with GoM's meshes
+# scaled to the Uzis' proportion (scripts/build_mp5.py, GunsOfTien_MP5.fbx). GoM's November 2026 update rescaled its MP5
+# meshes itself (0.779 of their size before: GOM_MP5_K), moved their points and added a jungle-taped 60, so the
+# override, its meshes and its build script were removed and GoM's own models apply unchanged. Only the name stays:
+# GoM's MP5 is shown as the MP5A3 it is (retractable stock; the MP5A1 has none), next to GoM's own "MP5A2 Submachine
+# Gun".
 MP5_NAMES = {'MarzGuns.MP5': 'MP5A3 Submachine Gun'}
+# game units per real mm of GoM's MP5 family since its November 2026 update: its MP5, MP5A2, MP5SD and MP5K meshes
+# measured in Blender at 0.779 of the size before (body length, width and height alike), which GoM drew at 0.72
+GOM_MP5_K = 0.00072 * 0.779
+# our 9mm muzzle parts and GoM's 9mm cans, built at 0.72, drawn on GoM's MP5 and MP5A2 through `<part>_MP5` models at
+# its size (smg_suppressor(); Suppressors.lua names them)
+MP5_PART_SCALE = round(GOM_MP5_K / 0.00072, 4)
 
 
-def model_block(name, m):
-    lines = [f"    model {name} {{",
-             f"        mesh     = {m['mesh']},",
-             f"        texture  = {m['texture']},"]
-    if m.get('cullFace'):
-        lines.append(f"        cullFace = {m['cullFace']},")
-    for pid, off, rot in m['attachments']:
-        lines += [f"        attachment {pid} {{",
-                  "            offset = %s," % ' '.join(f"{v:.4f}" for v in off),
-                  "            rotate = %s," % ' '.join(f"{v:.4f}" for v in rot),
-                  "        }"]
-    lines.append("    }")
-    return '\n'.join(lines) + '\n'
-
-
-# Where models_mp5.txt lives: ScriptManager.Load (42.21) sorts every mod's script files together by their lowercase
-# path under media/scripts (mod order plays no part) and a later block of a model resets an earlier one, so the file
-# must sort after GoM's own (MarzWeapons/models/...). Under GunsOfTien/ it loaded first and GoM's blocks replaced
-# every one of ours (found 2026-10-28: GoM's full-size MP5K bolt sticking out of our smaller MP5K).
-MP5_MODELS = 'scripts/zz_GunsOfTien/models_mp5.txt'
-
-
-def mp5_family():
-    data = json.load(open(MP5_POINTS))
-    out = ["/* Guns of Tien: GoM's MP5 family at the Uzis' size (scripts/build_mp5.py). This folder sorts after GoM's\n"
-           "   MarzWeapons/ so these blocks replace GoM's (scripts load sorted by path, not by mod order). */\n\n"
-           "module MarzGuns {\n"]
-    for name, m in data['models'].items():
-        out.append('\n' + model_block(name, m))
-    out.append("}\n")
-    write(MP5_MODELS, ''.join(out))
+def mp5_names():
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
     names.update(MP5_NAMES)
@@ -3648,11 +3672,16 @@ def mp5_family():
 
 # GoM's MP5K in our module, models only guns saved by older versions still name: MP5K_1H (a one-hand swap until
 # 2026-10-28) and MP5K_2H (a both-hands swap for our own hold, until 2026-10-29). SavedModels.lua copies the live
-# MarzGuns.MP5K mesh, texture and points over both at game start, so their blocks only have to load.
+# MarzGuns.MP5K mesh, texture and points over both at game start, so their blocks only have to load: GoM's MP5K mesh
+# and texture, read from GoM.
 def one_hand():
-    data = json.load(open(MP5_POINTS))
-    blocks = [model_block('MP5K_1H', data['models']['MP5K'])]
-    blocks += [model_block(name, m) for name, m in data['two_hand'].items()]
+    m = gom_data.model('MP5K')
+    blocks = [f"""    model {name} {{
+        mesh     = {m['mesh']},
+        texture  = {m['texture']},
+        cullFace = None,
+    }}
+""" for name in ('MP5K_1H', 'MP5K_2H')]
     write('scripts/GunsOfTien/models_onehand.txt', "module GunsOfTien {\n\n" + '\n'.join(blocks) + "}\n")
 
 
@@ -4000,8 +4029,8 @@ def p90():
         RecoilDelay                  = 12,
         MaxRange                     = 32.0,
         AimingPerkRangeModifier      = 0,
-        MinSightRange                = 4,
-        MaxSightRange                = 14.0,
+        MinSightRange                = {SIGHT['P90'][0]},
+        MaxSightRange                = {SIGHT['P90'][1]},
         MinRange                     = 0.61,
         MinAngle                     = 0.965,
         AimingPerkMinAngleModifier   = 0.01,
@@ -4221,7 +4250,7 @@ if __name__ == '__main__':
     rpd()
     svu()
     charging_handles()
-    mp5_family()
+    mp5_names()
     one_hand()
     fixed_bayonets()
     print('written under', os.path.normpath(ROOT))

@@ -20,7 +20,8 @@ end
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 GunsOfTien_TooltipStates[M .. "AUG_Integrated_Foregrip_Deployed"] = {
     "Folding front grip unfolded:",
-    "Aiming Time reduced by 20%",
-    "Critical and Hit Chance increased by 15%",
+    "Aiming Time reduced by 10",
+    "Critical Chance increased by 4%",
+    "Hit Chance increased by 7%",
     "Automatic fire spread reduced by 15%",
 }

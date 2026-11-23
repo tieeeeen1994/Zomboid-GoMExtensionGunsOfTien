@@ -13,16 +13,18 @@
       Bolt_Lock swap, the A1's AUG_BOLT); the charging handle moves only while racked (the main mod's
       ChargingHandle.lua), as on the A1;
     - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as the A1 (the main mod's GoMReloads.lua);
-    - the folding grip: the A1's two parts and their stats (the main mod's AUG.lua), folded through the main mod's
-      Foregrip.lua (the Para draws them with its own sand model);
+    - the folding grip: the A1's two parts and their stats (the main mod's AUG.lua), folded with Gunworks' swap
+      pair (the main mod's Foregrip.lua; the Para draws them with its own sand model); GoM's SMG grip stance, as its
+      FAMAS (GripStances.lua);
     - rails: integral top (GoM's optics) and right (GoM's lasers), hidden parts as on the SCARs and UMPs; no factory
       left rail: GoM's own Picatinny_Rail_Left (and its universal Picatinny Rail on the left side only) as an optional
       upgrade for GoM's lights, drawn on these guns with the main mod's short AUG_RAIL_LEFT (the A1 takes it too, with
       a right one, since 2026-10-30); no bottom rail (the folding grip);
     - muzzle: the A3 GoM's AR family (as the SCAR-L), the Para the 9x19mm mount device (GoM's, renamed) and
       the main mod's Mk9 (as the UMP9), the HBAR none;
-    - the HBAR's integrated folding bipod (Gunworks' FoldingBipod, as the main mod's M249 and GoM's BAR / M60 / M24)
-      with GoM's rail bipod stats.
+    - the HBAR's integrated folding bipod (Gunworks' FoldingBipod, as the main mod's M249 and GoM's BAR / M60 / M24):
+      no stat changes, as GoM's bipods since its November 2026 update; deployed, it steadies sustained fire as GoM's
+      rail bipod does (its RPM.lua).
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -86,16 +88,13 @@ RateOfFire.RegisterSpreadPartModifier(BIPOD_DEPLOYED, { sustainedSpreadMult = 0.
 for _, gun in ipairs(GUNS) do
     Animations.RegisterWeaponWithAnimatedParts(gun, ChargingHandle.ANIMATED_PARTS)
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("famas_rifle"))
-    Foregrip.Register(gun, {
-        folded = GRIP_FOLDED,
-        deployed = GRIP_DEPLOYED,
-        foldDesc = "IGUI_GunsOfTien_AUGFoldForegripDesc",
-        unfoldDesc = "IGUI_GunsOfTien_AUGUnfoldForegripDesc",
-    })
 end
+-- the A1's grip parts: Gunworks' swap pair and GoM's foregrip stance (the main mod's Foregrip.lua / AUG.lua register
+-- them; registering again here keeps this file whole on its own)
+Foregrip.Register(GRIP_FOLDED, GRIP_DEPLOYED, true)
 
 -------------------------------------------------
--- The HBAR's integrated bipod: GoM's rail bipod stats (a 4.9 kg rifle, not the M60's or M249's weight)
+-- The HBAR's integrated bipod: no stat changes, as GoM's M60, BAR and M24 bipods
 -------------------------------------------------
 FoldingBipod.RegisterWeapon(HBAR, {
     attachments = { partType = "BipodIntegrated", folded = BIPOD_FOLDED, deployed = BIPOD_DEPLOYED },
@@ -104,11 +103,7 @@ FoldingBipod.RegisterWeapon(HBAR, {
 -- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
 BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
 CSA.RegisterMultipleParts({
-    [BIPOD_DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.1),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
-    },
+    [BIPOD_DEPLOYED] = {},
     [BIPOD_FOLDED] = {},
     [RAIL_UP] = {},
     [RAIL_RIGHT] = {},

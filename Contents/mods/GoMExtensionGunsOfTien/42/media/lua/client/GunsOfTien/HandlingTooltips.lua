@@ -40,8 +40,6 @@ local HANDLING = {
     { "MarzGuns.BAR", "Has Integrated Bipod", {  } },
     { "MarzGuns.M24", "Has Integrated Bipod", {  } },
     { "MarzGuns.M60", "Has Integrated Bipod", {  } },
-    { "MarzGuns.Shellholder", "Allows the user to fire 40% faster", { "Recoil Delay reduced by 40%" } },
-    { "MarzGuns.Shellholder", "", { "Attachable on stocks." } },
     { "MarzGuns.AR15", "Can Attach Bayonets.", { "Can attach a bayonet." } },
     { "MarzGuns.BENELLI_M4", "Can Attach Bayonet.", { "Can attach a bayonet." } },
     { "MarzGuns.FAMAS", "Can Attach Bayonet.", { "Can attach a bayonet." } },
@@ -78,7 +76,9 @@ local HANDLING = {
     { "MarzGuns.Rem700_Sling", "", { "Reduces encumbrance." } },
     { "MarzGuns.VP70M_Stock", "", { "No Direct Stat Changes" } },
     { "MarzGuns.545x39Magazine60_Bakelite", "", { "Uses 5.45x39mm rounds." } },
+    { "MarzGuns.556x45Magazine60_STANAG_2", "", { "Uses .223/5.56x45mm NATO rounds." } },
     { "MarzGuns.9x19Magazine17_GLOCK", "", { "Uses 9x19mm rounds." } },
+    { "MarzGuns.9x19Magazine60_MP5_2", "", { "Uses 9x19mm rounds." } },
     { "MarzGuns.9x39Magazine10", "", { "Uses 9x39mm rounds." } },
     { "MarzGuns.9x39Magazine20", "", { "Uses 9x39mm rounds." } },
     { "MarzGuns.CAMP_CARBINE", "", { "Uses .45 rounds." } },
@@ -93,37 +93,28 @@ local HANDLING = {
 -- integrated part -> its lines, shown under a gun while that part is fitted (Tooltips.lua sets them per render)
 GunsOfTien_TooltipStates = GunsOfTien_TooltipStates or {}
 local STATES = GunsOfTien_TooltipStates
-STATES["MarzGuns.AKS74U_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 25%", "Automatic fire spread reduced by 25%" }
-STATES["MarzGuns.ASVAL_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 15%", "Automatic fire spread reduced by 25%" }
-STATES["MarzGuns.BAR_Integrated_Bipod_Deployed"] = { "Folding bipod deployed:", "Aiming Time increased by 20%", "Critical and Hit Chance increased by 25%" }
-STATES["MarzGuns.CAR15_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 15%" }
-STATES["MarzGuns.FNC_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 5%", "Hit Chance increased by 15%" }
-STATES["MarzGuns.G36C_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%", "Automatic fire spread reduced by 25%" }
-STATES["MarzGuns.G36_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 15%", "Hit Chance increased by 15%" }
-STATES["MarzGuns.M60_Integrated_Bipod_Deployed"] = { "Folding bipod deployed:", "Aiming Time increased by 30%", "Critical and Hit Chance increased by 10%" }
-STATES["MarzGuns.M60_Integrated_Bipod_Folded"] = { "Folding bipod folded:", "Hit Chance reduced by 20%", "Firing uses endurance" }
-STATES["MarzGuns.MAC10_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 10%" }
-STATES["MarzGuns.MP5SD_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%" }
-STATES["MarzGuns.MP5_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 25%", "Hit Chance increased by 15%" }
-STATES["MarzGuns.SPAS12_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 10%", "Hit Chance increased by 10%" }
+STATES["MarzGuns.AKS74U_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 4", "Hit Chance increased by 8%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.ASVAL_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 4", "Hit Chance increased by 8%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.CAR15_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 3", "Hit Chance increased by 8%" }
+STATES["MarzGuns.FNC_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 2", "Hit Chance increased by 6%" }
+STATES["MarzGuns.G36C_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 4", "Hit Chance increased by 8%", "Automatic fire spread reduced by 25%" }
+STATES["MarzGuns.G36_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 2", "Hit Chance increased by 8%" }
+STATES["MarzGuns.MAC10_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 3", "Hit Chance increased by 4%" }
+STATES["MarzGuns.MP5SD_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 10", "Hit Chance increased by 8%" }
+STATES["MarzGuns.MP5_Integrated_Stock_Deployed"] = { "Collapsible stock deployed:", "Aiming Time reduced by 10", "Hit Chance increased by 8%" }
+STATES["MarzGuns.SPAS12_Integrated_Stock_Deployed"] = { "Folding stock deployed:", "Aiming Time reduced by 4", "Hit Chance increased by 7%" }
 STATES["MarzGuns.SPAS12_Selector_Pump"] = { "Pump action:", "Needs racking every shot" }
-STATES["MarzGuns.SPAS12_Selector_Semi"] = { "Semi-automatic:", "Jam Chance increased by 60%", "Recoil Delay reduced by 50%" }
+STATES["MarzGuns.SPAS12_Selector_Semi"] = { "Semi-automatic:", "Jam Chance increased by 0.6%" }
 
 -- { part, a line its tooltip is missing }
 local PART_LINES = {
-    { "MarzGuns.Bipod_Deployed", "Automatic fire spread reduced by 35%" },
     { "MarzGuns.BrightPoint-5_Light", "Aiming Time increased by 5" },
     { "MarzGuns.LP_Light", "Aiming Time increased by 5" },
     { "MarzGuns.MK2_Foregrip", "Automatic fire spread reduced by 10%" },
-    { "MarzGuns.MK2_Foregrip", "Needs Screwdriver to install or remove." },
     { "MarzGuns.MKC_Foregrip", "Automatic fire spread reduced by 10%" },
-    { "MarzGuns.MKC_Foregrip", "Needs Screwdriver to install or remove." },
     { "MarzGuns.SR7_Light", "Aiming Time increased by 5" },
     { "MarzGuns.Stub_Foregrip", "Automatic fire spread reduced by 15%" },
-    { "MarzGuns.Stub_Foregrip", "Needs Screwdriver to install or remove." },
     { "MarzGuns.TL_Light", "Aiming Time increased by 5" },
-    { "MarzGuns.Model_70_Sling", "Needs Screwdriver to install or remove." },
-    { "MarzGuns.Rem700_Sling", "Needs Screwdriver to install or remove." },
     { "MarzGuns.VP70M_Stock", "Needs Screwdriver to install or remove." },
 }
 

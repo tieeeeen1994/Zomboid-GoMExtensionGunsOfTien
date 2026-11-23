@@ -8,8 +8,8 @@
       magazines fit neither the SR-25 nor the SCAR-H), in GoM's 7.62x51mm family;
     - select fire, Auto / Single at H&K's 600 rpm; the Sniper's longer, heavier barrel spreads a little less;
     - GoM's AR bolt and charging handle as on its AR15, GoM's AR15 reload with its bolt catch rule (as the Mk 11);
-    - H&K's six-position stock (HK417_Integrated_Stock_Folded / _Deployed, Gunworks' FoldingStock), with GoM's CAR-15 /
-      our SCARs' stock stats when out (as the HK416's);
+    - H&K's six-position stock (HK417_Integrated_Stock_Folded / _Deployed, Gunworks' FoldingStock), with GoM's CAR-15
+      stock stats when out (as the HK416's);
     - four hidden integrated rails (modelled in the body) as parents of GoM's optics (top), foregrips and bipods
       (bottom), lights (left) and lasers (right);
     - the iron sights follow the optic (IronSights.lua): H&K's flip-ups as on the HK416, the rear folded under a red
@@ -90,8 +90,8 @@ end
 CSA.RegisterMultipleParts({
     [STOCK_FOLDED] = {},
     [STOCK_DEPLOYED] = {
-        SF.Multiply("HitChance", 1.15),
-        SF.Multiply("AimingTime", 0.85),
+        SF.Adjust("HitChance", 8),
+        SF.Adjust("AimingTime", -3),
     },
 })
 

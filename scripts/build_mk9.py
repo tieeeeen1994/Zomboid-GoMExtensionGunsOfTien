@@ -163,8 +163,10 @@ def texture(ob, kind, size, path):
 # The `canon` point on GoM's MP5 and MP5A2
 # ==================================================================================================
 
-# GoM's model scripts (smgs.txt): the muzzle point's z is the bore axis
-GOM_GUNS = {"MP5": 0.0410, "MP5A2": 0.0410}
+# the bore axis z on GoM's meshes of its November 2026 update (the barrel tip's ring centre, measured 2026-11-23;
+# 0.0410 on both before GoM rescaled them). The values in use live in shared/GunsOfTien/GoMAttachments.lua POINTS
+# (canon y 0.2178 / 0.2190); smg9_points.json is only read by render_ad_guns.py and is rewritten by a rebuild here.
+GOM_GUNS = {"MP5": 0.0301, "MP5A2": 0.0325}
 
 
 def measure_canon(gun, bore_z):

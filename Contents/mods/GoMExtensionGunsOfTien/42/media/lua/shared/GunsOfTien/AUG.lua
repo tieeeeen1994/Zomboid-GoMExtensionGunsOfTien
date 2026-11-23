@@ -11,14 +11,16 @@
       Bolt_Fired swap); the charging handle on the left does not reciprocate and moves only while racked
       (ChargingHandle.lua);
     - held with vanilla's rifle clips and reloaded with GoM's FAMAS reload, as its FAMAS (GoMReloads.lua);
-    - the integral 1.5x scope, a hidden part with no model, below GoM's 2x Elcan: Aiming Time x1.05, Hit and Crit
-      Chance x1.05, sight range x1.15;
-    - the folding front grip (shared/GunsOfTien/Foregrip.lua swaps its two parts), unfolded with GoM's Stub Foregrip
-      stats and spread, as Post-93's MP7A1;
+    - the integral 1.5x scope, a hidden part with no model, below GoM's 2x Elcan: GoM's Aimpoint numbers (flat, as
+      GoM's attachments are since its November 2026 update): Critical Chance +1, Hit Chance +2, sight range 1 / 2
+      tiles further;
+    - the folding front grip (shared/GunsOfTien/Foregrip.lua: Gunworks' swap pair, as GoM's rail bipod), unfolded
+      with GoM's Stub Foregrip stats and spread and GoM's foregrip stance, as Post-93's MP7A1;
+    - GoM's SMG grip stance, as its FAMAS (GripStances.lua);
     - no optics, bayonet or muzzle parts (user, 2026-10-27: none fit a 1993 A1); GoM's optional left and right
       Picatinny rails (user, 2026-10-30; Rails.lua) for its lights and lasers, drawn as our short AUG_RAIL_LEFT /
       _RIGHT (the left one Post-93's A3s draw too). No top rail: an optic over the integral scope would add its stats
-      to the scope's (Gunworks multiplies every part's).
+      to the scope's (Gunworks applies every part's).
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -69,29 +71,24 @@ require("WeaponSystems/ReloadAnim/HandlerFactory").RegisterWeapon(AUG,
     require("GunsOfTien/GoMReloads").profile("famas_rifle"))
 
 -------------------------------------------------
--- Integrated parts: the 1.5x scope, the folding grip (GoM's Stub Foregrip numbers unfolded)
+-- Integrated parts: the 1.5x scope (GoM's Aimpoint numbers), the folding grip (GoM's Stub Foregrip numbers unfolded)
 -------------------------------------------------
 CSA.RegisterMultipleParts({
     [SCOPE] = {
-        SF.Multiply("AimingTime", 1.05),
-        SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("HitChance", 1.05),
-        SF.Multiply("MaxSightRange", 1.15),
-        SF.Multiply("MinSightRange", 1.15),
+        SF.Adjust("CriticalChance", 1),
+        SF.Adjust("HitChance", 2),
+        SF.Adjust("MaxSightRange", 2),
+        SF.Adjust("MinSightRange", 1),
     },
     [FOLDED] = {},
     [DEPLOYED] = {
-        SF.Multiply("AimingTime", 0.8),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
+        SF.Adjust("AimingTime", -10),
+        SF.Adjust("CriticalChance", 4),
+        SF.Adjust("HitChance", 7),
     },
 })
-Foregrip.Register(AUG, {
-    folded = FOLDED,
-    deployed = DEPLOYED,
-    foldDesc = "IGUI_GunsOfTien_AUGFoldForegripDesc",
-    unfoldDesc = "IGUI_GunsOfTien_AUGUnfoldForegripDesc",
-})
+-- folded / unfolded through Gunworks' swap pair; unfolded, a foregrip for GoM's grip stances (GripStances.lua)
+Foregrip.Register(FOLDED, DEPLOYED, true)
 
 -------------------------------------------------
 -- Parts that cannot be taken off through the vanilla upgrade menu (magazines go with the reload)

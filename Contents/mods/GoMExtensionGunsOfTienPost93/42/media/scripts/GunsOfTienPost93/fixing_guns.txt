@@ -43,4 +43,29 @@ module Base {
         Require = GunsOfTienPost93.UMP9,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
+
+    fixing Fix MP7_Suppressor {
+        Require = GunsOfTienPost93.MP7_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTienPost93.MP7_Suppressor; MetalWelding=2,
+    }
+
+    fixing Fix P90_Suppressor {
+        Require = GunsOfTienPost93.P90_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTienPost93.P90_Suppressor; MetalWelding=2,
+    }
+
+    fixing Fix FIVESEVEN_Suppressor {
+        Require = GunsOfTienPost93.FIVESEVEN_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTienPost93.FIVESEVEN_Suppressor; MetalWelding=2,
+    }
+
+    fixing Fix SCARH_Suppressor {
+        Require = GunsOfTienPost93.SCARH_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTienPost93.SCARH_Suppressor; MetalWelding=2,
+    }
+
 }

@@ -1,0 +1,7 @@
+module Base {
+    fixing Fix Mk9_Suppressor {
+        Require = GunsOfTien.Mk9_Suppressor,
+        Fixer   = MarzGuns.RepairPack; Aiming=5,
+        Fixer   = GunsOfTien.Mk9_Suppressor; MetalWelding=2,
+    }
+}

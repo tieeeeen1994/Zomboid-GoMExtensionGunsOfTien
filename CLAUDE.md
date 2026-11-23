@@ -35,7 +35,9 @@ guns". Neither mod ships an AnimSet node or a clip (`media/AnimSets` and `media/
 held with vanilla's rifle or pistol clips, as GoM's guns are, and reloads with one of GoM's reload animIds through
 Gunworks' registry (`shared/GunsOfTien/GoMReloads.lua`: `profile(animId)`, Gunworks' "none" style, GoM's durations
 copied from the local table in its `Registries/ReloadsAndAnims/ReloadAnims.lua`, re-synced 2026-11-04: the clips'
-real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrations (`GunworksGripAnim`) either.
+real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrations (`GunworksGripAnim`) either,
+except GoM's own SMG / foregrip stances since its November 2026 update (section "Guns of Marz's November 2026
+update, followed").
 
 - Per gun, the closest GoM gun: Uzi, Mini Uzi, Micro Uzi, MP7A1 / A2, P90 TR, Vector 9mm (one-handed, pistol clips)
   "handgun2" (GoM's MP5K / TEC-9; the full Uzi was rifle-held on "MP5" until 2026-10-30, user: "the rifle stance
@@ -153,6 +155,74 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `m_BlendTime`), so hands and gun cross-fade separately (the gun bone hangs from Bip01). A transition clip cannot
   cover it: the engine (42.21 `AdvancedAnimator.FindTransitionsFromProxy`) only plays one from a node going out to a
   node coming in, and the root idle node stays active under the reload layer.
+
+## Guns of Marz's November 2026 update, followed (2026-11-23; built, not played)
+
+User: "Let's match balance with GoM. Our changes should be consistent with GoM. We follow their changes. Fix everything
+in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November block; what changed here:
+- **STANAG magazines read from GoM** (`scripts/gom_data.py`): GoM dropped the model blocks `556x45Magazine50/75/150_STANAG`
+  (the 50 is now drawn as `556x45Magazine60_STANAG`, a 60-round extended STANAG; the 75 as `556x45Magazine60_PMAG`, a
+  60-round drum; the 150 as `556x45Magazine100_CMAG`, 100 rounds) and added the jungle-taped pair's second side
+  `556x45Magazine60_STANAG_2` (both sides drawn as `556x45Magazine30_STANAG_STACKED_1 / _2`; Gunworks'
+  StackedMagazines flips them, GoM's Registries/StackedMagazines.lua). `gom_data.stanags()` reads GoM's "STANAG"
+  profile (Registries/Magazines.lua), each item's StaticModel and that model's mesh, texture and Bip01_Prop2, its icon
+  and name; gen_scripts.py `stanag_got()` writes `<item>_GoT` / `<item>_Hand` from it (names by item, so saved hand
+  items keep working), M249 and post93 SCAR-L / MDRx .223 lines draw them, the HK416 GoM's own model per item
+  (`STANAG_MODEL`). The Lua lists are GoM's live profile (`HandMagazines.gomProfile("STANAG")`: M249.lua, Post-93
+  Guns.lua, HK416.lua, MDR.lua); a magazine GoM adds later without a `_Hand` item falls back to GoM's own in the hand.
+  Fixed bayonets copy GoM's gun lines at build time (re-run gen_scripts.py after a GoM update).
+- **MP5 resize dropped** (user decision): GoM rescaled its MP5 family itself to 0.779 of its former meshes (Blender,
+  body length / width / height alike: GoM's MP5s are now ~0.561 of real), moved their points and added
+  `9x19Magazine60_MP5_2`. `zz_GunsOfTien/models_mp5.txt`, `GunsOfTien_MP5.fbx`, `GunsOfTien_MP5_magazines.fbx`,
+  `scripts/build_mp5.py` and `mp5_points.json` are deleted; GoM's own models apply. Kept: the "MP5A3 Submachine Gun"
+  name (`mp5_names()`), the old `MP5K_1H / _2H` model blocks (now GoM's MP5K mesh; SavedModels.lua copies the points).
+  The `canon` point our models carried is now put on GoM's MP5 / MP5A2 at run time (GoMAttachments.lua POINTS:
+  0.2178 / 0.2190, bore z 0.0301 / 0.0325, measured on GoM's new meshes with build_mk9.py's rule); the 9mm parts are
+  drawn there through `<part>_MP5` models (`MP5_PART_SCALE` 0.779 of the 0.72-built Mk9, our adapter, GoM's M&P / Shh9)
+  and the H&K flash hider's own model at `drawn / scale` (muzzle_devices.py `drawn`). MuzzlePoints.lua moves GoM's
+  MP5SD muzzle point to its can's front (5.4 cm inside, GoM gave it the MP5's point). smg9_points.json (render art only)
+  is stale until build_mk9.py is run again.
+- **Flat attachment stats**: GoM's AttachmentCustomStats.lua uses `SF.Adjust` now (and clamps Aiming Time >= 5 after
+  every reapply with a restore handler, which runs for every gun, ours included). Ours follow, each by its GoM
+  equivalent: Uzi / MP7A1 stocks = GoM's MP5 stock (+8 Hit, -10 Aiming Time), Mini / Micro Uzi = MAC-10 (+4 / -3),
+  SCAR = G36 (+8 / -2), UMP / Vector = G36C (+8 / -4), HK416 / HK417 = CAR-15 (+8 / -3); the AUG and MP7A1 grips =
+  Stub (-10 / +4 crit / +7 hit); the AUG A1's 1.5x scope = Aimpoint (+1 crit, +2 hit, range +1 / +2 tiles); the
+  SR-25's scope = LR10X (+15 aim, +10 crit, +15 hit, +5 / +9 tiles). GoM's bipods (M60 / BAR / M24 integrated and the
+  rail bipod) carry no stats any more, so ours have none either (M249, RPD, RPK, SR-25, AUG HBAR, MDRx .308); the
+  spread modifiers stay where GoM keeps them (rail bipod). Muzzle devices: GoM's LR2 -15 radius / -4 volume, LX and
+  Trix42 -10 / -2 (`muzzle_devices.py KINDS`, MuzzleFamilies.lua `SF.Adjust`). Suppressors stay `SF.Multiply` 0.3 as
+  GoM's. Tooltips say it in GoM's wording ("Aiming Time reduced by 10", "Hit Chance increased by 8%", "Optimal Range
+  starts 1 tile and ends 2 tiles further"); gen_handling_tooltips.py reads `SF.Adjust` the same way.
+- **Sight windows by class**: each gun takes the Min/MaxSightRange of its closest GoM gun, read from GoM's script at
+  every run (`gom_data.sight`, `GOM_EQUIVALENT` in gen_scripts.py and gen_post93_guns.py; the table there is the
+  record). The SV-99 (.22 LR, range 30) has no GoM equal and takes the carbines' 5-14; the SV-98 GoM's M24 14-28; the
+  Mosin's sawn-off barrel 4-13 (a short carbine's).
+- **Real single fire**: Gunworks turns Single into RealSingle (one shot per click) only for RateOfFire-registered
+  guns; GoM registers all its semi, bolt and launcher guns at 600 rpm. `RealSingleFire.lua` (both mods) does the same
+  for ours with Single fire only, whose scripts now say `FireMode` and `FireModePossibilities = Single` as GoM's.
+- **Suppressors wear** (GoM: ConditionMax 50-100, 1 in 10-15 per shot, Gunworks AttachmentsDurability, repairs with
+  MarzGuns.RepairPack or a second can by welding): the Mk9 as GoM's M&P (100 / 15, `fixing_suppressors.txt`),
+  Post-93's MP7 / P90 / Five-seveN cans 100 / 15 and the SOCOM762-RC as the MKI 60 / 15 (`CAN_DURABILITY`,
+  fixing_guns.txt); registered in Suppressors.lua / Guns.lua. The Groza-4's integral can is part of the gun.
+- **Loot**: GoM's suppressor and muzzle device spawners are alternatives of {cans or devices} + {their mount} now.
+  The Mk9 joins GoM's 9mm alternative; our devices and Post-93's cans and SureFire devices are one alternative per
+  mount (Loot.lua `DEVICE_ALTERNATIVES`, Post-93 `PART_ALTERNATIVES`).
+- **Tools**: GoM's AttachAndDetach.lua leaves only CanonMount, rails, Barrel, Stock and Pistol_Underbarrel needing a
+  tool; our parts use GoM's part types and `requiredTools`, so they follow by themselves. "Needs Wrench" stays only
+  on mount devices.
+- **Folding grips are Gunworks' swap pair** (`DynamicAttachment.RegisterPair`, "Swap to ..." in the menu and radial,
+  `ISSwapAttachment`), as GoM's rail bipod, Beretta stock and SPAS selector: Foregrip.lua is now that registration;
+  ISFoldForegripGoT, ForegripMenu.lua, the radial icons, make_foregrip_radial.py and the IGUI fold strings are gone.
+  Gunworks swaps the first paired part it finds, so a gun must not carry two pairs (none of ours does).
+- **GoM's grip stances** (exception to "No grip registrations" below, GoM's own nodes): GoM registers its MP5s,
+  Thompson and FAMAS as `{ animId = "SMG", variants = { Foregrip = "ForegripSMG" } }`; GripStances.lua (both mods)
+  registers every two-handed gun of ours that reloads with GoM's MP5 or FAMAS reload the same way (AUG A1 / A3 /
+  Para / HBAR, SVU, UZI_2H, MDRx .223 / .308, PS90, Groza-1 / GL / 4, UMP45 / 9, Vector .45 / CRB). The nodes need
+  Weapon = firearm, so one-handed guns are left alone; the AUG's deployed grip is a GripAnim foregrip (two-handed),
+  the MP7A1's is not. GoM's own foregrips give any other two-handed gun GoM's rifle foregrip stance by themselves.
+- Hot Brass's `addCasingToVehicle` gained a 4th argument (`ignoreDespawn`); BeltLinks.lua passes `...` through.
+- GoM's own data left alone: its PSG-1 and SVD spawn tables list foregrips their MountOn refuses
+  (attachment_audit.py ISSUE lines, 2026-11-23).
 
 ## Decisions taken with the user (main mod)
 
@@ -678,7 +748,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`, `items_ammomaker_cartons.txt`,
   `recipes_ammomaker_cartons.txt`), `lua/shared/GunsOfTien/`
-  (`Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `AmmoPartCartons.lua` +
+  (`GripStances.lua` and `RealSingleFire.lua`, GoM's November 2026 stances and single fire for our guns (Post-93 has
+  its own two); `Ammunition.lua`, `Sounds.lua`, `SoundTable.lua`, `AmmoMaker.lua`, `AmmoPartCartons.lua` +
   `AmmoPartCartonsTable.lua`, `ChargingHandle.lua`: the non-reciprocating
   handles of the AUGs and MP7s, with `scripts/GunsOfTien/items_handles.txt`; `FixedBayonet.lua` with its server and
   client `FixedBayonetMenu.lua` halves and `items_fixedbayonet.txt`, section "Fixed bayonets"), `lua/server/GunsOfTien/HotBrass.lua` (no
@@ -867,8 +938,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `render_m249.py`, `make_m249_art.py` (the M249, section "M249 Light Machine Gun"); `scripts/build_uzi.py`,
   `render_uzi.py`, `make_uzi_art.py` (the Uzis, section "Uzi family"); `scripts/build_aug.py`, `render_aug.py`,
   `make_aug_art.py` (the AUG A1, section "Steyr AUG A1"); Post-93's `scripts/post93/build_aug3.py`, `render_aug3.py`,
-  `make_aug3_art.py` (the AUG A3, Para and HBAR, section "Steyr AUG A3, Para and HBAR"); `scripts/make_foregrip_radial.py` (the Fold / Unfold
-  Foregrip radial icons, moved from post93/ on 2026-10-27); `scripts/build_rails.py` (our short Picatinny rails for
+  `make_aug3_art.py` (the AUG A3, Para and HBAR, section "Steyr AUG A3, Para and HBAR"); `scripts/gom_data.py` (GoM's STANAG magazines,
+  models and sight windows, read by both generators; section "Guns of Marz's November 2026 update, followed"); `scripts/build_rails.py` (our short Picatinny rails for
   the AUGs and Uzis, section "Picatinny rail upgrades": run it after changing build_aug.py `LEFT_RAIL` / `RIGHT_RAIL`
   or build_uzi.py `RAILS`, then the guns' builds for their points, then `gen_scripts.py`); `scripts/build_glock21.py`,
   `render_glock21.py`, `make_glock21_art.py` (the Glock 21, section "Glock 21"); `scripts/build_ppk.py`,
@@ -1025,7 +1096,9 @@ space), so offset = hinge - R . hinge; upright the turn is +90, and in the turne
 about Y flips a turn about X), written that way because `turned()` keeps a given rotate. Which end hinges is from
 memory of photos of the unfolded gun (the grip hangs just behind the nose's hand stop), not from a photo in `docs/`.
 Parts `MP7A1_Integrated_Foregrip_Folded / _Deployed` (part type `ForegripIntegrated`, `CannotBeRemoved`), folded
-required at spawn. (Since 2026-10-27 the fold code below lives in the main mod, `shared/GunsOfTien/Foregrip.lua` with
+required at spawn. (Since 2026-11-23 the fold is Gunworks' swap pair, `DynamicAttachment.RegisterPair`, and
+everything below about our own fold action, menu and icons is history: section "Guns of Marz's November 2026 update,
+followed". Since 2026-10-27 the fold code below lived in the main mod, `shared/GunsOfTien/Foregrip.lua` with
 `Foregrip.Register(gun, { folded, deployed, foldDesc, unfoldDesc })` and `client/GunsOfTien/ForegripMenu.lua`, icons
 `ui/GunsOfTien_Radial_*Foregrip.png`, for the AUG A1 too; Post-93's Foregrip.lua only registers the MP7A1: a second
 copy would have redefined the global `ISFoldForegripGoT` bound to one mod's gun list.) The fitted part is the state:
@@ -1594,7 +1667,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   in the gun's light, the 30 at the 42's scale (the MP7's blue-heavy magazine light ringed them in blue); sheet `docs/aug_preview.png` with the photo's outline over the left side),
   `gen_scripts.py aug()` (items_aug.txt, models_aug.txt, fixing_aug.txt, names), `shared/GunsOfTien/AUG.lua`
   (registries), `client/GunsOfTien/AUGTooltips.lua`, loot in `server/GunsOfTien/Loot.lua`, Hot Brass in
-  `server/GunsOfTien/HotBrass.lua`, the fold in `shared/GunsOfTien/Foregrip.lua` + `client/GunsOfTien/ForegripMenu.lua`.
+  `server/GunsOfTien/HotBrass.lua`, the fold in `shared/GunsOfTien/Foregrip.lua` (Gunworks' swap pair since 2026-11-23).
   Rebuild: build, render, art, then `gen_scripts.py` and `check_refs.py`.
 - **Reference** (not in the repo; references/aug): Commons "Steyr AUG 5,56 mm" (MoserB, public domain, 4475 px) and its
   background-removed copy "Steyr AUG 5,56 mm noBG.png" (CC BY-SA 4.0, 5000 px, used for the edges): an Austrian StG 77,
@@ -3742,7 +3815,7 @@ ship, but how the Uzi set (now ShortSMG) was built still holds.
   `Mk9_Suppressor_GoT` / `SMG9_Muzzle_Mount_Device_GoT`, the same mesh with `scale = 0.8375` (gen_scripts.py
   `GOT_PART_SCALE`; a part model's own `scale` scales it about its origin, here its `canon` point). GoM's STANAG
   magazines (meshes at 0.65) are drawn in the SCAR-L and M249 through `GunsOfTien.<mag>_GoT` (GoM's mesh, scale
-  0.9277; gen_scripts.py `stanag_got`), and the M249's reload shows the hidden item `<mag>_Hand` with that model in
+  0.9277; gen_scripts.py `stanag_got`, from GoM's current STANAG models since 2026-11-23), and the M249's reload shows the hidden item `<mag>_Hand` with that model in
   the left hand (M249.lua swaps `ReloadAnim.resolveReloadMagItem` for the call of `attachReloadMagazine`, which looks
   it up on the table at call time); GoM's own ARs keep GoM's size. GoM's parts
   on our guns (optics, lights, lasers, foregrips, GoM's suppressors) keep GoM's sizes. Icons are framed to the icon box,
@@ -3752,8 +3825,9 @@ ship, but how the Uzi set (now ShortSMG) was built still holds.
   points files and scale offsets measured on the gun, never the hand's own contact offsets (`hold_fix`, CONTACT).
   The guns on vanilla's or GoM's clips (SCARs, UMPs, Five-seveN, UCP) needed no new clips. A HEAD worktree (`git
   worktree add`) runs the old-size pipeline for like-for-like comparisons.
-- **GoM's MP5 family at the Uzis' proportion** (user, 2026-10-27: the 9x19mm SMGs share the Mk9, so they must be one
-  size; "based on Uzi's"): `scripts/build_mp5.py` (Blender, seconds) scales GoM's own MP5 / MP5SD / MP5A2 / MP5K meshes
+- **GoM's MP5 family at the Uzis' proportion** (REMOVED 2026-11-23, user: GoM rescaled its MP5s itself; everything
+  below is history, see "Guns of Marz's November 2026 update, followed") (user, 2026-10-27: the 9x19mm SMGs share the
+  Mk9, so they must be one size; "based on Uzi's"): `scripts/build_mp5.py` (Blender, seconds) scales GoM's own MP5 / MP5SD / MP5A2 / MP5K meshes
   and its five MP5 magazines by one factor about the model origin (`GunsOfTien_MP5.fbx`,
   `GunsOfTien_MP5_magazines.fbx`, GoM's node names and UVs) and writes GoM's points times it to `mp5_points.json`;
   `gen_scripts.py mp5_family()` declares GoM's 15 model blocks again (`zz_GunsOfTien/models_mp5.txt`, `module

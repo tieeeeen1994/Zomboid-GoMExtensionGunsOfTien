@@ -47,7 +47,7 @@ STATES["GunsOfTien.MOSIN_Barrel_Sawnoff"] = function(item)
         "Hit Chance reduced by 17%",
         "Aiming Time reduced by 36%",
         "Recoil Delay increased by 20%",
-        SawnStock and SawnStock.IsSawn(item) and "Sight Range reduced to 2-9 tiles" or "Sight Range reduced to 4-12 tiles",
+        SawnStock and SawnStock.IsSawn(item) and "Sight Range reduced to 2-9 tiles" or "Sight Range reduced to 4-13 tiles",
         "Range reduced by 50%",
         "Sound Radius and Volume increased by 35%",
         "Larger Muzzle Flash",
@@ -86,7 +86,6 @@ for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) 
         "Damage reduced by 10%",
         "Removes Muzzle Flash",
         "Can be mounted on",
-        "Needs Wrench to install or remove.",
     }
 end
 lines["GunsOfTien.Mk9_Suppressor"] = {
@@ -95,7 +94,6 @@ lines["GunsOfTien.Mk9_Suppressor"] = {
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
     "Can be mounted on",
-    "Needs Wrench to install or remove.",
 }
 -- GoM's AK can on the main mod's RPKs and GoM's SKS too (RPK.lua, MuzzleFamilies.lua), and Post-93's Grozas
 lines["MarzGuns.PBS-1_Suppressor"] = {
@@ -104,7 +102,6 @@ lines["MarzGuns.PBS-1_Suppressor"] = {
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
     "Can be mounted on",
-    "Needs Wrench to install or remove.",
 }
 -- GoM's .45 can on its Camp Carbine too (MuzzleFamilies.lua) and Post-93's Vector .45 Carbine
 lines["MarzGuns.P45_Suppressor"] = {
@@ -113,28 +110,27 @@ lines["MarzGuns.P45_Suppressor"] = {
     "Damage reduced by 10%",
     "Removes Muzzle Flash",
     "Can be mounted on",
-    "Needs Wrench to install or remove.",
 }
 -- The real muzzle devices (shared/GunsOfTien/MuzzleFamilies.lua, MuzzleDevicesTable.lua) in the cans' wording, and
--- GoM's three AR devices the same way (it gives them only the effect and the wrench)
+-- GoM's three AR devices the same way (it gives them only the effect). Since GoM's November 2026 update a can or
+-- device needs no tool once its mount is on (OnCreate/AttachAndDetach.lua: part type Canon has none; CanonMount, the
+-- mount devices, keep the wrench), and its effects are flat (GoM's own wording)
 for device, d in pairs(require("GunsOfTien/MuzzleDevicesTable")) do
     lines[device] = {
         "Requires " .. d.family .. " Muzzle Mount",
         d.effect,
         "Removes Muzzle Flash",
         "Can be mounted on",
-        "Needs Wrench to install or remove.",
     }
 end
-for device, effect in pairs({ ["MarzGuns.LR2_Compensator"] = "Sound Radius and Volume reduced by 10%",
-    ["MarzGuns.LX_Flashhider"] = "Sound Radius and Volume reduced by 5%",
-    ["MarzGuns.Trix42_Muzzlebreak"] = "Sound Radius and Volume reduced by 5%" }) do
+for device, effect in pairs({ ["MarzGuns.LR2_Compensator"] = "Sound Radius reduced by 15 and Volume by 4",
+    ["MarzGuns.LX_Flashhider"] = "Sound Radius reduced by 10 and Volume by 2",
+    ["MarzGuns.Trix42_Muzzlebreak"] = "Sound Radius reduced by 10 and Volume by 2" }) do
     lines[device] = {
         "Requires AR Muzzle Mount",
         effect,
         "Removes Muzzle Flash",
         "Can be mounted on",
-        "Needs Wrench to install or remove.",
     }
 end
 local FITS_HOLSTER = "Fits a holster"

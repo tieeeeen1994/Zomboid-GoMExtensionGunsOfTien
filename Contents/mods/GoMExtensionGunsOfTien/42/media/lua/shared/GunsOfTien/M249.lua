@@ -11,7 +11,7 @@
       whatever is in the Clip slot, so for the M249 they are taken off while a STANAG is fitted.
     - rate of fire: two Auto rates, 750 and 1000 rpm (user, 2026-10-22: the original gun's gas regulator, normal and
       adverse; Gunworks lists one Auto entry per rate, as for GoM's BAR).
-    - the integrated bipod with GoM's M60 bipod stats; the feed cover a hidden part, always shut (the open and part
+    - the integrated bipod as GoM's M60's (no stat changes since GoM's November 2026 update); the feed cover a hidden part, always shut (the open and part
       way open covers only remain for guns saved while an older version's reload clips swung it).
     - the bolt seen through the ejection port under the receiver (M249_BOLT), animated as GoM animates its M60
       (Bolt_Lock / Bolt_Fired: back on each shot and on an empty gun); FN's cocking handle (M249_HANDLE) does not
@@ -57,10 +57,8 @@ for _, d in ipairs({ 10, 20, 30, 40, 50, 60 }) do
 end
 local BIPOD_FOLDED = "GunsOfTien.M249_Integrated_Bipod_Folded"
 local BIPOD_DEPLOYED = "GunsOfTien.M249_Integrated_Bipod_Deployed"
-local STANAGS = {}
-for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
-    STANAGS[#STANAGS + 1] = "MarzGuns.556x45Magazine" .. n .. "_STANAG"
-end
+-- GoM's STANAG magazines, read from its "STANAG" profile (both sides of the jungle pair included)
+local STANAGS = require("GunsOfTien/HandMagazines").gomProfile("STANAG")
 
 local function isM249(weapon)
     return weapon ~= nil and weapon.getFullType ~= nil and weapon:getFullType() == M249
@@ -118,7 +116,7 @@ if not Animations.GunsOfTienM249Wrapped then
 end
 
 -------------------------------------------------
--- Integrated bipod: GoM's M60 bipod and its stats
+-- Integrated bipod: GoM's M60 bipod (no stat changes, as GoM's)
 -------------------------------------------------
 FoldingBipod.RegisterWeapon(M249, {
     attachments = { partType = "BipodIntegrated", folded = BIPOD_FOLDED, deployed = BIPOD_DEPLOYED },
@@ -127,16 +125,8 @@ FoldingBipod.RegisterWeapon(M249, {
 -- Rests on low walls, windows and tables while aiming (Gunworks' bipod stance, as GoM registers its bipods)
 BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
 CSA.RegisterMultipleParts({
-    [BIPOD_DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.3),
-        SF.Multiply("CriticalChance", 1.1),
-        SF.Multiply("HitChance", 1.1),
-    },
-    [BIPOD_FOLDED] = {
-        SF.Set("UseEndurance", true),
-        SF.Set("EnduranceMod", 0.3),
-        SF.Multiply("HitChance", 0.8),
-    },
+    [BIPOD_DEPLOYED] = {},
+    [BIPOD_FOLDED] = {},
 })
 
 -------------------------------------------------

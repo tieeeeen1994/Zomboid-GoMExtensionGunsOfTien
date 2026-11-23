@@ -16,8 +16,8 @@
     bipod (user, 2026-11-04), so GoM's bipods are left out of the MountOn, the rail rule and the found-gun parts.
     - The .223 keeps Desert Tech's polymer handguard, GoM's foregrips under it (a hidden integral bottom rail).
     - The .308 has BLK LBL's 20" ALX bipod handguard: its two legs fold flush into the handguard's underside, so it
-      takes no foregrip, and fold and deploy as Gunworks' FoldingBipod (the AUG HBAR's way) with GoM's rail bipod
-      stats and Gunworks' bipod stance.
+      takes no foregrip, and fold and deploy as Gunworks' FoldingBipod (the AUG HBAR's way) as GoM's rail bipod (no
+      stat changes since GoM's November 2026 update) with Gunworks' bipod stance.
 --]]
 
 local Magazine = require("WeaponSystems/Utils/Magazine")
@@ -46,10 +46,8 @@ local MDR308 = M .. "MDR308"
 local MDRS = { MDR223, MDR308 }
 local PMAGS = { M .. "762x51Magazine20_PMAG", M .. "762x51Magazine10_PMAG", M .. "762x51Magazine25_PMAG",
     M .. "762x51Magazine50_PMAG" }
-local STANAGS = {}
-for _, n in ipairs({ 20, 25, 30, 50, 60, 75, 100, 150 }) do
-    STANAGS[#STANAGS + 1] = "MarzGuns.556x45Magazine" .. n .. "_STANAG"
-end
+-- GoM's STANAG magazines, read from its "STANAG" profile (both sides of the jungle pair included)
+local STANAGS = require("GunsOfTien/HandMagazines").gomProfile("STANAG")
 local RAIL_UP = M .. "MDR_Integrated_Rail_Up"
 local RAIL_DOWN = M .. "MDR_Integrated_Rail_Down"
 local BIPOD_FOLDED = M .. "MDR308_Integrated_Bipod_Folded"
@@ -77,7 +75,7 @@ for _, gun in ipairs(MDRS) do
 end
 
 -------------------------------------------------
--- The .308's ALX legs: GoM's rail bipod stats (as the AUG HBAR's; no spread modifier, the MDRx fires semi-automatic
+-- The .308's ALX legs: no stat changes, as GoM's bipods (as the AUG HBAR's; no spread modifier, the MDRx fires semi-automatic
 -- only), resting on low walls, windows and tables while aiming (Gunworks' bipod stance)
 -------------------------------------------------
 FoldingBipod.RegisterWeapon(MDR308, {
@@ -86,11 +84,7 @@ FoldingBipod.RegisterWeapon(MDR308, {
 })
 BipodSystem.RegisterBipod(BIPOD_DEPLOYED)
 CSA.RegisterMultipleParts({
-    [BIPOD_DEPLOYED] = {
-        SF.Multiply("AimingTime", 1.1),
-        SF.Multiply("CriticalChance", 1.15),
-        SF.Multiply("HitChance", 1.15),
-    },
+    [BIPOD_DEPLOYED] = {},
     [BIPOD_FOLDED] = {},
     [RAIL_UP] = {},
     [RAIL_DOWN] = {},

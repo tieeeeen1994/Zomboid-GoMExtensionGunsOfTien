@@ -40,6 +40,24 @@ Picked by the user from their wish list. Releases ship two or more guns each.
       waits for would also serve the CZ-83, Skorpion vz. 82, PP-91 Kedr and PP-9 Klin (PMM as its [+P] load);
       Ammo Maker has `9x18Mak`, Hot Brass no 9x18 casing (its 9x19 one would do).
 
+## Guns of Marz's November 2026 update followed (3.21.0, built 2026-11-23, not played)
+
+- [ ] STANAGs on the M249, SCAR-L, MDRx .223 and HK416: the 50 (extended 60), 75 (PMAG drum), 150 (C-Mag) and the
+      jungle pair drawn at the well; the pair flips with Gunworks' stacked reload and side 2 is drawn after the flip;
+      the M249 / SCAR-L / MDRx show the scaled `_Hand` magazine in the off hand.
+- [ ] GoM's own MP5 models on the MP5A3 / MP5A2 / MP5SD / MP5K (no resize): the Mk9, our adapter, GoM's M&P / Shh9 and
+      the H&K flash hider sit on the MP5 / MP5A2 front sight housing at the guns' size; the MP5SD's flash and bullet at
+      its can's front.
+- [ ] Folding grips (AUG A1 / A3 / Para / HBAR, MP7A1): "Swap to ..." in the gun's menu and radial; saved guns keep
+      their folded / unfolded grip; the AUGs take GoM's ForegripSMG stance with the grip down.
+- [ ] GoM's SMG stance on the UMPs, Vector .45 / CRB, AUGs, MDRx, PS90, SVU, Groza-1 / GL / 4 (and its foregrip stance
+      with a GoM foregrip); nothing changes on the one-handed guns.
+- [ ] One shot per click on the Glock 21, PPK, SR-25, SVU, Five-seveN, UCP, HK416 .22, MDRx, Mk 11, SV-98 / 99, GP-25.
+- [ ] Suppressors wear and drop off broken (Mk9, Post-93's four cans); Repair Pack and a second can repair them; a found
+      can or device comes with its mount.
+- [ ] Tooltips: flat stock / grip / scope lines, no bipod lines, no wrench on cans and devices, sight ranges by class.
+- [ ] Re-run build_mk9.py some time so smg9_points.json (render art only) has GoM's new MP5 canon.
+
 ## Attachments and muzzle parts audit (3.20.0, built 2026-11-23, not played)
 
 - [ ] Load a world saved before it with an old 9x19mm SMG mount on an Uzi / MP5 and one loose: both become GoM's

@@ -1,6 +1,8 @@
 module GunsOfTien {
 
     item Mk9_Suppressor {
+        ConditionMax              = 100,
+        ConditionLowerChanceOneIn = 15,
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
         Icon             = GunsOfTien_Mk9_Suppressor,

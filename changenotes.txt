@@ -1,0 +1,19 @@
+Follows Guns of Marz's November 2026 update (3.21.0).
+
+Fixes after the update
+- Guns of Marz's new STANAG magazines show on the M249, SCAR-L, MDRx .223 and HK416: the 60-round extended magazine, the 60-round PMAG drum, the 100-round C-Mag and both sides of the jungle-taped pair (the second side no longer leaves the gun empty after a flip). The magazine list is read from Guns of Marz, so later changes follow by themselves.
+- Guns of Marz's MP5 family is drawn as Guns of Marz draws it again (its new models and magazines); the Mk9, the 9mm mount, the M&P and Shh9 suppressors and the MP5 flash hider sit on it at its size. The MP5SD's muzzle flash starts at the front of its suppressor.
+- Spent casings and belt links thrown inside a vehicle follow Hot Brass's new rules.
+
+Balance, as Guns of Marz
+- Each gun has its class's optimal range: submachine guns 3-11 tiles, machine pistols 2-10, carbines 4-13 or 5-14, assault rifles 7-17, battle rifles and machine guns 9-20, marksman rifles 11-23, the SV-98 14-28, pistols 2-8.
+- Stocks, folding grips and built-in scopes give Guns of Marz's flat bonuses, and Aiming Time never drops below 5. Built-in bipods change no stats, as Guns of Marz's do; they still rest the gun on walls and tables and steady automatic fire.
+- Every semi-automatic and bolt gun fires one shot per click.
+- Suppressors wear out and come off broken; repair them with a Repair Pack or a second suppressor of the same kind. A found suppressor or muzzle device comes with its mount.
+- Muzzle devices lower the sound by Guns of Marz's flat amounts.
+- Suppressors, muzzle devices, scopes, lasers, lights, foregrips and bipods need no tool once their mount is on. Tooltips no longer ask for a wrench there.
+
+New from Guns of Marz and Gunworks
+- The AUG's and MP7A1's front grips fold with Gunworks' Swap in the gun's menu and the firearm radial.
+- Guns of Marz's PSG-1 and SVD take the Stub, MKC and MK2 foregrips on their bottom rail, as Guns of Marz's loot already fits them.
+- The two-handed submachine guns and bullpups (UMPs, Vector .45 and Carbine, AUGs, MDRx, PS90, SVU, Groza-1 and Groza-4) are held with Guns of Marz's new MP5 / FAMAS stance, and its foregrip stance with a foregrip.

@@ -19,6 +19,9 @@
       (the LRX-7 has it). Added.
     - CAR-15: the foregrips' MountOn lists it, but its bottom is taken by its integrated M203 and it never gets a
       bottom rail, so they could never be fitted. Taken out of their MountOn (nothing to take off existing guns).
+    - PSG-1 and SVD: GoM's spawn tables give them the Stub / MKC / MK2 foregrips on the bottom rail (2%) and their
+      items draw them, but the foregrips' MountOn leaves both out (user, 2026-11-23: "add support"). Added; the
+      PSG-1 model also gets the `foregrip` point it lacks, at the G3's offset from the bottom rail.
 
     Model points are set on GoM's loaded ModelScripts (a model block cannot be declared again from another mod: it
     resets the mesh and texture), as MuzzlePoints.lua does. Item scripts get their model lines with Item.DoParam,
@@ -52,6 +55,9 @@ end
 local MOUNT_ADD = {
     ["MarzGuns.AimRight_Laser"] = { "MarzGuns.M16A2" },
 }
+for _, grip in ipairs(FOREGRIPS) do
+    MOUNT_ADD[grip] = { "MarzGuns.PSG1", "MarzGuns.SVD" }
+end
 
 -- gun model -> new points (offset in the model's space, rotation 0 as every GoM rail point), measured by
 -- scripts/gom_points.py
@@ -64,6 +70,20 @@ local POINTS = {
     },
     ["MarzGuns.G36"] = {
         bipod = { 0.0000, 0.2881, -0.0005 },
+    },
+    -- the G3's foregrip-to-bottom-rail offset (-0.0463, -0.0046) applied to the PSG-1's bottom rail; GoM's PSG1 model
+    -- has no foregrip point although its item draws the three foregrips there
+    ["MarzGuns.PSG1"] = {
+        foregrip = { 0.0000, 0.2282, 0.0053 },
+    },
+    -- where a three-lug can or flash hider stops on GoM's MP5 and MP5A2 (Suppressors.lua, MuzzleFamilies.lua): the
+    -- front face of the front sight housing on the bore axis, measured on GoM's meshes of its November 2026 update
+    -- (build_mk9.py's rule; until then our own MP5 models carried it)
+    ["MarzGuns.MP5"] = {
+        canon = { 0.0000, 0.2178, 0.0301 },
+    },
+    ["MarzGuns.MP5A2"] = {
+        canon = { 0.0000, 0.2190, 0.0325 },
     },
 }
 

@@ -41,6 +41,20 @@ function HandMagazines.props(map)
     return out
 end
 
+--- The magazines of one of GoM's Gunworks magazine profiles ("STANAG": every STANAG size and both sides of the
+--- jungle-taped pair, 556x45Magazine60_STANAG / _STANAG_2), read from GoM's registry instead of a list of our own,
+--- so a magazine GoM adds or renames follows by itself (GoM's November 2026 update added the pair's second side,
+--- which our guns did not take until then). A copy, in GoM's order.
+---@param name string
+---@return string[]
+function HandMagazines.gomProfile(name)
+    pcall(require, "MarzWeapons/Registries/Magazines")
+    local Magazine = require("WeaponSystems/Utils/Magazine")
+    local out = {}
+    for _, mag in ipairs(Magazine.MagazineProfiles[name] or {}) do out[#out + 1] = mag end
+    return out
+end
+
 --- { [GoM magazine] = our hand item } for GoM magazine full types, by the `<name>_Hand` naming.
 ---@param magazines string[]
 ---@return table<string,string>
@@ -68,7 +82,10 @@ if not ReloadAnim.GunsOfTienHandMagazines and ReloadAnim.handlePropAnimEvent the
         end
         ReloadAnim.resolveReloadMagItem = function(a, h)
             local magType = resolve(a, h)
-            return map[magType] or magType
+            local hand = map[magType]
+            -- a magazine GoM added after our last build has no _Hand item yet: GoM's own then
+            if hand and ScriptManager.instance:getItem(hand) then return hand end
+            return magType
         end
         local ok, result = pcall(original, action, handler, event, parameter)
         ReloadAnim.resolveReloadMagItem = resolve

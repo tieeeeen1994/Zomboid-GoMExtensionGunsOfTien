@@ -16,8 +16,10 @@
     the bore itself on 2026-11-03 (re-measured 2026-11-04: every other point here still as before), so those two
     are no longer set here. Left alone: guns under 1 cm off, GoM's MP5K (in our
     compact stance, which reads its point), and the M203 launcher models (`*_M203_Underbarrel`, drawn while the
-    grenade launcher is selected). The MP5 and MP5A2 are not listed since 2026-10-27: their models are Guns of Tien's
-    (scripts/build_mp5.py), whose muzzle points already sit at the barrel's end at their own size.
+    grenade launcher is selected). The MP5 family is GoM's own again since 2026-11-23 (our resized copies dropped),
+    re-measured on the meshes of GoM's November 2026 update: the MP5, MP5A2 and MP5K points sit within 0.3 cm of the
+    barrel's end, the MP5SD's 5.4 cm inside its integral can (GoM gave it the MP5's point), so it is set to the can's
+    front.
     The offset is set on GoM's loaded ModelScript (a model block cannot be declared again from another mod: it resets
     the mesh and texture); x and z are kept. Scripts are rebuilt on leaving a game, so it runs again at every world
     load; the values are absolute, so running twice changes nothing.
@@ -36,6 +38,7 @@ local MUZZLE_Y = {
     ["MarzGuns.M1_GARAND"] = 0.5255,      -- was 0.5537 (+2.8)
     ["MarzGuns.M93R"] = 0.1619,           -- was 0.1433 (-1.9)
     ["MarzGuns.MODEL_70"] = 0.4700,       -- was 0.5100 (+4.0)
+    ["MarzGuns.MP5SD"] = 0.2964,          -- was 0.2422 (-5.4)
     ["MarzGuns.P226"] = 0.1325,           -- was 0.1433 (+1.1)
     ["MarzGuns.PSG1"] = 0.5344,           -- was 0.5149 (-2.0)
     ["MarzGuns.REMINGTON_870"] = 0.4996,  -- was 0.4785 (-2.1)

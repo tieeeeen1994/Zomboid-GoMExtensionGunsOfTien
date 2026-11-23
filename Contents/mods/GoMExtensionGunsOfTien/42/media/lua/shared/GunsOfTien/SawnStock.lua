@@ -224,7 +224,9 @@ SawnStock.BARREL_HANDLING = {
     StatsFactory.Multiply("SoundVolume", 1.35),
     bigFlash,
 }
-SawnStock.BARREL_SIGHTS = { StatsFactory.Set("MinSightRange", 4), StatsFactory.Set("MaxSightRange", 12) }
+-- GoM's sight windows (November 2026): the cut-down barrel a short carbine's (its W1873 Carbine, AKS-74U: 4-13), the
+-- Obrez a revolver's (2-9)
+SawnStock.BARREL_SIGHTS = { StatsFactory.Set("MinSightRange", 4), StatsFactory.Set("MaxSightRange", 13) }
 SawnStock.OBREZ_SIGHTS = { StatsFactory.Set("MinSightRange", 2), StatsFactory.Set("MaxSightRange", 9) }
 
 local function append(list, mods)

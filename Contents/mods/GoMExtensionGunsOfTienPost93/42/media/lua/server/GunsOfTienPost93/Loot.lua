@@ -59,9 +59,12 @@
       are its own again.
     - Everything added to a GoM list (spawner alternatives, slot entries, replacements) is taken out again before the
       next world adds it (Lua is not always reloaded).
-    - Suppressors and mount devices join the item lists of GoM's MarzGuns.World_Suppressor_Spawner (SWAT gun storage,
-      police evidence, drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and
-      army storage): each spawn picks one entry of the list, so ours are more equal choices in each. The mount
+    - Suppressors and muzzle devices join GoM's MarzGuns.World_Suppressor_Spawner (SWAT gun storage, police evidence,
+      drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and army storage)
+      as GoM's own have been since its November 2026 update ("Ensure a muzzle mount device per suppressor spawn"):
+      one alternative per mount, the cans or devices and their mount device, so each spawn picks one alternative and
+      one item of it with the mount it needs (the MP7's can with its mount, the P90's and Five-seveN's with the
+      5.7x28mm mount, the SCAR-H's can and the SureFire devices with the 7.62x51mm mount). The mount
       devices also join GoM's list for vanilla's Improved Choke Tube (VanillaReplacerTable.VanillaAttachmentMap, used
       while GoM's sandbox VanillaAttachmentReplacement is on), which GoM turns into one of its mount devices.
     - Standard boxes and cartons (4.6x30mm DM11) turn up next to vanilla 9mm boxes and cartons in police, SWAT and gun
@@ -283,12 +286,14 @@ local function asReplacement(alternative)
     return entry
 end
 
--- Parts added to the item list of a GoM spawner's first alternative.
-local PART_SPAWNERS = {
-    { "MarzGuns.World_Suppressor_Spawner",
-        { M .. "MP7_Suppressor", M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor", M .. "SCARH_Suppressor" } },
-    { "MarzGuns.World_Muzzle_Device_Spawner", { M .. "MP7_Muzzle_Mount_Device", M .. "P90_Muzzle_Mount_Device",
-        M .. "SCARH_Muzzle_Mount_Device", M .. "SF3P_Flash_Hider", M .. "SFMB_Muzzle_Brake", M .. "WarComp_Flash_Hider" } },
+-- Alternatives added to a GoM spawner, as GoM's own there: { spawner, the cans or devices, their mount device }
+local PART_ALTERNATIVES = {
+    { "MarzGuns.World_Suppressor_Spawner", { M .. "MP7_Suppressor" }, M .. "MP7_Muzzle_Mount_Device" },
+    { "MarzGuns.World_Suppressor_Spawner", { M .. "P90_Suppressor", M .. "FIVESEVEN_Suppressor" },
+        M .. "P90_Muzzle_Mount_Device" },
+    { "MarzGuns.World_Suppressor_Spawner", { M .. "SCARH_Suppressor" }, M .. "SCARH_Muzzle_Mount_Device" },
+    { "MarzGuns.World_Muzzle_Device_Spawner",
+        { M .. "SF3P_Flash_Hider", M .. "SFMB_Muzzle_Brake", M .. "WarComp_Flash_Hider" }, M .. "SCARH_Muzzle_Mount_Device" },
 }
 
 -- Parts added to the item list of a GoM vanilla attachment replacement's first alternative.
@@ -375,8 +380,13 @@ local function addSpawners()
         addGuns(map, EXTENDED_GUNS)
         addSlots(EXTENDED_SLOTS)
     end
-    for _, entry in ipairs(PART_SPAWNERS) do
-        addParts(map[entry[1]], entry[1], entry[2])
+    for _, entry in ipairs(PART_ALTERNATIVES) do
+        local list = map[entry[1]]
+        if type(list) == "table" then
+            addTo(list, { { items = entry[2], maxAmountChance = 1 }, { items = { entry[3] }, maxAmountChance = 1 } })
+        else
+            print("[GunsOfTienPost93] " .. entry[1] .. " not found, its parts will not spawn there")
+        end
     end
     local okR, replacer = pcall(require, "MarzWeapons/OnCreate/VanillaReplacerTable")
     local attachments = okR and type(replacer) == "table" and replacer.VanillaAttachmentMap

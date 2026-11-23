@@ -79,19 +79,29 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   M1911, and the Thompson's Cutts compensator; with the Post-93 add-on SureFire's SF3P flash hider (FN FAL, FN SCAR-H,
   G3, HK417, M14, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25), SFMB muzzle brake and WarComp (FN SCAR-H, G3,
   HK417, M24, MDRx .308, Mk 11, PSG-1, Remington 700, SR-25); the Grozas take the AK ones. Each removes the muzzle flash
-  and lowers the sound a little (compensators by 10%, hiders and brakes by 5%, as Guns of Marz's own), and is found
+  and lowers the sound a little (compensators Sound Radius by 15 and Volume by 4, hiders and brakes by 10 and 2, as
+  Guns of Marz's own), and is found
   where Guns of Marz's muzzle devices are
-- The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
-  proportion, so the Mk9 sits on them as it does on the Uzis; Guns of Marz's MP5 is named for what it is, the MP5A3
-  (retractable stock)
+- Guns of Marz's MP5 is named for what it is, the MP5A3 (retractable stock)
+- Follows Guns of Marz's November 2026 update on every gun of this mod and the Post-93 add-on: each gun has its
+  class's optimal range (submachine guns 3-11 tiles, machine pistols 2-10, carbines 4-13 or 5-14, assault rifles 7-17,
+  battle rifles and machine guns 9-20, marksman rifles 11-23, the SV-98 as the M24 14-28, pistols 2-8); stocks,
+  foregrips, scopes and the AUG's sight give Guns of Marz's flat bonuses (and Aiming Time never drops below 5), the
+  built-in bipods change no stats as Guns of Marz's do; every semi-automatic and bolt gun fires one shot per click;
+  suppressors wear, break and are repaired with a Repair Pack or a second can, and a found suppressor or muzzle
+  device comes with its mount; scopes, lasers, lights, foregrips, bipods, suppressors and muzzle devices need no tool
+  once their mount is on; the two-handed submachine guns and bullpups (UMPs, Vector .45 and Carbine, AUGs, MDRx, PS90,
+  SVU, Groza-1 and Groza-4) are held with Guns of Marz's MP5 / FAMAS stance and its foregrip stance; the AUG's and MP7A1's front
+  grips fold with Gunworks' Swap; the M249, SCAR-L, MDRx .223 and HK416 take both sides of Guns of Marz's jungle-taped
+  STANAG pair and draw its new long magazines
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
-  automatic fire spread penalty applies; on 21 guns the muzzle flash and the bullet start at the end of the barrel
+  automatic fire spread penalty applies; on 22 guns the muzzle flash and the bullet start at the end of the barrel
   (they started a little ahead of it or inside it); opening and packing ammo boxes, cartons and crates can be done
   while walking again (since 42.22 the game ignores the old walking setting Guns of Marz's recipes use); on a server,
   racking after a reload no longer leaves the gun saying "Chamber is open" with a round chambered (a Gunworks timing
   bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs); the AA-12's side rails,
   lights and lasers and the G36's bipod are drawn (they were fitted invisibly), the M16A2 takes the AimRight laser its
-  loot already gave it; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
+  loot already gave it, and the PSG-1 and SVD the Stub, MKC and MK2 foregrips theirs gave them; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
   no room), and a bipod already fitted on one comes off and lies beside the gun (sandbox option Update Parts on Saved
   Guns, on by default, which also swaps the old 9mm SMG mount; off once a world has been played through saves the
   checks)
@@ -156,8 +166,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 
 - Knight's SR-25 Match of 1990, Eugene Stoner's 7.62x51mm sniper rifle on the AR-10 pattern: a 24-inch match barrel
   in a free-float tube, semi-automatic, on Guns of Marz's AR-15 receiver
-- Its own 3.5-10x scope and a folding bipod built in (deployed, it steadies aim and
-  rests the rifle on low walls and tables)
+- Its own 3.5-10x scope and a folding bipod built in (deployed, it rests the rifle on low walls and tables, as
+  Guns of Marz's bipods do)
 - Knight's 20-round magazine; with the Post-93 add-on, Magpul's PMAGs and D-50 drum fit it too, and the SCAR-H's
   7.62x51mm muzzle mount and SOCOM762-RC suppressor
 - Found where Guns of Marz's PSG-1 is (mercenary snipers, imported rifles), with its magazines and boxes
@@ -165,8 +175,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 ## Steyr AUG A1
 
 - Steyr AUG A1, the green Austrian bullpup of 1977 (imported to the US until 1989): automatic at 700 rounds a minute
-  or single shots, its integral 1.5x scope, and a front grip that folds forward under the barrel (Fold / Unfold
-  Foregrip in the gun's menu and the firearm radial; unfolded, it steadies aim and automatic fire)
+  or single shots, its integral 1.5x scope, and a front grip that folds forward under the barrel (Gunworks' Swap in
+  the gun's menu and the firearm radial; unfolded, it steadies aim and automatic fire)
 - Its own translucent 30 and 42-round magazines
 - Guns of Marz's Picatinny Rail fits as a short rail on either side of the receiver: lights on the left, lasers on the
   right (no top rail: the integral scope is the optic)
@@ -193,8 +203,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 ## RPK and RPK-74
 
 - RPK (7.62x39mm, 1961) and RPK-74 (5.45x39mm, 1974), Kalashnikov's squad machine guns built on Guns of Marz's AK-47
-  and AK-74: the long heavy barrel, the club-foot stock and a folding bipod (deployed, it steadies aim and automatic
-  fire as Guns of Marz's bipod does), automatic at 600 rounds a minute or single shots
+  and AK-74: the long heavy barrel, the club-foot stock and a folding bipod (deployed, it steadies automatic fire as
+  Guns of Marz's bipod does), automatic at 600 rounds a minute or single shots
 - The RPK takes its own 40-round magazine and 75-round drum (both fit Guns of Marz's AK-47 too) and Guns of Marz's
   AK-47 magazines; the RPK-74 takes Guns of Marz's AK-74 magazines (its Bakelite 45 is the RPK-74's own)
 - Guns of Marz's AK mount and its optics, its AK muzzle mount and the PBS-1 suppressor (with it, the US Subsonic round
@@ -205,7 +215,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 ## RPD
 
 - RPD (7.62x39mm), Degtyaryov's belt-fed squad machine gun as first made: its 100-round belt drum under the gun,
-  automatic only at 700 rounds a minute, a folding bipod (deployed, it steadies aim; folded, firing tires you), and the
+  automatic only at 700 rounds a minute, a folding bipod (it rests the gun on low walls and tables, as Guns of Marz's M60's), and the
   first model's operating handle, which moves back and forth with every shot
 - The US Subsonic round needs racking after every shot in it (no PBS-1 fits)
 - Found with the RPKs, with its drums and boxes

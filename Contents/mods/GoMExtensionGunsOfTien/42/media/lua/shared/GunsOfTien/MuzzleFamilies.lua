@@ -107,7 +107,7 @@ end
 -- The real muzzle devices (user, 2026-11-23: "Option A", "Real fit only"; scripts/muzzle_devices.py, generated into
 -- MuzzleDevicesTable.lua): flash hiders, compensators and brakes per family, each fitting the guns the real one was made
 -- for (MountOn in the devices' own scripts, the main mod's and Post-93's). Stats are GoM's by kind (its LX / Trix42
--- sound and volume x0.95, its LR2 x0.90, all remove the flash), each needs its family's mount, and GoM's guns get their
+-- Sound Radius -10 and Volume -2, its LR2 -15 and -4, flat as GoM's since its November 2026 update; all remove the flash), each needs its family's mount, and GoM's guns get their
 -- model lines here (ours have them in their scripts). A device built into a gun's mesh (the AK-74's brake, the
 -- AR-15's birdcage) stays cosmetic, as GoM has it: the bare gun's stats, the fitted device's full effect (user).
 local CSA = require("WeaponSystems/Utils/CustomStatsAttachments")
@@ -118,8 +118,8 @@ local DEVICES = require("GunsOfTien/MuzzleDevicesTable")
 local stats = {}
 for device, d in pairs(DEVICES) do
     stats[device] = {
-        SF.Multiply("SoundRadius", d.sound),
-        SF.Multiply("SoundVolume", d.sound),
+        SF.Adjust("SoundRadius", d.radius),
+        SF.Adjust("SoundVolume", d.volume),
         SF.Set("MuzzleFlashModelKey", nil),
     }
     RequiredAttachment.RegisterRequired({ device }, d.mounts)
