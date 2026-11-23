@@ -15,7 +15,7 @@
       Bolt_Fired swap: back on each shot and on an empty gun); IMI's top cocking knob does not reciprocate, so it
       slides back along its top cover slot only while racked (ChargingHandle.lua; user, 2026-10-30);
     - reload: GoM's own animations (GoMReloads.lua), its MP5K's ("handgun2") for all three;
-    - AWC's Mk9 on its 9x19mm SMG mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
+    - AWC's Mk9 on the 9x19mm mount device (the real Mk9 replaced the Uzi's barrel nut; Suppressors.lua has the
       can's stats and rule, the parts' MountOn and the guns' ModelWeaponPart lines are in their scripts);
     - no bayonet; GoM's optional Picatinny rails on the Uzi and Mini Uzi (user, 2026-10-30; Rails.lua), drawn as our
       short UZI_ / MINIUZI_RAIL_UP / _DOWN / _LEFT: a clamp-on rail over the top cover (behind the Uzi's cocking knob,
@@ -160,7 +160,6 @@ if spawnTable then
     local function entry(gun, mags, rails)
         local optionals = {}
         for _, e in ipairs(mags) do optionals[#optionals + 1] = e end
-        optionals[#optionals + 1] = M .. "SMG9_Muzzle_Mount_Device:5"
         for _, e in ipairs(rails or {}) do optionals[#optionals + 1] = e end
         return {
             required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD, gun .. "_Integrated_Stock_Folded" },

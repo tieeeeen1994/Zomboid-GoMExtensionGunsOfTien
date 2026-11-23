@@ -67,10 +67,28 @@ for _, gun in ipairs({ "DOUBLEBARREL", "STEVENS_555", "TOZ34" }) do
         lines["MarzGuns." .. gun .. "_Barrel_Sawnoff_" .. side] = SAWN_BARRELS
     end
 end
--- AWC's Mk9 and its mount device (shared/GunsOfTien/Suppressors.lua), worded as GoM words its 9mm and .45 ones; the
--- guns that take them get their "Compatible Muzzle Device" line from GunLines.lua
+-- The 9mm muzzle parts (shared/GunsOfTien/Suppressors.lua) in GoM's own wording: one 9x19mm mount device (GoM's
+-- Pistol mount renamed, and the main mod's old one, the same item for worlds that have it) for GoM's pistol cans and
+-- AWC's Mk9; the guns that take them get their "Compatible Muzzle Device" line from GunLines.lua
+local NINE_MOUNT = {
+    "No Direct Stat Changes",
+    "Enables 9x19mm Muzzle Attachments",
+    "Needs Wrench to install or remove.",
+}
+lines["MarzGuns.Pistol_Muzzle_Mount_Device"] = NINE_MOUNT
+lines["GunsOfTien.SMG9_Muzzle_Mount_Device"] = NINE_MOUNT
+for _, can in ipairs({ "MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor" }) do
+    lines[can] = {
+        "Requires 9x19mm Muzzle Mount",
+        "Sound Radius and Volume reduced by 70%",
+        "Damage reduced by 10%",
+        "Removes Muzzle Flash",
+        "Can be mounted on 9x19mm pistols",
+        "Needs Wrench to install or remove.",
+    }
+end
 lines["GunsOfTien.Mk9_Suppressor"] = {
-    "Requires 9x19mm SMG Muzzle Mount",
+    "Requires 9x19mm Muzzle Mount",
     "Sound Radius and Volume reduced by 70%",
     "Damage reduced by 10%",
     "Aiming Time increased by 10%",
@@ -78,9 +96,13 @@ lines["GunsOfTien.Mk9_Suppressor"] = {
     "Can be mounted on 9x19mm SMGs",
     "Needs Wrench to install or remove.",
 }
-lines["GunsOfTien.SMG9_Muzzle_Mount_Device"] = {
-    "No Direct Stat Changes",
-    "Enables 9x19mm SMG Muzzle Attachments",
+-- GoM's AK can on the main mod's RPKs too (RPK.lua; Post-93's Tooltips.lua adds its Grozas)
+lines["MarzGuns.PBS-1_Suppressor"] = {
+    "Requires AK Muzzle Mount",
+    "Sound Radius and Volume reduced by 70%",
+    "Damage reduced by 10%",
+    "Removes Muzzle Flash",
+    "Can be mounted on AK-47, AK-74, AKS-74U, RPK and RPK-74",
     "Needs Wrench to install or remove.",
 }
 local FITS_HOLSTER = "Fits a holster"

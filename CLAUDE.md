@@ -214,6 +214,36 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   cap, only the MP5K-N had lugs / threads), the MP5SD (integral) or the TEC-9 (its pre-1994 threaded barrel would
   take one; the user left it out). The can is AWC's Mk9, 12" x 2", kept after the user found it huge (no shorter SMG
   can fitting both mounts is both documented and from before July 1993). Build notes: "AWC Mk9 SMG suppressor" below.
+  The separate SMG mount was merged on 2026-11-23: see "Muzzle parts audit" below.
+- **Muzzle parts audit** (2026-11-23; user: "MAKE IT CONSISTENT!", "follow the GoM way", "let's merge mounting device
+  of 9mm ... rename indeed like how others would do it"). Before, 9mm was the only calibre with two mounts, split by
+  gun type (GoM's Pistol mount for M&P / Shh9, our 9x19mm SMG mount for the Mk9) while .45 (GoM's own, pistols and
+  SMGs), 4.6x30, 5.7x28 (one mount, a can per gun type), 7.62x51, AR and AK each have one. Now:
+  - **One 9mm mount**: GoM's `MarzGuns.Pistol_Muzzle_Mount_Device`, renamed "9x19mm Family Muzzle Mounting Device"
+    (gen_scripts.py `NINE_MOUNT_NAME`, ItemName.json; translations merge by key), its MountOn appended with every 9mm
+    SMG (Suppressors.lua: the main mod's and GoM's MP5s; Post-93's Guns.lua / AUG.lua / Vector.lua: UMP9, AUG Para,
+    Vector 9mm and SDP), drawn on the SMGs with our adapter (`SMG9_Muzzle_Mount_Device_GoT`: the guns' scripts, the
+    MP5s' lines in Suppressors.lua). Cans unchanged: M&P / Shh9 pistols, Mk9 SMGs (the Mk9 is any-of both mounts).
+  - **Migration**: an item type cannot be renamed in a save (`InventoryItem.loadItem`: an unknown registry ID gives a
+    null item, dropped, fitted parts too), so `GunsOfTien.SMG9_Muzzle_Mount_Device` stays defined, looking and
+    working as GoM's (same name, GoM's icon and floor model, every 9mm gun in its MountOn, drawn as GoM's mount on the
+    pistols, accepted by all three cans, never spawned), and `server/GunsOfTien/RemovedParts.lua` swaps each one for
+    GoM's (`GunsOfTien_ReplacedParts` old -> new, set in Suppressors.lua): fitted on any gun its MountOn names
+    (detach + attach + `ReapplyAllModifiers`) or loose (container `DoRemoveItem` + `AddItem`, floor
+    `removeWorldObject` + `AddWorldInventoryItem`), at chunk load (nothing sent), players 10 s after joining
+    (`syncHandWeaponFields`, `sendRemoveItemFromContainer` + `sendAddItemToContainer`) and vehicles once loaded.
+    `tests/removed_parts_test.py` covers it. `Obsolete = true` was not used: `IsoGridSquare` drops world items of an
+    obsolete type on load (traced 42.22.2), which would lose the mounts lying on floors.
+  - **Groza-2** takes GoM's AK mount and PBS-1 as the Groza-1 (user: "Can't Groza-2 take this too?"): canon on the
+    held model at the Groza-1's distance behind the muzzle (`GROZA_AK_CANON_BACK`), turned like its other parts.
+  - **Found guns come with no mount device** (GoM's way: its spawn tables never give one); removed from every table.
+  - **Tooltips** of every can and mount in GoM's wording: "Requires <family> Muzzle Mount", effects, "Can be mounted
+    on ...", the wrench line; mounts "Enables <family> Muzzle Attachments". The main mod's Tooltips.lua sets the 9mm
+    ones and PBS-1 (with the RPKs), Post-93's Tooltips.lua (which requires the main one first) its own cans, PBS-1
+    (Grozas added) and P45 (Vector .45 Carbine). GunLines' `joinNames` lists a name once (two items share it).
+  - Left as decided before: RPD (the PBS-1 never fits it, docs/design.md 4k), XM177 (GoM's mesh has its moderator
+    built in and GoM gives it no muzzle lines), GoM's AR mount listing a nonexistent `MarzGuns.M4` (harmless, may be
+    Marz's), TEC-9, MP5K, AUG A1 / HBAR, M249, SR-25.
 - **M249 Light Machine Gun** (user, 2026-10-22; building): the main mod's first gun (adopted 1982, so it is 1993
   material). The PIP gun ("M249E2", the user's word for it), its own 200-round box plus every GoM STANAG in one
   profile (STANAG jam x2), two Auto rates 750 / 1000 (the original gas regulator, the user's choice over the PIP's one
@@ -355,7 +385,8 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   2026-10-22, as Post-93's parts). GoM also spawns its mount devices in place of vanilla's Improved Choke Tube
   (`VanillaReplacerTable.VanillaAttachmentMap["Base.ChokeTubeImproved"]`, read by `VanillaReplacer.lua` while its
   sandbox `VanillaAttachmentReplacement` is on; "Base.ChokeTubeFull" gives its compensator / flash hider / brake),
-  so every mount device of ours joins that list too (main mod's SMG mount, Post-93's MP7 / P90 / SCAR-H mounts, the
+  so every mount device of ours joins that list too (main mod's SMG mount until it merged into GoM's 9mm one on
+  2026-11-23, Post-93's MP7 / P90 / SCAR-H mounts, the
   latter missed until 2026-10-22). Ammo Maker still spawns this mod's
   bullet / pellet parts itself, as it does every active part. No loot multiplier of our own (removed 2026-10-17,
   user: "if GoM has it, use their option"): the Post-93 loot follows GoM's `MarzGuns.LootMultiplier` ("GoM Loot
@@ -367,7 +398,7 @@ real lengths now, aimed pistol variants added, M60 load 6.75). No grip registrat
   `FirearmCritRule` (1 Default = 42.22 per shot / 2 Old = 42.21 per target / 3 Enhanced = per target led by the
   shot),
   `FirearmCritLead` (0-100, default 50), see "Firearm crits per target", `FirearmMinimumDamage` (0-100 %,
-  default 0), see "Minimum firearm damage", and `FixedBayonets` ("Toggle Bayonet Usage", default off, read live), see "Fixed bayonets". `RescaleGuns` ("[BETA] Resize Guns of Marz",
+  default 0), see "Minimum firearm damage", `FixedBayonets` ("Toggle Bayonet Usage", default off, read live), see "Fixed bayonets", and `UpdateSavedParts` ("Update Parts on Saved Guns", default on, read live by `server/GunsOfTien/RemovedParts.lua`: off = no chunk, player or vehicle checks; user, 2026-11-23). `RescaleGuns` ("[BETA] Resize Guns of Marz",
   `GunScale.lua`) was removed on 2026-10-26 (user: "remove that option for now"); a server that had it keeps no
   value (its data and where the code is kept: `docs/gom_gun_scale.md`).
 - **Art** (all generated, deterministic): rounds and boxes recoloured from GoM's renders / textures
@@ -1236,7 +1267,7 @@ parts. Features follow GoM's pistols ("match the features of what GoM has"); des
   GoM's guns' point and lines), `server/GunsOfTien/Loot.lua`, the tooltip lines in `client/GunsOfTien/Tooltips.lua`;
   Post-93 adds the UMP9 (`appendMountOn` in Guns.lua, its own ModelWeaponPart lines from gen_post93_guns.py, its
   tooltip line). Display names "Mk9 Suppressor (9mm SMGs)" and "9x19mm SMG Family Muzzle Mounting Device" (GoM's
-  pattern); weights 1.2 / 0.5 (GoM's biggest cans / every mount); stats GoM's 9mm cans' (sound ×0.3, damage ×0.9, no
+  pattern; the mount merged into GoM's renamed 9mm one on 2026-11-23, "Muzzle parts audit"); weights 1.2 / 0.5 (GoM's biggest cans / every mount); stats GoM's 9mm cans' (sound ×0.3, damage ×0.9, no
   flash) plus Aiming Time ×1.1 (GoM's deployed bipod / LR4X: 24 oz on a 12" tube at the muzzle).
 - **The MP5SD stays the better quiet gun** (user, 2026-10-22: "make it so that MP5SD is better than the MP5 with
   silencer option"): before, the MP5 + Mk9 was 28 / 8 against the SD's 33 / 9 and hit harder (0.9-1.44 against

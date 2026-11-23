@@ -136,7 +136,7 @@ if spawnTable then
             "MarzGuns.Stub_Foregrip:2", "MarzGuns.MKC_Foregrip:2", "MarzGuns.MK2_Foregrip:2",
             "MarzGuns.AimRight_Laser:2", "MarzGuns.LRX-7_Laser:2",
             "MarzGuns.BrightPoint-5_Light:2", "MarzGuns.SR7_Light:2",
-            "MarzGuns.Bipod_Folded:2", "MarzGuns.AR_Muzzle_Mount_Device:5",
+            "MarzGuns.Bipod_Folded:2",
         },
     }
 end

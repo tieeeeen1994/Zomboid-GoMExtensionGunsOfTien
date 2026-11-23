@@ -76,6 +76,13 @@ option GunsOfTien.ExtendLootAreas {
     translation = GunsOfTien_ExtendLootAreas,
 }
 
+option GunsOfTien.UpdateSavedParts {
+    type        = boolean,
+    default     = true,
+    page        = GunsOfTien,
+    translation = GunsOfTien_UpdateSavedParts,
+}
+
 option GunsOfTien.GunLootPercent {
     type        = integer,
     min         = 0,

@@ -992,7 +992,8 @@ def ump_parts(gun):
     else:
         # the main mod's Mk9 at our size (its `_GoT` models; GoM's MP5s draw the GoM-sized ones)
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
-                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     lines += [f"{w}MarzGuns.{o} {(M + '.' + o + '_UMP') if o in UMP_OPTIC_OFFSET else 'MarzGuns.' + o} scope scope,"
               for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
@@ -1243,7 +1244,8 @@ def vector_parts(gun):
                   f"{w}MarzGuns.P45_Suppressor MarzGuns.P45_Suppressor canon canon,"]
     else:
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
-                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     lines += [f"{w}MarzGuns.{g} MarzGuns.{g} foregrip foregrip," for g in FOREGRIPS]
     lines += [f"{w}MarzGuns.Picatinny_Rail_Left {M}.{n}_RAIL_LEFT rail_left rail_left,",
@@ -1455,7 +1457,8 @@ def aug3_parts(gun):
         lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
     elif gun == 'AUGPARA':
         lines += [f"{w}GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,",
-                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,"]
+                  f"{w}GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT canon canon,",
+                  f"{w}MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     else:
         lines += [f"{w}{M}.AUGHBAR_Integrated_Bipod_Folded {M}.AUGHBAR_BIPOD_FOLDED integrated_bipod integrated_bipod,",
                   f"{w}{M}.AUGHBAR_Integrated_Bipod_Deployed {M}.AUGHBAR_BIPOD_DEPLOYED integrated_bipod "
@@ -2779,7 +2782,8 @@ def hk416qr22():
 # - GROZA2 "Groza-2 Prototype": 5.45x39, the compact OTs-14-4A of the user's photo, no forend; held like a pistol
 #   (user, 2026-11-12: "hold Groza-2 using handgun stance"), as GoM's MP5K and our MP7: GROZA2_HELD (the body turned
 #   180 degrees about the bore) and its turned points (groza_points.json "held"), GoM's handgun item lines
-#   (GUN_HANDGUN's); GoM's "545x39" magazines (Bakelite 30 / 45 / 60, the 100 drum) at our size; no muzzle parts;
+#   (GUN_HANDGUN's); GoM's "545x39" magazines (Bakelite 30 / 45 / 60, the 100 drum) at our size; GoM's AK muzzle
+#   mount and PBS-1 as the Groza-1 (user, 2026-11-23: "Can't Groza-2 take this too?"), as GoM's AK-74 and AKS-74U;
 # - GROZA4 "Groza-4": 9x39, the short barrel in the forend (GROZA4_BODY), front grip; GoM's AS VAL 10 / 20 / 30 at our
 #   size; its suppressor built in (user, 2026-11-12: "9x39 default ammo is treated as subsonic... but the gun took the
 #   stats into its own", GoM's AS VAL): the quiet sound in the gun's own stats (GoM's AS VAL lines, CapGunRevolverShoot
@@ -2798,7 +2802,7 @@ GROZAS = {
                    range=50.0, sight=(8, 16.0), jam=0.5, cond=300, weight=3.0, ammo='swmg:bullet_762x39',
                    box='MarzGuns.762x39_Box', mag='MarzGuns.762x39Magazine30', clip=30, shoot='JS14Shoot', gain=2.0,
                    radius=175, volume=50),
-    'GROZA2': dict(body='GROZA2_HELD', held=True, mag_point='magazine_545x39', muzzle='muzzle_compact', canon=None,
+    'GROZA2': dict(body='GROZA2_HELD', held=True, mag_point='magazine_545x39', muzzle='muzzle_compact', canon='compact',
                    name='Groza-2 Prototype Assault Rifle', min=1.0, max=1.6, crit=25.0, critmult=3.0, hit=35, aim=25,
                    range=40.0, sight=(6, 14.0), jam=0.5, cond=250, weight=2.6, ammo='swmg:bullet_545x39',
                    box='MarzGuns.545x39_Box', mag='MarzGuns.545x39Magazine30_Bakelite', clip=30, shoot='JS14Shoot',
@@ -2848,6 +2852,12 @@ def grozas():
 """)
             for name, value in pts['held'].items():
                 out.append(attachment(name, value))
+            if g['canon'] == 'compact':
+                # the Groza-1's AK canon (GROZA_AK_CANON_BACK behind the muzzle, on the bore) on the turned body;
+                # GoM's AK mount and PBS-1 (modelled upright) turned with it, as its magazines and optics
+                o = pts['held']['muzzle']['offset']
+                out.append(attachment('canon', [o[0], round(o[1] - GROZA_AK_CANON_BACK, 4), o[2]],
+                                      pts['held']['magazine']['rotate']))
             out.append("    }\n")
             continue
         out.append(f"""
@@ -2904,7 +2914,7 @@ def grozas():
         lines += [f"{w}{mag} {model} magazine magazine," for mag, model in GROZA_MAGS[gun]]
         lines += [f"{w}MarzGuns.Picatinny_Rail_Up {M}.GROZA_RAIL_UP rail_up rail_up,"]
         lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
-        if g['canon'] == 'long':
+        if g['canon'] in ('long', 'compact'):
             lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
                       f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
         elif g['canon'] == 'integral':

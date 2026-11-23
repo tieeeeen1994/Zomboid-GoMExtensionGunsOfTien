@@ -8,6 +8,7 @@
 
 local ok, tooltips = pcall(require, "MarzWeapons/ItemTooltipsTable")
 if not ok or type(tooltips) ~= "table" or type(tooltips.tooltipsPergun) ~= "table" then return end
+pcall(require, "GunsOfTien/Tooltips")     -- the main mod's lines first: some below replace them (PBS-1)
 
 local lines = tooltips.tooltipsPergun
 local M = "GunsOfTienPost93."
@@ -148,21 +149,49 @@ for _, mag in ipairs({ "46x30Magazine20_MP7", "46x30Magazine30_MP7", "46x30Magaz
 end
 -- the P90's magazine, mount device and SP90 and the SS190 round: the main mod's client/GunsOfTien/P90Tooltips.lua
 
-for _, part in ipairs({ "MP7_Suppressor", "P90_Suppressor", "FIVESEVEN_Suppressor", "SCARH_Suppressor" }) do
+-- suppressors and mount devices in GoM's own wording (its MKI / PBS-1 / P45 and their mounts): can -> { calibre,
+-- the guns it fits } (each MountOn in items_guns.txt)
+for part, can in pairs({
+    MP7_Suppressor = { "4.6x30mm", "MP7A1, MP7A2 and UCP" },
+    P90_Suppressor = { "5.7x28mm", "P90, P90 TR and PS90" },
+    FIVESEVEN_Suppressor = { "5.7x28mm", "Five-SeveN" },
+    SCARH_Suppressor = { "7.62x51mm", "SCAR-H, HK417, HK417 Marksman, Mk 11 and MDRx .308" },
+}) do
     lines[M .. part] = {
+        "Requires " .. can[1] .. " Muzzle Mount",
         "Sound Radius and Volume reduced by 70%",
-        "Damage to targets decreased by 10%",
+        "Damage reduced by 10%",
         "Removes Muzzle Flash",
-        "Needs its Muzzle Mount Device",
-    }
-end
-for _, part in ipairs({ "MP7_Muzzle_Mount_Device", "P90_Muzzle_Mount_Device", "SCARH_Muzzle_Mount_Device" }) do
-    lines[M .. part] = {
-        "No Direct Stat Changes",
-        "Enables its Suppressor",
+        "Can be mounted on " .. can[2],
         "Needs Wrench to install or remove.",
     }
 end
+for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mount_Device = "5.7x28mm",
+    SCARH_Muzzle_Mount_Device = "7.62x51mm" }) do
+    lines[M .. part] = {
+        "No Direct Stat Changes",
+        "Enables " .. calibre .. " Muzzle Attachments",
+        "Needs Wrench to install or remove.",
+    }
+end
+-- GoM's AK and .45 cans on Post-93's guns too (Groza.lua, Vector.lua): the main mod's PBS-1 line with the Grozas,
+-- GoM's P45 line with the Vector carbine
+lines["MarzGuns.PBS-1_Suppressor"] = {
+    "Requires AK Muzzle Mount",
+    "Sound Radius and Volume reduced by 70%",
+    "Damage reduced by 10%",
+    "Removes Muzzle Flash",
+    "Can be mounted on AK-47, AK-74, AKS-74U, RPK, RPK-74, Groza-1 and Groza-2",
+    "Needs Wrench to install or remove.",
+}
+lines["MarzGuns.P45_Suppressor"] = {
+    "Requires .45 Muzzle Mount",
+    "Sound Radius and Volume reduced by 70%",
+    "Damage reduced by 10%",
+    "Removes Muzzle Flash",
+    "Can be mounted on .45 pistols, SMGs and the Vector .45 Carbine",
+    "Needs Wrench to install or remove.",
+}
 
 lines[M .. "46x30_Bullet"] = { "DM11 solid copper-plated steel bullet", "Piercing targets", "Able to hit up to 2 targets" }
 for round, damage in pairs({ ["46x30_Bullet_Subsonic"] = "40%", ["57x28_Bullet_SB193"] = "30%" }) do

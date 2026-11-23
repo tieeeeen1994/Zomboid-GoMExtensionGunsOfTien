@@ -105,7 +105,6 @@ if spawnTable then
             "MarzGuns.LR4X_Scope:5", "MarzGuns.TR06X_Scope:3", "MarzGuns.LR10X_Scope:3", "MarzGuns.ElcanX2_Scope:3",
             "MarzGuns.Bipod_Folded:10", "MarzGuns.MKC_Foregrip:3",
             "MarzGuns.AimRight_Laser:2", "MarzGuns.SR7_Light:2",     -- no ":PR*": the rails are integral
-            M .. "SCARH_Muzzle_Mount_Device:5",
         },
     }
 end

@@ -11,7 +11,7 @@
       Bolt_Fired swap: back on each shot and on an empty gun); the cocking knob at the rear top slides straight back
       only while racked (ChargingHandle.lua);
     - reload: GoM's own animations (GoMReloads.lua), its MP5K's ("handgun2");
-    - AWC's Mk9 on the 9x19mm SMG mount device over its threaded barrel (Suppressors.lua has the can's stats and
+    - AWC's Mk9 on the 9x19mm mount device over its threaded barrel (Suppressors.lua has the can's stats and
       rule, the parts' MountOn and the gun's ModelWeaponPart lines are in their scripts);
     - no stock (Steyr's optional fixed stock came later), no bayonet;
     - GoM's optional Picatinny rails (user, 2026-11-12; Rails.lua): the top for red dots (as the Uzi: longer optics
@@ -76,7 +76,7 @@ local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTab
 if spawnTable then
     spawnTable[TMP] = {
         required = { "MarzGuns.Bolt_Lock", ChargingHandle.FORWARD },
-        optionals = { MAGS[2] .. ":30", MAGS[1] .. ":20", M .. "SMG9_Muzzle_Mount_Device:5" },
+        optionals = { MAGS[2] .. ":30", MAGS[1] .. ":20" },
     }
     local list = spawnTable[TMP].optionals
     for _, optic in ipairs(Rails.RED_DOTS) do list[#list + 1] = optic .. ":5:PRU" end

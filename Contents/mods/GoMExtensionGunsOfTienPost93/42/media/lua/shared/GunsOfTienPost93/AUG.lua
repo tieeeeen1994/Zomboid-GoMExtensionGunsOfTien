@@ -19,8 +19,8 @@
       left rail: GoM's own Picatinny_Rail_Left (and its universal Picatinny Rail on the left side only) as an optional
       upgrade for GoM's lights, drawn on these guns with the main mod's short AUG_RAIL_LEFT (the A1 takes it too, with
       a right one, since 2026-10-30); no bottom rail (the folding grip);
-    - muzzle: the A3 GoM's AR family (as the SCAR-L), the Para the main mod's 9x19mm SMG mount device and Mk9 (as the
-      UMP9), the HBAR none;
+    - muzzle: the A3 GoM's AR family (as the SCAR-L), the Para the 9x19mm mount device (GoM's, renamed) and
+      the main mod's Mk9 (as the UMP9), the HBAR none;
     - the HBAR's integrated folding bipod (Gunworks' FoldingBipod, as the main mod's M249 and GoM's BAR / M60 / M24)
       with GoM's rail bipod stats.
 --]]
@@ -166,9 +166,8 @@ if spawnTable then
         for _, e in ipairs(required or {}) do req[#req + 1] = e end
         return { required = req, optionals = optionals }
     end
-    spawnTable[A3] = entry({ A1_MAGS[1] .. ":30", A1_MAGS[2] .. ":5" }, { "MarzGuns.AR_Muzzle_Mount_Device:5" })
-    spawnTable[PARA] = entry({ PARA_MAGS[1] .. ":30", PARA_MAGS[2] .. ":20" },
-        { "GunsOfTien.SMG9_Muzzle_Mount_Device:5" })
+    spawnTable[A3] = entry({ A1_MAGS[1] .. ":30", A1_MAGS[2] .. ":5" }, {})
+    spawnTable[PARA] = entry({ PARA_MAGS[1] .. ":30", PARA_MAGS[2] .. ":20" }, {})
     spawnTable[HBAR] = entry({ HBAR_MAGS[1] .. ":50", HBAR_MAGS[2] .. ":5" }, {}, { BIPOD_FOLDED })
 end
 
@@ -210,7 +209,8 @@ local function appendAll()
         "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }) do
         appendMountOn(part, { A3 })
     end
-    for _, part in ipairs({ "GunsOfTien.SMG9_Muzzle_Mount_Device", "GunsOfTien.Mk9_Suppressor" }) do
+    for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
+        "GunsOfTien.Mk9_Suppressor" }) do
         appendMountOn(part, { PARA })
     end
 end

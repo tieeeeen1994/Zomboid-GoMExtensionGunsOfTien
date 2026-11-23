@@ -1,13 +1,22 @@
 --[[
     Guns of Tien -- parts a gun no longer takes come off guns saved with them fitted, and lie beside the gun in the
     same container (user, 2026-11-23: "force existing guns whose attachment slots are taken away to uninstall itself
-    from the gun and place it beside the gun in that container").
+    from the gun and place it beside the gun in that container"); parts merged into another item are swapped for it,
+    fitted or loose (user, 2026-11-23, the 9mm mount devices merged: "how do we migrate existing worlds into it?").
 
     Which parts: GunsOfTien_RemovedParts (gun full type -> part full types), filled by the files that take a slot
     away (shared/GunsOfTien/GoMAttachments.lua: GoM's rail bipod off six guns that cannot draw it without it
     overlapping the foregrip). A part taken off goes into the gun's own container (a bag inside a crate stays in that
     bag); a gun lying on the floor gets it on the floor at the same spot. Gunworks' attachment stats are applied again
     (StatsFactory.ReapplyAllModifiers, as its own removal does).
+    GunsOfTien_ReplacedParts (old part full type -> new part full type), filled by the file that merged them
+    (shared/GunsOfTien/Suppressors.lua: the main mod's 9x19mm SMG mount device -> GoM's 9mm mount): on a gun (any gun
+    the old part's MountOn names) the old part is detached and a new one attached in its place; a loose one is taken
+    out of its container (or off the floor) and a new one put in the same place. The old item stays defined and works
+    as the new one meanwhile, so anything this misses still works.
+
+    Sandbox option UpdateSavedParts ("Update Parts on Saved Guns", on by default; user, 2026-11-23: "let's just add a
+    sandbox option that turns it off"), read live: off, nothing is checked (the old mount still works as GoM's).
 
     When, on the server and in single player:
     - every chunk as it loads (LoadChunk, at the end of the chunk's load): its objects' containers, corpses and floor
@@ -16,7 +25,8 @@
     - each player once, 10 s after joining (single player: the local players), and each vehicle once while it is
       loaded (checked every 5 s): those are on clients already, so the gun is synced to its owner
       (syncHandWeaponFields, which updates the client's copy in place, the one in the hands too) or re-sent to the
-      players near the vehicle, and the part sent with sendAddItemToContainer.
+      players near the vehicle, and the part sent with sendAddItemToContainer (a swapped loose part: removed with
+      sendRemoveItemFromContainer, its replacement added).
 --]]
 
 if isClient() then return end
@@ -34,9 +44,41 @@ local function removedFor(gunType)
     return GunsOfTien_RemovedParts and GunsOfTien_RemovedParts[gunType]
 end
 
-local function where(gun, square)
+local function replacedParts()
+    return GunsOfTien_ReplacedParts or {}
+end
+
+local function isEnabled()
+    local vars = SandboxVars and SandboxVars.GunsOfTien
+    return vars ~= nil and vars.UpdateSavedParts == true
+end
+
+local function anyWork()
+    return isEnabled() and (hasAny(GunsOfTien_RemovedParts) or hasAny(GunsOfTien_ReplacedParts))
+end
+
+-- old part -> the gun full types its MountOn names (read once per world: scripts are rebuilt on leaving a game, and
+-- every MountOn is appended by OnInitGlobalModData, before any chunk loads)
+local gunsTakingCache = {}
+Events.OnInitGlobalModData.Add(function() gunsTakingCache = {} end)
+
+local function gunsTaking(partType)
+    local list = gunsTakingCache[partType]
+    if not list then
+        list = {}
+        local item = instanceItem(partType)
+        local mountOn = item and item.getMountOn and item:getMountOn()
+        if mountOn then
+            for i = 0, mountOn:size() - 1 do list[#list + 1] = tostring(mountOn:get(i)) end
+        end
+        gunsTakingCache[partType] = list
+    end
+    return list
+end
+
+local function where(item, square)
     if square then return square:getX() .. "," .. square:getY() .. "," .. square:getZ() end
-    local container = gun:getContainer()
+    local container = item:getContainer()
     while container and container:getContainingItem() and container:getContainingItem():getContainer() do
         container = container:getContainingItem():getContainer()
     end
@@ -47,20 +89,30 @@ local function where(gun, square)
     return "?"
 end
 
---- Takes the parts this gun no longer takes off it, beside it. `sync`: nil (nobody has the gun yet), "owner"
---- (`owner`'s inventory) or "nearby" (a vehicle's container, sent to the players near it).
+local function log(text, item, square)
+    local okWhere, place = pcall(where, item, square)
+    print("[GunsOfTien] removed parts: " .. text .. " at " .. (okWhere and place or "?"))
+end
+
+--- Takes the parts this gun no longer takes off it, beside it, and swaps merged parts for their replacement.
+--- `sync`: nil (nobody has the gun yet), "owner" (`owner`'s inventory) or "nearby" (a vehicle's container, sent to
+--- the players near it).
 local function strip(gun, sync, owner)
-    local removed = removedFor(gun:getFullType())
-    if not removed then return 0 end
     local drop = {}
-    for _, part in ipairs(removed) do drop[part] = true end
-    local parts = {}
+    for _, part in ipairs(removedFor(gun:getFullType()) or {}) do drop[part] = true end
+    local replace = replacedParts()
+    local parts, swaps = {}, {}
     local fitted = gun:getAllWeaponParts()
     for i = 0, fitted:size() - 1 do
         local part = fitted:get(i)
-        if part and drop[part:getFullType()] then parts[#parts + 1] = part end
+        local partType = part and part:getFullType()
+        if partType and drop[partType] then
+            parts[#parts + 1] = part
+        elseif partType and replace[partType] then
+            swaps[#swaps + 1] = part
+        end
     end
-    if #parts == 0 then return 0 end
+    if #parts == 0 and #swaps == 0 then return 0 end
 
     local worldItem = gun:getWorldItem()
     local square = worldItem and worldItem:getSquare()
@@ -73,9 +125,17 @@ local function strip(gun, sync, owner)
         elseif container then
             container:AddItem(part)
         end
-        local okWhere, place = pcall(where, gun, square)
-        print("[GunsOfTien] removed parts: took " .. part:getFullType() .. " off " .. gun:getFullType() .. " (id "
-            .. tostring(gun:getID()) .. ") at " .. (okWhere and place or "?"))
+        log("took " .. part:getFullType() .. " off " .. gun:getFullType() .. " (id " .. tostring(gun:getID()) .. ")",
+            gun, square)
+    end
+    for _, part in ipairs(swaps) do
+        local new = instanceItem(replace[part:getFullType()])
+        if new then
+            gun:detachWeaponPart(part)
+            gun:attachWeaponPart(new)
+            log("swapped " .. part:getFullType() .. " for " .. new:getFullType() .. " on " .. gun:getFullType()
+                .. " (id " .. tostring(gun:getID()) .. ")", gun, square)
+        end
     end
     if StatsFactory and StatsFactory.ReapplyAllModifiers then StatsFactory.ReapplyAllModifiers(gun) end
 
@@ -89,12 +149,36 @@ local function strip(gun, sync, owner)
             for _, part in ipairs(parts) do sendAddItemToContainer(container, part) end
         end
     end
-    return #parts
+    return #parts + #swaps
+end
+
+--- A loose merged part in a container: out, its replacement in, in the same container.
+local function swapLoose(item, sync)
+    local container = item:getContainer()
+    local new = container and instanceItem(replacedParts()[item:getFullType()])
+    if not new then return end
+    log("swapped loose " .. item:getFullType() .. " (id " .. tostring(item:getID()) .. ") for " .. new:getFullType(),
+        item)
+    container:DoRemoveItem(item)
+    container:AddItem(new)
+    if isServer() and sync then
+        sendRemoveItemFromContainer(container, item)
+        sendAddItemToContainer(container, new)
+    end
 end
 
 local function checkContainer(container, sync, owner)
-    if not container or not GunsOfTien_RemovedParts then return end
-    for gunType in pairs(GunsOfTien_RemovedParts) do
+    if not container then return end
+    local gunTypes = {}
+    for gunType in pairs(GunsOfTien_RemovedParts or {}) do gunTypes[gunType] = true end
+    for partType in pairs(replacedParts()) do
+        for _, gunType in ipairs(gunsTaking(partType)) do gunTypes[gunType] = true end
+        if container:containsTypeRecurse(partType) then
+            local loose = container:getAllTypeRecurse(partType)
+            for i = 0, loose:size() - 1 do swapLoose(loose:get(i), sync) end
+        end
+    end
+    for gunType in pairs(gunTypes) do
         if container:containsTypeRecurse(gunType) then
             local guns = container:getAllTypeRecurse(gunType)
             for i = 0, guns:size() - 1 do
@@ -116,14 +200,26 @@ local function checkSquare(square)
             checkContainer(obj:getContainerByIndex(c))
         end
     end
+    local replace = replacedParts()
     local worldObjects = square:getWorldObjects()
     for i = worldObjects:size() - 1, 0, -1 do
-        local item = i < worldObjects:size() and worldObjects:get(i):getItem() or nil
+        local worldItem = i < worldObjects:size() and worldObjects:get(i) or nil
+        local item = worldItem and worldItem:getItem()
         if item then
-            if instanceof(item, "HandWeapon") and removedFor(item:getFullType()) then
+            if instanceof(item, "HandWeapon") then
                 strip(item)
             elseif instanceof(item, "InventoryContainer") then
                 checkContainer(item:getInventory())
+            elseif replace[item:getFullType()] then
+                -- only reached from a chunk being loaded, which no client has yet: not transmitted
+                local new = instanceItem(replace[item:getFullType()])
+                if new then
+                    log("swapped " .. item:getFullType() .. " (id " .. tostring(item:getID()) .. ") on the floor for "
+                        .. new:getFullType(), item, square)
+                    square:removeWorldObject(worldItem)
+                    square:AddWorldInventoryItem(new, worldItem:getOffX(), worldItem:getOffY(), worldItem:getOffZ(),
+                        false)
+                end
             end
         end
     end
@@ -134,7 +230,7 @@ local function checkSquare(square)
 end
 
 local function onLoadChunk(chunk)
-    if not hasAny(GunsOfTien_RemovedParts) then return end
+    if not anyWork() then return end
     for z = chunk:getMinLevel(), chunk:getMaxLevel() do
         for x = 0, 7 do
             for y = 0, 7 do
@@ -204,5 +300,5 @@ local function poll()
 end
 
 Events.OnTick.Add(function()
-    if hasAny(GunsOfTien_RemovedParts) then poll() end
+    if anyWork() then poll() end
 end)

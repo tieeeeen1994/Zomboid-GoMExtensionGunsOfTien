@@ -14,7 +14,8 @@
     - the side-folding stock with GoM's G36C stock stats (as the UMPs');
     - GoM's optics on the integral top rail, its foregrips on the integral bottom rail, its optional left and right
       Picatinny rails (drawn as KRISS's side rails) for its lights and lasers (the main mod's Rails.Register);
-    - at canon the .45 GoM's .45 mount device and P45, the 9mm the main mod's 9x19mm SMG mount device and Mk9.
+    - at canon the .45 GoM's .45 mount device and P45, the 9mm the 9x19mm mount device (GoM's,
+      renamed) and the main mod's Mk9.
     The Vector CRB (user, 2026-11-03: ".45 ACP gets the longer barrel"; build_vectorcrb.py) is the Vector .45 with
     KRISS's 16" barrel in its long shroud: registered as the .45 is (its magazines, reload, stock, rails, muzzle parts
     on the shroud's face, select fire as the SMGs by the user's choice), steadier in automatic fire.
@@ -213,7 +214,8 @@ local function appendAll()
     for _, part in ipairs({ "MarzGuns.45_Muzzle_Mount_Device", "MarzGuns.P45_Suppressor", GLOCK21_13 }) do
         appendMountOn(part, { VECTOR45, VECTORCRB })
     end
-    for _, part in ipairs({ "GunsOfTien.SMG9_Muzzle_Mount_Device", "GunsOfTien.Mk9_Suppressor", GLOCK17_17 }) do
+    for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
+        "GunsOfTien.Mk9_Suppressor", GLOCK17_17 }) do
         appendMountOn(part, { VECTOR9, VECTORSDP })
     end
     for pistol, lines in pairs(PISTOL_PARTS) do

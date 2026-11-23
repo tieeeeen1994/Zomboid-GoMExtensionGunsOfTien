@@ -62,7 +62,7 @@ def parse_scripts(root):
                     depth += {"{": 1, "}": -1}.get(src[i], 0)
                     i += 1
                 body = src[mm.end():i - 1]
-                for im in re.finditer(r"\bitem\s+([\w\-\.]+)\s*\{([^{}]*)\}", body):
+                for im in re.finditer(r"\bitem\s+([\w\-\.&]+)\s*\{([^{}]*)\}", body):
                     fields = {}
                     for entry in im.group(2).split(","):
                         if "=" not in entry:

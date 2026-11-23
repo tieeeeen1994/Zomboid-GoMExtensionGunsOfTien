@@ -4,6 +4,15 @@ Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished featu
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
 Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
+## Attachments and muzzle parts audit (3.20.0, built 2026-11-23, not played)
+
+- [ ] Load a world saved before it with an old 9x19mm SMG mount on an Uzi / MP5 and one loose: both become GoM's
+      "9x19mm Family Muzzle Mounting Device" (server log `[GunsOfTien] removed parts: swapped ...`), the Mk9 stays on.
+- [ ] GoM's 9mm mount on the SMGs is drawn as our adapter; the Groza-2's AK mount and PBS-1 sit on its barrel.
+- [ ] The AA-12's side rails, lights and lasers and the G36's bipod are drawn where gom_points.py put them; a bipod
+      saved on an M4A1 / MP5 comes off beside the gun; gun and magazine tooltips read as GunLines.lua writes them.
+- [ ] Update Parts on Saved Guns off: nothing is swapped or taken off; on again: the next load does it.
+
 ## Ammo Maker part cartons (3.19.0, built 2026-11-21, not played)
 
 - [ ] After the 3.19.0 upload: put preview38 (part cartons and crates) on the Steam page by hand.

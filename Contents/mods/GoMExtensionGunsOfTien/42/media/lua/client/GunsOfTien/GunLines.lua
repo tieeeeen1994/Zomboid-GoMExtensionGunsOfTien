@@ -195,8 +195,15 @@ local function sideOf(part)
 end
 
 local function joinNames(list)
-    local names = {}
-    for _, part in ipairs(list) do names[#names + 1] = nameOf(part) end
+    -- each name once: two items can share one (the 9x19mm mount device, GoM's and the main mod's old one)
+    local names, seen = {}, {}
+    for _, part in ipairs(list) do
+        local name = nameOf(part)
+        if not seen[name] then
+            seen[name] = true
+            names[#names + 1] = name
+        end
+    end
     table.sort(names)
     return table.concat(names, ", ")
 end

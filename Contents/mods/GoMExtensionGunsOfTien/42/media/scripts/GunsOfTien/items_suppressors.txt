@@ -16,12 +16,12 @@ module GunsOfTien {
     item SMG9_Muzzle_Mount_Device {
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
-        Icon             = GunsOfTien_SMG9_Muzzle_Mount_Device,
+        Icon             = Muzzle_Mount_Device,
         Weight           = 0.5,
         WeightModifier   = 0.5,
-        MountOn          = MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;GunsOfTien.TMP,
+        MountOn          = MarzGuns.M92FS;MarzGuns.M93R;MarzGuns.HIPOWER;MarzGuns.P226;MarzGuns.GLOCK17;MarzGuns.VP70M;MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;GunsOfTien.TMP,
         PartType         = CanonMount,
-        WorldStaticModel = GunsOfTien.SMG9_Muzzle_Mount_Device,
+        WorldStaticModel = MarzGuns.Muzzle_Mount_Device,
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
         CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
     }

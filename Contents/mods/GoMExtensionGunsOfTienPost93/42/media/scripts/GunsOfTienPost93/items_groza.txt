@@ -208,6 +208,8 @@ module GunsOfTienPost93 {
         ModelWeaponPart              = MarzGuns.TR06X_Scope MarzGuns.TR06X_Scope scope scope,
         ModelWeaponPart              = MarzGuns.PSO1_Scope MarzGuns.PSO1_Scope scope scope,
         ModelWeaponPart              = MarzGuns.LRX12X_Scope MarzGuns.LRX12X_Scope scope scope,
+        ModelWeaponPart              = MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,
+        ModelWeaponPart              = MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,
         KnockBackOnNoDeath           = true,
     }
 

@@ -7,7 +7,8 @@
       RPK 40 and drum); GoM's AK muzzle mount and PBS-1 (with it fitted, 7.62x39 US Subsonic cycles the gun without
       racking: the main mod's Ammunition.lua rule, as on GoM's AKs);
     - Groza-2 Prototype: 5.45x39mm, the compact OTs-14-4A (no forend); held like a pistol (user, 2026-11-12), as GoM's
-      MP5K and Post-93's MP7, so GoM's MP5K reload ("handgun2"); GoM's "545x39" magazines; no muzzle parts;
+      MP5K and Post-93's MP7, so GoM's MP5K reload ("handgun2"); GoM's "545x39" magazines; GoM's AK muzzle mount
+      and PBS-1 as the Groza-1 (user, 2026-11-23), as GoM's AK-74 and AKS-74U;
     - Groza-4: 9x39mm, short barrel inside the forend, front grip; GoM's AS VAL magazines ("AS Val"); its suppressor
       built in, as GoM's AS VAL (user, 2026-11-12): the quiet sound is in the gun's own stats (items_groza.txt) and the
       can a hidden part that cannot come off, with no stats of its own;
@@ -139,7 +140,8 @@ PreventRemoval.Register({ GP25_PART })
 
 -------------------------------------------------
 -- MountOn appended (DoParam replaces the list, so it is read and written back whole, as MK11.lua does): GoM's
--- magazines, and the Groza-1's AK muzzle mount and PBS-1 (GoM's rule: the PBS-1 needs the mount)
+-- magazines, and the AK muzzle mount and PBS-1 on the Groza-1, Groza-2 and GP-25 Groza (GoM's rule: the PBS-1 needs
+-- the mount)
 -------------------------------------------------
 local function appendMountOn(partType, guns)
     local script = ScriptManager.instance:getItem(partType)
@@ -171,8 +173,8 @@ local function appendAll()
     for gun, mags in pairs(MAGS) do
         for _, mag in ipairs(mags) do appendMountOn(mag, { gun }) end
     end
-    appendMountOn("MarzGuns.AK_Muzzle_Mount_Device", { GROZA1, GROZAGL })
-    appendMountOn("MarzGuns.PBS-1_Suppressor", { GROZA1, GROZAGL })
+    appendMountOn("MarzGuns.AK_Muzzle_Mount_Device", { GROZA1, GROZA2, GROZAGL })
+    appendMountOn("MarzGuns.PBS-1_Suppressor", { GROZA1, GROZA2, GROZAGL })
 end
 
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.
@@ -182,8 +184,8 @@ Events.OnInitGlobalModData.Add(appendAll)
 -------------------------------------------------
 -- A found gun (GoM's MarzGuns_OnCreate.AttachParts reads this table): the bolt; GoM's AK / AK-74 / AS VAL magazine
 -- chances (the standard one mostly); now and then a red dot or low scope with its rail (":PRU"), at GoM's M16A2
--- chances; the Groza-4's built-in suppressor and the GP-25 always (GoM's M16A2_M203 its M203), the Groza-1's AK muzzle
--- mount now and then.
+-- chances; the Groza-4's built-in suppressor and the GP-25 always (GoM's M16A2_M203 its M203). No muzzle mount device:
+-- GoM's found guns never come with one.
 -------------------------------------------------
 local function optics()
     local out = {}
@@ -198,12 +200,12 @@ local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTab
 if spawnTable then
     local optionals = {
         [GROZA1] = { "MarzGuns.762x39Magazine30:40", "MarzGuns.762x39Magazine75:1",
-            "GunsOfTien.762x39Magazine40_RPK:3", "MarzGuns.AK_Muzzle_Mount_Device:5" },
+            "GunsOfTien.762x39Magazine40_RPK:3" },
         [GROZA2] = { "MarzGuns.545x39Magazine30_Bakelite:40", "MarzGuns.545x39Magazine45_Bakelite:3",
             "MarzGuns.545x39Magazine100_Drum:1" },
         [GROZA4] = { "MarzGuns.9x39Magazine20:40", "MarzGuns.9x39Magazine10:10", "MarzGuns.9x39Magazine30:5" },
         [GROZAGL] = { "MarzGuns.762x39Magazine30:40", "MarzGuns.762x39Magazine75:1",
-            "GunsOfTien.762x39Magazine40_RPK:3", "MarzGuns.AK_Muzzle_Mount_Device:5" },
+            "GunsOfTien.762x39Magazine40_RPK:3" },
     }
     for gun, list in pairs(optionals) do
         for _, o in ipairs(optics()) do list[#list + 1] = o end

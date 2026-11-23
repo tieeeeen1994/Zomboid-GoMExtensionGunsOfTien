@@ -62,8 +62,10 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   every gun's lines, Guns of Marz's included, follow one format written from what the gun really takes (calibre,
   built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet), so none of them
   can promise a rail the gun does not have; every magazine lists the guns it fits
-- AWC Mk9 suppressor for 9mm submachine guns, on its own muzzle mount: fits the MP5, MP5A2 and this mod's Uzis and TMP
-  (Guns of Marz's 9mm suppressors fit only its pistols), found where Guns of Marz's suppressors and muzzle devices are
+- AWC Mk9 suppressor for 9mm submachine guns: fits the MP5, MP5A2 and this mod's Uzis and TMP (Guns of Marz's 9mm
+  suppressors fit only its pistols), found where Guns of Marz's suppressors are. All 9mm guns share one muzzle mount,
+  Guns of Marz's pistol mount renamed "9x19mm Family Muzzle Mounting Device"; mounts of the old 9mm SMG kind in a
+  world become that one by themselves
 - The MP5 family (MP5A3, MP5A2, MP5SD, MP5K) and its magazines drawn true to the character's size, in the Uzis'
   proportion, so the Mk9 sits on them as it does on the Uzis; Guns of Marz's MP5 is named for what it is, the MP5A3
   (retractable stock)
@@ -75,7 +77,9 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs); the AA-12's side rails,
   lights and lasers and the G36's bipod are drawn (they were fitted invisibly), the M16A2 takes the AimRight laser its
   loot already gave it; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
-  no room), and a bipod already fitted on one comes off and lies beside the gun
+  no room), and a bipod already fitted on one comes off and lies beside the gun (sandbox option Update Parts on Saved
+  Guns, on by default, which also swaps the old 9mm SMG mount; off once a world has been played through saves the
+  checks)
 - Sawn-off stocks: the break-action shotguns (Double Barrel, Stevens 555, TOZ-34) can have their wooden stock sawn
   off behind the pistol grip with any saw (Saw Off Shotgun Stock); lighter and quicker to aim in, but less accurate
   and slower between shots; with sawn-off barrels too they fit a holster. The sawn-off stock and barrel ends are kept
@@ -115,7 +119,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   metal stock folding under the receiver, the Mini and Micro fit a holster (the Micro also an ankle holster), their
   stocks folding along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
-- The AWC Mk9 suppressor fits all three on its 9mm SMG muzzle mount
+- The AWC Mk9 suppressor fits all three on the 9x19mm muzzle mount
 - Guns of Marz's Picatinny rails fit the Uzi and Mini Uzi as short clamp-on rails: on the top cover for red dots (the
   Mini Uzi only the Reflex S2, the others reach its cocking knob), under the handguard for foregrips and on its left
   for lights; none on the Micro Uzi
@@ -128,7 +132,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Steyr TMP, the Austrian polymer machine pistol of 1992, held one-handed like the MP5K and MAC-10 and fitting a
   holster, its front grip moulded in: automatic at 900 rounds a minute, or single shots
 - Its own 15 and 30-round magazines (the 15 flush with the grip)
-- The AWC Mk9 suppressor fits it on its 9mm SMG muzzle mount
+- The AWC Mk9 suppressor fits it on the 9x19mm muzzle mount
 - Guns of Marz's optional Picatinny rails on top (its red dots), left (lights) and right (lasers), drawn as short rails sized to the gun
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits)
 
@@ -247,7 +251,7 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well.
 - H&K HK417, the HK416's 7.62x51mm big brother of 2006, as the 16-inch "HK417 Battle Rifle" (Recce) and the 20-inch "HK417 Marksman Rifle" with a longer rail system: H&K's free-floating rails on all four sides for Guns of Marz optics, foregrips, bipods, lights and lasers, H&K's six-position stock and grip, automatic or single shots at 600 rounds a minute; H&K's own translucent 10 and 20-round magazines; the SCAR-H's 7.62x51mm muzzle mount and SOCOM762-RC suppressor; flip-up iron sights that fold under an optic
 - Flip-up iron sights follow the optic on the MP7s, the SCARs and the Vectors too, as on the HK416: up with no optic, the rear folded under a red dot or holographic sight, both folded under a magnified scope (the rear taken off where an optic's mount needs its spot on the rail)
 - Knight's Mk 11 Mod 0, the SR-25 as US special forces adopted it in 2000: a 20-inch barrel, Knight's rail handguard with rails on all four sides for Guns of Marz optics (its sniper scopes need no mount), foregrips, bipods, lights and lasers, semi-automatic; takes the SR-25's 20-round magazine, Magpul's PMAGs and D-50 drum and the SOCOM762-RC suppressor
-- TsKIB SOO's OTs-14 Groza bullpups of 1994, on the AKS-74U's mechanism, automatic: the Groza-1 (7.62x39mm, long barrel; Guns of Marz's AK-47 magazines and the RPK's 40 and drum; its AK muzzle mount and PBS-1, with which 7.62x39 US Subsonic cycles it; also with a GP-25 grenade launcher, switched to from Gunworks' radial menu like Guns of Marz's M16A2 with M203, firing its 40mm grenades), the compact Groza-2 Prototype (5.45x39mm, held like a pistol, Guns of Marz's AK-74 magazines) and the Groza-4 (9x39mm, Guns of Marz's AS VAL magazines, a built-in suppressor as on Guns of Marz's AS VAL); Guns of Marz's Picatinny rail fits on the carrying handle for its optics
+- TsKIB SOO's OTs-14 Groza bullpups of 1994, on the AKS-74U's mechanism, automatic: the Groza-1 (7.62x39mm, long barrel; Guns of Marz's AK-47 magazines and the RPK's 40 and drum; its AK muzzle mount and PBS-1, with which 7.62x39 US Subsonic cycles it; also with a GP-25 grenade launcher, switched to from Gunworks' radial menu like Guns of Marz's M16A2 with M203, firing its 40mm grenades), the compact Groza-2 Prototype (5.45x39mm, held like a pistol, Guns of Marz's AK-74 magazines, its AK muzzle mount and PBS-1) and the Groza-4 (9x39mm, Guns of Marz's AS VAL magazines, a built-in suppressor as on Guns of Marz's AS VAL); Guns of Marz's Picatinny rail fits on the carrying handle for its optics
 - Izhmash SV-98 (2000), the Russian 7.62x54mmR bolt-action sniper rifle in its green plywood thumbhole stock: its own 10-round magazine, a rail on the receiver for Guns of Marz optics, a bipod that folds back under the forend, worked by hand after every shot
 - Izhmash SV-99 (1999), the quiet .22 LR sniper rifle with its straight-pull toggle lever and built-in suppressor, in green plywood with the open butt of its 2009 stock; a 5-round magazine, a rail on the receiver for Guns of Marz optics, a folding bipod
 - 4.6x30mm DM11, Subsonic

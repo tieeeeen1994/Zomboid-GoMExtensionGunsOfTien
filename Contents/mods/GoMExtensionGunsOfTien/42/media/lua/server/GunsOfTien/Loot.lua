@@ -1,14 +1,12 @@
 --[[
-    Guns of Tien -- loot for AWC's Mk9 suppressor and its 9x19mm SMG mount device (shared/GunsOfTien/Suppressors.lua)
-    and the M249
+    Guns of Tien -- loot for AWC's Mk9 suppressor (shared/GunsOfTien/Suppressors.lua) and the M249
 
-    They join the item lists of Guns of Marz's MarzGuns.World_Suppressor_Spawner (SWAT gun storage, police evidence,
-    drug labs, drug shacks) and MarzGuns.World_Muzzle_Device_Spawner (gun stores, garages, SWAT and army storage), as
-    Post-93's suppressors and mount devices do: each spawn picks one entry of the list, so ours are one more equal
-    choice in each. The mount device also joins GoM's list for vanilla's Improved Choke Tube
-    (VanillaReplacerTable.VanillaAttachmentMap, used while GoM's sandbox VanillaAttachmentReplacement is on), which GoM
-    turns into one of its mount devices wherever vanilla spawns one (user, 2026-10-22: loot the same as GoM). Found
-    MP5s come without a can, as GoM's guns come without its cans. Everything follows GoM's own loot and its
+    The Mk9 joins the item list of Guns of Marz's MarzGuns.World_Suppressor_Spawner (SWAT gun storage, police evidence,
+    drug labs, drug shacks), as Post-93's suppressors do: each spawn picks one entry of the list, so ours is one more
+    equal choice. Its mount is GoM's 9mm one (renamed "9x19mm Family Muzzle Mounting Device", user, 2026-11-23), which
+    GoM already spawns in its MarzGuns.World_Muzzle_Device_Spawner and in place of vanilla's Improved Choke Tube; the
+    main mod's old 9x19mm SMG mount device is no longer spawned. Found guns come without a mount device or a can, as
+    GoM's guns come without them. Everything follows GoM's own loot and its
     LootMultiplier, which scales how often GoM places these spawners. The items are taken out again before the next
     world adds them (Lua is not always reloaded).
 
@@ -84,10 +82,6 @@ require("Items/ProceduralDistributions")
 local LISTS = {
     { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_Suppressor_Spawner",
         { "GunsOfTien.Mk9_Suppressor" } },
-    { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_Muzzle_Device_Spawner",
-        { "GunsOfTien.SMG9_Muzzle_Mount_Device" } },
-    { "MarzWeapons/OnCreate/VanillaReplacerTable", "VanillaAttachmentMap", "Base.ChokeTubeImproved",
-        { "GunsOfTien.SMG9_Muzzle_Mount_Device" } },
     { "MarzWeapons/OnCreate/ItemSpawnerTable", "ItemSpawnerMap", "MarzGuns.World_HighCap_AR_Magazine_Spawner",
         { "GunsOfTien.556x45Magazine42_AUG" } },
 }

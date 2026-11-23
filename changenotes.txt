@@ -1,0 +1,19 @@
+Attachments, tooltips and muzzle parts audit (3.20.0).
+
+Tooltips
+- Every gun's information lines, Guns of Marz's included, now follow one format written from what the gun really takes: calibre, built-in parts, integrated rails, rail slots, optic limits, mounting and muzzle devices, bayonet. No tooltip promises a rail the gun does not have any more (the AR-15, Mini-14, G36C and CAR-15 did), and every magazine lists the guns it fits.
+- Lines with no effect in game are gone from this mod's guns (barrel lengths, case ejection and the like).
+- Every suppressor and muzzle mount tooltip in Guns of Marz's wording: which mount it needs, its effects, which guns it fits, and the wrench. The PBS-1 and P45 tooltips list the guns this mod adds.
+
+Guns of Marz fixes
+- The AA-12's side rails, lights and lasers and the G36's bipod are drawn (they could be fitted but were invisible).
+- The M16A2 takes the AimRight laser its loot already gave it.
+- The bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had no room). A bipod already fitted on one comes off and lies beside the gun.
+
+Muzzle parts
+- One muzzle mount for every 9mm gun: Guns of Marz's pistol mount is now the "9x19mm Family Muzzle Mounting Device" and carries the Mk9 on the submachine guns as it carries the M&P and Shh9 on the pistols (which suppressor fits which gun is unchanged). The old 9mm SMG mount is no longer found. In a world that has some, each one becomes the new mount by itself, on guns and loose, and works the same until then.
+- The Groza-2 Prototype takes Guns of Marz's AK muzzle mount and PBS-1 suppressor, as the Groza-1 does.
+- Found guns no longer come with a muzzle mount device, as Guns of Marz's guns never do.
+
+New sandbox option
+- Update Parts on Saved Guns (Guns of Tien page, on by default): takes unsupported parts off saved guns and swaps the old 9mm mounts, as areas load, in each player's inventory a few seconds after joining and in vehicles once loaded. Turn it off once a world has been played through to save the checks. A change takes effect at once.

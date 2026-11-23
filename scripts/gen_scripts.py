@@ -739,10 +739,19 @@ def lasers():
 # lines at run time (shared/GunsOfTien/Suppressors.lua). Weights as GoM's: its biggest cans 1.2, every mount 0.5.
 # The main mod's Uzis take it too (user, 2026-10-23: the real Mk9 took the Uzi barrel nut's place), listed in their
 # own scripts (uzi() below).
+# One 9mm mount (user, 2026-11-23: "let's merge mounting device of 9mm", named like the other families): GoM's Pistol
+# mount, renamed "9x19mm Family Muzzle Mounting Device" (NINE_MOUNT_NAME), carries the Mk9 on the SMGs as it carries
+# the M&P and Shh9 on the pistols; the guns draw it with our adapter (`SMG9_Muzzle_Mount_Device_GoT`), and its MountOn
+# gets the SMGs at run time (Suppressors.lua). Our own SMG9_Muzzle_Mount_Device stays defined for worlds that have
+# one: same name, GoM's icon and floor model, every 9mm gun in its MountOn, accepted by all three cans, never spawned.
+NINE_MOUNT = 'MarzGuns.Pistol_Muzzle_Mount_Device'
+NINE_MOUNT_NAME = '9x19mm Family Muzzle Mounting Device'
 SMG9_GUNS = ('MarzGuns.MP5;MarzGuns.MP5A2;GunsOfTien.UZI;GunsOfTien.MINIUZI;GunsOfTien.MICROUZI;GunsOfTien.UZI_2H;'
              'GunsOfTien.TMP')
+GOM_9MM_PISTOLS = ('MarzGuns.M92FS;MarzGuns.M93R;MarzGuns.HIPOWER;MarzGuns.P226;MarzGuns.GLOCK17;MarzGuns.VP70M')
 SMG9_PARTS = [('Mk9_Suppressor', 'Canon', 1.2, 'Mk9 Suppressor (9mm SMGs)'),
-              ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, '9x19mm SMG Family Muzzle Mounting Device')]
+              ('SMG9_Muzzle_Mount_Device', 'CanonMount', 0.5, NINE_MOUNT_NAME)]
+SMG9_LEGACY = 'SMG9_Muzzle_Mount_Device'
 # Both parts are built at GoM's SMG size (0.72 of real), while Guns of Tien's guns are drawn at the M16A2's proportion
 # (0.603, user 2026-10-26): every gun that takes them (our Uzis, the UMP9, and since 2026-10-27 GoM's MP5 and MP5A2 on
 # our MP5 models, Suppressors.lua) draws them through a second model of the same mesh, `<part>_GoT`, scaled down by as
@@ -818,16 +827,17 @@ def smg_suppressor():
         scale    = {GOT_PART_SCALE:.4f},
     }}
 """)
+        legacy = part == SMG9_LEGACY      # looks like GoM's mount, fits every 9mm gun it or the Mk9 fits
         items.append(f"""
     item {part} {{
         DisplayCategory  = WeaponPart,
         ItemType         = base:weaponpart,
-        Icon             = GunsOfTien_{part},
+        Icon             = {'Muzzle_Mount_Device' if legacy else f'GunsOfTien_{part}'},
         Weight           = {weight},
         WeightModifier   = {weight},
-        MountOn          = {SMG9_GUNS},
+        MountOn          = {GOM_9MM_PISTOLS + ';' + SMG9_GUNS if legacy else SMG9_GUNS},
         PartType         = {ptype},
-        WorldStaticModel = {MODULE}.{part},
+        WorldStaticModel = {'MarzGuns.Muzzle_Mount_Device' if legacy else f'{MODULE}.{part}'},
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,
         CanDetach        = MarzGuns_AttachAndDetach.requiredTools,
     }}
@@ -840,6 +850,7 @@ def smg_suppressor():
     names = json.load(open(names_path))
     for part, _, _, name in SMG9_PARTS:
         names[f'{MODULE}.{part}'] = name
+    names[NINE_MOUNT] = NINE_MOUNT_NAME          # GoM's, renamed (translations merge by key, the later mod wins)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -1649,6 +1660,7 @@ def uzi_item(gun):
                   f"{w}{MODULE}.{gun}_Integrated_Stock_Deployed {MODULE}.{gun}_STOCK stock stock,"]
     parts += [f"{w}{MODULE}.{uzi_mag(r)} {MODULE}.{uzi_mag(r)} magazine magazine," for r, _ in UZI_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    parts += [f"{w}{NINE_MOUNT} {MODULE}.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     if base in UZI_RAILS:
         # GoM's optional rails drawn as our short ones (build_rails.py): its red dots, foregrips and lights on them
         parts += rail_parts({s: f'{MODULE}.{base}_RAIL_{s.upper()}' for s in UZI_RAILS[base]},
@@ -1920,6 +1932,7 @@ def tmp():
              f"{w}{MODULE}.ChargingHandle_Back {MODULE}.TMP_HANDLE handle_back handle_back,"]
     parts += [f"{w}{MODULE}.{tmp_mag(r)} {MODULE}.{tmp_mag(r)} magazine magazine," for r, _ in TMP_MAGS]
     parts += [f"{w}{MODULE}.{p} {MODULE}.{p}_GoT canon canon," for p in ('SMG9_Muzzle_Mount_Device', 'Mk9_Suppressor')]
+    parts += [f"{w}{NINE_MOUNT} {MODULE}.SMG9_Muzzle_Mount_Device_GoT canon canon,"]
     # GoM's rails (top: red dots, as the Uzi's; left: lights; right: lasers)
     parts += rail_parts({s: f'{MODULE}.TMP_RAIL_{s.upper()}' for s in ('Up', 'Left', 'Right')}, RED_DOTS,
                         lights=True, lasers=True)

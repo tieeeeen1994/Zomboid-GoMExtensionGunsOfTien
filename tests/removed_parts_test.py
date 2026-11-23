@@ -7,6 +7,11 @@
   poll changes nothing.
 - On a server: the owner gets syncHandWeaponFields and sendAddItemToContainer; a vehicle's container gets
   sendReplaceItemInContainer and sendAddItemToContainer.
+- Sandbox option UpdateSavedParts off: a chunk load and a new player change nothing.
+- Replaced parts (the main mod's old 9x19mm SMG mount device -> GoM's 9mm mount): on a chunk load the old mount on a
+  Glock 17 in a crate and on an Uzi in a bag is swapped (the Uzi's Mk9 stays), a loose one in the crate and one on
+  the floor (same offsets, not transmitted) too, a gun its MountOn does not name is left alone, nothing is sent; on
+  a server a player's loose one is removed and its replacement added, and the MP5 carrying one is synced.
 
 Setup once: py -m pip install --target tests/.lupa lupa      Run: py tests/removed_parts_test.py
 """
@@ -26,12 +31,20 @@ local now = 0
 function getTimestampMs() return now end
 function ADVANCE(ms) now = now + ms end
 SERVER = false
+SandboxVars = { GunsOfTien = { UpdateSavedParts = true } }
 function isClient() return false end
 function isServer() return SERVER end
 SENT = {}
 function syncHandWeaponFields(p, gun) SENT[#SENT + 1] = "sync " .. gun.type end
 function sendAddItemToContainer(c, item) SENT[#SENT + 1] = "add " .. item.type .. " to " .. c.name end
 function sendReplaceItemInContainer(c, a, b) SENT[#SENT + 1] = "replace " .. a.type .. " in " .. c.name end
+function sendRemoveItemFromContainer(c, item) SENT[#SENT + 1] = "remove " .. item.type .. " from " .. c.name end
+MOUNTON = {}        -- part type -> the gun types its MountOn names
+function instanceItem(type)
+    local p = PART(type)
+    function p:getMountOn() return MOUNTON[type] and LIST(MOUNTON[type]) or nil end
+    return p
+end
 function instanceof(o, c) return type(o) == "table" and o.class == c end
 package.preload["WeaponSystems/Utils/StatsFactory"] = function()
     return { ReapplyAllModifiers = function(gun) gun.reapplied = (gun.reapplied or 0) + 1 end }
@@ -52,10 +65,12 @@ local function list(t)
     return o
 end
 ArrayList = { new = function() return list({}) end }
+LIST = list
 
 local nextId = 1
 function PART(type) nextId = nextId + 1 return { class = "WeaponPart", type = type, id = nextId,
-    getFullType = function(self) return self.type end } end
+    getFullType = function(self) return self.type end, getID = function(self) return self.id end,
+    getContainer = function(self) return self.container end } end
 
 function GUN(type, parts)
     nextId = nextId + 1
@@ -64,6 +79,7 @@ function GUN(type, parts)
     function g:getID() return self.id end
     function g:getAllWeaponParts() return list({ unpack(self.parts) }) end
     function g:detachWeaponPart(p) for i, q in ipairs(self.parts) do if q == p then table.remove(self.parts, i) return end end end
+    function g:attachWeaponPart(p) table.insert(self.parts, p) end
     function g:getWorldItem() return self.worldItem end
     function g:getContainer() return self.container end
     return g
@@ -72,6 +88,9 @@ end
 function Container(name)
     local c = { name = name, items = {} }
     function c:AddItem(item) table.insert(self.items, item) item.container = self return item end
+    function c:DoRemoveItem(item)
+        for i, it in ipairs(self.items) do if it == item then table.remove(self.items, i) item.container = nil return end end
+    end
     function c:getItems() return list(self.items) end
     function c:getContainingItem() return self.bag end
     function c:getSourceGrid() return self.square end
@@ -109,6 +128,9 @@ function SQUARE(x, y, z)
     function s:getObjects() return list(self.objects) end
     function s:getWorldObjects() return list(self.worldObjects) end
     function s:getDeadBodys() return list(self.bodies) end
+    function s:removeWorldObject(w)
+        for i, o in ipairs(self.worldObjects) do if o == w then table.remove(self.worldObjects, i) return end end
+    end
     function s:AddWorldInventoryItem(item, ox, oy, oz, transmit)
         table.insert(self.floor, { item = item, ox = ox, oy = oy, oz = oz, transmit = transmit })
         return item
@@ -241,6 +263,86 @@ check("server: the vehicle's gun re-sent and its part sent",
 n = len(list(lua.eval('SENT').values()))
 lua.execute('ADVANCE(6000) FIRE("OnTick")')
 check("a second poll changes nothing", len(list(lua.eval('SENT').values())) == n)
+
+# --- the option off: nothing is touched
+lua.execute(r'''
+SandboxVars.GunsOfTien.UpdateSavedParts = false
+SENT = {}
+crateOff = Container("crateOff")
+sqOff = SQUARE(50, 60, 0)
+sqOff.objects = { OBJECT({ crateOff }) }
+m4Off = GUN("MarzGuns.M4A1", { PART("MarzGuns.Bipod_Deployed") })
+crateOff:AddItem(m4Off)
+FIRE("LoadChunk", CHUNK({ ["0,0"] = sqOff }))
+invOff = Container("inventoryOff")
+playerOff = { getInventory = function() return invOff end, getUsername = function() return "off" end }
+invOff.character = playerOff
+PLAYERS = { player, player2, playerOff }
+gunOff = GUN("MarzGuns.MP5", { PART("MarzGuns.Bipod_Folded") })
+invOff:AddItem(gunOff)
+ADVANCE(6000) FIRE("OnTick")
+ADVANCE(11000) FIRE("OnTick")
+''')
+check("option off: a loading chunk's gun keeps its part", lua.eval('#m4Off.parts == 1 and #crateOff.items == 1'))
+check("option off: a player's gun keeps its part, nothing sent", lua.eval('#gunOff.parts == 1 and #SENT == 0'))
+lua.execute('SandboxVars.GunsOfTien.UpdateSavedParts = true PLAYERS = { player, player2 }')
+
+# --- replaced parts: the old 9mm mount becomes GoM's
+OLD = "GunsOfTien.SMG9_Muzzle_Mount_Device"
+NEW = "MarzGuns.Pistol_Muzzle_Mount_Device"
+lua.execute(r'''
+SERVER = false
+SENT = {}
+GunsOfTien_ReplacedParts = { ["GunsOfTien.SMG9_Muzzle_Mount_Device"] = "MarzGuns.Pistol_Muzzle_Mount_Device" }
+MOUNTON["GunsOfTien.SMG9_Muzzle_Mount_Device"] = { "MarzGuns.GLOCK17", "GunsOfTien.UZI", "MarzGuns.MP5" }
+crate2 = Container("crate2")
+sq2 = SQUARE(30, 40, 0)
+sq2.objects = { OBJECT({ crate2 }) }
+glock = GUN("MarzGuns.GLOCK17", { PART("GunsOfTien.SMG9_Muzzle_Mount_Device") })
+crate2:AddItem(glock)
+looseOld = crate2:AddItem(PART("GunsOfTien.SMG9_Muzzle_Mount_Device"))
+other = GUN("MarzGuns.AK47", { PART("GunsOfTien.SMG9_Muzzle_Mount_Device") })    -- not in its MountOn: untouched
+crate2:AddItem(other)
+bag2 = BAG("bag2")
+crate2:AddItem(bag2)
+uzi = GUN("GunsOfTien.UZI", { PART("GunsOfTien.SMG9_Muzzle_Mount_Device"), PART("GunsOfTien.Mk9_Suppressor") })
+bag2.inventory:AddItem(uzi)
+floorOld = PART("GunsOfTien.SMG9_Muzzle_Mount_Device")
+WORLDITEM(sq2, floorOld, 0.2, 0.4, 0.0)
+FIRE("LoadChunk", CHUNK({ ["0,0"] = sq2 }))
+function types(t) local o = {} for _, p in ipairs(t) do o[#o + 1] = p.type end table.sort(o) return table.concat(o, ",") end
+''')
+check("replaced: the Glock's old mount swapped for GoM's", lua.eval('types(glock.parts)') == NEW)
+check("replaced: the Uzi's old mount swapped, its Mk9 stays",
+      lua.eval('types(uzi.parts)') == "GunsOfTien.Mk9_Suppressor," + NEW)
+check("replaced: guns re-applied", lua.eval('glock.reapplied == 1 and uzi.reapplied == 1'))
+check("replaced: a gun its MountOn does not name is left alone", lua.eval('types(other.parts)') == OLD)
+check("replaced: the loose one in the crate swapped in the crate",
+      lua.eval('looseOld.container == nil') and NEW in lua.eval('types(crate2.items)').split(',')
+      and OLD not in lua.eval('types(crate2.items)').split(','))
+check("replaced: the one on the floor swapped at its offsets, not transmitted", lua.eval(
+    '#sq2.worldObjects == 0 and #sq2.floor == 1 and sq2.floor[1].item.type == "MarzGuns.Pistol_Muzzle_Mount_Device" '
+    'and sq2.floor[1].ox == 0.2 and sq2.floor[1].oy == 0.4 and sq2.floor[1].transmit == false'))
+check("replaced: chunk load sends nothing", lua.eval('#SENT == 0'))
+
+lua.execute(r'''
+SERVER = true
+inv3 = Container("inventory3")
+player3 = { getInventory = function() return inv3 end, getUsername = function() return "p3" end }
+inv3.character = player3
+PLAYERS = { player, player2, player3 }
+mp5 = GUN("MarzGuns.MP5", { PART("GunsOfTien.SMG9_Muzzle_Mount_Device") })
+inv3:AddItem(mp5)
+carried = inv3:AddItem(PART("GunsOfTien.SMG9_Muzzle_Mount_Device"))
+ADVANCE(6000) FIRE("OnTick")
+ADVANCE(11000) FIRE("OnTick")
+''')
+sent = list(lua.eval('SENT').values())
+check("replaced, server: the player's MP5 swapped and synced",
+      lua.eval('types(mp5.parts)') == NEW and 'sync MarzGuns.MP5' in sent)
+check("replaced, server: the player's loose one removed and its replacement sent",
+      lua.eval('carried.container == nil') and 'remove ' + OLD + ' from inventory3' in sent
+      and 'add ' + NEW + ' to inventory3' in sent)
 
 print("%d failed" % failed if failed else "all passed")
 sys.exit(1 if failed else 0)

@@ -146,12 +146,10 @@ if spawnTable then
     end
     spawnTable[MDR223] = entry({ "MarzGuns.556x45Magazine20_STANAG:30", "MarzGuns.556x45Magazine25_STANAG:20",
         "MarzGuns.556x45Magazine30_STANAG:50" },
-        { "MarzGuns.AR_Muzzle_Mount_Device:5",
-          "MarzGuns.Stub_Foregrip:5", "MarzGuns.MKC_Foregrip:5", "MarzGuns.MK2_Foregrip:3" }, { RAIL_DOWN })
+        { "MarzGuns.Stub_Foregrip:5", "MarzGuns.MKC_Foregrip:5", "MarzGuns.MK2_Foregrip:3" }, { RAIL_DOWN })
     spawnTable[MDR308] = entry({ M .. "762x51Magazine20_PMAG:60", M .. "762x51Magazine10_PMAG:10",
         M .. "762x51Magazine25_PMAG:10", M .. "762x51Magazine50_PMAG:2" },
-        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1",
-          M .. "SCARH_Muzzle_Mount_Device:5" }, { BIPOD_FOLDED })
+        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1" }, { BIPOD_FOLDED })
 end
 
 -------------------------------------------------

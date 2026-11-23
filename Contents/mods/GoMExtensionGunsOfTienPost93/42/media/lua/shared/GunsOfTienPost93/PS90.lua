@@ -83,7 +83,6 @@ if spawnTable then
             "MarzGuns.Stub_Foregrip:10", "MarzGuns.MKC_Foregrip:10", "MarzGuns.MK2_Foregrip:5",
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
             "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
-            M .. "P90_Muzzle_Mount_Device:10",
         },
     }
 end

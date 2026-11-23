@@ -24,21 +24,21 @@ static check cannot see.
 | AUG A1 | – (1.5x scope) | Left, Right | – | none | – |
 | Glock 21 | – | – | Beretta Mount | pistol sights | .45 |
 | M249 | – | Up, Down, Left, Right | – | 10 of 14 (no TR06X, LR10X, LRX-12X, PSO-1) | – |
-| Uzi / Uzi (two-handed) | – | Up, Down, Left | – | 7 red dots | 9mm SMG |
-| Mini Uzi | – | Up, Down, Left | – | Reflex S2 only | 9mm SMG |
-| Micro Uzi | – | – | – | – | 9mm SMG |
+| Uzi / Uzi (two-handed) | – | Up, Down, Left | – | 7 red dots | 9mm |
+| Mini Uzi | – | Up, Down, Left | – | Reflex S2 only | 9mm |
+| Micro Uzi | – | – | – | – | 9mm |
 | P90 | – (ring sight) | Left, Right | – | none | 5.7 |
-| TMP | – | Up, Left, Right | – | 7 red dots | 9mm SMG |
+| TMP | – | Up, Left, Right | – | 7 red dots | 9mm |
 | PPK, RPD, SR-25 | – | – | – | – (SR-25: integrated scope) | – |
 | RPK, RPK-74 | – | – | AK Mount | all 14 | AK |
 | SVU | – | – | AK Mount | all 14 | – |
-| AUG A3 / Para / HBAR | Up, Right | Left | – | all 14 | AR / 9mm SMG / – |
-| Groza-1 / -1 GP-25 / -2 / -4 | – | Up | – | all 14 | AK / AK / – / integral |
+| AUG A3 / Para / HBAR | Up, Right | Left | – | all 14 | AR / 9mm / – |
+| Groza-1 / -1 GP-25 / -2 / -4 | – | Up | – | all 14 | AK / AK / AK / integral |
 | HK416, HK417, HK417 Marksman, Mk 11, SCAR-L, SCAR-H, UMP45, UMP9, MP7A2, PS90, HK416 .22 | Up, Down, Left, Right | – | – | all 14 | per gun |
 | MP7A1, P90 TR | Up, Left, Right | – | – | all 14 | own can |
 | MDRx .223 | Up, Down | Left, Right | – | all 14 | AR |
 | MDRx .308 | Up | Left, Right | – | all 14 | 7.62x51 |
-| Vector .45 / 9mm / CRB / SDP | Up, Down | Left, Right | – | all 14 | .45 / 9mm SMG |
+| Vector .45 / 9mm / CRB / SDP | Up, Down | Left, Right | – | all 14 | .45 / 9mm |
 | SV-98, SV-99 | Up | – | – | all 14 | – / integral |
 | Five-seveN, UCP | – | – | Beretta Mount | pistol sights | 5.7 / 4.6 |
 
@@ -129,3 +129,11 @@ needing to overlap from the foregrip, let's drop the bipod support ... force exi
   it taken off and put beside it, in the same container, or on the floor at the gun's spot: chunks as they load,
   players 10 s after joining, vehicles once loaded. `tests/removed_parts_test.py` runs it against mocks.
 - Re-run `scripts/attachment_audit.py`: no issue left on any gun of the three mods.
+
+## 5. Muzzle parts (2026-11-23, user: "MAKE IT CONSISTENT!")
+
+One mount device per calibre family now (9mm: GoM's pistol mount renamed "9x19mm Family Muzzle Mounting Device",
+our old 9x19mm SMG mount swapped for it in existing worlds by `RemovedParts.lua`), the Groza-2 takes the AK mount and
+PBS-1, found guns carry no mount device (GoM's way), and every can and mount tooltip is in GoM's wording with the guns
+it fits. Details: CLAUDE.md "Muzzle parts audit". Re-run of `attachment_audit.py`: every fittable muzzle part has a
+model line on every gun; the 17 9mm guns all show "Compatible Muzzle Device: 9x19mm Family Muzzle Mounting Device".

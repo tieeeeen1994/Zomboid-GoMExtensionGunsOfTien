@@ -21,7 +21,7 @@
     and 9x19mm families, Ammunition.lua), select fire with H&K's two-round burst, GoM's MP5 reload, the shared
     side-folding stock with GoM's G36C stock stats, four integral rails as parents of GoM's MP5 accessories (optics,
     foregrips, lights, lasers). The UMP45 takes GoM's .45 mount device and P45 suppressor, as its MAC-10 does, the
-    UMP9 the main mod's 9x19mm SMG mount device and AWC Mk9 (GoM's 9mm cans fit its pistols only). The charging
+    UMP9 the 9x19mm mount device (GoM's, renamed) and the main mod's AWC Mk9 (GoM's 9mm cans fit its pistols only). The charging
     handle animated as GoM animates its MP5's.
 
     The Five-seveN is MarzGuns.FIVESEVEN (GoM names it but ships nothing else) and is registered like GoM's Glock 17
@@ -344,7 +344,6 @@ if spawnTable then
             "MarzGuns.ReflexS2_Sight:5",
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
             "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
-            M .. "MP7_Muzzle_Mount_Device:10",
         },
     }
     -- The A2: the A1's parts and magazines, no folding grip, its bottom rail, GoM's foregrips at GoM's own chances
@@ -369,7 +368,6 @@ if spawnTable then
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
             "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
             "MarzGuns.Stub_Foregrip:10", "MarzGuns.MKC_Foregrip:10", "MarzGuns.MK2_Foregrip:5",
-            M .. "MP7_Muzzle_Mount_Device:10",
         },
     }
     spawnTable[P90] = {
@@ -386,7 +384,6 @@ if spawnTable then
             "MarzGuns.ReflexS2_Sight:5",
             "MarzGuns.AimRight_Laser:5", "MarzGuns.LRX-7_Laser:5",
             "MarzGuns.BrightPoint-5_Light:10", "MarzGuns.SR7_Light:10",
-            M .. "P90_Muzzle_Mount_Device:10",
         },
     }
     -- The SCARs as GoM's M4A1 / FAL come (their optics, foregrips, lights and lasers at GoM's chances; no ":PR*"
@@ -418,11 +415,10 @@ if spawnTable then
     -- GoM's M4A1 magazines (20 / 25 / 30 at 50 / 30 / 30); FN's SCAR-H magazines, the 10 rarely, ProMag's 50-round
     -- drum as rarely as the MP7's 60 (2%); the FAL's bipod
     spawnTable[SCARL] = scarEntry({ "MarzGuns.556x45Magazine20_STANAG:30", "MarzGuns.556x45Magazine25_STANAG:20",
-        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.Bipod_Folded:2", "MarzGuns.AR_Muzzle_Mount_Device:5" })
+        "MarzGuns.556x45Magazine30_STANAG:50" }, { "MarzGuns.Bipod_Folded:2" })
     spawnTable[SCARH] = scarEntry({ M .. "762x51Magazine20_SCARH:60", M .. "762x51Magazine10_SCARH:10",
         M .. "762x51Magazine50_SCARH:2" },
-        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1", "MarzGuns.Bipod_Folded:5",
-          M .. "SCARH_Muzzle_Mount_Device:5" })
+        { "MarzGuns.TR06X_Scope:1", "MarzGuns.LR10X_Scope:1", "MarzGuns.Bipod_Folded:5" })
     -- The UMPs as GoM's MP5 comes (its optics, foregrips, lights and lasers at its chances; no ":PR*" rail suffix: the
     -- integral rails are always there), the stock folded. Magazines by GoM's own rule (user, 2026-10-22: "base your
     -- decisions on how GoM handles it"): its MP5 rolls 20 / 25 / 30 at 30 / 20 / 5, the shortest likeliest, and its
@@ -464,7 +460,6 @@ if spawnTable then
             "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
             "MarzGuns.PJ-3_Laser:5", "MarzGuns.PX1_Laser:5", "MarzGuns.TR-1_Laser:5",
             "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
-            M .. "P90_Muzzle_Mount_Device:5",
         },
     }
     -- The same as the Five-seveN's, the drum as its extended magazine.
@@ -478,7 +473,6 @@ if spawnTable then
             "MarzGuns.PL4_Sight:5:BM", "MarzGuns.PM2_Sight:5:BM", "MarzGuns.PS1_Sight:5:BM",
             "MarzGuns.PJ-3_Laser:5", "MarzGuns.PX1_Laser:5", "MarzGuns.TR-1_Laser:5",
             "MarzGuns.LP_Light:5", "MarzGuns.TL_Light:5",
-            M .. "MP7_Muzzle_Mount_Device:5",
         },
     }
 end
@@ -532,15 +526,16 @@ local function appendAll()
     for _, part in ipairs(LASERS) do appendMountOn(part, { MP7, MP7A2, P90 }) end
     for _, part in ipairs(FOREGRIPS) do appendMountOn(part, { MP7A2 }) end
     -- the UMPs: GoM's MP5 accessories (optics, foregrips, lights, lasers); the UMP45 also its MAC-10's .45 mount
-    -- device and P45 suppressor, the UMP9 the main mod's 9x19mm SMG mount device and Mk9 (GoM's 9mm cans fit its
-    -- pistols only)
+    -- device and P45 suppressor, the UMP9 the 9x19mm mount device (GoM's, renamed; the main mod's old one
+    -- for worlds that have it) and the main mod's Mk9 (GoM's 9mm cans fit its pistols only)
     for _, list in ipairs({ OPTICS, LIGHTS, LASERS, FOREGRIPS }) do
         for _, part in ipairs(list) do appendMountOn(part, UMPS) end
     end
     for _, part in ipairs({ "MarzGuns.45_Muzzle_Mount_Device", "MarzGuns.P45_Suppressor" }) do
         appendMountOn(part, { UMP45 })
     end
-    for _, part in ipairs({ "GunsOfTien.SMG9_Muzzle_Mount_Device", "GunsOfTien.Mk9_Suppressor" }) do
+    for _, part in ipairs({ "MarzGuns.Pistol_Muzzle_Mount_Device", "GunsOfTien.SMG9_Muzzle_Mount_Device",
+        "GunsOfTien.Mk9_Suppressor" }) do
         appendMountOn(part, { UMP9 })
     end
     for _, part in ipairs(PISTOL_PARTS) do appendMountOn(part, { FIVESEVEN, UCP }) end

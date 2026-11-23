@@ -132,7 +132,6 @@ if spawnTable then
             "MarzGuns.LR4X_Scope:3", "MarzGuns.TA28_Scope:3",
             "MarzGuns.MKC_Foregrip:3", "MarzGuns.Bipod_Folded:3",
             "MarzGuns.AimRight_Laser:2", "MarzGuns.SR7_Light:2",
-            M .. "SCARH_Muzzle_Mount_Device:5",
         },
     }
     spawnTable[HK417S] = {
@@ -142,7 +141,6 @@ if spawnTable then
             "MarzGuns.LR4X_Scope:5", "MarzGuns.TR06X_Scope:3", "MarzGuns.LR10X_Scope:3", "MarzGuns.ElcanX2_Scope:3",
             "MarzGuns.Bipod_Folded:10", "MarzGuns.MKC_Foregrip:3",
             "MarzGuns.AimRight_Laser:2", "MarzGuns.SR7_Light:2",
-            M .. "SCARH_Muzzle_Mount_Device:5",
         },
     }
 end
