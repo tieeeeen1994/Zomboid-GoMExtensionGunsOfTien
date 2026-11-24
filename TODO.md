@@ -37,11 +37,14 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
 - [ ] Look over docs/762x25_9x18_art_sheet.png (SAKER and TUSKER boxes, round icons).
 - [ ] Play the new rounds: box and carton icons, open / pack recipes, Ammo Maker's Tokarev loads, Hot Brass casings.
 - [ ] Decide: loot for the two rounds now, or only with the Tokarev guns (none for now).
-- [ ] Upload GoT 3.25.0 and Post-93 (A-91M) once played; changenotes.txt is written.
+- [ ] Upload GoT 3.25.0 once played; changenotes.txt is written. Post-93's A-91M waits for its model rework (or ship
+      Post-93 without it).
 
 ## To review: the A-91M and 5.56A-91 (Post-93, built overnight 2026-11-25)
 
-- [ ] Review the model on docs/post93_a91m_preview.png and the decisions in docs/post93_design.md "KBP A-91M and
+- [ ] **Redo the gun models**: the user disliked docs/post93_a91m_preview.png (2026-11-25). Start by asking what
+      looks wrong, then rework scripts/post93/build_a91m.py and re-run the design protocol.
+- [ ] Review the decisions in docs/post93_design.md "KBP A-91M and
       5.56A-91" (launcher integral on both, no PBS-1 on the 7.62, the charging handle's side, loot).
 - [ ] Choose whether to build the first over-barrel 7.62-A91M and the late 5.56 gun with a railed forearm.
 - [ ] Play them: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
