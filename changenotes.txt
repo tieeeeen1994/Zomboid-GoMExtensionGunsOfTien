@@ -1,4 +1,0 @@
-A stuck bolt fixed (3.23.1).
-
-Guns of Marz fixes
-- A rack cut short no longer leaves the gun saying "Chamber is open, close it before firing." until it is racked again, or for good on an empty gun: the bolt closes when the rack ends. It happened when the trigger was pulled while the bolt was back, and when changing between walking and running during a rack with Tien's Skill Mastery's Running Reload. Guns of Marz's guns too.
