@@ -1,4 +1,0 @@
-Attachment slots on our guns show up in slot-listing mods without the part in your inventory (3.24.1).
-
-Attachments
-- Mods that list a gun's attachment slots showed every slot on Guns of Marz's guns, but on ours only once you carried the part (a grip, say). Guns of Marz's grips, rails, optics, lights, lasers and muzzle parts now list our guns from the moment the game loads, as they list Guns of Marz's own, so those mods show our slots the same way.
