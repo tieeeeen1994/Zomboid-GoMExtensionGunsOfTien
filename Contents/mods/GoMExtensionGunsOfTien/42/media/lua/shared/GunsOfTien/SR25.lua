@@ -67,6 +67,7 @@ local BOLT_AR15 = {
 }
 Animations.RegisterWeaponWithAnimatedParts(SR25, BOLT_AR15)
 ReloadAnim.RegisterWeapon(SR25, GoMReloads.profile("ar15_rifle", { rules = "boltCatchAfterEmptyInsert" }))
+require("GunsOfTien/HoldOpen").register(SR25)      -- the bolt stays open after the last round, as GoM's
 
 -------------------------------------------------
 -- The integrated scope (GoM's LR10X) and bipod (GoM's rail bipod: no stats; semi-automatic, no spread modifier)

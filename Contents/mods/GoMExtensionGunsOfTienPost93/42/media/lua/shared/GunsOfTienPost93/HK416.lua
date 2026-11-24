@@ -72,6 +72,7 @@ Animations.RegisterWeaponWithAnimatedParts(HK416, {
     },
 })
 ReloadAnim.RegisterWeapon(HK416, GoMReloads.profile("ar15_rifle", { rules = "boltCatchAfterEmptyInsert" }))
+require("GunsOfTien/HoldOpen").register(HK416)      -- the bolt stays open after the last round, as GoM's
 
 -------------------------------------------------
 -- H&K's telescopic stock

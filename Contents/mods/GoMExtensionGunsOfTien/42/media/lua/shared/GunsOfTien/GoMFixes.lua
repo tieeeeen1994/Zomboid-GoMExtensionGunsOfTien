@@ -54,6 +54,43 @@
     rackStart alone), and Gunworks' server already records any rack but an opening stroke as leaving the bolt
     closed. So when a full rack stops or performs with the flag still set, the bolt is closed the way its rackEnd
     would have (Animations.rackAction: parts and flag). Single player too.
+
+    A closing stroke that performs counts too (2026-11-24, after a report on GoM's 5.56 AR-15s). Since GoM's
+    2026-11-23 update its M16s, M4A1, CAR-15, XM177, AR15, SKS and M1 Garand hold the bolt open on the last round
+    (MarzWeapons/Hooks/LockOpenWeapons.lua sets the flag in onShoot, on the server too, where Gunworks never moves
+    the bolt part: the server's next weapon sync leaves the owner with a closed bolt and the flag), and an empty
+    reload ends with the bolt catch slap, a closing stroke (gunworksRackPhase "close", RackAR15Slap: rackStart at
+    0.02, rackEnd at 0.26). The first version here skipped every stroke with a phase, so a slap whose Done came
+    before its rackEnd kept the flag. Only an opening stroke leaves the bolt open (Gunworks' own rule since its
+    2026-11-24 update: ISRackFirearm:complete closes for any phase but "open", but on a server its flag is already
+    off by then, so nothing is sent). A closing stroke that is stopped is left alone: Gunworks' rules still hold
+    the gun open (ReloadRules.openedBolts, cleared only when the stroke performs), and the next rack closes it.
+
+    Three more holes around the flag, closed the same day (an audit of every way it is set, cleared and synced):
+    - Held open, drawn closed (multiplayer, GoM alone, after every last round): a client sends a PlayerHit packet
+      for each shot (42.22 CombatManager ~1282, a miss lists the square), so the server runs onShoot too and
+      LockOpenWeapons.lua sets its flag, but Animations.lockActionOpen returns at once on a server and the bolt
+      part there stays MarzGuns.Bolt_Lock. Vanilla's onShoot ends with the weapon sync, which replaces the owner's
+      parts and mod data: bolt drawn closed, flag on, the trigger dead with nothing but a tooltip row to say why
+      ("the bolt is simultaneously locked and considered an open chamber"). On a server, a shot that newly sets
+      the flag now also fits the open bolt part (the firing entry's, what the owner's client shows) before that
+      sync goes out. syncHandWeaponFields is swapped for the length of the onShoot call, because a second sync
+      after it could overtake the first (both are RELIABLE, unordered).
+    - A flag nothing can clear: with a chamber, the flag on and no reload action running, a gun is really open
+      only if its reload rules would answer a rack with a closing stroke (two-stroke guns, pumps, GoM's AR-15s
+      while the chamber is empty). Any other gun has no way to close it but a full rack, which an empty gun
+      without rules cannot start (canRack) and which throws a live round out of a chambered one (an AR-15 whose
+      slap was cancelled after single player's rackBullet at its start; any gun saved with the flag before
+      3.23.1). So canShoot, asked at each trigger pull, closes such a bolt first. Gunworks' and Hot Brass's
+      attack hooks ask it before vanilla's clears the action queue, hence the test on isRacking / isLoading /
+      isUnloading. Guns without a chamber (break actions, launchers, revolvers) are left alone: open is a real
+      state for them, and a rack closes them (Gunworks' ISRackFirearm:complete). They are also the only guns whose
+      load and unload open the action (the openWeapon / closeWeapon events are on GoM's revolver, break shotgun,
+      M79 and M203 nodes and Gunworks' BreakAction ones, every one HaveChamber = false), so on a gun with a
+      chamber the flag only ever comes from a rack or from the hold-open, and nothing GoM leaves open on purpose
+      is closed here.
+    - A rack that ended with the gun no longer in the hands kept the flag (the redraw needs the gun held): its
+      parts and flag are now set without the redraw.
 --]]
 
 local ok, Bayonet = pcall(require, "WeaponSystems/Utils/Bayonet")
@@ -104,21 +141,36 @@ if okHooks and ISRackFirearm and ISRackFirearm.serverStart and ISReloadWeaponAct
     end
 end
 
--- A full rack never leaves the bolt open, however it ends. stop and perform run where the clip plays (the owner's
--- client, single player), never on a server.
+-- A full rack never leaves the bolt open, however it ends, nor a closing stroke that performs. stop and perform run
+-- where the clip plays (the owner's client, single player), never on a server.
 local okAnimations, Animations = pcall(require, "WeaponSystems/Utils/Animations")
-if okHooks and okAnimations and type(Animations) == "table" and Animations.rackAction and ISRackFirearm then
-    local function closeBolt(action)
+local boltFixes = okHooks and okAnimations and type(Animations) == "table" and Animations.rackAction
+    and Animations.CallAnimationFunction and ISRackFirearm and ISReloadWeaponAction
+
+--- Close the bolt the way a rack's rackEnd does: parts and flag. rackAction puts the gun back in the hands to redraw
+--- it, so a gun that is not in them gets only the parts and the flag.
+local function closeNow(character, gun, phase)
+    if character:getPrimaryHandItem() == gun then
+        Animations.rackAction(character, gun, false, phase)
+    else
+        Animations.CallAnimationFunction(gun, false, "reload", phase)
+        gun:getModData().gunworksBoltOpen = nil
+    end
+end
+
+if boltFixes then
+    local function closeBolt(action, stopped)
         local gun, character = action.gun, action.character
-        if action.gunworksRackPhase or not gun or not character then return end
+        local phase = action.gunworksRackPhase
+        if not gun or not character then return end
+        -- an opening stroke leaves the bolt open; a closing stroke cut short leaves it as it was (still to close)
+        if phase == "open" or (phase and stopped) then return end
         if gun:getModData().gunworksBoltOpen ~= true then return end
-        -- rackAction puts the gun back in the hands to redraw it: only for the gun that is in them
-        if character:getPrimaryHandItem() ~= gun then return end
-        Animations.rackAction(character, gun, false)
+        closeNow(character, gun, phase)
     end
     local rackStop = ISRackFirearm.stop
     function ISRackFirearm:stop(...)
-        closeBolt(self)
+        closeBolt(self, true)
         return rackStop(self, ...)
     end
     local rackPerform = ISRackFirearm.perform
@@ -126,4 +178,71 @@ if okHooks and okAnimations and type(Animations) == "table" and Animations.rackA
         closeBolt(self)
         return rackPerform(self, ...)
     end
+end
+
+-- A trigger pull closes a bolt that nothing else could: see the header. Where triggers are pulled only.
+if boltFixes and not isServer() and ISReloadWeaponAction.canShoot then
+    local okRules, ReloadRules = pcall(require, "WeaponSystems/ReloadAnim/Rules")
+    local okReloadAnim, ReloadAnim = pcall(require, "WeaponSystems/Utils/ReloadAnim")
+    local haveRules = okRules and okReloadAnim and type(ReloadRules) == "table" and type(ReloadAnim) == "table"
+        and ReloadAnim.GetHandlerForGun and ReloadRules.hasRules and ReloadRules.buildContext and ReloadRules.evaluate
+    local BUSY = { "isRacking", "isLoading", "isUnloading" }
+
+    -- Would the gun's reload rules turn a rack into a closing stroke now? Then it is open on purpose.
+    local function rackAnswer(player, gun)
+        local handler = ReloadAnim.GetHandlerForGun(gun)
+        if not ReloadRules.hasRules(handler) then return nil end
+        return ReloadRules.evaluate(handler, "instead", "rack", ReloadRules.buildContext(player, gun, "rack", nil))
+    end
+
+    local function staleOpenBolt(player, gun)
+        if not gun:haveChamber() then return false end
+        for i = 1, #BUSY do
+            if player:getVariableBoolean(BUSY[i]) then return false end
+        end
+        if not haveRules then return true end
+        local ok, answer = pcall(rackAnswer, player, gun)
+        return ok and answer == nil         -- rules that fail: leave the gun as it is
+    end
+
+    local canShoot = ISReloadWeaponAction.canShoot
+    ISReloadWeaponAction.canShoot = function(player, weapon, ...)
+        if player and weapon and instanceof(weapon, "HandWeapon") and weapon:getModData().gunworksBoltOpen == true
+            and staleOpenBolt(player, weapon) then
+            closeNow(player, weapon)
+        end
+        return canShoot(player, weapon, ...)
+    end
+end
+
+-- On a server, a shot that leaves the bolt held open (GoM's LockOpenWeapons.lua sets the flag there too, and our
+-- HoldOpen.lua for our own rifles) also fits the open bolt part, before vanilla's onShoot syncs the weapon to its
+-- owner: see the header. HoldOpen.lua is loaded first, so that its wrapper is inside this one (it sets the flag
+-- before calling on; from outside, this one would take the bolt for already held open).
+pcall(require, "GunsOfTien/HoldOpen")
+if boltFixes and isServer() and ISReloadWeaponAction.onShoot then
+    local onShoot = ISReloadWeaponAction.onShoot
+    Events.OnWeaponSwingHitPoint.Remove(onShoot)
+    ISReloadWeaponAction.onShoot = function(player, weapon, ...)
+        if not weapon or not instanceof(weapon, "HandWeapon") or weapon:getModData().gunworksBoltOpen == true then
+            return onShoot(player, weapon, ...)
+        end
+        local sync = syncHandWeaponFields
+        local fitted = false
+        local function fitOpenBolt()
+            if not fitted and weapon:getModData().gunworksBoltOpen == true then
+                fitted = true
+                Animations.CallAnimationFunction(weapon, true)
+            end
+        end
+        syncHandWeaponFields = function(character, item, ...)
+            if item == weapon then fitOpenBolt() end
+            return sync(character, item, ...)
+        end
+        local ok, err = pcall(onShoot, player, weapon, ...)
+        syncHandWeaponFields = sync
+        fitOpenBolt()                       -- a shot that sent no sync
+        if not ok then error(err, 0) end
+    end
+    Events.OnWeaponSwingHitPoint.Add(ISReloadWeaponAction.onShoot)
 end

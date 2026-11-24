@@ -94,7 +94,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   once their mount is on; the two-handed submachine guns and bullpups (UMPs, Vector .45 and Carbine, AUGs, MDRx, PS90,
   SVU, Groza-1 and Groza-4) are held with Guns of Marz's MP5 / FAMAS stance and its foregrip stance; the AUG's and MP7A1's front
   grips fold with Gunworks' Swap; the M249, SCAR-L, MDRx .223 and HK416 take both sides of Guns of Marz's jungle-taped
-  STANAG pair and draw its new long magazines
+  STANAG pair and draw its new long magazines; the HK416, HK417s, SR-25 and Mk 11 hold their bolt open after the last
+  round, and the reload that follows ends with a slap on the bolt catch, as on Guns of Marz's M16s and M4A1
 - Guns of Marz fixes: the Karabiner 98k bayonet fits the guns the other bayonets fit, and the overpressured 5.56's
   automatic fire spread penalty applies; on 22 guns the muzzle flash and the bullet start at the end of the barrel
   (they started a little ahead of it or inside it); opening and packing ammo boxes, cartons and crates can be done
@@ -102,7 +103,9 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   racking after a reload no longer leaves the gun saying "Chamber is open" with a round chambered (a Gunworks timing
   bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs), and a rack cut short (a
   trigger pull or a sprint while the bolt is back) closes the bolt instead of leaving the gun stuck on that message;
-  the AA-12's side rails,
+  a gun still left that way with no bolt to close is freed by pulling the trigger, and on a server the M16s, M4A1,
+  CAR-15, XM177, AR-15, SKS and M1 Garand show their bolt held open after the last round (it was drawn closed while
+  the gun counted as open); the AA-12's side rails,
   lights and lasers and the G36's bipod are drawn (they were fitted invisibly), the M16A2 takes the AimRight laser its
   loot already gave it, and the PSG-1 and SVD the Stub, MKC and MK2 foregrips theirs gave them; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
   no room), and a bipod already fitted on one comes off and lies beside the gun (sandbox option Update Parts on Saved

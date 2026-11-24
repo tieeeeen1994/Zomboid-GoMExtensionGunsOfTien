@@ -81,6 +81,7 @@ for _, gun in ipairs(GUNS) do
         },
     })
     ReloadAnim.RegisterWeapon(gun, GoMReloads.profile("ar15_rifle", { rules = "boltCatchAfterEmptyInsert" }))
+    require("GunsOfTien/HoldOpen").register(gun)      -- the bolt stays open after the last round, as GoM's
     FoldingStock.RegisterWeapon(gun, {
         attachments = { partType = "StockIntegrated", folded = STOCK_FOLDED, deployed = STOCK_DEPLOYED },
         initialState = "folded",

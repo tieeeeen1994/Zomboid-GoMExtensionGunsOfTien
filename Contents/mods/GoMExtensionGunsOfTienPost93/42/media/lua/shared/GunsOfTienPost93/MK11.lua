@@ -66,6 +66,7 @@ Animations.RegisterWeaponWithAnimatedParts(MK11, {
     },
 })
 ReloadAnim.RegisterWeapon(MK11, GoMReloads.profile("ar15_rifle", { rules = "boltCatchAfterEmptyInsert" }))
+require("GunsOfTien/HoldOpen").register(MK11)      -- the bolt stays open after the last round, as GoM's
 
 -------------------------------------------------
 -- The integrated rails as parents of GoM's parts

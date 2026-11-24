@@ -2999,6 +2999,53 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   full rack ends with the flag set and the gun in the primary hand. Client / single player only (a server never
   runs stop or perform). Test: `tests/rack_bolt_test.py` (lupa, Gunworks' real Animations.lua; break `noclose`).
   Not yet played. In MP the server chambers at the rack's start, so a pull mid-stroke now fires at once.
+  3.23.2 (2026-11-24, report on GoM's 5.56 AR-15s: "the bolt is simultaneously locked and considered an open
+  chamber"): GoM's 2026-11-23 `MarzWeapons/Hooks/LockOpenWeapons.lua` sets the flag in `onShoot` when its M16s,
+  M4A1, CAR-15, XM177, AR15, SKS or M1 Garand fire the last round, on the server too (42.22
+  `PlayerHitPacket.processServer` fires `OnWeaponSwingHitPoint` whenever the packet lists a hit), where
+  `Animations.lockActionOpen` returns at once: the server's copy has the flag with a closed bolt part, and its
+  weapon sync after that shot gives the owner exactly that (GoM alone, cosmetic). The empty reload's rack becomes
+  the bolt catch slap, a closing stroke (rule `boltCatchAfterEmptyInsert`, `RackAR15Slap`: rackStart 0.02, rackEnd
+  0.26), and the server clears its flag when any rack but an opening stroke starts (`recordStrokeOnServer`), so
+  by the code it heals; no stuck path was found with or without us, and nothing here ever sets the flag. Gunworks'
+  2026-11-24 update ("Potential fix to weapons staying open after racking") makes `ISRackFirearm:complete` close
+  for any phase but "open" (server / SP only; on a server the flag is already off, so nothing reaches a client
+  that missed its rackEnd). Our wrapper skipped every stroke with a phase; now only "open" is skipped on perform
+  (`rackAction` gets the phase, so the slap closes the bolt alone), and a stopped closing stroke is left as it was
+  (`ReloadRules.openedBolts` still holds a two-stroke gun open until a stroke performs). Not yet played.
+  Audit of the flag the same day (user: "think of all the possible problems ... harden it"). Set by: rackStart /
+  openWeapon events (owner's client), `LockOpenWeapons.lua` (client and server), `recordStrokeOnServer` (opening
+  stroke); cleared by rackEnd / closeWeapon, any non-opening rack starting on the server, Gunworks' `complete`; and
+  every server weapon sync overwrites the owner's flag and parts. Read by `canShoot` (Gunworks' `isTriggerBlocked`),
+  the rules' `ctx.boltOpen`, `canRack`, and the tooltip row, which is the only place "Chamber is open" is ever
+  shown: a blocked pull is just vanilla's empty click. Three more fixes in `GoMFixes.lua`, same version:
+  - **Server fits the open bolt part** when a shot newly sets the flag (wraps `ISReloadWeaponAction.onShoot` with
+    the Remove / Add convention every gun mod uses; `syncHandWeaponFields` swapped for that call so the one sync
+    carries it; a second sync could overtake the first). Without it every last round in MP left the owner with the
+    bolt drawn closed and the flag on. A miss reaches the server too (`CombatManager` ~1282 always sends PlayerHit).
+  - **A trigger pull closes a stale bolt**: `canShoot` wrapper, not on a server; gun with a chamber, flag on,
+    none of isRacking / isLoading / isUnloading (Gunworks' and Hot Brass's attack hooks call `canShoot` before
+    vanilla's clears the queue), and `ReloadRules.evaluate(handler, "instead", "rack", ctx)` gives nothing (no
+    closing stroke exists: guns without rules; GoM's ARs once chambered). Guns without a chamber are left alone.
+  - A rack ending with the gun out of the hands sets parts and flag without the redraw.
+  Looked at and left: the reload key does nothing on a full magazine with an empty chamber and vanilla's insert
+  only queues its rack if the server's sync beat the Done (both vanilla; the rack key closes the bolt); a closing
+  stroke cancelled before the server chambers needs the rack key again; other players never see the bolt part;
+  Gunworks' `complete` fix calls `CallAnimate` on the server (hand swap there, only when its flag is still on).
+  The trigger pull check closes nothing GoM leaves open on purpose: `openWeapon` / `closeWeapon` are only on
+  GoM's revolver, break shotgun, M79 and M203 nodes and Gunworks' BreakAction ones, all `HaveChamber = false` (GoM's
+  13 chamberless guns), so a gun with a chamber gets the flag only from a rack or the hold-open.
+  **Hold-open on our AR-pattern rifles** (user, 2026-11-24: "follow if it's realistic for them"):
+  `shared/GunsOfTien/HoldOpen.lua` (`register(fullType)`, own `onShoot` wrapper, same test as GoM's: round
+  chambered, none left) lists the SR-25, Mk 11, HK416 and both HK417s, which already had "ar15_rifle" with
+  `boltCatchAfterEmptyInsert` and `rackClose`; an empty reload now ends with GoM's bolt catch slap. Real: H&K's
+  MR556A1 / MR762A1 manuals (the catch "is also automatically activated when firing the last round in a
+  magazine"); SR-25 / Mk 11 by the AR-10 pattern (bolt catch a labelled control in Knight's M110 manual; no direct
+  quote found for Knight's, ArmaLite's AR-10 SuperSASS manual has it). Not the HK416 .22 (dummy catch, no slap
+  clip). A listed gun must have a closing stroke, or the trigger pull check clears the flag at once. `GoMFixes.lua`
+  requires HoldOpen before wrapping `onShoot` on a server: from outside, HoldOpen would set the flag first and the
+  bolt part would not be fitted. Test: `tests/rack_bolt_test.py` (31 cases; break `noclose` / `noheal` / `nofit`
+  / `nohold`).
 - **GoM's muzzle points** (2026-10-26, `shared/GunsOfTien/MuzzlePoints.lua`, measured by `scripts/muzzle_audit.py` +
   `muzzle_audit_sheet.py`, side views in tmp/muzzle): the flash and the bullet / tracer start at the model's `muzzle`
   point; on 21 of GoM's 72 gun models it sat 1-7 (game units x 100) ahead of the barrel's end or inside it (only the

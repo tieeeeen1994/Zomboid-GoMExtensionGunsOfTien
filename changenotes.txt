@@ -1,0 +1,9 @@
+The bolt stays open after the last round on the HK416, HK417s, SR-25 and Mk 11; bolt fixes around Guns of Marz's new hold-open (3.23.2).
+
+Guns
+- HK416, HK417 Battle Rifle, HK417 Marksman Rifle, SR-25 and Mk 11 Mod 0: the bolt stays open after the last round, and the reload that follows ends with a slap on the bolt catch instead of a pull on the charging handle, as on Guns of Marz's M16s and M4A1 since its November update. If the magazine goes in without that slap, the rack key closes the bolt.
+
+Guns of Marz fixes
+- On a server, the M16s, M4A1, CAR-15, XM177, AR-15, SKS and M1 Garand now show the bolt held open after the last round. It was drawn closed while the gun counted as open, so the rifle looked ready and would not fire until racked.
+- A gun left with its chamber "open" and no bolt to close (no closing stroke for it, or a round already chambered) is freed by pulling the trigger. This also frees guns saved in that state before 3.23.1.
+- The stuck bolt fix of 3.23.1 now covers the bolt catch slap that ends an empty reload on Guns of Marz's AR-15s, and a rack that ends after the gun has left the hands.
