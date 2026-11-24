@@ -105,5 +105,8 @@ end
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
+-- and at once (user, 2026-11-25): GoM's guns are in its parts' MountOn from the script files on, and a mod that
+-- lists a gun's slots from MountOn when its own Lua loads (before OnGameBoot) missed ours
+pcall(appendAll)
 
 GunsOfTien_Glock21 = { GUN = GLOCK21, MAGS = MAGS }

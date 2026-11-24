@@ -184,6 +184,9 @@ end
 
 Events.OnGameBoot.Add(apply)
 Events.OnInitGlobalModData.Add(apply)
+-- and at once (user, 2026-11-25): GoM's guns are in its parts' MountOn from the script files on, and a mod that
+-- lists a gun's slots from MountOn when its own Lua loads (before OnGameBoot) missed ours
+pcall(apply)
 
 -- MuzzleFamilies.lua adds its muzzle parts to these three before the events fire
 GoMAttachments.POINTS = POINTS

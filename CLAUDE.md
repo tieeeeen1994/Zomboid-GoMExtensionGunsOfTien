@@ -1818,6 +1818,12 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   OnInitGlobalModData, but files loading after it (M249.lua) append to that MountOn later in the same event, and
   scripts are reset when a game is left, so a beam could go missing; now it skips every `GunsOfTien*` gun and ours
   write their beam lines in their item scripts (gen_scripts.py, as Post-93's gen_post93_guns.py already did).
+- MountOn of GoM's parts, also at file load (2026-11-25): GoM's guns are in its parts' MountOn from the script files on,
+  ours were appended only at OnGameBoot / OnInitGlobalModData. A player's slot-listing mod (name not known) showed GoM
+  guns' slots always but ours only with the part in the inventory: it reads MountOn when its own Lua loads, before
+  OnGameBoot. Every MountOn writer (20 files, both mods) now also runs at file load (`pcall`, idempotent), and
+  `Rails.Register` appends for its gun as it registers. Shared Lua loads before client Lua, so any mod reading in its
+  client files or later sees ours; one reading in shared files that sort before ours would still miss them.
 - Checks: a mesh overlap test in Blender (`mathutils.bvhtree.BVHTree.overlap` between each GoM part placed at its point
   and the gun's nodes, in the gun's real exported meshes) finds clipping a render hides; contact hits remain where
   rails and clamps rest on a surface (rail bases are sunk 0.5 mm, GoM's rails 1.1 mm). Known and left: a light on the

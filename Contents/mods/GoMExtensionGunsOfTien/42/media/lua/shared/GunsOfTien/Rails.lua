@@ -106,4 +106,13 @@ end
 Events.OnGameBoot.Add(appendAll)
 Events.OnInitGlobalModData.Add(appendAll)
 
+-- and at once (user, 2026-11-25): GoM's guns are in its parts' MountOn from the script files on, and a mod that
+-- lists a gun's slots from MountOn when its own Lua loads (before OnGameBoot) missed ours
+-- (guns register from their own files, after this one: each is appended as it registers)
+local register = Rails.Register
+function Rails.Register(gun, def)
+    register(gun, def)
+    for _, part in ipairs(registered[gun]) do pcall(appendMountOn, part, { gun }) end
+end
+
 return Rails
