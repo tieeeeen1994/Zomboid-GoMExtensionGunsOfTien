@@ -32,6 +32,13 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       waits for would also serve the CZ-83, Skorpion vz. 82, PP-91 Kedr and PP-9 Klin (PMM as its [+P] load);
       Ammo Maker has `9x18Mak`, Hot Brass no 9x18 casing (its 9x19 one would do).
 
+## Release 3.25.0 (built 2026-11-25, not uploaded)
+
+- [ ] Look over docs/762x25_9x18_art_sheet.png (SAKER and TUSKER boxes, round icons).
+- [ ] Play the new rounds: box and carton icons, open / pack recipes, Ammo Maker's Tokarev loads, Hot Brass casings.
+- [ ] Decide: loot for the two rounds now, or only with the Tokarev guns (none for now).
+- [ ] Upload GoT 3.25.0 and Post-93 (A-91M) once played; changenotes.txt is written.
+
 ## To review: the A-91M and 5.56A-91 (Post-93, built overnight 2026-11-25)
 
 - [ ] Review the model on docs/post93_a91m_preview.png and the decisions in docs/post93_design.md "KBP A-91M and
@@ -48,6 +55,8 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       specs moved to their `_RD` / `_FD` bodies first (CLAUDE.md, Workshop art).
 - [ ] The HK416 .22's 30-round magazine length is an estimate (no measurable photo of a 30); re-measure if one
       turns up.
+- [ ] Tien's Inspect Weapon: decide whether to also show laser on / off, Gunworks swap-pair states and the
+      fixed-bayonet gun's load (proposed 2026-11-25).
 - [ ] The SV-98 variant left out (the aluminium one), if wanted. The SV-99 stays one gun (user, 2026-11-20).
 
 ## New Mod - EQUAL LOOT DISTRIBUTION
