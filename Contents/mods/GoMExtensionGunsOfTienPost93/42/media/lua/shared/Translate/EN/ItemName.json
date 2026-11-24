@@ -159,11 +159,11 @@
   "GunsOfTienPost93.SF3P_Flash_Hider": "SF3P Flash Hider (7.62x51mm Weapons)",
   "GunsOfTienPost93.SFMB_Muzzle_Brake": "SFMB Muzzle Brake (7.62x51mm Weapons)",
   "GunsOfTienPost93.WarComp_Flash_Hider": "WarComp Flash Hider (7.62x51mm Weapons)",
-  "GunsOfTienPost93.A91": "9A-91 Assault Rifle",
+  "GunsOfTienPost93.9A91": "9A-91 Assault Rifle",
   "GunsOfTienPost93.VSK94": "VSK-94 Sniper Rifle",
-  "GunsOfTienPost93.9x39Magazine20_A91": "9A-91 20Rds 9x39mm Magazine",
-  "GunsOfTienPost93.A91_Suppressor": "9A-91 Suppressor (9x39mm Weapons)",
-  "GunsOfTienPost93.A91_Muzzle_Mount_Device": "9x39mm Family Muzzle Mounting Device",
-  "GunsOfTienPost93.A91_Integrated_Stock_Folded": "9A-91 Integrated Stock (Folded)",
-  "GunsOfTienPost93.A91_Integrated_Stock_Deployed": "9A-91 Integrated Stock (Deployed)"
+  "GunsOfTienPost93.9x39Magazine20_9A91": "9A-91 20Rds 9x39mm Magazine",
+  "GunsOfTienPost93.9A91_Suppressor": "9A-91 Suppressor (9x39mm Weapons)",
+  "GunsOfTienPost93.9A91_Muzzle_Mount_Device": "9x39mm Family Muzzle Mounting Device",
+  "GunsOfTienPost93.9A91_Integrated_Stock_Folded": "9A-91 Integrated Stock (Folded)",
+  "GunsOfTienPost93.9A91_Integrated_Stock_Deployed": "9A-91 Integrated Stock (Deployed)"
 }

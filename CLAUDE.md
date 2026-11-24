@@ -776,6 +776,15 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
 - **Change notes** (user, 2026-10-29): whenever a release is being planned, write the Workshop change note into
   `changenotes.txt` at the repo root, plain text (no BBCode), overwriting whatever was there: what changed since the
   last upload, for subscribers.
+- **Release previews** (user, 2026-11-24, after the 9A-91 release nearly shipped without them): preparing any release
+  that adds or moves guns means regenerating the "where the guns are found" pages, preview33-37 (`py
+  scripts/loot/build.py <lupa dir> <out>` then `py scripts/make_loot_previews.py <out>/spawners.json`, and check the
+  hand-written place texts in that script), and, **only when a new gun takes a suppressor** (not every new gun does),
+  the suppressor page preview41 (`py scripts/attachment_audit.py --suppressors <dir>/suppressors.json`, then `py
+  scripts/make_suppressor_preview.py <dir>/suppressors.json`; a new can family also needs its line in that script's
+  `FAMILIES`), besides the new guns' own preview. scripts/loot/dump.lua finds the repo from its own path and loads
+  our shared tables (the main mod's Loot.lua requires `GunsOfTien/MuzzleDevicesTable`; until 2026-11-24 it had one
+  machine's absolute path and stubbed them, so it failed).
 - Main mod `Contents/mods/GoMExtensionGunsOfTien/42/media/`: `registries.lua` (ammo types, box tags),
   `sandbox-options.txt`, `scripts/GunsOfTien/` (`items_ammo.txt`, `models_ammo.txt`, `recipes_ammo.txt`,
   `recipes_ammomaker.txt`, `items_ammomaker_parts.txt`, `recipes_ammomaker_parts.txt`, `items_ammomaker_cartons.txt`,
@@ -940,6 +949,11 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   `SV_SCALE`; `gun_pair` takes `bottom`, `slot_y`, `gap` so a line fits under the slot row, and lays out any number of
   guns). Rebuild: `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> svu sv98 sv99`,
   then `make_workshop_art.py --renders <dir> preview31 preview32`. Not yet on the Steam page.
+  preview42 (3.23.0, 2026-11-24): Post-93's 9A-91 and VSK-94 through `gun_pair`, as preview32: render_ad_guns.py
+  `9a91` (stock deployed, our AK-mount bracket + Kobra, the can on its mount) and `vsk94` (bracket + PSO-1, the can),
+  one view and scale (`A91_SCALE`); slots gun, gun, magazine, mount device, can, GoM's 9x39 box. Rebuild:
+  `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> 9a91 vsk94`, then
+  `make_workshop_art.py --renders <dir> preview42`. Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -3183,31 +3197,57 @@ adds bloat"), no full stops.
 
 - **What**: KBP's 9A-91 (current production: left dovetail rail, selector right, folding charging handle) and VSK-94 on
   one receiver, 9x39mm, design and decisions in docs/post93_design.md "KBP 9A-91 and VSK-94". Files:
-  `scripts/post93/build_9a91.py` (Blender, ~2 min: `GunsOfTienPost93_9A91.fbx` A91_BODY / A91_STOCK_DEPLOYED /
-  A91_STOCK_FOLDED / VSK94_BODY / A91_BOLT, `_9A91_magazines.fbx` 9x39Magazine20_A91, `_9A91_parts.fbx`
-  A91_Suppressor / A91_Muzzle_Mount_Device, `A91.png` 512, magazine and can 128, `a91_points.json` keyed `A91` /
+  `scripts/post93/build_9a91.py` (Blender, ~2 min: `GunsOfTienPost93_9A91.fbx` 9A91_BODY / 9A91_STOCK_DEPLOYED /
+  9A91_STOCK_FOLDED / VSK94_BODY / 9A91_BOLT, `_9A91_magazines.fbx` 9x39Magazine20_9A91, `_9A91_parts.fbx`
+  9A91_Suppressor / 9A91_Muzzle_Mount_Device / 9A91_AK_Mount, `9A91.png` 512, magazine, can and AK mount 128, `a91_points.json` keyed `9A91` /
   `VSK94` plus `_mag_prop2`), `render_9a91.py -- DIR`, `make_9a91_art.py [--renders DIR]` (icons; review sheet
   `docs/post93_9a91_preview.png`), `gen_post93_guns.py a91()` (models_a91.txt, items_a91.txt, fixing_a91.txt, the
-  can in CAN_DURABILITY / fixing_guns.txt, names), `shared/GunsOfTienPost93/A91.lua`, lines in Post-93's
+  can in CAN_DURABILITY / fixing_guns.txt, names), `shared/GunsOfTienPost93/9A91.lua`, lines in Post-93's
   Tooltips.lua, Loot.lua, HotBrass.lua. Rebuild: build, render, art, `gen_post93_guns.py`, `check_refs.py`,
   `attachment_audit.py`, `fit_audit.py`.
 - **Measuring**: IMFDB's 9A-91silenced.jpg (2500 px studio right side, references/9a91/imfdb) at 2.785 px a mm: butt to
   muzzle 594 and receiver rear to muzzle 373 (Wikipedia) agree within 0.1 % once the muzzle under the can is placed
   0.31 of the handguard's length past it (KardeN's can-off photo); the height reads 192 against 190. Profiles are in
-  that photo's pixels (`P(x, y)`), read on 10 px gridded crops; the VSK-94's stock, grip and handguard in IMFDB's
-  VSK-94.jpg pixels at 2.56 (`PV`), registered on the trigger blade and bore; its receiver is the 9A-91's (the VSK
-  photo's receiver reads 5 % longer, so its handguard, barrel and can start at our receiver's front: the gun is 919 mm
-  with the can against 932). Origin as GoM's AKS-74U against trigger and bore (blade 0.066 ahead, bore 0.0148 up,
-  measured on AKS74U_BODY), so both sit in the rifle clips as GoM's AKs.
+  that photo's pixels (`P(x, y)`), read on 10 px gridded crops; the VSK-94's stock, grip, guard, ears and handguard
+  in IMFDB's VSK-94.jpg pixels at 2.56 (`PV`); its receiver is the 9A-91's. **Register a second photo on the part
+  the guns share, by correlation, never on a hand-read axis**: the first build took the VSK photo's bore for y 400
+  and its receiver for "5 % longer"; edge correlation of the 9A-91 photo's receiver (scaled 2.56 / 2.785) on the VSK
+  photo puts 9A-91 (700, 240) on (808, 305) at exactly that scale (both halves within 1 px), so `BOREV` is 381.3
+  (the can's axis reads 377-381) and the stock had sat 7.4 mm too high; the receiver's front is at VSK x 1360, not
+  1377 (the gun is now 926 mm with the can against 932). Origin as GoM's AKS-74U against trigger and bore (blade
+  0.066 ahead, bore 0.0148 up, measured on AKS74U_BODY), so both sit in the rifle clips as GoM's AKs.
+- **Check a trace in 2D before Blender** (2026-11-24, after the user refused the first trigger group: "I don't accept
+  this kind of detail"): draw every outline polygon on a gridded 6-10x crop of the photo with PIL (seconds) and fix
+  it there; the Blender build and sheet take 4 minutes a round. What the first trace had wrong and the crops
+  showed: the trigger is a thin crescent concave forward, not a straight sliver; the guard is a band along the
+  bottom only, its front closed by the magazine catch's plate (9A-91), or a full loop of its own (VSK-94: `TG_9A91`
+  / `TG_VSK`, each traced on its own photo); the receiver's rear outline ran round the stock's ear into the white
+  background. The bright strip under the receiver is the side of the trigger frame (an open-bottomed steel box,
+  Kuzmin's 12 / 14 / 27), so the receiver's underside steps up over it (`STRIP`, `trigger_frame`). The dark band
+  under it ahead of the trigger in the IMFDB photo, and the dark wedge behind the trigger, are **the Kobra's side
+  mount** on the far (left) side seen through the guard, not the gun (the user, 2026-11-24; a deep frame end with a
+  pin and a grip "web" were modelled from them and dropped the same day): the user's two side photos without an
+  optic (a current "14 BM 052" and an early gun) show open air there. A measuring photo with an optic fitted shows
+  its mount through every opening; cross-check such oddities against photos without one before modelling them.
+- **Stock hinge**: the strut is a stamped U channel as wide as the receiver (Kuzmin's 13, 36), open on top when
+  deployed; its side walls run on as two ears on the receiver's sides round the hinge pin (the first build had a
+  17 mm bar ending under a boss on the body, a visible gap: the user's "why is this not connected?"). `EAR` is on
+  the stock nodes (deployed; folded = the same outline turned -170 degrees about the pin, `rot_px`), the pin, its
+  washers and the lug between the ears on the bodies; the VSK-94's plain ear plates are part of its body.
 - **Overlay check** (`make_9a91_art.overlay`): the photo's foreground must exclude the studio photos' soft grey drop
   shadow (`max(rgb) < 150`, not `min < 200`): counting it pulled the registration 10 px (3.6 mm) down and made the
-  trigger guard look low. With it right: 9A-91 IoU 0.855, VSK-94 0.821 (below the optics), the trigger blade, guard
-  and magazine catch within about 1 mm of the photo's.
-- **GoM's AK side mount on our rail**: `AK_Mount` (parts/rails.fbx) clamps with its inner face at x +0.0155 of its
-  origin, z -0.022..-0.004, y -0.044..+0.0335; GoM's AKS-74U puts it at `rail_up` (0, 0.0764, 0.0225) and its optics'
-  `scope` at rail_up + (0, 0.0140, 0.0246). Our dovetail's outer face is at 22 mm real (0.0133), so `rail_up` x is
-  -0.0022 (the optic sits 3.7 mm off the bore's plane, unseen); clamp centred on the rail's height and on the
-  receiver's middle (photo x 950). fit_audit: GoM's optics sit 1.6-3.0 in, GoM's own medians 1.1-1.6, none flagged.
+  trigger guard look low. With it right: 9A-91 IoU 0.865, VSK-94 0.922 (below the optics; 0.821 before its bore
+  was fixed), the trigger blade, guard and magazine catch on the photo's.
+- **GoM's AK mount is drawn as our own bracket** (user, 2026-11-24: "is that how the mount really works on these
+  guns? That looks horrible"): GoM's `AK_Mount` mesh (parts/rails.fbx, x -18..38, y -73..121, z -36..47 mm real) is a
+  truss for the AK's deep receiver, its rail 62 mm over the clamp's middle; clamped on our dovetail it stood 33 mm
+  over this receiver's low cover, while the real Kobra and PSO-1 clamp straight on the rail and sit just over the
+  cover. So the item stays GoM's (needed for optics, ":AM" on found guns) and the guns' ModelWeaponPart line draws
+  it with `GunsOfTienPost93.9A91_AK_Mount` (build_ak_mount, in `_9A91_parts.fbx`, texture 9A91_AK_Mount.png 128), as
+  the AUGs draw GoM's side rail: a clamp on the dovetail, two posts, a bridge and an 80 mm Picatinny strip on the
+  bore's line, its mounting face 10 mm over the cover (`rail_up`; `scope` the same point). It clears the folded
+  stock (web top at cover + 7, the folded butt plate starts ahead of it). GoM's optics' origin is their rail seat
+  (clamps to z -2.4, bodies y about -60..50, the PSO-1 -190..126). fit_audit: optics 0.1-2.0 in, none flagged.
 - **Not done**: a Workshop preview (render_ad_guns.py / make_workshop_art.py specs); the 9A-91's diamond handguard
   (Kuzmin's gun) as an alternative look; the VSK-94's 10-round magazine; the folded stock is a simple channel on the
   cover with the butt at its front (Kuzmin 01 / 15), not the real stamped strut turned over.

@@ -121,12 +121,12 @@ for gun, uses in pairs({ GROZA1 = "Uses 7.62x39mm rounds", GROZAGL = "Uses 7.62x
     lines[M .. gun] = { uses }
 end
 lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
--- The 9A-91 and VSK-94 (shared/GunsOfTienPost93/A91.lua): the 9A-91's folding stock with GoM's AKS-74U stock stats
+-- The 9A-91 and VSK-94 (shared/GunsOfTienPost93/9A91.lua): the 9A-91's folding stock with GoM's AKS-74U stock stats
 -- (the UMP's lines: the same values and spread)
-lines[M .. "A91"] = { "Uses 9x39mm rounds" }
+lines[M .. "9A91"] = { "Uses 9x39mm rounds" }
 lines[M .. "VSK94"] = { "Uses 9x39mm rounds" }
-lines[M .. "9x39Magazine20_A91"] = { "Uses 9x39mm rounds." }
-GunsOfTien_TooltipStates[M .. "A91_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
+lines[M .. "9x39Magazine20_9A91"] = { "Uses 9x39mm rounds." }
+GunsOfTien_TooltipStates[M .. "9A91_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
 
 for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm rounds", P90TR = "Uses 5.7x28mm rounds",
     PS90 = "Uses 5.7x28mm rounds", MDR223 = "Uses .223/5.56x45mm NATO rounds",
@@ -169,23 +169,22 @@ for part, can in pairs({
     SCARH_Suppressor = { "7.62x51mm",
         "Sound Radius reduced by 150 and Volume by 43",
         "Min Damage reduced by 0.15 and Max Damage by 0.2" },
-    -- the 9A-91's 106 / 30, 0.7-1.4
-    A91_Suppressor = { "9x39mm",
-        "Sound Radius reduced by 75 and Volume by 21",
-        "Min Damage reduced by 0.05 and Max Damage by 0.15" },
+    -- the 9A-91's 106 / 30 down to the AS VAL's 22 / 6 (subsonic 9x39: 9A91.lua; radius to 5 as every can's line),
+    -- 0.78-1.56 x0.9 = the AS VAL's 0.7-1.4 (cuts 0.08 / 0.16, to 0.05 as every can's line)
+    ["9A91_Suppressor"] = { "9x39mm",
+        "Sound Radius reduced by 85 and Volume by 24",
+        "Min Damage reduced by 0.1 and Max Damage by 0.15" },
 }) do
-    lines[M .. part] = {
-        "Requires " .. can[1] .. " Muzzle Mount",
-        can[2],
-        can[3],
-        "Removes Muzzle Flash",
-        "Can be mounted on",
-    }
+    local t = { "Requires " .. can[1] .. " Muzzle Mount", can[2] }
+    if can[3] then t[#t + 1] = can[3] end
+    t[#t + 1] = "Removes Muzzle Flash"
+    t[#t + 1] = "Can be mounted on"
+    lines[M .. part] = t
 end
 -- the mount devices keep the wrench (part type CanonMount); a can fitted on one needs no tool (GoM's November 2026
 -- update, its OnCreate/AttachAndDetach.lua)
 for part, calibre in pairs({ MP7_Muzzle_Mount_Device = "4.6x30mm", P90_Muzzle_Mount_Device = "5.7x28mm",
-    SCARH_Muzzle_Mount_Device = "7.62x51mm", A91_Muzzle_Mount_Device = "9x39mm" }) do
+    SCARH_Muzzle_Mount_Device = "7.62x51mm", ["9A91_Muzzle_Mount_Device"] = "9x39mm" }) do
     lines[M .. part] = {
         "No Direct Stat Changes",
         "Enables " .. calibre .. " Muzzle Attachments",

@@ -3,7 +3,7 @@ Two new 9x39mm guns in the Post-93 add-on (3.23.0).
 Post-93 add-on
 - KBP 9A-91, the compact Russian police carbine: automatic or single shots at 700 rounds a minute, its own 20-round magazine, a stock that folds over the receiver, Guns of Marz's AK side mount on the left rail for any of its optics.
 - KBP VSK-94, its sniper version on the same receiver: a skeleton stock, steadier and longer-ranged, the same magazine.
-- Both take the 9A-91 suppressor on the new 9x39mm muzzle mount (sound and volume x0.3 as Guns of Marz's suppressors; it wears and is repaired like Guns of Marz's PBS-1). They fire Guns of Marz's 9x39mm rounds and the main mod's SP-6, reload with Guns of Marz's AK reload, and are found with Guns of Marz's Russian rifles (and with Undead Survivors' mercenaries); the suppressor and its mount turn up where Guns of Marz's suppressors do.
+- Both take the 9A-91 suppressor on the new 9x39mm muzzle mount (as quiet as the AS VAL, since 9x39 is a subsonic round; it wears and is repaired like Guns of Marz's PBS-1). They fire Guns of Marz's 9x39mm rounds and the main mod's SP-6, reload with Guns of Marz's AK reload, and are found with Guns of Marz's Russian rifles (and with Undead Survivors' mercenaries); the suppressor and its mount turn up where Guns of Marz's suppressors do.
 
 Also in this update (3.22.0):
 

@@ -65,6 +65,9 @@ bipod folded), one view and scale.
 3.20.0 (2026-11-23): every real muzzle device alone (`dev_<node>`, scripts/muzzle_devices.py), its mesh scaled back
 to real millimetres so all share one view and scale, for preview39 (the main mod's seven) and preview40 (Post-93's
 SureFire three).
+
+3.23.0 (2026-11-24): Post-93's 9A-91 and VSK-94 (preview42, `9a91`: stock deployed, our bracket for GoM's AK mount
+with a Kobra, its can on the mount device; `vsk94`: the same with a PSO-1), one view and scale.
 """
 
 import json
@@ -279,7 +282,35 @@ def sv99(prefix, scope):
             gom_part("scopes", scope, "scope")]
 
 
+# 3.23.0 (2026-11-24): the 9A-91 and VSK-94 (preview42), as their item scripts draw them: body, carrier, the 9A-91's
+# stock deployed on `stock`, the 20-round magazine, the 9x39mm mount device and can on `canon`, GoM's AK mount drawn
+# as our low bracket (A91 build: build_ak_mount) on `rail_up` with GoM's optic on `scope`
+A91_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_9A91.fbx")
+A91_TEX = os.path.join(TEX, "9A91.png")
+A91_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx")
+A91_SCALE, A91_SIZE = 0.98, (2400, 1000)
+
+
+def a91(body, scope, stock=True):
+    parts = [(A91_FBX, body, A91_TEX, None), (A91_FBX, "9A91_BOLT", A91_TEX, None),
+             (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx"),
+              "9x39Magazine20_9A91", os.path.join(TEX, "9x39Magazine20_9A91.png"), "magazine"),
+             (A91_PARTS, "9A91_Muzzle_Mount_Device", os.path.join(TEX, "9A91_Suppressor.png"), "canon"),
+             (A91_PARTS, "9A91_Suppressor", os.path.join(TEX, "9A91_Suppressor.png"), "canon"),
+             (A91_PARTS, "9A91_AK_Mount", os.path.join(TEX, "9A91_AK_Mount.png"), "rail_up"),
+             gom_part("scopes", scope, "scope")]
+    if stock:
+        parts.append((A91_FBX, "9A91_STOCK_DEPLOYED", A91_TEX, "stock"))
+    return parts
+
+
 GUNS = {
+    "9a91": {"points": "post93/a91_points.json", "points_key": "9A91",
+             "assembled": a91("9A91_BODY", "Kobra_Sight"),
+             "view": RIFLE_VIEW, "scale": A91_SCALE, "size": A91_SIZE},
+    "vsk94": {"points": "post93/a91_points.json", "points_key": "VSK94",
+              "assembled": a91("VSK94_BODY", "PSO1_Scope", stock=False),
+              "view": RIFLE_VIEW, "scale": A91_SCALE, "size": A91_SIZE},
     "svu": {"points": "svu_points.json",
             "assembled": [(SVU_FBX, "SVU_FD_BODY", SVU_TEX, None), (SVU_FBX, "SVU_BOLT", SVU_TEX, None),
                           (os.path.join(GOM, "models_X/weapons/magazines/semi_rifles.fbx"), "762x54Magazine10_SVD",

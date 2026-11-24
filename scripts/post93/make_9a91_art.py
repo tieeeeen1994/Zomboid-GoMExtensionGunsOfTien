@@ -37,24 +37,25 @@ PTS = json.load(open(os.path.join(HERE, "a91_points.json")))
 FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_9A91.fbx")
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx")
-TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/A91.png")
-MAG = "9x39Magazine20_A91"
+TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9A91.png")
+MAG = "9x39Magazine20_9A91"
 MTEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/%s.png" % MAG)
-CTEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/A91_Suppressor.png")
+CTEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9A91_Suppressor.png")
 RIFLE_CAMERAS = os.path.join(HERE, "scar_icon_cameras.json")
 MP7_CAMERAS = os.path.join(HERE, "mp7_icon_cameras.json")
 RENDER_PPM = 2.785
 PHOTOS = {
-    "A91": (os.path.join(ROOT, "references/9a91/imfdb/9A-91silenced.jpg"), 2.785, 240, (840, 380, 1040, 540)),
+    "9A91": (os.path.join(ROOT, "references/9a91/imfdb/9A-91silenced.jpg"), 2.785, 240, (840, 380, 1040, 540)),
     "VSK94": (os.path.join(ROOT, "references/vsk94/imfdb/VSK-94.jpg"), 2.56, 330, (930, 420, 1130, 580)),
 }
 NOTES = [
     "To review (decisions taken overnight, docs/post93_design.md \"KBP 9A-91 and VSK-94\"):",
-    "- the current-production 9A-91 (left dovetail rail for GoM's AK side mount, selector on the right, folding charging handle), not the 1994 first model",
+    "- the current-production 9A-91 (left dovetail rail, selector on the right, folding charging handle), not the 1994 first model",
     "- both guns take the same detachable 9A-91 can on a new 9x39mm mount device; the TODO had the VSK-94's built in, but the real one is not integral",
     "- ribbed handguard on the 9A-91 (IMFDB's measuring photo), diamond on the VSK-94; one 20-round magazine (GoM's AS VAL magazines do not fit the real gun)",
-    "- the VSK-94 shares the 9A-91's receiver: its photo reads 5% larger than the 9A-91's, so its trigger zoom sits a few mm off while the 9A-91's matches",
-    "- GoM's AK side mount stands as tall on these guns as on GoM's AKs (its optics sit 1.6-3.0 into the mount, GoM's own 1.1-1.6: fit_audit, nothing flagged)",
+    "- the VSK-94 shares the 9A-91's receiver (registered on it: same size on both photos); its guard, stock, handguard and ears are traced on its own photo",
+    "- GoM's AK Mounting Rail is drawn on these two guns as our own low bracket (clamp on the dovetail, posts, a short strip just over the cover): GoM's truss stood 33 mm over this low receiver",
+    "- the stock's strut is a U channel as wide as the receiver; its side walls run on as the ears round the hinge pin (they turn up with it when folded)",
 ]
 LEFT_PHOTO = os.path.join(ROOT, "references/9a91/commons/9mm_KBP_9A-91_compact_assault_rifle_-_06.jpg")
 
@@ -65,8 +66,8 @@ def make_icons():
     # the guns are blued black all over (GoM's AKs have wood): lit a third brighter so the icons read as GoM's do
     gun_light = dict(rifle["light"], coef=[[a * 1.35, b * 1.35] for a, b in rifle["light"]["coef"]])
     made = {}
-    mag = A.attach(A.load_game(FBX_MAGS, MAG), PTS["A91"]["magazine"])
-    for gun, nodes in (("A91", ("A91_BODY", "A91_BOLT", "A91_STOCK_FOLDED")), ("VSK94", ("VSK94_BODY", "A91_BOLT"))):
+    mag = A.attach(A.load_game(FBX_MAGS, MAG), PTS["9A91"]["magazine"])
+    for gun, nodes in (("9A91", ("9A91_BODY", "9A91_BOLT", "9A91_STOCK_FOLDED")), ("VSK94", ("VSK94_BODY", "9A91_BOLT"))):
         objs = [(A.load_game(FBX_GUN, n), 0) for n in nodes] + [(mag, 1)]
         icon = A.shade(objs, [A.img(TEX), A.img(MTEX)], dict(rifle["camera"]), gun_light)
         icon.save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % gun))
@@ -75,7 +76,7 @@ def make_icons():
     light = dict(rifle["light"], coef=[[a * 1.15, b * 1.15] for a, b in rifle["light"]["coef"]])
     made[MAG] = A.shade(objs[MAG], [A.img(MTEX)], AUG.mag_cameras(objs)[MAG], light)
     made[MAG].save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % MAG))
-    for n, kind in (("A91_Suppressor", "suppressor"), ("A91_Muzzle_Mount_Device", "mount")):
+    for n, kind in (("9A91_Suppressor", "suppressor"), ("9A91_Muzzle_Mount_Device", "mount")):
         objs = [(A.load_game(FBX_PARTS, n), 0)]
         made[n] = A.shade(objs, [A.img(CTEX)], dict(mp7[kind]["camera"]), mp7[kind]["light"])
         made[n].save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % n))
@@ -145,12 +146,12 @@ def overlay(gun, render):
 
 
 def sheet(renders, icons):
-    p = B.Page(renders, 2100, 7000, "9A-91 and VSK-94 (Post-93): Workbench renders of the exported FBX on A91.png "
+    p = B.Page(renders, 2100, 9000, "9A-91 and VSK-94 (Post-93): Workbench renders of the exported FBX on 9A91.png "
                                     "(red: the render's outline on the measuring photo)")
     r = lambda n: Image.open(os.path.join(renders, n + ".png"))
     y = 70
     notes = {}
-    for gun, label in (("A91", "9A-91"), ("VSK94", "VSK-94")):
+    for gun, label in (("9A91", "9A-91"), ("VSK94", "VSK-94")):
         full, zoom, iou, off = overlay(gun, os.path.join(renders, gun + "_right_can.png"))
         notes[gun] = iou
         print("%s: silhouette IoU %.3f at %s" % (gun, iou, off))
@@ -161,37 +162,44 @@ def sheet(renders, icons):
         y += max(round(crop.height * 1400 / crop.width), round(zoom.height * 640 / zoom.width)) + 20
     p.heading(20, y, "9A-91 (game view: the right side as the game draws it)")
     y += 40
-    p.put(None, 20, y, 1010, "right side, stock deployed, its can", im=on_white(ImageOps.mirror(r("A91_right_can"))))
-    y += p.put(None, 1050, y, 1010, "GoM's AK side mount and Kobra on the left rail",
-               im=on_white(ImageOps.mirror(r("A91_right_optic")))) + 15
-    p.put(None, 20, y, 1010, "bare (the barrel's collar and thread)", im=on_white(ImageOps.mirror(r("A91_right"))))
-    y += p.put(None, 1050, y, 1010, "stock folded on the receiver", im=on_white(ImageOps.mirror(r("A91_folded")))) + 15
+    p.put(None, 20, y, 1010, "right side, stock deployed, its can", im=on_white(ImageOps.mirror(r("9A91_right_can"))))
+    y += p.put(None, 1050, y, 1010, "GoM's AK mount item (our bracket) and Kobra on the left rail",
+               im=on_white(ImageOps.mirror(r("9A91_right_optic")))) + 15
+    p.put(None, 20, y, 1010, "bare (the barrel's collar and thread)", im=on_white(ImageOps.mirror(r("9A91_right"))))
+    y += p.put(None, 1050, y, 1010, "stock folded on the receiver", im=on_white(ImageOps.mirror(r("9A91_folded")))) + 15
     p.put(None, 20, y, 1010, "left side: the dovetail rail, mount device only",
-          im=on_white(ImageOps.mirror(r("A91_left_mount"))))
+          im=on_white(ImageOps.mirror(r("9A91_left_mount"))))
     if os.path.exists(LEFT_PHOTO):
         lp = Image.open(LEFT_PHOTO).convert("RGBA")
         y += p.put(None, 1050, y, 1010, "Kuzmin's left side (Commons 06)", im=lp) + 15
-    p.put(None, 20, y, 1010, "3/4 from the front", im=on_white(r("A91_q")))
-    y += p.put(None, 1050, y, 1010, "3/4 from behind", im=on_white(r("A91_q_back"))) + 15
-    p.put(None, 20, y, 680, "3/4, stock folded", im=on_white(r("A91_folded_q")))
-    p.put(None, 720, y, 680, "carrier and handle back (bolt_fired)", im=on_white(ImageOps.mirror(r("A91_bolt_back"))))
-    y += p.put(None, 1440, y, 300, "front", im=on_white(r("A91_front"))) + 15
-    y += p.put(None, 20, y, 2040, "top (muzzle right)", im=on_white(r("A91_top").rotate(-90, expand=True))) + 25
+    p.put(None, 20, y, 1010, "3/4 from the front", im=on_white(r("9A91_q")))
+    y += p.put(None, 1050, y, 1010, "3/4 from behind", im=on_white(r("9A91_q_back"))) + 15
+    p.put(None, 20, y, 1010, "left side with the Kobra", im=on_white(ImageOps.mirror(r("9A91_left_optic"))))
+    y += p.put(None, 1050, y, 1010, "stock folded under the Kobra",
+               im=on_white(ImageOps.mirror(r("9A91_folded_optic")))) + 15
+    p.put(None, 20, y, 1010, "the bracket on the dovetail, from the left rear", im=on_white(r("9A91_q_mount")))
+    y += p.put(None, 1050, y, 1010, "3/4 with the Kobra", im=on_white(r("9A91_q_optic"))) + 15
+    p.put(None, 20, y, 680, "3/4, stock folded", im=on_white(r("9A91_folded_q")))
+    p.put(None, 720, y, 680, "carrier and handle back (bolt_fired)", im=on_white(ImageOps.mirror(r("9A91_bolt_back"))))
+    y += p.put(None, 1440, y, 300, "front", im=on_white(r("9A91_front"))) + 15
+    y += p.put(None, 20, y, 2040, "top (muzzle right)", im=on_white(r("9A91_top").rotate(-90, expand=True))) + 25
     p.heading(20, y, "VSK-94 (game view)")
     y += 40
     p.put(None, 20, y, 1010, "its can", im=on_white(ImageOps.mirror(r("VSK94_right_can"))))
-    y += p.put(None, 1050, y, 1010, "GoM's AK side mount and PSO-1",
+    y += p.put(None, 1050, y, 1010, "GoM's AK mount item (our bracket) and PSO-1",
                im=on_white(ImageOps.mirror(r("VSK94_right_optic")))) + 15
     p.put(None, 20, y, 1010, "left side, mount device only", im=on_white(ImageOps.mirror(r("VSK94_left_mount"))))
     y += p.put(None, 1050, y, 1010, "left side, PSO-1", im=on_white(ImageOps.mirror(r("VSK94_left_optic")))) + 15
     p.put(None, 20, y, 1010, "3/4 from the front", im=on_white(r("VSK94_q")))
     y += p.put(None, 1050, y, 1010, "3/4 from behind", im=on_white(r("VSK94_q_back"))) + 15
+    p.put(None, 20, y, 1010, "3/4 with the PSO-1", im=on_white(r("VSK94_q_optic")))
+    y += p.put(None, 1050, y, 1010, "the bracket, from the left rear", im=on_white(r("VSK94_q_mount"))) + 15
     p.put(None, 20, y, 680, "carrier and handle back", im=on_white(ImageOps.mirror(r("VSK94_bolt_back"))))
     y += p.put(None, 720, y, 300, "front", im=on_white(r("VSK94_front"))) + 25
     gom = lambda n: Image.open(os.path.join(A.G, "textures", "item_%s.png" % n)).convert("RGBA")
-    p.icons(20, y, [(gom("AKS74U"), "AKS-74U (GoM)"), (gom("ASVAL"), "AS VAL (GoM)"), (icons["A91"], "9A-91"),
-                    (icons["VSK94"], "VSK-94"), (icons[MAG], "9A-91 20Rds"), (icons["A91_Suppressor"], "can"),
-                    (icons["A91_Muzzle_Mount_Device"], "mount device")])
+    p.icons(20, y, [(gom("AKS74U"), "AKS-74U (GoM)"), (gom("ASVAL"), "AS VAL (GoM)"), (icons["9A91"], "9A-91"),
+                    (icons["VSK94"], "VSK-94"), (icons[MAG], "9A-91 20Rds"), (icons["9A91_Suppressor"], "can"),
+                    (icons["9A91_Muzzle_Mount_Device"], "mount device")])
     y += 250
     for line in NOTES:
         p.d.text((30, y), line, fill=(30, 30, 30), font=p.FS)

@@ -2,8 +2,8 @@
 
     blender -b --factory-startup -P scripts/post93/render_9a91.py -- OUT_DIR
 
-Imports what build_9a91.py wrote with A91.png, the magazine on `magazine`, the can and mount on `canon`, GoM's AK side
-mount and Kobra / PSO-1 on `rail_up` / `scope` for the fitted views, places parts at a91_points.json the way the engine does (offset,
+Imports what build_9a91.py wrote with 9A91.png, the magazine on `magazine`, the can and mount on `canon`, our bracket for
+GoM's AK mount (9A91_AK_Mount) on `rail_up` and GoM's Kobra / PSO-1 on `scope` for the fitted views, places parts at a91_points.json the way the engine does (offset,
 then rotateXYZ in degrees, game space) and renders orthographic Workbench views into OUT_DIR at PX_PER_MM real.
 Game space is Blender world space, the mirror image of what the game shows: the camera at +X shows the gun's left.
 """
@@ -29,11 +29,12 @@ SCALE = 1.0
 K = 0.000603
 PX_PER_MM = 2.785
 GUN_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_9A91.fbx")
-TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/A91.png")
+TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9A91.png")
 MAG_FBX = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx")
-MAG_TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9x39Magazine20_A91.png")
+MAG_TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9x39Magazine20_9A91.png")
 PART_FBX = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx")
-PART_TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/A91_Suppressor.png")
+PART_TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9A91_Suppressor.png")
+AKM_TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/9A91_AK_Mount.png")
 
 
 def material(texture):
@@ -119,15 +120,14 @@ def main():
     sc.collection.objects.link(cam)
     sc.camera = cam
 
-    nodes = ("A91_BODY", "A91_STOCK_DEPLOYED", "A91_STOCK_FOLDED", "VSK94_BODY", "A91_BOLT")
+    nodes = ("9A91_BODY", "9A91_STOCK_DEPLOYED", "9A91_STOCK_FOLDED", "VSK94_BODY", "9A91_BOLT")
     info = {}
-    for gun, body_name in (("A91", "A91_BODY"), ("VSK94", "VSK94_BODY")):
+    for gun, body_name in (("9A91", "9A91_BODY"), ("VSK94", "VSK94_BODY")):
         pts = PTS[gun]
         g = load(GUN_FBX, {n: TEX for n in nodes})
-        mag = load(MAG_FBX, {"9x39Magazine20_A91": MAG_TEX})["9x39Magazine20_A91"]
-        parts = load(PART_FBX, {"A91_Suppressor": PART_TEX, "A91_Muzzle_Mount_Device": PART_TEX})
-        fit = load(GOM + "/models_X/weapons/parts/rails.fbx",
-                   {"AK_Mount": GOM + "/textures/weapons/parts/rails/AK_Mount.png"})
+        mag = load(MAG_FBX, {"9x39Magazine20_9A91": MAG_TEX})["9x39Magazine20_9A91"]
+        parts = load(PART_FBX, {"9A91_Suppressor": PART_TEX, "9A91_Muzzle_Mount_Device": PART_TEX})
+        fit = {"AK_Mount": load(PART_FBX, {"9A91_AK_Mount": AKM_TEX})["9A91_AK_Mount"]}
         fit.update(load(GOM + "/models_X/weapons/parts/scopes.fbx",
                         {"PSO1_Scope": GOM + "/textures/weapons/parts/scopes/PSO1_Scope.png",
                          "Kobra_Sight": GOM + "/textures/weapons/parts/scopes/Kobra_Sight.png"}))
@@ -139,11 +139,11 @@ def main():
         place(fit["AK_Mount"], pts["rail_up"])
         for n in ("PSO1_Scope", "Kobra_Sight"):
             place(fit[n], pts["scope"])
-        body, bolt = g[body_name], g["A91_BOLT"]
-        extra = [g["A91_STOCK_DEPLOYED"]] if gun == "A91" else []
+        body, bolt = g[body_name], g["9A91_BOLT"]
+        extra = [g["9A91_STOCK_DEPLOYED"]] if gun == "9A91" else []
         lo, hi = bounds([body] + extra)
         info[gun] = {"length_mm": round((hi.y - lo.y) / K, 1), "height_mm": round((hi.z - lo.z) / K, 1)}
-        lo2, hi2 = bounds([body] + extra + [mag, parts["A91_Suppressor"]])
+        lo2, hi2 = bounds([body] + extra + [mag, parts["9A91_Suppressor"]])
         info[gun]["length_with_can_mm"] = round((hi2.y - lo2.y) / K, 1)
         info[gun]["height_with_mag_mm"] = round((hi2.z - lo2.z) / K, 1)
         centre = Vector((0.0, (lo2.y + hi2.y) / 2.0, (lo2.z + hi2.z) / 2.0))
@@ -151,22 +151,34 @@ def main():
         tall = (hi2.z - lo2.z) / K + 120
         right, left, front = (1, 0, 0), (-1, 0, 0), (0, -1, 0)
         base = [body, bolt, mag] + extra
-        can = [parts["A91_Suppressor"]]
+        can = [parts["9A91_Suppressor"]]
         render(gun + "_right", base, right, span, centre, tall)
         render(gun + "_right_can", base + can, right, span, centre, tall)
         render(gun + "_left", base + can, left, span, centre, tall)
-        render(gun + "_left_mount", base + [parts["A91_Muzzle_Mount_Device"]], left, span, centre, tall)
-        sight = fit["Kobra_Sight"] if gun == "A91" else fit["PSO1_Scope"]
+        render(gun + "_left_mount", base + [parts["9A91_Muzzle_Mount_Device"]], left, span, centre, tall)
+        sight = fit["Kobra_Sight"] if gun == "9A91" else fit["PSO1_Scope"]
         render(gun + "_left_optic", base + can + [fit["AK_Mount"], sight], left, span, centre, tall)
         render(gun + "_right_optic", base + can + [fit["AK_Mount"], sight], right, span, centre, tall)
+        render(gun + "_q_optic", base + can + [fit["AK_Mount"], sight], (-0.7, -0.45, -0.5), span, centre, tall + 150)
+        render(gun + "_q_mount", base + can + [fit["AK_Mount"]], (-0.7, 0.55, -0.45), span, centre, tall + 150)
         render(gun + "_q", base + can, (0.7, -0.45, -0.5), span, centre, tall + 150)
         render(gun + "_q_back", base + can, (-0.7, 0.55, -0.45), span, centre, tall + 150)
         render(gun + "_top", base + can, (0, 0, -1), 140, centre, span)      # the length runs up the image
         render(gun + "_front", base, front, 220, centre, tall)
-        if gun == "A91":
-            render("A91_folded", [body, bolt, mag, g["A91_STOCK_FOLDED"]], right, span, centre, tall)
-            render("A91_folded_q", [body, bolt, mag, g["A91_STOCK_FOLDED"]], (0.7, -0.45, -0.5), span, centre,
+        if gun == "9A91":
+            render("9A91_folded", [body, bolt, mag, g["9A91_STOCK_FOLDED"]], right, span, centre, tall)
+            render("9A91_folded_optic", [body, bolt, mag, g["9A91_STOCK_FOLDED"], fit["AK_Mount"], sight], right, span,
+                   centre, tall)
+            render("9A91_folded_q", [body, bolt, mag, g["9A91_STOCK_FOLDED"]], (0.7, -0.45, -0.5), span, centre,
                    tall + 150)
+            # the folded stock under the bracket and each optic: from the left front (the bracket's side) and from
+            # above the left rear, close up on the receiver
+            folded = [body, bolt, mag, g["9A91_STOCK_FOLDED"], fit["AK_Mount"]]
+            rc = Vector((0.0, centre.y + 0.01, centre.z + 0.02))
+            for name, s in (("kobra", fit["Kobra_Sight"]), ("pso1", fit["PSO1_Scope"])):
+                render("9A91_folded_%s_q" % name, folded + [s], (-0.7, -0.45, -0.5), 420, rc, 300)
+                render("9A91_folded_%s_back" % name, folded + [s], (-0.6, 0.6, -0.55), 420, rc, 300)
+                render("9A91_folded_%s_right" % name, folded + [s], right, 420, rc, 260)
         place(bolt, pts["bolt_fired"])
         render(gun + "_bolt_back", base, right, span, centre, tall)
         for o in list(g.values()) + [mag] + list(parts.values()) + list(fit.values()):

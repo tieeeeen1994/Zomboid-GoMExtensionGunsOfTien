@@ -26,15 +26,20 @@ Picked by the user from their wish list. Releases ship two or more guns each.
 
 Built end to end (model, scripts, Lua, loot, Hot Brass, tooltips, icons, docs); review sheet
 `docs/post93_9a91_preview.png`, design and reasons in docs/post93_design.md "KBP 9A-91 and VSK-94".
-- [ ] Review the model on the sheet (both guns' outlines on their photos, the trigger zooms, every view).
-- [ ] Confirm the decisions taken while you slept: the 9A-91 has its own can (the TODO said "ask"); the VSK-94 takes
-      the same **detachable** can, because the real one is not integral (the TODO said built-in); the current
-      9A-91 with its left rail, not the 1994 first model; the ribbed handguard on the 9A-91, the diamond one on the
-      VSK-94; one 20-round magazine only (GoM's AS VAL magazines do not fit the real gun).
+- [x] Review the model on the sheet (user, 2026-11-24: "this looks good" after the redo: the stock's ears round the
+      hinge pin, both trigger groups retraced, the trigger frame as the strip only, the VSK-94 put right on its
+      receiver, GoM's AK mount drawn as our own low bracket).
+- [x] Decided 2026-11-24: their own detachable 9x39 can on both (the AS VAL's 22 / 6 sound fitted, GoM's x0.9
+      damage kept for balance, the guns' base damage raised by 1 / 0.9 so a canned 9A-91 hits as the VAL); no
+      optional rails (none on the real guns; GoM's AK-47 has none either); no holster (back slot, as the MP7); the
+      20-round magazine only (no longer one exists; the AS VAL family's 10 / 30 do not fit); item IDs renamed
+      `A91` → `9A91` before release (the real A-91 is another KBP gun).
+- [x] Confirmed 2026-11-24: the current 9A-91 with its left rail, not the 1994 first model; the ribbed handguard on
+      the 9A-91, the diamond one on the VSK-94.
 - [ ] Play them: GoM's AK reload with our magazine in the off hand, the bolt and handle moving, the 9A-91's stock
       folding (Gunworks' radial / menu), GoM's AK mount and optics on the left rail, the can on its mount and its
       wear, Auto / Single at 700 rpm, the found-gun parts, loot (GoM's Russian rifle spawner).
-- [ ] A Workshop preview (preview42) once the model is approved.
+- [x] Workshop preview preview42.png (2026-11-24); add it on the Steam page by hand.
 
 ### 3. Bizon family (Post-93, later: waits for more rounds)
 

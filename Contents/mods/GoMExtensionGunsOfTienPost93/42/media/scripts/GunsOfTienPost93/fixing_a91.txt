@@ -1,6 +1,6 @@
 module Base {
-    fixing Fix A91 {
-        Require = GunsOfTienPost93.A91,
+    fixing Fix 9A91 {
+        Require = GunsOfTienPost93.9A91,
         Fixer   = MarzGuns.RepairPack; Aiming=3,
     }
     fixing Fix VSK94 {

@@ -16,3 +16,8 @@ Specs: Wikipedia "9A-91" (594 / 373 mm, 1.8 kg empty, 600-800 rpm, 20-round box;
     its own (stamped steel, double feed), not interchangeable with the AS / VSS / SR-3 family (web search,
     2026-11-24: Russian references quoted by guns.fandom, IMFDB talk pages).
 contact_sheet_commons.png  the Commons photos.
+
+user/  two right-side photos the user gave on 2026-11-24 (source not given): 9a91_current_14BM052_right.png (a current
+    gun with its can, serial 14 BM 052) and 9a91_early_right.png (an early gun, bare muzzle). Both show open air under
+    the trigger frame ahead of the trigger and behind it, so the dark shapes there in imfdb/9A-91silenced.jpg are not
+    the gun: they are its Kobra's side mount on the far side, seen through the guard.

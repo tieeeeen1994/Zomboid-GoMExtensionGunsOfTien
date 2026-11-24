@@ -212,7 +212,7 @@ SpentCasingPhysics.RegisterWeaponParams({
     },
     -- The 9A-91 and VSK-94 eject to the right from the AK-type port: GoM's AKS-74U's and AS VAL's values (the same
     -- 9x39 round as the AS VAL; the VSK-94's port as far ahead of the grip)
-    ["GunsOfTienPost93.A91"] = {
+    ["GunsOfTienPost93.9A91"] = {
         forwardOffset = 0.35,
         sideOffset    = 0.10,
         heightOffset  = 0.45,

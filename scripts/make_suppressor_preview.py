@@ -48,6 +48,7 @@ FAMILIES = [
     ("AK", ["MarzGuns.PBS-1_Suppressor"], "PBS-1 on the AK muzzle mount", "the Groza-1 and Groza-2"),
     (".45 ACP", ["MarzGuns.P45_Suppressor"], "P45 on the .45 muzzle mount", "the UMP45 and Vector .45s"),
     ("7.62X51MM", [P + "SCARH_Suppressor"], "", "SOCOM762-RC on the SCAR-H's muzzle mount"),
+    ("9X39MM", [P + "9A91_Suppressor"], "", "the 9A-91's can on the 9x39mm muzzle mount"),
     ("4.6X30MM AND 5.7X28MM", [P + "MP7_Suppressor", P + "P90_Suppressor", P + "FIVESEVEN_Suppressor"], "",
      "Rotex-II, SP90 and SFN-57 on their muzzle mounts"),
 ]
@@ -121,7 +122,8 @@ def main():
         x0 = MARGIN + c * (width + gap)
         block_icons(layer, family, x0 + width, tops[c])
         tops[c] = draw_block(layer, d, tops[c], title, fits, set(), where, post, "", fonts, x0, width)
-    y = one_line(d, max(tops), "Every suppressor: 70% quieter, 10% less damage, no muzzle flash")
+    y = one_line(d, max(tops), "Every suppressor: 70% quieter (the 9x39mm can: as quiet as the AS VAL), "
+                                       "10% less damage, no muzzle flash")
     h = y + 24
     page = background((W, h)).convert("RGBA")
     page.alpha_composite(layer.crop((0, 0, W, h)))

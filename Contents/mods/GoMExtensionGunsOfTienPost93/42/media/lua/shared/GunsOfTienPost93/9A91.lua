@@ -17,8 +17,10 @@
     - GoM's AK side mount on the left dovetail rail (both real guns carry their optics there) and every GoM optic on
       it, appended to their MountOn as the SVU does;
     - the detachable can on the threaded barrel (the VSK-94's is not integral, unlike the VSS's), behind the 9x39mm
-      mount device, GoM's way: GoM's PBS-1 stats (sound and volume x0.3, damage x0.9, no flash, its shot), worn and
-      repaired as GoM's PBS-1 (AttachmentsDurability, fixing_guns.txt);
+      mount device: the AS VAL's sound when fitted (22 / 6, the main mod's SoundTable), not GoM's x0.3 (user,
+      2026-11-24: 9x39 is subsonic by default, so a can made for it is as quiet as the VAL's built-in one); GoM's
+      x0.9 damage kept for balance (user, the same day), no flash, GoM's can shot; worn and repaired as GoM's PBS-1
+      (AttachmentsDurability, fixing_guns.txt);
     - a found gun: the bolt (and the 9A-91's stock folded), its magazine at GoM's AS VAL chance, now and then GoM's
       optics with the AK mount (":AM", the SVU's and GoM's AK chances; the VSK-94 mostly its PSO-1). No can and no
       mount device: GoM's found guns never come with one.
@@ -44,14 +46,14 @@ for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "Stocks", "ReloadsAndA
 end
 
 local M = "GunsOfTienPost93."
-local A91 = M .. "A91"
+local GUN_9A91 = M .. "9A91"
 local VSK94 = M .. "VSK94"
-local GUNS = { A91, VSK94 }
-local MAG = M .. "9x39Magazine20_A91"
-local CAN = M .. "A91_Suppressor"
-local MOUNT = M .. "A91_Muzzle_Mount_Device"
-local FOLDED = M .. "A91_Integrated_Stock_Folded"
-local DEPLOYED = M .. "A91_Integrated_Stock_Deployed"
+local GUNS = { GUN_9A91, VSK94 }
+local MAG = M .. "9x39Magazine20_9A91"
+local CAN = M .. "9A91_Suppressor"
+local MOUNT = M .. "9A91_Muzzle_Mount_Device"
+local FOLDED = M .. "9A91_Integrated_Stock_Folded"
+local DEPLOYED = M .. "9A91_Integrated_Stock_Deployed"
 
 -------------------------------------------------
 -- Magazine
@@ -63,7 +65,7 @@ Ammo.RegisterMultipleItemsWithFamilies({ ["9x39mm"] = { MAG } })
 -------------------------------------------------
 -- Rate of fire (GoM's AS VAL 900, 0.12 / 3.0; AKS-74U 650, 0.25 / 3.5)
 -------------------------------------------------
-RateOfFire.RegisterWeapon(A91, { rpm = 700, enableSpread = true, sustainedSpread = 0.18, maxSpread = 3.3 })
+RateOfFire.RegisterWeapon(GUN_9A91, { rpm = 700, enableSpread = true, sustainedSpread = 0.18, maxSpread = 3.3 })
 RateOfFire.RegisterWeapon(VSK94, { rpm = 700, enableSpread = true, sustainedSpread = 0.12, maxSpread = 2.8 })
 
 -------------------------------------------------
@@ -82,14 +84,14 @@ end
 -------------------------------------------------
 -- The 9A-91's folding stock (GoM's AKS-74U stock: flat values since GoM's November 2026 update, and its spread)
 -------------------------------------------------
-FoldingStock.RegisterWeapon(A91, {
+FoldingStock.RegisterWeapon(GUN_9A91, {
     attachments = { partType = "StockIntegrated", folded = FOLDED, deployed = DEPLOYED },
     initialState = "folded",
 })
 RateOfFire.RegisterSpreadPartModifier(DEPLOYED, { sustainedSpreadMult = 0.75, maxSpreadMult = 0.85 })
 
 -------------------------------------------------
--- Stats: the stock, and the can (GoM's PBS-1, its rifle cans' shot)
+-- Stats: the stock, and the can (the AS VAL's sound, see the header; GoM's rifle cans' shot)
 -------------------------------------------------
 CSA.RegisterMultipleParts({
     [FOLDED] = {},
@@ -98,8 +100,8 @@ CSA.RegisterMultipleParts({
         SF.Adjust("AimingTime", -4),
     },
     [CAN] = {
-        SF.Multiply("SoundRadius", 0.3),
-        SF.Multiply("SoundVolume", 0.3),
+        SF.Set("SoundRadius", 22),
+        SF.Set("SoundVolume", 6),
         SF.Multiply("MaxDamage", 0.9),
         SF.Multiply("MinDamage", 0.9),
         SF.Set("SwingSound", "CapGunRevolverShoot"),
@@ -177,8 +179,8 @@ if spawnTable then
     a91[#a91 + 1] = "MarzGuns.PSO1_Scope:1:AM"
     local vsk = optionals(1, 3)
     vsk[#vsk + 1] = "MarzGuns.PSO1_Scope:15:AM"      -- the VSK-94's own scope
-    spawnTable[A91] = { required = { "MarzGuns.Bolt_Lock", FOLDED }, optionals = a91 }
+    spawnTable[GUN_9A91] = { required = { "MarzGuns.Bolt_Lock", FOLDED }, optionals = a91 }
     spawnTable[VSK94] = { required = { "MarzGuns.Bolt_Lock" }, optionals = vsk }
 end
 
-GunsOfTienPost93_A91 = { GUNS = GUNS, MAG = MAG, CAN = CAN, MOUNT = MOUNT, FOLDED = FOLDED, DEPLOYED = DEPLOYED }
+GunsOfTienPost93_9A91 = { GUNS = GUNS, MAG = MAG, CAN = CAN, MOUNT = MOUNT, FOLDED = FOLDED, DEPLOYED = DEPLOYED }

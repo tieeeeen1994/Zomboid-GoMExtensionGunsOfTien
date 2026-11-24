@@ -3,15 +3,18 @@
     blender -b --factory-startup -P scripts/post93/build_9a91.py -- [--size 1024] [--samples 48] [--debug DIR]
 
 Writes (M = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
-    M/models_X/weapons/firearms/GunsOfTienPost93_9A91.fbx   A91_BODY (the 9A-91 without its stock), A91_STOCK_DEPLOYED,
-                                                            A91_STOCK_FOLDED, VSK94_BODY (the VSK-94: the same receiver,
-                                                            its skeleton stock and grip, its handguard), A91_BOLT (the
+    M/models_X/weapons/firearms/GunsOfTienPost93_9A91.fbx   9A91_BODY (the 9A-91 without its stock), 9A91_STOCK_DEPLOYED,
+                                                            9A91_STOCK_FOLDED, VSK94_BODY (the VSK-94: the same receiver,
+                                                            its skeleton stock and grip, its handguard), 9A91_BOLT (the
                                                             carrier's side and the folding charging handle, right side)
-    M/models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx   9x39Magazine20_A91
-    M/models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx           A91_Suppressor, A91_Muzzle_Mount_Device
-    M/textures/weapons/GunsOfTienPost93/A91.png                512 atlas (the four gun nodes and the bolt)
-    M/textures/weapons/GunsOfTienPost93/9x39Magazine20_A91.png 128
-    M/textures/weapons/GunsOfTienPost93/A91_Suppressor.png     128 (the can and the mount)
+    M/models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx   9x39Magazine20_9A91
+    M/models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx           9A91_Suppressor, 9A91_Muzzle_Mount_Device,
+                                                                       9A91_AK_Mount (the look of GoM's AK Mounting
+                                                                       Rail on these two guns: a low side bracket)
+    M/textures/weapons/GunsOfTienPost93/9A91.png                512 atlas (the four gun nodes and the bolt)
+    M/textures/weapons/GunsOfTienPost93/9x39Magazine20_9A91.png 128
+    M/textures/weapons/GunsOfTienPost93/9A91_Suppressor.png     128 (the can and the mount)
+    M/textures/weapons/GunsOfTienPost93/9A91_AK_Mount.png       128
     scripts/post93/a91_points.json                             attachment points (game space), both guns
 
 User, 2026-11-24 (TODO.md "9x39 release"; docs/post93_design.md "9A-91 and VSK-94"): KBP's 9A-91 compact assault
@@ -63,7 +66,7 @@ FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_9A91.f
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_9A91_magazines.fbx")
 FBX_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_9A91_parts.fbx")
 POINTS_JSON = os.path.join(HERE, "a91_points.json")
-MAG_NAME = "9x39Magazine20_A91"
+MAG_NAME = "9x39Magazine20_9A91"
 
 K = 0.000603
 kit.K = K
@@ -82,7 +85,11 @@ for ch, rows in {"9": ["111", "101", "111", "001", "111"], "A": ["010", "101", "
 S9 = 2.785                         # 9A-91 photo, px a mm
 TRIG9, BORE9 = 924.0, 323.0        # the trigger blade's middle (x), the bore (y: the can's axis)
 SV = 2.56                          # VSK-94 photo
-TRIGV, BOREV = 1014.0, 400.0
+# registered on the receiver the two guns share (edge correlation of the 9A-91 photo's receiver, scaled 2.56 / 2.785,
+# on the VSK-94 photo, 2026-11-24: 9A-91 (700, 240) lands on (808, 305), the halves agree within 1 px). The first
+# build took the bore for y 400; this photo's can axis reads 377-381 and the receiver puts the bore at 381.3, so the
+# stock sat 7.4 mm too high on the receiver.
+TRIGV, BOREV = 1014.0, 381.3
 ORIGIN_TO_TRIGGER = 0.066 / K      # GoM's AKS-74U: 109.5 mm real
 BORE_Z = 0.0148 / K                # 24.5 mm real
 
@@ -111,7 +118,10 @@ HG_LEN = (1597.0 - 1297.0) / S9   # the 9A-91 handguard, 108 mm
 MUZZLE_OUT = 0.31 * HG_LEN         # barrel (collar and thread) out of the handguard's front (KardeN's photo)
 
 W_REC, W_COVER, W_HG, W_GRIP, W_MAG = 15.0, 13.0, 18.0, 14.0, 12.0
-W_STRUT, W_BUTT = 8.5, 13.0
+# the stock's strut is a stamped U channel as wide as the receiver (Kuzmin's 13 and 36): its side walls run on as the
+# two ears round the hinge pin, and folded it lies over the top cover (W_CHAN: the folded channel's web)
+W_STRUT, W_BUTT, W_CHAN = 15.6, 16.6, 12.5
+EAR_X = W_REC + 1.2                # the ears' middle across (they lie on the receiver's sides, 2 mm plate)
 W_VSK_BAR, W_VSK_BUTT = 14.0, 19.0
 RAIL_OUT = 22.0                    # the left dovetail rail's outer face (x, real mm from the bore's plane)
 BOLT_TRAVEL = 70.0                 # the carrier's stroke (GoM's AKS-74U 0.047 at 0.645 = 73 mm)
@@ -122,30 +132,58 @@ BOLT_TRAVEL = 70.0                 # the carrier's stroke (GoM's AKS-74U 0.047 a
 
 # the receiver: the stamped body from the hinge block at the rear to its front at the handguard, the top cover's
 # rear step, the lower edge level over the grip, trigger guard and magazine well
-RECEIVER = [(655, 290), (660, 276), (676, 268), (700, 262), (712, 254), (757, 243), (1180, 243), (1252, 245),
-            (1301, 250), (1302, 390), (1290, 394), (1020, 396), (700, 396), (688, 388), (668, 360), (658, 330)]
+# (its rear face is behind the stock's ears: re-read on the 12x crop, 2026-11-24; the first trace ran round the ear)
+RECEIVER = [(686, 388), (686, 300), (694, 293), (700, 285), (710, 279), (710, 254), (730, 255), (740, 251),
+            (753, 242), (1180, 243), (1252, 245), (1301, 250), (1302, 390), (1290, 394), (1020, 396), (986, 396),
+            (986, 391), (873, 391), (873, 396), (700, 396), (690, 392)]
 # the top cover's raised strip over the receiver (drawn narrower, standing 1 mm proud)
-COVER = [(712, 254), (757, 243), (1180, 243), (1252, 245), (1252, 262), (712, 262)]
+COVER = [(710, 254), (730, 255), (740, 251), (753, 242), (1180, 243), (1252, 245), (1252, 262), (710, 262)]
 # the magazine well's skirt over the magazine's top: its lower edge a curve from the front of the guard up to the
 # well's front (the curved line on the photo's magazine)
-SKIRT = [(1016, 394), (1200, 394), (1200, 420), (1180, 426), (1150, 438), (1110, 456), (1070, 474), (1040, 486),
-         (1022, 492), (1016, 488)]
-# the trigger housing under the receiver between grip and well (the guard hangs from it)
-HOUSING = [(860, 394), (1016, 394), (1016, 412), (860, 412)]
-# the pistol grip (polymer): rear edge from the receiver down to the heel, the bottom, the front edge up to the guard
+SKIRT = [(1016, 394), (1200, 394), (1200, 412), (1180, 415), (1150, 420), (1125, 427), (1100, 437), (1080, 447),
+         (1060, 460), (1045, 473), (1034, 484), (1022, 492), (1016, 488)]
+# Under the receiver, read on 6x and 8x gridded crops of the photo (2026-11-24, redone: the first trace drew the
+# blade as a straight sliver, the housing as one box and the guard as a band up the front):
+# the trigger frame (Kuzmin's 12, 14, 27): a bright steel box under the receiver, open at the bottom, narrower than
+# the receiver; the bright strip on the photo is its side, and the trigger's root rises into it. The dark band under
+# it ahead of the trigger in the measuring photo is the Kobra's side mount on the far (left) side, seen through the
+# guard (the user, 2026-11-24): their two side photos without an optic (a current "14 BM 052" and an early gun) show
+# open air there.
+STRIP = [(873, 391), (986, 391), (986, 402), (873, 402)]
+FRAME_W = 7.5                      # the frame's half width (mm)
+# the pistol grip (polymer): rear edge from the receiver down to the heel, the bottom, the front edge up to the nub
+# the guard ends on, then straight up to the receiver. No web behind the trigger: the dark wedge there in the IMFDB
+# photo is the same side mount (the photos without an optic show the guard's opening clear up to the grip)
 GRIP = [(720, 390), (726, 396), (738, 420), (742, 440), (738, 456), (722, 484), (700, 524), (680, 564), (668, 596),
         (664, 620), (666, 640), (680, 646), (720, 654), (760, 660), (790, 664), (802, 668), (800, 656), (794, 646),
-        (786, 628), (788, 600), (796, 572), (808, 546), (824, 512), (832, 490), (840, 479), (856, 475), (870, 481),
-        (872, 440), (862, 404), (860, 394)]
-# the trigger guard (a band): outer and inner lines from the grip's front, under the opening, up to the housing
-GUARD_OUT = [(866, 470), (872, 482), (884, 490), (900, 495), (930, 497), (966, 493), (984, 487), (996, 476),
-             (1002, 456), (1004, 430), (1004, 412)]
-GUARD_IN = [(872, 462), (878, 474), (890, 482), (904, 486), (930, 488), (962, 485), (978, 480), (989, 470),
-            (994, 452), (996, 430), (996, 412)]
-# the blade: a hook hanging from the housing, its tip curled forward (traced on the 2.5x crop)
-TRIGGER = [(914, 412), (919, 412), (922, 426), (925, 440), (929, 456), (933, 469), (937, 477), (934, 480),
-           (928.5, 472), (923, 460), (918.5, 444), (916, 428)]   # the rear edge re-read on the overlay zoom (+2 px)
-MAG_CATCH = [(1000, 412), (1012, 412), (1014, 480), (1010, 520), (1004, 536), (1001, 534), (1004, 500), (1003, 480)]
+        (786, 628), (788, 600), (796, 572), (808, 546), (824, 512), (832, 490), (840, 479), (856, 475), (866, 480),
+        (872, 479), (866, 470), (862, 440), (861, 394)]
+# per gun (the VSK-94's guard is a full loop of its own, traced on its own photo): the blade (a thin stamped
+# crescent, about 1.5 mm thick, concave forward), the guard's band (outer and inner lines, rear to front), the catch
+# plate that closes the guard's front (the opening's edge, then down to the magazine), the magazine catch's spike
+TG_9A91 = {
+    "trigger": [(906, 393), (906, 403), (908, 412), (909.5, 420), (909, 430), (910, 440), (912, 449), (916, 459), (921, 466),
+                (927, 473), (933, 479), (936, 480), (938, 477), (931, 470), (925, 463), (920, 456), (916, 448),
+                (914, 440), (913, 430), (914, 420), (916, 412), (919, 406), (922, 403), (922, 393)],
+    "guard_out": [(866, 480), (872, 486), (884, 492), (900, 497), (930, 499), (960, 497), (982, 492), (994, 488)],
+    "guard_in": [(866, 472), (872, 479), (884, 486), (900, 491), (930, 493), (960, 490), (980, 485), (990, 481)],
+    "plate": [(996, 400), (1003, 412), (1007, 425), (1008, 440), (1006, 455), (1000, 470), (990, 483), (986, 490),
+              (1022, 490), (1022, 396)],
+    "catch": [(994, 490), (1012, 490), (1010, 507), (1007, 522), (1004, 532), (1002, 536), (1003, 530), (1005, 522),
+              (1004.5, 512), (1001.5, 500)],
+}
+TG_VSK = {     # VSK-94 photo px
+    "trigger": [(998, 446), (998, 452), (999, 465), (1000, 480), (1001, 494), (1005, 506), (1011, 516), (1019, 522), (1024, 522),
+                (1024, 519), (1019, 514), (1012.5, 505), (1008, 494), (1005.5, 481), (1006, 468), (1009, 458),
+                (1011, 452), (1011, 446)],
+    "guard_out": [(955, 448), (955, 465), (957, 489), (966, 508), (976, 520), (991, 530), (1010, 536.5), (1030, 537),
+                  (1050, 534), (1065, 530)],
+    "guard_in": [(960, 448), (960, 465), (962, 488), (970, 506), (980, 517), (994, 526), (1010, 532), (1030, 532),
+                 (1050, 529), (1062, 526)],
+    "plate": [(1077, 447), (1085, 462), (1089, 481), (1086, 500), (1080, 512), (1072, 522), (1062, 529), (1062, 534),
+              (1104, 534), (1104, 447)],
+    "catch": [(1078, 534), (1098, 534), (1096, 548), (1094, 560), (1091, 571), (1089, 566), (1090, 552), (1086, 542)],
+}
 # the handguard (polymer), ribbed under a smooth top band
 HANDGUARD = [(1297, 240), (1306, 230), (1318, 228), (1578, 228), (1592, 234), (1598, 246), (1598, 370),
              (1592, 380), (1580, 384), (1310, 384), (1300, 378), (1297, 368)]
@@ -153,14 +191,21 @@ HG_RIBS = (1316, 1585, 262, 380, 13)     # x from, to, y top, bottom, count
 FRONT_SIGHT = [(1552, 230), (1556, 222), (1576, 222), (1580, 230)]
 REAR_SIGHT = [(1206, 244), (1208, 232), (1214, 228), (1232, 228), (1236, 236), (1236, 244)]
 GAS_BLOCK = [(1252, 245), (1284, 247), (1296, 252), (1296, 268), (1252, 268)]     # front of the cover, over the gas tube
-HINGE = (675.0, 302.0, 17.0)       # the stock's hinge boss (x, y, radius px)
+HINGE = (676.0, 304.0)             # the stock's hinge pin (px)
+# the stock's ear on each side of the receiver, round the pin (10x crop): the channel's side wall carried forward
+EAR = [(656, 312), (658, 300), (661, 293), (666, 288), (672, 285.5), (678, 285), (684, 286), (690, 290), (694, 295),
+       (696, 302), (696.5, 315), (695, 326), (690, 330), (688, 335), (691, 342), (694, 350), (695.5, 360),
+       (694.5, 370), (691, 378), (686, 385), (672, 388), (650, 390), (650, 331)]
+FOLD_DEG = -169.97                 # deployed to folded, about the pin (the strut's line turned level, pointing forward)
 SELECTOR = [(852, 296), (870, 296), (874, 330), (882, 366), (870, 376), (854, 374), (850, 350), (856, 326)]
 # the stock (deployed): the stamped strut from the hinge down to the butt, the butt block and its folding plate
-STRUT = [(656, 332), (640, 335), (560, 352), (500, 363), (400, 387), (300, 400), (240, 413), (200, 421),
-         (140, 432), (120, 433), (120, 475), (200, 463), (300, 450), (400, 437), (500, 417), (640, 390),
-         (668, 388)]
-BUTT_BLOCK = [(32, 430), (120, 428), (122, 480), (84, 482), (34, 476)]
-BUTT_PLATE = [(33, 478), (80, 482), (80, 640), (74, 648), (40, 650), (33, 640)]
+STRUT = [(657, 312), (655, 320), (650, 329), (640, 335), (630, 337), (560, 352), (500, 363), (400, 387), (300, 400),
+         (280, 407), (260, 413), (240, 420), (220, 427), (205, 431), (120, 433), (120, 475), (200, 463), (300, 450),
+         (400, 437), (500, 417), (640, 390), (657, 389)]
+STRUT_LOW = [(120, 475), (200, 463), (300, 450), (400, 437), (500, 417), (640, 390), (657, 389)]
+STRUT_WEB = 7.0                    # the channel's web along its lower edge (px up from it); it is open on top
+BUTT_BLOCK = [(42, 430), (120, 428), (122, 480), (84, 482), (43, 476)]
+BUTT_PLATE = [(42, 478), (80, 482), (80, 640), (74, 648), (48, 650), (42, 640)]
 # the bolt: the folding charging handle (hook up, as folded on Kuzmin's 25) on its base plate, and the carrier's
 # side seen in the receiver's slot
 HANDLE_BASE = [(1116, 300), (1192, 300), (1196, 312), (1192, 324), (1116, 324)]
@@ -177,17 +222,27 @@ MAG = (1022.0, 1197.0, 380.0, 757.0)
 # VSK-94 (IMFDB VSK-94.jpg px)
 # ==================================================================================================
 
-VSK_STOCK = [(784, 405), (770, 426), (68, 426), (66, 440), (70, 700), (78, 716), (884, 719), (879, 704),
-             (860, 690), (858, 668), (863, 647), (880, 610), (895, 574), (912, 530), (926, 489), (930, 455),
-             (928, 440)]
+# the skeleton stock: its top under the receiver (behind the ears it steps up to the comb), the front down the grip
+VSK_STOCK = [(957, 447), (957, 480), (954, 497), (941, 515), (931, 535), (922, 552), (911, 584), (900, 612),
+             (880, 650), (863, 690), (879, 704), (884, 719), (78, 716), (70, 700), (66, 440), (68, 426), (770, 426),
+             (770, 443)]
 VSK_WINDOWS = [[(226, 481), (526, 481), (526, 658), (226, 658)],
                [(581, 481), (832, 479), (826, 505), (821, 526), (800, 572), (779, 616), (758, 640), (737, 658),
                 (581, 658)]]
 VSK_PAD = [(66, 426), (124, 426), (124, 716), (70, 716), (66, 700)]
-VSK_HANDGUARD_LEN = (1650.0 - 1377.0) / SV
-VSK_HG = [(0.0, 25.0), (2.0, 27.5), (6.0, 29.0), (100.0, 29.0), (105.0, 27.0), (107.0, 22.5), (107.0, -18.0),
-          (104.0, -21.0), (96.0, -22.0), (4.0, -22.0), (0.0, -19.5)]   # (mm ahead of the receiver, mm over the bore)
-VSK_DIAMOND = (14.0, 86.0, 0.0, 22.0)    # the diamond panel: mm along, its band's mm under the bore
+# the plates the stock is pinned by, on each side of the receiver's rear (the 9A-91's hinge pin, a plain plate)
+VSK_EAR = [(770, 353), (772, 348), (777, 345.5), (796, 345.5), (801, 348), (804, 354), (804.5, 392), (801, 398),
+           (800, 430), (798, 435.5), (773, 435.5), (770, 432)]
+# the handguard: a tongue back to the receiver's front under the gas block, the top strip, the underside rising
+# forward; the front sight's hood on its front top and the sling ring at the front
+VSK_HG = [(1362, 364), (1408, 361), (1412, 352), (1413, 326), (1418, 318), (1426, 315), (1430, 306), (1436, 303),
+          (1596, 303), (1600, 301), (1645, 301), (1647, 318), (1650, 325), (1650, 410), (1647, 416), (1500, 426),
+          (1368, 437), (1363, 432)]
+# the gas block between the receiver's front and the handguard's upper part, over its tongue
+VSK_GAS = [(1355, 305), (1432, 305), (1432, 318), (1415, 322), (1414, 362), (1355, 362)]
+VSK_FSIGHT = [(1610, 302), (1611, 288), (1616, 281), (1624, 279), (1633, 281), (1638, 288), (1639, 302)]
+VSK_RING = (1656.0, 319.0, 8.0)
+VSK_PANEL = [(1380, 402), (1450, 352), (1625, 340), (1555, 392)]     # the diamond panel on each side
 
 
 # ==================================================================================================
@@ -203,30 +258,55 @@ def lathe_bore(b, profile, seg=16, mat="steel"):
     b.lathe("y", (0.0, 0.0, Z_BORE), profile, seg=seg, mat=mat)
 
 
+def rot_px(pts, deg, centre=None):
+    """Photo px turned about the hinge pin (y runs down, so a negative angle lifts what hangs behind the pin)."""
+    cx, cy = centre or HINGE
+    a = math.radians(deg)
+    ca, sa = math.cos(a), math.sin(a)
+    return [(cx + (x - cx) * ca - (y - cy) * sa, cy + (x - cx) * sa + (y - cy) * ca) for x, y in pts]
+
+
+def ears(b, outline, f=P):
+    """The stock's two ears: 2 mm plates on the receiver's sides, round the hinge pin."""
+    for s in (1, -1):
+        slab(b, outline, half=1.0, bevel=0.4, mat="steel", x0=s * EAR_X, f=f)
+
+
+def trigger_frame(b):
+    """The open-bottomed steel box under the receiver: two side walls, the end walls, the receiver's floor seen
+    through it."""
+    for s in (1, -1):
+        slab(b, STRIP, half=0.9, bevel=0.3, mat="bright", x0=s * (FRAME_W - 0.9))
+    for xa, xb in ((873, 879), (980, 986)):
+        slab(b, [(xa, 391), (xb, 391), (xb, 402), (xa, 402)], half=FRAME_W, bevel=0.3, mat="bright")
+    slab(b, [(879, 391), (980, 391), (980, 394), (879, 394)], half=FRAME_W - 1.8, bevel=0.2, mat="dark")
+
+
 def receiver(b, vsk=False):
     slab(b, RECEIVER, half=W_REC, bevel=1.2, mat="steel")
     slab(b, COVER, half=W_COVER, bevel=1.5, mat="steel", x0=0.0)
     slab(b, SKIRT, half=W_REC - 0.6, bevel=0.8, mat="steel")
-    slab(b, HOUSING, half=W_REC - 3.0, bevel=0.6, mat="steel")
+    trigger_frame(b)
     slab(b, GAS_BLOCK, half=W_COVER - 1.0, bevel=1.0, mat="steel")
     slab(b, REAR_SIGHT, half=6.5, bevel=0.6, mat="steel")
-    slab(b, TRIGGER, half=2.3, bevel=0.4, mat="steel")
-    if vsk:     # the guard's band carried back into the VSK-94 stock's grip (its front sits 19 mm further back than
-        #         the 9A-91 grip's, measured from the trigger on both photos)
-        b.strip([(66.0, P(*GUARD_OUT[0])[1])] + PL(GUARD_OUT), [(66.0, P(*GUARD_IN[0])[1])] + PL(GUARD_IN),
-                -5.0, 5.0, mat="steel", bevel=0.4)
-    else:
-        b.strip(PL(GUARD_OUT), PL(GUARD_IN), -5.0, 5.0, mat="steel", bevel=0.4)
-    slab(b, MAG_CATCH, half=5.0, bevel=0.5, mat="steel")
+    tg, f = (TG_VSK, PV) if vsk else (TG_9A91, P)
+    slab(b, tg["trigger"], half=2.3, bevel=0.25, mat="steel", f=f)
+    b.strip(PL(tg["guard_out"], f), PL(tg["guard_in"], f), -5.0, 5.0, mat="steel", bevel=0.4)
+    slab(b, tg["plate"], half=W_REC - 2.0, bevel=0.6, mat="steel", f=f)
+    slab(b, tg["catch"], half=2.5, bevel=0.3, mat="steel", f=f)
     # the selector lever on the right (game -x), pivoting at its top
     slab(b, SELECTOR, half=1.2, bevel=0.3, mat="steel", x0=-W_REC - 1.0)
-    # the hinge boss and its pin, both sides
-    hx, hy, hr = HINGE
+    # the hinge: the receiver's lug between the stock's ears, the pin through both with its washers
+    hx, hy = HINGE
+    slab(b, [(hx - 12, hy - 14), (hx + 12, hy - 14), (hx + 12, hy + 18), (hx - 12, hy + 18)], half=W_REC, bevel=1.0,
+         mat="steel")
     y, z = P(hx, hy)
-    b.lathe("x", (0.0, y, z), [(-W_REC - 1.5, 0.0), (-W_REC - 1.5, hr / S9), (W_REC + 1.5, hr / S9),
-                               (W_REC + 1.5, 0.0)], seg=16, mat="steel")
+    e = EAR_X + 1.0
+    b.lathe("x", (0.0, y, z), [(-e - 0.6, 0.0), (-e - 0.6, 4.0), (e + 0.6, 4.0), (e + 0.6, 0.0)], seg=12, mat="steel")
+    b.lathe("x", (0.0, y, z), [(-e - 1.4, 0.0), (-e - 1.4, 1.8), (e + 1.4, 1.8), (e + 1.4, 0.0)], seg=10,
+            mat="bright")
     # the left dovetail rail: a plate on the receiver's side with the dovetail's two sloped faces (the side mount's
-    # clamp grips it); GoM's AK mount is drawn on it at `rail_up`
+    # clamp grips it); the AK mount's bracket is drawn on it (build_ak_mount)
     La, Lb, ya, yb = RAIL
     y0, z1 = P(La, ya)
     y1, z0 = P(Lb, yb)
@@ -254,33 +334,42 @@ def build_a91_body():
     slab(b, HANDGUARD, half=W_HG, bevel=3.0, res=1, mat="poly")
     slab(b, FRONT_SIGHT, half=3.5, bevel=0.5, mat="steel")
     barrel(b, P(1598, BORE9)[0])
-    return b.to_object("A91_BODY")
+    return b.to_object("9A91_BODY")
 
 
 def build_stock(folded):
     b = kit.Builder()
     if not folded:
-        slab(b, STRUT, half=W_STRUT, bevel=1.5, mat="steel")
-        slab(b, BUTT_BLOCK, half=W_BUTT - 2.0, bevel=1.5, mat="steel")
+        # the U channel, open on top (it closes over the top cover when folded): two side walls and the web
+        web = STRUT_LOW + [(x, y - STRUT_WEB) for x, y in reversed(STRUT_LOW)]
+        slab(b, web, half=W_STRUT - 0.5, bevel=0.8, mat="steel")
+        for s in (1, -1):
+            slab(b, STRUT, half=1.1, bevel=0.5, mat="steel", x0=s * (W_STRUT - 1.1))
+        ears(b, EAR)
+        slab(b, BUTT_BLOCK, half=W_STRUT, bevel=1.5, mat="steel")
         slab(b, BUTT_PLATE, half=W_BUTT, bevel=2.0, res=1, mat="steel")
-        return b.to_object("A91_STOCK_DEPLOYED")
+        return b.to_object("9A91_STOCK_DEPLOYED")
     # folded flat on the receiver (Kuzmin's 01 / 15): the strut's channel over the top cover from the hinge to the
-    # receiver's front, the butt block and its plate folded flat along it at the front, the rear sight in the channel
-    hx, hy, _ = HINGE
-    y_h, z_h = P(hx, hy)
+    # receiver's front, the butt block and its plate folded flat along it at the front, the rear sight in the channel;
+    # the ears turned up with it about the pin
+    y_h, z_h = P(*HINGE)
     top = P(0, 243)[1]
     y_end = FRONT9 - 4.0
-    b.box(-W_STRUT - 4.0, W_STRUT + 4.0, y_h - 6.0, y_end - 30.0, top + 4.6, top + 7.0, mat="steel", bevel=0.8)
+    b.box(-W_CHAN, W_CHAN, y_h - 6.0, y_end - 30.0, top + 4.6, top + 7.0, mat="steel", bevel=0.8)
     for s in (-1, 1):                    # the channel's flanges down the cover's sides
         b.box(s * (W_COVER + 0.6), s * (W_COVER + 2.6), y_h + 8.0, y_end - 30.0, top - 3.0, top + 7.0, mat="steel",
               bevel=0.5)
     # the arm from the hinge up onto the cover
     b.prism("x", [(y_h - 8.0, z_h - 5.0), (y_h + 10.0, z_h - 5.0), (y_h + 18.0, top + 7.0), (y_h - 6.0, top + 7.0)],
-            -W_STRUT - 4.0, W_STRUT + 4.0, mat="steel", bevel=0.8)
+            -W_CHAN, W_CHAN, mat="steel", bevel=0.8)
+    ears(b, rot_px(EAR, FOLD_DEG))
     # the butt block and plate at the front
     b.box(-W_BUTT, W_BUTT, y_end - 32.0, y_end, top + 4.0, top + 13.0, mat="steel", bevel=1.5)
     b.box(-W_BUTT + 1.0, W_BUTT - 1.0, y_end - 90.0, y_end - 30.0, top + 7.0, top + 11.5, mat="steel", bevel=1.2)
-    return b.to_object("A91_STOCK_FOLDED")
+    return b.to_object("9A91_STOCK_FOLDED")
+
+
+VSK_HANDGUARD_LEN = PV(1650.0, 0.0)[0] - FRONT9     # 113 mm (the first build read the receiver's front 6.5 mm late)
 
 
 def build_vsk_body():
@@ -288,12 +377,10 @@ def build_vsk_body():
     receiver(b, vsk=True)
     slab(b, VSK_STOCK, VSK_WINDOWS, half=W_VSK_BAR, bevel=3.0, res=1, mat="poly", f=PV)
     slab(b, VSK_PAD, half=W_VSK_BUTT, bevel=3.0, res=1, mat="rubber", f=PV)
-    hg = [(FRONT9 + a, Z_BORE + h) for a, h in VSK_HG]
-    kit.slab(b, hg, [], W_HG, 3.0, 1, "poly", 0.0)
-    fs = FRONT9 + 100.0               # the front sight on the handguard's front top, as on the 9A-91
-    kit.slab(b, [(fs - 10.0, Z_BORE + 28.0), (fs - 8.5, Z_BORE + 31.5), (fs - 2.0, Z_BORE + 31.5),
-                 (fs - 0.5, Z_BORE + 28.0)], [], 3.5, 0.5, 0, "steel", 0.0)
-
+    ears(b, VSK_EAR, f=PV)
+    slab(b, VSK_HG, half=W_HG, bevel=3.0, res=1, mat="poly", f=PV)
+    slab(b, VSK_FSIGHT, half=3.5, bevel=0.5, mat="steel", f=PV)
+    slab(b, VSK_GAS, half=W_COVER - 1.0, bevel=1.0, mat="steel", f=PV)
     barrel(b, FRONT9 + VSK_HANDGUARD_LEN)
     return b.to_object("VSK94_BODY")
 
@@ -303,7 +390,7 @@ def build_bolt():
     slab(b, CARRIER, half=1.0, bevel=0.3, mat="bright", x0=-W_REC - 0.2)
     slab(b, HANDLE_BASE, half=1.8, bevel=0.5, mat="steel", x0=-W_REC - 1.8)
     slab(b, HANDLE_HOOK, half=2.2, bevel=0.5, mat="steel", x0=-W_REC - 2.6)
-    return b.to_object("A91_BOLT")
+    return b.to_object("9A91_BOLT")
 
 
 def build_magazine():
@@ -337,7 +424,7 @@ def build_suppressor():
             (L - 5.0, CAN_R + 0.6), (L - 1.0, CAN_R + 0.6), (L, CAN_R - 1.0), (L, 6.5), (L - 4.0, 5.5),
             (L - 4.0, 0.0)]
     b.lathe("y", (0.0, 0.0, 0.0), prof, seg=20, mat="steel")
-    return b.to_object("A91_Suppressor")
+    return b.to_object("9A91_Suppressor")
 
 
 def build_mount():
@@ -346,7 +433,41 @@ def build_mount():
     b.lathe("y", (0.0, 0.0, 0.0), [(-2.0, 0.0), (-2.0, 14.8), (-1.0, 15.6), (11.0, 15.6), (12.0, 14.8),
                                    (12.0, 9.0), (MUZZLE_OUT - 10.0, 9.0), (MUZZLE_OUT - 10.0, 0.0)],
             seg=18, mat="steel")
-    return b.to_object("A91_Muzzle_Mount_Device")
+    return b.to_object("9A91_Muzzle_Mount_Device")
+
+
+# GoM's AK Mounting Rail (MarzGuns.AK_Mount) is a tall truss made for the AK's deep receiver: on this low one its rail
+# stood 33 mm over the top cover (the user, 2026-11-24: "is that how the mount really works on these guns? That looks
+# horrible"). The real Kobra and PSO-1 clamp straight onto the left dovetail and sit just over the cover. So these two
+# guns draw GoM's mount item with a model of our own (ModelWeaponPart names it, as the AUGs draw GoM's side rail): a
+# clamp on the dovetail, two posts up the left side, a bridge over the cover carrying a short Picatinny strip on the
+# bore's line. It clears the folded stock (web top at cover + 7, butt plate from FRONT9 - 94 forward).
+COVER_TOP = P(0, 243)[1]
+MOUNT_Y = FRONT9 - 135.0           # the strip's middle (the Kobra over the receiver's middle, as on the photo)
+MOUNT_Z = COVER_TOP + 10.0         # the strip's mounting face = the model's origin (`rail_up`)
+MOUNT_LEN = 80.0
+SCOPE_UP = 0.0                     # GoM's optics' origin on the mounting face: they sit 0.5-1.5 into the strip
+#                                    (fit_audit; GoM's own medians 1.1-1.6), their clamps reaching 2.4 under it
+
+
+def build_ak_mount():
+    b = kit.Builder()
+    zc = (P(0, RAIL[2])[1] + P(0, RAIL[3])[1]) / 2.0 - MOUNT_Z        # the dovetail's middle
+    hh = (P(0, RAIL[2])[1] - P(0, RAIL[3])[1]) / 2.0
+    out = RAIL_OUT + 0.3
+    b.box(out, out + 4.5, -30.0, 30.0, zc - hh - 3.2, zc + hh + 3.2, mat="steel", bevel=0.8)      # the clamp's plate
+    for s in (1, -1):                                                 # its two jaws over the dovetail's edges
+        za, zb = sorted((zc + s * (hh + 0.3), zc + s * (hh + 3.2)))
+        b.box(W_REC + 1.0, out + 0.5, -30.0, 30.0, za, zb, mat="steel", bevel=0.4)
+    b.lathe("x", (0.0, -10.0, zc), [(out + 4.5, 0.0), (out + 4.5, 4.2), (out + 7.0, 4.2), (out + 7.0, 0.0)], seg=10,
+            mat="steel")                                              # the locking lever's boss and arm
+    b.box(out + 5.0, out + 7.0, -10.0, 24.0, zc - 2.6, zc + 2.6, mat="steel", bevel=0.7)
+    for ya, yb in ((-30.0, -19.0), (19.0, 30.0)):                     # the posts
+        b.box(out + 0.5, out + 4.5, ya, yb, zc + hh + 2.5, -0.5, mat="steel", bevel=0.6)
+    b.box(-10.6, out + 4.5, -30.0, 30.0, -2.2, 0.0, mat="steel", bevel=0.5)                       # the bridge
+    kit.picatinny(b, -MOUNT_LEN / 2.0, MOUNT_LEN / 2.0, lambda u, h, yy: Vector((u, yy, h)), base_h=2.5, tooth_h=4.0,
+                  mat="steel")
+    return b.to_object("9A91_AK_Mount")
 
 
 # ==================================================================================================
@@ -434,10 +555,9 @@ def paint(maps, kind):
             col[poly & side & (np.abs(z - zt) < 0.7) & (y > ya) & (y < yb)] *= 0.6
         else:
             # the VSK-94's diamond panel, slanted, on each side of its handguard
-            a0, a1, d0, d1 = VSK_DIAMOND
             u = y - FRONT9
             v = Z_BORE - z
-            panel = poly & side & (u > a0 + v * 0.6) & (u < a1 + v * 0.6) & (v > d0) & (v < d1)
+            panel = poly & side & in_poly(y, z, [PV(*q) for q in VSK_PANEL])
             dia = (np.abs(((u + v) / 4.2) % 1.0 - 0.5) < 0.16) | (np.abs(((u - v) / 4.2) % 1.0 - 0.5) < 0.16)
             col[panel & dia] *= 0.5
             col[panel & ~dia] *= 1.1
@@ -491,23 +611,10 @@ def g(y, z, x=0.0):
 
 
 ZERO = [0.0, 0.0, 0.0]
-# GoM's AK side mount (parts/rails.fbx AK_Mount, measured 2026-11-24): its clamp's inner face at x +0.0155 of its
-# origin, the clamp from z -0.022 to -0.004, its body from y -0.044 to +0.0335; GoM's AKS-74U puts the mount's origin
-# (`rail_up`) at (0, 0.0764, 0.0225), 0.0077 over its bore, and its optics' `scope` at rail_up + (0, 0.0140, 0.0246)
-MOUNT_CLAMP_X = 0.0155
-MOUNT_CLAMP_ZC = -0.013
-SCOPE_FROM_MOUNT = (0.0, 0.0140, 0.0246)
-
-
 def points(body):
-    La, Lb, ya, yb = RAIL
-    rail_mid_y = (P(La, 0)[0] + P(Lb, 0)[0]) / 2.0
-    rail_mid_z = (P(0, ya)[1] + P(0, yb)[1]) / 2.0
-    # the mount's clamp centred on our rail in height, on its outer face across, its middle over the receiver's middle
-    clamp_y = P(950, 0)[0]
-    mount = [round(RAIL_OUT * K - MOUNT_CLAMP_X, 4), round(clamp_y * K - (-0.044 + 0.0335) / 2.0, 4),
-             round(rail_mid_z * K - MOUNT_CLAMP_ZC, 4)]
-    scope = [round(mount[i] + SCOPE_FROM_MOUNT[i], 4) for i in range(3)]
+    # our bracket for GoM's AK mount (build_ak_mount): its origin on the bore's line, GoM's optics on its strip
+    mount = g(MOUNT_Y, MOUNT_Z)
+    scope = g(MOUNT_Y, MOUNT_Z + SCOPE_UP)
     front = FRONT9 + (VSK_HANDGUARD_LEN if body == "vsk" else HG_LEN)
     muzzle_y = front + MUZZLE_OUT
     pts = {
@@ -541,24 +648,27 @@ def main():
     bolt = build_bolt()
     mag = build_magazine()
     can, mount = build_suppressor(), build_mount()
+    ak_mount = build_ak_mount()
     gun = [body, deployed, folded, vsk, bolt]
     kit.unwrap(gun, 0.005)
     kit.unwrap([mag], 0.012)
     kit.unwrap([can, mount], 0.012)
+    kit.unwrap([ak_mount], 0.012)
     os.makedirs(TEX_DIR, exist_ok=True)
     # each body bakes against itself and the bolt (the deployed stock with the 9A-91), so AO matches what is drawn
     texture(gun, [[body, bolt, deployed], [deployed, body], [folded, body], [vsk, bolt], [bolt, body]],
-            ["a91", "stock", "stock", "vsk", "bolt"], 512, os.path.join(TEX_DIR, "A91.png"))
+            ["a91", "stock", "stock", "vsk", "bolt"], 512, os.path.join(TEX_DIR, "9A91.png"))
     texture([mag], [[mag]], ["mag"], 128, os.path.join(TEX_DIR, MAG_NAME + ".png"))
-    texture([can, mount], [[can], [mount]], ["can", "can"], 128, os.path.join(TEX_DIR, "A91_Suppressor.png"))
-    bounds = {o.name: kit.bounds_of(o) for o in gun + [mag, can, mount]}
+    texture([can, mount], [[can], [mount]], ["can", "can"], 128, os.path.join(TEX_DIR, "9A91_Suppressor.png"))
+    texture([ak_mount], [[ak_mount]], ["mount"], 128, os.path.join(TEX_DIR, "9A91_AK_Mount.png"))
+    bounds = {o.name: kit.bounds_of(o) for o in gun + [mag, can, mount, ak_mount]}
     kit.export(gun, FBX_GUN)
     kit.export([mag], FBX_MAGS)
-    kit.export([can, mount], FBX_PARTS)
+    kit.export([can, mount, ak_mount], FBX_PARTS)
     # the off hand's point on the magazine (GoM's AS VAL 20's, its offset moved by the two meshes' centres)
     gom_mag = kit.import_mesh(os.path.join(kit.GOM, "models_X/weapons/magazines/assault_rifles.fbx"), "9x39Magazine20")
     prop2 = kit.bip01_prop2(mag, gom_mag, ([0.0279, 0.0937, -0.0020], [-86.2737, 31.4012, -93.4148]))
-    out = {"A91": points("a91"), "VSK94": points("vsk"), "_mag_prop2": prop2, "_bounds": bounds,
+    out = {"9A91": points("a91"), "VSK94": points("vsk"), "_mag_prop2": prop2, "_bounds": bounds,
            "_extras": {"k": K, "origin_to_trigger_mm": ORIGIN_TO_TRIGGER, "bore_z_mm": BORE_Z,
                        "receiver_front_mm": FRONT9, "can_len_mm": CAN_LEN}}
     with open(POINTS_JSON, "w") as fh:

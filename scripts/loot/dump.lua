@@ -1,11 +1,17 @@
 local EXTEND = ...
 local GOM = [[C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/42.16/media/lua/shared/]]
-local ROOT = [[C:/Users/Chen/Zomboid/Workshop/GoMExtensionGunsOfTien/Contents/mods/]]
+-- the repo's Contents/mods, from this file's own path (it was written with one machine's absolute path)
+local ROOT = debug.getinfo(1, "S").source:sub(2):gsub("\\", "/"):match("^(.*)/[^/]*$") .. "/../../Contents/mods/"
 local PZ = [[C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/shared/]]
 local cache = {}
 function require(name)
   if cache[name] then return cache[name] end
   if name:find("^MarzWeapons/OnCreate/") then local r = dofile(GOM .. name .. ".lua"); cache[name] = r or true; return r end
+  -- our own shared tables (the main mod's Loot.lua reads GunsOfTien/MuzzleDevicesTable since 3.21.0)
+  for _, mod in ipairs({ "GoMExtensionGunsOfTien", "GoMExtensionGunsOfTienPost93" }) do
+    local f = io.open(ROOT .. mod .. "/42/media/lua/shared/" .. name .. ".lua")
+    if f then f:close(); local r = dofile(ROOT .. mod .. "/42/media/lua/shared/" .. name .. ".lua"); cache[name] = r or true; return r end
+  end
   cache[name] = true; return true
 end
 local auto = { __index = function(t, k) local v = { items = {} }; rawset(t, k, v); return v end }

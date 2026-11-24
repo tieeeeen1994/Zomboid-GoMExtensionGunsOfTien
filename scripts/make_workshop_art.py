@@ -15,7 +15,8 @@ Post-93's MDRx .223 and .308, the same), preview23-26 (3.13.0: SR-25, Steyr TMP,
 preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the same), preview28.png (1024x1024,
 Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same),
 preview30.png (1024x1024, the Walther PPK, the same), preview31.png (1024x1024, the SVU, the same), preview32.png
-(1024x1024, Post-93's SV-98 and SV-99, the same), preview38.png (1024x1024, the Ammo Maker part cartons and crates,
+(1024x1024, Post-93's SV-98 and SV-99, the same), preview42.png (1024x1024, Post-93's 9A-91 and VSK-94, the same),
+preview38.png (1024x1024, the Ammo Maker part cartons and crates,
 the same; previews 33-37 are scripts/make_loot_previews.py's)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
 preview2 ... preview16, posters, icons) writes only those. The guns come from scripts/render_ad_guns.py (Blender), whose renders it reads from --renders (default
@@ -1493,6 +1494,20 @@ def preview32(path, W=1024):
              ("FOLDING BIPODS  ·  RAILS FOR GUNS OF MARZ OPTICS",), W, bottom=384, slot_y=398, gap=14)
 
 
+def preview42(path, W=1024):
+    """Post-93's 9A-91 and VSK-94 (3.23.0), as gun_pair: the 9A-91 stock deployed, a Kobra on the AK mount, its can
+    ("9a91"); the VSK-94 with a PSO-1 and the can ("vsk94"); then their slot row and what plays."""
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    gun_pair(path, (("9a91", "9A-91", "9X39MM  ·  700 RPM  ·  FOLDING STOCK"),
+                    ("vsk94", "VSK-94", "9X39MM  ·  700 RPM  ·  MARKSMAN")),
+             [post("9A91"), post("VSK94"), post("9x39Magazine20_9A91"), post("9A91_Muzzle_Mount_Device"),
+              post("9A91_Suppressor"), gom("9x39_Box")],
+             "THEIR OWN 20-ROUND MAGAZINE AND SUPPRESSOR",
+             ("AS QUIET AS THE AS VAL WITH THE CAN ON  ·  OPTICS ON THE AK MOUNT",), W, bottom=384, slot_y=398,
+             gap=14)
+
+
 AMMO_MAKER_TEXTURES = next((p for p in (
     os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/2788256295/mods/"
                        "AmmoMaker/common/media/textures"),
@@ -1740,6 +1755,8 @@ if __name__ == "__main__":
         preview40(os.path.join(ROOT, "preview40.png"))   # Post-93's SureFire devices (3.20.0), added the same way
     if want("preview32"):
         preview32(os.path.join(ROOT, "preview32.png"))   # Post-93's SV-98 and SV-99 (3.17.0), added the same way
+    if want("preview42"):
+        preview42(os.path.join(ROOT, "preview42.png"))   # Post-93's 9A-91 and VSK-94 (3.23.0), added the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):
