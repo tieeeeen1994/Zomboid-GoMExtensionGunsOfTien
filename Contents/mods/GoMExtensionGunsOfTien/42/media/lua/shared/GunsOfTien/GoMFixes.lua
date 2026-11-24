@@ -52,8 +52,11 @@
     all (canRack wants a round; only guns with reload rules may close an open bolt). Every full rack node of GoM
     and Gunworks has both events (only the opening strokes of two-stroke racks, which carry gunworksRackPhase, have
     rackStart alone), and Gunworks' server already records any rack but an opening stroke as leaving the bolt
-    closed. So when a full rack stops or performs with the flag still set, the bolt is closed the way its rackEnd
-    would have (Animations.rackAction: parts and flag). Single player too.
+    closed. So when a full rack performs with the flag still set, the bolt is closed the way its rackEnd would have
+    (Animations.rackAction: parts and flag). Single player too. A stopped rack was closed here too until Gunworks'
+    second 2026-11-24 update, whose own ISRackFirearm:stop / ISReloadWeaponAction:stop close the action of any gun
+    with animated parts unless its rules say keepActionWhenStopped (GoM's pump, lever, bolt, revolver and break
+    action presets since the same day); ours ran first and would have closed those too, so it went.
 
     A closing stroke that performs counts too (2026-11-24, after a report on GoM's 5.56 AR-15s). Since GoM's
     2026-11-23 update its M16s, M4A1, CAR-15, XM177, AR15, SKS and M1 Garand hold the bolt open on the last round
@@ -61,10 +64,9 @@
     the bolt part: the server's next weapon sync leaves the owner with a closed bolt and the flag), and an empty
     reload ends with the bolt catch slap, a closing stroke (gunworksRackPhase "close", RackAR15Slap: rackStart at
     0.02, rackEnd at 0.26). The first version here skipped every stroke with a phase, so a slap whose Done came
-    before its rackEnd kept the flag. Only an opening stroke leaves the bolt open (Gunworks' own rule since its
-    2026-11-24 update: ISRackFirearm:complete closes for any phase but "open", but on a server its flag is already
-    off by then, so nothing is sent). A closing stroke that is stopped is left alone: Gunworks' rules still hold
-    the gun open (ReloadRules.openedBolts, cleared only when the stroke performs), and the next rack closes it.
+    before its rackEnd kept the flag. Only an opening stroke leaves the bolt open. (Gunworks' ISRackFirearm:complete
+    closed for any phase but "open" in its first 2026-11-24 update; its second narrowed that to guns without a
+    chamber.) A stopped stroke is Gunworks' business since then (see above).
 
     Three more holes around the flag, closed the same day (an audit of every way it is set, cleared and synced):
     - Held open, drawn closed (multiplayer, GoM alone, after every last round): a client sends a PlayerHit packet
@@ -141,8 +143,8 @@ if okHooks and ISRackFirearm and ISRackFirearm.serverStart and ISReloadWeaponAct
     end
 end
 
--- A full rack never leaves the bolt open, however it ends, nor a closing stroke that performs. stop and perform run
--- where the clip plays (the owner's client, single player), never on a server.
+-- A full rack or closing stroke that performs never leaves the bolt open. perform runs where the clip plays (the
+-- owner's client, single player), never on a server.
 local okAnimations, Animations = pcall(require, "WeaponSystems/Utils/Animations")
 local boltFixes = okHooks and okAnimations and type(Animations) == "table" and Animations.rackAction
     and Animations.CallAnimationFunction and ISRackFirearm and ISReloadWeaponAction
@@ -158,24 +160,16 @@ local function closeNow(character, gun, phase)
     end
 end
 
+-- ponytail: no stop wrapper; Gunworks' own (2026-11-24 evening) closes a stopped rack and honours GoM's
+-- keepActionWhenStopped, which ours did not.
 if boltFixes then
-    local function closeBolt(action, stopped)
-        local gun, character = action.gun, action.character
-        local phase = action.gunworksRackPhase
-        if not gun or not character then return end
-        -- an opening stroke leaves the bolt open; a closing stroke cut short leaves it as it was (still to close)
-        if phase == "open" or (phase and stopped) then return end
-        if gun:getModData().gunworksBoltOpen ~= true then return end
-        closeNow(character, gun, phase)
-    end
-    local rackStop = ISRackFirearm.stop
-    function ISRackFirearm:stop(...)
-        closeBolt(self, true)
-        return rackStop(self, ...)
-    end
     local rackPerform = ISRackFirearm.perform
     function ISRackFirearm:perform(...)
-        closeBolt(self)
+        local gun, character, phase = self.gun, self.character, self.gunworksRackPhase
+        -- an opening stroke leaves the bolt open
+        if gun and character and phase ~= "open" and gun:getModData().gunworksBoltOpen == true then
+            closeNow(character, gun, phase)
+        end
         return rackPerform(self, ...)
     end
 end

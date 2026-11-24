@@ -2,11 +2,11 @@
 
 Racks (owner's client, single player). A rack must not leave Gunworks' bolt flag set by ending between its clip's
 rackStart and rackEnd (a trigger pull, sprinting, an early server Done):
-- a full rack stopped or performed after rackStart: flag cleared, bolt and handle parts back to closed, synced,
-  vanilla's stop / perform still runs;
+- a full rack performed after rackStart: flag cleared, bolt and handle parts back to closed, synced, vanilla's
+  perform still runs; a stopped one is left to Gunworks' own stop hook (not loaded here), so ours touches nothing;
 - an opening stroke of a two-stroke rack (gunworksRackPhase "open") stays open, stopped or performed;
 - a closing stroke (GoM's AR-15 bolt catch slap after an empty reload) that performs before its rackEnd is closed
-  with its own parts (the bolt; the charging handle is not touched); stopped, it is left as it was;
+  with its own parts (the bolt; the charging handle is not touched);
 - a rack that never opened the bolt sends nothing;
 - a gun that is no longer in the hands is closed without the redraw (no sync, nothing put in the hands).
 
@@ -232,10 +232,11 @@ rack = lua.eval(r'''function(fullType, how, phase, opened, inHand)
     return gun.data.gunworksBoltOpen == true, gun.parts.bolt, gun.parts.handle, SYNCS, ENDED[1], player.hand == gun
 end''')
 
-for how in ('stop', 'perform'):
-    is_open, bolt, handle, syncs, ended, held = rack(AUG, how, None, True, True)
-    check(f'{how} after rackStart: bolt closed', not is_open and bolt == LOCK
-          and handle == 'GunsOfTien.ChargingHandle_Forward' and syncs == 1 and ended == how and held)
+is_open, bolt, handle, syncs, ended, held = rack(AUG, 'perform', None, True, True)
+check('perform after rackStart: bolt closed', not is_open and bolt == LOCK
+      and handle == 'GunsOfTien.ChargingHandle_Forward' and syncs == 1 and ended == 'perform' and held)
+is_open, bolt, handle, syncs, ended, held = rack(AUG, 'stop', None, True, True)
+check('stop after rackStart: left to Gunworks', is_open and bolt == FIRED and syncs == 0 and ended == 'stop')
 
 for how in ('stop', 'perform'):
     is_open, bolt, handle, syncs, ended, held = rack(AUG, how, 'open', True, True)
@@ -245,16 +246,16 @@ is_open, bolt, handle, syncs, ended, held = rack(M16, 'perform', 'close', True, 
 check('closing stroke performed before rackEnd: bolt closed, handle untouched', not is_open and bolt == LOCK
       and handle is None and syncs == 1 and ended == 'perform' and held)
 is_open, bolt, handle, syncs, ended, held = rack(M16, 'stop', 'close', True, True)
-check('closing stroke stopped: left open', is_open and bolt == FIRED and syncs == 0 and ended == 'stop')
+check('closing stroke stopped: left to Gunworks', is_open and bolt == FIRED and syncs == 0 and ended == 'stop')
 is_open, bolt, handle, syncs, ended, held = rack(M16, 'perform', 'close', False, True)
 check('closing stroke that already closed sends nothing', not is_open and syncs == 0 and ended == 'perform')
 
 is_open, bolt, handle, syncs, ended, held = rack(AUG, 'perform', None, False, True)
 check('a rack that never opened sends nothing', not is_open and syncs == 0 and bolt is None and ended == 'perform')
 
-is_open, bolt, handle, syncs, ended, held = rack(AUG, 'stop', None, True, False)
+is_open, bolt, handle, syncs, ended, held = rack(AUG, 'perform', None, True, False)
 check('a gun out of the hands is closed without the redraw', not is_open and bolt == LOCK and syncs == 0
-      and not held and ended == 'stop')
+      and not held and ended == 'perform')
 
 # ---------------------------------------------------------------- trigger pulls
 pull = lua.eval(r'''function(fullType, flagged, chambered, busy, chamber)

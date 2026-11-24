@@ -89,8 +89,8 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   battle rifles and machine guns 9-20, marksman rifles 11-23, the SV-98 as the M24 14-28, pistols 2-8); stocks,
   foregrips, scopes and the AUG's sight give Guns of Marz's flat bonuses (and Aiming Time never drops below 5), the
   built-in bipods change no stats as Guns of Marz's do; every semi-automatic and bolt gun fires one shot per click;
-  suppressors wear, break and are repaired with a Repair Pack or a second can, and a found suppressor or muzzle
-  device comes with its mount; scopes, lasers, lights, foregrips, bipods, suppressors and muzzle devices need no tool
+  suppressors wear (a bar on the gun's tooltip shows how far), break and are repaired with a Repair Pack or a
+  second can, broken ones too, and a found suppressor or muzzle device comes with its mount; scopes, lasers, lights, foregrips, bipods, suppressors and muzzle devices need no tool
   once their mount is on; the two-handed submachine guns and bullpups (UMPs, Vector .45 and Carbine, AUGs, MDRx, PS90,
   SVU, Groza-1 and Groza-4) are held with Guns of Marz's MP5 / FAMAS stance and its foregrip stance; the AUG's and MP7A1's front
   grips fold with Gunworks' Swap; the M249, SCAR-L, MDRx .223 and HK416 take both sides of Guns of Marz's jungle-taped

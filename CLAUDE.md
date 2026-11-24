@@ -233,6 +233,11 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   MarzGuns.RepairPack or a second can by welding): the Mk9 as GoM's M&P (100 / 15, `fixing_suppressors.txt`),
   Post-93's MP7 / P90 / Five-seveN cans 100 / 15 and the SOCOM762-RC as the MKI 60 / 15 (`CAN_DURABILITY`,
   fixing_guns.txt); registered in Suppressors.lua / Guns.lua. The Groza-4's integral can is part of the gun.
+  A can only reaches the inventory broken (Gunworks detaches it at 0; mounted parts get no Repair) and vanilla's menu
+  repairs only unbroken items, so a worn-out can was never repairable (only one taken off by hand while worn).
+  `client/GunsOfTien/SuppressorWear.lua` (2026-11-25) adds vanilla's Repair submenu for broken registered parts
+  (Java `fixItem` clears the flag) and a condition bar per mounted registered part to the gun tooltip (HandWeapon
+  `DoTooltip` / `DoTooltipEmbedded` metatable wrappers). Muzzle devices are not registered: they never wear.
 - **Loot**: GoM's suppressor and muzzle device spawners are alternatives of {cans or devices} + {their mount} now.
   The Mk9 joins GoM's 9mm alternative; our devices and Post-93's cans and SureFire devices are one alternative per
   mount (Loot.lua `DEVICE_ALTERNATIVES`, Post-93 `PART_ALTERNATIVES`).
@@ -2995,8 +3000,8 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   sprinting and hits). Then `canShoot` is false, each further pull cancels the rack that would close it, and an
   empty gun cannot rack at all (`canRack` passes an open bolt only for guns with reload rules). Every full rack
   node of GoM / Gunworks has both events (only `gunworksRackPhase` opening strokes have `rackStart` alone), so our
-  `ISRackFirearm.stop` / `perform` wrappers (`...` passed) call `Animations.rackAction(chr, gun, false)` when a
-  full rack ends with the flag set and the gun in the primary hand. Client / single player only (a server never
+  `ISRackFirearm.perform` wrapper (`...` passed; a `stop` one too until Gunworks took that over, below) calls
+  `Animations.rackAction(chr, gun, false)` when a full rack ends with the flag set and the gun in the primary hand. Client / single player only (a server never
   runs stop or perform). Test: `tests/rack_bolt_test.py` (lupa, Gunworks' real Animations.lua; break `noclose`).
   Not yet played. In MP the server chambers at the rack's start, so a pull mid-stroke now fires at once.
   3.23.2 (2026-11-24, report on GoM's 5.56 AR-15s: "the bolt is simultaneously locked and considered an open
@@ -3008,11 +3013,14 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   the bolt catch slap, a closing stroke (rule `boltCatchAfterEmptyInsert`, `RackAR15Slap`: rackStart 0.02, rackEnd
   0.26), and the server clears its flag when any rack but an opening stroke starts (`recordStrokeOnServer`), so
   by the code it heals; no stuck path was found with or without us, and nothing here ever sets the flag. Gunworks'
-  2026-11-24 update ("Potential fix to weapons staying open after racking") makes `ISRackFirearm:complete` close
-  for any phase but "open" (server / SP only; on a server the flag is already off, so nothing reaches a client
-  that missed its rackEnd). Our wrapper skipped every stroke with a phase; now only "open" is skipped on perform
-  (`rackAction` gets the phase, so the slap closes the bolt alone), and a stopped closing stroke is left as it was
-  (`ReloadRules.openedBolts` still holds a two-stroke gun open until a stroke performs). Not yet played.
+  2026-11-24 update ("Potential fix to weapons staying open after racking") made `ISRackFirearm:complete` close
+  for any phase but "open"; its second update that day (22:55, with GoM's) narrowed that to guns without a
+  chamber and added `ISRackFirearm:stop` / `ISReloadWeaponAction:stop` hooks (`AnimationsHooks.lua`) that close
+  any animated-parts gun (`recordStroke(gun, "close")` + `CallAnimate` close, which re-equips the gun) unless a
+  rule has `keepActionWhenStopped` (`ReloadRules.keepsActionWhenStopped`; GoM's presets pumpAction, leverAction,
+  boltAction, revolver, breakAction). Our perform wrapper skips only "open" (`rackAction` gets the phase, so the
+  slap closes the bolt alone); **our stop wrapper was removed** (checked 2026-11-24): it ran before Gunworks' and
+  closed keep-open guns too. Not yet played.
   Audit of the flag the same day (user: "think of all the possible problems ... harden it"). Set by: rackStart /
   openWeapon events (owner's client), `LockOpenWeapons.lua` (client and server), `recordStrokeOnServer` (opening
   stroke); cleared by rackEnd / closeWeapon, any non-opening rack starting on the server, Gunworks' `complete`; and

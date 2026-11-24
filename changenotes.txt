@@ -1,0 +1,8 @@
+Suppressor condition on the gun's tooltip, and worn-out suppressors can be repaired (3.24.0).
+
+Suppressors
+- A gun's tooltip shows a condition bar for each suppressor on it, so you can see how worn it is before it breaks. Guns of Marz's suppressors and ours alike.
+- A suppressor that breaks comes off the gun, and the game never offered to repair a broken item, so a worn-out suppressor could not be repaired at all. Right-click it for Repair, with Guns of Marz's own repair options: a Repair Pack, or a second suppressor of the same kind.
+
+Guns of Marz fixes
+- A rack cut short is now closed by Gunworks itself (its 2026-11-24 update), which also leaves a gun's bolt open where Guns of Marz wants it to stay open. Our own fix for it, which closed those too, is gone.
