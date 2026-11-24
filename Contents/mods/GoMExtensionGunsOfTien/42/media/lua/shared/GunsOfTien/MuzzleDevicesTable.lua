@@ -2,7 +2,7 @@
 return {
     ["GunsOfTien.AKM_Slant_Compensator"] = { radius = -15, volume = -4, family = "AK", kind = "comp", effect = "Sound Radius reduced by 15 and Volume by 4",
         mounts = { "MarzGuns.AK_Muzzle_Mount_Device" },
-        guns = { "MarzGuns.AK47", "GunsOfTien.RPK", "MarzGuns.SKS", "GunsOfTienPost93.GROZA1", "GunsOfTienPost93.GROZAGL" } },
+        guns = { "MarzGuns.AK47", "GunsOfTien.RPK", "MarzGuns.SKS", "GunsOfTienPost93.GROZA1", "GunsOfTienPost93.GROZAGL", "GunsOfTienPost93.A91M" } },
     ["GunsOfTien.AK74_Muzzle_Brake"] = { radius = -10, volume = -2, family = "AK", kind = "brake", effect = "Sound Radius reduced by 10 and Volume by 2",
         mounts = { "MarzGuns.AK_Muzzle_Mount_Device" },
         guns = { "MarzGuns.AK74", "MarzGuns.AKS74U", "GunsOfTien.RPK74", "GunsOfTienPost93.GROZA2" } },

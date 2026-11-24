@@ -3335,6 +3335,37 @@ adds bloat"), no full stops.
   (Kuzmin's gun) as an alternative look; the VSK-94's 10-round magazine; the folded stock is a simple channel on the
   cover with the butt at its front (Kuzmin 01 / 15), not the real stamped strut turned over.
 
+## A-91M and 5.56A-91 (Post-93, 2026-11-25; built overnight, not played; model for review)
+
+- **What**: KBP's 1998 bullpup with the integral 40 mm launcher under the barrel, in two real versions: the 7.62 mm
+  A-91M (KBP's catalogue gun, GoM's AK magazines) and the 5.56A-91 export gun (its own straight 30-round magazine).
+  Design and decisions in docs/post93_design.md "KBP A-91M and 5.56A-91"; review sheet `docs/post93_a91m_preview.png`.
+  The 1990 "A-91" is a different, conventional compact rifle; the first 7.62-A91M had the launcher over the barrel
+  and the late 5.56 gun a railed forearm instead of the launcher (references/a91, not built).
+- **Files**: `scripts/post93/build_a91m.py` (Blender, ~2 min: `GunsOfTienPost93_A91M.fbx` A91M_BODY / A91M556_BODY /
+  _BOLT / _RAIL_UP, `_A91M_magazines.fbx`, `A91M.png` 512, the magazine 128, `a91m_points.json`),
+  `render_a91m.py -- DIR`, `make_a91m_art.py [--renders DIR]` (icons, overlay, sheet), `gen_post93_guns.py a91m()`
+  (models_a91m.txt, items_a91m.txt, fixing_a91m.txt, names), `shared/GunsOfTienPost93/A91M.lua`, lines in Post-93's
+  Tooltips.lua, Loot.lua, HotBrass.lua, GripStances.lua, RealSingleFire.lua; the A-91M in the main mod's
+  `muzzle_devices.py` AK762 (the AKM slant compensator).
+- **Measuring without a hand reading**: the photos are small (GunRF's A91M2.jpg 880 px at 1.294 px a mm, Commons'
+  KBP_A_91_noBG.png 1300 px at 1.693), so outlines were read as numbers: per-column foreground runs of the photo
+  (`max(rgb) < 175` on the white studio shot, the alpha mask on the transparent one) give every top and bottom edge,
+  and 3-10x gridded crops only say which part is which (reading coordinates by eye off a crop, screen pixels were
+  taken for grid labels once). Overlay IoU 0.83 (A-91M; GoM's AK magazine curves a little differently from the
+  photo's, and the white shot's highlights fall out of its mask) and 0.94 (5.56A-91); both triggers on the photos'.
+- **Both photos show the LEFT side** (muzzle left), not the right as first assumed: the slab silhouettes do not care,
+  but the charging handle (on the gas piston rod under the carrying handle; GunRF: "deflectable left or right") is
+  put on the right without a photo of it there.
+- **The launcher** is the Groza-1 GP-25's path (GoM's M16A2_M203): hidden `<gun>_GL_Integrated` (PartType
+  Underbarrel) swapped by Gunworks for `<gun>_GL`, model "self" = the same body with `muzzle_gl` at the tube's front.
+  Two triggers in one opening on the real guns (the launcher's ring in front, the rifle's crescent behind), modelled.
+- **Muzzle**: the A-91M's `canon` is the Grozas' AK one (0.0282 behind the muzzle), so GoM's AK devices overlap the
+  built-in slotted brake (fit_audit: the AKM slant compensator 7.4 in), as on the Groza-1; the 5.56A-91's is GoM's
+  M4A1's 28.8 mm (the SCAR-L's), every AR part within GoM's own range.
+- **Not done**: a Workshop preview; the left-side controls (selector, launcher quadrant) are not modelled beyond the
+  silhouette.
+
 ## Fixed bayonets (2026-11-19; built, not played)
 
 User, 2026-11-19: bayonet stabs never raised Spear; asked for a rework "using the underbarrel design" (a mode the gun

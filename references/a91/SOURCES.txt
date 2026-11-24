@@ -1,0 +1,22 @@
+A-91M / 5.56A-91 references (collected 2026-11-25)
+
+A91M2.jpg          GunRF, "A 91M (7.62 mm) firearm grenade launcher complex",
+                   https://gunrf.ru/rg_avtomat_a91m_eng.html (image https://gunrf.ru/wp-content/uploads/img/avtomat/A91M2.jpg).
+                   Studio photo, LEFT side (muzzle left), AK magazine. The A-91M's measuring photo: 1.294 px a mm (660 mm).
+A91M.jpg           GunRF, the same page: "A 91M (5.56 mm) firearm grenade launcher complex".
+a91m_raz.jpg       GunRF, the same page: field-stripped (launcher, grip and triggers are one lower).
+KBP_A_91_noBG.png  Wikimedia Commons, File:KBP A 91 noBG.png (the 5.56A-91, left side, transparent background).
+                   The 5.56A-91's measuring photo: 1.693 px a mm (670 mm).
+762-a91m.jpg       Modern Firearms, https://modernfirearms.net/en/assault-rifles/russia-assault-rifles/a-91m-eng/:
+                   "the 7,62-A91M, an original version of the A-91M" (launcher over the barrel; left side).
+556-a91m.jpg       Modern Firearms, the same page: "the 5,56-A91M, an updated version ... circa 2003" (exhibition).
+556-a91m-1.jpg     Modern Firearms, the same page: "late version ... grenade launcher replaced with forward grip, and with
+                   tactical suppressor and Picatinny rails".
+
+Text: Wikipedia "A-91" (specs: 660 / 670 mm, 415 mm barrel, 4.3 / 4.4 kg, 600-800 / 700 rpm, 40 mm VOG-25);
+GunRF (3.97 kg, cases ejected forward, charging handle on the gas piston rod under the carrying handle, two triggers,
+muzzle-loaded launcher, its sight on the left); Modern Firearms (introduced 1998; versions).
+
+Not downloaded (Commons rate-limited the session): File:5,56А-91 Interpolitex-2012.jpg (Vitaly Kuzmin, CC BY-SA 4.0),
+File:Interpolitex 2011 (405-49).jpg, File:Interpolitex 2012 (482-27).jpg, File:A-91.jpg. IMFDB refused automated
+fetches (403).

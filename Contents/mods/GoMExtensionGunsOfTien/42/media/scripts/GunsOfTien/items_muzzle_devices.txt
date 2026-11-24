@@ -6,7 +6,7 @@ module GunsOfTien {
         Icon             = GunsOfTien_AKM_Slant_Compensator,
         Weight           = 1.0,
         WeightModifier   = 1.0,
-        MountOn          = MarzGuns.AK47;GunsOfTien.RPK;MarzGuns.SKS;GunsOfTienPost93.GROZA1;GunsOfTienPost93.GROZAGL,
+        MountOn          = MarzGuns.AK47;GunsOfTien.RPK;MarzGuns.SKS;GunsOfTienPost93.GROZA1;GunsOfTienPost93.GROZAGL;GunsOfTienPost93.A91M,
         PartType         = Canon,
         WorldStaticModel = GunsOfTien.AKM_Slant_Compensator,
         CanAttach        = MarzGuns_AttachAndDetach.requiredTools,

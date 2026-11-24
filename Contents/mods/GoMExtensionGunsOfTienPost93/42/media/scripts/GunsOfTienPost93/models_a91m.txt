@@ -1,0 +1,86 @@
+module GunsOfTienPost93 {
+
+    model A91M {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M_BODY,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2260 0.0198, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0709 0.0142, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0274 0.0756, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1978 0.0198, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91M_GL {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M_BODY,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2111 -0.0021, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0709 0.0142, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0274 0.0756, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.1978 0.0198, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91M_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M_BOLT,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+    }
+
+    model A91M_RAIL_UP {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M_RAIL_UP,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+    }
+
+    model A91M556 {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M556_BODY,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2255 0.0239, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0506 0.0075, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0153 0.0792, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2081 0.0239, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91M556_GL {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M556_BODY,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2141 0.0020, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0506 0.0075, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0153 0.0792, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2081 0.0239, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91M556_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M556_BOLT,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+    }
+
+    model A91M556_RAIL_UP {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91M|A91M556_RAIL_UP,
+        texture  = weapons/GunsOfTienPost93/A91M,
+        cullFace = None,
+    }
+
+    model 556x45Magazine30_A91M {
+        mesh     = weapons/magazines/GunsOfTienPost93_A91M_magazines|556x45Magazine30_A91M,
+        texture  = weapons/GunsOfTienPost93/556x45Magazine30_A91M,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0329 0.0689 -0.0156, rotate = -94.9600 23.4300 -89.8200, }
+    }
+}

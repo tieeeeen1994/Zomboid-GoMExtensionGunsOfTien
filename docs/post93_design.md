@@ -787,3 +787,57 @@ Hot Brass: GoM's AKS-74U / AS VAL values.
 - The 9A-91's ribbed handguard (the measuring photo's); Kuzmin's 45 photos show the diamond-pattern one the VSK-94
   wears. Swapping is a paint and outline change in build_9a91.py.
 - One magazine (20). Some sources give the VSK-94 a 10-round one too; not built.
+
+
+## KBP A-91M and 5.56A-91 (user, 2026-11-25: "Can we actually make A-91 with the grenade launcher? be sure to follow protocol of designing the gun. Do this while I sleep"; built overnight, not played, model for review)
+
+What the name covers (Wikipedia "A-91", Modern Firearms "A-91M", GunRF "A-91M (7.62 mm) firearm grenade launcher
+complex"; references/a91, SOURCES.txt there): KBP's first "A-91" (about 1990) was a compact conventional rifle grown
+from the 9A-91. The **bullpup with the 40 mm launcher is the A-91M**, introduced in 1998 (Modern Firearms), so
+**Post-93**. Three real versions:
+- the first 7.62-A91M: the launcher **over** the barrel, a long frame handguard with its own front grip
+  (references/a91/762-a91m.jpg, the left side). A different body; not built tonight;
+- the **7.62 mm A-91M** of KBP's catalogue (GunRF A91M2.jpg, studio right side): the launcher under the barrel, its
+  casing the gun's lower receiver and handguard (GunRF's field strip a91m_raz.jpg: the launcher, grip and trigger
+  group are one lower), GoM-style AK magazines, a slotted muzzle brake, a carrying handle with a diopter sight;
+- the **5.56A-91** for export (KBP_A_91_noBG.png, Commons; Interpolitex 2011 / 2012): the same layout with a
+  flash hider, a taller front sight block, a flat-topped handle and its own straight polymer 30-round magazine ("the
+  export 5.56 barrel, bolt and magazine heavily modified", GunRF; "proprietary 30-round magazines", Modern Firearms);
+  its launcher can be swapped for a railed forearm with a front grip (556-a91m-1.jpg, the late version): not built
+  tonight, a choice for the user.
+
+Common to the real guns: 660 mm (7.62) / 670 mm (5.56), 415 mm barrel, 3.97 kg (7.62, GunRF) / 4.4 kg (5.56 with its
+launcher, Wikipedia), 600-800 rpm (700 for the 5.56), gas piston, rotating bolt, **cases ejected forward** through a
+port on the right (GunRF), the charging handle on the gas piston rod under the carrying handle (either side), two
+triggers in one enlarged guard: the launcher's ring in front, the rifle's blade behind it (both photos); the
+launcher muzzle-loaded, 40 mm VOG-25 / VOG-25P, 400 m; the launcher's sight a folding leaf on the front block.
+
+| | `GunsOfTienPost93.A91M` "A-91M Assault Rifle" | `GunsOfTienPost93.A91M556` "5.56A-91 Assault Rifle" |
+|---|---|---|
+| Measured on | GunRF A91M2.jpg (880 px, right side) at 1.294 px a mm (660 mm muzzle brake to butt) | Commons KBP_A_91_noBG.png (1300 px, right side, transparent background) at 1.693 px a mm (670 mm) |
+| Magazines | GoM's "762x39" profile, as the Groza-1: its AK-47 30 and 75 box, the main mod's RPK 40 and 75 drum | its own `556x45Magazine30_A91M` "5.56A-91 30Rds 5.56x45mm Magazine" (modelled from the photo) |
+| Muzzle | GoM's AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator), as GoM's AK-47; **no PBS-1** (no source shows a suppressor on the 7.62 gun) | GoM's AR mount and its AR muzzle parts (LR2, LX, Trix42, MKI / NDR suppressors), as the SCAR-L: the late 5.56 gun was shown with a suppressor |
+| Stats (GoM's balance) | the Groza-1's (GoM's AK-47 numbers with the bullpup's steadier hold: 1.5-1.8, Hit 52), 4.0 kg | GoM's FAMAS's (1.1-1.7, crit 25 x4.2, Hit 40, Aiming Time 45) with Max 1.65 for its 415 mm barrel (the FAMAS's 488), range 48, 4.1 kg |
+| Sound | sound_model.py: 7.62x39 from 16.3" = 175 / 50 (GoM's AK-47's shot) | 5.56 from 16.3" = 186 / 53 (GoM's M16 shot) |
+| Fire | Auto / Single, 700 rpm (as the Grozas) | Auto / Single, 700 rpm |
+| Sight window | GoM's AK-47's (assault rifles) | GoM's FAMAS's |
+
+Both (proposed and built, to confirm):
+- **The launcher**: the Groza-1 GP-25's path (GoM's M16A2_M203): a hidden `<gun>_GL_Integrated` part (PartType
+  Underbarrel) that Gunworks' Underbarrel swaps for a launcher weapon `<gun>_GL` "A-91M Grenade Launcher" /
+  "5.56A-91 Grenade Launcher" drawn as the same body with its muzzle at the tube's bore; GoM's 40 mm family standing
+  in for the VOG-25 (the same bore, GoM has no other grenade), GoM's M203 reload, caseless (no spent case), its
+  numbers GoM's M203_Weapon's. The 5.56A-91's real launcher is detachable, but GoM's way has no detachable launcher
+  part that a rifle could be fired without, so it is built integral as the 7.62's.
+- Held as a rifle, GoM's "famas_rifle" reload (the magazine behind the grip), GoM's SMG stance and foregrip stance as
+  the other bullpups (GripStances.lua), GoM's AK bolt swap with the handle on the right, closing on an empty chamber
+  (the RPKs' wrapper).
+- Optics: GoM's Picatinny Rail (Up) on the carrying handle, drawn as our clamp with GoM's rail on it (the Grozas'
+  way), and every GoM optic on it.
+- Origin: the grip's back meets the receiver (the Grozas' and MDRx's), so the hands sit as on GoM's FAMAS.
+- Loot: the A-91M as an alternative beside the Groza-1 in GoM's Russian rifle spawner, the mercenary rifles and the
+  crime rifles; the 5.56A-91 as an export rifle in the mercenary rifle spawner only. Hot Brass: cases forward and to
+  the right from the port behind the grip.
+
+Not built tonight (choices for the user): the first over-barrel 7.62-A91M, the late 5.56 version with a railed
+forearm and front grip instead of the launcher, a 5.45 version (a 2012 prototype only).

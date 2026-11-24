@@ -22,4 +22,7 @@ RateOfFire.RegisterMultipleWeapons({
     [M .. "SV99"] = { rpm = 600, enableSpread = true },
     -- the Groza's GP-25 (GoM's M203)
     [M .. "GROZAGL_GP25"] = { rpm = 600, enableSpread = false },
+    -- the A-91M's and 5.56A-91's launchers (GoM's M203)
+    [M .. "A91M_GL"] = { rpm = 600, enableSpread = false },
+    [M .. "A91M556_GL"] = { rpm = 600, enableSpread = false },
 })

@@ -190,6 +190,29 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 45,
         spinForce     = { 164, 164 },
     },
+    -- The A-91M and 5.56A-91 throw their cases forward (GunRF: deflected along the breech face, then out of a slot
+    -- on the right ahead of the port): the Grozas' place behind the grip, the angle turned forward (25 against 45),
+    -- the 5.56's force a little lower (GoM's M16 against its AK)
+    ["GunsOfTienPost93.A91M"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 40,
+        heightSpread  = 60,
+        ejectAngle    = 25,
+        spinForce     = { 164, 164 },
+    },
+    ["GunsOfTienPost93.A91M556"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.80,
+        sideSpread    = 40,
+        heightSpread  = 60,
+        ejectAngle    = 25,
+        spinForce     = { 164, 164 },
+    },
     ["GunsOfTienPost93.GROZA2"] = {
         forwardOffset = 0.44,
         sideOffset    = 0.06,

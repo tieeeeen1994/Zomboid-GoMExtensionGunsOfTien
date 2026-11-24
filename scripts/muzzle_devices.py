@@ -48,7 +48,8 @@ OLD_NINE_MOUNT = 'GunsOfTien.SMG9_Muzzle_Mount_Device'
 ACP45_MOUNT = 'MarzGuns.45_Muzzle_Mount_Device'
 NATO762_MOUNT = 'GunsOfTienPost93.SCARH_Muzzle_Mount_Device'
 
-AK762 = ['MarzGuns.AK47', 'GunsOfTien.RPK', 'MarzGuns.SKS', 'GunsOfTienPost93.GROZA1', 'GunsOfTienPost93.GROZAGL']
+AK762 = ['MarzGuns.AK47', 'GunsOfTien.RPK', 'MarzGuns.SKS', 'GunsOfTienPost93.GROZA1', 'GunsOfTienPost93.GROZAGL',
+         'GunsOfTienPost93.A91M']
 AK545 = ['MarzGuns.AK74', 'MarzGuns.AKS74U', 'GunsOfTien.RPK74', 'GunsOfTienPost93.GROZA2']
 NATO762_THREADED = ['GunsOfTien.SR25', 'GunsOfTienPost93.SCARH', 'GunsOfTienPost93.HK417', 'GunsOfTienPost93.HK417S',
                     'GunsOfTienPost93.MK11', 'GunsOfTienPost93.MDR308', 'MarzGuns.G3', 'MarzGuns.M24', 'MarzGuns.PSG1',
