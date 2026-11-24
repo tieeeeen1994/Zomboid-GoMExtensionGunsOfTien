@@ -87,6 +87,16 @@ Ammo.RegisterMultipleAmmoFamilies({
         { type = "GunsOfTien.22LR_Bullet_HollowPoint", enum = T.BULLET_22LR_HollowPoint, profile = "GunsOfTien_22LRHollowPoint" },
         { type = "GunsOfTien.22LR_Bullet_HyperVelocity", enum = T.BULLET_22LR_HyperVelocity, profile = "GunsOfTien_22LRHyperVelocity" },
     },
+    -- 7.62x25mm Tokarev and 9x18mm Makarov (2026-11-25), ahead of their guns: the plain rounds have no profile (a gun
+    -- never profiles its own script round); their guns' magazines join the family where they are defined
+    ["7.62x25mm"] = {
+        { type = "GunsOfTien.762x25_Bullet", enum = T.BULLET_762x25 },
+        { type = "GunsOfTien.762x25_Bullet_SteelCore", enum = T.BULLET_762x25_SteelCore, profile = "GunsOfTien_762x25SteelCore" },
+        { type = "GunsOfTien.762x25_Bullet_Subsonic", enum = T.BULLET_762x25_Subsonic, profile = "GunsOfTien_762x25Subsonic" },
+    },
+    ["9x18mm"] = {
+        { type = "GunsOfTien.9x18_Bullet", enum = T.BULLET_9x18 },
+    },
 })
 -- the P90's magazine (the P90, Post-93's P90 TR and PS90); Post-93 adds the Five-seveN's
 Ammo.RegisterMultipleItemsWithFamilies({ ["5.7x28mm"] = { "GunsOfTienPost93.57x28Magazine50_P90" } })
@@ -249,6 +259,20 @@ Ammo.RegisterMultipleAmmoStats({
         SF.Multiply("CritDmgMultiplier", 1.1),
         sound(1.1),
         SF.Multiply("ConditionLowerChanceOneIn", 0.8)
+    ),
+    -- 7.62x25mm special loads (2026-11-25), against the plain Soviet P (85 gr lead-core FMJ). Steel core (Soviet Pst,
+    -- 57-N-134s): the 7.62x39 steel core's numbers with a pistol round's reach through, 2 targets. Subsonic
+    -- (China's heavy pointed round for the suppressed Type 64): the 9x19 subsonic's
+    ["GunsOfTien_762x25SteelCore"] = list(
+        damage(0.9),
+        SF.Multiply("CritDmgMultiplier", 0.95),
+        SF.Multiply("CriticalChance", 0.9),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+        pierce(2)
+    ),
+    ["GunsOfTien_762x25Subsonic"] = list(
+        damage(0.85),
+        sound(0.7)
     ),
 })
 

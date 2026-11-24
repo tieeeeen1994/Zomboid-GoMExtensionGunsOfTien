@@ -32,6 +32,12 @@ GunsOfTien_AmmoTypes.BULLET_22LR_Subsonic = AmmoType.register("gunsoftien:bullet
 GunsOfTien_AmmoTypes.BULLET_22LR_HollowPoint = AmmoType.register("gunsoftien:bullet_22lr_hollow_point", "GunsOfTien.22LR_Bullet_HollowPoint")
 GunsOfTien_AmmoTypes.BULLET_22LR_HyperVelocity = AmmoType.register("gunsoftien:bullet_22lr_hyper_velocity", "GunsOfTien.22LR_Bullet_HyperVelocity")
 
+-- 7.62x25mm Tokarev and 9x18mm Makarov (2026-11-25): calibres of their own, ahead of their guns
+GunsOfTien_AmmoTypes.BULLET_762x25 = AmmoType.register("gunsoftien:bullet_762x25", "GunsOfTien.762x25_Bullet")
+GunsOfTien_AmmoTypes.BULLET_762x25_SteelCore = AmmoType.register("gunsoftien:bullet_762x25_steel_core", "GunsOfTien.762x25_Bullet_SteelCore")
+GunsOfTien_AmmoTypes.BULLET_762x25_Subsonic = AmmoType.register("gunsoftien:bullet_762x25_subsonic", "GunsOfTien.762x25_Bullet_Subsonic")
+GunsOfTien_AmmoTypes.BULLET_9x18 = AmmoType.register("gunsoftien:bullet_9x18", "GunsOfTien.9x18_Bullet")
+
 -- Box / carton / crate tags of this mod's own open and pack recipes (GoM's recipes use closed item mappers).
 GunsOfTien_Tags = {}
 GunsOfTien_Tags.AmmoBox20 = ItemTag.register("gunsoftien:ammobox20")

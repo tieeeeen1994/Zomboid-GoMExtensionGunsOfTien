@@ -2262,6 +2262,35 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   the load, the sticker in GoM's colours for it; the plain box and round are byte-identical to before. Regenerating
   RoundTooltips.lua also added the SS190's lines (piercing, up to 2), which it had lacked since the 11-03 move.
 
+## 7.62x25mm Tokarev and 9x18mm Makarov (main mod, 2026-11-25; built overnight, not played)
+
+- **What** (user, 2026-11-25: "implement the Tokarev and Makarov ammunition. Be sure to design the ammo boxes and
+  bullets properly", ahead of the TT-30 / PPSh-41 release and the 9x18 guns): calibres of their own in the main mod
+  (Soviet service rounds of 1930 and 1951). Items `GunsOfTien.762x25_Bullet / _Box / _Carton / _Crate` and
+  `9x18_...` ("7.62x25mm Tokarev Round" ..., "9x18mm Makarov Round" ...), AmmoTypes `gunsoftien:bullet_762x25`,
+  `bullet_9x18` (registries.lua), Gunworks families "7.62x25mm" / "9x18mm" (the rounds only; their guns' magazines
+  join where they are defined), Ammo Maker's own `762x25Tok` / `9x18Mak`, Hot Brass the 5.7x28's and the .380's
+  casings (none of their own). Boxes of 50, GoM's carton and crate, the main mod's recipes (`EXTRA_50`).
+  `gen_scripts.py ammo_762x25_9x18()` (items_762x25_9x18.txt, models_762x25_9x18.txt, names).
+- **Loads, real and pre-1993 only** (Wikipedia's lists, which date none of them; the services' dates): Tokarev
+  plain = the Soviet P (85 gr lead-core FMJ), **Steel Core** = the Soviet Pst (57-N-134s; profile as the 7.62x39
+  steel core's with piercing 2), **Subsonic** = China's heavy pointed round for the suppressed Type 64 (the 9x19
+  subsonic's profile). Not built: the Czech "M48 hot load" (no source found), the Tokarev hollow points (no date).
+  Makarov: the plain round only (the standard 57-N-181S); every special load that could be dated is later (PMM
+  57-N-181SM 1994, RG028, SP-7, SP-8, 7N25), so Post-93 material, with the PP-9 Klin. Ammo Maker: `762x25TokAP`
+  (its BulletHandgunSAP), `762x25TokSS` (8 grains of 12).
+- **Loot: none yet** (decided overnight, to confirm): rounds for guns that do not exist would be clutter; they come
+  with their guns' kits. Until then Ammo Maker makes them.
+- **Art** (`scripts/make_762x25_9x18_art.py`, sheet `docs/762x25_9x18_art_sheet.png`): rounds on GoM's meshes, the
+  Tokarev on 57x28_Round (scale 0.0129, its 34.9 mm against 40.5) with the case in tombac (the Soviet steel case
+  clad in copper alloy) so it is no 5.7x28, the Makarov on 9x19_Round (0.0135) with the grey clad-steel case; tips
+  in GoM's AP / SS paints. Boxes from GoM's 9x19 box (`make_ammo_art.make_box`, whose tray heads now take a
+  calibre's `tray` colour), each calibre its own layout and a made-up maker with a fierce animal, approved by the
+  user (2026-11-25: "let's go with your recommended"): **SAKER**, a falcon's head (`draw_falcon`; a stooping
+  falcon was tried and read as a quill at 25 texels) on an olive surplus face with a diagonal band; **TUSKER**, a
+  boar's head with tusks (`draw_boar`) on a cream face with a tall red panel. Brown Bear, Silver Bear, Golden Tiger
+  and Wolf are real Russian ammo brands: no bear, tiger or named wolf.
+
 ## PS90 Carbine (Post-93, 2026-11-03)
 
 - **What** (user, 2026-11-03): `GunsOfTienPost93.PS90`, "PS90 Carbine" (first built the same day as a "P90

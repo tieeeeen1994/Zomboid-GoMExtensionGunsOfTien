@@ -1,0 +1,50 @@
+module GunsOfTien {
+
+    model GunsOfTien_762x25_Round {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_762x25_Round,
+        scale   = 0.0129,
+    }
+
+    model GunsOfTien_762x25_Box {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_762x25_Box,
+        scale   = 0.4,
+    }
+
+    model GunsOfTien_762x25_Round_SC {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_762x25_Round_SC,
+        scale   = 0.0129,
+    }
+
+    model GunsOfTien_762x25_Box_SC {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_762x25_Box_SC,
+        scale   = 0.4,
+    }
+
+    model GunsOfTien_762x25_Round_SS {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_762x25_Round_SS,
+        scale   = 0.0129,
+    }
+
+    model GunsOfTien_762x25_Box_SS {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_762x25_Box_SS,
+        scale   = 0.4,
+    }
+
+    model GunsOfTien_9x18_Round {
+        mesh    = Worlditems/Ammunition/Rounds|9x19_Round,
+        texture = worlditems/GunsOfTien/Rounds/GunsOfTien_9x18_Round,
+        scale   = 0.0135,
+    }
+
+    model GunsOfTien_9x18_Box {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/GunsOfTien_9x18_Box,
+        scale   = 0.4,
+    }
+}

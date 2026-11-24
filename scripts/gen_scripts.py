@@ -343,6 +343,8 @@ AMMOMAKER_TYPES = [
     ('22LRSS', '.22 LR SS', '.22 long rifle SS 40gr sub sonic round - 1930s'),
     ('22LRHP', '.22 LR HP', '.22 long rifle HP hollow point round - 1963'),
     ('22LRHV', '.22 LR HV', '.22 long rifle HV hyper velocity round - 1976'),
+    ('762x25TokAP', '7.62x25mm Tokarev Pst', '7.62x25mm Tokarev Pst steel core round - 1950s'),
+    ('762x25TokSS', '7.62x25mm Tokarev SS', '7.62x25mm Tokarev SS heavy sub sonic round - 1960s'),
 ]
 
 
@@ -3708,8 +3710,20 @@ LOADS_22LR = [('Subsonic', 'SS', 'Subsonic', 'bullet_22lr_subsonic'),
               ('HollowPoint', 'HP', 'Hollow Point', 'bullet_22lr_hollow_point'),
               ('HyperVelocity', 'HV', 'Hyper Velocity', 'bullet_22lr_hyper_velocity')]
 Q22_LOADS = [{k: f"{q}_{var}" for k, q in Q22.items()} for var, _, _, _ in LOADS_22LR]
-# 50-round boxes outside ROUNDS that share this mod's open / pack recipes (recipes()): 5.7x28mm SS190, .22 LR
-EXTRA_50 = [Q57, Q22] + Q22_LOADS
+# 7.62x25mm Tokarev and 9x18mm Makarov (user, 2026-11-25; ammo_762x25_9x18()): the plain round, then the loads
+Q762x25 = {k: f"{MODULE}.762x25_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
+                                                  ('crate', 'Crate'))}
+Q9x18 = {k: f"{MODULE}.9x18_{v}" for k, v in (('round', 'Bullet'), ('box', 'Box'), ('carton', 'Carton'),
+                                              ('crate', 'Crate'))}
+# item suffix, art suffix, English label, ammo id (registries.lua): Soviet Pst steel core (57-N-134s), China's heavy
+# pointed subsonic for the suppressed Type 64; no pre-1993 special load of the 9x18 could be dated (PMM 1994, the
+# rest later): Post-93 material
+LOADS_762x25 = [('SteelCore', 'SC', 'Steel Core', 'bullet_762x25_steel_core'),
+                ('Subsonic', 'SS', 'Subsonic', 'bullet_762x25_subsonic')]
+Q762x25_LOADS = [{k: f"{q}_{var}" for k, q in Q762x25.items()} for var, _, _, _ in LOADS_762x25]
+# 50-round boxes outside ROUNDS that share this mod's open / pack recipes (recipes()): 5.7x28mm SS190, .22 LR,
+# 7.62x25mm, 9x18mm
+EXTRA_50 = [Q57, Q22] + Q22_LOADS + [Q762x25] + Q762x25_LOADS + [Q9x18]
 # the magazine in the off hand of the PS90's FAMAS reload (Post-93 build_ps90.py magazine_prop2: GoM's STANAG 30
 # point after the magazine is stood on its feed end); the P90 and the TR reload with GoM's MP5K one, which shows none
 P90_MAG_PROP2 = {'offset': [0.0200, 0.0538, -0.0146], 'rotate': [85.4927, 66.5693, -90.4154]}
@@ -3962,6 +3976,116 @@ def ammo_22lr():
         })
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
+
+# ==================================================================================================
+# 7.62x25mm Tokarev and 9x18mm Makarov (user, 2026-11-25: "implement the Tokarev and Makarov ammunition. Be sure to
+# design the ammo boxes and bullets properly"), ahead of their guns (TODO.md: the TT-30 / PPSh-41 release, the Bizons,
+# Kedr, Klin, Skorpion vz. 82, CZ-83). Both rounds are Soviet service rounds older than 1993 (1930, 1951), so the main
+# mod. Neither vanilla, Gunworks nor GoM has them; Ammo Maker has 762x25Tok and 9x18Mak. Boxes of 50, GoM's carton and
+# crate, the main mod's open / pack recipes (EXTRA_50). World models on GoM's round meshes: the Tokarev on 57x28_Round
+# (the nearest bottlenecked round) drawn 0.86 for its 34.9 mm against the 5.7's 40.5, the Makarov on 9x19_Round at
+# 0.9 (25 mm against 29.7, the bore about the same). Weights on GoM's scale (~0.0007 a gram): a Tokarev cartridge
+# weighs about 10.6 g (5.5 g bullet), a Makarov about 10 g (6.1 g bullet). Art: scripts/make_762x25_9x18_art.py.
+# ==================================================================================================
+
+W762x25 = packed_weights(round(10.6 * 0.0007, 4), 50)
+W9x18 = packed_weights(round(10.0 * 0.0007, 4), 50)
+
+
+def ammo_762x25_9x18():
+    """items / models of both calibres and their names; every load weighs its plain round's (GoM's way)."""
+    def items_of(prefix, sfx, art_round, art_box, ammo_id, w):
+        return f"""
+    item {prefix}_Bullet{sfx} {{
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = {w['round']},
+        Icon             = {art_round},
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = {MODULE}.{art_round},
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:{ammo_id},
+    }}
+
+    item {prefix}_Box{sfx} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {w['box']},
+        Icon               = {art_box},
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = {MODULE}.{art_box},
+        WorldStaticModel   = {MODULE}.{art_box},
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }}
+
+    item {prefix}_Carton{sfx} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {w['carton']},
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }}
+
+    item {prefix}_Crate{sfx} {{
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = {w['crate']},
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }}
+"""
+
+    def models_of(art_round, art_box, mesh, scale):
+        return f"""
+    model {art_round} {{
+        mesh    = Worlditems/Ammunition/Rounds|{mesh},
+        texture = worlditems/GunsOfTien/Rounds/{art_round},
+        scale   = {scale},
+    }}
+
+    model {art_box} {{
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/{art_box},
+        scale   = 0.4,
+    }}
+"""
+
+    items = [f"module {MODULE} {{\n    imports {{ Base }}\n"]
+    models = [f"module {MODULE} {{\n"]
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for prefix, calname, mesh, scale, w, qs, loads in (
+            ('762x25', '7.62x25mm Tokarev', '57x28_Round', 0.0129, W762x25, [Q762x25] + Q762x25_LOADS,
+             [('', '', None, 'bullet_762x25')] + [(f"_{v}", f"_{a}", l, i) for v, a, l, i in LOADS_762x25]),
+            ('9x18', '9x18mm Makarov', '9x19_Round', 0.0135, W9x18, [Q9x18], [('', '', None, 'bullet_9x18')])):
+        for q, (sfx, art, label, ammo_id) in zip(qs, loads):
+            art_round, art_box = f"{MODULE}_{prefix}_Round{art}", f"{MODULE}_{prefix}_Box{art}"
+            items.append(items_of(prefix, sfx, art_round, art_box, ammo_id, w))
+            models.append(models_of(art_round, art_box, mesh, scale))
+            cal = f"{calname} {label}" if label else calname
+            names.update({q['round']: f'{cal} Round', q['box']: f'{cal} Box', q['carton']: f'Carton of {cal} Boxes',
+                          q['crate']: f'Crate of {cal} Boxes'})
+    items.append("}\n")
+    models.append("}\n")
+    write('scripts/GunsOfTien/items_762x25_9x18.txt', ''.join(items))
+    write('scripts/GunsOfTien/models_762x25_9x18.txt', ''.join(models))
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
 # ==================================================================================================
@@ -4231,6 +4355,7 @@ if __name__ == '__main__':
     translations()
     ammo_57x28()
     ammo_22lr()
+    ammo_762x25_9x18()
     p90()
     ammomaker()
     ammomaker_part_cartons()

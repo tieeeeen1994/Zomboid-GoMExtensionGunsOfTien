@@ -33,6 +33,16 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 - Fired by the Walther PPK (below) and, with the Post-93 add-on, the HK416 .22 Quad Rail Pistol
 - Plain .22 LR boxes and cartons turn up wherever 9mm boxes and cartons do, homes included
 
+## 7.62x25mm Tokarev and 9x18mm Makarov
+
+Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev pistol and PPSh-41 are next).
+
+- 7.62x25mm Tokarev, the fast, hard-hitting round of the Tokarev pistols and Soviet submachine guns, in boxes of 50, cartons and crates; with its Steel Core load (pierces a second target) and a heavy Subsonic load (quieter, a little weaker)
+- 9x18mm Makarov, the Soviet police and army pistol round, in boxes of 50, cartons and crates
+- Their own boxes: SAKER (a falcon) on the Tokarev's olive surplus boxes, TUSKER (a boar) on the Makarov's
+- Made with Ammo Maker; not found as loot until their guns arrive
+- With Hot Brass their spent casings fly out like any other
+
 ## Changes to Guns of Marz
 
 - Realistic sound radius and volume for the guns (not the grenade launchers)

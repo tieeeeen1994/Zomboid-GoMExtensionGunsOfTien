@@ -51,6 +51,10 @@ local NEW_TYPES = {
     ["22LRSS"] = { "22LR", { grainsAmount = 3 } },
     ["22LRHP"] = { "22LR", { bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
     ["22LRHV"] = { "22LR", { grainsAmount = 6, bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
+    -- 7.62x25mm Tokarev (Ammo Maker's 762x25Tok: 12 grains, small handgun bullet, small bottleneck case): the steel
+    -- core on Ammo Maker's own small handgun AP bullet, the subsonic x0.7
+    ["762x25TokAP"] = { "762x25Tok", { bulletType = "ammomaker.ammomaker_BulletHandgunSAP" } },
+    ["762x25TokSS"] = { "762x25Tok", { grainsAmount = 8 } },
 }
 
 local SOFT_POINT_RECIPE = "GunsOfTien_MakeSoftPointBullet"
@@ -208,6 +212,11 @@ local MAP = {
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_Subsonic", ammoType = "22LRSS" },
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_HollowPoint", ammoType = "22LRHP" },
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.22LR_Bullet_HyperVelocity", ammoType = "22LRHV" },
+    -- 7.62x25mm Tokarev and 9x18mm Makarov: Ammo Maker's own types for the plain rounds
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.762x25_Bullet", ammoType = "762x25Tok" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.762x25_Bullet_SteelCore", ammoType = "762x25TokAP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.762x25_Bullet_Subsonic", ammoType = "762x25TokSS" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.9x18_Bullet", ammoType = "9x18Mak" },
 }
 
 MAP.gunsOfTien = true

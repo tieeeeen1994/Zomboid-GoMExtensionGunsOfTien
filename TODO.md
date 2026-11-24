@@ -10,12 +10,9 @@ Picked by the user from their wish list. Releases ship two or more guns each.
 
 ### 1. Tokarev release (main mod: round and guns all predate 1993)
 
-- [ ] **7.62x25mm Tokarev**, a new calibre in the main mod (as .22 LR was): the plain round in boxes, cartons and
-      crates, AmmoType `gunsoftien:...`, its own Gunworks family, loot beside the guns. Ammo Maker already has the
-      base type `762x25Tok` (no AP / TR copies), so only the special loads need copies. Hot Brass has no 7.62x25
-      casing: borrow the nearest. Special loads to settle in the reference hunt, real loads only: steel core Pst
-      (Armor Piercing, Soviet issue), a hot load (Czech M48 surplus is the usual candidate), Soft Point or Hollow
-      Point only if a real commercial load exists.
+- [ ] With the guns: the 7.62x25mm round's loot beside their kits and their magazines in its Gunworks family (the
+      round, its Steel Core and Subsonic loads and the SAKER boxes are built: CLAUDE.md "7.62x25mm Tokarev and
+      9x18mm Makarov"; not played).
 - [ ] **TT-30 pistol** (the user's choice). The wish list said TT-33, the simplified 1933 version made in the millions;
       check the two in the reference hunt and, by "build every real variant", propose both if they differ visibly.
       GoM's pistol reload (`pistol_reload`), holster.
@@ -24,6 +21,9 @@ Picked by the user from their wish list. Releases ship two or more guns each.
 
 ### 2. Bizon family (Post-93, later: waits for more rounds)
 
+The 9x18mm Makarov round exists since 2026-11-25 (main mod, plain only; boxes TUSKER). Its later loads (PMM 1994,
+SP-7, RG028) belong in Post-93, with the PP-9 Klin.
+
 - [ ] **PP-19 Bizon**, one gun per real version, named by its round: **Bizon Parabellum** (Bizon-2-01, 9x19, 53-round
       helical magazine), **Bizon Makarov** (Bizon-2, 9x18, 64-round), **Bizon Tokarev** (Bizon-2-07, 7.62x25; confirm
       it was real), and if their rounds come, the .380 Bizon-2-02 and the suppressed 9x18 Bizon-2-03. Each its own
@@ -31,6 +31,15 @@ Picked by the user from their wish list. Releases ship two or more guns each.
       AKS-74U (the real gun is mostly AKS-74 parts), held as a rifle, GoM's AK reload. The 9x18 Makarov round it
       waits for would also serve the CZ-83, Skorpion vz. 82, PP-91 Kedr and PP-9 Klin (PMM as its [+P] load);
       Ammo Maker has `9x18Mak`, Hot Brass no 9x18 casing (its 9x19 one would do).
+
+## To review: the A-91M and 5.56A-91 (Post-93, built overnight 2026-11-25)
+
+- [ ] Review the model on docs/post93_a91m_preview.png and the decisions in docs/post93_design.md "KBP A-91M and
+      5.56A-91" (launcher integral on both, no PBS-1 on the 7.62, the charging handle's side, loot).
+- [ ] Choose whether to build the first over-barrel 7.62-A91M and the late 5.56 gun with a railed forearm.
+- [ ] Play them: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
+      5.56A-91's own magazine, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
+- [ ] A Workshop preview (render_ad_guns.py / make_workshop_art.py).
 
 ## Smaller open items
 

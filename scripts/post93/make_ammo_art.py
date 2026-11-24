@@ -607,6 +607,10 @@ def make_box(spec, design=None):
         # and the tray's brightness scaled as the H&K case is to the brass one.
         hk, brass = _hsv(case_colour("H&K_Round_Base")), _hsv(case_colour("Pistol_Standard_Round_Base"))
         targets["tray"] = _rgb(hk[0], hk[1], _hsv(medians["tray"])[2] * hk[2] / brass[2])
+    elif "tray" in cal:
+        # a calibre whose case is not brass (the main mod's Tokarev tombac, Makarov clad steel): the same way
+        brass, case = _hsv(case_colour("Pistol_Standard_Round_Base")), _hsv(cal["tray"])
+        targets["tray"] = _rgb(case[0], case[1], _hsv(medians["tray"])[2] * case[2] / brass[2])
 
     # A: GoM's print, recoloured (what the icon shows after the colour swaps). B: the new print.
     old = _recolour(base, classes, targets, refs)

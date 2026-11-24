@@ -31,6 +31,11 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTien.22LR_Bullet_Subsonic"] = "HBVCEF.22_Casing",
     ["GunsOfTien.22LR_Bullet_HollowPoint"] = "HBVCEF.22_Casing",
     ["GunsOfTien.22LR_Bullet_HyperVelocity"] = "HBVCEF.22_Casing",
+    -- no 7.62x25 or 9x18 casing in Hot Brass: the nearest, the 5.7x28's small bottleneck and the .380's (9x17)
+    ["GunsOfTien.762x25_Bullet"] = "HBVCEF.57x28_Casing",
+    ["GunsOfTien.762x25_Bullet_SteelCore"] = "HBVCEF.57x28_Casing",
+    ["GunsOfTien.762x25_Bullet_Subsonic"] = "HBVCEF.57x28_Casing",
+    ["GunsOfTien.9x18_Bullet"] = "HBVCEF.380_Casing",
 })
 
 SpentCasingPhysics.RegisterPressureProfiles({
@@ -39,6 +44,7 @@ SpentCasingPhysics.RegisterPressureProfiles({
     ["GunsOfTien_9x19PPP"] = 1.5,
     ["GunsOfTien_22LRSubsonic"] = 0.7,
     ["GunsOfTien_22LRHyperVelocity"] = 1.3,
+    ["GunsOfTien_762x25Subsonic"] = 0.7,
     ["GunsOfTien_45P"] = 1.3,
     ["GunsOfTien_12GaugeBirdshot"] = 0.9,
 })

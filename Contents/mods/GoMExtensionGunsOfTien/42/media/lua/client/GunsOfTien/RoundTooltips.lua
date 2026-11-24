@@ -72,6 +72,18 @@ local ROUNDS = {
         "Sound Radius and Volume increased by 10%",
         "Chance to degrade weapon condition increased by 43%",
     },
+    ["GunsOfTien.762x25_Bullet_SteelCore"] = {
+        "Damage to targets decreased by 10%",
+        "Critical Damage decreased by 5%",
+        "Critical Chance decreased by 10%",
+        "Chance to degrade weapon condition increased by 18%",
+        "Piercing targets",
+        "Able to hit up to 2 targets",
+    },
+    ["GunsOfTien.762x25_Bullet_Subsonic"] = {
+        "Damage to targets decreased by 15%",
+        "Sound Radius and Volume reduced by 30%",
+    },
     ["GunsOfTien.762x39_Bullet_SP"] = {
         "Damage to targets increased by 20%",
         "Critical Damage increased by 15%",

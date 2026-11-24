@@ -339,4 +339,56 @@ module Base {
 		inputs {}
 		outputs {}
 	}
+
+	craftRecipe Make762x25TokAP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x25TokAP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x25TokAP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x25TokAP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x25TokSS
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x25TokSS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x25TokSS
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x25TokSS,
+		inputs {}
+		outputs {}
+	}
 }
