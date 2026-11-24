@@ -100,7 +100,9 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
   (they started a little ahead of it or inside it); opening and packing ammo boxes, cartons and crates can be done
   while walking again (since 42.22 the game ignores the old walking setting Guns of Marz's recipes use); on a server,
   racking after a reload no longer leaves the gun saying "Chamber is open" with a round chambered (a Gunworks timing
-  bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs); the AA-12's side rails,
+  bug that cut racks short for skilled characters, seen most on the UMPs, Vectors and SCARs), and a rack cut short (a
+  trigger pull or a sprint while the bolt is back) closes the bolt instead of leaving the gun stuck on that message;
+  the AA-12's side rails,
   lights and lasers and the G36's bipod are drawn (they were fitted invisibly), the M16A2 takes the AimRight laser its
   loot already gave it, and the PSG-1 and SVD the Stub, MKC and MK2 foregrips theirs gave them; the bipod no longer fits the G36C, M4A1, XM177 or the MP5s (it overlapped the foregrip or had
   no room), and a bipod already fitted on one comes off and lies beside the gun (sandbox option Update Parts on Saved

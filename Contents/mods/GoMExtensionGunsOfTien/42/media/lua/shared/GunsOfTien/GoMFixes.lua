@@ -34,6 +34,26 @@
     (SCARs: 0.70, aimed 0.76). Setting the rack's speed before Gunworks' serverStart runs fixes the timing for
     every gun with a Gunworks reload profile (Gunworks' own initVars sets the same value again). Single player never
     runs serverStart.
+
+    A rack cut short leaves the bolt "open" (2026-11-24, reported on the AUG HBAR, whose timings are right: its
+    durations are GoM's clip lengths and its rackEnd comes at 0.40 of the clip, 0.49 aimed). Gunworks' bolt flag
+    is set by the rack clip's rackStart and cleared only by its rackEnd, and nothing clears it when the rack ends
+    between the two. The flag is the owner's alone: syncHandWeaponFields sends nothing from a client (42.22
+    LuaManager: only when GameServer.server), and the server's own weapon syncs replace the client's parts and mod
+    data with its copy, where a full rack is always closed. So a late server never opens the bolt; what does is
+    the rack ending inside the stroke:
+    - Tien's Skill Mastery's Running Reload (the report): starting or stopping a run restarts the rack clip (the
+      walking and the running copies are separate nodes) while the server's rack timer runs on, so its Done lands
+      after the second rackStart and before the rackEnd;
+    - a trigger pull (vanilla's attackHook clears the action queue on every pull), sprinting without that
+      signature, a hit.
+    The gun then refuses to fire ("Chamber is open, close it before firing.") until the server's next weapon sync
+    or a whole rack, each further pull cancels the rack that would close it, and an empty gun cannot be racked at
+    all (canRack wants a round; only guns with reload rules may close an open bolt). Every full rack node of GoM
+    and Gunworks has both events (only the opening strokes of two-stroke racks, which carry gunworksRackPhase, have
+    rackStart alone), and Gunworks' server already records any rack but an opening stroke as leaving the bolt
+    closed. So when a full rack stops or performs with the flag still set, the bolt is closed the way its rackEnd
+    would have (Animations.rackAction: parts and flag). Single player too.
 --]]
 
 local ok, Bayonet = pcall(require, "WeaponSystems/Utils/Bayonet")
@@ -81,5 +101,29 @@ if okHooks and ISRackFirearm and ISRackFirearm.serverStart and ISReloadWeaponAct
             ISReloadWeaponAction.setReloadSpeed(self.character, true)
         end
         return gunworksRackServerStart(self, ...)
+    end
+end
+
+-- A full rack never leaves the bolt open, however it ends. stop and perform run where the clip plays (the owner's
+-- client, single player), never on a server.
+local okAnimations, Animations = pcall(require, "WeaponSystems/Utils/Animations")
+if okHooks and okAnimations and type(Animations) == "table" and Animations.rackAction and ISRackFirearm then
+    local function closeBolt(action)
+        local gun, character = action.gun, action.character
+        if action.gunworksRackPhase or not gun or not character then return end
+        if gun:getModData().gunworksBoltOpen ~= true then return end
+        -- rackAction puts the gun back in the hands to redraw it: only for the gun that is in them
+        if character:getPrimaryHandItem() ~= gun then return end
+        Animations.rackAction(character, gun, false)
+    end
+    local rackStop = ISRackFirearm.stop
+    function ISRackFirearm:stop(...)
+        closeBolt(self)
+        return rackStop(self, ...)
+    end
+    local rackPerform = ISRackFirearm.perform
+    function ISRackFirearm:perform(...)
+        closeBolt(self)
+        return rackPerform(self, ...)
     end
 end

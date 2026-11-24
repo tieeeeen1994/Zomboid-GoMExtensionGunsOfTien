@@ -2977,6 +2977,28 @@ Second audit (user, 2026-10-19: "let's fix every bad tooltip"), every line of Go
   `setReloadSpeed(chr, true)` and then Gunworks' serverStart (`...` passed through). Checked with lupa against
   a mock of that order (978 ms → 1272 ms for MP5_Rack at Reloading 5); not yet played. Drop it once Gunworks
   moves its `initVars()` up.
+- **A rack cut short left the bolt "open"** (3.23.1, 2026-11-24, reported on the AUG HBAR: "the bolt can't be closed
+  sometimes"; also `GoMFixes.lua`). Not timings: "famas_rifle" durations equal GoM's `CLIP_SECONDS` (rack 2.2,
+  aimed 1.5) and its `rackEnd` is at 0.40 / 0.49, so no server Done can come before it. Not server delay either
+  (42.22 Java, decompiled 2026-11-24): the Lua global `syncHandWeaponFields` sends only when `GameServer.server`
+  (LuaManager ~9883; `SyncHandWeaponFieldsPacket` is handlingType 2, client only), so Gunworks' client calls of it
+  (rackStart / rackEnd, `CallSyncHandWeaponFields`) send nothing and the bolt flag and bolt parts are the owner's
+  alone; `processClient` replaces the weapon's parts and, when both copies have mod data, wipes and refills its
+  mod data from the server's, where a full rack is always closed. A rack on a client ends on its own clip's
+  `rackingFinished` (vanilla `ISRackFirearm:animEvent` calls `forceComplete` there, unlike the eject and insert,
+  which wait for the server) or on the server's Done, whichever is first. The flag
+  (`gunworksBoltOpen`) is set at `rackStart` and cleared only at `rackEnd`; nothing clears it when the action
+  ends between them. **The reported cause: Tien's Skill Mastery's Running Reload** (the rack goes on through
+  running; a change of gait restarts the clip, walking and running copies being separate nodes, while the server's
+  rack timer runs on, so the Done lands after the second `rackStart`). Also vanilla's `attackHook` runs
+  `ISTimedActionQueue.clear` on **every trigger pull** (so do
+  sprinting and hits). Then `canShoot` is false, each further pull cancels the rack that would close it, and an
+  empty gun cannot rack at all (`canRack` passes an open bolt only for guns with reload rules). Every full rack
+  node of GoM / Gunworks has both events (only `gunworksRackPhase` opening strokes have `rackStart` alone), so our
+  `ISRackFirearm.stop` / `perform` wrappers (`...` passed) call `Animations.rackAction(chr, gun, false)` when a
+  full rack ends with the flag set and the gun in the primary hand. Client / single player only (a server never
+  runs stop or perform). Test: `tests/rack_bolt_test.py` (lupa, Gunworks' real Animations.lua; break `noclose`).
+  Not yet played. In MP the server chambers at the rack's start, so a pull mid-stroke now fires at once.
 - **GoM's muzzle points** (2026-10-26, `shared/GunsOfTien/MuzzlePoints.lua`, measured by `scripts/muzzle_audit.py` +
   `muzzle_audit_sheet.py`, side views in tmp/muzzle): the flash and the bullet / tracer start at the model's `muzzle`
   point; on 21 of GoM's 72 gun models it sat 1-7 (game units x 100) ahead of the barrel's end or inside it (only the
