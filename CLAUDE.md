@@ -289,6 +289,8 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   (7.62x39 US, 7U1) = GoM Subsonic (x0.4, sound x0.5, wear x2); .44 Special = GoM civilian (x0.7) + sound
   x0.75. Kept: pistol subsonics (heavy pistol bullets lose little; Post-93's sound x0.7 was the user's),
   shotgun loads, DM21. Numbers in the section text below are from before this.
+  The released 7.62x39 Steel Core and 9x39 SP-6 went from 3 targets to 5 with it; asked, the user kept 5
+  (2026-11-25, "let's do A"). The plain rounds' RealisticPiercing layer is unchanged.
 - **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):
   7.62x39 **US Subsonic** (×0.5 dmg, sound ×0.5; must rack after every shot **unless a PBS-1 is fitted**: low powder
   short-strokes the AK's gas system, the PBS-1's back pressure pushes enough gas into the port — the user wanted this
