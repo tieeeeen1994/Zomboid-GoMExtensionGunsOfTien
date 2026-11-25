@@ -203,7 +203,7 @@ Enable [i]GoM Extension: Guns of Tien - Post-93[/i] as well.
 [*]4.6x30mm DM11, Subsonic
 [*]5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
 [*]4.6x30mm DM21 (a soft-cored ball beside the DM11)
-[*]Later loads for older calibres: 7.62x25mm Tokarev Hollow Point; 9x18mm Makarov PMM (hot) and RG028 (Armor Piercing); 9x19mm 7N21 (Armor Piercing); 5.45x39mm 7N22 (Armor Piercing); 7.62x39mm Hollow Point; 7.62x54mmR Soft Point and 7N13 (Armor Piercing); 9x39mm PAB-9 (Armor Piercing: weaker than the SP-6, pierces a fourth target); .30-30 FTX (Polymer Tip, reaches further); .50 AE Hollow Point
+[*]Later loads for older calibres: 7.62x25mm Tokarev Hollow Point; 9x18mm Makarov PMM (hot) and RG028 (Armor Piercing); 9x19mm 7N21 (Armor Piercing); 5.45x39mm 7N22 (Armor Piercing); 7.62x39mm Hollow Point; 7.62x54mmR Soft Point and 7N13 (Armor Piercing); 9x39mm PAB-9 (Armor Piercing, a cheaper and weaker penetrator than the SP-6); .30-30 FTX (Polymer Tip, reaches further); .50 AE Hollow Point
 [*]12 Gauge Dragon's Breath (Incendiary): almost no hitting power, but 1 pellet hit in 5 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
 [/list]
 [b]Where Post-93's guns are found:[/b] each gun joins the Guns of Marz loot spawner for its kind of gun, packed the same way, so it turns up wherever Guns of Marz's guns of that kind do (scaled by Guns of Marz's loot multiplier):

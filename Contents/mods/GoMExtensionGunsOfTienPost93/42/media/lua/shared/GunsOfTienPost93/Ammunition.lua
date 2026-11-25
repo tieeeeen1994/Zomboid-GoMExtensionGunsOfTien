@@ -159,20 +159,21 @@ Ammo.RegisterMultipleAmmoStats({
             a, b,
         }
     end)(),
-    -- 7N21: a hot 9x19 with a steel penetrator, so the pistol AP's piercing at full damage and the +P+'s wear
+    -- 7N21: a hot 9x19 with a steel penetrator: the pistol AP's piercing and damage, the +P+'s wear
     ["GunsOfTienPost93_9x19_7N21"] = (function()
         local a, b = pierce(2)
         return {
+            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
             SF.Multiply("SoundRadius", 1.1), SF.Multiply("SoundVolume", 1.1),
             SF.Multiply("ConditionLowerChanceOneIn", 0.7),
             a, b,
         }
     end)(),
-    -- 7N13: the steel core 7.62x54R, one target more than the plain round's realistic piercing (2)
+    -- 7N13 (1990s): the better penetrator than the B-32 (1932; x0.9, 3 targets), so a target more and lighter
     ["GunsOfTienPost93_762x54_7N13"] = (function()
-        local a, b = pierce(3)
+        local a, b = pierce(4)
         return {
-            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
+            SF.Multiply("MaxDamage", 0.85), SF.Multiply("MinDamage", 0.85),
             SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
             SF.Multiply("ConditionLowerChanceOneIn", 0.85),
             a, b,
@@ -219,13 +220,14 @@ Ammo.RegisterMultipleAmmoStats({
             weapon:setProjectileSpread(math.max(0.3, weapon:getProjectileSpread() * 2.5))
         end,
     },
-    -- PAB-9 (1995): the cheaper armour piercing 9x39 (user, 2026-11-25: "weaker damage but more pierces"):
-    -- a long steel core that goes through more and hits each target lighter than the SP-6 (x0.9, 3 targets)
+    -- Within a calibre, the better the penetrator, the more targets and the less damage (user, 2026-11-25:
+    -- "whatever has a higher pierce tech will get more pierces but lower damage of the family").
+    -- PAB-9 (1995): the cheaper armour piercing 9x39, a worse penetrator than the SP-6 (x0.9, 3 targets), so
+    -- between it and the plain SP-5
     ["GunsOfTienPost93_9x39PAB9"] = (function()
-        local a, b = pierce(4)
+        local a, b = pierce(2)
         return {
-            SF.Multiply("MaxDamage", 0.8), SF.Multiply("MinDamage", 0.8),
-            SF.Multiply("CritDmgMultiplier", 0.9),
+            SF.Multiply("MaxDamage", 0.95), SF.Multiply("MinDamage", 0.95),
             a, b,
         }
     end)(),

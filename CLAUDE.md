@@ -2316,7 +2316,10 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   4.6x30 DM21 (x1.1, no pierce), 9x18 PMM (as +P+) and RG028 (`GunsOfTienPost93_PistolAP`, pierce 2), 9x19 7N21
   (pierce 2, full damage, +P+ wear), 5.45x39 7N22 (pierce 5), 7.62x39 hollow point (x1.15, crit x1.25 / x1.1),
   7.62x54R soft point (the main mod's `GunsOfTien_RifleSoftPoint`) and 7N13 (pierce 3), .30-30 FTX (x1.15, range
-  x1.15), .50 AE hollow point, 9x39 PAB-9 (user: "weaker damage but more pierces": x0.8, crit x0.9, pierce 4 against the SP-6's x0.9 / 3), 12 gauge Dragon's Breath (x0.15, range x0.4, spread x2.5 + Incendiary.lua).
+  x1.15), .50 AE hollow point, 9x39 PAB-9 (x0.95, pierce 2: a worse penetrator than the SP-6's x0.9 / 3). Rule (user, 2026-11-25:
+  "whatever has a higher pierce tech will get more pierces but lower damage of the family"): within a
+  calibre, more penetration = more targets and less damage; so 7N13 x0.85 / 4 above the B-32's x0.9 / 3,
+  7N21 x0.9 like the pistol AP. GoM's own 5.56 Overpressured (x1.5, 2 targets) breaks it; left alone, 12 gauge Dragon's Breath (x0.15, range x0.4, spread x2.5 + Incendiary.lua).
   Post-93 lines are hand-written in its Tooltips.lua; the main mod's come from gen_round_tooltips.py (NOTES for the
   7U1, .44 Special, B-32).
 - **Ammo Maker**: every load has its own type (copies; AP loads copy Ammo Maker's AP types, since its own type may

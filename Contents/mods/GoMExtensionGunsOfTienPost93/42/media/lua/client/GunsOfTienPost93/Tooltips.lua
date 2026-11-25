@@ -252,12 +252,12 @@ lines[M .. "762x54_Bullet_SP"] = {
     "Does not pierce",
 }
 lines[M .. "762x54_Bullet_7N13"] = {
-    "Damage to targets decreased by 10%",
+    "Damage to targets decreased by 15%",
     "Critical Damage decreased by 5%",
     "Critical Chance decreased by 10%",
     "Chance to degrade weapon condition increased by 18%",
     "Piercing targets",
-    "Able to hit up to 3 targets",
+    "Able to hit up to 4 targets",
 }
 lines[M .. "545x39_Bullet_7N22"] = {
     "Damage to targets decreased by 10%",
@@ -268,6 +268,7 @@ lines[M .. "545x39_Bullet_7N22"] = {
     "Able to hit up to 5 targets",
 }
 lines[M .. "9x19_Bullet_7N21"] = {
+    "Damage to targets decreased by 10%",
     "Sound Radius and Volume increased by 10%",
     "Chance to degrade weapon condition increased by 43%",
     "Piercing targets",
@@ -293,10 +294,9 @@ lines[M .. "50_Bullet_HollowPoint"] = {
     "Chance to degrade weapon condition increased by 11%",
 }
 lines[M .. "9x39_Bullet_PAB9"] = {
-    "Damage to targets decreased by 20%",
-    "Critical Damage decreased by 10%",
+    "Damage to targets decreased by 5%",
     "Piercing targets",
-    "Able to hit up to 4 targets",
+    "Able to hit up to 2 targets",
 }
 lines[M .. "12Gauge_Shell_DragonsBreath"] = {
     "Damage to targets decreased by 85%",
