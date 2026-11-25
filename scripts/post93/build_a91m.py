@@ -128,10 +128,12 @@ G7 = dict(
     trigger=[(405, 151), (408, 161), (411, 169), (412.5, 177), (411, 184), (406.5, 189),
              (409.5, 191), (417, 187.5), (422.5, 180.5), (425, 172), (425.5, 163), (425, 151)],
     trigger_tab=(407.5, 413.0, 171.0, 179.0),
-    # the selector on the left: a steel lever from its knurled knob over the rear dimple down to the front
-    selector=[(304.3, 159.8), (297.7, 152.2), (272.0, 174.5), (278.5, 182.0)],
-    selector_head=[(272.0, 172.0), (281.0, 181.0), (272.0, 190.0), (263.0, 181.0)],   # its square end, set on a corner
-    selector_knob=(300.5, 155.5, 5.5),
+    # a steel lever on the LEFT of the lower, ahead of the trigger guard, from its knurled knob over the rear dimple
+    # down to the front. Not the fire selector (that is the AK-style lever on the right, `selector` below; Kuzmin
+    # 2011, Modern Firearms); what this one does no source says (TODO.md), so it is named for where it is
+    left_lever=[(304.3, 159.8), (297.7, 152.2), (272.0, 174.5), (278.5, 182.0)],
+    left_lever_head=[(272.0, 172.0), (281.0, 181.0), (272.0, 190.0), (263.0, 181.0)],   # its square end, set on a corner
+    left_lever_knob=(300.5, 155.5, 5.5),
     grip=[(436, 167), (500, 167), (497, 172), (493, 180), (492, 200), (492, 268), (489, 276), (423, 290), (419, 287),
           (421, 281), (425, 268), (429, 248), (432, 228), (435, 210), (437, 200)],
     # the gas block with the handle's front post on it, the gas tube, the piston rod into the receiver
@@ -158,8 +160,10 @@ G7 = dict(
     # on under it to the front: as a full-width block it stood on the cover like a box)
     hump=[(549, 68), (551, 66), (564, 66), (569, 71), (577, 80), (592, 85.5), (549, 85.5)],
     cover=(549.0, 826.0, 83.5, 110.0, 117.0, 9.5),     # x from, to; top, the chamfer's foot, bottom; top half width
-    # the case deflector on the right: a riveted plate with a spout to the front (Kuzmin 2011, A91M.jpg)
-    deflector=[(769, 150), (762, 128), (742, 121), (704, 124), (696, 134), (631, 144), (631, 148), (690, 152),
+    # the fire selector on the right, AK-style: its long lever over a riveted housing, the lever's end to the front
+    # (Kuzmin 2011, A91M.jpg; Modern Firearms: "on the right side of the receiver"; misnamed a case deflector
+    # until 2026-11-25)
+    selector=[(769, 150), (762, 128), (742, 121), (704, 124), (696, 134), (631, 144), (631, 148), (690, 152),
                (700, 160), (742, 163), (764, 160)],
     loop=[(789, 191), (803, 191), (803, 200), (789, 200)],
     loop_hole=[(792, 193.5), (800.5, 193.5), (800.5, 197.5), (792, 197.5)],
@@ -284,10 +288,10 @@ def build_body(name, g):
     slab(b, g["trigger"], half=3.2, bevel=0.8, mat="dark")
     tx0, tx1, ty0, ty1 = g["trigger_tab"]
     pxbox(b, tx0, tx1, ty0, ty1, -2.0, 2.0, mat="dark", bevel=0.4)
-    # the selector's lever and knob, on the left
-    slab(b, g["selector"], half=1.3, bevel=0.4, mat="metal", x0=w["lower"] + 1.5)
-    slab(b, g["selector_head"], half=1.5, bevel=0.5, mat="metal", x0=w["lower"] + 1.7)
-    kx_, ky_, kr_ = g["selector_knob"]
+    # the left lever and its knob
+    slab(b, g["left_lever"], half=1.3, bevel=0.4, mat="metal", x0=w["lower"] + 1.5)
+    slab(b, g["left_lever_head"], half=1.5, bevel=0.5, mat="metal", x0=w["lower"] + 1.7)
+    kx_, ky_, kr_ = g["left_lever_knob"]
     boss(b, kx_, ky_, kr_, w["lower"] + 0.2, w["lower"] + 6.0, seg=10, mat="dark")
     slab(b, g["grip"], half=w["grip"] + 0.5, bevel=5.0, res=2, mat="poly")
 
@@ -332,7 +336,7 @@ def build_body(name, g):
     zt, zf, zb = P(0.0, ct)[1], P(0.0, cf)[1], P(0.0, cbm)[1]
     b.prism("y", [(-cw, zb), (cw, zb), (cw, zf), (ctw, zt), (-ctw, zt), (-cw, zf)], P(cb, 0.0)[0], P(ca, 0.0)[0],
             mat="poly", bevel=0.9)
-    slab(b, g["deflector"], half=0.9, bevel=0.3, mat="steel", x0=-(w["rec"] + 0.9))
+    slab(b, g["selector"], half=0.9, bevel=0.3, mat="steel", x0=-(w["rec"] + 0.9))
     slab(b, g["loop"], [g["loop_hole"]], half=1.0, bevel=0.3, mat="steel")
     slab(b, g["cap"], half=w["cap"], bevel=1.5, mat="rubber")
     slab(b, g["butt"], half=w["butt"], bevel=4.0, res=2, mat="rubber")
@@ -451,7 +455,7 @@ def paint(maps, kind, g=None):
         poly, steel, rubber = is_("poly"), is_("steel"), is_("rubber")
         w = g["widths"]
 
-        # -- the lower: its ledge and front frame, screws, the pin, the two dimples, the selector (left) --
+        # -- the lower: its ledge and front frame, screws, the pin, the two dimples, the left lever --
         low = poly & side & (X > 183) & (X < 549) & (Y > 112) & (Y < 200) & (np.abs(x) > w["lower"] - 0.5)
         col[low & (Y < 117.5)] *= 1.15
         col[low & (np.abs(Y - 118.2) < 0.6)] *= 0.55
@@ -475,7 +479,7 @@ def paint(maps, kind, g=None):
         col[poly & side & band & (np.abs(x) > w["rib"] - 0.4)] *= 1.35
         col[low & band & (np.abs(x) < w["lower"] + 0.3)] *= 0.72
         lft = low & left
-        col[lft & (np.hypot(X - 264.0, Y - 166.0) < 1.6)] = 190              # the selector's white dot
+        col[lft & (np.hypot(X - 264.0, Y - 166.0) < 1.6)] = 190              # the left lever's white dot
         # the grip's grooves
         gx = [q[0] for q in g["grip"]]
         grip = poly & side & (X > 448) & (X < max(gx) - 3) & (Y > 198) & (Y < 272)
@@ -492,7 +496,7 @@ def paint(maps, kind, g=None):
         col[cov & (dcv >= 0) & (dcv < 1.3) & ~tab] *= 0.6
         col[pad & (dcv > -1.6)] *= 0.85
 
-        # -- the receiver box: screws and rivets; on the right the deflector's rivets and the fire marks --
+        # -- the receiver box: screws and rivets; on the right the selector's rivets and its fire marks --
         rec = steel & side & (X > 553) & (X < 800) & (Y > 117) & (Y < 167)
         screw(col, rec, X, Y, 674.0, 146.0, 2.8)
         screw(col, rec, X, Y, 759.0, 148.0, 2.8)

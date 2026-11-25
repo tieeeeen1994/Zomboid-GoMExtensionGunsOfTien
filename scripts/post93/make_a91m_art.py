@@ -60,7 +60,7 @@ REFS = [("A91M2.jpg", "GunRF: the A-91M (7.62 mm), the measuring photo"),
 NOTES = [
     "A-91M (7.62x39, KBP's catalogue gun with the launcher under the barrel); the 5.56A-91 was removed (user, 2026-11-25).",
     "- rebuilt after the first model was rejected; three remodel passes (CLAUDE.md \"A-91M\")",
-    "- the measuring photo shows the LEFT side: the launcher sight's dial and the selector's marks are on the left only",
+    "- the measuring photo shows the LEFT side: the launcher sight's dial and the left lever's marks are on the left only",
     "- the charging hook stands on the piston rod under the carrying handle (the field strip's part 3) and rides back on each shot",
     "- the ejection port on the right is placed over the magazine's front (GunRF: cases leave forward on the right; no photo of that side)",
     "- not built yet (TODO): the first 7.62-A91M with the launcher over the barrel",

@@ -2351,7 +2351,12 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   at fireKillRate 0.068 on the machine that lit it (user: "4 burns kill" a normal zombie, 1.8-2.1 health),
   then `StopBurning` there and vanilla's 0.0038 back. Known gap: a lit zombie that despawns
   alive leaves spread 0 on its reused object.
-- **Art**: make_art.py (GoM-template rifle and revolver boxes, labels only on the coloured revolver / .50 boxes,
+- **Art**: make_art.py (GoM-template rifle and revolver boxes; the revolver / .50 boxes' own print colour, an
+  `accent` hue range, takes the load's hue as GoM's red does on the 9x19 / .45 (user: "why didn't we recolor"),
+  the .357's copper tray kept (`keep`, icon pixels mapped to texels by the camera); the .50 AE hollow point
+  barely changes, its box already GoM's hollow point green. Also on Windows the labels render in Arial Bold, not
+  the Mac's Arial Narrow, so a full make_art.py run changes every released box's label: put those back,
+  and compare images with RGB and alpha separately (an RGBA difference's getbbox reads only the alpha),
   new schemes LEAD, API, FTX, the shells by hue: flechette teal, dragon's breath orange; `ROUNDS_POST93` /
   `BOXES_POST93` into Post-93's textures), make_762x25_9x18_art.py (PMM, RG028), post93/make_ammo_art.py (DM21),
   make_ammomaker_art.py (flechette pouch and box; its Ammo Maker path now finds the Windows install).
@@ -3519,8 +3524,8 @@ adds bloat"), no full stops.
     half-moon scoops; the handguard's bars deep and rounded; the brake four ribs and a crown; the launcher sight's
     housing with a notch cutout, a cross pin and the dial as a hole with its lever; the front sight tower two
     stamped side plates with an oval slot and the post between; **the cheek cover a flat top with a broad chamfer
-    each side and a lighter pad on it** (the "recess" was that pad); on the right the **case deflector plate** with
-    its spout, rivets, the white cross and red fire marks (Kuzmin 2011 and GunRF's A91M.jpg, the 5.56 gun: the
+    each side and a lighter pad on it** (the "recess" was that pad); on the right the **AK-style fire selector**
+    (called a case deflector plate until 2026-11-25) with its lever, rivets, the white cross and red fire marks (Kuzmin 2011 and GunRF's A91M.jpg, the 5.56 gun: the
     invented ejection port is gone);
   - *pass 5*: charcoal instead of black (steel 60, polymer 52, rubber 66: GoM's AK-47's range; at 38 / 33 nothing
     read in the renders), the loop's wall, the fin's belly, its block against it, a wider lever;
@@ -3544,10 +3549,17 @@ adds bloat"), no full stops.
 - **Renders are no longer mirrored**: render_a91m.py scales its camera x by -1 (game space as Blender world space
   is the mirror image, "Handedness of the review renders"), so `A91M_left` is the true left side with the muzzle
   on the left, as the measuring photo, and left-only details (the launcher sight's dial, the selector's marks,
-  painted or built where x > 0) show on the left of the gun. The other render scripts still
+  painted or built where x > 0) show on the left of the gun.
+- **Controls, named by the sources** (2026-11-25, user: "accuracy is a must"): the fire selector is the AK-style
+  lever on the RIGHT of the receiver (Modern Firearms: "on the right side of the receiver, well behind the trigger
+  guard"; Kuzmin 2011's right-side photo shows the lever and its marks), `selector` in build_a91m.py (it was called
+  a case deflector). The steel lever with a knurled knob on the LEFT of the lower, ahead of the trigger guard (the
+  measuring photo, the field strip's part 7), is no selector; Modern Firearms, GunRF, Small Arms Review and
+  Wikipedia do not say what it is, so it is `left_lever`. Cases leave forward on the right through a channel along
+  the barrel (bstudy.net, zonwar.ru): no deflector plate. Renames only: the FBX and texture rebuild byte-identical. The other render scripts still
   mirror.
-- **The measuring photo shows the LEFT side** (muzzle left). The 7.62 gun's right side has no photo: the case
-  deflector plate and the fire marks are the 5.56 gun's (Kuzmin 2011, GunRF A91M.jpg), placed by the magazine's
+- **The measuring photo shows the LEFT side** (muzzle left). The 7.62 gun's right side has no photo: the fire
+  selector and its marks are the 5.56 gun's (Kuzmin 2011, GunRF A91M.jpg), placed by the magazine's
   position; the launcher's right side is plain.
 - **The charging hook** (`A91M_BOLT`) stands on the piston rod through the gas tube's slot under the carrying
   handle (the field strip's part 3) and rides back 100 mm with GoM's AK bolt swap.
@@ -3557,6 +3569,9 @@ adds bloat"), no full stops.
 - **Muzzle**: `canon` is the Grozas' AK one (0.0282 behind the muzzle), so GoM's AK devices overlap the built-in
   slotted brake (the AKM slant compensator 7.4 in), as on the Groza-1.
 - **Not done**: a Workshop preview; playing it.
+
+Not built, by the user's word (2026-11-25, "no"): the 1998 leaflet's shorter two-grip A-91M as a third gun, and
+the aluminium SV-98.
 
 ## A-91M Prototype (Post-93, 2026-11-25; three remodel passes, the user's corrections, then rechambered; not played)
 
@@ -3623,7 +3638,7 @@ adds bloat"), no full stops.
   tilt (`rotate = 4.25 0 0`: a rotation about X reads the same in the game, the render scripts and
   make_mp7_art's `attach`). The game's gun now draws the SV-98's magazines (see "The 20-round magazine").
 - **What the parts are** (text sources in SOURCES.txt): the plate with a pointer and red marks on the receiver's
-  right is the **AK-style selector** (the A-91M's notes call its twin a case deflector: wrong, TODO); the bar under
+  right is the **AK-style selector** (the A-91M's twin was misnamed a case deflector; renamed 2026-11-25); the bar under
   the beam ending over the grip is the **case chute** (cases leave forward on the right); the hook under the handle
   is the charging handle; the tall blade is the **launcher's folding sight leaf**. Raised it is in the measuring
   photo; folded, zonwar's side view does not show it, and a fin as wide as the photo's cannot lie on top of the

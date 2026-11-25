@@ -895,12 +895,16 @@ def make_rifle_box(calibre, scheme, label, sch):
 HANDGUN_BOXES = {
     "9x19": dict(tex="9x19_Box", icon="item_9x19_Box.png", label=((2, 3, 33, 17), False)),
     "45": dict(tex="45_Box", icon="item_45_Box.png", label=((47, 33, 62, 86), True)),
-    # the revolver and .50 AE boxes print in their own colours (blue, orange, dark red, green), so only the label
-    # marks the load, on the top strip of small print (the .38: its lid stamp)
-    "38": dict(tex="38_Box", icon="item_38_Box.png", label=((2, 3, 29, 14), False), recolour=False),
-    "357": dict(tex="357_Box", icon="item_357_Box.png", label=((1, 1, 28, 13), False), recolour=False),
-    "44": dict(tex="44_Box", icon="item_44_Box.png", label=((1, 1, 28, 13), False), recolour=False),
-    "50": dict(tex="50_Box", icon="item_50_Box.png", label=((1, 1, 28, 13), False), recolour=False),
+    # the revolver and .50 AE boxes print in their own colours, not GoM's red: that colour (hue range `accent`) takes
+    # the load's hue as the red does on the 9x19 / .45 boxes (user, 2026-11-25: "why didn't we recolor"), and a
+    # label on the top strip of small print (the .38: its lid stamp)
+    "38": dict(tex="38_Box", icon="item_38_Box.png", label=((2, 3, 29, 14), False), accent=(185, 235)),   # light blue
+    # orange; its tray of copper-coloured rounds keeps its colour (`keep`), so the icon takes the change through the
+    # camera instead of a hue swap over the whole picture
+    "357": dict(tex="357_Box", icon="item_357_Box.png", label=((1, 1, 28, 13), False), accent=(15, 45),
+                keep=(0, 90, 48, 128)),
+    "44": dict(tex="44_Box", icon="item_44_Box.png", label=((1, 1, 28, 13), False), accent=(340, 15)),   # dark red
+    "50": dict(tex="50_Box", icon="item_50_Box.png", label=((1, 1, 28, 13), False), accent=(80, 165)),   # green
 }
 
 
@@ -908,16 +912,45 @@ def make_handgun_box(calibre, scheme, label, sch):
     cfg = HANDGUN_BOXES[calibre]
     base = Image.open(os.path.join(GOM_BOXES, cfg["tex"] + ".png")).convert("RGBA")
     s = sch[scheme]
-    hue = hue_of(s["paint"][-1][2])[0]
-    recolour = cfg.get("recolour", True)
-    recoloured = recolour_hue(base, hue, is_red) if recolour else base
+    hue, sat, _ = hue_of(s["paint"][-1][2])
+    test, icon_test = is_red, is_reddish
+    if "accent" in cfg:
+        lo, hi = cfg["accent"]
+        within = (lambda h: lo <= h <= hi) if lo < hi else (lambda h: h >= lo or h <= hi)
+        test = lambda c: within(hue_of(c)[0]) and hue_of(c)[1] > 0.25 and hue_of(c)[2] > 0.12
+        icon_test = lambda c: within(hue_of(c)[0]) and hue_of(c)[1] > 0.18 and hue_of(c)[2] > 0.1
+    sat_scale = 0.25 if sat < 0.2 else 1.0           # a grey paint (lead) greys the print
+    recoloured = recolour_hue(base, hue, test, sat_scale)
+    if "keep" in cfg:
+        recoloured.paste(base.crop(cfg["keep"]), cfg["keep"][:2])
     tex = recoloured.copy()
     rect, vertical = cfg["label"]
     draw_label(tex, rect, label, s["band"], s["text"], vertical)
     # The print colour is swapped on the icon directly (adding a red -> blue texel change to the icon's light
     # edge pixels turns them neon); only the label goes through the camera transfer.
-    icon = Image.open(os.path.join(GOM_TEX, cfg["icon"]))
-    icon = recolour_hue(icon, hue, is_reddish) if recolour else icon.convert("RGBA")
+    icon_src = Image.open(os.path.join(GOM_TEX, cfg["icon"]))
+    if "keep" in cfg:
+        # icon pixels showing a kept texel (the camera says which texel each one shows) are left as they are
+        k0, k1, k2, k3 = cfg["keep"]
+        grid = icon_uv_grid(load_mesh(BOX_FBX % "HandGunAmmoBox"), CAMERAS[cfg["icon"]], icon_src.width, 1)
+        tw, th = base.size
+
+        def kept(xy):
+            uv = grid[xy[1]][xy[0]]
+            if uv is None:
+                return False
+            tx, ty = int(uv[0] % 1.0 * tw), int((1 - uv[1] % 1.0) * th)
+            return k0 <= tx < k2 and k1 <= ty < k3
+        keep_px = {(x, y) for y in range(icon_src.height) for x in range(icon_src.width) if kept((x, y))}
+        icon = icon_src.convert("RGBA").copy()
+        src, dst = icon_src.convert("RGBA").load(), icon.load()
+        for y in range(icon.height):
+            for x in range(icon.width):
+                c = src[x, y]
+                if c[3] and (x, y) not in keep_px and icon_test(c):
+                    dst[x, y] = set_hue(c, hue, sat_scale)
+    else:
+        icon = recolour_hue(icon_src, hue, icon_test, sat_scale)
     out_icon = transfer_icon(icon, load_mesh(BOX_FBX % "HandGunAmmoBox"), CAMERAS[cfg["icon"]], recoloured, tex)
     return out_icon, tex
 

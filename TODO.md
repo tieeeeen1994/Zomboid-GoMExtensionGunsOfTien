@@ -54,10 +54,6 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       on the FAMAS reload (our own magazine, no hand copy: as the 9A-91's), the SV-98 with the 20 in (it hangs
       55 mm under the stock; not rendered), the charging hook riding back, optics on the handle, Hot Brass forward, loot, its numbers
       against the SVU and HK417.
-- [ ] Decide: the 1998 leaflet's shorter 7.62 A-91M with two separate grips (Small Arms Review's drawings,
-      references/a91/top_launcher) as a third gun? Only drawings and one small photo exist.
-- [ ] The A-91M's "case deflector" on the right is the selector (references/a91/SOURCES.txt): rename it in its
-      notes and builder; its left-side "selector lever" needs another look.
 - [ ] Review the decisions in docs/post93_design.md "KBP A-91M" (launcher integral, no PBS-1, loot).
 - [ ] Play it: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
       charging hook riding back, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
@@ -71,4 +67,3 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
 
 ## Smaller open items
 
-- [ ] The SV-98 variant left out (the aluminium one), if wanted. The SV-99 stays one gun (user, 2026-11-20).
