@@ -3,8 +3,8 @@
     "muzzle": {
       "offset": [
         0.0,
-        0.226,
-        0.0198
+        0.2251,
+        0.0196
       ],
       "rotate": [
         -90.0,
@@ -16,7 +16,7 @@
       "offset": [
         0.0,
         0.2111,
-        -0.0021
+        -0.0023
       ],
       "rotate": [
         -90.0,
@@ -27,8 +27,8 @@
     "canon": {
       "offset": [
         0.0,
-        0.1978,
-        0.0198
+        0.1969,
+        0.0196
       ],
       "rotate": [
         0.0,
@@ -75,7 +75,7 @@
     "scope": {
       "offset": [
         0.0,
-        0.0274,
+        0.0304,
         0.0756
       ],
       "rotate": [
@@ -97,214 +97,52 @@
       ]
     }
   },
-  "A91M556": {
-    "muzzle": {
-      "offset": [
-        0.0,
-        0.2255,
-        0.0239
-      ],
-      "rotate": [
-        -90.0,
-        0.0,
-        -180.0
-      ]
-    },
-    "muzzle_gl": {
-      "offset": [
-        0.0,
-        0.2141,
-        0.002
-      ],
-      "rotate": [
-        -90.0,
-        0.0,
-        -180.0
-      ]
-    },
-    "canon": {
-      "offset": [
-        0.0,
-        0.2081,
-        0.0239
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "magazine": {
-      "offset": [
-        0.0,
-        -0.0506,
-        0.0075
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "bolt_fired": {
-      "offset": [
-        0.0,
-        -0.0603,
-        0.0
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "rail_up": {
-      "offset": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "scope": {
-      "offset": [
-        0.0,
-        0.0153,
-        0.0792
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    "world": {
-      "offset": [
-        0.0186,
-        0.1206,
-        0.0
-      ],
-      "rotate": [
-        180.0,
-        0.0,
-        180.0
-      ]
-    }
-  },
-  "_mag_prop2": {
-    "offset": [
-      0.0329,
-      0.0689,
-      -0.0156
-    ],
-    "rotate": [
-      -94.96,
-      23.43,
-      -89.82
-    ]
-  },
   "_bounds": {
     "A91M_BODY": {
       "min": [
-        -0.0146,
-        -0.1687,
-        -0.0564
-      ],
-      "max": [
-        0.0146,
-        0.226,
-        0.0727
-      ],
-      "tris": 2704
-    },
-    "A91M556_BODY": {
-      "min": [
         -0.0147,
-        -0.1795,
-        -0.0563
+        -0.1692,
+        -0.0569
       ],
       "max": [
         0.0147,
-        0.2255,
-        0.073
+        0.2251,
+        0.0732
       ],
-      "tris": 2696
+      "tris": 6112
     },
     "A91M_BOLT": {
       "min": [
-        -0.0205,
-        0.0506,
-        0.0287
+        -0.0021,
+        0.0601,
+        0.0373
       ],
       "max": [
-        -0.0103,
-        0.0566,
-        0.0347
+        0.0021,
+        0.0713,
+        0.0508
       ],
-      "tris": 116
-    },
-    "A91M556_BOLT": {
-      "min": [
-        -0.0208,
-        0.039,
-        0.0355
-      ],
-      "max": [
-        -0.0106,
-        0.045,
-        0.0415
-      ],
-      "tris": 116
+      "tris": 140
     },
     "A91M_RAIL_UP": {
       "min": [
         -0.0076,
-        -0.0038,
+        -0.0008,
         0.0552
       ],
       "max": [
         0.0076,
-        0.0718,
+        0.0749,
         0.0772
       ],
       "tris": 492
-    },
-    "A91M556_RAIL_UP": {
-      "min": [
-        -0.0076,
-        -0.0159,
-        0.0545
-      ],
-      "max": [
-        0.0076,
-        0.0597,
-        0.0808
-      ],
-      "tris": 492
-    },
-    "556x45Magazine30_A91M": {
-      "min": [
-        -0.0081,
-        -0.0367,
-        -0.115
-      ],
-      "max": [
-        0.0081,
-        0.0285,
-        0.0
-      ],
-      "tris": 344
     }
   },
   "_notes": {
     "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the grip's rear top",
-    "magazine": "A91M: GoM's AK magazines' feed lips (the Grozas' seat); A91M556: its own magazine's lips",
+    "magazine": "GoM's AK magazines' feed lips (the Grozas' seat)",
     "muzzle_gl": "the launcher tube's bore at its front: the launcher weapon's muzzle",
-    "canon": "A91M: GoM's AK mount (0.0282 behind the muzzle, the Grozas'); A91M556: GoM's AR mount (28.8 mm)",
-    "bolt_fired": "the charging handle back 100 mm (GoM's AK swap)"
+    "canon": "GoM's AK mount (0.0282 behind the muzzle, the Grozas')",
+    "bolt_fired": "the charging hook back 100 mm (GoM's AK swap)"
   }
 }

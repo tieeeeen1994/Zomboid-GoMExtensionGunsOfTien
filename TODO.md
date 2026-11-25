@@ -34,36 +34,24 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
 
 ## Release 3.25.0 (built 2026-11-25, not uploaded)
 
-- [ ] Look over docs/762x25_9x18_art_sheet.png (SAKER and TUSKER boxes, round icons).
+- [ ] Look over docs/762x25_9x18_art_sheet.png (SAKER and TUSKER boxes, round icons). The user reviews the two
+      calibres later.
 - [ ] Play the new rounds: box and carton icons, open / pack recipes, Ammo Maker's Tokarev loads, Hot Brass casings.
 - [ ] Decide: loot for the two rounds now, or only with the Tokarev guns (none for now).
-- [ ] Upload GoT 3.25.0 once played; changenotes.txt is written. Post-93's A-91M waits for its model rework (or ship
-      Post-93 without it).
+- [ ] Upload GoT 3.25.0 once played; changenotes.txt is written (A-91M only since the 5.56A-91 was removed).
 
-## To review: the A-91M and 5.56A-91 (Post-93, built overnight 2026-11-25)
+## The A-91M (Post-93, rebuilt 2026-11-25 in eight remodel passes; model accepted 2026-11-25: "good enough")
 
-- [ ] **Redo the gun models**: the user disliked docs/post93_a91m_preview.png (2026-11-25). Start by asking what
-      looks wrong, then rework scripts/post93/build_a91m.py and re-run the design protocol.
-- [ ] Review the decisions in docs/post93_design.md "KBP A-91M and
-      5.56A-91" (launcher integral on both, no PBS-1 on the 7.62, the charging handle's side, loot).
-- [ ] Choose whether to build the first over-barrel 7.62-A91M and the late 5.56 gun with a railed forearm.
-- [ ] Play them: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
-      5.56A-91's own magazine, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
+- [ ] **The first 7.62-A91M, launcher over the barrel** (user, 2026-11-25: "let's add the 7.62 version instead
+      with the launcher on top"; nothing built yet, noted only). A different body: references/a91/762-a91m.jpg
+      (left side), more photos to gather first. It is also the test of the remodel-passes rule (CLAUDE.md
+      Decisions, six since 2026-11-25): first build, then six part-by-part passes before the user sees it. It replaces the
+      removed 5.56A-91 as the release's second gun.
+- [ ] Review the decisions in docs/post93_design.md "KBP A-91M" (launcher integral, no PBS-1, loot).
+- [ ] Play it: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
+      charging hook riding back, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
 - [ ] A Workshop preview (render_ad_guns.py / make_workshop_art.py).
 
 ## Smaller open items
 
-- [ ] Re-run build_mk9.py some time so smg9_points.json (render art only) has GoM's new MP5 canon.
-- [ ] The older Workshop previews show the pre-audit triggers (a few pixels); redoing them needs the MP7 / SCAR / Vector
-      specs moved to their `_RD` / `_FD` bodies first (CLAUDE.md, Workshop art).
-- [ ] The HK416 .22's 30-round magazine length is an estimate (no measurable photo of a 30); re-measure if one
-      turns up.
-- [ ] Tien's Inspect Weapon: decide whether to also show laser on / off, Gunworks swap-pair states and the
-      fixed-bayonet gun's load (proposed 2026-11-25).
 - [ ] The SV-98 variant left out (the aluminium one), if wanted. The SV-99 stays one gun (user, 2026-11-20).
-
-## New Mod - EQUAL LOOT DISTRIBUTION
-
-This will modify all loot so that all guns spawn without discrimination. Ammo and mags will still spawn beside the gun.
-Sub-mod "Loot Equalizer", parked 2026-11-15: decisions, the spawner-table takeover idea and the open questions are in
-`docs/equal_loot_design.md`.

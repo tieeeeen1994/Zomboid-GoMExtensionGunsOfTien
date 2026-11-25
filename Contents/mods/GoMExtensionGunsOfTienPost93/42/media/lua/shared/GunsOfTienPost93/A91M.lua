@@ -1,21 +1,19 @@
 --[[
-    Guns of Tien - Post-93 -- KBP's A-91M and 5.56A-91 bullpups with their 40 mm launcher (user, 2026-11-25;
-    docs/post93_design.md "KBP A-91M and 5.56A-91") in Gunworks' and Guns of Marz's registries.
+    Guns of Tien - Post-93 -- KBP's A-91M bullpup with its 40 mm launcher (user, 2026-11-25; docs/post93_design.md
+    "KBP A-91M") in Gunworks' and Guns of Marz's registries. The 5.56A-91 export version was built beside it and
+    removed (user, 2026-11-25).
 
     The bullpup assault rifle and grenade launcher of 1998 (scripts/post93/build_a91m.py; items_a91m.txt):
-    - A-91M: 7.62x39mm, GoM's "762x39" magazines as the Groza-1 (its AK-47 30 and 75, the main mod's RPK 40 and drum),
-      GoM's AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator); no PBS-1 (no
-      source shows the gun with a suppressor);
-    - 5.56A-91: 5.56x45mm, its own 30-round magazine (the export gun's: "magazine heavily modified", GunRF), GoM's AR
-      mount and its AR muzzle parts as the SCAR-L (the late 5.56 gun was shown with a suppressor);
-    - both: Auto / Single at 700 rpm, GoM's AK bolt swap (the charging handle rides the gas piston rod, so it moves on
-      each shot), closing on an empty chamber as an AK does (the main mod's RPK.lua wrapper), GoM's FAMAS reload (the
-      magazine behind the grip), the A-91M's GoM magazines in the off hand at our size (HandMagazines.lua);
+    - 7.62x39mm, GoM's "762x39" magazines as the Groza-1 (its AK-47 30 and 75, the main mod's RPK 40 and drum), GoM's
+      AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator); no PBS-1 (no source
+      shows the gun with a suppressor);
+    - Auto / Single at 700 rpm, GoM's AK bolt swap (the charging handle rides the gas piston rod, so it moves on each
+      shot), closing on an empty chamber as an AK does (the main mod's RPK.lua wrapper), GoM's FAMAS reload (the
+      magazine behind the grip), GoM's magazines in the off hand at our size (HandMagazines.lua);
     - the launcher, as the Groza-1's GP-25 (GoM's M16A2_M203 way): a hidden <gun>_GL_Integrated part (PartType
       Underbarrel) that Gunworks' Underbarrel swaps for the launcher weapon <gun>_GL (Gunworks' radial menu), drawn as
       the same body with its muzzle at the tube's bore; GoM's 40mm family standing in for the VOG-25, GoM's M203
-      reload, caseless (muzzle-loaded, no spent case). The 5.56's real launcher detaches; built integral (GoM's way
-      has no detachable launcher a rifle fires without);
+      reload, caseless (muzzle-loaded, no spent case);
     - optics: GoM's Picatinny Rail (Up) on the carrying handle (drawn as <gun>_RAIL_UP: our clamp with GoM's rail on
       it, the Grozas' way) and every GoM optic on it (Rails.lua).
 --]]
@@ -41,30 +39,23 @@ end
 
 local M = "GunsOfTienPost93."
 local A91M = M .. "A91M"
-local A91M556 = M .. "A91M556"
-local GUNS = { A91M, A91M556 }
-local MAG556 = M .. "556x45Magazine30_A91M"
+local GUNS = { A91M }
 
 local MAGS = {
     [A91M] = { "MarzGuns.762x39Magazine30", "MarzGuns.762x39Magazine75", "GunsOfTien.762x39Magazine40_RPK",
         "GunsOfTien.762x39Drum75_RPK" },
-    [A91M556] = { MAG556 },
 }
 
 -------------------------------------------------
--- Magazines: GoM's AK profile; the 5.56A-91's own magazine in a profile of its own, in the 5.56 family
+-- Magazines: GoM's AK profile
 -------------------------------------------------
 Magazine.RegisterWeaponWithProfile("762x39", A91M)
-Magazine.RegisterMagazineProfile("5.56x45mm A-91", { MAG556 })
-Magazine.RegisterWeaponWithProfile("5.56x45mm A-91", A91M556)
-Ammo.RegisterMultipleItemsWithFamilies({ ["5.56x45mm"] = { MAG556 } })
 
 -------------------------------------------------
--- Rate of fire: 700 rpm (600-800 published; 700 for the 5.56). The bullpup's straight line as the Grozas: the 7.62
--- a little steadier than GoM's AK-47 (0.3 / 3.5), the 5.56 as GoM's FAMAS
+-- Rate of fire: 700 rpm (600-800 published). The bullpup's straight line as the Grozas: a little steadier than
+-- GoM's AK-47 (0.3 / 3.5)
 -------------------------------------------------
 RateOfFire.RegisterWeapon(A91M, { rpm = 700, enableSpread = true, sustainedSpread = 0.27, maxSpread = 3.3 })
-RateOfFire.RegisterWeapon(A91M556, { rpm = 700, enableSpread = true, sustainedSpread = 0.18, maxSpread = 3.0 })
 
 -------------------------------------------------
 -- The bolt (GoM's AK bolt swap: the handle on the piston rod), closing on the empty chamber as an AK does, and the
@@ -86,7 +77,6 @@ for _, mag in ipairs(MAGS[A91M]) do
 end
 HandMagazines.register(A91M, hand)
 ReloadAnim.RegisterWeapon(A91M, GoMReloads.profile("famas_rifle", { partState = { props = HandMagazines.props(hand) } }))
-ReloadAnim.RegisterWeapon(A91M556, GoMReloads.profile("famas_rifle"))
 
 -------------------------------------------------
 -- GoM's Picatinny Rail (Up) on the carrying handle, and GoM's optics on it
@@ -115,12 +105,9 @@ end
 
 -------------------------------------------------
 -- MountOn appended (DoParam replaces the list, so it is read and written back whole, as MK11.lua does): GoM's AK
--- magazines and AK mount on the A-91M, GoM's AR mount and AR muzzle parts on the 5.56A-91 (GoM's rule: the parts
--- need the mount). The AKM slant compensator lists the A-91M in its own script (the main mod's muzzle_devices.py).
+-- magazines and AK mount (GoM's rule: the parts need the mount). The AKM slant compensator lists the A-91M in its
+-- own script (the main mod's muzzle_devices.py).
 -------------------------------------------------
-local AR_MUZZLE = { "MarzGuns.AR_Muzzle_Mount_Device", "MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor",
-    "MarzGuns.LR2_Compensator", "MarzGuns.LX_Flashhider", "MarzGuns.Trix42_Muzzlebreak" }
-
 local function appendMountOn(partType, guns)
     local script = ScriptManager.instance:getItem(partType)
     if not script then return end
@@ -150,7 +137,6 @@ end
 local function appendAll()
     for _, mag in ipairs(MAGS[A91M]) do appendMountOn(mag, { A91M }) end
     appendMountOn("MarzGuns.AK_Muzzle_Mount_Device", { A91M })
-    for _, part in ipairs(AR_MUZZLE) do appendMountOn(part, { A91M556 }) end
 end
 
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.
@@ -178,7 +164,6 @@ local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTab
 if spawnTable then
     local optionals = {
         [A91M] = { "MarzGuns.762x39Magazine30:40", "MarzGuns.762x39Magazine75:1", "GunsOfTien.762x39Magazine40_RPK:3" },
-        [A91M556] = { MAG556 .. ":40" },
     }
     for gun, list in pairs(optionals) do
         for _, o in ipairs(optics()) do list[#list + 1] = o end
@@ -186,4 +171,4 @@ if spawnTable then
     end
 end
 
-GunsOfTienPost93_A91M = { GUNS = GUNS, MAGS = MAGS, MAG556 = MAG556 }
+GunsOfTienPost93_A91M = { GUNS = GUNS, MAGS = MAGS }

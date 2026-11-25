@@ -789,7 +789,12 @@ Hot Brass: GoM's AKS-74U / AS VAL values.
 - One magazine (20). Some sources give the VSK-94 a 10-round one too; not built.
 
 
-## KBP A-91M and 5.56A-91 (user, 2026-11-25: "Can we actually make A-91 with the grenade launcher? be sure to follow protocol of designing the gun. Do this while I sleep"; built overnight, not played, model for review)
+## KBP A-91M (user, 2026-11-25: "Can we actually make A-91 with the grenade launcher? be sure to follow protocol of designing the gun. Do this while I sleep"; built overnight, rebuilt the same day, not played, model for review)
+
+**Changed 2026-11-25 (user):** the 5.56A-91 below was built and then removed ("No remove 5.56 version. let's add the
+7.62 version instead with the launcher on top"); only the 7.62 mm A-91M ships, the over-barrel first 7.62-A91M is
+next (TODO). The first model was rejected and rebuilt in three remodel passes (CLAUDE.md "A-91M"). The 5.56
+column and notes are kept as the record of what was tried.
 
 What the name covers (Wikipedia "A-91", Modern Firearms "A-91M", GunRF "A-91M (7.62 mm) firearm grenade launcher
 complex"; references/a91, SOURCES.txt there): KBP's first "A-91" (about 1990) was a compact conventional rifle grown

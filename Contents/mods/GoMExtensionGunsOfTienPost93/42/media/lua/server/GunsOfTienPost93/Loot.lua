@@ -159,9 +159,8 @@ local sv99 = kit({ M .. "SV99" }, { M .. "22LRMagazine5_SV99" }, { "GunsOfTien.2
 -- the 9A-91 and VSK-94 with their own magazine and GoM's 9x39 box, as the Groza-4
 local a91 = kit({ M .. "9A91" }, { M .. "9x39Magazine20_9A91" }, { "MarzGuns.9x39_Box" })
 local vsk94 = kit({ M .. "VSK94" }, { M .. "9x39Magazine20_9A91" }, { "MarzGuns.9x39_Box" })
--- the A-91M with GoM's AK-47 30 and box, the 5.56A-91 (the export gun) with its own magazine and GoM's 5.56 box
+-- the A-91M with GoM's AK-47 30 and box
 local a91m = kit({ M .. "A91M" }, { "MarzGuns.762x39Magazine30" }, { "MarzGuns.762x39_Box" })
-local a91m556 = kit({ M .. "A91M556" }, { M .. "556x45Magazine30_A91M" }, { "MarzGuns.556x45_Box" })
 
 -- High-capacity magazines on their own, as GoM's in its high-capacity magazine spawners (its M92FS 50, M93R 60, MP5
 -- 60 / 100 drums: the magazine and up to two boxes; only with GoM's sandbox SpawnHighCapMags on, which places them).
@@ -219,7 +218,6 @@ local GUNS = {
     { RUSSIAN_RIFLE, a91, 6, 6 }, { RUSSIAN_RIFLE, vsk94, 6, 6 },
     { MERC_RIFLE, a91, { 2, 4 }, { 4, 8 } }, { MERC_SNIPER, vsk94, { 3, 6 }, { 6, 10 } },
     { RUSSIAN_RIFLE, a91m, 6, 6 }, { MERC_RIFLE, a91m, { 2, 4 }, { 4, 8 } },
-    { MERC_RIFLE, a91m556, { 2, 4 }, { 4, 8 } },
     -- high-capacity magazines
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_MP7", M .. "46x30_Box"), nil, 2 },
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), nil, 2 },

@@ -181,7 +181,8 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   drawn there through `<part>_MP5` models (`MP5_PART_SCALE` 0.779 of the 0.72-built Mk9, our adapter, GoM's M&P / Shh9)
   and the H&K flash hider's own model at `drawn / scale` (muzzle_devices.py `drawn`). MuzzlePoints.lua moves GoM's
   MP5SD muzzle point to its can's front (5.4 cm inside, GoM gave it the MP5's point). smg9_points.json (render art only)
-  is stale until build_mk9.py is run again.
+  holds the same values (build_mk9.py re-run 2026-11-25: points, textures and meshes unchanged; the FBX differs only
+  in its export timestamp, so it was not committed).
 - **Flat attachment stats**: GoM's AttachmentCustomStats.lua uses `SF.Adjust` now (and clamps Aiming Time >= 5 after
   every reapply with a restore handler, which runs for every gun, ours included). Ours follow, each by its GoM
   equivalent: Uzi / MP7A1 stocks = GoM's MP5 stock (+8 Hit, -10 Aiming Time), Mini / Micro Uzi = MAC-10 (+4 / -3),
@@ -511,6 +512,23 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
 - **SVU** (main mod, user, 2026-11-20: the pre-1993 model; "let's implement the new guns"; built, not played): the
   1991 semi-automatic OTs-03 on GoM's SVD, GoM's SVD magazine, folding sights in two bodies, GoM's FAMAS reload.
   Section "SVU". The SV-98 and SV-99 are Post-93's (section "SV-98 and SV-99").
+- **A model's first pass is never shown: six remodel-check passes by default** (user, 2026-11-25, on the overnight
+  A-91M: "the first pass of modeling you make is always absolutely disgusting. By default, make 3 passes of remodel
+  checks to make it more beautiful and accurate"; raised the same day after three were not enough: "it's still
+  terrible. think we can increase remodel pass? The triggers still look bad. The circle on trigger guard's front is
+  not correct"). After the first build of any gun, variant or rework, six times: render it, then **part by part**
+  put the highest-resolution photo of that part next to the model's same part at 5x or more (trigger guard and
+  triggers first, then sights, controls, muzzle, grip, stock), and the 3/4, top and front renders beside the 3/4
+  photos; list what is wrong (a part taken for something it is not, slab-sided bodies with no cross-section, one
+  flat extrusion, missing or misplaced details, proportions, tone), fix, render again. The gun's section says what
+  each pass changed, and the review sheet shows the photo over the model part by part. Every pass also checks that
+  no part floats (triggers, loops and levers touch what carries them) and that bodies which meet on the real gun
+  show no gap. Lessons from the A-91M: read
+  small parts off the **largest** photo of the same family, not the small measuring photo (its 880 px turned the
+  launcher's loop trigger into a free-floating oval and the selector's steel lever into painted white lines); a
+  3/4 photo decides what a shape is (the cheek "recess" was a raised pad on a chamfer); lay the render on the photo
+  by the model's own frame, not by best overlap (a larger magazine pulls it 4 px off); the outline overlap score
+  (IoU) is no measure of looks (the rejected model and the rebuilt one both score 0.82-0.83).
 - **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
   you this many times. the triggers you make are not good"): check every new gun's trigger blade against its
   measuring photo by laying the photo-scale render's outline over it, row by row, before showing the gun. GoM's AR15
@@ -3364,36 +3382,90 @@ adds bloat"), no full stops.
   (Kuzmin's gun) as an alternative look; the VSK-94's 10-round magazine; the folded stock is a simple channel on the
   cover with the butt at its front (Kuzmin 01 / 15), not the real stamped strut turned over.
 
-## A-91M and 5.56A-91 (Post-93, 2026-11-25; built overnight, not played; model for review)
+## A-91M (Post-93, 2026-11-25; rebuilt the same day in eight remodel passes; model accepted: "this is good enough"; not played)
 
-- **What**: KBP's 1998 bullpup with the integral 40 mm launcher under the barrel, in two real versions: the 7.62 mm
-  A-91M (KBP's catalogue gun, GoM's AK magazines) and the 5.56A-91 export gun (its own straight 30-round magazine).
-  Design and decisions in docs/post93_design.md "KBP A-91M and 5.56A-91"; review sheet `docs/post93_a91m_preview.png`.
-  The 1990 "A-91" is a different, conventional compact rifle; the first 7.62-A91M had the launcher over the barrel
-  and the late 5.56 gun a railed forearm instead of the launcher (references/a91, not built).
-- **Files**: `scripts/post93/build_a91m.py` (Blender, ~2 min: `GunsOfTienPost93_A91M.fbx` A91M_BODY / A91M556_BODY /
-  _BOLT / _RAIL_UP, `_A91M_magazines.fbx`, `A91M.png` 512, the magazine 128, `a91m_points.json`),
-  `render_a91m.py -- DIR`, `make_a91m_art.py [--renders DIR]` (icons, overlay, sheet), `gen_post93_guns.py a91m()`
-  (models_a91m.txt, items_a91m.txt, fixing_a91m.txt, names), `shared/GunsOfTienPost93/A91M.lua`, lines in Post-93's
-  Tooltips.lua, Loot.lua, HotBrass.lua, GripStances.lua, RealSingleFire.lua; the A-91M in the main mod's
-  `muzzle_devices.py` AK762 (the AKM slant compensator).
-- **Measuring without a hand reading**: the photos are small (GunRF's A91M2.jpg 880 px at 1.294 px a mm, Commons'
-  KBP_A_91_noBG.png 1300 px at 1.693), so outlines were read as numbers: per-column foreground runs of the photo
-  (`max(rgb) < 175` on the white studio shot, the alpha mask on the transparent one) give every top and bottom edge,
-  and 3-10x gridded crops only say which part is which (reading coordinates by eye off a crop, screen pixels were
-  taken for grid labels once). Overlay IoU 0.83 (A-91M; GoM's AK magazine curves a little differently from the
-  photo's, and the white shot's highlights fall out of its mask) and 0.94 (5.56A-91); both triggers on the photos'.
-- **Both photos show the LEFT side** (muzzle left), not the right as first assumed: the slab silhouettes do not care,
-  but the charging handle (on the gas piston rod under the carrying handle; GunRF: "deflectable left or right") is
-  put on the right without a photo of it there.
-- **The launcher** is the Groza-1 GP-25's path (GoM's M16A2_M203): hidden `<gun>_GL_Integrated` (PartType
-  Underbarrel) swapped by Gunworks for `<gun>_GL`, model "self" = the same body with `muzzle_gl` at the tube's front.
-  Two triggers in one opening on the real guns (the launcher's ring in front, the rifle's crescent behind), modelled.
-- **Muzzle**: the A-91M's `canon` is the Grozas' AK one (0.0282 behind the muzzle), so GoM's AK devices overlap the
-  built-in slotted brake (fit_audit: the AKM slant compensator 7.4 in), as on the Groza-1; the 5.56A-91's is GoM's
-  M4A1's 28.8 mm (the SCAR-L's), every AR part within GoM's own range.
-- **Not done**: a Workshop preview; the left-side controls (selector, launcher quadrant) are not modelled beyond the
-  silhouette.
+- **What**: KBP's 1998 bullpup with the integral 40 mm launcher under the barrel, the 7.62 mm A-91M of KBP's
+  catalogue (GoM's AK magazines). Design and decisions in docs/post93_design.md "KBP A-91M"; review sheet
+  `docs/post93_a91m_preview.png`. **The 5.56A-91 export gun was built beside it overnight and removed** (user,
+  2026-11-25: "No remove 5.56 version"): its body, magazine, launcher, items, names, loot, Hot Brass and tooltip
+  lines are gone, `gen_post93_guns.py a91m()` pops its names from ItemName.json. Next (TODO): the first 7.62-A91M
+  with the launcher **over** the barrel (references/a91/762-a91m.jpg). The 1990 "A-91" is a different, conventional
+  compact rifle; the late 5.56 gun had a railed forearm instead of the launcher.
+- **Files**: `scripts/post93/build_a91m.py` (Blender, ~2 min: `GunsOfTienPost93_A91M.fbx` A91M_BODY 6,152 tris /
+  A91M_BOLT / A91M_RAIL_UP, `A91M.png` 512, `a91m_points.json`), `render_a91m.py -- DIR`, `make_a91m_art.py
+  [--renders DIR]` (icon, overlay, sheet beside the photos), `gen_post93_guns.py a91m()` (models_a91m.txt,
+  items_a91m.txt, fixing_a91m.txt, names), `shared/GunsOfTienPost93/A91M.lua`, lines in Post-93's Tooltips.lua,
+  Loot.lua, HotBrass.lua, GripStances.lua, RealSingleFire.lua; the A-91M in the main mod's `muzzle_devices.py`
+  AK762 (the AKM slant compensator).
+- **The first model was rejected** (user: "the current A-91M is terrible looking"): every part one flat extrusion
+  of its side outline at nearly one width, an almost black texture with nothing on it, and parts named wrong (the
+  rifle's tall front sight tower taken for a launcher leaf, the charging hook for a diopter, an invented charging
+  knob on the right). Its outline overlap was already 0.83, and the rebuild's is the same: the score says nothing
+  about looks. Rebuilt under the new rule "three remodel-check passes" (Decisions):
+  - *rebuild*: parts identified from more photos (GunRF's field strip; Commons' A-91.jpg and Kuzmin's Interpolitex
+    2011 / 2012 photos of the 5.56 gun from 3/4, saved in references/a91), profiles re-read from 4-5x gridded
+    crops, and **depth in steps**: sight housing 18 mm on a 29 mm launcher breech on the 46 mm tube, lower 33 mm with
+    raised bars to 37, steel receiver 30 under a rounded 37 mm cheek cover, 42 mm butt pad, the handle's fork and
+    rear strut as pairs of plates (the strut's sheared in from the lower's width to the handle's), the tower's
+    A-frame with hood ears and a post, a real bore in the tube and the brake, bosses for the dial and pins;
+  - *pass 1*: colours pulled together (the real gun is black all over: painted steel 38, polymer 33; the first
+    rebuild read as a two-tone gun), the launcher breech's sloped top, the launcher ring round and of steel, the
+    lower's ledge and front frame standing proud, dimples lit from one side, the selector's marks redrawn thin
+    (lever, white line to a diamond, a dot: left only), the handle's window, the gas block's grooves;
+  - *pass 2*: the hump its own crisp part (the cover's 4.5 mm rounding had turned it into a fin), a rounder grip
+    (bevel 5 in 3 steps), a sheen band on the round parts (tube, gas tube, brake), the cheek recess shaded under
+    its upper lip and lit along the lower one, the catch bracket lighter, a thicker trigger blade, the sling loop;
+  - *pass 3*: top light on every part (upper faces lighter, undersides darker), the handguard's bars lit with
+    shaded gaps, brighter screws, the launcher ring's height.
+  **Rejected again** ("it's still terrible... The triggers still look bad. The circle on trigger guard's front is
+  not correct"), and the rule went to six passes. Four more, each from 5-9x crops of the largest photos (Commons
+  A-91.jpg at 1200 px for the lower and launcher, Kuzmin's at 2250 px for the upper):
+  - *pass 4*: **the trigger guard read again**: the opening is a stadium (end radius 19 px, not a rounded
+    rectangle); the launcher's trigger is a **loop as tall as the opening set in its front end** (13 x 19.6 px,
+    8 mm deep; it had been a small free oval); the rifle's is a **broad fin** hanging from the opening's top with a
+    small block in front (it had been a thin crescent). The selector is a **steel lever** with a knurled knob over
+    the rear dimple (the "white line and diamond" of the small photo are its edges and square end), the dimples
+    half-moon scoops; the handguard's bars deep and rounded; the brake four ribs and a crown; the launcher sight's
+    housing with a notch cutout, a cross pin and the dial as a hole with its lever; the front sight tower two
+    stamped side plates with an oval slot and the post between; **the cheek cover a flat top with a broad chamfer
+    each side and a lighter pad on it** (the "recess" was that pad); on the right the **case deflector plate** with
+    its spout, rivets, the white cross and red fire marks (Kuzmin 2011 and GunRF's A91M.jpg, the 5.56 gun: the
+    invented ejection port is gone);
+  - *pass 5*: charcoal instead of black (steel 60, polymer 52, rubber 66: GoM's AK-47's range; at 38 / 33 nothing
+    read in the renders), the loop's wall, the fin's belly, its block against it, a wider lever;
+  - *pass 6*: the receiver box no longer pokes through the chamfer (its top under the cover's foot), the lever's
+    square end, the bars flush with the lower's bottom line;
+  - *pass 7*: the pad's front flange in rubber, the cheek pad's tone; the sheet
+    gained the photo-over-model panels (trigger guard 5x, front and rear halves 3x) placed by the model's frame.
+  **Rejected a third time** (user, with a crop of the strut: "still wrong. it's not a seprate circle.... it's like
+  a C connected to the oval. Also this is wrong why are they separated?"):
+  - *pass 8*: **the launcher's trigger is a C-shaped bar, not a ring**: the guard's opening ends at the front in
+    half an oval (13.5 x 21 px), and the bar is that oval's rear half, its ends running into the opening's top and
+    bottom edges (a full loop inside the opening left a gap all round it). **The upper joins the lower**: the
+    receiver box and the cover now start inside the lower's rear end (x 544 / 549), where a 2-4 px see-through slit
+    had been left between x 549 and 553. The hump is a ridge as wide as the cover's flat top, the chamfers running
+    on under it to the front (as a full-width block it stood on the cover like a box).
+  Two checks to make on every gun from this: no part may float (a trigger, loop or lever must touch what carries
+  it), and no two bodies that meet on the real gun may show daylight between them at any zoom.
+- **Review tools made for it** (scratch, re-creatable): gridded zoom crops of the measuring photo (grid every 10
+  px, labels every 50) to read coordinates; the photo and the photo-scale render stacked at 3x, front and rear
+  halves, which is what showed the wrong shapes and tones each pass. Looking only at the outline overlay hides them.
+- **Renders are no longer mirrored**: render_a91m.py scales its camera x by -1 (game space as Blender world space
+  is the mirror image, "Handedness of the review renders"), so `A91M_left` is the true left side with the muzzle
+  on the left, as the measuring photo, and left-only details (the launcher sight's dial, the selector's marks,
+  painted or built where x > 0) show on the left of the gun. The other render scripts still
+  mirror.
+- **The measuring photo shows the LEFT side** (muzzle left). The 7.62 gun's right side has no photo: the case
+  deflector plate and the fire marks are the 5.56 gun's (Kuzmin 2011, GunRF A91M.jpg), placed by the magazine's
+  position; the launcher's right side is plain.
+- **The charging hook** (`A91M_BOLT`) stands on the piston rod through the gas tube's slot under the carrying
+  handle (the field strip's part 3) and rides back 100 mm with GoM's AK bolt swap.
+- **The launcher** is the Groza-1 GP-25's path (GoM's M16A2_M203): hidden `A91M_GL_Integrated` (PartType
+  Underbarrel) swapped by Gunworks for `A91M_GL`, model "self" = the same body with `muzzle_gl` at the tube's front.
+  Two triggers in one opening on the real gun (the launcher's ring in front, the rifle's crescent behind), modelled.
+- **Muzzle**: `canon` is the Grozas' AK one (0.0282 behind the muzzle), so GoM's AK devices overlap the built-in
+  slotted brake (the AKM slant compensator 7.4 in), as on the Groza-1.
+- **Not done**: a Workshop preview; playing it.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

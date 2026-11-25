@@ -121,12 +121,10 @@ for gun, uses in pairs({ GROZA1 = "Uses 7.62x39mm rounds", GROZAGL = "Uses 7.62x
     lines[M .. gun] = { uses }
 end
 lines[M .. "762x51Magazine50_SCARH"] = { "Uses .308/7.62x51mm NATO rounds." }
--- The A-91M and 5.56A-91 (shared/GunsOfTienPost93/A91M.lua); their launchers worded as the Groza's GP-25
-for gun, uses in pairs({ A91M = "Uses 7.62x39mm rounds", A91M_GL = "Uses 40mm rounds",
-    A91M556 = "Uses .223/5.56x45mm NATO rounds", A91M556_GL = "Uses 40mm rounds" }) do
+-- The A-91M (shared/GunsOfTienPost93/A91M.lua); its launcher worded as the Groza's GP-25
+for gun, uses in pairs({ A91M = "Uses 7.62x39mm rounds", A91M_GL = "Uses 40mm rounds" }) do
     lines[M .. gun] = { uses }
 end
-lines[M .. "556x45Magazine30_A91M"] = { "Uses .223/5.56x45mm NATO rounds." }
 -- The 9A-91 and VSK-94 (shared/GunsOfTienPost93/9A91.lua): the 9A-91's folding stock with GoM's AKS-74U stock stats
 -- (the UMP's lines: the same values and spread)
 lines[M .. "9A91"] = { "Uses 9x39mm rounds" }

@@ -301,7 +301,6 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well.
 - KBP 9A-91 (1994), the compact 9x39mm Russian police carbine: automatic or single shots at 700 rounds a minute, its own 20-round magazine, a stock that folds over the receiver, Guns of Marz's AK side mount on the left rail for its optics, its own suppressor on the 9x39mm muzzle mount (as quiet as Guns of Marz's AS VAL)
 - KBP VSK-94 (1995), the 9A-91's sniper version: the same receiver, magazine and suppressor, a skeleton stock, steadier and longer-ranged, automatic or single shots
 - KBP A-91M (1998), the 7.62x39mm bullpup assault rifle with its 40mm grenade launcher under the barrel: Guns of Marz's AK magazines, automatic or single shots at 700 rounds a minute, switch to the launcher with Gunworks' underbarrel control (Guns of Marz's 40mm rounds), Guns of Marz's rail on the carrying handle for its optics, its AK muzzle mount and devices
-- KBP 5.56A-91, the A-91M's 5.56x45mm export version: its own 30-round magazine, the same launcher, Guns of Marz's AR muzzle mount, flash hiders, compensators and suppressors
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
 
@@ -313,7 +312,7 @@ Each gun joins the Guns of Marz loot spawner for its kind of gun, packed the sam
 - Modern military rifles (the SCARs, HK416, HK417s, Mk 11), with Guns of Marz's M16s and M14: army storage, the bunker, army trucks and packs, military rifle cases, late homes and late bandit bags, and on army zombies; the HK416 and SCAR-L also as SWAT and police patrol rifles, the Mk 11 and HK417 Marksman also with army snipers in ghillie suits
 - Civilian rifles (the MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22), with Guns of Marz's imported rifles and the AUG A1: gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes, and on survivalist zombies
 - Pistols (the Five-seveN, Vector SDP), with Guns of Marz's imported pistols: gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars
-- Russian guns (the Grozas, SV-98, SV-99, 9A-91, VSK-94, A-91M), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Undead Survivors the Grozas, the 9A-91, the A-91M and the 5.56A-91 also with its mercenaries and the SV-98, SV-99 and VSK-94 with its mercenary snipers
+- Russian guns (the Grozas, SV-98, SV-99, 9A-91, VSK-94, A-91M), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Undead Survivors the Grozas, the 9A-91 and the A-91M also with its mercenaries and the SV-98, SV-99 and VSK-94 with its mercenary snipers
 
 SWAT gun storage, where Guns of Marz places no rifles or submachine guns of its own, also holds SWAT submachine guns and carbines, Guns of Marz's MP5s and CAR-15s among them; police stations' gun storage, police cars and police zombies carry patrol rifles (Guns of Marz's CAR-15s, the HK416 and SCAR-L). The Five-seveN and the UCP are also carried by police and SWAT with Guns of Marz's police handguns; long magazines, suppressors and mount devices turn up with Guns of Marz's, the 4.6x30mm boxes beside 9mm boxes in police, SWAT and gun store storage. Special loads only come from Ammo Maker.
 

@@ -20,3 +20,15 @@ muzzle-loaded launcher, its sight on the left); Modern Firearms (introduced 1998
 Not downloaded (Commons rate-limited the session): File:5,56А-91 Interpolitex-2012.jpg (Vitaly Kuzmin, CC BY-SA 4.0),
 File:Interpolitex 2011 (405-49).jpg, File:Interpolitex 2012 (482-27).jpg, File:A-91.jpg. IMFDB refused automated
 fetches (403).
+
+Added 2026-11-25 for the rebuild (the depths and the parts' shapes from 3/4):
+commons_A-91.jpg   Wikimedia Commons, File:A-91.jpg (Remigiusz Wilk, CC BY 2.5): the 5.56 gun with the launcher on a
+                   display board, left side from slightly ahead; the same lower, launcher and handle as the 7.62.
+commons_556A-91_Interpolitex-2012.jpg
+                   Wikimedia Commons, File:5,56A-91 Interpolitex-2012.jpg (Vitaly Kuzmin, CC BY-SA 4.0), scaled to
+                   1500 px: the 5.56 gun without launcher, left side from below: cover, receiver, pad, handle.
+commons_Interpolitex_2011_405-49.jpg
+                   Wikimedia Commons, File:Interpolitex 2011 (405-49).jpg (Vitaly Kuzmin, CC BY-SA 4.0), scaled to
+                   1500 px: the same gun's right side from 3/4.
+The 5.56A-91 was built from KBP_A_91_noBG.png and removed the same day; the A-91M's measuring photo is A91M2.jpg,
+which shows the LEFT side.

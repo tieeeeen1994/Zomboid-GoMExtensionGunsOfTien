@@ -39,8 +39,8 @@ GOM_EQUIVALENT = {
     'MK11': 'SVD', 'HK417S': 'SVD', 'VSK94': 'SVD',                                    # marksman rifles 11-23
     'SV98': 'M24',                                                                     # bolt-action sniper 14-28
     'GROZAGL_GP25': 'M203_Weapon',                                                     # the launcher, as GoM's M203
-    'A91M': 'AK47', 'A91M556': 'FAMAS',                                                # assault rifles 6-16 / 7-17
-    'A91M_GL': 'M203_Weapon', 'A91M556_GL': 'M203_Weapon',                             # their launchers
+    'A91M': 'AK47',                                                                    # assault rifles 6-16
+    'A91M_GL': 'M203_Weapon',                                                          # its launcher
 }
 SIGHT = {gun: gom_data.sight(gom) for gun, gom in GOM_EQUIVALENT.items()}
 
@@ -3883,34 +3883,26 @@ def a91():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
-# KBP A-91M and 5.56A-91 (user, 2026-11-25; docs/post93_design.md "KBP A-91M and 5.56A-91"; meshes and points:
-# scripts/post93/build_a91m.py; registries: shared/GunsOfTienPost93/A91M.lua). The 1998 bullpup with its 40 mm
-# launcher under the barrel, built as the Groza-1 with the GP-25 (GoM's M16A2_M203 way): the rifle with a hidden
-# <gun>_GL_Integrated part (PartType Underbarrel) that Gunworks swaps for the launcher weapon <gun>_GL, drawn as the
-# same body with its muzzle at the tube's bore. The A-91M (7.62x39) takes GoM's "762x39" magazines as the Groza-1, the
-# 5.56A-91 its own 30-round magazine. Stats: the A-91M the Groza-1's (GoM's AK-47 with the bullpup's steadier hold,
-# the same 415 mm barrel class), 4.0 kg (GunRF 3.97); the 5.56A-91 GoM's FAMAS's (1.1-1.7, Hit 40, crit 25 x4.2) with
-# Max 1.65 for its 415 mm barrel against the FAMAS's 488, 4.1 kg. Sounds by sound_model.py: 7.62x39 from 16.3" =
-# 175 / 50 (GoM's AK-47's shot), 5.56 from 16.3" = 186 / 53 (GoM's M16 shot). The launchers: GoM's M203_Weapon's
-# numbers, GoM's 40mm family (standing in for the VOG-25), caseless.
+# KBP A-91M (user, 2026-11-25; docs/post93_design.md "KBP A-91M"; meshes and points: scripts/post93/build_a91m.py;
+# registries: shared/GunsOfTienPost93/A91M.lua). The 1998 bullpup with its 40 mm launcher under the barrel, built as
+# the Groza-1 with the GP-25 (GoM's M16A2_M203 way): the rifle with a hidden <gun>_GL_Integrated part (PartType
+# Underbarrel) that Gunworks swaps for the launcher weapon <gun>_GL, drawn as the same body with its muzzle at the
+# tube's bore. It takes GoM's "762x39" magazines as the Groza-1. Stats: the Groza-1's (GoM's AK-47 with the bullpup's
+# steadier hold, the same 415 mm barrel class), 4.0 kg (GunRF 3.97). Sound by sound_model.py: 7.62x39 from 16.3" =
+# 175 / 50 (GoM's AK-47's shot). The launcher: GoM's M203_Weapon's numbers, GoM's 40mm family (standing in for the
+# VOG-25), caseless. The 5.56A-91 export version was built beside it and removed (user, 2026-11-25).
 A91M_TEX = f'{TEX}/A91M'
-A91M_MAG = '556x45Magazine30_A91M'
 A91M_GUNS = {
     'A91M': dict(name='A-91M Assault Rifle', min=1.5, max=1.8, crit=25.0, critmult=6.0, hit=52, aim=50, recoil=15,
                  range=50.0, jam=0.5, cond=300, cmax=10, weight=4.0, ammo='swmg:bullet_762x39',
                  box='MarzGuns.762x39_Box', mag='MarzGuns.762x39Magazine30', clip=30, shoot='JS14Shoot', gain=2.0,
                  radius=175, volume=50, gl_name='A-91M Grenade Launcher'),
-    'A91M556': dict(name='5.56A-91 Assault Rifle', min=1.1, max=1.65, crit=25.0, critmult=4.2, hit=40, aim=45,
-                    recoil=15, range=48.0, jam=1.0, cond=180, cmax=10, weight=4.1, ammo='swmg:bullet_556x45',
-                    box='MarzGuns.556x45_Box', mag=f'{M}.{A91M_MAG}', clip=30, shoot='M16Shoot', gain=2.0,
-                    radius=186, volume=53, gl_name='5.56A-91 Grenade Launcher'),
 }
 A91M_AK_MAGS = GROZA_MAGS['GROZA1']          # GoM's AK-47 30 / 75, the main mod's RPK 40 / drum, at our size
 
 
 def a91m():
     allpts = load_points('a91m_points.json')
-    prop2 = allpts['_mag_prop2']
     out = [f"module {M} {{\n"]
     for gun in A91M_GUNS:
         pts = allpts[gun]
@@ -3933,14 +3925,6 @@ def a91m():
         cullFace = None,
     }}
 """)
-    out.append(f"""
-    model {A91M_MAG} {{
-        mesh     = weapons/magazines/GunsOfTienPost93_A91M_magazines|{A91M_MAG},
-        texture  = {TEX}/{A91M_MAG},
-        cullFace = None,
-        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
-{attachment('Bip01_Prop2', prop2)}    }}
-""")
     out.append("}\n")
     write(f'scripts/{M}/models_a91m.txt', ''.join(out))
 
@@ -3949,14 +3933,9 @@ def a91m():
     for gun, g in A91M_GUNS.items():
         lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
                  f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
-        if gun == 'A91M':
-            lines += [f"{w}{mag} {model} magazine magazine," for mag, model in A91M_AK_MAGS]
-            lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
-            lines += MD.model_lines(w, f"{M}.{gun}")
-        else:
-            lines += [f"{w}{M}.{A91M_MAG} {M}.{A91M_MAG} magazine magazine,"]
-            lines += [f"{w}MarzGuns.AR_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
-            lines += [f"{w}MarzGuns.{p} MarzGuns.{p} canon canon," for p in AR_MUZZLE]
+        lines += [f"{w}{mag} {model} magazine magazine," for mag, model in A91M_AK_MAGS]
+        lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+        lines += MD.model_lines(w, f"{M}.{gun}")
         lines += [f"{w}MarzGuns.Picatinny_Rail_Up {M}.{gun}_RAIL_UP rail_up rail_up,"]
         lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
         items.append(f"""
@@ -4144,29 +4123,9 @@ def a91m():
         CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
     }}
 """)
-    items.append(f"""
-    item {A91M_MAG} {{
-        AmmoType         = swmg:bullet_556x45,
-        CanStack         = false,
-        DisplayCategory  = WeaponMagazine,
-        Icon             = GunsOfTienPost93_{A91M_MAG},
-        ItemType         = base:weaponpart,
-        MaxAmmo          = 30,
-        MountOn          = {M}.A91M556,
-        PartType         = Clip,
-        Tags             = base:riflemagazine,
-        Weight           = 0.2,
-        WeightModifier   = 0.2,
-        StaticModel      = {M}.{A91M_MAG},
-        WorldStaticModel = {M}.{A91M_MAG},
-        UseDelta         = 1,
-        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
-        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
-    }}
-""")
     items.append("}\n")
     write(f'scripts/{M}/items_a91m.txt', ''.join(items))
-    # GoM repairs its AKs and FAMAS with Aiming=3
+    # GoM repairs its AKs with Aiming=3
     write(f'scripts/{M}/fixing_a91m.txt', "module Base {\n" + "".join(f"""    fixing Fix {gun} {{
         Require = {M}.{gun},
         Fixer   = MarzGuns.RepairPack; Aiming=3,
@@ -4174,11 +4133,12 @@ def a91m():
 """ for gun in A91M_GUNS) + "}\n")
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path))
+    for gone in ('A91M556', 'A91M556_GL', 'A91M556_GL_Integrated', '556x45Magazine30_A91M'):  # removed 2026-11-25
+        names.pop(f'{M}.{gone}', None)
     for gun, g in A91M_GUNS.items():
         names[f'{M}.{gun}'] = g['name']
         names[f'{M}.{gun}_GL'] = g['gl_name']                            # GoM: "M203 Grenade Launcher"
         names[f'{M}.{gun}_GL_Integrated'] = g['gl_name'].replace('Grenade', 'Integrated Grenade')
-    names[f'{M}.{A91M_MAG}'] = '5.56A-91 30Rds 5.56x45mm Magazine'      # GoM's "M14 20Rds 7.62x51mm Magazine"
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
