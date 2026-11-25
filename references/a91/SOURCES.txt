@@ -32,3 +32,28 @@ commons_Interpolitex_2011_405-49.jpg
                    1500 px: the same gun's right side from 3/4.
 The 5.56A-91 was built from KBP_A_91_noBG.png and removed the same day; the A-91M's measuring photo is A91M2.jpg,
 which shows the LEFT side.
+
+The 7.62-A91M, launcher over the barrel (2026-11-25, build_a91m_proto.py: the game's "A-91M Prototype", which
+takes this body but is stretched and rechambered to 7.62x54R without a reference). Its measuring photo is
+762-a91m.jpg above:
+it shows the RIGHT side (muzzle right; the entry above said left), 1.289 px a mm by GoM's AK magazine.
+top_launcher/zonwar_A-91.jpg
+                   zonwar.ru, https://zonwar.ru/avtomat/A-91.html (images/avtomat/A-91.jpg): the same gun, right
+                   side, the launcher's sight leaf folded (880 px, heavily sharpened).
+top_launcher/zonwar_A-91_3_fieldstrip.jpg, zonwar_A-91_4_556.jpg
+                   the same page: the later 7.62 gun field-stripped, the 5.56 gun.
+top_launcher/sar_001-22.jpg, sar_002-21.jpg, sar_header-155.jpg, sar_003-22.jpg
+                   Small Arms Review, C. Q. Cutshaw, "The TULA KBP A-91M 7.62x39mm Bullpup Assault Rifle" (V1N10,
+                   July 1998), https://smallarmsreview.com/?p=660: drawings of the right side with the GP-97
+                   launcher over the barrel, of the left side without it, and KBP's 1998 leaflet (595 mm, 400 mm
+                   barrel, 3 kg). An earlier, shorter body than the photos': two separate grips, a plain handle,
+                   a birdcage flash hider. Not built (drawings and one small photo only).
+Text: Small Arms Review (the GP-97 "an inverted GP-95", its trigger against the forward grip, "offset slightly to
+the right"; charging handle at the left front of the handle; the selector "similar in shape and function to that
+of Kalashnikov weapons, but in a different location"); Modern Firearms (selector on the right of the receiver,
+behind the trigger guard; the launcher integral, its trigger on the forward grip); bstudy.net and zonwar.ru (cases
+leave forward on the right over the pistol grip through a channel along the barrel; a folding sight for the
+launcher at the front). So the plate with red marks on the receiver's right is the SELECTOR, not a case deflector
+(the A-91M's notes call it that).
+Not reached: museum-arms.ru's A-91 exhibit page, weaponland.ru's images, vk.ru, zhais.ru (connections reset),
+the Wayback Machine (rate-limited); IMFDB's A-91_Prototype.jpg is 762-a91m.jpg at 600 px.

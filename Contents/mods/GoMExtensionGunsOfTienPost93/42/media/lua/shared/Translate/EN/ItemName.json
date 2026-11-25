@@ -166,7 +166,11 @@
   "GunsOfTienPost93.9A91_Muzzle_Mount_Device": "9x39mm Family Muzzle Mounting Device",
   "GunsOfTienPost93.9A91_Integrated_Stock_Folded": "9A-91 Integrated Stock (Folded)",
   "GunsOfTienPost93.9A91_Integrated_Stock_Deployed": "9A-91 Integrated Stock (Deployed)",
-  "GunsOfTienPost93.A91M": "A-91M Assault Rifle",
-  "GunsOfTienPost93.A91M_GL": "A-91M Grenade Launcher",
-  "GunsOfTienPost93.A91M_GL_Integrated": "A-91M Integrated Grenade Launcher"
+  "GunsOfTienPost93.A91M": "A-91M 39 Assault Rifle",
+  "GunsOfTienPost93.A91M_GL": "A-91M 39 Grenade Launcher",
+  "GunsOfTienPost93.A91M_GL_Integrated": "A-91M 39 Integrated Grenade Launcher",
+  "GunsOfTienPost93.A91MPROTO": "A-91M 54 Prototype Battle Rifle",
+  "GunsOfTienPost93.A91MPROTO_GL": "A-91M 54 Prototype Grenade Launcher",
+  "GunsOfTienPost93.A91MPROTO_GL_Integrated": "A-91M 54 Prototype Integrated Grenade Launcher",
+  "GunsOfTienPost93.762x54Magazine20_SV98": "SV-98 20Rds 7.62x54mm Magazine"
 }

@@ -791,6 +791,31 @@ Hot Brass: GoM's AKS-74U / AS VAL values.
 
 ## KBP A-91M (user, 2026-11-25: "Can we actually make A-91 with the grenade launcher? be sure to follow protocol of designing the gun. Do this while I sleep"; built overnight, rebuilt the same day, not played, model for review)
 
+**Names in the game** (user, 2026-11-25): "A-91M 39 Assault Rifle" and "A-91M 54 Prototype Battle Rifle"; this page keeps "A-91M" and "A-91M Prototype".
+
+**Built 2026-11-25:** the A-91M Prototype (`A91MPROTO`), a second item beside the A-91M on the body of the first
+A-91M, the one with the launcher over the barrel (user: "GoT A-91 7.62 version with the launcher on top"). Built
+first as that 7.62x39 gun from Modern Firearms' photo and liked ("I like it now"); then, as the two guns were the
+same in play, the user made it the longer-barrelled one in another calibre: "can we use a different calibre for the
+longer barrel too? Like 7.62x51 or 7.62x54. We can call this prototype", picked 7.62x54R, and "work on this without
+references. Just know the calibre and make some parts longer. take note of Scar-L and Scar-H differences". So it
+is an invented gun on a real body:
+
+| | A-91M | A-91M Prototype |
+|---|---|---|
+| round, magazine | 7.62x39, GoM's AK-47 30 / 75, our RPK 40 / drum | 7.62x54R, the SV-98's 10 and a 20 made for it (`762x54Magazine20_SV98`, which the SV-98 takes too: user, "introduce a 20-round mag which is also compatible with SV-98") |
+| class (sight window) | assault rifle (GoM's AK-47's) | battle rifle (GoM's FAL's) |
+| rate | 700 rpm, spread 0.27 / 3.3 | 600 rpm, spread 0.33 / 3.8 |
+| damage, hit, aim, recoil | 1.5-1.8, 52, 50, 15 | 1.3-1.9, 50, 56, 18 |
+| range, jam, weight | 50, 0.5, 4.0 kg | 60, 1.0, 4.8 kg |
+| sound | 175 / 50 | 231 / 66 |
+| muzzle | AK mount and devices | fixed flash hider, none |
+| body | 660 mm, launcher under | about 820 mm, launcher over, leaf raised in launcher mode |
+
+Loot places, optics, reload, launcher and Hot Brass are shared. CLAUDE.md "A-91M Prototype"; sheet
+docs/post93_a91m_proto_preview.png. The 1998 leaflet's shorter gun with two separate grips is a third real
+version, not built (drawings only).
+
 **Changed 2026-11-25 (user):** the 5.56A-91 below was built and then removed ("No remove 5.56 version. let's add the
 7.62 version instead with the launcher on top"); only the 7.62 mm A-91M ships, the over-barrel first 7.62-A91M is
 next (TODO). The first model was rejected and rebuilt in three remodel passes (CLAUDE.md "A-91M"). The 5.56

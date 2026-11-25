@@ -7,4 +7,5 @@
 - [GoT: no option for gun rules](got-no-sandbox-options-for-gun-rules.md) — rules the gun decides (subsonic racking) ship without a sandbox option
 - [Build every real variant](build-every-real-variant.md) — two real versions of a gun = build both, don't ask which
 - [Gather many gun images first](gather-many-gun-references.md) — before modelling a gun, collect MANY reference photos from every angle; never model from one or two side views
-- [Six remodel passes](three-remodel-passes.md) — a gun model's first pass is always ugly; do 6 part-by-part photo-vs-model passes (triggers first) before showing it
+- [Six remodel passes](three-remodel-passes.md) — a gun model's first pass is always ugly; do 6 part-by-part photo-vs-model passes (triggers first) before showing it; then check for holes, shine built as gaps, floating parts
+- [Variants must differ in play](variants-must-differ-in-play.md) — say what differs before building a second version; an invented "prototype" calibre is fine if named so

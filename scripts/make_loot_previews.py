@@ -94,7 +94,8 @@ def short_name(full):
                  " REVOLVER", " BOLT RIFLE", " BOLT-ACTION RIFLE", " SEMI-AUTO RIFLE", " LEVER-ACTION RIFLE"):
         if n.endswith(tail) and len(n) - len(tail) >= 3:
             n = n[:-len(tail)]
-    return n
+    # "A-91M 54 PROTOTYPE", beside "A-91M 39" (user, 2026-11-25); other battle rifles keep their kind
+    return re.sub(r"(?<=PROTOTYPE) BATTLE RIFLE$", "", n)
 
 
 # ---------------------------------------------------------------------------------------------- the pages

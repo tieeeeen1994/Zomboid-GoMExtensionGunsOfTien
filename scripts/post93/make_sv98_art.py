@@ -36,6 +36,8 @@ FBX_GUN = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_SV98.f
 FBX_MAGS = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazines.fbx")
 TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/SV98.png")
 MAG = "762x54Magazine10_SV98"
+MAG20 = "762x54Magazine20_SV98"            # build_sv98_mag20.py's, for the SV-98 and the A-91M Prototype
+FBX_MAG20 = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazine20.fbx")
 MTEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/%s.png" % MAG)
 RIFLE_CAMERAS = os.path.join(HERE, "scar_icon_cameras.json")
 PHOTO = os.path.join(ROOT, "references/sv98/sv98/ru_003.jpg")
@@ -47,11 +49,14 @@ def make_icons():
     gun = [(A.load_game(FBX_GUN, n), 0) for n in ("SV98_BODY", "SV98_BOLT", "SV98_BIPOD_FOLDED")]
     icon = A.shade(gun, [A.img(TEX)], dict(rifle["camera"]), rifle["light"])
     icon.save(os.path.join(ICONS, "item_GunsOfTienPost93_SV98.png"))
-    objs = {MAG: [(A.load_game(FBX_MAGS, MAG), 0)]}
+    objs = {MAG: [(A.load_game(FBX_MAGS, MAG), 0)], MAG20: [(A.load_game(FBX_MAG20, MAG20), 0)]}
     light = dict(rifle["light"], coef=[[a * 1.15, b * 1.15] for a, b in rifle["light"]["coef"]])
-    mag = A.shade(objs[MAG], [A.img(MTEX)], AUG.mag_cameras(objs)[MAG], light)
-    mag.save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % MAG))
-    return {"SV98": icon, MAG: mag}
+    cameras = AUG.mag_cameras(objs)                    # one scale: the 10-round one is drawn shorter than the 20
+    made = {"SV98": icon}
+    for name in (MAG, MAG20):
+        made[name] = A.shade(objs[name], [A.img(MTEX.replace(MAG, name))], cameras[name], light)
+        made[name].save(os.path.join(ICONS, "item_GunsOfTienPost93_%s.png" % name))
+    return made
 
 
 def check():
@@ -117,7 +122,7 @@ def sheet(renders, icons):
     p.put(None, 440, y, 780, "bolt forward", im=on_white(ImageOps.mirror(r("SV98_bolt_open"))))
     y += p.put(None, 1240, y, 780, "bolt back (bolt_fired)", im=on_white(ImageOps.mirror(r("SV98_bolt_back")))) + 20
     gom = Image.open(os.path.join(A.G, "textures", "item_M24.png")).convert("RGBA")
-    p.icons(20, y, [(gom, "M24 (GoM)"), (icons["SV98"], "SV-98"), (icons[MAG], "SV-98 10Rds")])
+    p.icons(20, y, [(gom, "M24 (GoM)"), (icons["SV98"], "SV-98"), (icons[MAG], "SV-98 10Rds"), (icons[MAG20], "SV-98 20Rds")])
     p.save(PREVIEW)
 
 

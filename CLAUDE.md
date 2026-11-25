@@ -528,7 +528,13 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   launcher's loop trigger into a free-floating oval and the selector's steel lever into painted white lines); a
   3/4 photo decides what a shape is (the cheek "recess" was a raised pad on a chamfer); lay the render on the photo
   by the model's own frame, not by best overlap (a larger magazine pulls it 4 px off); the outline overlap score
-  (IoU) is no measure of looks (the rejected model and the rebuilt one both score 0.82-0.83).
+  (IoU) is no measure of looks (the rejected model and the rebuilt one both score 0.82-0.83). From the A-91M
+  Prototype's body
+  (2026-11-25, three passes asked for that gun, then three corrections from the user's own crops): a bright area
+  bounded by a part's edges is shine on that part, not an opening ("it's just shine and NOT transparent"); bodies
+  that meet must overlap, not touch ("I don't know why your models have holes"); a part the photo shows dark
+  down to its support sits on it ("the launcher is floating"). Run `make_a91m_art.openings` (or its like) on
+  every gun before showing it: it lists each see-through region of the side view against the photo.
 - **Triggers must sit where the photo has them** (user, 2026-11-13: "the trigger is not aligned though.... i've told
   you this many times. the triggers you make are not good"): check every new gun's trigger blade against its
   measuring photo by laying the photo-scale render's outline over it, row by row, before showing the gun. GoM's AR15
@@ -977,6 +983,13 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   one view and scale (`A91_SCALE`); slots gun, gun, magazine, mount device, can, GoM's 9x39 box. Rebuild:
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> 9a91 vsk94`, then
   `make_workshop_art.py --renders <dir> preview42`. Not yet on the Steam page.
+  preview43 (3.25.0, 2026-11-25): Post-93's A-91M 39 and A-91M 54 Prototype through `gun_pair`, as preview42:
+  render_ad_guns.py `a91m` (GoM's AK-47 30 at our size, the handle's rail + Aimpoint) and `a91mproto` (the
+  20-round SV-98 magazine, rail + Elcan), launcher leaves folded, `RIFLE_SCALE`; slots gun, gun, GoM's AK-47 30,
+  the 20-round magazine, GoM's 7.62x39, 7.62x54 and 40mm boxes. Rebuild: `blender -b --factory-startup -P
+  scripts/render_ad_guns.py -- <absolute dir> a91m a91mproto`, then `make_workshop_art.py --renders <dir>
+  preview43`. Loot pages preview34 / 36 and the suppressor page preview41 were regenerated with it (the 39 takes
+  the AK cans). Not yet on the Steam page.
   preview16 (2026-11-01) is the main mod's Glock 21, laid out like preview13: render_ad_guns.py `glock21` (bare, as in
   1993) over `glock21_fitted` (GoM's Beretta mount + PS1, TL light, .45 mount + P45), one scale and the bare gun's
   camera so they line up (`centre_on_assembled`; `assembled` specs take `upright` for guns modelled upside down),
@@ -3384,12 +3397,16 @@ adds bloat"), no full stops.
 
 ## A-91M (Post-93, 2026-11-25; rebuilt the same day in eight remodel passes; model accepted: "this is good enough"; not played)
 
+- **Names in the game** (user, 2026-11-25: "let's name these A-91M 39 and A-91M 54 Prototype"): "A-91M 39 Assault Rifle" (`A91M`)
+  and "A-91M 54 Prototype Battle Rifle" (`A91MPROTO`), their launchers "A-91M 39 / A-91M 54 Prototype Grenade
+  Launcher"; README, forum, changenotes and mod.info use them. These notes, the comments and the item IDs keep
+  "A-91M" and "A-91M Prototype".
 - **What**: KBP's 1998 bullpup with the integral 40 mm launcher under the barrel, the 7.62 mm A-91M of KBP's
   catalogue (GoM's AK magazines). Design and decisions in docs/post93_design.md "KBP A-91M"; review sheet
   `docs/post93_a91m_preview.png`. **The 5.56A-91 export gun was built beside it overnight and removed** (user,
   2026-11-25: "No remove 5.56 version"): its body, magazine, launcher, items, names, loot, Hot Brass and tooltip
-  lines are gone, `gen_post93_guns.py a91m()` pops its names from ItemName.json. Next (TODO): the first 7.62-A91M
-  with the launcher **over** the barrel (references/a91/762-a91m.jpg). The 1990 "A-91" is a different, conventional
+  lines are gone, `gen_post93_guns.py a91m()` pops its names from ItemName.json. The first 7.62-A91M
+  with the launcher **over** the barrel is built beside it as the A-91M Prototype: section "A-91M Prototype". The 1990 "A-91" is a different, conventional
   compact rifle; the late 5.56 gun had a railed forearm instead of the launcher.
 - **Files**: `scripts/post93/build_a91m.py` (Blender, ~2 min: `GunsOfTienPost93_A91M.fbx` A91M_BODY 6,152 tris /
   A91M_BOLT / A91M_RAIL_UP, `A91M.png` 512, `a91m_points.json`), `render_a91m.py -- DIR`, `make_a91m_art.py
@@ -3466,6 +3483,108 @@ adds bloat"), no full stops.
 - **Muzzle**: `canon` is the Grozas' AK one (0.0282 behind the muzzle), so GoM's AK devices overlap the built-in
   slotted brake (the AKM slant compensator 7.4 in), as on the Groza-1.
 - **Not done**: a Workshop preview; playing it.
+
+## A-91M Prototype (Post-93, 2026-11-25; three remodel passes, the user's corrections, then rechambered; not played)
+
+- **What**: `GunsOfTienPost93.A91MPROTO` "A-91M 54 Prototype Battle Rifle" (names: section "A-91M"): the body of the first A-91M, its 40 mm
+  launcher OVER the barrel (user: "GoT A-91 7.62 version with the launcher on top"), which in the game is a
+  7.62x54R battle rifle on the SV-98's magazines (its 10, and a 20 made for it). **Two steps the same day.** First the real gun: 7.62x39,
+  the A-91M's magazines and numbers, named "7.62-A91M" (id `762A91M`), its body from the photo; the user liked the
+  model ("Nah this is fine. I like it now"). Then, seeing that the two guns were the same in play: "Let's both name
+  them the same, except one of them has a longer barrel", "can we use a different calibre for the longer barrel
+  too? Like 7.62x51 or 7.62x54. We can call this prototype", picked 7.62x54R (told it is an invented chambering),
+  and "you'll have to work on this without references. Just know the calibre and make some parts longer. take note
+  of Scar-L and Scar-H differences and other guns. this is a prototype after all." Everything below about the
+  photo is the first step; **"Rechambered" is the second**. Shared with the A-91M
+  (`shared/GunsOfTienPost93/A91M.lua` loops over both): FAMAS reload, handle rail and optics, launcher, loot places,
+  Hot Brass values. Sheet `docs/post93_a91m_proto_preview.png`.
+- **Rechambered** (design table in docs/post93_design.md "KBP A-91M"): the SV-98's magazine profile (GoM's SVD
+  magazine at first, see "The 20-round magazine"), 600 rpm with more spread, the HK417's damage with the SVU's reach, slower to aim, more
+  kick, Jam 1.0, 4.8 kg, GoM's FAL's sight window, GoM's SVD's shot at 231 / 66, no muzzle mount or devices
+  (`muzzle=False` in `A91M_GUNS`; taken out of muzzle_devices.py's AK762 again). **The body is stretched in
+  `stretch(G)`**, not redrawn: everything behind the photo's magazine well front (x 300) moves back 30 px = 23 mm
+  (the round is 21 mm longer: well and bolt travel), the barrel is 1 mm thicker a side and 35 mm longer ahead of
+  the launcher's front plate, the flash hider bigger; 824 mm long. The texture's fixed places follow through
+  `REAR`. The magazine sits with its rear on the catch and its top 15 mm in the receiver, upright (`MAG_FIT`). The
+  photo's overlay and the `openings` check no longer fit behind the well (the sling ring is flagged: it sits 30 px
+  behind the photo's); render_a91m.py and make_a91m_art.py draw each gun's own magazine (`SPECS`).
+- **The 20-round magazine** (user, 2026-11-25, after hearing that the SVD magazine's 10 rounds were thin for
+  automatic fire: "yes introduce a 20-round mag which is also compatible with SV-98"):
+  `GunsOfTienPost93.762x54Magazine20_SV98` "SV-98 20Rds 7.62x54mm Magazine", an invented magazine of the SV-98's
+  pattern. A magazine that fits both wells makes them one pattern, so the prototype takes the SV-98's 10 as well
+  and no longer GoM's SVD magazine. `scripts/post93/build_sv98_mag20.py` imports build_sv98.py and calls its
+  `build_magazine(extra, name)` (55 mm more body, the same origin at the feed lips' front) into its own
+  `GunsOfTienPost93_SV98_magazine20.fbx` and 128 px texture, so the SV-98's files are not rebuilt.
+  `gen_post93_guns.py` `SV98_MAGS` writes both magazines' models and items (MountOn = SV98;A91MPROTO in the
+  script); SV98.lua's profile "7.62x54mm SV-98" holds both and A91M.lua registers the prototype with it
+  (`require "GunsOfTienPost93/SV98"`, `GunsOfTienPost93_SV98.MAGS / PROFILE`). The prototype's receiver is 16.5
+  mm a side (`REC_HALF`) over the magazines' 15, which would have lain in its faces. Found: the prototype with
+  the 20 (40 %) or the 10 (10 %), its kits with 20s, the 20 also in GoM's high-capacity Russian magazine
+  spawner; the SV-98 is found with its 10 as before. make_sv98_art.py draws both magazines' icons at one scale,
+  so the 10's icon is smaller than it was. Not rendered: the SV-98 with the 20 in (it hangs 55 mm lower).
+- **Files**: `scripts/post93/build_a91m_proto.py` (imports build_a91m.py for the helpers, materials, wear and the
+  handle clamp, and sets its photo frame through that module's globals: `base.S / ORIGIN / BORE / P`;
+  `GunsOfTienPost93_A91MPROTO.fbx` A91MPROTO_BODY 7,776 tris / A91MPROTO_BODY_GL / A91MPROTO_BOLT /
+  A91MPROTO_RAIL_UP, `A91MPROTO.png` 512, `a91m_proto_points.json`). `render_a91m.py -- DIR A91MPROTO` and
+  `make_a91m_art.py A91MPROTO
+  [--renders DIR]` take the gun as an argument (default: the A-91M, as before). `gen_post93_guns.py a91m()` writes
+  both guns into models_a91m.txt / items_a91m.txt / fixing_a91m.txt; a gun's `points` / `file` / `gl_body` /
+  `mags` / `muzzle` keys name its points file, FBX, the launcher weapon's mesh, its magazines and whether it
+  takes the AK muzzle mount.
+- **References** (references/a91, SOURCES.txt): only two photos of this gun exist in reach, both the RIGHT side:
+  Modern Firearms' 762-a91m.jpg (1024 px, the measuring photo, leaf raised) and zonwar.ru's (880 px, leaf folded).
+  Small Arms Review's 1998 article has drawings of an earlier, shorter gun with two separate grips (KBP's leaflet:
+  595 mm): a third real version, not built. No photo shows the left side, top or front: the left is the right
+  without the selector plate, the case chute and the wire; the widths are the A-91M's.
+- **Which side a photo shows**: muzzle on the right = the gun's RIGHT side. SOURCES.txt had this photo down as the
+  left side. So `_photo` is rendered from the right (render_a91m.py `SPECS`).
+- **Scale from the magazine**: GoM's AK-47 magazine outline fitted to the photo's magazine (scale, tilt, place;
+  scratch tool, a coarse grid then hill climbing on the overlap) gives 1.289 px a mm, a tilt of 4.25 degrees
+  (bottom forward) and makes the gun about 760 mm long, against the later A-91M's 660. The same fit on the A-91M's
+  photo gives 1.2425 against the 1.294 it was built at (from "660 mm"), which is the "GoM's larger magazine" noted
+  there. The barrel, gas tube and flash hider come out at AK sizes at 1.289 (15, 19 and 26 mm), which 660 mm would
+  not give. **The fit matches GoM's whole magazine to the photo's seen part** (GoM's is that much shorter than a
+  real one), so its origin put the lips at the receiver's bottom edge; as the 7.62x39 gun the magazine was
+  seated 22.7 mm in instead (the Grozas' seat), moved up along its own axis, its `magazine` point carrying the
+  tilt (`rotate = 4.25 0 0`: a rotation about X reads the same in the game, the render scripts and
+  make_mp7_art's `attach`). The game's gun now draws the SV-98's magazines (see "The 20-round magazine").
+- **What the parts are** (text sources in SOURCES.txt): the plate with a pointer and red marks on the receiver's
+  right is the **AK-style selector** (the A-91M's notes call its twin a case deflector: wrong, TODO); the bar under
+  the beam ending over the grip is the **case chute** (cases leave forward on the right); the hook under the handle
+  is the charging handle; the tall blade is the **launcher's folding sight leaf**. Raised it is in the measuring
+  photo; folded, zonwar's side view does not show it, and a fin as wide as the photo's cannot lie on top of the
+  tube without cutting into it, so it is hung on a cross pin beside the tube's left and folds forward along it.
+  The rifle's body has it folded, `A91MPROTO_BODY_GL` (the launcher weapon's model: Gunworks' Underbarrel `model =
+  "self"` draws the launcher item's own WeaponSprite) has it raised. Both bodies are one core mesh joined with the
+  leaf's mesh, the raised one turned about its pin after unwrapping and baking, so they share every texel.
+- **The launcher** sits 4 mm right of the centre (Small Arms Review: "offset slightly to the right"), `muzzle_gl`
+  at its mouth.
+- **Passes** (each: render, photo over model part by part at 4-14x, list, fix):
+  - *first build*: the magazine hung below the receiver (the fit's origin), the guard a thin wire, the launcher a
+    plain cone on a box, floating catch and lever, black "dark" parts read as holes;
+  - *pass 1*: magazine seated; the launcher's bell, hex nut, breech housing under the axis, the leaf's lug; the
+    stock split into a beam and a narrower lower; tones (a 40 "dark" for the tubes); grips' ribs deeper;
+  - *pass 2*: the guard's bow as a circle, the hook thicker, the bell's rim, clips;
+  - *pass 3*: the guard's front run straight down from the frame, the cover's seam 2.5 px lower, heads that were
+    texel blocks (the receiver's pin, the selector plate's rivets) made meshes, parts that only touched made to
+    overlap; then grip, strut and fore grip as ONE slab with the opening as its hole (three slabs left a crease).
+- **The user's corrections while it was being built** (2026-11-25, each with a crop of a render):
+  - "this trigger is bad. in your reference. it's just shine and NOT transparent": behind the trigger the guard's
+    two edges part, and the bright wedge between them had been built as a gap between two thin members. It is the
+    same polished metal: one solid piece. **White in a studio photo is not always background.**
+  - "I don't know why your models have holes": slits of 1-3 px where bodies only met edge to edge (cover / butt /
+    receiver, receiver / magazine catch).
+  - "the launcher is floating which is not correct": brightness down the photo's columns shows the beam's top at
+    row 193, not 199 (behind the launcher the gas tube lies sunk in it and hides the edge), and the photo dark from
+    the tube down to it. The beam was raised and a saddle put under the breech and the tube's rear.
+  - "this part should be solid" (a 28 px crop, not placed for certain): every remaining enclosed opening where
+    the photo is not background was closed (under the tube ahead of the beam, over the sear).
+- **The check made from this** (`make_a91m_art.openings`, run by the sheet): flood-fills the photo-scale render's
+  see-through regions and prints each enclosed one with the photo's mean brightness there; under 180 it is flagged.
+  What remains open here: the handle, the finger opening, the frame's opening, a 12 px gap under the tube's mouth,
+  the sling ring. A `slab` whose bar is thinner than two bevels turns inside out (the frame's top bar closed the
+  top of the opening until it was made 22 mm): the same check shows it as an opening that shrank.
+- **Not done**: playing it; a Workshop preview; the left side is a guess; texture at 512 like the A-91M.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

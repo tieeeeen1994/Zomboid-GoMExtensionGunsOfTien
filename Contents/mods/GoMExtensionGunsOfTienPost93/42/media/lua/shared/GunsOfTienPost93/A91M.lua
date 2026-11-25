@@ -1,7 +1,11 @@
 --[[
     Guns of Tien - Post-93 -- KBP's A-91M bullpup with its 40 mm launcher (user, 2026-11-25; docs/post93_design.md
     "KBP A-91M") in Gunworks' and Guns of Marz's registries. The 5.56A-91 export version was built beside it and
-    removed (user, 2026-11-25).
+    removed (user, 2026-11-25). The A-91M Prototype is the first A-91M's body, its launcher over the barrel (user,
+    2026-11-25; scripts/post93/build_a91m_proto.py): in the game the longer-barrelled gun of the two, in 7.62x54R on
+    the SV-98's magazines, its 10 and the 20 made for this gun (an invented chambering, the user's choice; SV98.lua's
+    profile), 600 rpm, no muzzle parts; everything
+    else below is shared, and its launcher weapon's model raises the launcher's sight leaf.
 
     The bullpup assault rifle and grenade launcher of 1998 (scripts/post93/build_a91m.py; items_a91m.txt):
     - 7.62x39mm, GoM's "762x39" magazines as the Groza-1 (its AK-47 30 and 75, the main mod's RPK 40 and drum), GoM's
@@ -38,24 +42,28 @@ for _, file in ipairs({ "Ammunition", "Magazines", "RPM", "ReloadsAndAnims/Reloa
 end
 
 local M = "GunsOfTienPost93."
-local A91M = M .. "A91M"
-local GUNS = { A91M }
+local A91M, PROTO = M .. "A91M", M .. "A91MPROTO"
+local GUNS = { A91M, PROTO }
 
-local MAGS = {
-    [A91M] = { "MarzGuns.762x39Magazine30", "MarzGuns.762x39Magazine75", "GunsOfTien.762x39Magazine40_RPK",
-        "GunsOfTien.762x39Drum75_RPK" },
-}
+local AK_MAGS = { "MarzGuns.762x39Magazine30", "MarzGuns.762x39Magazine75", "GunsOfTien.762x39Magazine40_RPK",
+    "GunsOfTien.762x39Drum75_RPK" }
+require("GunsOfTienPost93/SV98")             -- the SV-98's magazines and their profile
+local SV98_MAGS = GunsOfTienPost93_SV98.MAGS
+local MAGS = { [A91M] = AK_MAGS, [PROTO] = SV98_MAGS }
 
 -------------------------------------------------
--- Magazines: GoM's AK profile
+-- Magazines: GoM's AK profile; the prototype the SV-98's (its 10 and 20, in the 7.62x54mm family from SV98.lua)
 -------------------------------------------------
 Magazine.RegisterWeaponWithProfile("762x39", A91M)
+Magazine.RegisterWeaponWithProfile(GunsOfTienPost93_SV98.PROFILE, PROTO)
 
 -------------------------------------------------
 -- Rate of fire: 700 rpm (600-800 published). The bullpup's straight line as the Grozas: a little steadier than
 -- GoM's AK-47 (0.3 / 3.5)
 -------------------------------------------------
 RateOfFire.RegisterWeapon(A91M, { rpm = 700, enableSpread = true, sustainedSpread = 0.27, maxSpread = 3.3 })
+-- the prototype's full-power round: slower and harder to hold
+RateOfFire.RegisterWeapon(PROTO, { rpm = 600, enableSpread = true, sustainedSpread = 0.33, maxSpread = 3.8 })
 
 -------------------------------------------------
 -- The bolt (GoM's AK bolt swap: the handle on the piston rod), closing on the empty chamber as an AK does, and the
@@ -71,12 +79,14 @@ for _, gun in ipairs(GUNS) do
         cycleTicks = 3,
     })
 end
+-- GoM's magazines in the off hand at our size (HandMagazines); the prototype's are our own, already at it
 local hand = {}
-for _, mag in ipairs(MAGS[A91M]) do
+for _, mag in ipairs(AK_MAGS) do
     if mag:sub(1, 9) == "MarzGuns." then hand[mag] = "GunsOfTien." .. mag:match("[^.]+$") .. "_Hand" end
 end
 HandMagazines.register(A91M, hand)
 ReloadAnim.RegisterWeapon(A91M, GoMReloads.profile("famas_rifle", { partState = { props = HandMagazines.props(hand) } }))
+ReloadAnim.RegisterWeapon(PROTO, GoMReloads.profile("famas_rifle"))
 
 -------------------------------------------------
 -- GoM's Picatinny Rail (Up) on the carrying handle, and GoM's optics on it
@@ -135,7 +145,9 @@ local function appendMountOn(partType, guns)
 end
 
 local function appendAll()
-    for _, mag in ipairs(MAGS[A91M]) do appendMountOn(mag, { A91M }) end
+    for _, gun in ipairs(GUNS) do
+        for _, mag in ipairs(MAGS[gun]) do appendMountOn(mag, { gun }) end
+    end
     appendMountOn("MarzGuns.AK_Muzzle_Mount_Device", { A91M })
 end
 
@@ -162,10 +174,12 @@ end
 local ok, points = pcall(require, "MarzWeapons/OnCreate/AttachmentPointsTable")
 local spawnTable = ok and type(points) == "table" and points.weaponAttachmentTablesAndChances
 if spawnTable then
-    local optionals = {
+    local found = {
         [A91M] = { "MarzGuns.762x39Magazine30:40", "MarzGuns.762x39Magazine75:1", "GunsOfTien.762x39Magazine40_RPK:3" },
+        [PROTO] = { SV98_MAGS[2] .. ":40", SV98_MAGS[1] .. ":10" },   -- its 20 mostly, now and then the SV-98's 10
     }
-    for gun, list in pairs(optionals) do
+    for _, gun in ipairs(GUNS) do
+        local list = found[gun]
         for _, o in ipairs(optics()) do list[#list + 1] = o end
         spawnTable[gun] = { required = { "MarzGuns.Bolt_Lock", gun .. "_GL_Integrated" }, optionals = list }
     end

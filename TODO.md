@@ -38,19 +38,29 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       calibres later.
 - [ ] Play the new rounds: box and carton icons, open / pack recipes, Ammo Maker's Tokarev loads, Hot Brass casings.
 - [ ] Decide: loot for the two rounds now, or only with the Tokarev guns (none for now).
-- [ ] Upload GoT 3.25.0 once played; changenotes.txt is written (A-91M only since the 5.56A-91 was removed).
+- [ ] Upload GoT 3.25.0 once played; changenotes.txt is written (A-91M 39 and A-91M 54 Prototype, the 20-round
+      SV-98 magazine). Previews built 2026-11-25: preview43 (the two guns), loot pages preview34 / 36 and the
+      suppressor page preview41 regenerated; add preview43 to the Steam page.
 
 ## The A-91M (Post-93, rebuilt 2026-11-25 in eight remodel passes; model accepted 2026-11-25: "good enough")
 
-- [ ] **The first 7.62-A91M, launcher over the barrel** (user, 2026-11-25: "let's add the 7.62 version instead
-      with the launcher on top"; nothing built yet, noted only). A different body: references/a91/762-a91m.jpg
-      (left side), more photos to gather first. It is also the test of the remodel-passes rule (CLAUDE.md
-      Decisions, six since 2026-11-25): first build, then six part-by-part passes before the user sees it. It replaces the
-      removed 5.56A-91 as the release's second gun.
+- [ ] **The A-91M Prototype** (`A91MPROTO`: the launcher-over-the-barrel body, in the game a 7.62x54R battle rifle
+      on the SV-98's magazines, a 20 made for it; built 2026-11-25, the model liked by the user as the 7.62x39 gun, then stretched and
+      rechambered at the user's word without a reference; CLAUDE.md "A-91M Prototype"; sheet
+      docs/post93_a91m_proto_preview.png): look over the stretched body (rear 23 mm longer, barrel 35 mm longer).
+      Open: the remaining see-through places are the handle, the finger opening, the frame's opening, the sling
+      ring and a 12 px gap under the tube's mouth; say if any of those should be solid too.
+- [ ] Play it: the launcher swap and its raised sight leaf, the 20-round magazine in the well and in the off hand
+      on the FAMAS reload (our own magazine, no hand copy: as the 9A-91's), the SV-98 with the 20 in (it hangs
+      55 mm under the stock; not rendered), the charging hook riding back, optics on the handle, Hot Brass forward, loot, its numbers
+      against the SVU and HK417.
+- [ ] Decide: the 1998 leaflet's shorter 7.62 A-91M with two separate grips (Small Arms Review's drawings,
+      references/a91/top_launcher) as a third gun? Only drawings and one small photo exist.
+- [ ] The A-91M's "case deflector" on the right is the selector (references/a91/SOURCES.txt): rename it in its
+      notes and builder; its left-side "selector lever" needs another look.
 - [ ] Review the decisions in docs/post93_design.md "KBP A-91M" (launcher integral, no PBS-1, loot).
 - [ ] Play it: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
       charging hook riding back, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
-- [ ] A Workshop preview (render_ad_guns.py / make_workshop_art.py).
 
 ## Smaller open items
 

@@ -1,6 +1,9 @@
 """Review renders of the exported A-91M, read back from the FBX file (Blender 5.2, headless).
 
-    blender -b --factory-startup -P scripts/post93/render_a91m.py -- OUT_DIR
+    blender -b --factory-startup -P scripts/post93/render_a91m.py -- OUT_DIR [GUN ...]
+
+GUN: A91M (the default) or A91MPROTO (build_a91m_proto.py's gun: its measuring photo shows the RIGHT side, so its
+`_photo` view is the right side with the muzzle on the right; `_gl*` are the launcher weapon's body, the leaf raised).
 
 Imports what build_a91m.py wrote with A91M.png; the A-91M with GoM's AK-47 30 (at our size, as the Grozas draw it);
 GoM's rail on our handle clamp and GoM's LR4X on `scope` for the fitted views; places
@@ -24,12 +27,18 @@ ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 MEDIA = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media")
 GOM = "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/3722134990/mods/GunsOfMarz/42.16/media"
 OUT = sys.argv[sys.argv.index("--") + 1]
-PTS = json.load(open(os.path.join(HERE, "a91m_points.json")))
 K = 0.000603
-GUN_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_A91M.fbx")
-TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/A91M.png")
 GOM_SCALE = 0.603 / 0.645
-PHOTO_PX = {"A91M": 1.294}
+# gun -> its points file, the measuring photo's px a mm, the side that photo shows, the magazine drawn in it (FBX,
+# node, texture, scale: GoM's at our size, our own as built)
+SPECS = {"A91M": ("a91m_points.json", 1.294, "left",
+                  (GOM + "/models_X/weapons/magazines/assault_rifles.fbx", "762x39Magazine30",
+                   GOM + "/textures/weapons/magazines/assault_rifles/762x39Magazine30.png", GOM_SCALE)),
+         "A91MPROTO": ("a91m_proto_points.json", 1.289, "right",
+                       (MEDIA + "/models_X/weapons/magazines/GunsOfTienPost93_SV98_magazine20.fbx",
+                        "762x54Magazine20_SV98",
+                        MEDIA + "/textures/weapons/GunsOfTienPost93/762x54Magazine20_SV98.png", 1.0))}
+GUNS = [a for a in sys.argv[sys.argv.index("--") + 2:] if a in SPECS] or ["A91M"]
 
 
 def material(texture):
@@ -116,14 +125,14 @@ def main():
     sc.collection.objects.link(cam)
     sc.camera = cam
 
-    nodes = [g + s for g in ("A91M",) for s in ("_BODY", "_BOLT", "_RAIL_UP")]
     info = {}
-    for gun in ("A91M",):
-        pts = PTS[gun]
-        g = load(GUN_FBX, {n: TEX for n in nodes})
-        mag = load(GOM + "/models_X/weapons/magazines/assault_rifles.fbx",
-                   {"762x39Magazine30": GOM + "/textures/weapons/magazines/assault_rifles/762x39Magazine30.png"},
-                   GOM_SCALE)["762x39Magazine30"]
+    for gun in GUNS:
+        points_file, photo_px, photo_side, (mag_fbx, mag_node, mag_tex, mag_scale) = SPECS[gun]
+        pts = json.load(open(os.path.join(HERE, points_file)))[gun]
+        GUN_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_%s.fbx" % gun)
+        TEX = os.path.join(MEDIA, "textures/weapons/GunsOfTienPost93/%s.png" % gun)
+        g = load(GUN_FBX, {gun + s: TEX for s in ("_BODY", "_BODY_GL", "_BOLT", "_RAIL_UP")})
+        mag = load(mag_fbx, {mag_node: mag_tex}, mag_scale)[mag_node]
         scope = load(GOM + "/models_X/weapons/parts/scopes.fbx",
                      {"LR4X_Scope": GOM + "/textures/weapons/parts/scopes/LR4X_Scope.png"})["LR4X_Scope"]
         for o in g.values():
@@ -139,10 +148,11 @@ def main():
         span = (hi2.y - lo2.y) / K + 40
         tall = (hi2.z - lo2.z) / K + 60
         right, left = (1, 0, 0), (-1, 0, 0)         # looking along: from the gun's right, from its left
+        shown = right if photo_side == "right" else left    # the measuring photo's side
         base = [body, bolt, mag]
         # the bare body at its measuring photo's scale, framed on the body alone, for the overlay
         cb = Vector((0.0, (lo2.y + hi2.y) / 2.0, (lo2.z + hi2.z) / 2.0))
-        render(gun + "_photo", [body, bolt, mag], left, (hi2.y - lo2.y) / K, cb, (hi2.z - lo2.z) / K, PHOTO_PX[gun])
+        render(gun + "_photo", [body, bolt, mag], shown, (hi2.y - lo2.y) / K, cb, (hi2.z - lo2.z) / K, photo_px)
         info[gun]["photo_frame_mm"] = [round(lo2.y / K, 3), round(hi2.y / K, 3), round(lo2.z / K, 3),
                                        round(hi2.z / K, 3)]
         render(gun + "_right", base, right, span, centre, tall)
@@ -156,8 +166,12 @@ def main():
         render(gun + "_q_low", base, (-0.6, -0.6, 0.35), span, centre, tall + 150)
         render(gun + "_top", base + [rail, scope], (0, 0, -1), 140, centre, span)
         render(gun + "_front", base, (0, -1, 0), 220, centre, tall)
+        if gun + "_BODY_GL" in g:                   # the launcher weapon's body (the sight leaf raised)
+            gl = [g[gun + "_BODY_GL"], bolt, mag]
+            render(gun + "_gl_right", gl, right, span, centre, tall + 80)
+            render(gun + "_gl_q", gl, (-0.7, -0.45, -0.5), span, centre, tall + 150)
         place(bolt, pts["bolt_fired"])
-        render(gun + "_bolt_back", base, left, span, centre, tall)
+        render(gun + "_bolt_back", base, shown, span, centre, tall)
         for o in list(g.values()) + [mag, scope]:
             bpy.data.objects.remove(o)
     print("SIZES", info)

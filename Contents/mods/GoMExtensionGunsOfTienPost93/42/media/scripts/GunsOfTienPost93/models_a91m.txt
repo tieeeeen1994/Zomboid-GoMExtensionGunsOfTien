@@ -37,4 +37,42 @@ module GunsOfTienPost93 {
         texture  = weapons/GunsOfTienPost93/A91M,
         cullFace = None,
     }
+
+    model A91MPROTO {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91MPROTO|A91MPROTO_BODY,
+        texture  = weapons/GunsOfTienPost93/A91MPROTO,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.2802 0.0213, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0635 -0.0002, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0280 0.0833, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2520 0.0213, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91MPROTO_GL {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91MPROTO|A91MPROTO_BODY_GL,
+        texture  = weapons/GunsOfTienPost93/A91MPROTO,
+        cullFace = None,
+        attachment muzzle { offset = -0.0024 0.2054 0.0458, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+        attachment magazine { offset = 0.0000 -0.0635 -0.0002, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0603 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0280 0.0833, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2520 0.0213, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model A91MPROTO_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91MPROTO|A91MPROTO_BOLT,
+        texture  = weapons/GunsOfTienPost93/A91MPROTO,
+        cullFace = None,
+    }
+
+    model A91MPROTO_RAIL_UP {
+        mesh     = weapons/firearms/GunsOfTienPost93_A91MPROTO|A91MPROTO_RAIL_UP,
+        texture  = weapons/GunsOfTienPost93/A91MPROTO,
+        cullFace = None,
+    }
 }

@@ -12,7 +12,7 @@ local SMG = require("GunsOfTien/GripStances")
 local M = "GunsOfTienPost93."
 local entries = {}
 for _, gun in ipairs({ "AUGA3", "AUGPARA", "AUGHBAR", "MDR223", "MDR308", "PS90", "GROZA1", "GROZAGL", "GROZA4",
-    "UMP45", "UMP9", "VECTOR45", "VECTORCRB", "A91M" }) do
+    "UMP45", "UMP9", "VECTOR45", "VECTORCRB", "A91M", "A91MPROTO" }) do
     entries[M .. gun] = SMG
 end
 GripAnim.RegisterMultipleWeapons(entries)

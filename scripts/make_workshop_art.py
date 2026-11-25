@@ -16,6 +16,7 @@ preview27.png (1024x1024, Post-93's HK416 and HK416 .22 Quad Rail Pistol, the sa
 Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024, the .22 LR loads, the same),
 preview30.png (1024x1024, the Walther PPK, the same), preview31.png (1024x1024, the SVU, the same), preview32.png
 (1024x1024, Post-93's SV-98 and SV-99, the same), preview42.png (1024x1024, Post-93's 9A-91 and VSK-94, the same),
+preview43.png (1024x1024, Post-93's A-91M 39 and A-91M 54 Prototype, the same),
 preview38.png (1024x1024, the Ammo Maker part cartons and crates,
 the same; previews 33-37 are scripts/make_loot_previews.py's)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
@@ -1508,6 +1509,20 @@ def preview42(path, W=1024):
              gap=14)
 
 
+def preview43(path, W=1024):
+    """Post-93's A-91M 39 and A-91M 54 Prototype (3.25.0), as gun_pair: the 39 with GoM's AK-47 30 and an Aimpoint
+    ("a91m"); the 54 Prototype with the 20-round magazine and an Elcan ("a91mproto"); then their slot row."""
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    gom = lambda n: os.path.join(GOM, "item_%s.png" % n)
+    gun_pair(path, (("a91m", "A-91M 39", "7.62X39MM  \u00b7  700 RPM"),
+                    ("a91mproto", "A-91M 54 PROTOTYPE", "7.62X54MMR  \u00b7  600 RPM")),
+             [post("A91M"), post("A91MPROTO"), gom("762x39Magazine30"), post("762x54Magazine20_SV98"),
+              gom("762x39_Box"), gom("762x54_Box"), gom("40mm_Box")],
+             "GUNS OF MARZ AK MAGAZINES  \u00b7  A NEW 20-ROUND SV-98 MAGAZINE",
+             ("40MM LAUNCHER UNDER THE BARREL, OR OVER IT  \u00b7  OPTICS ON THE HANDLE",), W, bottom=384, slot_y=398,
+             gap=14)
+
+
 AMMO_MAKER_TEXTURES = next((p for p in (
     os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/2788256295/mods/"
                        "AmmoMaker/common/media/textures"),
@@ -1757,6 +1772,8 @@ if __name__ == "__main__":
         preview32(os.path.join(ROOT, "preview32.png"))   # Post-93's SV-98 and SV-99 (3.17.0), added the same way
     if want("preview42"):
         preview42(os.path.join(ROOT, "preview42.png"))   # Post-93's 9A-91 and VSK-94 (3.23.0), added the same way
+    if want("preview43"):
+        preview43(os.path.join(ROOT, "preview43.png"))   # Post-93's A-91M 39 and 54 Prototype (3.25.0), the same way
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

@@ -36,4 +36,12 @@ module GunsOfTienPost93 {
         attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
         attachment Bip01_Prop2 { offset = 0.0730 0.0595 -0.0008, rotate = -86.2737 31.4012 -93.4148, }
     }
+
+    model 762x54Magazine20_SV98 {
+        mesh     = weapons/magazines/GunsOfTienPost93_SV98_magazine20|762x54Magazine20_SV98,
+        texture  = weapons/GunsOfTienPost93/762x54Magazine20_SV98,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0730 0.0595 -0.0008, rotate = -86.2737 31.4012 -93.4148, }
+    }
 }

@@ -1,0 +1,161 @@
+{
+  "A91MPROTO": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.2802,
+        0.0213
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "muzzle_gl": {
+      "offset": [
+        -0.0024,
+        0.2054,
+        0.0458
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.252,
+        0.0213
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        -0.0635,
+        -0.0002
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "bolt_fired": {
+      "offset": [
+        0.0,
+        -0.0603,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_up": {
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "scope": {
+      "offset": [
+        0.0,
+        0.028,
+        0.0833
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "world": {
+      "offset": [
+        0.0186,
+        0.1206,
+        0.0
+      ],
+      "rotate": [
+        180.0,
+        0.0,
+        180.0
+      ]
+    }
+  },
+  "_bounds": {
+    "A91MPROTO_BODY": {
+      "min": [
+        -0.0238,
+        -0.2166,
+        -0.0734
+      ],
+      "max": [
+        0.019,
+        0.2802,
+        0.0765
+      ],
+      "tris": 7732
+    },
+    "A91MPROTO_BODY_GL": {
+      "min": [
+        -0.0238,
+        -0.2166,
+        -0.0734
+      ],
+      "max": [
+        0.019,
+        0.2802,
+        0.1057
+      ],
+      "tris": 7732
+    },
+    "A91MPROTO_BOLT": {
+      "min": [
+        -0.003,
+        0.058,
+        0.037
+      ],
+      "max": [
+        0.003,
+        0.0734,
+        0.0599
+      ],
+      "tris": 224
+    },
+    "A91MPROTO_RAIL_UP": {
+      "min": [
+        -0.0076,
+        -0.0032,
+        0.0624
+      ],
+      "max": [
+        0.0076,
+        0.0724,
+        0.0849
+      ],
+      "tris": 492
+    }
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin = the grip's rear top",
+    "magazine": "the SV-98's magazines' feed lips' front: their rear on the catch, their top 15 mm into the receiver",
+    "muzzle_gl": "the launcher tube's bore at its mouth: the launcher weapon's muzzle",
+    "canon": "GoM's AK mount (0.0282 behind the muzzle, the Grozas')",
+    "bolt_fired": "the charging hook back 100 mm (GoM's AK swap)"
+  }
+}

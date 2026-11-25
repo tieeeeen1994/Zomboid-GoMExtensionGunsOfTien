@@ -304,7 +304,28 @@ def a91(body, scope, stock=True):
     return parts
 
 
+# 3.25.0 (2026-11-25): the A-91M 39 and A-91M 54 Prototype (preview43), as their item scripts draw them: body (the
+# launcher's leaf folded), bolt, magazine (GoM's AK-47 30 at our size / the 20-round SV-98 one), the handle's rail
+# with GoM's optic on `scope`
+def a91m(gun, magazine, scope):
+    fbx, tex = os.path.join(POST_FIRE, "GunsOfTienPost93_%s.fbx" % gun), os.path.join(TEX, gun + ".png")
+    return [(fbx, gun + "_BODY", tex, None), (fbx, gun + "_BOLT", tex, None), magazine,
+            (fbx, gun + "_RAIL_UP", tex, "rail_up"), gom_part("scopes", scope, "scope")]
+
+
 GUNS = {
+    "a91m": {"points": "post93/a91m_points.json", "points_key": "A91M",
+             "assembled": a91m("A91M", (os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"),
+                                        "762x39Magazine30",
+                                        os.path.join(GOM, "textures/weapons/magazines/assault_rifles/762x39Magazine30.png"),
+                                        "magazine", 0.603 / 0.645), "Aimpoint_Sight"),
+             "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "a91mproto": {"points": "post93/a91m_proto_points.json", "points_key": "A91MPROTO",
+                  "assembled": a91m("A91MPROTO", (
+                      os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazine20.fbx"),
+                      "762x54Magazine20_SV98", os.path.join(TEX, "762x54Magazine20_SV98.png"), "magazine"),
+                      "ElcanX2_Scope"),
+                  "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
     "9a91": {"points": "post93/a91_points.json", "points_key": "9A91",
              "assembled": a91("9A91_BODY", "Kobra_Sight"),
              "view": RIFLE_VIEW, "scale": A91_SCALE, "size": A91_SIZE},

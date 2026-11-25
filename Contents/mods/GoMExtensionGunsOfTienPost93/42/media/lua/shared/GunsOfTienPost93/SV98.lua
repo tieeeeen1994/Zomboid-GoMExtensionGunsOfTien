@@ -34,6 +34,10 @@ end
 local M = "GunsOfTienPost93."
 local SV98 = M .. "SV98"
 local MAG = M .. "762x54Magazine10_SV98"
+-- an invented 20-round magazine of the same pattern (user, 2026-11-25; scripts/post93/build_sv98_mag20.py), made for
+-- the A-91M Prototype, which is registered with this profile in A91M.lua
+local MAG20 = M .. "762x54Magazine20_SV98"
+local MAGS = { MAG, MAG20 }
 local RAIL_UP = M .. "SV98_Integrated_Rail_Up"
 local FOLDED = M .. "SV98_Integrated_Bipod_Folded"
 local DEPLOYED = M .. "SV98_Integrated_Bipod_Deployed"
@@ -41,9 +45,9 @@ local DEPLOYED = M .. "SV98_Integrated_Bipod_Deployed"
 -------------------------------------------------
 -- Magazine
 -------------------------------------------------
-Magazine.RegisterMagazineProfile("7.62x54mm SV-98", { MAG })
+Magazine.RegisterMagazineProfile("7.62x54mm SV-98", MAGS)
 Magazine.RegisterWeaponWithProfile("7.62x54mm SV-98", SV98)
-Ammo.RegisterMultipleItemsWithFamilies({ ["7.62x54mm"] = { MAG } })
+Ammo.RegisterMultipleItemsWithFamilies({ ["7.62x54mm"] = MAGS })
 
 -------------------------------------------------
 -- The bolt and the reload
@@ -75,7 +79,7 @@ FoldingBipod.RegisterWeapon(SV98, {
 })
 BipodSystem.RegisterBipod(DEPLOYED)
 
-PreventRemoval.Register({ MAG, RAIL_UP })
+PreventRemoval.Register({ MAG, MAG20, RAIL_UP })
 
 -------------------------------------------------
 -- MountOn appended for GoM's optics (DoParam replaces the list, so it is read and written back whole, as MK11.lua
@@ -130,4 +134,4 @@ if spawnTable then
     spawnTable[SV98] = { required = { "MarzGuns.Bolt_Lock", RAIL_UP, FOLDED }, optionals = optionals }
 end
 
-GunsOfTienPost93_SV98 = { GUN = SV98, MAG = MAG, RAIL_UP = RAIL_UP, FOLDED = FOLDED, DEPLOYED = DEPLOYED }
+GunsOfTienPost93_SV98 = { GUN = SV98, MAG = MAG, MAGS = MAGS, PROFILE = "7.62x54mm SV-98", RAIL_UP = RAIL_UP, FOLDED = FOLDED, DEPLOYED = DEPLOYED }

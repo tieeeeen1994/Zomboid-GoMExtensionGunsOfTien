@@ -41,6 +41,7 @@ GOM_EQUIVALENT = {
     'GROZAGL_GP25': 'M203_Weapon',                                                     # the launcher, as GoM's M203
     'A91M': 'AK47',                                                                    # assault rifles 6-16
     'A91M_GL': 'M203_Weapon',                                                          # its launcher
+    'A91MPROTO': 'FAL', 'A91MPROTO_GL': 'M203_Weapon',                                 # battle rifles 9-20; its launcher
 }
 SIGHT = {gun: gom_data.sight(gom) for gun, gom in GOM_EQUIVALENT.items()}
 
@@ -3249,6 +3250,11 @@ def grozas():
 # is slower); GoM's M24 sounds and shot; sound 220 / 63 (the main mod's sound_model.py: 7.62x54R from 25.6").
 SV98_TEX = f'{TEX}/SV98'
 SV98_MAG = '762x54Magazine10_SV98'
+# The SV-98's magazines: name -> FBX file, rounds, weight. The 20 is an invented one (user, 2026-11-25: "introduce a
+# 20-round mag which is also compatible with SV-98"; scripts/post93/build_sv98_mag20.py), made for the A-91M
+# Prototype, which takes both (a91m() below); so both list both guns in MountOn.
+SV98_MAGS = {SV98_MAG: ('GunsOfTienPost93_SV98_magazines', 10, 0.15),
+             '762x54Magazine20_SV98': ('GunsOfTienPost93_SV98_magazine20', 20, 0.25)}
 SV98_PARTS = [('SV98_Integrated_Rail_Up', 'RailUp', None), ('SV98_Integrated_Bipod_Folded', 'BipodIntegrated', None),
               ('SV98_Integrated_Bipod_Deployed', 'BipodIntegrated', 0.7)]
 GOM_SVD_MAG_PROP2 = {'offset': [0.0730, 0.0595, -0.0008], 'rotate': [-86.2737, 31.4012, -93.4148]}
@@ -3273,15 +3279,16 @@ def sv98():
         cullFace = None,
     }}
 """)
-    out.append(f"""
-    model {SV98_MAG} {{
-        mesh     = weapons/magazines/GunsOfTienPost93_SV98_magazines|{SV98_MAG},
-        texture  = {TEX}/{SV98_MAG},
+    for mag, (mag_file, _, _) in SV98_MAGS.items():
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/{mag_file}|{mag},
+        texture  = {TEX}/{mag},
         cullFace = None,
         attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
 {attachment('Bip01_Prop2', GOM_SVD_MAG_PROP2)}    }}
-}}
 """)
+    out.append("}\n")
     write(f'scripts/{M}/models_sv98.txt', ''.join(out))
 
     w = "        ModelWeaponPart              = "
@@ -3289,7 +3296,7 @@ def sv98():
              f"{w}MarzGuns.Bolt_Fired {M}.SV98_BOLT bolt_fired bolt_fired,",
              f"{w}{M}.SV98_Integrated_Bipod_Folded {M}.SV98_BIPOD_FOLDED integrated_bipod integrated_bipod,",
              f"{w}{M}.SV98_Integrated_Bipod_Deployed {M}.SV98_BIPOD_DEPLOYED integrated_bipod integrated_bipod,",
-             f"{w}{M}.{SV98_MAG} {M}.{SV98_MAG} magazine magazine,"]
+             ] + [f"{w}{M}.{mag} {M}.{mag} magazine magazine," for mag in SV98_MAGS]
     lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
     items = [f"module {M} {{\n", f"""
     item SV98 {{
@@ -3377,26 +3384,28 @@ def sv98():
 {chr(10).join(lines)}
         KnockBackOnNoDeath           = true,
     }}
-
-    item {SV98_MAG} {{
+"""]
+    for mag, (_, rounds, weight) in SV98_MAGS.items():
+        items.append(f"""
+    item {mag} {{
         AmmoType         = swmg:bullet_762x54,
         CanStack         = false,
         DisplayCategory  = WeaponMagazine,
-        Icon             = GunsOfTienPost93_{SV98_MAG},
+        Icon             = GunsOfTienPost93_{mag},
         ItemType         = base:weaponpart,
-        MaxAmmo          = 10,
-        MountOn          = {M}.SV98,
+        MaxAmmo          = {rounds},
+        MountOn          = {M}.SV98;{M}.A91MPROTO,
         PartType         = Clip,
         Tags             = base:riflemagazine,
-        Weight           = 0.15,
-        WeightModifier   = 0.15,
-        StaticModel      = {M}.{SV98_MAG},
-        WorldStaticModel = {M}.{SV98_MAG},
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
         UseDelta         = 1,
         CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
         CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
     }}
-"""]
+""")
     for part, ptype, weight in SV98_PARTS:
         wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
         items.append(f"""
@@ -3423,6 +3432,7 @@ def sv98():
     names = json.load(open(path))
     names[f'{M}.SV98'] = 'SV-98 Sniper Rifle'                   # GoM's "M24 Sniper Rifle"
     names[f'{M}.{SV98_MAG}'] = 'SV-98 10Rds 7.62x54mm Magazine'  # GoM's "SVD 10Rds 7.62x54mm Magazine"
+    names[f'{M}.762x54Magazine20_SV98'] = 'SV-98 20Rds 7.62x54mm Magazine'
     names[f'{M}.SV98_Integrated_Rail_Up'] = 'SV-98 Integrated Rail (Up)'
     names[f'{M}.SV98_Integrated_Bipod_Folded'] = 'SV-98 Integrated Bipod (Folded)'
     names[f'{M}.SV98_Integrated_Bipod_Deployed'] = 'SV-98 Integrated Bipod (Deployed)'
@@ -3891,26 +3901,45 @@ def a91():
 # steadier hold, the same 415 mm barrel class), 4.0 kg (GunRF 3.97). Sound by sound_model.py: 7.62x39 from 16.3" =
 # 175 / 50 (GoM's AK-47's shot). The launcher: GoM's M203_Weapon's numbers, GoM's 40mm family (standing in for the
 # VOG-25), caseless. The 5.56A-91 export version was built beside it and removed (user, 2026-11-25).
-A91M_TEX = f'{TEX}/A91M'
+# Names in the game (user, 2026-11-25: "let's name these A-91M 39 and A-91M 54 Prototype"): the calibre's case
+# length after the name; comments and docs still say "A-91M" and "A-91M Prototype".
 A91M_GUNS = {
-    'A91M': dict(name='A-91M Assault Rifle', min=1.5, max=1.8, crit=25.0, critmult=6.0, hit=52, aim=50, recoil=15,
+    'A91M': dict(name='A-91M 39 Assault Rifle', min=1.5, max=1.8, crit=25.0, critmult=6.0, hit=52, aim=50, recoil=15,
                  range=50.0, jam=0.5, cond=300, cmax=10, weight=4.0, ammo='swmg:bullet_762x39',
                  box='MarzGuns.762x39_Box', mag='MarzGuns.762x39Magazine30', clip=30, shoot='JS14Shoot', gain=2.0,
-                 radius=175, volume=50, gl_name='A-91M Grenade Launcher'),
+                 radius=175, volume=50, gl_name='A-91M 39 Grenade Launcher'),
+    # The A-91M Prototype: the first A-91M's body, its launcher over the barrel (scripts/post93/build_a91m_proto.py;
+    # CLAUDE.md "A-91M Prototype"). The real gun is 7.62x39; the game's is the long-barrelled one of the two in
+    # 7.62x54R (user, 2026-11-25: "can we use a different calibre for the longer barrel too? Like 7.62x51 or 7.62x54.
+    # We can call this prototype"; picked 7.62x54R) on the SV-98's magazines: its 10 and the 20 made for this gun
+    # (SV98_MAGS; GoM's SVD 10 at first, too few for automatic fire). A battle rifle in the game's
+    # numbers: the HK417's damage with the round's reach (Max 1.9, the SVU's), a heavy nose and a sight line over the
+    # launcher (Hit 50, Aimingtime 56), more kick on automatic (RecoilDelay 18, the SVU's), a rimmed round in a
+    # prototype (Jam 1.0), 4.8 kg. The body is the photo's stretched for the round (build_a91m_proto.py: the rear
+    # 23 mm longer, the barrel 35 mm): about 22" of barrel, so MaxRange 60 (the HK417's) and, by sound_model.py,
+    # 7.62x54R from 22" = 231 / 66, GoM's SVD's shot. No muzzle parts: its flash hider is fixed and no mount of ours
+    # is cut for this barrel. The launcher weapon draws the body with the sight leaf raised (<gun>_BODY_GL)
+    'A91MPROTO': dict(name='A-91M 54 Prototype Battle Rifle', min=1.3, max=1.9, crit=30.0, critmult=5.0, hit=50, aim=56,
+                      recoil=18, range=60.0, jam=1.0, cond=250, cmax=10, weight=4.8, ammo='swmg:bullet_762x54',
+                      box='MarzGuns.762x54_Box', mag=f'{M}.762x54Magazine20_SV98', clip=20, shoot='MSR700Shoot',
+                      gain=2.0, radius=231, volume=66, gl_name='A-91M 54 Prototype Grenade Launcher',
+                      points='a91m_proto_points.json', file='A91MPROTO', gl_body='A91MPROTO_BODY_GL',
+                      mags=[(f'{M}.{mag}', f'{M}.{mag}') for mag in SV98_MAGS], muzzle=False),
 }
 A91M_AK_MAGS = GROZA_MAGS['GROZA1']          # GoM's AK-47 30 / 75, the main mod's RPK 40 / drum, at our size
 
 
 def a91m():
-    allpts = load_points('a91m_points.json')
     out = [f"module {M} {{\n"]
-    for gun in A91M_GUNS:
-        pts = allpts[gun]
-        for model, muzzle in ((gun, 'muzzle'), (gun + '_GL', 'muzzle_gl')):
+    for gun, g in A91M_GUNS.items():
+        pts = load_points(g.get('points', 'a91m_points.json'))[gun]
+        file = g.get('file', 'A91M')                 # the gun's FBX and texture (GunsOfTienPost93_<file>)
+        for model, muzzle, body in ((gun, 'muzzle', gun + '_BODY'),
+                                    (gun + '_GL', 'muzzle_gl', g.get('gl_body', gun + '_BODY'))):
             out.append(f"""
     model {model} {{
-        mesh     = weapons/firearms/GunsOfTienPost93_A91M|{gun}_BODY,
-        texture  = {A91M_TEX},
+        mesh     = weapons/firearms/GunsOfTienPost93_{file}|{body},
+        texture  = {TEX}/{file},
         cullFace = None,
 """)
             out.append(attachment('muzzle', pts[muzzle], [-90, 0, -180]))
@@ -3920,8 +3949,8 @@ def a91m():
         for node in (gun + '_BOLT', gun + '_RAIL_UP'):
             out.append(f"""
     model {node} {{
-        mesh     = weapons/firearms/GunsOfTienPost93_A91M|{node},
-        texture  = {A91M_TEX},
+        mesh     = weapons/firearms/GunsOfTienPost93_{file}|{node},
+        texture  = {TEX}/{file},
         cullFace = None,
     }}
 """)
@@ -3933,9 +3962,10 @@ def a91m():
     for gun, g in A91M_GUNS.items():
         lines = [f"{w}MarzGuns.Bolt_Lock {M}.{gun}_BOLT bolt_lock bolt_lock,",
                  f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
-        lines += [f"{w}{mag} {model} magazine magazine," for mag, model in A91M_AK_MAGS]
-        lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
-        lines += MD.model_lines(w, f"{M}.{gun}")
+        lines += [f"{w}{mag} {model} magazine magazine," for mag, model in g.get('mags', A91M_AK_MAGS)]
+        if g.get('muzzle', True):
+            lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+            lines += MD.model_lines(w, f"{M}.{gun}")
         lines += [f"{w}MarzGuns.Picatinny_Rail_Up {M}.{gun}_RAIL_UP rail_up rail_up,"]
         lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
         items.append(f"""
@@ -4133,7 +4163,8 @@ def a91m():
 """ for gun in A91M_GUNS) + "}\n")
     path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(path))
-    for gone in ('A91M556', 'A91M556_GL', 'A91M556_GL_Integrated', '556x45Magazine30_A91M'):  # removed 2026-11-25
+    for gone in ('A91M556', 'A91M556_GL', 'A91M556_GL_Integrated', '556x45Magazine30_A91M',   # removed 2026-11-25
+                 '762A91M', '762A91M_GL', '762A91M_GL_Integrated'):                           # renamed A91MPROTO
         names.pop(f'{M}.{gone}', None)
     for gun, g in A91M_GUNS.items():
         names[f'{M}.{gun}'] = g['name']

@@ -286,11 +286,13 @@ def build_bipod(deployed):
     return b.to_object("SV98_BIPOD_DEPLOYED" if deployed else "SV98_BIPOD_FOLDED")
 
 
-def build_magazine():
+def build_magazine(extra=0.0, name=MAG_NAME):
     """The 10-round polymer magazine: a box from its feed lips to the floor, the floor plate a little wider. Origin at
-    the feed lips' front (GoM's magazines' way), drawn at the gun's `magazine` point."""
+    the feed lips' front (GoM's magazines' way), drawn at the gun's `magazine` point. `extra` mm of body below it
+    is the 20-round one (build_sv98_mag20.py)."""
     b = kit.Builder()
     La, Lb, Rt, Rf, hw = MAG_BOX
+    Rf += extra
     top = P(Lb, Rt)
     def M(L, R):
         y, z = P(L, R)
@@ -301,7 +303,7 @@ def build_magazine():
     kit.slab(b, floor, (), hw + 1.0, 1.0, 0, "magpoly", 0.0)
     lips = [M(La + 12, Rt - 3), M(Lb - 6, Rt - 3), M(Lb - 6, Rt + 1), M(La + 12, Rt + 1)]
     kit.slab(b, lips, (), hw - 4.0, 0.5, 0, "metal", 0.0)
-    return b.to_object(MAG_NAME)
+    return b.to_object(name)
 
 
 # ==================================================================================================

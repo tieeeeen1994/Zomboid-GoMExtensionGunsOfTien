@@ -161,6 +161,7 @@ local a91 = kit({ M .. "9A91" }, { M .. "9x39Magazine20_9A91" }, { "MarzGuns.9x3
 local vsk94 = kit({ M .. "VSK94" }, { M .. "9x39Magazine20_9A91" }, { "MarzGuns.9x39_Box" })
 -- the A-91M with GoM's AK-47 30 and box
 local a91m = kit({ M .. "A91M" }, { "MarzGuns.762x39Magazine30" }, { "MarzGuns.762x39_Box" })
+local a91mProto = kit({ M .. "A91MPROTO" }, { M .. "762x54Magazine20_SV98" }, { "MarzGuns.762x54_Box" })
 
 -- High-capacity magazines on their own, as GoM's in its high-capacity magazine spawners (its M92FS 50, M93R 60, MP5
 -- 60 / 100 drums: the magazine and up to two boxes; only with GoM's sandbox SpawnHighCapMags on, which places them).
@@ -218,6 +219,7 @@ local GUNS = {
     { RUSSIAN_RIFLE, a91, 6, 6 }, { RUSSIAN_RIFLE, vsk94, 6, 6 },
     { MERC_RIFLE, a91, { 2, 4 }, { 4, 8 } }, { MERC_SNIPER, vsk94, { 3, 6 }, { 6, 10 } },
     { RUSSIAN_RIFLE, a91m, 6, 6 }, { MERC_RIFLE, a91m, { 2, 4 }, { 4, 8 } },
+    { RUSSIAN_RIFLE, a91mProto, 6, 6 }, { MERC_RIFLE, a91mProto, { 2, 4 }, { 4, 8 } },
     -- high-capacity magazines
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_MP7", M .. "46x30_Box"), nil, 2 },
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), nil, 2 },
@@ -230,6 +232,8 @@ local GUNS = {
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "762x51Magazine50_PMAG", "MarzGuns.762x51_Box"), nil, 2 },
     -- the HBAR's 50 beside GoM's own 7.62x39 75 (its high-capacity Russian-calibre magazine spawner)
     { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x39Magazine50_AUG", "MarzGuns.762x39_Box"), nil, 2 },
+    -- the 20-round 7.62x54R magazine (the SV-98's and the A-91M Prototype's) there too
+    { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x54Magazine20_SV98", "MarzGuns.762x54_Box"), nil, 2 },
 }
 
 -- GoM's spawners placed where GoM places no spawner of that kind and the guns belong: { spawner, distribution ("pd"
@@ -260,7 +264,7 @@ local EXTENDED_GUNS = {
     -- criminals with Grozas and SMGs
     { CRIME_RIFLE, groza1, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, groza2, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91, { 2, 4 }, { 2, 4 } },
-    { CRIME_RIFLE, a91m, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, a91m, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91mProto, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, ump45, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, vector9, { 2, 4 }, { 2, 4 } },
     -- survivalists with military and Russian rifles

@@ -202,6 +202,17 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 25,
         spinForce     = { 164, 164 },
     },
+    -- The A-91M Prototype the same way: its chute ends on the right over the grip
+    ["GunsOfTienPost93.A91MPROTO"] = {
+        forwardOffset = 0.10,
+        sideOffset    = 0.10,
+        heightOffset  = 0.45,
+        shellForce    = 0.90,
+        sideSpread    = 40,
+        heightSpread  = 60,
+        ejectAngle    = 25,
+        spinForce     = { 164, 164 },
+    },
     ["GunsOfTienPost93.GROZA2"] = {
         forwardOffset = 0.44,
         sideOffset    = 0.06,
