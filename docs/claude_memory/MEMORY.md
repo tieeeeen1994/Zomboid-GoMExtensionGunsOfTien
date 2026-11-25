@@ -13,3 +13,4 @@
 - [Six remodel passes](three-remodel-passes.md) — a gun model's first pass is always ugly; do 6 part-by-part photo-vs-model passes (triggers first) before showing it; then check for holes, shine built as gaps, floating parts
 - [Variants must differ in play](variants-must-differ-in-play.md) — say what differs before building a second version; an invented "prototype" calibre is fine if named so
 - [Later loads go to Post-93](later-loads-go-to-post93.md) — GoT: a load with no pre-1993 date goes into Post-93, never dropped
+- [All means all](all-means-all.md) — "implement all" = every item; never drop one on my own say or claim the user agreed
