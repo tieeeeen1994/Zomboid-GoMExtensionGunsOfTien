@@ -292,6 +292,12 @@ lines[M .. "50_Bullet_HollowPoint"] = {
     "Critical Chance increased by 5%",
     "Chance to degrade weapon condition increased by 11%",
 }
+lines[M .. "9x39_Bullet_PAB9"] = {
+    "Damage to targets decreased by 20%",
+    "Critical Damage decreased by 10%",
+    "Piercing targets",
+    "Able to hit up to 4 targets",
+}
 lines[M .. "12Gauge_Shell_DragonsBreath"] = {
     "Damage to targets decreased by 85%",
     "Critical Damage decreased by 50%",

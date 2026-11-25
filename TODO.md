@@ -68,7 +68,6 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       Breath fire in single player and on a server (a zombie run by another client), that no ground fire starts
       and corpses do not burn.
 - [ ] Flechette part art shows pellets (the birdshot's in steel), not darts.
-- [ ] Skipped: 9x39 PAB-9 (would play as a weaker SP-6).
 
 ## Smaller open items
 

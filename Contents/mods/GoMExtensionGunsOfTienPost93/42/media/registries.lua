@@ -26,6 +26,7 @@ GunsOfTienPost93_AmmoTypes.BULLET_9x19_7N21 = AmmoType.register("gunsoftienpost9
 GunsOfTienPost93_AmmoTypes.BULLET_762x39_HollowPoint = AmmoType.register("gunsoftienpost93:bullet_762x39_hollow_point", "GunsOfTienPost93.762x39_Bullet_HollowPoint")
 GunsOfTienPost93_AmmoTypes.BULLET_3030_FTX = AmmoType.register("gunsoftienpost93:bullet_3030_ftx", "GunsOfTienPost93.3030_Bullet_FTX")
 GunsOfTienPost93_AmmoTypes.BULLET_50_HollowPoint = AmmoType.register("gunsoftienpost93:bullet_50_hollow_point", "GunsOfTienPost93.50_Bullet_HollowPoint")
+GunsOfTienPost93_AmmoTypes.BULLET_9x39_PAB9 = AmmoType.register("gunsoftienpost93:bullet_9x39_pab9", "GunsOfTienPost93.9x39_Bullet_PAB9")
 GunsOfTienPost93_AmmoTypes.SHELL_12G_DragonsBreath = AmmoType.register("gunsoftienpost93:shell_12g_dragons_breath", "GunsOfTienPost93.12Gauge_Shell_DragonsBreath")
 
 GunsOfTienPost93_Tags = {}

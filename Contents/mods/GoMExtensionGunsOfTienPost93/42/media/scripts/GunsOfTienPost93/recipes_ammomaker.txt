@@ -391,4 +391,30 @@ module Base {
 		inputs {}
 		outputs {}
 	}
+
+	craftRecipe Make9x39PAB9
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x39PAB9,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x39PAB9
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x39PAB9,
+		inputs {}
+		outputs {}
+	}
 }

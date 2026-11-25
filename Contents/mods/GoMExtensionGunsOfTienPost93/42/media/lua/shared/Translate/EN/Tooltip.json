@@ -29,5 +29,7 @@
   "Tooltip_Recipe_Make50AEHP": "Assemble .50 Action Express HP hollow point round.",
   "Tooltip_Recipe_Produce50AEHP": "Assemble .50 AE HP rounds with reloading press.",
   "Tooltip_Recipe_Make12DragonsBreath": "Assemble 12 bore dragon's breath (aka. 12-gauge) - 18.5mm.",
-  "Tooltip_Recipe_Produce12DragonsBreath": "Assemble 12 bore dragon's breath rounds with reloading press."
+  "Tooltip_Recipe_Produce12DragonsBreath": "Assemble 12 bore dragon's breath rounds with reloading press.",
+  "Tooltip_Recipe_Make9x39PAB9": "Assemble 9x39mm PAB-9 armour piercing round - 1995.",
+  "Tooltip_Recipe_Produce9x39PAB9": "Assemble 9x39mm PAB-9 rounds with reloading press."
 }

@@ -32,6 +32,8 @@ CALIBRES = {
                    crate_w='6.637', box_mesh='WorldItems/RifleAmmoBox', box_scale='0.6'),
     '3030': dict(name='.30-30', weight='0.015', mesh='3030_Round', per_box=20, box_w='0.27', carton_w='2.592',
                  crate_w='8.294', box_mesh='WorldItems/RifleAmmoBox', box_scale='0.6'),
+    '9x39': dict(name='9x39mm', weight='0.0115', mesh='9x39_Round', per_box=20, box_w='0.207', carton_w='1.987',
+                 crate_w='6.358', box_mesh='WorldItems/RifleAmmoBox', box_scale='0.6'),
     '9x19': dict(name='9x19mm', weight='0.009', mesh='9x19_Round', box_w='0.405', carton_w='3.888', crate_w='12.442'),
     '50': dict(name='.50 AE', weight='0.024', mesh='50_Round', per_box=25, box_w='0.54', carton_w='5.184',
                crate_w='16.589'),
@@ -77,11 +79,12 @@ ROUNDS = [
     ('3030', '_FTX', 'FTX', 'bullet_3030_ftx', 'FTX'),
     ('50', '_HollowPoint', 'HP', 'bullet_50_hollow_point', 'Hollow Point'),
     ('12Gauge', '_DragonsBreath', 'DragonsBreath', 'shell_12g_dragons_breath', "Dragon's Breath"),
+    ('9x39', '_PAB9', 'PAB9', 'bullet_9x39_pab9', 'PAB-9'),
 ]
 
 # GoM's naming, a real load name followed by its use in parentheses (as GoM's 'MKI Suppressor (5.56mm Rifles)').
 USAGE = {'_SB193': 'Subsonic', '_SS197SR': 'Hollow Point', '_RG028': 'Armor Piercing', '_7N13': 'Armor Piercing',
-         '_7N22': 'Armor Piercing', '_7N21': 'Armor Piercing', '_FTX': 'Polymer Tip', '_DragonsBreath': 'Incendiary'}
+         '_7N22': 'Armor Piercing', '_7N21': 'Armor Piercing', '_FTX': 'Polymer Tip', '_DragonsBreath': 'Incendiary', '_PAB9': 'Armor Piercing'}
 
 
 def write(path, text):
@@ -316,6 +319,7 @@ AMMOMAKER_TYPES = [
     ('3030WinFTX', '.30-30 Winchester FTX', '.30-30 Winchester FTX polymer tip round - 2005'),
     ('50AEHP', '.50 AE HP', '.50 Action Express HP hollow point round'),
     ('12DragonsBreath', "12 bore dragon's breath", "12 bore dragon's breath (aka. 12-gauge) - 18.5mm"),
+    ('9x39PAB9', '9x39mm PAB-9', '9x39mm PAB-9 armour piercing round - 1995'),
 ]
 
 

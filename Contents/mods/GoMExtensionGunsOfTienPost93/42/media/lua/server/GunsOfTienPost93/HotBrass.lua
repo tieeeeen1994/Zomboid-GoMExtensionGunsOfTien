@@ -31,6 +31,7 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTienPost93.3030_Bullet_FTX"] = "HBVCEF.3030_Casing",
     ["GunsOfTienPost93.50_Bullet_HollowPoint"] = "HBVCEF.50_Casing",
     ["GunsOfTienPost93.12Gauge_Shell_DragonsBreath"] = "HBVCEF.12Gauge_Hull_Red",
+    ["GunsOfTienPost93.9x39_Bullet_PAB9"] = "HBVCEF.9x39_Casing",
 })
 
 -- Hot Brass launches a casing from a point in front of the shooter (forward / side / height, tiles and levels from

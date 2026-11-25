@@ -19,6 +19,7 @@ module Base {
             GunsOfTienPost93.545x39_Bullet_7N22        = GunsOfTienPost93.545x39_Box_7N22,
             GunsOfTienPost93.762x39_Bullet_HollowPoint = GunsOfTienPost93.762x39_Box_HollowPoint,
             GunsOfTienPost93.3030_Bullet_FTX           = GunsOfTienPost93.3030_Box_FTX,
+            GunsOfTienPost93.9x39_Bullet_PAB9          = GunsOfTienPost93.9x39_Box_PAB9,
         }
     }
 
@@ -29,7 +30,7 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
-            item 20 [GunsOfTienPost93.762x54_Bullet_SP;GunsOfTienPost93.762x54_Bullet_7N13;GunsOfTienPost93.545x39_Bullet_7N22;GunsOfTienPost93.762x39_Bullet_HollowPoint;GunsOfTienPost93.3030_Bullet_FTX] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 20 [GunsOfTienPost93.762x54_Bullet_SP;GunsOfTienPost93.762x54_Bullet_7N13;GunsOfTienPost93.545x39_Bullet_7N22;GunsOfTienPost93.762x39_Bullet_HollowPoint;GunsOfTienPost93.3030_Bullet_FTX;GunsOfTienPost93.9x39_Bullet_PAB9] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
@@ -40,6 +41,7 @@ module Base {
             GunsOfTienPost93.545x39_Box_7N22        = GunsOfTienPost93.545x39_Bullet_7N22,
             GunsOfTienPost93.762x39_Box_HollowPoint = GunsOfTienPost93.762x39_Bullet_HollowPoint,
             GunsOfTienPost93.3030_Box_FTX           = GunsOfTienPost93.3030_Bullet_FTX,
+            GunsOfTienPost93.9x39_Box_PAB9          = GunsOfTienPost93.9x39_Bullet_PAB9,
         }
     }
 
@@ -160,6 +162,7 @@ module Base {
             GunsOfTienPost93.3030_Box_FTX              = GunsOfTienPost93.3030_Carton_FTX,
             GunsOfTienPost93.50_Box_HollowPoint        = GunsOfTienPost93.50_Carton_HollowPoint,
             GunsOfTienPost93.12Gauge_Box_DragonsBreath = GunsOfTienPost93.12Gauge_Carton_DragonsBreath,
+            GunsOfTienPost93.9x39_Box_PAB9             = GunsOfTienPost93.9x39_Carton_PAB9,
         }
     }
 
@@ -192,6 +195,7 @@ module Base {
             GunsOfTienPost93.3030_Carton_FTX              = GunsOfTienPost93.3030_Box_FTX,
             GunsOfTienPost93.50_Carton_HollowPoint        = GunsOfTienPost93.50_Box_HollowPoint,
             GunsOfTienPost93.12Gauge_Carton_DragonsBreath = GunsOfTienPost93.12Gauge_Box_DragonsBreath,
+            GunsOfTienPost93.9x39_Carton_PAB9             = GunsOfTienPost93.9x39_Box_PAB9,
         }
     }
 
@@ -224,6 +228,7 @@ module Base {
             GunsOfTienPost93.3030_Carton_FTX              = GunsOfTienPost93.3030_Crate_FTX,
             GunsOfTienPost93.50_Carton_HollowPoint        = GunsOfTienPost93.50_Crate_HollowPoint,
             GunsOfTienPost93.12Gauge_Carton_DragonsBreath = GunsOfTienPost93.12Gauge_Crate_DragonsBreath,
+            GunsOfTienPost93.9x39_Carton_PAB9             = GunsOfTienPost93.9x39_Crate_PAB9,
         }
     }
 
@@ -256,6 +261,7 @@ module Base {
             GunsOfTienPost93.3030_Crate_FTX              = GunsOfTienPost93.3030_Carton_FTX,
             GunsOfTienPost93.50_Crate_HollowPoint        = GunsOfTienPost93.50_Carton_HollowPoint,
             GunsOfTienPost93.12Gauge_Crate_DragonsBreath = GunsOfTienPost93.12Gauge_Carton_DragonsBreath,
+            GunsOfTienPost93.9x39_Crate_PAB9             = GunsOfTienPost93.9x39_Carton_PAB9,
         }
     }
 }

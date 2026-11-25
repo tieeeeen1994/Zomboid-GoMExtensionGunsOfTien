@@ -2301,7 +2301,8 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   training, smoke or less-lethal); each load confirmed to exist on the web before building (sources in the
   conversation; dates in TODO.md "Special rounds audit"). Dated before 1993 = main mod, later or undated = Post-93
   (memory: later loads go to Post-93, never dropped). Complete before: 5.56x45, .45 ACP, .22 LR, 5.7x28, 40mm.
-  Skipped: 9x39 PAB-9 (a worse SP-6, would not play differently), a separate .30-30 soft point (user dropped it).
+  Not built: a separate .30-30 soft point (user dropped it). The 9x39 PAB-9 was skipped on my own recommendation
+  and the user objected ("i didn't agree to skipping anything"): built the same day. "Implement all" means all.
 - **Main mod** (gen_scripts.py ROUNDS; new CALIBRES 762x51, 545x39, 762x54, 38, 357, 44 with GoM's box weights):
   7.62x51 M61 and .30-06 M2 (`GunsOfTien_RifleAP`: the 7.62x39 steel core's numbers, pierce 3), 5.45x39 7U1
   (x0.55, sound x0.5, no racking rule: made for the PBS-4) and 7N10 (pierce 4, no tumbling), .38 +P (as the .45
@@ -2315,7 +2316,7 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   4.6x30 DM21 (x1.1, no pierce), 9x18 PMM (as +P+) and RG028 (`GunsOfTienPost93_PistolAP`, pierce 2), 9x19 7N21
   (pierce 2, full damage, +P+ wear), 5.45x39 7N22 (pierce 5), 7.62x39 hollow point (x1.15, crit x1.25 / x1.1),
   7.62x54R soft point (the main mod's `GunsOfTien_RifleSoftPoint`) and 7N13 (pierce 3), .30-30 FTX (x1.15, range
-  x1.15), .50 AE hollow point, 12 gauge Dragon's Breath (x0.15, range x0.4, spread x2.5 + Incendiary.lua).
+  x1.15), .50 AE hollow point, 9x39 PAB-9 (user: "weaker damage but more pierces": x0.8, crit x0.9, pierce 4 against the SP-6's x0.9 / 3), 12 gauge Dragon's Breath (x0.15, range x0.4, spread x2.5 + Incendiary.lua).
   Post-93 lines are hand-written in its Tooltips.lua; the main mod's come from gen_round_tooltips.py (NOTES for the
   7U1, .44 Special, B-32).
 - **Ammo Maker**: every load has its own type (copies; AP loads copy Ammo Maker's AP types, since its own type may

@@ -30,6 +30,7 @@ local NEW_TYPES = {
     ["3030WinFTX"] = { "3030Win", { bulletType = "ammomaker.ammomaker_BulletRifleMHP" } },
     ["50AEHP"] = { "50AE", { bulletType = "ammomaker.ammomaker_BulletHandgunLHP" } },
     ["12DragonsBreath"] = { "12Dragon", {} },
+    ["9x39PAB9"] = { "9x39AP", {} },
 }
 
 if type(ammoMakerAmmoData) ~= "table" then
@@ -73,6 +74,7 @@ local MAP = {
     { modId = MOD, itemType = "GunsOfTienPost93.3030_Bullet_FTX", ammoType = "3030WinFTX" },
     { modId = MOD, itemType = "GunsOfTienPost93.50_Bullet_HollowPoint", ammoType = "50AEHP" },
     { modId = MOD, itemType = "GunsOfTienPost93.12Gauge_Shell_DragonsBreath", ammoType = "12DragonsBreath" },
+    { modId = MOD, itemType = "GunsOfTienPost93.9x39_Bullet_PAB9", ammoType = "9x39PAB9" },
 }
 MAP.gunsOfTienPost93 = true
 

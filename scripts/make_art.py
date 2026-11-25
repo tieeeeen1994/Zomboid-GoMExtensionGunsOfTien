@@ -562,6 +562,7 @@ ROUNDS_POST93 = [
     (P93 + "762x39_Round_HP", "762x39_Round", "Russian_Steel_Round_Base", "item_762x39_Round_Base.png", "HP"),
     (P93 + "3030_Round_FTX", "3030_Round", "Pistol_Standard_Round_Base", "item_3030_Round_Base.png", "FTX"),
     (P93 + "50_Round_HP", "50_Round", "Pistol_Heavy_Round_Base", "item_50_Round_Base.png", "HP"),
+    (P93 + "9x39_Round_PAB9", "9x39_Round", "Russian_Steel_Round_Base", "item_9x39_Round_Base.png", "STEEL"),
 ]
 
 # Rifle boxes share GoM's template (band, label panel, bullet drawing). bullet = (tip, mouth, across0, across1,
@@ -613,6 +614,7 @@ BOXES_POST93 = [
     (P93 + "762x39_Box_HP", "762x39", "HP", "HOLLOW POINT"),
     (P93 + "3030_Box_FTX", "3030", "FTX", "FTX"),
     (P93 + "50_Box_HP", "50", "HP", "HOLLOW PT"),
+    (P93 + "9x39_Box_PAB9", "9x39", "STEEL", "PAB-9 AP"),
 ]
 
 BIRDSHOT_HUE = 222.0             # royal blue hull: GoM uses red (buckshot), green (slug), yellow (.410 model)

@@ -93,6 +93,9 @@ Ammo.RegisterMultipleAmmoFamilies({
     [".50 AE"] = {
         { type = M .. "50_Bullet_HollowPoint", enum = T.BULLET_50_HollowPoint, profile = "GunsOfTien_HandgunHollowPoint" },
     },
+    ["9x39mm"] = {
+        { type = M .. "9x39_Bullet_PAB9", enum = T.BULLET_9x39_PAB9, profile = "GunsOfTienPost93_9x39PAB9" },
+    },
     ["12Gauge"] = {
         { type = M .. "12Gauge_Shell_DragonsBreath", enum = T.SHELL_12G_DragonsBreath, profile = "GunsOfTienPost93_12GaugeDragonsBreath" },
     },
@@ -216,6 +219,16 @@ Ammo.RegisterMultipleAmmoStats({
             weapon:setProjectileSpread(math.max(0.3, weapon:getProjectileSpread() * 2.5))
         end,
     },
+    -- PAB-9 (1995): the cheaper armour piercing 9x39 (user, 2026-11-25: "weaker damage but more pierces"):
+    -- a long steel core that goes through more and hits each target lighter than the SP-6 (x0.9, 3 targets)
+    ["GunsOfTienPost93_9x39PAB9"] = (function()
+        local a, b = pierce(4)
+        return {
+            SF.Multiply("MaxDamage", 0.8), SF.Multiply("MinDamage", 0.8),
+            SF.Multiply("CritDmgMultiplier", 0.9),
+            a, b,
+        }
+    end)(),
     ["GunsOfTienPost93_762x25HollowPoint"] = (function()
         local a, b = pierce(1)
         return {

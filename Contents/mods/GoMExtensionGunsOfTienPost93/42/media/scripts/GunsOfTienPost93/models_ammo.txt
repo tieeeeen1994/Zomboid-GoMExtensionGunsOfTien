@@ -191,4 +191,16 @@ module GunsOfTienPost93 {
         texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_12Gauge_Box_DragonsBreath,
         scale   = 0.6,
     }
+
+    model GunsOfTienPost93_9x39_Round_PAB9 {
+        mesh    = Worlditems/Ammunition/Rounds|9x39_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_9x39_Round_PAB9,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_9x39_Box_PAB9 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_9x39_Box_PAB9,
+        scale   = 0.6,
+    }
 }
