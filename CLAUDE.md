@@ -281,6 +281,14 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   `GunsOfTien/Tooltips.lua` `SAWN_BARRELS`; user, 2026-10-19, replacing the earlier one-sentence stat list). Long Information
   lines are wrapped by ZomboidFixesB42's GoM tooltip fix (`*_GoMTooltips.lua`), not by breaking them up here.
 
+- **Balance on GoM's numbers** (user, 2026-11-25: "let's balance our ammunition according to GoM's balance";
+  GoM's 5.56 profiles, Registries/Ammunition.lua): best penetrator of a calibre = GoM AP (x0.85, crit dmg
+  x0.95, crit chance x0.9, 5 targets), lesser penetrators a target fewer and a step more damage; hollow / soft
+  points = GoM HP (x1.2, x1.15, x1.05, wear x0.85); +P+, hyper velocity, PMM = GoM Overpressured (x1.5, x1.5,
+  x1.05, wear x0.5, 2 targets; user kept GoM's pierce); +P half way (x1.25, wear x0.75); rifle subsonics
+  (7.62x39 US, 7U1) = GoM Subsonic (x0.4, sound x0.5, wear x2); .44 Special = GoM civilian (x0.7) + sound
+  x0.75. Kept: pistol subsonics (heavy pistol bullets lose little; Post-93's sound x0.7 was the user's),
+  shotgun loads, DM21. Numbers in the section text below are from before this.
 - **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):
   7.62x39 **US Subsonic** (×0.5 dmg, sound ×0.5; must rack after every shot **unless a PBS-1 is fitted**: low powder
   short-strokes the AK's gas system, the PBS-1's back pressure pushes enough gas into the port — the user wanted this

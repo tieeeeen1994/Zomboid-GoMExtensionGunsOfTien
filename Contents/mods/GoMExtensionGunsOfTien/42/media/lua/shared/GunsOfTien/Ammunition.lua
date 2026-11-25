@@ -177,10 +177,17 @@ function GunsOfTien.subsonicNeedsRack(weapon)
     return not hasPart(weapon, PBS1)
 end
 
+-- Balanced on Guns of Marz's own 5.56 numbers (user, 2026-11-25: "let's balance our ammunition according to GoM's
+-- balance"; GoM's Registries/Ammunition.lua): armour piercing x0.85, crit damage x0.95, crit chance x0.9, 5 targets
+-- for a calibre's best penetrator, lesser ones a target fewer and a step more damage each (user: "whatever has a
+-- higher pierce tech will get more pierces but lower damage"); hollow and soft points x1.2, x1.15, x1.05, wear
+-- x0.85; overpressure (+P+, hyper velocity) x1.5, x1.5, x1.05, wear x0.5, 2 targets; +P half way (crit chance as the others); rifle subsonics
+-- x0.4, sound x0.5, wear x2; a milder commercial round GoM's civilian x0.7, x0.8, x0.9, wear x1.5. Pistol
+-- subsonics keep their own numbers (a heavy pistol bullet loses little; GoM has no pistol subsonic), shotgun
+-- loads too (no GoM equivalent beyond the slug). The comments below predate this and give the reasons only.
 Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTien_762x39US"] = list(
-        damage(0.5),
-        SF.Multiply("CritDmgMultiplier", 0.8),
+        damage(0.4),
         sound(0.5),
         SF.Multiply("ConditionLowerChanceOneIn", 2.0),
         function(weapon)
@@ -191,15 +198,14 @@ Ammo.RegisterMultipleAmmoStats({
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
         SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.9),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
         pierce(1)
     ),
     ["GunsOfTien_762x39SteelCore"] = list(
-        damage(0.9),
+        damage(0.85),
         SF.Multiply("CritDmgMultiplier", 0.95),
         SF.Multiply("CriticalChance", 0.9),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
-        pierce(3)
+        pierce(5)
     ),
     ["GunsOfTien_9x19Subsonic"] = list(
         damage(0.85),
@@ -209,35 +215,38 @@ Ammo.RegisterMultipleAmmoStats({
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
         SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85)
     ),
     ["GunsOfTien_9x19PPP"] = list(
-        damage(1.2),
-        SF.Multiply("CritDmgMultiplier", 1.1),
-        sound(1.1),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.6)
+        damage(1.5),
+        SF.Multiply("CritDmgMultiplier", 1.5),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.5),
+        pierce(2)
     ),
     ["GunsOfTien_45HollowPoint"] = list(
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
         SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85)
     ),
     ["GunsOfTien_45P"] = list(
-        damage(1.15),
-        SF.Multiply("CritDmgMultiplier", 1.1),
-        sound(1.1),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.7)
+        damage(1.25),
+        SF.Multiply("CritDmgMultiplier", 1.25),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.75)
     ),
     ["GunsOfTien_9x39SP6"] = list(
-        damage(0.9),
+        damage(0.85),
         SF.Multiply("CritDmgMultiplier", 0.95),
-        pierce(3)
+        SF.Multiply("CriticalChance", 0.9),
+        pierce(5)
     ),
     ["GunsOfTien_RifleSoftPoint"] = list(
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
-        SF.Multiply("CriticalChance", 1.1),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
         pierce(1)
     ),
     -- Pellets only exist on RangeFalloff guns (every GoM shotgun: 9 pellets, 9 hits, and the native code returns at
@@ -278,23 +287,23 @@ Ammo.RegisterMultipleAmmoStats({
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
         SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85)
     ),
     ["GunsOfTien_22LRHyperVelocity"] = list(
-        damage(1.25),
-        SF.Multiply("CritDmgMultiplier", 1.1),
-        sound(1.1),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.8)
+        damage(1.5),
+        SF.Multiply("CritDmgMultiplier", 1.5),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.5),
+        pierce(2)
     ),
     -- 7.62x25mm special loads (2026-11-25), against the plain Soviet P (85 gr lead-core FMJ). Steel core (Soviet Pst,
     -- 57-N-134s): the 7.62x39 steel core's numbers with a pistol round's reach through, 2 targets. Subsonic
     -- (China's heavy pointed round for the suppressed Type 64): the 9x19 subsonic's
     ["GunsOfTien_762x25SteelCore"] = list(
-        damage(0.9),
+        damage(0.85),
         SF.Multiply("CritDmgMultiplier", 0.95),
         SF.Multiply("CriticalChance", 0.9),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
-        pierce(2)
+        pierce(5)
     ),
     ["GunsOfTien_762x25Subsonic"] = list(
         damage(0.85),
@@ -303,17 +312,15 @@ Ammo.RegisterMultipleAmmoStats({
     -- Special rounds audit (2026-11-25). Armour piercing rifle rounds (7.62x51 M61, .30-06 M2): the 7.62x39 steel
     -- core's numbers, one target more than the plain round's realistic piercing (2)
     ["GunsOfTien_RifleAP"] = list(
-        damage(0.9),
+        damage(0.85),
         SF.Multiply("CritDmgMultiplier", 0.95),
         SF.Multiply("CriticalChance", 0.9),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
-        pierce(3)
+        pierce(5)
     ),
     -- 7U1 (1985): the AKS-74UB's subsonic round, made for its PBS-4 suppressor, so no racking rule; a light
     -- round slowed below the speed of sound hits about as weakly as the 7.62x39 US
     ["GunsOfTien_545x39_7U1"] = list(
-        damage(0.55),
-        SF.Multiply("CritDmgMultiplier", 0.8),
+        damage(0.4),
         sound(0.5),
         SF.Multiply("ConditionLowerChanceOneIn", 2.0),
         pierce(1)
@@ -321,29 +328,30 @@ Ammo.RegisterMultipleAmmoStats({
     -- 7N10 (1992): the 7N6 with a stronger steel core, one target more than the plain 7N6's 3, without its
     -- tumbling (crit chance)
     ["GunsOfTien_545x39_7N10"] = list(
-        damage(0.95),
+        damage(0.9),
         pierce(4)
     ),
     -- .38 Special +P (1974): as the .45 +P
     ["GunsOfTien_38P"] = list(
-        damage(1.15),
-        SF.Multiply("CritDmgMultiplier", 1.1),
-        sound(1.1),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.7)
+        damage(1.25),
+        SF.Multiply("CritDmgMultiplier", 1.25),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.75)
     ),
     -- revolver hollow points (.38 Special, .357 Magnum 1963; .44 Magnum): the 9x19 / .45 hollow points' numbers
     ["GunsOfTien_HandgunHollowPoint"] = list(
         damage(1.2),
         SF.Multiply("CritDmgMultiplier", 1.15),
         SF.Multiply("CriticalChance", 1.05),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85)
     ),
     -- .44 Special (1907) in a .44 Magnum gun: a much milder round, quieter, kinder to the gun
     ["GunsOfTien_44Special"] = list(
         damage(0.7),
-        SF.Multiply("CritDmgMultiplier", 0.9),
-        sound(0.75),
-        SF.Multiply("ConditionLowerChanceOneIn", 1.3)
+        SF.Multiply("CritDmgMultiplier", 0.8),
+        SF.Multiply("CriticalChance", 0.9),
+        SF.Multiply("ConditionLowerChanceOneIn", 1.5),
+        sound(0.75)
     ),
     -- 12 gauge flechettes (1960s): darts keep their speed and fly straight, so further and tighter than buckshot,
     -- each hitting lighter
@@ -358,10 +366,7 @@ Ammo.RegisterMultipleAmmoStats({
     -- 7.62x54R B-32 (1932) armour piercing incendiary: the AP rifle numbers; the fire is Incendiary.lua's
     ["GunsOfTien_762x54B32"] = list(
         damage(0.9),
-        SF.Multiply("CritDmgMultiplier", 0.95),
-        SF.Multiply("CriticalChance", 0.9),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
-        pierce(3)
+        pierce(4)
     ),
 })
 

@@ -123,6 +123,9 @@ local function subsonic(damage)
     }
 end
 
+-- Balanced on Guns of Marz's 5.56 numbers like the main mod's (its shared/GunsOfTien/Ammunition.lua, 2026-11-25):
+-- best penetrator x0.85 / 5 targets, hollow points x1.2 with wear x0.85, overpressure x1.5 with 2 targets; the
+-- 4.6x30 / 5.7x28 subsonics keep their own (user, 2026-10-24, sound x0.7). Comments below give the reasons only.
 Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_46x30DM11"] = standard(),
     ["GunsOfTienPost93_46x30Subsonic"] = subsonic(0.6),
@@ -130,8 +133,10 @@ Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_57x28SS197SR"] = (function()
         local a, b = pierce(1)
         return {
-            SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
-            SF.Multiply("CritDmgMultiplier", 1.1),
+            SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
+            SF.Multiply("CritDmgMultiplier", 1.15),
+            SF.Multiply("CriticalChance", 1.05),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
             a, b,
         }
     end)(),
@@ -143,39 +148,43 @@ Ammo.RegisterMultipleAmmoStats({
         return { SF.Multiply("MaxDamage", 1.1), SF.Multiply("MinDamage", 1.1), SF.Multiply("CritDmgMultiplier", 1.1), a, b }
     end)(),
     -- PMM (early 1990s): the hot Makarov load, as the 9x19 +P+
-    ["GunsOfTienPost93_9x18PMM"] = {
-        SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
-        SF.Multiply("CritDmgMultiplier", 1.1),
-        SF.Multiply("SoundRadius", 1.1), SF.Multiply("SoundVolume", 1.1),
-        SF.Multiply("ConditionLowerChanceOneIn", 0.6),
-    },
-    -- pistol armour piercing (RG028): the main mod's Tokarev steel core
-    ["GunsOfTienPost93_PistolAP"] = (function()
+    ["GunsOfTienPost93_9x18PMM"] = (function()
         local a, b = pierce(2)
         return {
-            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
-            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
-            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            SF.Multiply("MaxDamage", 1.5), SF.Multiply("MinDamage", 1.5),
+            SF.Multiply("CritDmgMultiplier", 1.5),
+            SF.Multiply("CriticalChance", 1.05),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.5),
+            a, b,
+        }
+    end)(),
+    -- pistol armour piercing (RG028): the main mod's Tokarev steel core
+    ["GunsOfTienPost93_PistolAP"] = (function()
+        local a, b = pierce(5)
+        return {
+            SF.Multiply("MaxDamage", 0.85), SF.Multiply("MinDamage", 0.85),
+            SF.Multiply("CritDmgMultiplier", 0.95),
+            SF.Multiply("CriticalChance", 0.9),
             a, b,
         }
     end)(),
     -- 7N21: a hot 9x19 with a steel penetrator: the pistol AP's piercing and damage, the +P+'s wear
     ["GunsOfTienPost93_9x19_7N21"] = (function()
-        local a, b = pierce(2)
+        local a, b = pierce(5)
         return {
-            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
-            SF.Multiply("SoundRadius", 1.1), SF.Multiply("SoundVolume", 1.1),
-            SF.Multiply("ConditionLowerChanceOneIn", 0.7),
+            SF.Multiply("MaxDamage", 0.85), SF.Multiply("MinDamage", 0.85),
+            SF.Multiply("CritDmgMultiplier", 0.95),
+            SF.Multiply("CriticalChance", 0.9),
             a, b,
         }
     end)(),
     -- 7N13 (1990s): the better penetrator than the B-32 (1932; x0.9, 3 targets), so a target more and lighter
     ["GunsOfTienPost93_762x54_7N13"] = (function()
-        local a, b = pierce(4)
+        local a, b = pierce(5)
         return {
             SF.Multiply("MaxDamage", 0.85), SF.Multiply("MinDamage", 0.85),
-            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
-            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            SF.Multiply("CritDmgMultiplier", 0.95),
+            SF.Multiply("CriticalChance", 0.9),
             a, b,
         }
     end)(),
@@ -183,9 +192,9 @@ Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_545x39_7N22"] = (function()
         local a, b = pierce(5)
         return {
-            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
-            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
-            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            SF.Multiply("MaxDamage", 0.85), SF.Multiply("MinDamage", 0.85),
+            SF.Multiply("CritDmgMultiplier", 0.95),
+            SF.Multiply("CriticalChance", 0.9),
             a, b,
         }
     end)(),
@@ -193,8 +202,10 @@ Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_762x39HollowPoint"] = (function()
         local a, b = pierce(1)
         return {
-            SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
-            SF.Multiply("CritDmgMultiplier", 1.25), SF.Multiply("CriticalChance", 1.1),
+            SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
+            SF.Multiply("CritDmgMultiplier", 1.15),
+            SF.Multiply("CriticalChance", 1.05),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
             a, b,
         }
     end)(),
@@ -203,8 +214,10 @@ Ammo.RegisterMultipleAmmoStats({
     ["GunsOfTienPost93_3030FTX"] = (function()
         local a, b = pierce(1)
         return {
-            SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
-            SF.Multiply("CriticalChance", 1.1),
+            SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
+            SF.Multiply("CritDmgMultiplier", 1.15),
+            SF.Multiply("CriticalChance", 1.05),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
             SF.Multiply("MaxRange", 1.15),
             a, b,
         }
@@ -225,9 +238,9 @@ Ammo.RegisterMultipleAmmoStats({
     -- PAB-9 (1995): the cheaper armour piercing 9x39, a worse penetrator than the SP-6 (x0.9, 3 targets), so
     -- between it and the plain SP-5
     ["GunsOfTienPost93_9x39PAB9"] = (function()
-        local a, b = pierce(2)
+        local a, b = pierce(3)
         return {
-            SF.Multiply("MaxDamage", 0.95), SF.Multiply("MinDamage", 0.95),
+            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
             a, b,
         }
     end)(),
@@ -237,7 +250,7 @@ Ammo.RegisterMultipleAmmoStats({
             SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
             SF.Multiply("CritDmgMultiplier", 1.15),
             SF.Multiply("CriticalChance", 1.05),
-            SF.Multiply("ConditionLowerChanceOneIn", 0.9),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
             a, b,
         }
     end)(),

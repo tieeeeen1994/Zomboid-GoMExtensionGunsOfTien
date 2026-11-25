@@ -20,10 +20,10 @@ Each in boxes, cartons and crates. Like Guns of Marz's own special loads they ar
 [*].308 Winchester Soft Point
 [*]12 Gauge Birdshot, Flechette (reaches further, tighter pattern)
 [*]7.62x51mm M61 and .30-06 Springfield M2 (Armor Piercing)
-[*]5.45x39mm 7U1 (Subsonic) and 7N10 (pierces a fourth target)
+[*]5.45x39mm 7U1 (Subsonic) and 7N10 (pierces up to 4 targets)
 [*].38 Special [+P] and Hollow Point, .357 Magnum Hollow Point
 [*].44 Special (a milder round any .44 Magnum gun fires) and .44 Magnum Hollow Point
-[*]7.62x54mmR B-32 (Incendiary): pierces like armour piercing and 1 hit in 4 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
+[*]7.62x54mmR B-32 (Incendiary): pierces up to 4 targets and 1 hit in 4 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
 [/list]
 
 [h2].22 LR[/h2]
@@ -40,7 +40,7 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 [h2]7.62x25mm Tokarev and 9x18mm Makarov[/h2]
 Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev pistol and PPSh-41 are next).
 [list]
-[*]7.62x25mm Tokarev, the fast, hard-hitting round of the Tokarev pistols and Soviet submachine guns, in boxes of 50, cartons and crates; with its Steel Core load (pierces a second target) and a heavy Subsonic load (quieter, a little weaker)
+[*]7.62x25mm Tokarev, the fast, hard-hitting round of the Tokarev pistols and Soviet submachine guns, in boxes of 50, cartons and crates; with its Steel Core load (armour piercing, up to 5 targets) and a heavy Subsonic load (quieter, a little weaker)
 [*]9x18mm Makarov, the Soviet police and army pistol round, in boxes of 50, cartons and crates
 [*]Their own boxes: SAKER (a falcon) on the Tokarev's olive surplus boxes, TUSKER (a boar) on the Makarov's
 [*]Made with Ammo Maker; not found as loot until their guns arrive
