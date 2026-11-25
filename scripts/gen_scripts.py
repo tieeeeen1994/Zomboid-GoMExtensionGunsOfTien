@@ -18,10 +18,12 @@ GOM_STANAGS = gom_data.stanags()
 # takes the window of its closest GoM gun, read from GoM's script at every run.
 GOM_EQUIVALENT = {
     'UZI': 'MP5', 'MINIUZI': 'MAC10', 'MICROUZI': 'MAC10', 'TMP': 'MAC10', 'P90': 'MP5',  # SMGs 3-11, short 2-10
+    'SKORPION': 'MAC10',
+    'PPSH41': 'THOMPSON',
     'AUG': 'FAMAS',                                                                    # assault rifle 7-17
     'M249': 'M60', 'RPD': 'M60', 'RPK': 'M60',                                         # LMGs 9-20
     'SR25': 'SVD', 'SVU': 'SVD',                                                       # marksman rifles 11-23
-    'GLOCK21': 'M1911', 'PPK': 'GLOCK17',                                              # pistols 2-8
+    'GLOCK21': 'M1911', 'PPK': 'GLOCK17', 'TT33': 'M1911',                             # pistols 2-8
 }
 SIGHT = {gun: gom_data.sight(gom) for gun, gom in GOM_EQUIVALENT.items()}
 
@@ -515,9 +517,9 @@ module Base {
         'Tooltip_DOUBLEBARREL_Barrel_Sawnoff_Open': sawn % 'double-barrel shotgun',
         'Tooltip_DOUBLE_DEUCE_Barrel_Close': full % 'Double Deuce',
         'Tooltip_DOUBLE_DEUCE_Barrel_Open': full % 'Double Deuce',
-        'Tooltip_STEVENS_555_Barrel_Close': full % 'Stevens 555',
-        'Tooltip_STEVENS_555_Barrel_Open': full % 'Stevens 555',
-        'Tooltip_STEVENS_555_Barrel_Sawnoff_Close': sawn % 'Stevens 555',
+        'Tooltip_STEVENS_555_Barrel_Close': full % 'Model 555',
+        'Tooltip_STEVENS_555_Barrel_Open': full % 'Model 555',
+        'Tooltip_STEVENS_555_Barrel_Sawnoff_Close': sawn % 'Model 555',
         'Tooltip_TOZ34_Barrel_Close': full % 'TOZ-34',
         'Tooltip_TOZ34_Barrel_Open': full % 'TOZ-34',
         'Tooltip_TOZ34_Barrel_Sawnoff_Close': sawn % 'TOZ-34',
@@ -1028,7 +1030,7 @@ def muzzle_devices():
 # gun: (English name as GoM's barrel parts, GoM's muzzle offset, front of GoM's sawn-off barrel)
 SAWN_STOCK_GUNS = {
     'DOUBLEBARREL': ('Double Barrel', (0.0, 0.4830, 0.0217), 0.3410),
-    'STEVENS_555': ('Stevens 555', (0.0, 0.5418, 0.0250), 0.4180),
+    'STEVENS_555': ('Model 555', (0.0, 0.5418, 0.0250), 0.4180),
     'TOZ34': ('TOZ-34', (0.0, 0.5213, 0.0180), 0.3820),
 }
 SAWN_STOCK_WEIGHT = -0.5      # the buttstock sawn away (GoM's barrels: 3.0 full, 1.0 sawn off)
@@ -2249,6 +2251,209 @@ def tmp():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# Skorpion vz. 82 (docs/design.md 4s, user 2026-11-26: "For makarov guns, let's add Skorpion and Kedr"; meshes and
+# points: scripts/build_skorpion.py, icons: scripts/make_skorpion_art.py, registries: shared/GunsOfTien/Skorpion.lua).
+# The Czechoslovak army's 9x18mm Makarov Skorpion of 1982: held like a pistol and holstered as the Mini Uzi and the
+# TMP (the model turned, GoM's MP5K reload), its wire stock two hidden parts drawn in place (GoM's MAC-10 way, as the
+# Uzi's), the bolt with both cocking knobs on GoM's Bolt swap. No muzzle parts (no muzzle family in 9x18) and no
+# rails. Real: 113 mm barrel, 1.44 kg, about 850 rpm (the rate reducer in the grip), straight steel magazines of 12,
+# 24 and 30. Stats under the Micro Uzi's (9x19 from 117 mm, 0.6-1.0): the Makarov round has about two thirds of the
+# 9x19's energy; steadier than any Uzi (850 rpm from a 1.4 kg gun). Sound from sound_model.py's formula: 3.9 grains
+# against the PM's 3.7" barrel, no crack (the round is subsonic) -> f = 0.38, 67 / 19.
+SKORPION_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'skorpion_points.json')
+SKORPION_MAGS = [(12, 0.06), (24, 0.1), (30, 0.13)]      # steel; the Uzi's 20 / 25 / 32: 0.08 / 0.12 / 0.15
+SKORPION_STATS = dict(min=0.5, max=0.85, crit=25.0, hit=46, aim=24, recoil=10, range=22.0, stop=3.5, weight=1.1,
+                      radius=67, volume=19, sight=SIGHT['SKORPION'], angle=(0.95, 0.05), knock=2.0, mag=24)
+SKORPION_PARTS = [  # hidden integrated stocks: (item, part type, weight, English name); GoM's MAC-10 stock weighs 0.2
+    ('SKORPION_Integrated_Stock_Folded', 'StockIntegrated', None, 'Skorpion Integrated Stock (Folded)'),
+    ('SKORPION_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Skorpion Integrated Stock (Deployed)'),
+]
+
+
+def skorpion_mag(rounds):
+    return f'9x18Magazine{rounds}_SKORPION'
+
+
+def skorpion():
+    pts = json.load(open(SKORPION_POINTS))
+    s = SKORPION_STATS
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model SKORPION {{
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_BODY,
+        texture  = {tex}/SKORPION,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append("    }\n")
+    # SKORPION_BOLT = the bolt under the top port with both cocking knobs; the two stocks are drawn in place
+    for node in ('BOLT', 'STOCK_FOLDED', 'STOCK_DEPLOYED'):
+        models.append(f"""
+    model SKORPION_{node} {{
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_{node},
+        texture  = {tex}/SKORPION,
+        cullFace = None,
+    }}
+""")
+    for r, _ in SKORPION_MAGS:
+        models.append(f"""
+    model {skorpion_mag(r)} {{
+        mesh     = weapons/magazines/GunsOfTien_SKORPION_magazines|{skorpion_mag(r)},
+        texture  = {tex}/{skorpion_mag(r)},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_skorpion.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.SKORPION_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.SKORPION_BOLT bolt_fired bolt_fired,",
+             f"{w}{MODULE}.SKORPION_Integrated_Stock_Folded {MODULE}.SKORPION_STOCK_FOLDED stock stock,",
+             f"{w}{MODULE}.SKORPION_Integrated_Stock_Deployed {MODULE}.SKORPION_STOCK_DEPLOYED stock stock,"]
+    parts += [f"{w}{MODULE}.{skorpion_mag(r)} {MODULE}.{skorpion_mag(r)} magazine magazine," for r, _ in SKORPION_MAGS]
+    items = [f"module {MODULE} {{\n", f"""
+    item SKORPION {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['sight'][0]},
+        MaxSightRange                = {s['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = {s['angle'][0]},
+        AimingPerkMinAngleModifier   = {s['angle'][1]},
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 20.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_9x18,
+        AmmoBox                      = {MODULE}.9x18_Box,
+        ClipSize                     = {s['mag']},
+        MagazineType                 = {MODULE}.{skorpion_mag(s['mag'])},
+        MaxAmmo                      = {s['mag']},
+        Reloadtime                   = 30,
+        AttachmentType               = Holster,
+        WeaponReloadType             = handgun,
+        SwingAnim                    = Handgun,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_SKORPION,
+        RunAnim                      = Run_Weapon2,
+        WeaponSprite                 = {MODULE}.SKORPION,
+        AimReleaseSound              = M9AimRelease,
+        BreakSound                   = M9Break,
+        BringToBearSound             = M9BringToBear,
+        ClickSound                   = M9Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = M9Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = M9Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M9UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = {s['knock']},
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+"""]
+    for r, weight in SKORPION_MAGS:
+        items.append(f"""
+    item {skorpion_mag(r)} {{
+        AmmoType         = gunsoftien:bullet_9x18,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{skorpion_mag(r)},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {r},
+        MountOn          = {MODULE}.SKORPION,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{skorpion_mag(r)},
+        WorldStaticModel = {MODULE}.{skorpion_mag(r)},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight, _ in SKORPION_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ''
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_skorpion.txt', ''.join(items))
+    # GoM repairs its SMGs with Aiming=3
+    write('scripts/GunsOfTien/fixing_skorpion.txt', f"""module Base {{
+    fixing Fix SKORPION {{
+        Require = {MODULE}.SKORPION,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.SKORPION'] = 'Skorpion vz. 82 Machine Pistol'
+    for r, _ in SKORPION_MAGS:      # GoM's names ("MP5 30Rds 9x19mm Magazine")
+        names[f'{MODULE}.{skorpion_mag(r)}'] = f"Skorpion {r}Rds 9x18mm {'Extended ' if r >= 30 else ''}Magazine"
+    for part, _, _, name in SKORPION_PARTS:
+        names[f'{MODULE}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 # Knight's SR-25 Match (docs/design.md 4l, user 2026-11-11: the 1990 rifle, integrated scope and bipod; meshes and
 # points: scripts/build_sr25.py, on GoM's AR15 texture; registries: shared/GunsOfTien/SR25.lua). Semi-automatic only
 # (FireMode Single, as GoM's AR-15 / M14 / PSG-1); GoM's AR bolt and charging handle parts (Bolt_Lock / _Fired,
@@ -2692,7 +2897,7 @@ def aug():
 """)
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
-    names[f'{MODULE}.AUG'] = 'Steyr AUG A1 Assault Rifle'          # GoM's "FN FNC Assault Rifle"
+    names[f'{MODULE}.AUG'] = 'AUG A1 Assault Rifle'                # GoM's "G36 Assault Rifle"; no maker names
     for r, _ in AUG_MAGS:      # GoM's names ("STANAG 30Rds 5.56x45mm Magazine", "MAC-10 40Rds .45 ACP Extended Magazine")
         names[f'{MODULE}.{aug_mag(r)}'] = f"AUG {r}Rds 5.56x45mm {'Extended ' if r > 30 else ''}Magazine"
     for part, _, name in AUG_PARTS:
@@ -3525,7 +3730,7 @@ def glock21():
 """)
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
-    names[f'{MODULE}.GLOCK21'] = 'Glock-21'                                    # GoM's "Glock-17"
+    names[f'{MODULE}.GLOCK21'] = 'Glock-21 Pistol'                             # GoM's "Glock-17" (GOM_NAMES)
     names[f'{MODULE}.{GLOCK21_MAG}'] = 'Glock-21 13Rds .45 ACP Magazine'       # GoM's "USP 12Rds .45 ACP Magazine"
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
@@ -3702,8 +3907,369 @@ def ppk():
 """)
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
-    names[f'{MODULE}.PPK'] = 'Walther PPK'                                    # GoM's "Browning Hi-Power" style
-    names[f'{MODULE}.{PPK_MAG}'] = 'Walther PPK 8Rds .22 LR Magazine'
+    names[f'{MODULE}.PPK'] = 'PPK Pistol'                                     # no maker names (GOM_NAMES)
+    names[f'{MODULE}.{PPK_MAG}'] = 'PPK 8Rds .22 LR Magazine'
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# Tokarev TT-33 in 7.62x25mm (user, 2026-11-25: the Tokarev release; named TT-33 on my recommendation: the TT-30 does
+# not differ in play and every reference is a TT-33; meshes and points: scripts/build_tt.py, icons:
+# scripts/make_tt_art.py, registries: shared/GunsOfTien/TT33.lua). The PPK's pattern (GoM's pistols): body + slide
+# drawn through MarzGuns.Slide_Lock / Slide_Fired, the magazine in the gun's own space; no GoM parts (no rail, no
+# threaded barrel).
+TT33_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tt_points.json')
+TT33_MAG = '762x25Magazine8_TT33'
+
+
+def tt33():
+    pts = json.load(open(TT33_POINTS))
+    prop2 = pts['_extras']['mag_prop2']
+    p2o = ' '.join('%.4f' % v for v in prop2['offset'])
+    p2r = ' '.join('%.4f' % v for v in prop2['rotate'])
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model TT33 {{
+        mesh     = weapons/firearms/GunsOfTien_TT33|TT33_BODY,
+        texture  = {tex}/TT33,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'slide_fired', 'world'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append(f"""    }}
+
+    model TT33_SLIDE {{
+        mesh     = weapons/firearms/GunsOfTien_TT33|TT33_SLIDE,
+        texture  = {tex}/TT33,
+        cullFace = None,
+    }}
+
+    model {TT33_MAG} {{
+        mesh     = weapons/magazines/GunsOfTien_TT33_magazines|{TT33_MAG},
+        texture  = {tex}/{TT33_MAG},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+        attachment Bip01_Prop2 {{ offset = {p2o}, rotate = {p2r}, }}
+    }}
+}}
+""")
+    write('scripts/GunsOfTien/models_tt33.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Slide_Lock {MODULE}.TT33_SLIDE slide_Lock slide_Lock,",
+             f"{w}MarzGuns.Slide_Fired {MODULE}.TT33_SLIDE slide_fired slide_fired,",
+             f"{w}{MODULE}.{TT33_MAG} {MODULE}.{TT33_MAG} magazine magazine,"]
+    # Stats: GoM's 9mm service pistols (its Hi-Power and P226: 0.8-1.1, StopPower 5), whose energy the Tokarev round
+    # matches with a lighter, narrower bullet, between them and GoM's M1911 in handling: small fixed sights and an
+    # upright grip (HitChance 45: the Hi-Power's 40, the M1911's 50), crit 18 (15 / 20), Aimingtime 27 (30 / 25), a
+    # sharp recoil (RecoilDelay 14: 13 / 15), eight rounds, 854 g (GoM's M1911: 1.1 for 1105 g, so 0.85), the
+    # Hi-Power's durability. The plain round does not pierce (the Steel Core load does: Ammunition.lua). Sound from
+    # the main mod's model (sound_model.py's formula: 8 grains from a 4.6" barrel, supersonic: 124 / 35; GoM's 9mm
+    # pistols come to 114 / 33), GoM's 9mm shot and M9 handling sounds. Holster as GoM's pistols.
+    item = f"""module {MODULE} {{
+
+    item TT33 {{
+        MinDamage                    = 0.8,
+        MaxDamage                    = 1.1,
+        CriticalChance               = 18.0,
+        AimingPerkCritModifier       = 5,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 45,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 27,
+        RecoilDelay                  = 14,
+        MaxRange                     = 20.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {SIGHT['TT33'][0]},
+        MaxSightRange                = {SIGHT['TT33'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.95,
+        AimingPerkMinAngleModifier   = 0.05,
+        FireMode                     = Single,
+        FireModePossibilities        = Single,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 190,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 5.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Holster,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 0.85,
+        MetalValue                   = 30.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_762x25,
+        AmmoBox                      = {Q762x25['box']},
+        ClipSize                     = 8,
+        MagazineType                 = {MODULE}.{TT33_MAG},
+        MaxAmmo                      = 8,
+        Reloadtime                   = 30,
+        WeaponReloadType             = handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_TT33,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Handgun,
+        WeaponSprite                 = {MODULE}.TT33,
+        AimReleaseSound              = M9AimRelease,
+        BreakSound                   = M9Break,
+        BringToBearSound             = M9BringToBear,
+        ClickSound                   = M9Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = M9Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = M9Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M9UnEquip,
+        SoundGain                    = 1.7,
+        SoundRadius                  = 124,
+        SoundVolume                  = 35,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = 2.0,
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+
+    item {TT33_MAG} {{
+        AmmoType         = gunsoftien:bullet_762x25,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{TT33_MAG},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = 8,
+        MountOn          = {MODULE}.TT33,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:pistolmagazine,
+        Weight           = 0.05,
+        WeightModifier   = 0.05,
+        StaticModel      = {MODULE}.{TT33_MAG},
+        WorldStaticModel = {MODULE}.{TT33_MAG},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+}}
+"""
+    write('scripts/GunsOfTien/items_tt33.txt', item)
+    # GoM repairs its pistols with RepairPack, Aiming 3
+    write('scripts/GunsOfTien/fixing_tt33.txt', f"""module Base {{
+    fixing Fix TT33 {{
+        Require = {MODULE}.TT33,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.TT33'] = 'TT-33 Pistol'                                   # no maker names (GOM_NAMES)
+    names[f'{MODULE}.{TT33_MAG}'] = 'TT-33 8Rds 7.62x25mm Magazine'            # GoM's "USP 12Rds .45 ACP Magazine"
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
+# PPSh-41 in 7.62x25mm (user, 2026-11-23: the Tokarev release, with the TT-33; meshes and points:
+# scripts/build_ppsh41.py, icons: scripts/make_ppsh41_art.py, registries: shared/GunsOfTien/PPSH41.lua). GoM's
+# Thompson pattern (its closest gun): rifle-held, the cocking handle on GoM's Bolt_Lock / Bolt_Fired swap, the
+# magazines at the gun's `magazine` point, no GoM parts (no rail, no thread; the compensator is part of the jacket).
+PPSH41_POINTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ppsh41_points.json')
+PPSH41_DRUM, PPSH41_BOX = '762x25Drum71_PPSH41', '762x25Magazine35_PPSH41'
+# The off hand's point: GoM gives its Thompson's three magazines one Bip01_Prop2 (their origins at the top); ours
+# take it with their middles where GoM's drum's and 30-round box's are (bounds measured from GoM's smgs.fbx)
+GOM_THOMPSON_MAG_PROP2 = {'offset': [0.0033, 0.0921, 0.0025], 'rotate': [-87.5316, 0.6323, -109.3767]}
+GOM_THOMPSON_DRUM_BOUNDS = ([-0.0579, -0.0126, -0.1148], [0.0579, 0.0152, 0.0063])
+GOM_THOMPSON_BOX_BOUNDS = ([-0.0080, -0.0127, -0.1524], [0.0080, 0.0122, 0.0082])
+# item, rounds, weight (GoM's Thompson drum 0.35 and 30-round box 0.15), name
+PPSH41_MAGS = [(PPSH41_DRUM, 71, '0.3', 'PPSh-41 71Rds 7.62x25mm Drum', GOM_THOMPSON_DRUM_BOUNDS),
+               (PPSH41_BOX, 35, '0.15', 'PPSh-41 35Rds 7.62x25mm Magazine', GOM_THOMPSON_BOX_BOUNDS)]
+
+
+def ppsh41():
+    pts = json.load(open(PPSH41_POINTS))
+    tex = 'weapons/GunsOfTien'
+    models = [f"module {MODULE} {{\n", f"""
+    model PPSH41 {{
+        mesh     = weapons/firearms/GunsOfTien_PPSH41|PPSH41_BODY,
+        texture  = {tex}/PPSH41,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'magazine', 'bolt_lock', 'bolt_fired', 'world'):
+        models.append(m249_attachment(name, pts[name]))
+    models.append(f"""    }}
+
+    model PPSH41_BOLT {{
+        mesh     = weapons/firearms/GunsOfTien_PPSH41|PPSH41_BOLT,
+        texture  = {tex}/PPSH41,
+        cullFace = None,
+    }}
+""")
+    for mag, _, _, _, gom_bounds in PPSH41_MAGS:
+        bd = pts['_bounds'][mag]
+        models.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTien_PPSH41_magazines|{mag},
+        texture  = {tex}/{mag},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{m249_attachment('Bip01_Prop2', prop2_moved(GOM_THOMPSON_MAG_PROP2, gom_bounds, (bd['min'], bd['max'])))}    }}
+""")
+    models.append("}\n")
+    write('scripts/GunsOfTien/models_ppsh41.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {MODULE}.PPSH41_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {MODULE}.PPSH41_BOLT bolt_fired bolt_fired,"]
+    parts += [f"{w}{MODULE}.{mag} {MODULE}.{mag} magazine magazine," for mag, _, _, _, _ in PPSH41_MAGS]
+    # Stats: GoM's Thompson is its M1911 from a long barrel (0.9-1.2 to 1.0-1.6: x1.11 / x1.33); the same step on the
+    # TT-33's 0.8-1.1 gives 0.9-1.45. Thompson handling (Hit 50, Aimingtime 40, range 30, its 3-11 sights), the
+    # TT-33's crit 18 and the round's sharper recoil than a .45's (RecoilDelay 14), GoM's SMG wear (1 in 200), 3.63 kg
+    # drawn as GoM's Thompson is (4.0 for 4.9 kg): 3.0. Automatic with a selector for single shots (the lever ahead
+    # of the trigger), about 900 rounds a minute (PPSH41.lua). The plain round does not pierce. Sound from the main
+    # mod's model (sound_model.py's formula: 8 grains from a 10.6" barrel against the pistol's 4.6": 97 / 28), GoM's
+    # 9mm shot (its MP5's) and its Thompson's handling sounds and gain.
+    items = [f"module {MODULE} {{\n", f"""
+    item PPSH41 {{
+        MinDamage                    = 0.9,
+        MaxDamage                    = 1.45,
+        CriticalChance               = 18.0,
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = 50,
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = 40,
+        RecoilDelay                  = 14,
+        MaxRange                     = 30.0,
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {SIGHT['PPSH41'][0]},
+        MaxSightRange                = {SIGHT['PPSH41'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 200,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = 3.0,
+        MetalValue                   = 45.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_762x25,
+        AmmoBox                      = {Q762x25['box']},
+        MagazineType                 = {MODULE}.{PPSH41_DRUM},
+        MaxAmmo                      = 71,
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTien_PPSH41,
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {MODULE}.PPSH41,
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M1911Drop,
+        EjectAmmoStartSound          = M1911EjectAmmoStart,
+        EjectAmmoSound               = M1911EjectAmmo,
+        EjectAmmoStopSound           = M1911EjectAmmoStop,
+        EquipSound                   = M1911Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M1911InsertAmmoStart,
+        InsertAmmoSound              = M1911InsertAmmo,
+        InsertAmmoStopSound          = M1911InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = 2.0,
+        SoundRadius                  = 97,
+        SoundVolume                  = 28,
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+    }}
+"""]
+    for mag, rounds, weight, _, _ in PPSH41_MAGS:
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = gunsoftien:bullet_762x25,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTien_{mag},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {rounds},
+        MountOn          = {MODULE}.PPSH41,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {MODULE}.{mag},
+        WorldStaticModel = {MODULE}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    items.append("}\n")
+    write('scripts/GunsOfTien/items_ppsh41.txt', ''.join(items))
+    # GoM repairs its Thompson with RepairPack, Aiming 3
+    write('scripts/GunsOfTien/fixing_ppsh41.txt', f"""module Base {{
+    fixing Fix PPSH41 {{
+        Require = {MODULE}.PPSH41,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(names_path))
+    names[f'{MODULE}.PPSH41'] = 'PPSh-41 Submachine Gun'                       # GoM's "... Submachine Gun"
+    for mag, _, _, name, _ in PPSH41_MAGS:
+        names[f'{MODULE}.{mag}'] = name
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -3714,7 +4280,49 @@ def ppk():
 # override, its meshes and its build script were removed and GoM's own models apply unchanged. Only the name stays:
 # GoM's MP5 is shown as the MP5A3 it is (retractable stock; the MP5A1 has none), next to GoM's own "MP5A2 Submachine
 # Gun".
-MP5_NAMES = {'MarzGuns.MP5': 'MP5A3 Submachine Gun'}
+# No maker names on guns (user, 2026-11-26): GoM's branded guns and the parts named after one gun lose the brand;
+# a bare model number takes GoM's own "Model 70 Bolt Rifle" form. Kept: cartridge names (.308 Winchester), names
+# that are the gun itself (Glock, Desert Eagle, Mosin-Nagant, Browning Automatic Rifle) and GoM's rail families
+# (Beretta / Colt Mounting Rail, Beretta Stock: shared by several pistols). Pistols end in "Pistol" as the long guns
+# end in their type (user, 2026-11-26).
+GOM_NAMES = {
+    'MarzGuns.MP5': 'MP5A3 Submachine Gun',
+    'MarzGuns.FNC': 'FNC Assault Rifle',
+    'MarzGuns.FNC_Integrated_Stock_Deployed': 'FNC Integrated Stock (Deployed)',
+    'MarzGuns.FNC_Integrated_Stock_Folded': 'FNC Integrated Stock (Folded)',
+    'MarzGuns.FAL': 'FAL Battle Rifle',
+    'MarzGuns.W1894': 'Model 1894 Rifle',
+    'MarzGuns.M1895': 'Model 1895 Rifle',
+    'MarzGuns.W1887': 'Model 1887 Shotgun',
+    'MarzGuns.W1873': 'Model 1873 Rifle',
+    'MarzGuns.W1873_CARBINE': 'Model 1873 Short Carbine',
+    'MarzGuns.M92FS': 'M92FS Pistol',
+    'MarzGuns.M93R': 'M93R Pistol',
+    'MarzGuns.HIPOWER': 'Hi-Power Pistol',
+    'MarzGuns.P226': 'P226 Pistol',
+    'MarzGuns.USP': 'USP Pistol',
+    'MarzGuns.M1911': 'M1911 Pistol',
+    'MarzGuns.VP70M': 'VP70M Pistol',
+    'MarzGuns.GLOCK17': 'Glock-17 Pistol',
+    'MarzGuns.DEAGLE': '.50 Desert Eagle Pistol',
+    'MarzGuns.Rem700_Sling': 'Model 700 Sling',
+    'MarzGuns.SW629': 'Model 629 Revolver',
+    'MarzGuns.COLT_SINGLE': 'Single Action Revolver',
+    'MarzGuns.PYTHON': 'Python Revolver',
+    'MarzGuns.MAC10': 'MAC-10 Machine Pistol',
+    'MarzGuns.MOSSBERG_590': 'Model 590 Shotgun',
+    'MarzGuns.BENELLI_M4': 'M4 Super 90 Semi-Shotgun',
+    'MarzGuns.STEVENS_555': 'Model 555 Double Barrel Shotgun',
+    'MarzGuns.STEVENS_555_Barrel_Close': 'Model 555 Barrel',
+    'MarzGuns.STEVENS_555_Barrel_Open': 'Model 555 Barrel',
+    'MarzGuns.STEVENS_555_Barrel_Sawnoff_Close': 'Model 555 Barrel Sawnoff',
+    'MarzGuns.STEVENS_555_Barrel_Sawnoff_Open': 'Model 555 Barrel Sawnoff',
+    'MarzGuns.REMINGTON_870': 'Model 870 Shotgun',
+    'MarzGuns.DOUBLE_DEUCE': '2-Bore Rifle',
+    'MarzGuns.M1903': 'M1903 Bolt Rifle',
+    'MarzGuns.REMINGTON_700': 'Model 700 Bolt Rifle',
+    'MarzGuns.CAMP_CARBINE': 'Camp Carbine',
+}
 # game units per real mm of GoM's MP5 family since its November 2026 update: its MP5, MP5A2, MP5SD and MP5K meshes
 # measured in Blender at 0.779 of the size before (body length, width and height alike), which GoM drew at 0.72
 GOM_MP5_K = 0.00072 * 0.779
@@ -3723,10 +4331,10 @@ GOM_MP5_K = 0.00072 * 0.779
 MP5_PART_SCALE = round(GOM_MP5_K / 0.00072, 4)
 
 
-def mp5_names():
+def gom_name_overrides():
     names_path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
     names = json.load(open(names_path))
-    names.update(MP5_NAMES)
+    names.update(GOM_NAMES)
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
@@ -4425,15 +5033,18 @@ if __name__ == '__main__':
     belt_links()
     uzi()
     tmp()
+    skorpion()
     sr25()
     aug()
     glock21()
     ppk()
+    tt33()
+    ppsh41()
     rpk()
     rpd()
     svu()
     charging_handles()
-    mp5_names()
+    gom_name_overrides()
     one_hand()
     fixed_bayonets()
     print('written under', os.path.normpath(ROOT))

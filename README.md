@@ -25,7 +25,7 @@ Maker they can be made.
 - 5.45x39mm 7U1 (Subsonic) and 7N10 (pierces up to 4 targets)
 - .38 Special [+P] and Hollow Point, .357 Magnum Hollow Point
 - .44 Special (a milder round any .44 Magnum gun fires) and .44 Magnum Hollow Point
-- 7.62x54mmR B-32 (Incendiary): pierces up to 4 targets and 1 hit in 4 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
+- 7.62x54mmR B-32 (Incendiary): pierces up to 4 targets and 1 hit in 4 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground; any other fire (a Molotov, burning ground) takes over
 
 ## .22 LR
 
@@ -40,12 +40,13 @@ A new calibre, .22 Long Rifle, the small rimfire round of plinkers and small gam
 
 ## 7.62x25mm Tokarev and 9x18mm Makarov
 
-Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev pistol and PPSh-41 are next).
+Two Soviet pistol calibres. The Tokarev TT-33 and the PPSh-41 (below) fire the first, the Skorpion vz. 82 and
+Post-93's PP-91 Kedr the second.
 
 - 7.62x25mm Tokarev, the fast, hard-hitting round of the Tokarev pistols and Soviet submachine guns, in boxes of 50, cartons and crates; with its Steel Core load (armour piercing, up to 5 targets) and a heavy Subsonic load (quieter, a little weaker)
 - 9x18mm Makarov, the Soviet police and army pistol round, in boxes of 50, cartons and crates
 - Their own boxes: SAKER (a falcon) on the Tokarev's olive surplus boxes, TUSKER (a boar) on the Makarov's
-- Made with Ammo Maker; not found as loot until their guns arrive
+- Boxes and cartons in gun stores beside the 9mm ones (with Extend Loot Areas on, wherever 9mm boxes are) and with their guns; also made with Ammo Maker
 - With Hot Brass their spent casings fly out like any other
 
 ## Changes to Guns of Marz
@@ -98,7 +99,7 @@ Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev p
   Guns of Marz's own), and does its real job: compensators Aiming Time -3 and automatic fire spread -10%, muzzle
   brakes Aiming Time -5 and spread -5%, flash hiders Hit Chance +2%, Guns of Marz's LR2, LX and Trix42 included. Found
   where Guns of Marz's muzzle devices are
-- Guns of Marz's MP5 is named for what it is, the MP5A3 (retractable stock)
+- Guns of Marz's MP5 is named for what it is, the MP5A3 (retractable stock). In game no gun name carries its maker, Guns of Marz's included, and every pistol's ends in "Pistol": the Remington 870 shows as "Model 870 Shotgun", the Colt M1911 as "M1911 Pistol", the Steyr AUG A1 as "AUG A1 Assault Rifle"; this list gives the full names
 - Follows Guns of Marz's November 2026 update on every gun of this mod and the Post-93 add-on: each gun has its
   class's optimal range (submachine guns 3-11 tiles, machine pistols 2-10, carbines 4-13 or 5-14, assault rifles 7-17,
   battle rifles and machine guns 9-20, marksman rifles 11-23, the SV-98 as the M24 14-28, pistols 2-8); stocks,
@@ -140,9 +141,9 @@ Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev p
 - Guns held like a pistol (Post-93's MP7s and P90) hang the right way up on attachment slots other mods add, such as
   Plysken Attachments Reborn's backpack slots, and sawn-off shotguns in modded holsters (sandbox option)
 
-## M249 Light Machine Gun and belt links
+## FN M249 Light Machine Gun and belt links
 
-- M249 Light Machine Gun (the 1993 PIP gun): full auto at 750 or 1000 rounds a minute (its gas regulator), fed from
+- FN M249 Light Machine Gun (the 1993 PIP gun): full auto at 750 or 1000 rounds a minute (its gas regulator), fed from
   its own 200-round box or, in an emergency, any of Guns of Marz's STANAG magazines (which jam twice as often),
   integrated bipod; found where Guns of Marz's M60 is (army zombies, army storage, heavy army trucks), with its boxes
 - Guns of Marz's Picatinny rails fit all four sides, on the feed cover and round the handguard: its optics (all but
@@ -160,9 +161,9 @@ Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev p
   M13 7.62mm Belt Links, Metalworking 2: 50 M27 or 40 M13 links)
 - Links can be switched off (sandbox option): the belt boxes then load like any magazine, and no link boxes are found
 
-## Uzi, Mini Uzi and Micro Uzi
+## IMI Uzi, Mini Uzi and Micro Uzi
 
-- Uzi, Mini Uzi and Micro Uzi, all held one-handed like the MP5K and MAC-10; the Uzi is carried on the back, its
+- IMI's Uzi, Mini Uzi and Micro Uzi, all held one-handed like the MP5K and MAC-10; the Uzi is carried on the back, its
   metal stock folding under the receiver, the Mini and Micro fit a holster (the Micro also an ankle holster), their
   stocks folding along the right side: automatic at 600, 950 and 1200 rounds a minute, or single shots
 - One set of IMI magazines fits all three: 20, 25 and 32 rounds, and long 40 and 50-round magazines
@@ -183,7 +184,7 @@ Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev p
 - Guns of Marz's optional Picatinny rails on top (its red dots), left (lights) and right (lasers), drawn as short rails sized to the gun
 - Found with Guns of Marz's short SMGs (gun stores, pawn shops, survivalists, bandits)
 
-## SR-25
+## Knight's Armament SR-25
 
 - Knight's SR-25 Match of 1990, Eugene Stoner's 7.62x51mm sniper rifle on the AR-10 pattern: a 24-inch match barrel
   in a free-float tube, semi-automatic, on Guns of Marz's AR-15 receiver
@@ -220,6 +221,37 @@ Two Soviet pistol calibres, ahead of the guns that will fire them (the Tokarev p
 - Small enough for an ankle holster
 - No attachments: no rail and no threaded barrel
 - Carried by civilian zombies and found with Guns of Marz's imported pistols in gun stores, with .22 LR boxes
+
+## Tokarev TT-33
+
+- Tokarev TT-33 in 7.62x25mm, the Soviet service pistol as the wartime Tula gun: its own 8-round magazine, black
+  ribbed grips with the star, a lanyard loop at the heel
+- Hits like Guns of Marz's 9mm service pistols, a little louder; takes the Steel Core and Subsonic loads
+- No attachments: no rail and no threaded barrel
+- A war bring-back and a surplus import: found with Guns of Marz's wartime guns and with its imported pistols in gun
+  stores, with 7.62x25mm boxes
+
+## PPSh-41
+
+- PPSh-41 submachine gun in 7.62x25mm: the slotted barrel jacket and its muzzle compensator, a wooden stock, the
+  cocking handle running with the bolt
+- Its 71-round drum and the 35-round curved box magazine
+- Automatic at about 900 rounds a minute, with single shots on its selector; reloaded and held as Guns of Marz's
+  Thompson
+- No attachments: no rail and no thread
+- Found with Guns of Marz's wartime guns (Thompson, BAR, Garand, Mosin), with 7.62x25mm boxes
+
+## Skorpion vz. 82
+
+- Skorpion vz. 82 machine pistol in 9x18mm Makarov, the Czechoslovak army's 1982 version of the little Skorpion:
+  held one-handed and holstered like the MP5K and MAC-10, its wire stock folded over the top or swung open, the
+  orange-brown wooden grip
+- Straight steel magazines of 12 and 24 rounds, and a long 30
+- Automatic at about 850 rounds a minute, with single shots on its selector; light and easy to hold on target, and
+  it hits softer than the 9mm machine pistols
+- Both cocking knobs run with the bolt, and the cases fly up out of the top
+- No attachments: no rail and no threaded barrel
+- A smuggled gun: found with Guns of Marz's Russian guns (drug labs, stashes, police evidence, survivalists' and bandits' vehicles), with 9x18mm boxes; with Extend Loot Areas on, with the short submachine guns instead (gun stores, pawn shops, bandit bags, shoulder holsters); its 30-round magazine with the other long magazines
 
 ## RPK and RPK-74
 
@@ -285,7 +317,7 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well.
 - FN PS90 Carbine: the P90 with the PS90's 16-inch barrel, long flash hider and cheek riser and an M-LOK handguard, held two-handed like a rifle; the P90's magazine and suppressor, Guns of Marz optics on the top rail, its lights and lasers on the handguard's sides and its foregrips under it
 - The MP7s and the P90 TR held one-handed like Guns of Marz's MP5K; carried on the back, take Guns of Marz optics,
   lights and lasers
-- FN Five-seveN pistol (Guns of Marz's own gun, now named just "Five-SeveN"): 20 and 30-round magazines, its own SFN-57 suppressor,
+- FN Five-seveN pistol (Guns of Marz's own gun, shown as "Five-SeveN Pistol"): 20 and 30-round magazines, its own SFN-57 suppressor,
   takes Guns of Marz's pistol sights, pistol lasers and pistol lights
 - H&K UCP Prototype: the MP7's 4.6x30mm companion pistol that H&K never sold, 20-round magazine and a small 40-round drum, takes the MP7's
   suppressor and Guns of Marz's pistol sights, pistol lasers and pistol lights
@@ -306,13 +338,14 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well.
 - Izhmash SV-99 (1999), the quiet .22 LR sniper rifle with its straight-pull toggle lever and built-in suppressor, in green plywood with the open butt of its 2009 stock; a 5-round magazine, a rail on the receiver for Guns of Marz optics, a folding bipod
 - KBP 9A-91 (1994), the compact 9x39mm Russian police carbine: automatic or single shots at 700 rounds a minute, its own 20-round magazine, a stock that folds over the receiver, Guns of Marz's AK side mount on the left rail for its optics, its own suppressor on the 9x39mm muzzle mount (as quiet as Guns of Marz's AS VAL)
 - KBP VSK-94 (1995), the 9A-91's sniper version: the same receiver, magazine and suppressor, a skeleton stock, steadier and longer-ranged, automatic or single shots
-- KBP A-91M 39 (1998), the 7.62x39mm bullpup assault rifle with its 40mm grenade launcher under the barrel: Guns of Marz's AK magazines, automatic or single shots at 700 rounds a minute, switch to the launcher with Gunworks' underbarrel control (Guns of Marz's 40mm rounds), Guns of Marz's rail on the carrying handle for its optics, its AK muzzle mount and devices
+- PP-91 Kedr (1994), Dragunov's 9x18mm Makarov submachine gun of the Russian police: held one-handed and holstered like the MP7, automatic or single shots at 1000 rounds a minute, 20 and 30-round magazines, a stock that folds over the top; it fires the main mod's 9x18mm round and this add-on's later loads; no rail and no threaded barrel
+- KBP A-91M 39 (1998), the 7.62x39mm bullpup assault rifle with its 40mm grenade launcher under the barrel: Guns of Marz's AK magazines, automatic or single shots at 700 rounds a minute, switch to the launcher with Gunworks' underbarrel control (Guns of Marz's 40mm rounds), Guns of Marz's rail on the carrying handle for its optics, its AK muzzle mount, devices and the PBS-1 suppressor
 - A-91M 54 Prototype, a battle rifle on the first A-91M's body with the 40mm grenade launcher over the barrel: 7.62x54mmR (a chambering the real gun never had) on the SV-98's magazines, its 10 and a 20-round one made for this rifle, a longer and heavier barrel, automatic or single shots at 600 rounds a minute, two grips joined by a frame, the launcher's own trigger under the muzzle and its sight leaf raised while the launcher is in use; Guns of Marz's rail on the carrying handle for optics, no muzzle parts
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
 - 4.6x30mm DM21 (a soft-cored ball beside the DM11)
 - Later loads for older calibres: 7.62x25mm Tokarev Hollow Point; 9x18mm Makarov PMM (hot) and RG028 (Armor Piercing); 9x19mm 7N21 (Armor Piercing); 5.45x39mm 7N22 (Armor Piercing); 7.62x39mm Hollow Point; 7.62x54mmR Soft Point and 7N13 (Armor Piercing); 9x39mm PAB-9 (Armor Piercing, a cheaper and weaker penetrator than the SP-6); .30-30 FTX (Polymer Tip, reaches further); .50 AE Hollow Point
-- 12 Gauge Dragon's Breath (Incendiary): almost no hitting power, but 1 pellet hit in 5 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
+- 12 Gauge Dragon's Breath (Incendiary): almost no hitting power, but 1 pellet hit in 5 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground; any other fire (a Molotov, burning ground) takes over
 
 ### Where Post-93's guns are found
 
@@ -322,7 +355,7 @@ Each gun joins the Guns of Marz loot spawner for its kind of gun, packed the sam
 - Modern military rifles (the SCARs, HK416, HK417s, Mk 11), with Guns of Marz's M16s and M14: army storage, the bunker, army trucks and packs, military rifle cases, late homes and late bandit bags, and on army zombies; the HK416 and SCAR-L also as SWAT and police patrol rifles, the Mk 11 and HK417 Marksman also with army snipers in ghillie suits
 - Civilian rifles (the MDRx .223 and .308, AUG A3 and HBAR, PS90, Vector CRB, HK416 .22), with Guns of Marz's imported rifles and the AUG A1: gun stores, pawn shops, police evidence, survivalists' vehicles, rifle cases, late homes, and on survivalist zombies
 - Pistols (the Five-seveN, Vector SDP), with Guns of Marz's imported pistols: gun stores, pawn shops, police evidence, drug labs, stashes, bandits' and luxury cars
-- Russian guns (the Grozas, SV-98, SV-99, 9A-91, VSK-94, A-91M 39, A-91M 54 Prototype), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Undead Survivors the Grozas, the 9A-91 and the A-91Ms also with its mercenaries and the SV-98, SV-99 and VSK-94 with its mercenary snipers
+- Russian guns (the Grozas, SV-98, SV-99, 9A-91, VSK-94, A-91M 39, A-91M 54 Prototype, Kedr), with Guns of Marz's AKs and SVD: drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes and safehouses; with Extend Loot Areas on the Kedr, a holstered gun, is with the short submachine guns instead (gun stores, pawn shops, bandit bags, shoulder holsters); with Undead Survivors the Grozas, the 9A-91 and the A-91Ms also with its mercenaries and the SV-98, SV-99 and VSK-94 with its mercenary snipers
 
 SWAT gun storage, where Guns of Marz places no rifles or submachine guns of its own, also holds SWAT submachine guns and carbines, Guns of Marz's MP5s and CAR-15s among them; police stations' gun storage, police cars and police zombies carry patrol rifles (Guns of Marz's CAR-15s, the HK416 and SCAR-L). The Five-seveN and the UCP are also carried by police and SWAT with Guns of Marz's police handguns; long magazines, suppressors and mount devices turn up with Guns of Marz's, the 4.6x30mm boxes beside 9mm boxes in police, SWAT and gun store storage. Special loads only come from Ammo Maker.
 

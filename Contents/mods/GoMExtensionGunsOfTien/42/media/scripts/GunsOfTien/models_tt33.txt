@@ -1,0 +1,24 @@
+module GunsOfTien {
+
+    model TT33 {
+        mesh     = weapons/firearms/GunsOfTien_TT33|TT33_BODY,
+        texture  = weapons/GunsOfTien/TT33,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1154 -0.0240, rotate = -90.0000 0.0000 -180.0000, }
+        attachment slide_fired { offset = 0.0000 -0.0241 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = -0.0075 0.0519 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model TT33_SLIDE {
+        mesh     = weapons/firearms/GunsOfTien_TT33|TT33_SLIDE,
+        texture  = weapons/GunsOfTien/TT33,
+        cullFace = None,
+    }
+
+    model 762x25Magazine8_TT33 {
+        mesh     = weapons/magazines/GunsOfTien_TT33_magazines|762x25Magazine8_TT33,
+        texture  = weapons/GunsOfTien/762x25Magazine8_TT33,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0110 0.0013 -0.0435, rotate = 7.4929 -4.9199 -40.7737, }
+    }
+}

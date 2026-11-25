@@ -19,6 +19,7 @@ RateOfFire.RegisterMultipleWeapons({
     -- pistols (GoM's M1911 / Glock 17)
     ["GunsOfTien.GLOCK21"] = { rpm = 600, enableSpread = true },
     ["GunsOfTien.PPK"] = { rpm = 600, enableSpread = true },
+    ["GunsOfTien.TT33"] = { rpm = 600, enableSpread = true },
     -- marksman rifles (GoM's SVD / PSG-1)
     ["GunsOfTien.SR25"] = { rpm = 600, enableSpread = true },
     ["GunsOfTien.SVU"] = { rpm = 600, enableSpread = true },

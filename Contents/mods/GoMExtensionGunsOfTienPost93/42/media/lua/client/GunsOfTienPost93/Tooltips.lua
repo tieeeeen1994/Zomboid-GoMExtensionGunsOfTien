@@ -133,6 +133,16 @@ lines[M .. "9A91"] = { "Uses 9x39mm rounds" }
 lines[M .. "VSK94"] = { "Uses 9x39mm rounds" }
 lines[M .. "9x39Magazine20_9A91"] = { "Uses 9x39mm rounds." }
 GunsOfTien_TooltipStates[M .. "9A91_Integrated_Stock_Deployed"] = GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
+-- The PP-91 Kedr (shared/GunsOfTienPost93/Kedr.lua): its folding stock with GoM's MAC-10 stock stats, as the main
+-- mod's Mini and Micro Uzi
+lines[M .. "KEDR"] = { "Uses 9x18mm Makarov rounds" }
+lines[M .. "9x18Magazine20_KEDR"] = { "Uses 9x18mm Makarov rounds." }
+lines[M .. "9x18Magazine30_KEDR"] = { "Uses 9x18mm Makarov rounds." }
+GunsOfTien_TooltipStates[M .. "KEDR_Integrated_Stock_Deployed"] = {
+    "Folding stock deployed:",
+    "Aiming Time reduced by 3",
+    "Hit Chance increased by 4%",
+}
 
 for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm rounds", P90TR = "Uses 5.7x28mm rounds",
     PS90 = "Uses 5.7x28mm rounds", MDR223 = "Uses .223/5.56x45mm NATO rounds",

@@ -65,7 +65,7 @@ DEVICES = [
     dict(node='AKS74U_Muzzle_Booster', mod='main', kind='hider', name='AKS-74U Muzzle Booster (5.45x39mm AKs)',
          mounts=[AK_MOUNT], family='AK', guns=AK545, scale=0.00064),
     # H&K's three lugs: the MP5 and MP5A2 only (the MP5K's barrel ends flush)
-    dict(node='MP5_Flash_Hider', mod='main', kind='hider', name='H&K Three-Lug Flash Hider (MP5s)',
+    dict(node='MP5_Flash_Hider', mod='main', kind='hider', name='Three-Lug Flash Hider (MP5s)',
          mounts=[NINE_MOUNT, OLD_NINE_MOUNT], family='9x19mm', guns=['MarzGuns.MP5', 'MarzGuns.MP5A2'], scale=0.000603,
          drawn=0.00072 * 0.779),  # GoM's MP5s since its November 2026 update (gen_scripts.py GOM_MP5_K)
     # IPSC race compensators on a custom threaded barrel (Clark Custom, 1980s): the 9mm pistols such guns were built

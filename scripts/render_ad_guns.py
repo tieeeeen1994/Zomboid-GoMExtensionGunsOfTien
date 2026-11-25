@@ -167,6 +167,18 @@ PPK_BARE = [(PPK_FBX, "PPK_BODY", os.path.join(MAIN_TEX, "PPK.png"), None),
              "22LRMagazine8_PPK", os.path.join(MAIN_TEX, "22LRMagazine8_PPK.png"), None)]
 PPK_SCALE = round(G21_SCALE * 155 / 208, 3)
 
+# preview44, the main mod's Tokarev TT-33 and PPSh-41 (2026-11-25): the pistol bare with its magazine in, as the PPK
+# (the Glock 21's view, scaled to its 195 mm); the PPSh-41 with its drum on, from the RPKs' front quarter, scaled to
+# its 843 mm against the RPK's 1040
+TT33_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_TT33.fbx")
+TT33_BARE = [(TT33_FBX, "TT33_BODY", os.path.join(MAIN_TEX, "TT33.png"), None),
+             (TT33_FBX, "TT33_SLIDE", os.path.join(MAIN_TEX, "TT33.png"), None),
+             (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_TT33_magazines.fbx"),
+              "762x25Magazine8_TT33", os.path.join(MAIN_TEX, "762x25Magazine8_TT33.png"), None)]
+TT33_SCALE = round(G21_SCALE * 195 / 208, 3)
+PPSH41_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_PPSH41.fbx")
+PPSH41_MAGS = os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_PPSH41_magazines.fbx")
+
 
 # preview17, the main mod's RPK and RPK-74 (2026-11-02): GoM's AK textures on our meshes; the RPK with its 75-round
 # drum and its bipod deployed, the RPK-74 with GoM's Bakelite 45 (drawn at our scale, as its `_GoT` model) and its
@@ -217,6 +229,26 @@ TMP_BARE = [(TMP_FBX, n, os.path.join(MAIN_TEX, "TMP.png"), p) for n, p in
      os.path.join(MAIN_TEX, "9x19Magazine30_TMP.png"), "magazine")]
 RAILS_FBX = os.path.join(MAIN_MEDIA, "models_X/weapons/parts/GunsOfTien_rails.fbx")
 TMP_VIEW, TMP_SCALE, TMP_SIZE = (-0.88, 0.32, -0.26), 0.5, (2400, 1500)
+
+# preview45 / preview46, the Makarov release (2026-11-26; one page per mod): the main mod's Skorpion vz. 82 with its 24-round magazine and
+# Post-93's PP-91 Kedr with its 30, both with their stocks open, from the TMP's side (their left, so the Skorpion's
+# selector and the Kedr's cocking handle face the camera after make_workshop_art.py mirrors them back), one scale
+SKORPION_FBX = os.path.join(MAIN_FIRE, "GunsOfTien_SKORPION.fbx")
+SKORPION_OPEN = [(SKORPION_FBX, n, os.path.join(MAIN_TEX, "SKORPION.png"), None) for n in
+                 ("SKORPION_BODY", "SKORPION_BOLT", "SKORPION_STOCK_DEPLOYED")] + [
+    (os.path.join(MAIN_MEDIA, "models_X/weapons/magazines/GunsOfTien_SKORPION_magazines.fbx"),
+     "9x18Magazine24_SKORPION", os.path.join(MAIN_TEX, "9x18Magazine24_SKORPION.png"), "magazine")]
+KEDR_FBX = os.path.join(MEDIA, "models_X/weapons/firearms/GunsOfTienPost93_KEDR.fbx")
+KEDR_OPEN = [(KEDR_FBX, n, os.path.join(TEX, "KEDR.png"), None) for n in
+             ("KEDR_BODY", "KEDR_BOLT", "KEDR_STOCK_DEPLOYED")] + [
+    (os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_KEDR_magazines.fbx"),
+     "9x18Magazine30_KEDR", os.path.join(TEX, "9x18Magazine30_KEDR.png"), "magazine")]
+MAKAROV_SCALE, MAKAROV_SIZE = 0.56, (2400, 1500)
+# the same guns with their stocks folded (the Skorpion's 24, the Kedr's 20), for each mod's own page
+SKORPION_FOLDED = [(f, "SKORPION_STOCK_FOLDED" if n == "SKORPION_STOCK_DEPLOYED" else n, t, p)
+                   for f, n, t, p in SKORPION_OPEN]
+KEDR_FOLDED = [(f, {"KEDR_STOCK_DEPLOYED": "KEDR_STOCK_FOLDED", "9x18Magazine30_KEDR": "9x18Magazine20_KEDR"}.get(n, n),
+                t.replace("9x18Magazine30_KEDR", "9x18Magazine20_KEDR"), p) for f, n, t, p in KEDR_OPEN]
 MK11_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_MK11.fbx")
 SCAR_PARTS = os.path.join(MEDIA, "models_X/weapons/parts/GunsOfTienPost93_SCAR_parts.fbx")
 GROZA_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_GROZA.fbx")
@@ -320,6 +352,15 @@ GUNS = {
                                         os.path.join(GOM, "textures/weapons/magazines/assault_rifles/762x39Magazine30.png"),
                                         "magazine", 0.603 / 0.645), "Aimpoint_Sight"),
              "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    # the A-91M 39 with GoM's AK mount and PBS-1 on its canon (2026-11-26), for checking the can sits on the muzzle
+    "a91m_pbs": {"points": "post93/a91m_points.json", "points_key": "A91M",
+                 "assembled": a91m("A91M", (os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"),
+                                            "762x39Magazine30",
+                                            os.path.join(GOM, "textures/weapons/magazines/assault_rifles/762x39Magazine30.png"),
+                                            "magazine", 0.603 / 0.645), "Aimpoint_Sight") + [
+                     gom_part("muzzles", "Muzzle_Mount_Device", "canon"),
+                     gom_part("suppressors", "PBS-1_Suppressor", "canon")],
+                 "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
     "a91mproto": {"points": "post93/a91m_proto_points.json", "points_key": "A91MPROTO",
                   "assembled": a91m("A91MPROTO", (
                       os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_SV98_magazine20.fbx"),
@@ -387,6 +428,14 @@ GUNS = {
              "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
     "tmp": {"points": "tmp_points.json", "assembled": TMP_BARE, "upright": True, "centre_on_assembled": True,
             "view": TMP_VIEW, "scale": TMP_SCALE, "size": TMP_SIZE},
+    "skorpion": {"points": "skorpion_points.json", "assembled": SKORPION_OPEN, "upright": True,
+                 "centre_on_assembled": True, "view": TMP_VIEW, "scale": MAKAROV_SCALE, "size": MAKAROV_SIZE},
+    "kedr": {"points": "post93/kedr_points.json", "assembled": KEDR_OPEN, "upright": True,
+             "centre_on_assembled": True, "view": TMP_VIEW, "scale": MAKAROV_SCALE, "size": MAKAROV_SIZE},
+    "skorpion_folded": {"points": "skorpion_points.json", "assembled": SKORPION_FOLDED, "upright": True,
+                        "centre_on_assembled": True, "view": TMP_VIEW, "scale": MAKAROV_SCALE, "size": MAKAROV_SIZE},
+    "kedr_folded": {"points": "post93/kedr_points.json", "assembled": KEDR_FOLDED, "upright": True,
+                    "centre_on_assembled": True, "view": TMP_VIEW, "scale": MAKAROV_SCALE, "size": MAKAROV_SIZE},
     "tmp_fitted": {
         "points": "tmp_points.json", "upright": True, "centre_on_assembled": True,
         "assembled": TMP_BARE + [(RAILS_FBX, "TMP_RAIL_" + s, os.path.join(MAIN_TEX, "Rails.png"), "rail_" + s.lower())
@@ -450,6 +499,14 @@ GUNS = {
     },
     "ppk": {"points": "ppk_points.json", "assembled": PPK_BARE, "upright": True, "centre_on_assembled": True,
             "view": G21_VIEW, "scale": PPK_SCALE, "size": G21_SIZE},
+    "tt33": {"points": "tt_points.json", "assembled": TT33_BARE, "upright": True, "centre_on_assembled": True,
+             "view": G21_VIEW, "scale": TT33_SCALE, "size": G21_SIZE},
+    "ppsh41": {
+        "points": "ppsh41_points.json",
+        "assembled": [(PPSH41_FBX, n, os.path.join(MAIN_TEX, "PPSH41.png"), None) for n in ("PPSH41_BODY", "PPSH41_BOLT")] + [
+            (PPSH41_MAGS, "762x25Drum71_PPSH41", os.path.join(MAIN_TEX, "762x25Drum71_PPSH41.png"), "magazine")],
+        "view": RPK_VIEW, "scale": round(RPK_ORTHO * 843 / 1040, 3), "size": RPK_SIZE,
+    },
     # the main mod's Uzis (preview10): (gun, stock folded, magazine)
     "uzi": {"uzi": ("UZI", True, "9x19Magazine32_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE, "size": UZI_SIZE},
     "miniuzi": {"uzi": ("MINIUZI", False, "9x19Magazine20_UZI"), "view": UZI_VIEW, "scale": UZI_SCALE,

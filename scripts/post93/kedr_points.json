@@ -1,0 +1,160 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1608,
+      -0.0249
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.0765,
+      -0.0121
+    ],
+    "rotate": [
+      -180.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0142,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0209,
+      0.0,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "magazine": "9x18Magazine20 / 30_KEDR hang straight down from here (their feed lips)",
+    "bolt_fired": "KEDR_BOLT (the bolt's side in the right ejection port, the cocking handle on the left) back 23.5 mm real: each shot and held open when empty (GoM's Bolt_Fired)",
+    "stocks": "KEDR_STOCK_FOLDED / _DEPLOYED are drawn in place (no point)",
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; held like a pistol, so modelled upside down as GoM's MP5K / MAC-10: +Z the gun's BOTTOM, +X its RIGHT; origin = the hollow under the grip's hump (photo L 267, H 146)"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      267.0,
+      146.0
+    ],
+    "bore_mm": 187.25,
+    "k": 0.000603
+  },
+  "_bounds": {
+    "KEDR_BODY": {
+      "min": [
+        -0.0119,
+        -0.0236,
+        -0.0525
+      ],
+      "max": [
+        0.0109,
+        0.1608,
+        0.0531
+      ],
+      "tris": 2470
+    },
+    "KEDR_BOLT": {
+      "min": [
+        -0.0145,
+        0.0523,
+        -0.0374
+      ],
+      "max": [
+        0.0093,
+        0.0784,
+        -0.03
+      ],
+      "tris": 88
+    },
+    "KEDR_STOCK_FOLDED": {
+      "min": [
+        -0.0078,
+        -0.0202,
+        -0.0447
+      ],
+      "max": [
+        0.0078,
+        0.1366,
+        -0.0003
+      ],
+      "tris": 436
+    },
+    "KEDR_STOCK_DEPLOYED": {
+      "min": [
+        -0.0078,
+        -0.1617,
+        -0.0368
+      ],
+      "max": [
+        0.0078,
+        -0.0157,
+        0.0288
+      ],
+      "tris": 608
+    },
+    "KEDR_BOLT_fired": {
+      "min": [
+        -0.0145,
+        0.0381,
+        -0.0374
+      ],
+      "max": [
+        0.0093,
+        0.0642,
+        -0.03
+      ],
+      "tris": 88
+    }
+  },
+  "_mags": {
+    "9x18Magazine20_KEDR": {
+      "min": [
+        -0.0068,
+        -0.0136,
+        -0.0736
+      ],
+      "max": [
+        0.0068,
+        0.009,
+        0.0005
+      ],
+      "tris": 438
+    },
+    "9x18Magazine30_KEDR": {
+      "min": [
+        -0.0068,
+        -0.0136,
+        -0.1001
+      ],
+      "max": [
+        0.0068,
+        0.009,
+        0.0005
+      ],
+      "tris": 438
+    }
+  }
+}

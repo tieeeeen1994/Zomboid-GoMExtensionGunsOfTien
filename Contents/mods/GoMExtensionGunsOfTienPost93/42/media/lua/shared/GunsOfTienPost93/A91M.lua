@@ -9,8 +9,9 @@
 
     The bullpup assault rifle and grenade launcher of 1998 (scripts/post93/build_a91m.py; items_a91m.txt):
     - 7.62x39mm, GoM's "762x39" magazines as the Groza-1 (its AK-47 30 and 75, the main mod's RPK 40 and drum), GoM's
-      AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator); no PBS-1 (no source
-      shows the gun with a suppressor);
+      AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator), and GoM's PBS-1 (user,
+      2026-11-26: "let's allow A-91M 34 to be used with PBS please"; no source shows the gun with a suppressor, so it
+      was left off at first; with it fitted, 7.62x39 US Subsonic cycles the gun as on the Groza-1);
     - Auto / Single at 700 rpm, GoM's AK bolt swap (the charging handle rides the gas piston rod, so it moves on each
       shot), closing on an empty chamber as an AK does (the main mod's RPK.lua wrapper), GoM's FAMAS reload (the
       magazine behind the grip), GoM's magazines in the off hand at our size (HandMagazines.lua);
@@ -115,8 +116,8 @@ end
 
 -------------------------------------------------
 -- MountOn appended (DoParam replaces the list, so it is read and written back whole, as MK11.lua does): GoM's AK
--- magazines and AK mount (GoM's rule: the parts need the mount). The AKM slant compensator lists the A-91M in its
--- own script (the main mod's muzzle_devices.py).
+-- magazines, AK mount and PBS-1 (GoM's rule: the parts need the mount). The AKM slant compensator lists the A-91M in
+-- its own script (the main mod's muzzle_devices.py).
 -------------------------------------------------
 local function appendMountOn(partType, guns)
     local script = ScriptManager.instance:getItem(partType)
@@ -149,6 +150,7 @@ local function appendAll()
         for _, mag in ipairs(MAGS[gun]) do appendMountOn(mag, { gun }) end
     end
     appendMountOn("MarzGuns.AK_Muzzle_Mount_Device", { A91M })
+    appendMountOn("MarzGuns.PBS-1_Suppressor", { A91M })
 end
 
 -- Item scripts exist from game boot; re-run at every world load because scripts are reloaded on leaving a game.

@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix KEDR {
+        Require = GunsOfTienPost93.KEDR,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

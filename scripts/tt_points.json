@@ -1,0 +1,105 @@
+{
+  "muzzle": {
+    "offset": [
+      0.0,
+      0.1154,
+      -0.024
+    ],
+    "rotate": [
+      -90.0,
+      0.0,
+      -180.0
+    ]
+  },
+  "slide_fired": {
+    "offset": [
+      0.0,
+      -0.0241,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      -0.0075,
+      0.0519,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size, the M16A2's proportion); +Y muzzle; modelled upside down as GoM's pistols are: +Z the gun's BOTTOM, +X its RIGHT; origin = the web of the grip under the tang (photo L 191.4, H 70)",
+    "magazine": "no magazine point: 762x25Magazine8_TT33 is modelled in the gun's space and drawn at its origin",
+    "parts": "none: no rail and no threaded barrel on a Tokarev",
+    "slide_fired": "TT33_SLIDE back 40 mm real"
+  },
+  "_extras": {
+    "handgun_hold": true,
+    "photo_origin_mm": [
+      191.4,
+      70.0
+    ],
+    "real_mm_per_game_unit": 1658.37,
+    "mag_prop2": {
+      "offset": [
+        -0.011,
+        0.0013,
+        -0.0435
+      ],
+      "rotate": [
+        7.4929,
+        -4.9199,
+        -40.7737
+      ]
+    }
+  },
+  "_bounds": {
+    "TT33_BODY": {
+      "min": [
+        -0.009,
+        -0.0022,
+        -0.0332
+      ],
+      "max": [
+        0.009,
+        0.1154,
+        0.0391
+      ],
+      "tris": 3913
+    },
+    "TT33_SLIDE": {
+      "min": [
+        -0.0065,
+        -0.0022,
+        -0.0347
+      ],
+      "max": [
+        0.0065,
+        0.1151,
+        -0.0113
+      ],
+      "tris": 1308
+    },
+    "762x25Magazine8_TT33": {
+      "min": [
+        -0.0046,
+        0.001,
+        -0.0183
+      ],
+      "max": [
+        0.0046,
+        0.0359,
+        0.0422
+      ],
+      "tris": 504
+    }
+  }
+}

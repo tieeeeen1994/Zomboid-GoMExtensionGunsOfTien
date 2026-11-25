@@ -42,6 +42,11 @@
     The Steyr TMP (shared/GunsOfTien/TMP.lua; docs/design.md 4m; user, 2026-11-11) is one more kit in
     MarzGuns.World_Short_SMG_Spawner beside the Uzis' (the gun, up to 6 of its 15 / 30-round magazines and 6 boxes of
     GoM's 9mm, as GoM's kits there): a holstered machine pistol like its MP5K, TEC-9 and MAC-10.
+    The Skorpion vz. 82 (shared/GunsOfTien/Skorpion.lua; docs/design.md 4s; user, 2026-11-26) is a smuggled gun: its
+    kit (the gun, up to 6 of its 12 / 24-round magazines and 6 boxes of the main mod's 9x18mm Makarov, which has no
+    loot of its own) lies with GoM's Russian guns (MarzGuns.World_Russian_Rifle_Spawner); with Extend Loot Areas on
+    it is in the short SMG spawner beside the TMP's instead (see SKORPION_KIT). Its 30-round magazine comes loose
+    with the Uzi's long ones.
     The Steyr AUG A1 (shared/GunsOfTien/AUG.lua; docs/design.md 4g; user, 2026-10-27) is an import as GoM's FNC, FAL,
     G3 and FAMAS are: one more alternative in MarzGuns.World_Import_Rifle_Spawner (gun stores, pawn shops' special
     guns, police evidence, survivalist trucks, rifle cases, late gun finds), packed as GoM's civilian FNC kit there
@@ -68,6 +73,16 @@
     the Glock 21's kits there (the gun, up to 4 or 6 of its magazines, as many .22 LR boxes): one more alternative in
     MarzGuns.Zombie_Civilian_Handgun_Spawner and MarzGuns.World_Import_Pistol_Spawner (gun stores, an import); not the
     police spawner (no US police force carried it).
+    The Tokarev TT-33 (shared/GunsOfTien/TT33.lua; user, 2026-11-25) is a war bring-back and an import: one more
+    alternative beside GoM's Thompson, BAR, Garand and Mosin in MarzGuns.World_Oldies_Spawner and in
+    MarzGuns.World_Import_Pistol_Spawner (surplus Tokarevs were sold in the US), packed as the Glock 21's kits (the
+    gun, up to 6 of its magazines, as many 7.62x25mm boxes). Not MarzGuns.Zombie_Oldies_Spawner: that one hangs its
+    guns on zombies' backs. Its round has no loot of its own: it comes with the gun's kits (the special loads
+    never spawn).
+    The PPSh-41 (shared/GunsOfTien/PPSH41.lua; user, 2026-11-25) is a wartime gun and a bring-back: one more
+    alternative beside GoM's Thompson in MarzGuns.World_Oldies_Spawner (the gun, up to 3 drums, up to 3 box
+    magazines, up to 6 boxes of 7.62x25mm) and MarzGuns.Zombie_Oldies_Spawner (GoM's own layout there: the gun
+    and drums in one group, up to 4 boxes).
     The .22 LR box and carton (the plain round; the special loads never spawn) beside vanilla's 9mm box and carton in
     every list that has them, civilian homes included: .22 LR was the commonest round in America (moved here from
     Post-93's Loot.lua with the PPK, 2026-11-19, so a server without the add-on has .22 ammunition for it).
@@ -164,6 +179,28 @@ end
 -- the Steyr TMP kit beside the Uzis' in the short SMG spawner (GoM's MP5K / TEC-9 / MAC-10 kits there: 6 and 6)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Short_SMG_Spawner", uziAlternative(
     { "GunsOfTien.TMP" }, { "GunsOfTien.9x19Magazine15_TMP", "GunsOfTien.9x19Magazine30_TMP" }, 6) }
+-- The Skorpion vz. 82 kit (user, 2026-11-26), with the main mod's 9x18mm boxes: the round has no loot of its own, it
+-- comes with its guns. Where it goes follows Extend Loot Areas (user, the same day: "Extend Loot off should be lore
+-- accurate while extend loot on should expose the guns to loot distribution regardless of lore"; the third field,
+-- "lore" = only with the option off, "extended" = only with it on):
+-- - off: a Czechoslovak army machine pistol was sold in no American gun store in 1993; it is a smuggled gun, so it
+--   lies with GoM's Russian guns (drug labs and shacks, drug money, police evidence, stashes, survivalists' and
+--   bandits' vehicles, late homes), a spawner no zombie carries while the option is off;
+-- - on: that spawner goes onto zombies' backs (ExtendLootAreas.lua's EXTENDED_SLOTS), no place for a holstered
+--   gun, so the kit moves to GoM's short SMG spawner beside the Uzis' and the TMP's: gun stores, pawn shops,
+--   glove boxes, bandit bags, homes, and with the option shoulder holsters, drug labs, shacks and stashes.
+-- Its long 30-round magazine comes loose, as the Uzi's long ones.
+local SKORPION_KIT = {
+    { items = { "GunsOfTien.SKORPION" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.9x18Magazine12_SKORPION", "GunsOfTien.9x18Magazine24_SKORPION" }, maxAmountChance = 6 },
+    { items = { "GunsOfTien.9x18_Box" }, maxAmountChance = 6 },
+}
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Russian_Rifle_Spawner", SKORPION_KIT, "lore" }
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Short_SMG_Spawner", SKORPION_KIT, "extended" }
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_HighCap_Tactical_Magazine_Spawner", {
+    { items = { "GunsOfTien.9x18Magazine30_SKORPION" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.9x18_Box" }, maxAmountChance = 2 },
+} }
 -- the SR-25 kits beside GoM's PSG-1 kits, packed as those (user, 2026-11-12: "like PSG for SR-25"): mercenary snipers
 -- (the gun, 6-12 magazines, 4-8 boxes) and the import rifle spawner (the gun, 3-6 magazines, 3-6 boxes)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.Zombie_Mercenary_Sniper_Spawner", {
@@ -238,6 +275,28 @@ for _, entry in ipairs({ { "MarzGuns.Zombie_Civilian_Handgun_Spawner", 4 }, { "M
         { items = { "GunsOfTien.22LR_Box" }, maxAmountChance = entry[2] },
     } }
 end
+
+-- Tokarev TT-33 kits, as the Glock 21's: beside GoM's wartime guns and its imported pistols
+for _, entry in ipairs({ { "MarzGuns.World_Oldies_Spawner", 6 }, { "MarzGuns.World_Import_Pistol_Spawner", 6 } }) do
+    UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { entry[1], {
+        { items = { "GunsOfTien.TT33" }, maxAmountChance = 1 },
+        { items = { "GunsOfTien.762x25Magazine8_TT33" }, maxAmountChance = entry[2] },
+        { items = { "GunsOfTien.762x25_Box" }, maxAmountChance = entry[2] },
+    } }
+end
+
+-- PPSh-41 kits beside GoM's wartime guns, as its Thompson's there: { spawner, drums, boxes of rounds }; a 35-round
+-- box magazine or two comes with the world ones
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.World_Oldies_Spawner", {
+    { items = { "GunsOfTien.PPSH41" }, maxAmountChance = 1 },
+    { items = { "GunsOfTien.762x25Drum71_PPSH41" }, maxAmountChance = 3 },
+    { items = { "GunsOfTien.762x25Magazine35_PPSH41" }, maxAmountChance = 3 },
+    { items = { "GunsOfTien.762x25_Box" }, maxAmountChance = 6 },
+} }
+UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.Zombie_Oldies_Spawner", {
+    { items = { "GunsOfTien.PPSH41", "GunsOfTien.762x25Drum71_PPSH41" }, maxAmountChance = 4 },
+    { items = { "GunsOfTien.762x25_Box" }, maxAmountChance = 4 },
+} }
 
 -- the P90 kit in the police SMG spawner, as Post-93's P90 TR kit there (up to 3 magazines and 2 boxes)
 UZI_ALTERNATIVES[#UZI_ALTERNATIVES + 1] = { "MarzGuns.Zombie_Police_SMG_Spawner", {
@@ -341,9 +400,13 @@ local function addLoot()
             print("[GunsOfTien] Guns of Marz's " .. entry[1] .. " not found, our muzzle devices will not spawn there")
         end
     end
+    local vars = SandboxVars and SandboxVars.GunsOfTien
+    local extended = vars ~= nil and vars.ExtendLootAreas == true
     for _, entry in ipairs(UZI_ALTERNATIVES) do
         local list = type(map) == "table" and map[entry[1]]
-        if type(list) == "table" then
+        if (entry[3] == "lore" and extended) or (entry[3] == "extended" and not extended) then
+            -- a kit of the other Extend Loot Areas setting
+        elseif type(list) == "table" then
             list[#list + 1] = entry[2]
             addedAlternatives[#addedAlternatives + 1] = { list, entry[2] }
         else
@@ -402,15 +465,28 @@ Events.OnPostDistributionMerge.Add(addBoxes)
 -------------------------------------------------
 -- The 5.7x28mm SS190 box and carton beside vanilla's 9mm ones, only in police, SWAT and gun store lists (moved from
 -- Post-93's Loot.lua with the round, 2026-11-03), and the .22 LR box and carton beside them in every list, civilian
--- homes too (the last field; moved from Post-93's Loot.lua with the PPK, 2026-11-19): every loot table, as GoM's
--- Distribution.Insert does
--------------------------------------------------
+-- homes too (the fourth field; moved from Post-93's Loot.lua with the PPK, 2026-11-19): every loot table, as GoM's
+-- Distribution.Insert does.
+-- The 7.62x25mm Tokarev and 9x18mm Makarov boxes and cartons (user, 2026-11-26: "Don't forget the standard rounds
+-- ammo boxes. they should also be lootable"; only the plain rounds, the special loads stay Ammo Maker's), by Extend
+-- Loot Areas (the fifth field: "lore" = only with the option off, "extended" = only with it on):
+-- - off: surplus and imported ammunition a gun store sold (Chinese 7.62x25 and 9x18 came in with the Tokarev and
+--   Makarov pistols), so beside the 9mm boxes in gun store lists only ("gunstore" in the fourth field);
+-- - on: beside the 9mm boxes in every list, homes too.
+--------------------------------------------------
 local WORLD = {
     { "GunsOfTienPost93.57x28_Box", "Base.Bullets9mmBox", 0.05 },
     { "GunsOfTienPost93.57x28_Carton", "Base.Bullets9mmCarton", 0.05 },
     { "GunsOfTien.22LR_Box", "Base.Bullets9mmBox", 0.1, true },
     { "GunsOfTien.22LR_Carton", "Base.Bullets9mmCarton", 0.05, true },
 }
+for _, calibre in ipairs({ "762x25", "9x18" }) do
+    for _, pack in ipairs({ "Box", "Carton" }) do
+        local item, base = "GunsOfTien." .. calibre .. "_" .. pack, "Base.Bullets9mm" .. pack
+        WORLD[#WORLD + 1] = { item, base, 0.05, "gunstore", "lore" }
+        WORLD[#WORLD + 1] = { item, base, 0.05, true, "extended" }
+    end
+end
 
 local function isWantedList(name)
     local lower = string.lower(name)
@@ -419,19 +495,32 @@ local function isWantedList(name)
         or string.find(lower, "gunstore", 1, true) ~= nil
 end
 
+local function isGunStoreList(name)
+    return string.find(string.lower(name), "gunstore", 1, true) ~= nil
+end
+
 local function addWorldAmmo()
     local multiplier = lootMultiplier()
     if multiplier <= 0 then return end
+    local vars = SandboxVars and SandboxVars.GunsOfTien
+    local extended = vars ~= nil and vars.ExtendLootAreas == true
     local tables = { ProceduralDistributions.list, VehicleDistributions, BagsAndContainers, SuburbsDistributions }
     for _, entry in ipairs(WORLD) do
         local newItem, baseItem, share, everywhere = entry[1], entry[2], entry[3] * multiplier, entry[4]
         local script = ScriptManager.instance:getItem(baseItem)
+        local wanted = isWantedList
+        if everywhere == "gunstore" then
+            wanted, everywhere = isGunStoreList, false
+        end
+        if (entry[5] == "lore" and extended) or (entry[5] == "extended" and not extended) then
+            script = nil              -- an entry of the other Extend Loot Areas setting
+        end
         if script and ScriptManager.instance:getItem(newItem) then
             local name, fullName = script:getName(), script:getFullName()
             for _, lootTable in ipairs(tables) do
                 for listName, data in pairs(lootTable or {}) do
                     local items = type(listName) == "string" and type(data) == "table" and data.items
-                    if type(items) == "table" and (everywhere or isWantedList(listName)) then
+                    if type(items) == "table" and (everywhere or wanted(listName)) then
                         local weights = {}
                         for i = 1, #items - 1, 2 do
                             if (items[i] == name or items[i] == fullName) and type(items[i + 1]) == "number" then

@@ -30,6 +30,7 @@ TEX = 'weapons/GunsOfTienPost93'
 GOM_EQUIVALENT = {
     'FIVESEVEN': 'M92FS',                                                              # pistols 2-8 (the UCP too)
     'MP7A1': 'MP5K', 'VECTORSDP': 'MP5K', 'HK416QR22': 'TEC9',                         # short SMGs 2-10
+    'KEDR': 'MAC10',
     'P90TR': 'MP5', 'UMP45': 'MP5', 'UMP9': 'MP5', 'VECTOR45': 'MP5', 'VECTOR9': 'MP5', 'AUGPARA': 'MP5',  # SMGs 3-11
     'VECTORCRB': 'CAMP_CARBINE', 'PS90': 'CAMP_CARBINE', 'GROZA2': 'AKS74U', 'GROZA4': 'ASVAL',  # short carbines 4-13
     '9A91': 'ASVAL',
@@ -3964,7 +3965,10 @@ def a91m():
                  f"{w}MarzGuns.Bolt_Fired {M}.{gun}_BOLT bolt_fired bolt_fired,"]
         lines += [f"{w}{mag} {model} magazine magazine," for mag, model in g.get('mags', A91M_AK_MAGS)]
         if g.get('muzzle', True):
-            lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,"]
+            # GoM's AK mount, its PBS-1 (user, 2026-11-26: "let's allow A-91M 34 to be used with PBS please"; no
+            # source shows one on the gun, so it was left off at first) and the AK 7.62 muzzle devices
+            lines += [f"{w}MarzGuns.AK_Muzzle_Mount_Device MarzGuns.Muzzle_Mount_Device canon canon,",
+                      f"{w}MarzGuns.PBS-1_Suppressor MarzGuns.PBS-1_Suppressor canon canon,"]
             lines += MD.model_lines(w, f"{M}.{gun}")
         lines += [f"{w}MarzGuns.Picatinny_Rail_Up {M}.{gun}_RAIL_UP rail_up rail_up,"]
         lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
@@ -4227,7 +4231,7 @@ def translations():
         # MarzGuns.FIVESEVEN itself is named by GoM ("5.7x28mm Five-SeveN"); its magazines in GoM's style
         f'{M}.57x28Magazine20_FIVESEVEN': 'Five-SeveN 20Rds 5.7x28mm Magazine',
         f'{M}.57x28Magazine30_FIVESEVEN': 'Five-SeveN 30Rds 5.7x28mm Extended Magazine',
-        f'{M}.UCP': 'UCP Prototype',                                  # user, 2026-10-17
+        f'{M}.UCP': 'UCP Prototype Pistol',                           # user, 2026-10-17; "Pistol" 2026-11-26
         f'{M}.46x30Magazine20_UCP': 'UCP 20Rds 4.6x30mm Magazine',
         f'{M}.46x30Magazine40_UCP': 'UCP 40Rds Drum 4.6x30mm Magazine',
         f'{M}.MP7A1_Integrated_Stock_Folded': 'MP7 Integrated Stock (Folded)',
@@ -4246,8 +4250,8 @@ def translations():
         f'{M}.FIVESEVEN_Suppressor': 'SFN-57 Suppressor',
         f'{M}.P90_Muzzle_Mount_Device': '5.7x28mm Family Muzzle Mounting Device',
         # GoM: "FN FAL Battle Rifle", "FN FNC Assault Rifle", "FAL 20Rds 7.62x51mm Magazine"
-        f'{M}.SCARL': 'FN SCAR-L Assault Rifle',
-        f'{M}.SCARH': 'FN SCAR-H Battle Rifle',
+        f'{M}.SCARL': 'SCAR-L Assault Rifle',
+        f'{M}.SCARH': 'SCAR-H Battle Rifle',
         f'{M}.762x51Magazine20_SCARH': 'SCAR-H 20Rds 7.62x51mm Magazine',
         f'{M}.762x51Magazine10_SCARH': 'SCAR-H 10Rds 7.62x51mm Magazine',
         f'{M}.762x51Magazine50_SCARH': 'SCAR-H 50Rds Drum 7.62x51mm Magazine',     # as the MP7's 60 drum
@@ -4274,11 +4278,11 @@ def translations():
         f'{M}.UMP_Integrated_Rail_Down': 'UMP Integrated Rail (Down)',
         f'{M}.UMP_Integrated_Rail_Left': 'UMP Integrated Rail (Left)',
         f'{M}.UMP_Integrated_Rail_Right': 'UMP Integrated Rail (Right)',
-        # the main mod's "Steyr AUG A1 Assault Rifle" and "AUG 30Rds 5.56x45mm Magazine"; the HBAR's 50 is long, as
+        # the main mod's "AUG A1 Assault Rifle" and "AUG 30Rds 5.56x45mm Magazine"; the HBAR's 50 is long, as
         # GoM's "Extended" magazines
-        f'{M}.AUGA3': 'Steyr AUG A3 Assault Rifle',
-        f'{M}.AUGPARA': 'Steyr AUG Para Submachine Gun',
-        f'{M}.AUGHBAR': 'Steyr AUG HBAR Light Machine Gun',
+        f'{M}.AUGA3': 'AUG A3 Assault Rifle',
+        f'{M}.AUGPARA': 'AUG Para Submachine Gun',
+        f'{M}.AUGHBAR': 'AUG HBAR Light Machine Gun',
         f'{M}.9x19Magazine25_AUG': 'AUG Para 25Rds 9x19mm Magazine',
         f'{M}.9x19Magazine32_AUG': 'AUG Para 32Rds 9x19mm Magazine',
         f'{M}.762x39Magazine30_AUG': 'AUG 30Rds 7.62x39mm Magazine',
@@ -4297,7 +4301,7 @@ def translations():
         f'{M}.VECTORSDP': 'Vector 9mm Pistol',
         # GoM's own name for the Five-seveN is "5.7x28mm Five-SeveN": the calibre dropped (user, 2026-11-01), GoM's
         # spelling kept as our magazines have it. Translations merge by key in mod order, so ours wins.
-        'MarzGuns.FIVESEVEN': 'Five-SeveN',
+        'MarzGuns.FIVESEVEN': 'Five-SeveN Pistol',
         f'{M}.45Magazine30_GLOCK21': 'Glock-21 30Rds .45 ACP Extended Magazine',
         f'{M}.9x19Magazine33_GLOCK': 'Glock-17 33Rds 9x19mm Extended Magazine',
         f'{M}.9x19Magazine40_GLOCK': 'Glock-17 40Rds 9x19mm Extended Magazine',
@@ -4337,6 +4341,205 @@ def translations():
     write('lua/shared/Translate/EN/Tooltip.json', json.dumps(tips, indent=2) + '\n')
 
 
+# PP-91 Kedr (user, 2026-11-26: "For makarov guns, let's add Skorpion and Kedr"; docs/post93_design.md "PP-91 Kedr";
+# meshes and points: scripts/post93/build_kedr.py; registries: shared/GunsOfTienPost93/Kedr.lua). Dragunov's 9x18mm
+# submachine gun, in production at Zlatoust from 1994: held like a pistol and holstered as the MP7 and the main mod's
+# TMP and Skorpion (the model turned, GoM's MP5K reload), its top-folding stock two hidden parts drawn in place (GoM's
+# MAC-10 way), the bolt's side in the right ejection port and the cocking handle on the left one Bolt part on GoM's
+# swap. It fires the main mod's 9x18mm Makarov round and Post-93's later loads. No muzzle parts (no muzzle family in
+# 9x18; the Kedr-B's integral can is another gun) and no rails. Real: 120 mm barrel, 1.57 kg, 800-1000 rpm, 20 and
+# 30-round magazines. Stats a step over the main mod's Skorpion vz. 82 (0.5-0.85 from 113 mm) and wilder (1000 rpm
+# without the Skorpion's rate reducer). Sound from sound_model.py's formula: 3.9 grains against the PM's 3.7" barrel,
+# no crack -> f = 0.375, 66 / 19.
+KEDR_MAGS = [(20, 0.09), (30, 0.13)]
+KEDR_STATS = dict(min=0.5, max=0.9, crit=25.0, hit=46, aim=25, recoil=11, range=23.0, stop=3.5, weight=1.2,
+                  radius=66, volume=19, sight=SIGHT['KEDR'], angle=(0.95, 0.05), knock=2.0, mag=20)
+KEDR_PARTS = [('KEDR_Integrated_Stock_Folded', 'StockIntegrated', None, 'Kedr Integrated Stock (Folded)'),
+              ('KEDR_Integrated_Stock_Deployed', 'StockIntegrated', 0.2, 'Kedr Integrated Stock (Deployed)')]
+
+
+def kedr_mag(rounds):
+    return f'9x18Magazine{rounds}_KEDR'
+
+
+def kedr():
+    pts = load_points('kedr_points.json')
+    s = KEDR_STATS
+    models = [f"module {M} {{\n", f"""
+    model KEDR {{
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_BODY,
+        texture  = {TEX}/KEDR,
+        cullFace = None,
+"""]
+    for name in ('muzzle', 'world', 'magazine', 'bolt_fired'):
+        models.append(attachment(name, pts[name]))
+    models.append("    }\n")
+    for node in ('BOLT', 'STOCK_FOLDED', 'STOCK_DEPLOYED'):
+        models.append(f"""
+    model KEDR_{node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_{node},
+        texture  = {TEX}/KEDR,
+        cullFace = None,
+    }}
+""")
+    for r, _ in KEDR_MAGS:
+        models.append(f"""
+    model {kedr_mag(r)} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_KEDR_magazines|{kedr_mag(r)},
+        texture  = {TEX}/{kedr_mag(r)},
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+    }}
+""")
+    models.append("}\n")
+    write(f'scripts/{M}/models_kedr.txt', ''.join(models))
+
+    w = "        ModelWeaponPart              = "
+    parts = [f"{w}MarzGuns.Bolt_Lock {M}.KEDR_BOLT bolt_lock bolt_lock,",
+             f"{w}MarzGuns.Bolt_Fired {M}.KEDR_BOLT bolt_fired bolt_fired,",
+             f"{w}{M}.KEDR_Integrated_Stock_Folded {M}.KEDR_STOCK_FOLDED stock stock,",
+             f"{w}{M}.KEDR_Integrated_Stock_Deployed {M}.KEDR_STOCK_DEPLOYED stock stock,"]
+    parts += [f"{w}{M}.{kedr_mag(r)} {M}.{kedr_mag(r)} magazine magazine," for r, _ in KEDR_MAGS]
+    items = [f"module {M} {{\n", f"""
+    item KEDR {{
+        MinDamage                    = {s['min']},
+        MaxDamage                    = {s['max']},
+        CriticalChance               = {s['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {s['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {s['aim']},
+        RecoilDelay                  = {s['recoil']},
+        MaxRange                     = {s['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {s['sight'][0]},
+        MaxSightRange                = {s['sight'][1]},
+        MinRange                     = 0.61,
+        MinAngle                     = {s['angle'][0]},
+        AimingPerkMinAngleModifier   = {s['angle'][1]},
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 220,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = {s['stop']},
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {s['weight']},
+        MetalValue                   = 20.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = gunsoftien:bullet_9x18,
+        AmmoBox                      = GunsOfTien.9x18_Box,
+        ClipSize                     = {s['mag']},
+        MagazineType                 = {M}.{kedr_mag(s['mag'])},
+        MaxAmmo                      = {s['mag']},
+        Reloadtime                   = 30,
+        AttachmentType               = Holster,
+        WeaponReloadType             = handgun,
+        SwingAnim                    = Handgun,
+        MuzzleFlashModelKey          = muzzle_flash_handgun,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_KEDR,
+        RunAnim                      = Run_Weapon2,
+        WeaponSprite                 = {M}.KEDR,
+        AimReleaseSound              = M9AimRelease,
+        BreakSound                   = M9Break,
+        BringToBearSound             = M9BringToBear,
+        ClickSound                   = M9Jam,
+        DropSound                    = M9Drop,
+        EjectAmmoStartSound          = M9EjectAmmoStart,
+        EjectAmmoSound               = M9EjectAmmo,
+        EjectAmmoStopSound           = M9EjectAmmoStop,
+        EquipSound                   = M9Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M9InsertAmmoStart,
+        InsertAmmoSound              = M9InsertAmmo,
+        InsertAmmoStopSound          = M9InsertAmmoStop,
+        RackSound                    = M9Rack,
+        ShellFallSound               = M9CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M9UnEquip,
+        SoundGain                    = 1.5,
+        SoundRadius                  = {s['radius']},
+        SoundVolume                  = {s['volume']},
+        NPCSoundBoost                = 1.5,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(parts)}
+        KnockBackOnNoDeath           = true,
+        KnockdownMod                 = {s['knock']},
+        MultipleHitConditionAffected = false,
+        ToHitModifier                = 1.5,
+    }}
+"""]
+    for r, weight in KEDR_MAGS:
+        items.append(f"""
+    item {kedr_mag(r)} {{
+        AmmoType         = gunsoftien:bullet_9x18,
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{kedr_mag(r)},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {r},
+        MountOn          = {M}.KEDR,
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{kedr_mag(r)},
+        WorldStaticModel = {M}.{kedr_mag(r)},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight, _ in KEDR_PARTS:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_kedr.txt', ''.join(items))
+    # GoM repairs its SMGs with Aiming=3
+    write(f'scripts/{M}/fixing_kedr.txt', f"""module Base {{
+    fixing Fix KEDR {{
+        Require = {M}.KEDR,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    names[f'{M}.KEDR'] = 'PP-91 Kedr Submachine Gun'
+    for r, _ in KEDR_MAGS:
+        names[f'{M}.{kedr_mag(r)}'] = f'Kedr {r}Rds 9x18mm Magazine'
+    for part, _, _, name in KEDR_PARTS:
+        names[f'{M}.{part}'] = name
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+
+
 if __name__ == '__main__':
     mp7 = load_points('mp7_points.json')
     mp7a2 = load_points('mp7a2_points.json')
@@ -4362,6 +4565,7 @@ if __name__ == '__main__':
     sv99()
     a91()
     a91m()
+    kedr()
     muzzle_devices()
     translations()
     print('written under', os.path.normpath(ROOT))

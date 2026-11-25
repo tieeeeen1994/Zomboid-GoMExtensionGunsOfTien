@@ -1,0 +1,42 @@
+module GunsOfTienPost93 {
+
+    model KEDR {
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_BODY,
+        texture  = weapons/GunsOfTienPost93/KEDR,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1608 -0.0249, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0765 -0.0121, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0142 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model KEDR_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_BOLT,
+        texture  = weapons/GunsOfTienPost93/KEDR,
+        cullFace = None,
+    }
+
+    model KEDR_STOCK_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_STOCK_FOLDED,
+        texture  = weapons/GunsOfTienPost93/KEDR,
+        cullFace = None,
+    }
+
+    model KEDR_STOCK_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTienPost93_KEDR|KEDR_STOCK_DEPLOYED,
+        texture  = weapons/GunsOfTienPost93/KEDR,
+        cullFace = None,
+    }
+
+    model 9x18Magazine20_KEDR {
+        mesh     = weapons/magazines/GunsOfTienPost93_KEDR_magazines|9x18Magazine20_KEDR,
+        texture  = weapons/GunsOfTienPost93/9x18Magazine20_KEDR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x18Magazine30_KEDR {
+        mesh     = weapons/magazines/GunsOfTienPost93_KEDR_magazines|9x18Magazine30_KEDR,
+        texture  = weapons/GunsOfTienPost93/9x18Magazine30_KEDR,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

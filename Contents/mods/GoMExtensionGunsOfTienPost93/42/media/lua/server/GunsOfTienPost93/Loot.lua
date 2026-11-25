@@ -162,6 +162,8 @@ local vsk94 = kit({ M .. "VSK94" }, { M .. "9x39Magazine20_9A91" }, { "MarzGuns.
 -- the A-91M with GoM's AK-47 30 and box
 local a91m = kit({ M .. "A91M" }, { "MarzGuns.762x39Magazine30" }, { "MarzGuns.762x39_Box" })
 local a91mProto = kit({ M .. "A91MPROTO" }, { M .. "762x54Magazine20_SV98" }, { "MarzGuns.762x54_Box" })
+-- the Kedr with its magazines and the main mod's 9x18mm box (the round has no loot of its own)
+local kedr = kit({ M .. "KEDR" }, { M .. "9x18Magazine20_KEDR", M .. "9x18Magazine30_KEDR" }, { "GunsOfTien.9x18_Box" })
 
 -- High-capacity magazines on their own, as GoM's in its high-capacity magazine spawners (its M92FS 50, M93R 60, MP5
 -- 60 / 100 drums: the magazine and up to two boxes; only with GoM's sandbox SpawnHighCapMags on, which places them).
@@ -259,8 +261,20 @@ local SLOTS = {
     { "meleeInBackBag", IMPORT_RIFLE }, { "meleeInBackBag_Mid", IMPORT_RIFLE }, { "meleeInBackBag_Late", IMPORT_RIFLE },
 }
 
+-- Only while GunsOfTien.ExtendLootAreas is off (user, 2026-11-26: "Extend Loot off should be lore accurate while
+-- extend loot on should expose the guns to loot distribution regardless of lore"): the Kedr, a Russian police gun
+-- that reached nobody's gun store, lies with the Russian guns (drug labs, stashes, police evidence, survivalists'
+-- and bandits' vehicles, late homes). With the option on that spawner goes onto zombies' backs (the main mod's
+-- ExtendLootAreas.lua), no place for a holstered gun, so the Kedr moves to the short SMG spawner (EXTENDED_GUNS).
+local LORE_GUNS = {
+    { RUSSIAN_RIFLE, kedr, 6, 6 },
+}
+
 -- Sandbox GunsOfTien.ExtendLootAreas: places that bend reality but still make sense in game.
 local EXTENDED_GUNS = {
+    -- the Kedr with GoM's holstered machine pistols (MP5K, TEC-9, MAC-10; the main mod's Uzis, TMP and Skorpion):
+    -- gun stores, pawn shops, glove boxes, bandit bags, homes, shoulder holsters, drug labs, shacks and stashes
+    { G .. "World_Short_SMG_Spawner", kedr, 6, 6 },
     -- criminals with Grozas and SMGs
     { CRIME_RIFLE, groza1, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, groza2, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91, { 2, 4 }, { 2, 4 } },
@@ -394,6 +408,8 @@ local function addSpawners()
     if extend then
         addGuns(map, EXTENDED_GUNS)
         addSlots(EXTENDED_SLOTS)
+    else
+        addGuns(map, LORE_GUNS)
     end
     for _, entry in ipairs(PART_ALTERNATIVES) do
         local list = map[entry[1]]

@@ -533,6 +533,70 @@ rounds by different sources (Walther's own figure was not found); 8 is used (Wik
 
 Model: scripts/build_ppk.py (references/ppk22, CLAUDE.md "Walther PPK").
 
+## 4q. Tokarev TT-33 (2026-11-25, built, not played)
+
+User, 2026-11-23: the Tokarev release (a Tokarev pistol and the PPSh-41, both before 1993, so main mod; the wish list
+said TT-33, the user "TT-30"); 2026-11-25, asked which name: "We can go with your recommendation and model it now",
+and "do not add new guns" (no 9x19 Norinco Model 213). **TT-33**: the two do not differ in play (round, eight-round
+magazine, barrel) and outside only by the TT-30's removable back strap, trigger and lower rear sight; every
+reference found is a TT-33, and well over a million were made against about 93,000 TT-30s. In 1993 Kentucky it is
+a Korea or Vietnam bring-back or a surplus import (Interarms sold wartime Tokarevs in the US).
+
+| | |
+|---|---|
+| Item | `GunsOfTien.TT33`, "Tokarev TT-33" (GoM's "Browning Hi-Power" style); magazine `GunsOfTien.762x25Magazine8_TT33`, "TT-33 8Rds 7.62x25mm Magazine", 0.05, profile "7.62x25mm TT-33" in the main mod's "7.62x25mm" family (plain, Steel Core, Subsonic; Post-93's Hollow Point) |
+| Stats | GoM's 9mm service pistols (Hi-Power, P226), whose energy the round matches with a lighter bullet: damage 0.8-1.1, StopPower 5, crit 18 (x4.0), HitChance 45, Aimingtime 27, RecoilDelay 14 (between the Hi-Power's 40 / 30 / 13 and the M1911's 50 / 25 / 15), range 20, sights 2-8 (GoM's M1911), jam 1, durability 1 in 190, weight 0.85 (854 g; GoM's M1911 1.1 for 1105 g); the plain round does not pierce (Steel Core does); sound 124 / 35 (sound_model.py's formula: 8 grains from 4.6", supersonic; GoM's 9mm pistols come to 114 / 33), GoM's 9mm shot and M9 handling sounds |
+| Holster | AttachmentType Holster, as GoM's pistols |
+| Parts | none: no rail, no threaded barrel |
+| Hold, reload | held and reloaded as GoM's pistols ("pistol_reload"); the slide on GoM's Slide_Lock / Slide_Fired swap, 40 mm, its recoil spring tube running back into the dust cover |
+| Loot | as the Glock 21's kits (the gun, up to 6 magazines, up to 6 `GunsOfTien.762x25_Box`): an alternative in `World_Oldies_Spawner` (GoM's Thompson, BAR, Garand, Mosin) and `World_Import_Pistol_Spawner`; not `Zombie_Oldies_Spawner` (guns on zombies' backs); found guns carry the magazine at 50. The round has no loot of its own |
+| Casings | the Glock 21's throw from a port further forward (0.45); Hot Brass's 5.7x28 casing, as the round's |
+| Repair | RepairPack, Aiming 3 (GoM's pistols) |
+
+Model: scripts/build_tt.py (references/tt, CLAUDE.md "Tokarev TT-33").
+
+## 4r. PPSh-41 (2026-11-25, built, not played)
+
+User, 2026-11-23: the Tokarev release's second gun; 2026-11-25: "finish it please". Shpagin's submachine gun of 1941,
+main mod (it predates 1993 by half a century): in Kentucky a Korea or Vietnam bring-back, as GoM's Thompson and BAR
+are wartime guns. One gun, the standard production one, with both of its real magazines.
+
+| | |
+|---|---|
+| Item | `GunsOfTien.PPSH41`, "PPSh-41 Submachine Gun"; `GunsOfTien.762x25Drum71_PPSH41`, "PPSh-41 71Rds 7.62x25mm Drum", 0.3 (GoM's Thompson drum 0.35); `GunsOfTien.762x25Magazine35_PPSH41`, "PPSh-41 35Rds 7.62x25mm Magazine", 0.15 (GoM's 30-round Thompson box); profile "7.62x25mm PPSh-41" in the main mod's "7.62x25mm" family; a found gun's default is the drum |
+| Stats | GoM's Thompson is its M1911 from a long barrel (0.9-1.2 to 1.0-1.6); the same step on the TT-33's 0.8-1.1: damage 0.9-1.45, StopPower 2, crit 18 (x4.0), HitChance 50, Aimingtime 40, RecoilDelay 14, range 30, sights 3-11 (GoM's Thompson), jam 1, durability 1 in 200, weight 3.0 (3.63 kg; GoM's Thompson 4.0 for 4.9 kg); the plain round does not pierce; sound 97 / 28 (sound_model.py's formula: 8 grains from 10.6"), GoM's 9mm shot (its MP5's), its Thompson's handling sounds |
+| Fire | Auto / Single (the selector lever ahead of the trigger); 900 rpm with GoM's Thompson spread (sustained 0.3, max 4.5); open bolt: the cocking handle is the gun's Bolt part on GoM's swap, back 85 mm on each shot, cocked and empty |
+| Hold, reload | rifle-held, GoM's SMG stance and its Thompson reload ("thompson_marz"), the magazine in the off hand at GoM's Thompson magazines' point; AttachmentType Rifle |
+| Parts | none: no rail, no thread (the compensator is the jacket's front) |
+| Loot | an alternative beside GoM's Thompson in `World_Oldies_Spawner` (the gun, up to 3 drums, up to 3 box magazines, up to 6 `GunsOfTien.762x25_Box`) and `Zombie_Oldies_Spawner` (GoM's layout there: the gun and drums in one group, up to 4 boxes) |
+| Casings | GoM's Thompson's throw (straight up) from the top port, on the gun's middle line; Hot Brass's 5.7x28 casing, as the round's |
+| Repair | RepairPack, Aiming 3 (GoM's Thompson) |
+
+Model: scripts/build_ppsh41.py (references/ppsh41, CLAUDE.md "PPSh-41").
+
+## 4s. Skorpion vz. 82 (2026-11-26, built, not played)
+
+User, 2026-11-26: "For makarov guns, let's add Skorpion and Kedr" (the first guns for the main mod's 9x18mm Makarov
+round; the Kedr is Post-93's, docs/post93_design.md). Of the Skorpions only the Czechoslovak army's Sa vz. 82 of 1982
+fires 9x18mm (the vz. 61 is .32 ACP, the vz. 83 .380), so that is the gun: main mod. In 1993 Kentucky it is an import
+or a smuggled gun, as GoM's MAC-10 and TEC-9 are criminals' guns.
+
+| | |
+|---|---|
+| Item | `GunsOfTien.SKORPION`, "Skorpion vz. 82 Machine Pistol" (the TMP's "TMP Machine Pistol" form; no maker name); magazines `GunsOfTien.9x18Magazine12 / 24 / 30_SKORPION`, "Skorpion 12Rds 9x18mm Magazine" ... "30Rds 9x18mm Extended Magazine", 0.06 / 0.1 / 0.13 (steel), profile "9x18mm Skorpion" in the main mod's "9x18mm" family; a found gun's default is the 24 |
+| Stats | under the Micro Uzi's (9x19 from 117 mm: 0.6-1.0): the Makarov round has about two thirds of the 9x19's energy: damage 0.5-0.85, StopPower 3.5, crit 25 (x4.0), HitChance 46, Aimingtime 24, RecoilDelay 10, range 22, sights 2-10 (GoM's MAC-10), jam 1, durability 1 in 220, weight 1.1 (1.44 kg; the TMP 1.0 for 1.3); sound 67 / 19 (sound_model.py's formula: 3.9 grains against the PM's 3.7" barrel, subsonic), GoM's 9mm shot and M9 handling sounds |
+| Fire | Auto / Single; 850 rpm (the rate reducer in the grip), steadier than the Uzis and the TMP: spread 0.15 / 1.9 |
+| Hold, reload | held like a pistol and holstered (AttachmentType Holster), GoM's MP5K reload ("handgun2"), as the Mini Uzi and the TMP |
+| Stock | the wire stock folded over the top or open, two hidden parts drawn in place (GoM's MAC-10 way), GoM's MAC-10 stock stats (Hit Chance +4, Aiming Time -3), folded on a found gun |
+| Bolt | the bolt under the top ejection port with a cocking knob on each side, all of it the gun's Bolt part on GoM's swap (back 55 mm on each shot and on an empty gun); no ChargingHandle part |
+| Parts | none: no rail, no threaded barrel, and no muzzle family in 9x18mm |
+| Look | blued steel and the orange-brown wooden grip (user, 2026-11-26), the Skorpion's best-known look |
+| Loot | by Extend Loot Areas (user, 2026-11-26: off is lore accurate, on exposes the gun regardless of lore). Off: a smuggled gun, its kit (the gun, up to 6 of its 12 / 24-round magazines, up to 6 `GunsOfTien.9x18_Box`) in GoM's `World_Russian_Rifle_Spawner` (drug labs and shacks, drug money, police evidence, stashes, survivalists' and bandits' vehicles, late homes; on no zombie). On: that spawner goes onto zombies' backs, no place for a holstered gun, so the kit is in `World_Short_SMG_Spawner` instead beside the Uzis' and the TMP's (gun stores, pawn shops, glove boxes, bandit bags, homes, shoulder holsters, drug labs, stashes). The 30-round magazine loose in `World_HighCap_Tactical_Magazine_Spawner`. Loose 9x18mm (and 7.62x25mm) boxes and cartons: beside the 9mm ones in gun store lists (share 0.05), with the option on in every list |
+| Casings | straight up out of the top port (the PPSh-41's throw, lighter); Hot Brass's .380 casing, as the round's |
+| Repair | RepairPack, Aiming 3 (GoM's SMGs) |
+
+Model: scripts/build_skorpion.py (references/skorpion, CLAUDE.md "Skorpion vz. 82").
+
 ## 4p. SVU (OTs-03, 1991) (2026-11-20, built, not played)
 
 User, 2026-11-20: the SV-98 "with partners", the SV-99 and the SVU picked; the SVU "use the pre-1993 model" (research:

@@ -248,6 +248,18 @@ SpentCasingPhysics.RegisterWeaponParams({
         ejectAngle    = 45,
         spinForce     = { 64, 128 },
     },
+    -- The Kedr throws its cases out to the right from the port in its cover, held like a pistol: the MP7's throw
+    -- (GoM's MP5K's), a little lighter (9x18).
+    ["GunsOfTienPost93.KEDR"] = {
+        forwardOffset = 0.544,
+        sideOffset    = 0.06,
+        heightOffset  = 0.53,
+        shellForce    = 0.55,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 80,
+        spinForce     = { 24, 34 },
+    },
     -- The 9A-91 and VSK-94 eject to the right from the AK-type port: GoM's AKS-74U's and AS VAL's values (the same
     -- 9x39 round as the AS VAL; the VSK-94's port as far ahead of the grip)
     ["GunsOfTienPost93.9A91"] = {

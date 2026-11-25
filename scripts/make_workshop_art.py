@@ -17,6 +17,10 @@ Post-93's HK417 battle and marksman rifles, the same), preview29.png (1024x1024,
 preview30.png (1024x1024, the Walther PPK, the same), preview31.png (1024x1024, the SVU, the same), preview32.png
 (1024x1024, Post-93's SV-98 and SV-99, the same), preview42.png (1024x1024, Post-93's 9A-91 and VSK-94, the same),
 preview43.png (1024x1024, Post-93's A-91M 39 and A-91M 54 Prototype, the same),
+preview44.png (1024x1024, the Tokarev TT-33 and the PPSh-41, the same),
+preview45.png (1024x1024, the Skorpion vz. 82, the same), preview46.png (Post-93's PP-91 Kedr), preview47.png
+(the main mod's ammunition of 3.25.0: two calibres and eleven special loads), preview48.png (Post-93's thirteen
+later loads); the main mod and the add-on each get pages of their own (user, 2026-11-26),
 preview38.png (1024x1024, the Ammo Maker part cartons and crates,
 the same; previews 33-37 are scripts/make_loot_previews.py's)
 and, for each mod's 42/ folder, poster.png (512x512) and icon.png (128x128) for the in-game mod list; NAME (preview,
@@ -1523,6 +1527,220 @@ def preview43(path, W=1024):
              gap=14)
 
 
+def preview44(path, W=1024):
+    """The main mod's Tokarev TT-33 and PPSh-41 (the Tokarev release): the PPSh-41 with its drum across the top and
+    the pistol under it, both at their real sizes against each other (render_ad_guns.py "ppsh41" and "tt33",
+    mirrored back to the game's view; the pistol's render is finer by PISTOL_K). Each gun's name and numbers stand
+    in the free space beside it (the PPSh-41's under its trigger guard, the pistol's to its right), none squeezed between
+    the guns (user, 2026-11-26: "preview 44 can use some work in the spacing"); then one row of slots and what
+    plays."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    PISTOL_K = (0.78 * 843 / 1040 / 2400) / (0.46 * 195 / 208 / 2400)   # game units a pixel: the PPSh's over the pistol's
+    page = background(size).convert("RGBA")
+    title(page, "PPSH-41  ·  TT-33", 34, "GUNS OF MARZ EXTENSION")
+    ims = {}
+    for name, f in (("ppsh41", 1.0), ("tt33", 1.0 / PISTOL_K)):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        im = im.crop(im.getchannel("A").getbbox())
+        ims[name] = im.resize((round(im.width * f), round(im.height * f)), Image.LANCZOS)
+    s = min(u(470) / max(im.width for im in ims.values()), u(250) / sum(im.height for im in ims.values()))
+    long, pistol = [ims[n].resize((round(ims[n].width * s), round(ims[n].height * s)), Image.LANCZOS)
+                    for n in ("ppsh41", "tt33")]
+    big, mid = font(BOLD, u(17), b"Bold"), font(BOLD, u(13), b"Bold")
+    dark, grey = (28, 30, 34, 255), (60, 64, 70, 255)
+    # the PPSh-41 across the top; its name under the trigger guard, between the stock's belly and the drum, clear of
+    # the gun's drop shadow (user, 2026-11-26: "nearer to the center and avoid touching the ppsh shadow outline")
+    x0, y0 = (W - long.width) // 2, u(90)
+    paste_with_shadow(page, placed(size, long, (x0, y0)), (0, u(6)), u(6), 160)
+    cx, ty = x0 + round(long.width * 0.365), y0 + long.height - u(22)
+    page.alpha_composite(text_layer(size, (cx, ty), "PPSH-41", big, dark, anchor="ma", spacing=u(1)))
+    page.alpha_composite(text_layer(size, (cx, ty + u(24)), "7.62X25MM  ·  900 RPM", mid, grey, anchor="ma",
+                                    spacing=u(1)))
+    # the pistol in the middle of the space left under it, its name and numbers to its right
+    lines = ("TOKAREV TT-33", "7.62X25MM", "SEMI-AUTOMATIC")
+    label_w = round(max(big.getlength(lines[0]), mid.getlength(lines[2])) * 1.12)
+    gap = u(24)
+    px = (W - (pistol.width + gap + label_w)) // 2
+    top, bottom = y0 + long.height + u(22), u(390)      # under the PPSh-41's two lines
+    py = top + (bottom - top - pistol.height) // 2
+    paste_with_shadow(page, placed(size, pistol, (px, py)), (0, u(6)), u(6), 160)
+    tx, ty = px + pistol.width + gap, py + (pistol.height - u(62)) // 2
+    page.alpha_composite(text_layer(size, (tx, ty), lines[0], big, dark, spacing=u(1)))
+    for n, line in enumerate(lines[1:]):
+        page.alpha_composite(text_layer(size, (tx, ty + u(26) + n * u(18)), line, mid, grey, spacing=u(1)))
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main("PPSH41"), main("762x25Drum71_PPSH41"), main("762x25Magazine35_PPSH41"), main("TT33"),
+                    main("762x25Magazine8_TT33"), main("762x25_Box")], 256, 398,
+             "71-ROUND DRUM  ·  35-ROUND BOX  ·  8-ROUND MAGAZINE")
+    caption(page, 462, "THE TOKAREV ROUND AND ITS STEEL CORE AND SUBSONIC LOADS")
+    caption(page, 478, "FOUND WITH THE WARTIME GUNS  ·  THE PISTOL IN GUN STORES TOO")
+    save_under(page.convert("RGB"), path)
+
+
+def folded_and_open(page, folded, opened, top, specs, bottom=380):
+    """One gun twice at one scale (render_ad_guns.py's renders, mirrored back to the game's view): stock folded at
+    the upper left with `specs` (the first line large) and "STOCK FOLDED" in the free space to its right, stock open
+    under it with "STOCK OPEN" in the free space under its stock. No text between the guns (user, 2026-11-26: "make
+    use of the empty spaces and put the text there ... you're cramping the texts with the models")."""
+    size = page.size
+    k = size[0] / 512
+
+    def u(v):
+        return round(v * k)
+
+    ims = []
+    for name in (folded, opened):
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims.append(im.crop(im.getchannel("A").getbbox()))
+    gap = u(16)
+    s = min(u(452) / ims[1].width, (u(bottom) - u(top) - gap) / (ims[0].height + ims[1].height))
+    fold, full = [im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS) for im in ims]
+    x0 = (size[0] - full.width) // 2                  # both guns' muzzles on one line
+    y = u(top) + (u(bottom) - u(top) - gap - fold.height - full.height) // 2
+    paste_with_shadow(page, placed(size, fold, (x0, y)), (0, u(6)), u(6), 160)
+    paste_with_shadow(page, placed(size, full, (x0, y + fold.height + gap)), (0, u(6)), u(6), 160)
+    # right of the folded gun: the specs, then the state
+    big, mid, small = font(BOLD, u(17), b"Bold"), font(BOLD, u(13), b"Bold"), font(BOLD, u(11), b"Bold")
+    tx = x0 + fold.width + u(26)
+    block = u(22) + (len(specs) - 1) * u(18) + u(26)
+    ty = y + (fold.height - block) // 2
+    page.alpha_composite(text_layer(size, (tx, ty), specs[0], big, (28, 30, 34, 255), spacing=u(1)))
+    for n, line in enumerate(specs[1:]):
+        page.alpha_composite(text_layer(size, (tx, ty + u(24) + n * u(18)), line, mid, (60, 64, 70, 255), spacing=u(1)))
+    page.alpha_composite(text_layer(size, (tx, ty + u(24) + (len(specs) - 1) * u(18) + u(10)), "STOCK FOLDED", small,
+                                    (96, 100, 108, 255), spacing=u(1)))
+    # under the open stock, right of the grip
+    page.alpha_composite(text_layer(size, (x0 + round(full.width * 0.76), y + fold.height + gap + round(full.height * 0.80)),
+                                    "STOCK OPEN", small, (96, 100, 108, 255), anchor="ma", spacing=u(1)))
+
+
+def preview45(path, W=1024):
+    """The main mod's Skorpion vz. 82 (the Makarov release; the main mod and the add-on each get a page of their
+    own, user 2026-11-26): the gun with its stock folded and open at one scale (render_ad_guns.py "skorpion_folded"
+    and "skorpion"), its numbers beside the folded gun, then a row of slots and what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "SKORPION VZ. 82", 34, "GUNS OF MARZ EXTENSION")
+    folded_and_open(page, "skorpion_folded", "skorpion", 84, ("9X18MM MAKAROV", "850 RPM", "ONE-HANDED"))
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    slot_row(page, [main("SKORPION"), main("9x18Magazine12_SKORPION"), main("9x18Magazine24_SKORPION"),
+                    main("9x18Magazine30_SKORPION"), main("9x18_Box")], 256, 398, "12, 24 AND 30-ROUND MAGAZINES")
+    caption(page, 462, "HOLSTERED LIKE A PISTOL  ·  FOLDING STOCK")
+    caption(page, 478, "A SMUGGLED GUN  \u00b7  FOUND WITH THE RUSSIAN GUNS")
+    save_under(page.convert("RGB"), path)
+
+
+def preview46(path, W=1024):
+    """Post-93's PP-91 Kedr, on its own page as the add-on's other guns (the add-on line on top): stock folded and
+    open at one scale (render_ad_guns.py "kedr_folded" and "kedr"), its numbers beside the folded gun, then its
+    slots and what plays."""
+    size = (W, W)
+    k = W / 512
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, round(34 * k)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, round(14 * k), b"Bold"), (60, 64, 70, 255), anchor="mm",
+                                    spacing=round(2 * k)))
+    page.alpha_composite(text_layer(size, (W // 2, round(62 * k)), "PP-91 KEDR", font(BOLD, round(26 * k), b"Bold"),
+                                    (28, 30, 34, 255), anchor="mm", spacing=round(2 * k)))
+    folded_and_open(page, "kedr_folded", "kedr", 88, ("9X18MM MAKAROV", "1000 RPM", "ONE-HANDED"))
+    main = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    slot_row(page, [post("KEDR"), post("9x18Magazine20_KEDR"), post("9x18Magazine30_KEDR"), main("9x18_Box"),
+                    post("9x18_Box_PMM"), post("9x18_Box_RG028")], 256, 398, "20 AND 30-ROUND MAGAZINES")
+    caption(page, 462, "HOLSTERED LIKE A PISTOL  ·  FOLDING STOCK")
+    caption(page, 478, "A SMUGGLED GUN  \u00b7  FOUND WITH THE RUSSIAN GUNS")
+    save_under(page.convert("RGB"), path)
+
+
+def ammo_row(page, entries, y, px_grid, cell):
+    """A centred row of ammunition boxes (32 px inventory icons scaled up crisp), each over two short lines: the
+    calibre and the load. entries = ((icon path, line, line), ...); y and cell in 512ths of the page."""
+    size = page.size
+    k = size[0] / 512
+
+    def u(v):
+        return round(v * k)
+
+    px = 32 * max(1, round(px_grid * k / 32))
+    name, sub = font(BOLD, u(8.5), b"Bold"), font(BOLD, u(7.5), b"Bold")
+    x0 = (size[0] - len(entries) * u(cell)) // 2
+    for n, (path, a, b) in enumerate(entries):
+        cx = x0 + n * u(cell) + u(cell) // 2
+        paste_with_shadow(page, placed(size, icon(path, px), (cx - px // 2, u(y))), (0, u(4)), u(4), 190)
+        ty = u(y) + px + u(4)
+        page.alpha_composite(text_layer(size, (cx, ty), a, name, (28, 30, 34, 255), anchor="ma"))
+        page.alpha_composite(text_layer(size, (cx, ty + u(11)), b, sub, (60, 64, 70, 255), anchor="ma"))
+
+
+def preview47(path, W=1024):
+    """The main mod's ammunition of 3.25.0: the two new calibres' boxes (7.62x25mm Tokarev with its two special
+    loads, 9x18mm Makarov) in a row, then the eleven special loads of the special rounds audit in two rows, each
+    box over its calibre and load; then what plays."""
+    page = background((W, W)).convert("RGBA")
+    title(page, "NEW AMMUNITION", 36, "GUNS OF MARZ EXTENSION")
+    caption(page, 82, "TWO NEW CALIBRES  ·  BOXES OF 50, CARTONS AND CRATES", big=True)
+    own = lambda n: os.path.join(MAIN, "item_GunsOfTien_%s.png" % n)
+    gom = lambda n: os.path.join(MAIN, "item_%s.png" % n)
+    ammo_row(page, ((own("762x25_Box"), "7.62X25MM TOKAREV", "THE STANDARD ROUND"),
+                    (own("762x25_Box_SC"), "7.62X25MM", "STEEL CORE"),
+                    (own("762x25_Box_SS"), "7.62X25MM", "SUBSONIC"),
+                    (own("9x18_Box"), "9X18MM MAKAROV", "THE STANDARD ROUND")), 104, 56, 112)
+    caption(page, 204, "ELEVEN NEW SPECIAL LOADS", big=True)
+    ammo_row(page, ((gom("762x51_Box_M61"), "7.62X51MM M61", "ARMOUR PIERCING"),
+                    (gom("3006_Box_M2"), ".30-06 M2", "ARMOUR PIERCING"),
+                    (gom("545x39_Box_7N10"), "5.45X39MM 7N10", "ARMOUR PIERCING"),
+                    (gom("545x39_Box_7U1"), "5.45X39MM 7U1", "SUBSONIC"),
+                    (gom("762x54_Box_B32"), "7.62X54MMR B-32", "AP INCENDIARY"),
+                    (gom("12Gauge_Box_Flechette"), "12 GAUGE", "FLECHETTES")), 226, 48, 84)
+    ammo_row(page, ((gom("38_Box_P"), ".38 SPECIAL", "+P"),
+                    (gom("38_Box_HP"), ".38 SPECIAL", "HOLLOW POINT"),
+                    (gom("357_Box_HP"), ".357 MAGNUM", "HOLLOW POINT"),
+                    (gom("44_Box_HP"), ".44 MAGNUM", "HOLLOW POINT"),
+                    (gom("44_Box_Special"), ".44 SPECIAL", "A MILDER ROUND")), 318, 48, 84)
+    caption(page, 414, "ARMOUR PIERCING GOES THROUGH UP TO 5 TARGETS", big=True)
+    caption(page, 436, "HOLLOW POINTS AND +P HIT HARDER  ·  SUBSONIC IS QUIETER")
+    caption(page, 452, "THE B-32 SETS ZOMBIES ON FIRE  ·  FLECHETTES FLY FURTHER AND TIGHTER")
+    caption(page, 474, "STANDARD BOXES IN GUN STORES  \u00b7  SPECIAL LOADS FROM AMMO MAKER")
+    save_under(page.convert("RGB"), path)
+
+
+def preview48(path, W=1024):
+    """Post-93's ammunition of 3.25.0: the thirteen later loads, each box over its calibre and load, under the
+    add-on line; then what plays."""
+    size = (W, W)
+    k = W / 512
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, round(34 * k)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, round(14 * k), b"Bold"), (60, 64, 70, 255), anchor="mm",
+                                    spacing=round(2 * k)))
+    page.alpha_composite(text_layer(size, (W // 2, round(62 * k)), "LATER LOADS", font(BOLD, round(26 * k), b"Bold"),
+                                    (28, 30, 34, 255), anchor="mm", spacing=round(2 * k)))
+    caption(page, 80, "THIRTEEN SPECIAL LOADS FROM AFTER 1993", big=True)
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    ammo_row(page, ((post("762x25_Box_HP"), "7.62X25MM", "HOLLOW POINT"),
+                    (post("9x18_Box_PMM"), "9X18MM PMM", "OVERPRESSURE"),
+                    (post("9x18_Box_RG028"), "9X18MM RG028", "ARMOUR PIERCING"),
+                    (post("9x19_Box_7N21"), "9X19MM 7N21", "ARMOUR PIERCING"),
+                    (post("9x39_Box_PAB9"), "9X39MM PAB-9", "ARMOUR PIERCING")), 104, 56, 100)
+    ammo_row(page, ((post("545x39_Box_7N22"), "5.45X39MM 7N22", "ARMOUR PIERCING"),
+                    (post("762x39_Box_HP"), "7.62X39MM", "HOLLOW POINT"),
+                    (post("762x54_Box_7N13"), "7.62X54MMR 7N13", "ARMOUR PIERCING"),
+                    (post("762x54_Box_SP"), "7.62X54MMR", "SOFT POINT")), 204, 56, 100)
+    ammo_row(page, ((post("46x30_Box_DM21"), "4.6X30MM", "DM21"),
+                    (post("3030_Box_FTX"), ".30-30", "FTX"),
+                    (post("50_Box_HP"), ".50 AE", "HOLLOW POINT"),
+                    (post("12Gauge_Box_DragonsBreath"), "12 GAUGE", "DRAGON'S BREATH")), 304, 56, 100)
+    caption(page, 410, "ARMOUR PIERCING GOES THROUGH MORE TARGETS", big=True)
+    caption(page, 432, "HOLLOW AND SOFT POINTS HIT HARDER  ·  THE PMM HITS HARDEST")
+    caption(page, 448, "DRAGON'S BREATH SETS ZOMBIES ON FIRE")
+    caption(page, 474, "SPECIAL LOADS ARE MADE WITH AMMO MAKER, NOT FOUND")
+    save_under(page.convert("RGB"), path)
+
+
 AMMO_MAKER_TEXTURES = next((p for p in (
     os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/2788256295/mods/"
                        "AmmoMaker/common/media/textures"),
@@ -1774,6 +1992,16 @@ if __name__ == "__main__":
         preview42(os.path.join(ROOT, "preview42.png"))   # Post-93's 9A-91 and VSK-94 (3.23.0), added the same way
     if want("preview43"):
         preview43(os.path.join(ROOT, "preview43.png"))   # Post-93's A-91M 39 and 54 Prototype (3.25.0), the same way
+    if want("preview44"):
+        preview44(os.path.join(ROOT, "preview44.png"))   # the Tokarev TT-33 and PPSh-41, added the same way
+    if want("preview45"):
+        preview45(os.path.join(ROOT, "preview45.png"))   # the main mod's Skorpion vz. 82
+    if want("preview46"):
+        preview46(os.path.join(ROOT, "preview46.png"))   # Post-93's PP-91 Kedr
+    if want("preview47"):
+        preview47(os.path.join(ROOT, "preview47.png"))   # the main mod's new calibres and special loads (3.25.0)
+    if want("preview48"):
+        preview48(os.path.join(ROOT, "preview48.png"))   # Post-93's later loads (3.25.0)
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):

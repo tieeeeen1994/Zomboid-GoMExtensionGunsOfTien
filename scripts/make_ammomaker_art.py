@@ -18,6 +18,9 @@ How Ammo Maker marks its bullet variants, and what this script does the same way
     the world model (Ammo Maker's Balls00 mesh, every disc shows the whole 16x16 texture). The box keeps Ammo
     Maker's buckshot box (magenta shot print) with the three balls replaced by a heap of 28 pellets, "00"
     replaced by shot size "8", and the labels "BALL 00" -> "BIRDSHOT".
+  * Flechettes: finned steel darts drawn in the chrome and outline of Ammo Maker's arrow head icon (its colours read
+    off that icon), four side by side on the icon, one across each disc of the Balls00 world model, and the same
+    four across the lid of the birdshot box (no shot size, its print teal, the labels "FLECHETTE").
   Lettering is Ammo Maker's own stencil glyphs cut from its box textures (B from BALL, R I S H P from RIFLE S HP,
   D from HANDGUN, O T from SHOTGUN); the small code S is its big calibre S scaled down; the big 8 is two of its
   big 0s stacked.
@@ -514,7 +517,8 @@ BALLS_BOX = dict(
 )
 
 
-def make_birdshot_box_texture():
+def make_birdshot_box_texture(picture=None):
+    """picture="flechettes": the lid shows a handful of darts instead of the pellet heap."""
     cfg = BALLS_BOX
     tex = am_world("BoxBalls00").convert("RGB")
     orig = tex.copy()
@@ -525,6 +529,13 @@ def make_birdshot_box_texture():
         r = cfg["ball_r"]
         gone |= {(x, y) for y in range(int(cy - r - 1), int(cy + r + 2)) for x in range(int(cx - r - 1), int(cx + r + 2))
                  if (x + 0.5 - cx) ** 2 + (y + 0.5 - cy) ** 2 <= r * r and 0 <= x < 128 and 0 <= y < 128}
+    if picture == "flechettes":
+        zpts = set()
+        for box in cfg["zeros"]:
+            zpts |= glyph_points(ink_glyph(orig, box, "magenta"), box[0], box[1], 0.05)
+        gone |= dilate(zpts, 1, tex.size)
+        for rect in (cfg["front_label"], cfg["back_label"]):
+            gone |= dilate(glyph_points(white_glyph(orig, rect), rect[0], rect[1], 0.08), 1, tex.size)
     inpaint(tex, gone)
     heap = pellet_heap(sprite, 7, sprite.width * 0.98, seed=36)
     scale = 6.2 / sprite.width
@@ -534,8 +545,21 @@ def make_birdshot_box_texture():
     hx = (min(xs) + max(xs)) / 2 - heap.width / 2
     hy = (min(ys) - cfg["ball_r"] + max(ys) + cfg["ball_r"]) / 2 - heap.height / 2
     lid = tex.convert("RGBA")
-    lid.alpha_composite(heap, (int(round(hx)), int(round(hy))))
+    if picture == "flechettes":
+        # no shot size on a flechette box: the darts fill the lid's picture band, balls and "00" both
+        x0, x1 = min(xs) - cfg["ball_r"], cfg["zeros"][1][2]
+        y0, y1 = min(ys) - cfg["ball_r"], max(ys) + cfg["ball_r"]
+        darts = dart_layer((64, 64), FLECHETTE_BUNDLE)
+        darts = darts.crop(darts.getbbox())
+        k = min((x1 - x0) * 0.8 / darts.width, (y1 - y0) * 1.15 / darts.height)
+        darts = darts.resize((round(darts.width * k), round(darts.height * k)), Image.LANCZOS)
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        lid.alpha_composite(darts, (int(round(cx - darts.width / 2)), int(round(cy - darts.height / 2))))
+    else:
+        lid.alpha_composite(heap, (int(round(hx)), int(round(hy))))
     tex = lid.convert("RGB")
+    if picture == "flechettes":
+        return tex   # its own labels go on in make_flechette_box_texture
     # Shot size "00" -> "8": two of Ammo Maker's big stencil 0s stacked (top one smaller, as in the type).
     zero = trim(ink_glyph(orig, cfg["zeros"][0], "magenta"))
     pts = set()
@@ -657,9 +681,10 @@ def build():
     done.append((save(tex, world("GunsOfTien_BoxBirdshot")), "WorldItems/ammomaker_BoxBalls00.png"))
     done.append((save(box_icon("BoxBalls00", "BoxBalls00", am_world("BoxBalls00"), tex),
                       icon("GunsOfTien_BoxBirdshot")), "Item_ammomaker_BoxBalls00.png"))
-    # Flechettes (2026-11-25): the birdshot art in bright steel; the box's print teal, "FLECHETTE" on its labels
-    done.append((save(steel(make_birdshot_icon()), icon("GunsOfTien_Flechettes")), "birdshot icon"))
-    done.append((save(steel(make_birdshot_world()), world("GunsOfTien_Flechettes")), "birdshot world"))
+    # Flechettes: finned steel darts in Ammo Maker's arrow-head chrome (2026-11-26; until then the birdshot art in
+    # steel); the box's print teal, "FLECHETTE" on its labels, darts on its lid
+    done.append((save(make_flechette_icon(), icon("GunsOfTien_Flechettes")), "Item_ammomaker_ArrowHead.png colours"))
+    done.append((save(make_flechette_world(), world("GunsOfTien_Flechettes")), "WorldItems/ammomaker_Balls00.png"))
     tex = make_flechette_box_texture()
     done.append((save(tex, world("GunsOfTien_BoxFlechettes")), "birdshot box"))
     done.append((save(box_icon("BoxBalls00", "BoxBalls00", am_world("BoxBalls00"), tex),
@@ -684,9 +709,104 @@ def steel(img):
     return out
 
 
+# --------------------------------------------------------------------------------------------------
+# Flechettes (user, 2026-11-26: "let's make the flechette icon properly"; it was the birdshot heap in steel): small
+# finned steel darts, drawn as Ammo Maker draws its arrow head: chrome shaded across the part, a dark outline, the
+# point to the upper right. The chrome ramp and the outline colour are read off Ammo Maker's ArrowHead icon.
+# --------------------------------------------------------------------------------------------------
+
+def chrome_palette():
+    """(outline colour, [chrome colours dark to light]) from Ammo Maker's arrow head icon."""
+    src = am_icon("ArrowHead").convert("RGBA")
+    px = [p for p in src.getdata() if p[3] > 200]
+    lum = lambda c: 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2]
+    dark = sorted(px, key=lum)[: max(1, len(px) // 12)]
+    outline = tuple(sum(c[i] for c in dark) // len(dark) for i in range(3))
+    metal = sorted((p for p in px if lum(p) > lum(outline) + 30), key=lum)
+    ramp = [metal[int(i * (len(metal) - 1) / 15)][:3] for i in range(16)]
+    return outline, ramp
+
+
+def dart_layer(size, darts, ss=8):
+    """RGBA layer of finned darts, size (w, h) px. darts = [(tail x, tail y, angle degrees, length px)], drawn in
+    order (back first). Each dart: a round shaft that tapers to a point over its front fifth, and at the tail four
+    swept fins, of which the side view shows two flaring out and back; chrome across the part (light above, dark
+    below, a highlight a third of the way down), a one-pixel dark outline round each dart so overlaps stay apart."""
+    import numpy as np
+    outline, ramp = chrome_palette()
+    ramp = np.array(ramp, np.float32)
+    W, H = size[0] * ss, size[1] * ss
+    rgb = np.zeros((H, W, 3), np.float32)
+    alpha = np.zeros((H, W), np.float32)
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32) + 0.5
+    for tx, ty, ang, length in darts:
+        a = math.radians(ang)
+        ux, uy = math.cos(a), -math.sin(a)                     # along the dart, tail to point (screen y down)
+        vx, vy = -uy, ux                                       # across it
+        u = ((xx / ss - tx) * ux + (yy / ss - ty) * uy)        # px along
+        v = ((xx / ss - tx) * vx + (yy / ss - ty) * vy)        # px across (negative = upper side)
+        # a slim needle (2 px round), its point over the front tenth; the fins a trapezoid from the side: full
+        # span over the tail's first 12%, sloping back into the shaft by 22% (a first try with fins tapering all
+        # the way from the tail and a long point read as stacked cones)
+        r_shaft = 0.85
+        t = np.clip(u / length, 0.0, 1.0)
+        half = np.where(t > 0.9, r_shaft * (1.0 - t) / 0.1, r_shaft)
+        shaft = (u >= 0) & (u <= length) & (np.abs(v) <= half)
+        fin_full, fin_len = 0.12 * length, 0.22 * length
+        fin_half = r_shaft + 1.9 * np.clip((fin_len - u) / (fin_len - fin_full), 0.0, 1.0)
+        fins = (u >= -0.3) & (u <= fin_len) & (np.abs(v) <= fin_half)
+        body = shaft | fins
+        edge = np.zeros_like(body)
+        grown = (u >= -1.4) & (u <= length + 1.2) & (np.abs(v) <= np.maximum(np.where(u <= fin_len, fin_half, 0),
+                                                                                 np.where(t > 0.8, half, r_shaft)) + 1.0)
+        edge = grown & ~body
+        rgb[edge] = outline
+        alpha[edge] = 1.0
+        # chrome across the part: s = -1 (upper edge) .. 1 (lower edge)
+        s = np.clip(v / np.maximum(np.where(fins & ~shaft, fin_half, half), 0.3), -1.0, 1.0)
+        shade = 0.62 - 0.38 * s + 0.35 * np.exp(-((s + 0.35) / 0.28) ** 2)
+        shade = np.where(fins & ~shaft, shade * 0.72, shade)    # the fins a step darker than the shaft
+        idx = np.clip(shade, 0.0, 1.0) * (len(ramp) - 1)
+        lo = np.floor(idx).astype(int)
+        hi = np.minimum(lo + 1, len(ramp) - 1)
+        f = (idx - lo)[..., None]
+        col = ramp[lo] * (1 - f) + ramp[hi] * f
+        rgb[body] = col[body]
+        alpha[body] = 1.0
+    img = Image.fromarray(np.dstack([rgb, alpha * 255.0]).clip(0, 255).astype(np.uint8), "RGBA")
+    return img.resize(size, Image.BOX)
+
+
+FLECHETTE_BUNDLE = [  # tail x, tail y, angle, length (64 px icon): four darts a few pixels apart, points up and right
+    (13.8, 34.4, 34.0, 34.0), (13.8, 41.9, 39.0, 37.0), (20.6, 44.3, 36.0, 35.0), (22.2, 50.6, 40.0, 36.0),
+]
+
+
+def make_flechette_icon():
+    """Ammo Maker draws its parts as one object filling the icon at an angle (its arrow head); flechettes are a loose
+    handful of four darts, points to the upper right."""
+    src = am_icon("Balls00")
+    layer = dart_layer(src.size, FLECHETTE_BUNDLE)
+    bbox = layer.getbbox()
+    out = Image.new("RGBA", src.size, (0, 0, 0, 0))
+    out.alpha_composite(layer, (int(round((src.width - (bbox[0] + bbox[2])) / 2)),
+                                int(round((src.height - (bbox[1] + bbox[3])) / 2))))
+    return out
+
+
+def make_flechette_world():
+    """Balls00's model is 7 flat discs each showing the whole 16x16 texture: each disc shows a dart across it."""
+    src = am_world("Balls00").convert("RGBA")
+    rim = src.getpixel((1, 8))[:3]
+    big = dart_layer((128, 128), [(18.0, 104.0, 45.0, 128.0)], ss=4)
+    out = Image.new("RGBA", (128, 128), rim + (255,))
+    out.alpha_composite(big)
+    return out.resize((16, 16), Image.LANCZOS).convert(src.mode)
+
+
 def make_flechette_box_texture():
     cfg = BALLS_BOX
-    tex = make_birdshot_box_texture()
+    tex = make_birdshot_box_texture(picture="flechettes")
     is_magenta = lambda c: 270 < make_art.hue_of(c)[0] < 345 and make_art.hue_of(c)[1] > 0.3
     tex = make_art.recolour_hue(tex, 186.0, is_magenta).convert("RGB")
     rgba = tex.convert("RGBA")
@@ -698,10 +818,6 @@ def make_flechette_box_texture():
         rgba.paste(label.rotate(180) if flip else label, (x0, y0))
     return rgba.convert("RGB")
 
-
-# ==================================================================================================
-# Contact sheet: Ammo Maker's art next to the new art
-# ==================================================================================================
 
 def _am(name):
     return lambda: am_icon(name)

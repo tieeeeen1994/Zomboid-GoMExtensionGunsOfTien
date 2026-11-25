@@ -1,0 +1,48 @@
+module GunsOfTien {
+
+    model SKORPION {
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_BODY,
+        texture  = weapons/GunsOfTien/SKORPION,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.1510 -0.0262, rotate = -90.0000 0.0000 -180.0000, }
+        attachment world { offset = -0.0209 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.0699 -0.0217, rotate = -180.0000 0.0000 -180.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0336 0.0000, rotate = 0.0000 0.0000 0.0000, }
+    }
+
+    model SKORPION_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_BOLT,
+        texture  = weapons/GunsOfTien/SKORPION,
+        cullFace = None,
+    }
+
+    model SKORPION_STOCK_FOLDED {
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_STOCK_FOLDED,
+        texture  = weapons/GunsOfTien/SKORPION,
+        cullFace = None,
+    }
+
+    model SKORPION_STOCK_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTien_SKORPION|SKORPION_STOCK_DEPLOYED,
+        texture  = weapons/GunsOfTien/SKORPION,
+        cullFace = None,
+    }
+
+    model 9x18Magazine12_SKORPION {
+        mesh     = weapons/magazines/GunsOfTien_SKORPION_magazines|9x18Magazine12_SKORPION,
+        texture  = weapons/GunsOfTien/9x18Magazine12_SKORPION,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x18Magazine24_SKORPION {
+        mesh     = weapons/magazines/GunsOfTien_SKORPION_magazines|9x18Magazine24_SKORPION,
+        texture  = weapons/GunsOfTien/9x18Magazine24_SKORPION,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+
+    model 9x18Magazine30_SKORPION {
+        mesh     = weapons/magazines/GunsOfTien_SKORPION_magazines|9x18Magazine30_SKORPION,
+        texture  = weapons/GunsOfTien/9x18Magazine30_SKORPION,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+    }
+}

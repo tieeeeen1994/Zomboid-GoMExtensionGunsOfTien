@@ -1,0 +1,35 @@
+module GunsOfTien {
+
+    model PPSH41 {
+        mesh     = weapons/firearms/GunsOfTien_PPSH41|PPSH41_BODY,
+        texture  = weapons/GunsOfTien/PPSH41,
+        cullFace = None,
+        attachment muzzle { offset = 0.0000 0.3332 0.0096, rotate = -90.0000 0.0000 -180.0000, }
+        attachment magazine { offset = 0.0000 0.1414 0.0006, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_lock { offset = 0.0000 0.0000 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment bolt_fired { offset = 0.0000 -0.0513 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model PPSH41_BOLT {
+        mesh     = weapons/firearms/GunsOfTien_PPSH41|PPSH41_BOLT,
+        texture  = weapons/GunsOfTien/PPSH41,
+        cullFace = None,
+    }
+
+    model 762x25Drum71_PPSH41 {
+        mesh     = weapons/magazines/GunsOfTien_PPSH41_magazines|762x25Drum71_PPSH41,
+        texture  = weapons/GunsOfTien/762x25Drum71_PPSH41,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0078 0.0788 0.0036, rotate = -87.5316 0.6323 -109.3767, }
+    }
+
+    model 762x25Magazine35_PPSH41 {
+        mesh     = weapons/magazines/GunsOfTien_PPSH41_magazines|762x25Magazine35_PPSH41,
+        texture  = weapons/GunsOfTien/762x25Magazine35_PPSH41,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0131 0.0858 -0.0035, rotate = -87.5316 0.6323 -109.3767, }
+    }
+}

@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix TT33 {
+        Require = GunsOfTien.TT33,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

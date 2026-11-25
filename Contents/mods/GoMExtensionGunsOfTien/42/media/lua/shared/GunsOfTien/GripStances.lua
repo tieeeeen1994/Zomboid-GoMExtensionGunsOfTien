@@ -22,6 +22,8 @@ GripAnim.RegisterMultipleWeapons({
     ["GunsOfTien.AUG"] = SMG,
     ["GunsOfTien.SVU"] = SMG,
     ["GunsOfTien.UZI_2H"] = SMG,
+    -- GoM holds its Thompson this way too; the PPSh-41 borrows its reload
+    ["GunsOfTien.PPSH41"] = SMG,
 })
 
 return SMG

@@ -288,7 +288,16 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   x1.05, wear x0.5, 2 targets; user kept GoM's pierce); +P half way (x1.25, wear x0.75); rifle subsonics
   (7.62x39 US, 7U1) = GoM Subsonic (x0.4, sound x0.5, wear x2); .44 Special = GoM civilian (x0.7) + sound
   x0.75. Kept: pistol subsonics (heavy pistol bullets lose little; Post-93's sound x0.7 was the user's),
-  shotgun loads, DM21. Numbers in the section text below are from before this.
+  shotgun loads, DM21; the user confirmed the pistol subsonics and +P's half step the same day. Asked "keep, or
+  rebalance to GoM's x0.4?", the user said "rebalance GoM's subsonic then" and meant the other way round: GoM's
+  5.56 subsonic onto our balance, ours untouched (I first cut ours to x0.4 and took it back).
+  **Basis of our subsonic damage** (asked 2026-11-25; none was ever written down, the numbers were judged per
+  round): fitted afterwards against real loads, they follow the square root of the muzzle energy ratio
+  (subsonic / standard), mean error 0.08, better than energy (0.22) or momentum (0.16): 9x19 147 gr 0.95 (ours
+  0.85), .22 LR 0.85 (0.85), SB193 0.57 (0.7), 4.6x30 0.68 (0.6), 7U1 0.42 (0.55 before GoM's 0.4), 7.62x39 US
+  0.53 (0.5 before GoM's 0.4). 5.56 by the same rule (M855 62 gr at 3020 fps against 55-77 gr at 1050 fps):
+  0.33-0.39, so GoM's x0.4 already is our balance; its sound x0.5 and wear x2 are our rifle subsonics' too.
+  Numbers in the section text below are from before this.
   The released 7.62x39 Steel Core and 9x39 SP-6 went from 3 targets to 5 with it; asked, the user kept 5
   (2026-11-25, "let's do A"). The plain rounds' RealisticPiercing layer is unchanged.
 - **Rounds** (12, all real 1993 loads; profiles in `shared/GunsOfTien/Ammunition.lua`, numbers in docs/design.md):
@@ -818,8 +827,10 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
 - **Release previews** (user, 2026-11-24, after the 9A-91 release nearly shipped without them): preparing any release
   that adds or moves guns means regenerating the "where the guns are found" pages, preview33-37 (`py
   scripts/loot/build.py <lupa dir> <out>` then `py scripts/make_loot_previews.py <out>/spawners.json`, and check the
-  hand-written place texts in that script), and, **only when a new gun takes a suppressor** (not every new gun does),
-  the suppressor page preview41 (`py scripts/attachment_audit.py --suppressors <dir>/suppressors.json`, then `py
+  hand-written place texts in that script), and the suppressor page preview41 **for every new gun** (corrected
+  2026-11-26: a gun that takes no can still changes the page, whose heading counts all guns, "42 OF 87 GUNS TAKE
+  ONE"; under the old "only when a new gun takes a suppressor" rule the TT-33 and PPSh-41 had left it stale):
+  preview41 (`py scripts/attachment_audit.py --suppressors <dir>/suppressors.json`, then `py
   scripts/make_suppressor_preview.py <dir>/suppressors.json`; a new can family also needs its line in that script's
   `FAMILIES`), besides the new guns' own preview. scripts/loot/dump.lua finds the repo from its own path and loads
   our shared tables (the main mod's Loot.lua requires `GunsOfTien/MuzzleDevicesTable`; until 2026-11-24 it had one
@@ -993,6 +1004,18 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   one view and scale (`A91_SCALE`); slots gun, gun, magazine, mount device, can, GoM's 9x39 box. Rebuild:
   `blender -b --factory-startup -P scripts/render_ad_guns.py -- <absolute dir> 9a91 vsk94`, then
   `make_workshop_art.py --renders <dir> preview42`. Not yet on the Steam page.
+  preview45-48 (2026-11-26). **The main mod and the Post-93 add-on each get pages of their own** (user, on a first
+  preview45 with both Makarov guns: "post 93 addon and main mod gets seaprate previews"; an add-on page opens with
+  the "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION" line), and **new rounds get a preview too** ("we need to add a
+  preview for the newly added rounds and ammunition"): preview45 the main mod's Skorpion vz. 82 and preview46
+  Post-93's PP-91 Kedr, each with its stock folded over its stock open at one scale (`folded_and_open`: the
+  numbers and the two state labels stand in the free space beside the guns, none between or over them; user,
+  on the first layout: "make use of the empty spaces and put the text there ... you're cramping the texts with
+  the models";
+  render_ad_guns.py `skorpion_folded` / `skorpion` / `kedr_folded` / `kedr`, the TMP's view), "ONE-HANDED" in the
+  line under the name as the TMP's page; preview47 the main mod's ammunition of 3.25.0 (the two new calibres' four
+  boxes, then the eleven special loads) and preview48 Post-93's thirteen later loads, every box over its calibre
+  and load (`ammo_row`).
   preview43 (3.25.0, 2026-11-25): Post-93's A-91M 39 and A-91M 54 Prototype through `gun_pair`, as preview42:
   render_ad_guns.py `a91m` (GoM's AK-47 30 at our size, the handle's rail + Aimpoint) and `a91mproto` (the
   20-round SV-98 magazine, rail + Elcan), launcher leaves folded, `RIFLE_SCALE`; slots gun, gun, GoM's AK-47 30,
@@ -2349,8 +2372,16 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   and `OnZombieDead` (fired in `onKilled`, before `die()` makes the corpse, whose constructor starts a fire on
   its square when `isOnFire`) puts it out and gives the spread (6) back. Burns 3 s from the last hit (user)
   at fireKillRate 0.068 on the machine that lit it (user: "4 burns kill" a normal zombie, 1.8-2.1 health),
-  then `StopBurning` there and vanilla's 0.0038 back. Known gap: a lit zombie that despawns
-  alive leaves spread 0 on its reused object.
+  then `StopBurning` there and vanilla's 0.0038 back; the spread comes back once the server's copy is out (or
+  1 s later). **Another fire always wins** (user, 2026-11-26: "another kind of fire source ALWAYS overwrites
+  it"): a zombie already burning ignores our hit, and one of ours on a square with `IsoFlagType.burning` (what
+  vanilla's `FireCheck` lights zombies from: Molotovs, any ground fire) is handed over on every machine (no end
+  time, vanilla rate, spread and corpse fire back, never put out by us). Checked in lupa against mocks (single
+  player and dedicated server). **Recycled zombie objects** (42.22 `VirtualZombieManager.reuseZombie` ->
+  `IsoZombie.resetForReuse`, on despawn and removal): the reset wipes mod data and the online ID but keeps
+  `fireSpreadProbability` and `fireKillRate`, so every machine keeps the objects it changed (`touched`) with the
+  mark in their mod data; dead or mark gone = vanilla numbers back and its burn dropped (lupa: single player
+  mid-burn, server, owner client).
 - **Art**: make_art.py (GoM-template rifle and revolver boxes; the revolver / .50 boxes' own print colour, an
   `accent` hue range, takes the load's hue as GoM's red does on the 9x19 / .45 (user: "why didn't we recolor"),
   the .357's copper tray kept (`keep`, icon pixels mapped to texels by the camera); the .50 AE hollow point
@@ -2360,7 +2391,9 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   new schemes LEAD, API, FTX, the shells by hue: flechette teal, dragon's breath orange; `ROUNDS_POST93` /
   `BOXES_POST93` into Post-93's textures), make_762x25_9x18_art.py (PMM, RG028), post93/make_ammo_art.py (DM21),
   make_ammomaker_art.py (flechette pouch and box; its Ammo Maker path now finds the Windows install).
-- **Not done**: playing any of it; the ignite relay under lag; flechette art as darts.
+- **Not done**: playing any of it; the ignite relay under lag. Flechette art redrawn as darts 2026-11-26 (user:
+  "let's make the flechette icon properly"): four finned darts in Ammo Maker's arrow-head chrome, box lid without
+  the birdshot's shot size.
 
 ## 7.62x25mm Tokarev and 9x18mm Makarov (main mod, 2026-11-25; built overnight, not played)
 
@@ -2389,8 +2422,22 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   GoM's hollow point green on the same round and SAKER box, written into Post-93's textures). Never loot, as the
   add-on's other special loads. Not played. The rule for later: a load with no date found before 1993 goes to
   Post-93, it is not dropped.
-- **Loot: none yet** (decided overnight, to confirm): rounds for guns that do not exist would be clutter; they come
-  with their guns' kits. Until then Ammo Maker makes them.
+- **Loot by Extend Loot Areas** (user, 2026-11-26, asked where the Skorpion and Kedr had been put: "Extend Loot off
+  should be lore accurate while extend loot on should expose the guns to loot distribution regardless of lore",
+  and "Don't forget the standard rounds ammo boxes. they should also be lootable"). The rule for every gun and
+  round from now on: **option off = where the thing would really have been in Kentucky in 1993; option on = widely
+  found**. I had put both guns in GoM's short SMG spawner (gun stores) and the Kedr in the Russian one too, which
+  was wrong twice: no gun store sold either, and with the option on the Russian spawner goes onto zombies' backs
+  (ExtendLootAreas.lua `EXTENDED_SLOTS`), where a holstered gun must never hang. Now: off, the Skorpion and the
+  Kedr are smuggled guns in `World_Russian_Rifle_Spawner` (on no zombie while off); on, they leave it for
+  `World_Short_SMG_Spawner`. A kit can carry a third field, "lore" or "extended" (main Loot.lua
+  `UZI_ALTERNATIVES`; Post-93 `LORE_GUNS` / `EXTENDED_GUNS`). **A holstered gun goes in no spawner that reaches a
+  back slot in either setting.** Loose plain-round boxes and cartons of both calibres (`WORLD`, fifth field): off,
+  beside the 9mm ones in gun store lists only (share 0.05: Chinese surplus came in with the pistols); on, in
+  every list. The special loads stay Ammo Maker's. Checked in lupa (scripts/loot/dump.lua with the post-merge
+  handlers fired): off, gun store lists only; on, police storage and homes too. The loot pages show each gun
+  under the Russian guns and, as an Extend Loot Areas extra, under the short SMGs; they cannot show that it
+  leaves the Russian spawner when the option is on.
 - **Art** (`scripts/make_762x25_9x18_art.py`, sheet `docs/762x25_9x18_art_sheet.png`): rounds on GoM's meshes, the
   Tokarev on 57x28_Round (scale 0.0129, its 34.9 mm against 40.5) with the case in tombac (the Soviet steel case
   clad in copper alloy) so it is no 5.7x28, the Makarov on 9x19_Round (0.0135) with the grey clad-steel case; tips
@@ -3492,7 +3539,11 @@ adds bloat"), no full stops.
   [--renders DIR]` (icon, overlay, sheet beside the photos), `gen_post93_guns.py a91m()` (models_a91m.txt,
   items_a91m.txt, fixing_a91m.txt, names), `shared/GunsOfTienPost93/A91M.lua`, lines in Post-93's Tooltips.lua,
   Loot.lua, HotBrass.lua, GripStances.lua, RealSingleFire.lua; the A-91M in the main mod's `muzzle_devices.py`
-  AK762 (the AKM slant compensator).
+  AK762 (the AKM slant compensator). **GoM's PBS-1 fits the A-91M 39** (user, 2026-11-26: "let's allow A-91M 34 to
+  be used with PBS please"; it had been left off because no source shows a suppressor on the gun): its line in
+  `a91m()` (the launcher weapon `A91M_GL` gets it too, as the GP-25 Groza does, so the can stays drawn while the
+  launcher is in use) and A91M.lua's `appendMountOn`; render_ad_guns.py `a91m_pbs` shows it on GoM's mount, on the
+  bore. preview41 counts it (80 of 123 with Post-93). Not the 54 Prototype: the PBS-1 is a 7.62x39 can.
 - **The first model was rejected** (user: "the current A-91M is terrible looking"): every part one flat extrusion
   of its side outline at nearly one width, an almost black texture with nothing on it, and parts named wrong (the
   rifle's tall front sight tower taken for a launcher leaf, the charging hook for a diopter, an invented charging
@@ -3555,7 +3606,26 @@ adds bloat"), no full stops.
   guard"; Kuzmin 2011's right-side photo shows the lever and its marks), `selector` in build_a91m.py (it was called
   a case deflector). The steel lever with a knurled knob on the LEFT of the lower, ahead of the trigger guard (the
   measuring photo, the field strip's part 7), is no selector; Modern Firearms, GunRF, Small Arms Review and
-  Wikipedia do not say what it is, so it is `left_lever`. Cases leave forward on the right through a channel along
+  Wikipedia do not say what it is, so it is `left_lever`. **Hunted 2026-11-25** (user: "Hunt it"; no KBP manual
+  for the A-91M is on the web, spec-naz.org / bstudy.net / oruzhie.info did not load): most likely the
+  **safety-selector flag**. GunRF's Russian A-91M page (and bezpekavip.com, the same text): "Флажок
+  предохранителя-переводчика расположен с левой стороны ствольной коробки"; the gun is the 9A-91's mechanism,
+  whose first version had its safety-selector on the left above the trigger guard (moved right when the optics
+  rail took the left side); a forum gives the A-91M's positions as ПР - 1 - 3. Against it: weaponland.ru and a
+  vk article (both on "the A-91") and Modern Firearms put the selector on the right, as our AK-style one,
+  which is drawn from the 5.56 gun's photo; Small Arms Review only guesses at a mirrored one. No source names a
+  launcher safety, bolt catch or latch there. Not proven, so the part keeps its name and both levers stay.
+  Closed 2026-11-26 (user: "I thought we confirmed this already with some of the pictures"): the photos settle its
+  shape and place, which the model follows; only its purpose is unproven, which nothing in the game uses.
+  **Games** (same day, user: "how do games model it?"): Battlefield 3 / 4 / 2042 / Play4Free, Ghost Recon Future
+  Soldier, SOCOM Fireteam Bravo 3 carry the 5.56A-91, none animates a selector, and their wikis (Fandom, IMFDB)
+  refuse automated fetches, so their screenshots were not seen. Sketchfab (open API): a game-style A-91
+  (migueld1994, 2014; crop docs/a91m_left_lever_game_model.png) draws our lever as a diagonal bar on the launcher
+  housing with a half-moon scoop at each end of its swing, i.e. **two positions**; B3RT0's and TastyTony's models
+  show the AK-style selector on the right behind the grip, over the magazine (as weaponland.ru and the vk article).
+  That turns the reading: with the three-position selector on the right, a two-position lever on the launcher's
+  housing beside the launcher's trigger is more likely the **launcher's safety** (the GP-25 has its safety flag
+  on the left); GunRF's "left of the receiver" then fits nothing seen. Still an inference. Cases leave forward on the right through a channel along
   the barrel (bstudy.net, zonwar.ru): no deflector plate. Renames only: the FBX and texture rebuild byte-identical. The other render scripts still
   mirror.
 - **The measuring photo shows the LEFT side** (muzzle left). The 7.62 gun's right side has no photo: the fire
@@ -3674,6 +3744,249 @@ the aluminium SV-98.
   the sling ring. A `slab` whose bar is thinner than two bevels turns inside out (the frame's top bar closed the
   top of the opening until it was made 22 mm): the same check shows it as an opening that shrank.
 - **Not done**: playing it; a Workshop preview; the left side is a guess; texture at 512 like the A-91M.
+
+## Tokarev TT-33 (main mod, 2026-11-25; model built in six passes and wired the same day; not played)
+
+- **What**: the Tokarev release's pistol (TODO.md "Next guns"), `GunsOfTien.TT33` "Tokarev TT-33" with
+  `762x25Magazine8_TT33`; design and numbers: docs/design.md 4q. Files: `scripts/build_tt.py` (Blender, ~2 min:
+  `GunsOfTien_TT33.fbx` TT33_BODY / TT33_SLIDE, `GunsOfTien_TT33_magazines.fbx`, `TT33.png` 512, the magazine 128,
+  `scripts/tt_points.json`), `render_tt.py -- DIR`, `make_tt_art.py --renders DIR --photo
+  references/tt/tt33_left_rama_6553.jpg --right-photo references/tt/raw/commons_001.jpg --views
+  references/tt/raw` (icons on the Five-seveN cameras, sheet `docs/tt_preview.png`), `gen_scripts.py tt33()`
+  (models_tt33.txt, items_tt33.txt, fixing_tt33.txt, names), `shared/GunsOfTien/TT33.lua` (the PPK's pattern: its
+  magazine's own profile in the "7.62x25mm" family, GoM's slide swap and "pistol_reload", magazine at 50 % on a
+  found gun), `client/GunsOfTien/TT33Tooltips.lua`, RealSingleFire.lua, loot (Loot.lua: World_Oldies_Spawner and
+  World_Import_Pistol_Spawner) and Hot Brass in the server files. Built as the PPK: upside down at export, origin
+  11 mm behind the back strap's deepest point (photo L 191.4, H 70), 0.603. check_refs.py clean,
+  attachment_audit.py loads it with 0 ISSUE lines. Rebuild: build, render, art, then gen_scripts.py, check_refs.py.
+- **TT-30 or TT-33** (the user chose "TT-30"; the wish list said TT-33): they do not differ in play (same round,
+  eight-round magazine, barrel), and outside only by the TT-30's removable back strap (a seam down each side of
+  the grip's rear), its trigger and a lower rear sight; inside by the barrel's lugs and the lock work. Every photo
+  found is a TT-33 (Commons' "TT-30 Tokarev 001 / 002" are Armemuseum's 1940 gun, a TT-33), and about 93,000
+  TT-30s were made against well over a million TT-33s. So one gun, modelled as the wartime TT-33 and named so
+  (user, 2026-11-25: "We can go with your recommendation"). The 9x19 Norinco Model 213 (the Tokarev sold in the US
+  in the 1980s and 1990s, with a safety) was offered as a variant that would differ in play: "do not add new
+  guns".
+- **References** (`references/tt/`, SOURCES.tsv, `sheet_commons.png`, `sheet_ria.png`; 86 photos, fetched with the
+  new `scripts/ref_hunt.py`): Wikimedia Commons (29 picked from Category:TT pistol by title) and Rock Island
+  Auction's CDN (nine TT-33 lots, six angles each: 5010/81, 5010/463, 5039/558, 5039/276, 2084/373, 5040/87,
+  5018/123, 5019/593, 5004/439, plus group lots). **Bing's image endpoint now answers scripts with unrelated
+  pictures** (2026-11-25: books, worse with `adlt=off`), Fandom answers 402 / a Cloudflare page, Commons answers
+  429 after about 30 files and also to its API after a few quick calls (ref_hunt.py paces both and stops on a
+  429): the PPSh-41's Commons photos are still to fetch (`references/_fetch_commons.py` holds the picked titles).
+  Measuring photo: Rama's flat studio left side of a 1944 gun (Commons "Tokarev TT-33-IMG 6553-white.jpg", only
+  the 1920 px size could be fetched: 7.70 px a mm at 195 mm; the height reads 127.6 mm, the published 134 with
+  the lanyard loop hanging). Right side: Armemuseum's 1940 gun (1200 px, read by fractions of the length).
+- **New tools** (kept in the repo: the PPK's were session scratch and lost): `scripts/ref_hunt.py` (commons /
+  search / urls / ria / sheet), `scripts/ref_crop.py` (a crop of the measuring photo with a mm grid in the
+  builder's (L, H), and `--overlay` = the model's red outline from a render_*.py photo-scale view over it: the
+  part-by-part check of the remodel passes). Edges that the eye reads 3-6 mm wrong off a crop (the grip panel
+  against the frame) come out of **brightness sampled along rows and columns** of the photo in (L, H): ribs give a
+  jumpy row, smooth steel a flat one (the panel's rear edge leans from L 171 under the tang to 2.8 mm inside the
+  back strap; I had drawn it parallel to the back strap, 6 mm too far back at the top).
+- **Model**: the slide a loft (flat sides, superellipse shoulders over its upper 4.6 mm, the rear rounded down to
+  the tang, narrower at the very back), its recoil spring tube under the barrel a slab **narrower than the frame**
+  (half 8.4 against 9.6): the tube runs back into the dust cover when the slide recoils, as on the real gun (at
+  the slide's width it swallowed the frame). Frame, guard (its opening off the trace), grip panels (one slab a
+  side, the left one cut away at the heel for the lanyard loop, a wire ring folded up against the frame), the
+  trigger filling the guard's rear (it slides straight back; overlapping frame and guard, no slit), the hammer's
+  toothed round spur as real teeth in its outline, the slide stop on the left (round head, arm, thumb shelf) and
+  its split clip on the right, the catch's round button left and slotted end right. Painted: the wartime
+  serrations (seven wide oval cuts, a narrow one ahead of each, run out of the lower edge), the relief flats at the
+  front, the stop's notch, the ejection port (right, over the shoulder; L 82-113), the extractor behind it, the
+  ribs and the star in a ring with CCCP, serial and year. kit.slab collapses a hole whose wall to the outline is
+  thinner than two bevels (the guard's opening lost its roof until the guard's top went up inside the frame).
+- **Passes** (1 build + 5 remodel, each from photo-with-outline crops at 16 px a mm, trigger and guard first):
+  1 the guard's roof, the trigger to the rear wall, hammer teeth, the tunnel's facet, the stop's round head,
+  contrast; 2 steel raised to GoM's M1911 grey (92; at 50-68 nothing read), ribs at 2.4 mm (the atlas holds
+  0.75 mm a texel: the real 1.9 mm pitch washed out), the right side from Armemuseum's photo (port, extractor,
+  clip); 3 the spring tube narrower than the frame, the port dark, a slimmer trigger; 4 the grip panel's edges
+  from brightness rows; 5 the review sheet. Silhouette IoU 99.4 %; the only see-through region in eleven views
+  is the guard's opening.
+- **Copper** (user, 2026-11-25, on the first sheet: "can we also change the texture of TT-33 to copper as well like
+  the reference?"): the steel's base colour comes off the measuring photo now (its slide reads 138 118 101 lit, its
+  frame 99 81 72): 132 104 80, grips 50 35 26, the sheen and edge wear tinted warm; the first try (116 98 84)
+  still read grey under the bake's shading.
+- **Loot**: GoM's `Zombie_Oldies_Spawner` hangs its guns on zombies' backs (ExtendLootAreas.lua's
+  gunOnBackBountyHunter), so a pistol kit does not go there; `World_Oldies_Spawner` and the import pistols do.
+- **Not done**: playing it.
+
+## PPSh-41 (main mod, 2026-11-25; built and wired the same day; not played)
+
+- **What**: the Tokarev release's submachine gun, `GunsOfTien.PPSH41` "PPSh-41 Submachine Gun" with
+  `762x25Drum71_PPSH41` and `762x25Magazine35_PPSH41`; design and numbers: docs/design.md 4r. Files:
+  `scripts/build_ppsh41.py` (Blender, ~2 min: `GunsOfTien_PPSH41.fbx` PPSH41_BODY / PPSH41_BOLT,
+  `GunsOfTien_PPSH41_magazines.fbx`, `PPSH41.png` 256, the magazines 128, `scripts/ppsh41_points.json`),
+  `render_ppsh41.py -- DIR` (the whole gun at 3 px a mm plus four 8 px a mm views, left_a .. left_d, for the
+  part crops), `make_ppsh41_art.py --renders DIR --photo references/ppsh41/ppsh41_left_ria84_1677.jpg
+  --right-photo references/ppsh41/raw/ria_000.jpg --box-photo references/ppsh41/raw/commons_003.jpg` (icons: the
+  SCARs' rifle and rifle magazine cameras, the drum from its front quarter as the RPD's; sheet
+  `docs/ppsh41_preview.png`), `gen_scripts.py ppsh41()`, `shared/GunsOfTien/PPSH41.lua` (GoM's Thompson pattern:
+  both magazines in one profile in the "7.62x25mm" family, 900 rpm with the Thompson's spread, the cocking handle
+  on GoM's Bolt swap, the "thompson_marz" reload now in GoMReloads.lua, GoM's SMG stance in GripStances.lua),
+  `client/GunsOfTien/PPSH41Tooltips.lua`, loot and Hot Brass in the server files. check_refs.py clean,
+  attachment_audit.py loads it with 0 ISSUE lines.
+- **GoM's Thompson first** (memory: render GoM's equivalent before modelling): its drum faces forward (a slab from
+  the side), its three magazines share one Bip01_Prop2 with their origins at the top, its `magazine` point is in
+  the well; the gun's origin is the rear top of its pistol grip. The PPSh-41 has no pistol grip: the SV-98's rule
+  (GoM's M24: the trigger 57.5 mm ahead of the origin, the bore 16 mm over it) puts the origin in the top of the
+  stock's wrist (photo L 552.5, H 149). Our magazines have their origins at the middle of their tops and take
+  GoM's point with their middles moved onto GoM's drum's and 30-round box's (`prop2_moved`).
+- **References** (`references/ppsh41/`, 49 photos; SOURCES.tsv, sheets): Rock Island Auction lots 89/405, 74/1515,
+  74/1383, 73/1730, 84/1677 (both sides at 4800-7000 px, top close-ups, drums and pouches) and 27 Commons files
+  (three more quarters, the box magazine: commons_003, commons_014). Measuring photo: lot 84/1677's left side
+  (7078 px), levelled by 0.29 degrees on the jacket's top edge (a line fitted through its top row, sights thrown
+  out), traced at 843 mm (8.25 px a mm, 202.5 mm tall with the drum). The right side (handle, slot) from lot
+  89/405 by fractions of the length. Widths from lot 89/405's top view (raw/ria_002.jpg): 7.7 px a mm, the same
+  between the rear cap's front (L 470), the rear sight's (L 414) and the handle (L 384).
+- **A side photo lies about anything off the gun's middle plane**: the lens was over L 421 and close, so the drum
+  (100 mm ahead of it, 68 mm of radius towards the lens) shows its edge **plus its rear face**: 59 mm in the
+  outline. Fitted to that outline alone it came out 53 mm thick; the top view gives 39 mm at 105 mm further from
+  the lens, about 45 real, and the side photo's two edges solve to 43-49 mm for a lens 0.8-1.2 m away. So the
+  outline's IoU (94 %) is not a target for the drum; the body's columns agree within 2 mm. The same top view put
+  the ejection port at L 316-365, 14 mm wide (it was 296-366 and ran onto the right shoulder), and the stock at
+  48 mm of wood round a 33 mm receiver (it was 38). Check widths and anything round against a second view
+  before trusting a silhouette fit.
+- **Model**: the barrel jacket a slab with its four slots **cut through** (painted ones were mush at 256: a texel
+  is 3.3 mm on an 843 mm gun), the barrel inside thick enough (r 9.6 against the slots' 18 mm) that no light comes
+  through them; the compensator its own slab with the port through both sides, where the real gun is see-through
+  too; receiver, the rear cap, the hinge lug and pin, the lower receiver with its band against the stock, the
+  stock one slab (bevel 5.5), a thin butt plate, the guard a pressed strap (kit strip), the J-shaped trigger, the
+  selector's block and lever, the flip rear sight between two guards, the hooded front sight a ring (from the
+  side an orthographic view shows it as a block; the photo's arch is perspective), sling loop and plate on the
+  left. The drum: a lathe along the barrel, pressed rings on both faces, the hub behind, the neck on top with a
+  round in it. The box: a curved slab (R 483, 222 mm, its foot 54 mm forward: off Commons' photo of a gun with the
+  box in), two ribs painted down each side. The see-through regions of the side views are the guard's opening and
+  the compensator's port only.
+- **Passes**: 1 build (slots painted, the barrel ending in the port, a kinked trigger, no hinge lug, the box 20 mm
+  short); 2 the slots cut, the lug, the trigger a J, the handle and its slot from the right-side photo, the box
+  longer; 3 steel down to GoM's Thompson's tone (56), birch orange as the photo (204 118 46; at 136 76 36 it read
+  as walnut), a wider sight hood, a smooth comb; 4 a thin butt plate; 5 by numbers, not by eye (the traced
+  outline's top and bottom edge against the render's alpha every 4 mm, scratch `pp_fit.py`): the stock's whole
+  profile off the outline (read off gridded crops it was 2-5 mm thin, with an upright butt; the real one slants),
+  the sight hood 27 mm long (was 17), the rear sight 4 mm forward with a gap before the cap, the guard's bow 3 mm
+  back at the front and forward at the rear, its plate ahead of the bow, the hinge lug 3 mm deeper, the catch,
+  the compensator's slant: IoU 92.0 to 94.9 %; 6 the top view (above): the drum 45 mm thick, hanging 5 degrees
+  foot forward (its front edge leans in the side photo; turned and moved in the mesh after painting,
+  `DRUM_TILT` / `DRUM_BACK`), the port, the wider stock; the box magazine's icon lit with the rifle's light (the
+  SCAR magazine camera's own light was fitted to GoM's blue STANAG icon and turned it blue); 7 (user, the same
+  day, on the sheet's guard crop: "What honestly is this?") the selector had been a box with a spike: now its
+  two-step housing, the stud and the bent-wire lever with its open teardrop eye, and the trigger's blade, all
+  off a 16 px a mm crop (`ref_crop.py ... 428 524 76 122 --px 16`). Small parts get that crop **before** the
+  sheet is shown, not a guess at 3 px a mm.
+- **Not done**: playing it; the right side's plate differs a little from the left's on the real gun and is not
+  modelled; the drum's cover catch and the box's lips are plain.
+
+## Skorpion vz. 82 (main mod, 2026-11-26; built and wired in one sitting; not played, model not seen by the user)
+
+- **What** (user, 2026-11-26: "For makarov guns, let's add Skorpion and Kedr"): `GunsOfTien.SKORPION` "Skorpion vz. 82
+  Machine Pistol" with `9x18Magazine12 / 24 / 30_SKORPION`, the first main-mod gun for the 9x18mm round; design and
+  numbers: docs/design.md 4s. Only the Czechoslovak army's Sa vz. 82 (1982) is a 9x18 Skorpion (vz. 61 .32 ACP,
+  vz. 83 .380), so main mod. Files: `scripts/build_skorpion.py` (Blender, ~45 s: `GunsOfTien_SKORPION.fbx`
+  SKORPION_BODY / _BOLT / _STOCK_FOLDED / _STOCK_DEPLOYED, `GunsOfTien_SKORPION_magazines.fbx`, `SKORPION.png` 256,
+  the magazines 128, `scripts/skorpion_points.json`), `render_skorpion.py -- DIR`, `make_skorpion_art.py --renders
+  DIR --photo references/skorpion/skorpion_left_9mak.jpg --mags-photo references/skorpion/raw/mf_004.jpg
+  --open-photo references/skorpion/raw/commons_010.jpg` (icons on the MP7 cameras as the TMP's; sheet
+  `docs/skorpion_preview.png`), `gen_scripts.py skorpion()`, `shared/GunsOfTien/Skorpion.lua` (the TMP's pattern:
+  pistol-held, Holster, GoM's "handgun2" reload, 850 rpm; the bolt with both cocking knobs is the gun's Bolt part,
+  as the PPSh-41's handle; the wire stock on Gunworks' FoldingStock with GoM's MAC-10 stock stats, each state its
+  own node drawn in place), `client/GunsOfTien/SkorpionTooltips.lua`, its kit in Loot.lua (`SKORPION_KIT`: the
+  Russian spawner, or the short SMG one with Extend Loot Areas, see "Loot by Extend Loot Areas" under the 7.62x25 /
+  9x18 section; the 30 in the high-capacity magazine spawner), Hot Brass in HotBrass.lua. check_refs.py
+  clean, attachment_audit.py loads it with no ISSUE line.
+- **References** (`references/skorpion/`, SOURCES.tsv): Commons "Sa vz 61 Pistol 9 Makarov.jpg" (CC0, 5841 px: a
+  current Czech Small Arms 9x18 semi-automatic, left side, stock folded, a translucent polymer magazine) is the
+  measuring photo; Rock Island lots 2044/364, 2075/711, 2099/447, 2037/456, 1031/1048 (vz. 61 pistols: rear, top and
+  3/4 views for the widths, 31 mm upper, 24 frame, 29 grip); modernfirearms.net's photo of a vz. 82 with its three
+  steel magazines (raw/mf_004.jpg: 12 / 24 / 30 rounds, 100 / 158 / 187 mm, 4.8 mm a round, the selector marked
+  20 / 0 / 1) and of the stock open; Commons' vz. 61 with the stock open (the arms slope 10 degrees down). The
+  Commons category is "Sa vz. 61 Škorpion" (ref_hunt.py now survives titles outside the console's code page).
+- **The measuring photo is a phone's from about 450 mm, and that matters**: the far stock arm shows 10 mm inboard
+  of the near one (two arms 37 mm apart). So a point z mm nearer the lens than the middle plane is drawn
+  1 + z / (D - z) further from the lens axis. build_skorpion.py `rl()` takes a photo point at a known depth back to
+  real millimetres and `fix()` does it for a slab's outline (each vertex's depth = half width x the cosine between
+  its outward normal and its direction from the axis: a hard near / far switch made outlines cross themselves);
+  render_skorpion.py renders `left_persp` **through the same lens** (a perspective camera 450 mm out, on the photo's
+  axis), and that view, not an orthographic one, is laid on the photo and scored: IoU 93.8 % with the magazine's
+  column left out (the photo's magazine is not the vz. 82's). Against the published figures the middle plane then
+  reads 0.7-2 % small (sight radius 147 for 148, folded 264.5 for 270), so the gun's nodes are exported at 1.012.
+  Rule for the next close-up photo: find two parts at known different depths first; if they disagree by more than a
+  millimetre or two, model the lens.
+- **Model**: the upper a stamped box in prisms (two side rails and the top ahead of and behind the top ejection
+  port; built as one outline it left a step and a 4 mm slit before the rear cap), pressed ribs round it, the rear
+  cap with the hinge lug, the machined frame, the grip in two slabs (the wider block under the frame, the hand's
+  part; **orange-brown beech**, user 2026-11-26: "Can we use the brown orange grip for skorpion?", the wooden grip
+  the Skorpion is known by, painted with a grain and its four grooves on the measuring photo's plastic grip shape:
+  army vz. 82s are mostly seen with black plastic), the guard a strip off the traced opening, the trigger off the trace, the selector a boss and a
+  lever with its thumb piece, the wire stock one continuous tube (left eye, leg, arm, down, the butt's U, up, the
+  arch over the barrel, and back on the right) with its knurled collars and cross piece; the open stock is the
+  folded one's mesh swung 190 degrees about the hinge on the same texels. Texture: islands packed on quarter turns
+  only and the stock's shrunk (`repack`): at 256 px a rib on an island lying at an odd angle is a staircase, and
+  the wire took a third of the atlas. **Area-weighted normals** (`weighted_normals`, Blender's Weighted Normal
+  modifier, sharp edges kept): a rounded edge under the kit's 35 degree sharp angle tilts the normals round a large
+  flat face, whose triangles then shade as a fan of wedges (seen on both new guns' grips; the TMP's grips are
+  built the same way and have it).
+- **Passes**: 1 build; 2 the lens correction smoothed; 3 the upper without seams, the grip in two, the selector's
+  lever, steel up to GoM's MP5K tone (it was darker than the Micro Uzi); 4 the grip's ribs and grooves, the
+  selector's marks as dabs (3.6 mm digits are noise at 256); 5 the atlas repacked; 6 weighted normals, the slit
+  before the rear cap closed; 7 (user, on two crops of the sheet: "Fix these spacings. at the center of each image
+  should be enclosed properly") light showed between the trigger's web and the grip, and between the barrel cap,
+  the stock's front bend and the receiver's slanted face: the frame's web now runs on into the grip, and the upper
+  has a nose over the cap up to the bend (in the photo the far arm's bend fills that wedge; I had called it real).
+  Both came from `fix()`: two bodies that meet in the photo are drawn by different faces (one's near, the other's
+  far), so corrected they stand 2-4 mm apart. **Bodies that meet get an overlap after the lens correction, and an
+  enclosed-region check is not enough: a slit open to the outside is not listed.** Side-view see-through regions
+  now: the guard, the butt's U under the barrel, the lanyard loop, and the gap between the folded stock's rear
+  bend and the cap.
+- **Not done**: playing it; the right side is the left's without the selector (no photo of a vz. 82's right side
+  was found; the Rock Island pistols show the same slot and knob); the magazines' catch notch and witness holes are
+  plain; the selector's digits are dabs.
+
+## PP-91 Kedr (Post-93, 2026-11-26; built and wired the same sitting; not played, model not seen by the user)
+
+- **What**: `GunsOfTienPost93.KEDR` "PP-91 Kedr Submachine Gun" with `9x18Magazine20 / 30_KEDR`; design and numbers:
+  docs/post93_design.md "PP-91 Kedr". **Post-93 because** Wikipedia gives production and service from 1994 and every
+  photographed gun is stamped "ПО ЗМЗ 1994г" (modernfirearms.net says limited manufacture in the early 1990s;
+  nothing found dates a gun before July 1993). Files: `scripts/post93/build_kedr.py` (KEDR_BODY / _BOLT /
+  _STOCK_FOLDED / _STOCK_DEPLOYED, `GunsOfTienPost93_KEDR_magazines.fbx`, `KEDR.png` 256, `kedr_points.json`),
+  `render_kedr.py -- DIR`, `make_kedr_art.py --renders DIR --photo references/kedr/kedr_left_open.jpg --folded-photo
+  references/kedr/raw/commons_008.jpg --right-photo references/kedr/raw/commons_003.jpg` (sheet
+  `docs/post93_kedr_preview.png`), `gen_post93_guns.py kedr()`, `shared/GunsOfTienPost93/Kedr.lua` (the Skorpion's
+  pattern; 1000 rpm; the bolt's side in the right port and the cocking handle on the left are one Bolt part),
+  tooltips, loot (`LORE_GUNS`: the Russian spawner; with Extend Loot Areas `EXTENDED_GUNS`: the short SMG one) and
+  Hot Brass in Post-93's files. It
+  fires the main mod's 9x18mm round and Post-93's PMM and RG028. The two guns' magazines are not shared (user asked,
+  2026-11-26: the real ones do not interchange).
+- **References** (`references/kedr/`): zonawar.ru's studio photo on gunrf.ru (raw/gunrf_000.jpg, 2000 px: left
+  side, stock open, 30-round magazine) is the measuring photo, a true side view: at 3.522 px a mm the muzzle to the
+  hinge knob's rear is the published 305 mm folded and the open gun 535 (530 published). Vitaly Kuzmin's 37 photos
+  (Commons, CC BY-SA 4.0) are sharper but **every one is taken at a slant**: laid on the studio photo by the muzzle
+  and the hinge, their magazine catch sits 11 mm and their trigger 13 mm too far forward (a tilted-plane projection
+  fits the pairs to 1-3 mm). They say what a part is, not where it is. The first trace was made from one of them
+  and thrown away for that.
+- **Model**: the stamped receiver one slab with the magazine housing, the front sight's bracket round the barrel
+  with its hood's round window cut through, the hinge bracket, the grip one slab with the chequered panel painted,
+  the guard a strip, the trigger off the trace. The stock folded: two struts, one along each edge of the cover's top, and the
+  slotted butt plate hanging in front of the receiver with the barrel through its slot (two cheeks, the plate's two
+  tines, the solid end with its knurled catch); open: the strut down to the butt, the plate standing up from its
+  end. The stock has **two struts**, flat strips on edge (`STRUT_X` = |x| 9.5-12.5 mm), one each side: folded,
+  one along each edge of the top with the front sight's hood between them; the side views show them as one.
+  Built as a single 9 mm bar on the right until 2026-11-26 (read off Kuzmin's slanted "Kedr 04"); the user, with
+  a 3D render of a folded and an open gun: "it needs to be left and right". Superhive's "Russian PP-91" render
+  draws one plate as wide as the receiver: wrong, do not follow it.
+  Weighted normals and the quarter-turn atlas as the Skorpion.
+- **Passes**: 1 build (IoU 96.1 % against the studio outline at once: a true side view needs no lens model); 2 the
+  butt plate's top, the cover's catch, the bracket's two holes; 3 the strut moved to the right, the folded plate's
+  shape, the selector's broad lever, the bolt's plate down from near white; 4 weighted normals; 5 the strut sunk
+  into the cover (a 1 mm slit of light ran under it); 6 (user: "Weird space here for Kedr as well"; the picture
+  did not reach the session, so the two found were closed) the grip's top now runs up inside the receiver (a line
+  of light followed the receiver's stepped bottom) and the folded butt plate's cheeks reach back over the front
+  sight's bracket (a slit stood between them). 7 (user: "it needs to be left and right") two struts, one each side. See-through regions: the guard and the hood's window.
+- **Review renders hide textures under a highlight**: Workbench's specular highlight on a flat face seen square on
+  is one even sheen, so the grip's chequering and the receiver's rivets vanished in the side views while showing in
+  the 3/4 ones. Both render scripts set `show_specular_highlight = False` (render_tmp.py always did).
+- **Not done**: playing it; the right side's markings (АВ / ОД / ПР) are three dabs; the cocking handle is a small
+  block, the real one a hooked lever; the sling loops are left off.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

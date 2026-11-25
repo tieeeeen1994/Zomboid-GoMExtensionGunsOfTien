@@ -846,7 +846,7 @@ launcher muzzle-loaded, 40 mm VOG-25 / VOG-25P, 400 m; the launcher's sight a fo
 |---|---|---|
 | Measured on | GunRF A91M2.jpg (880 px, right side) at 1.294 px a mm (660 mm muzzle brake to butt) | Commons KBP_A_91_noBG.png (1300 px, right side, transparent background) at 1.693 px a mm (670 mm) |
 | Magazines | GoM's "762x39" profile, as the Groza-1: its AK-47 30 and 75 box, the main mod's RPK 40 and 75 drum | its own `556x45Magazine30_A91M` "5.56A-91 30Rds 5.56x45mm Magazine" (modelled from the photo) |
-| Muzzle | GoM's AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator), as GoM's AK-47; **no PBS-1** (no source shows a suppressor on the 7.62 gun) | GoM's AR mount and its AR muzzle parts (LR2, LX, Trix42, MKI / NDR suppressors), as the SCAR-L: the late 5.56 gun was shown with a suppressor |
+| Muzzle | GoM's AK mount and the AK 7.62 muzzle devices (GoM's and the main mod's AKM slant compensator), as GoM's AK-47, and **GoM's PBS-1** (user, 2026-11-26: "let's allow A-91M 34 to be used with PBS please"; first left off because no source shows a suppressor on the 7.62 gun) | GoM's AR mount and its AR muzzle parts (LR2, LX, Trix42, MKI / NDR suppressors), as the SCAR-L: the late 5.56 gun was shown with a suppressor |
 | Stats (GoM's balance) | the Groza-1's (GoM's AK-47 numbers with the bullpup's steadier hold: 1.5-1.8, Hit 52), 4.0 kg | GoM's FAMAS's (1.1-1.7, crit 25 x4.2, Hit 40, Aiming Time 45) with Max 1.65 for its 415 mm barrel (the FAMAS's 488), range 48, 4.1 kg |
 | Sound | sound_model.py: 7.62x39 from 16.3" = 175 / 50 (GoM's AK-47's shot) | 5.56 from 16.3" = 186 / 53 (GoM's M16 shot) |
 | Fire | Auto / Single, 700 rpm (as the Grozas) | Auto / Single, 700 rpm |
@@ -871,3 +871,26 @@ Both (proposed and built, to confirm):
 
 Not built tonight (choices for the user): the first over-barrel 7.62-A91M, the late 5.56 version with a railed
 forearm and front grip instead of the launcher, a 5.45 version (a 2012 prototype only).
+
+## PP-91 Kedr (user, 2026-11-26: "For makarov guns, let's add Skorpion and Kedr"; built, not played, model for review)
+
+Dragunov's PP-71 of 1970, put into production at Zlatoust as the PP-91 Kedr for the Russian Ministry of the Interior:
+Wikipedia gives production and service from 1994, and every photographed gun is stamped "1994", so it is Post-93's
+(modernfirearms.net has limited manufacture "in the early 1990s"; nothing found puts a gun in anyone's hands before
+July 1993). The plain Kedr only: the Kedr-B (integral can), the Klin (9x18 PMM, 1996) and the 9x19 guns are other
+guns.
+
+| | |
+|---|---|
+| Item | `GunsOfTienPost93.KEDR`, "PP-91 Kedr Submachine Gun"; magazines `GunsOfTienPost93.9x18Magazine20 / 30_KEDR`, "Kedr 20Rds 9x18mm Magazine" / "Kedr 30Rds ...", 0.09 / 0.13, profile "9x18mm Kedr" in the main mod's "9x18mm" family (the plain round, this mod's PMM and RG028); a found gun's default is the 20. Not shared with the Skorpion: the two guns' magazines do not interchange |
+| Stats | a step over the main mod's Skorpion vz. 82 (0.5-0.85 from 113 mm): damage 0.5-0.9, StopPower 3.5, crit 25 (x4.0), HitChance 46, Aimingtime 25, RecoilDelay 11, range 23, sights 2-10 (GoM's MAC-10), weight 1.2 (1.57 kg); sound 66 / 19 (sound_model.py's formula: 9x18 from 120 mm, subsonic), GoM's 9mm shot and M9 handling sounds |
+| Fire | Auto / Single; 1000 rpm (the factory's 800-1000) with no rate reducer: spread 0.2 / 2.3, wilder than the Skorpion |
+| Hold, reload | held like a pistol and holstered (AttachmentType Holster), GoM's MP5K reload ("handgun2"), as the MP7 |
+| Stock | folded over the top (two struts, one along each edge of the cover with the front sight between them, the slotted butt plate hanging in front of the receiver with the barrel through its slot) or open; two hidden parts drawn in place, GoM's MAC-10 stock stats, folded on a found gun |
+| Bolt | the bolt's side in the ejection port on the right and the cocking handle on the left (fixed to the bolt): one Bolt part on GoM's swap, back 23.5 mm; no ChargingHandle part |
+| Parts | none: no rail, no thread, no muzzle family in 9x18mm |
+| Loot | by Extend Loot Areas, as the main mod's Skorpion: off, with the Russian guns (`World_Russian_Rifle_Spawner`, `LORE_GUNS`); on, with GoM's holstered machine pistols instead (`World_Short_SMG_Spawner`, `EXTENDED_GUNS`), since the Russian spawner then goes onto zombies' backs. The gun, up to 6 magazines, up to 6 of the main mod's `GunsOfTien.9x18_Box`. Never on a zombie's back |
+| Casings | out to the right, the MP7's throw a little lighter; Hot Brass's .380 casing, as the round's |
+| Repair | RepairPack, Aiming 3 |
+
+Model: scripts/post93/build_kedr.py (references/kedr, CLAUDE.md "PP-91 Kedr").

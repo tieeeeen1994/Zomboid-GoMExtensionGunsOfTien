@@ -240,4 +240,39 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = 90,
         spinForce     = { 16, 24 },
     },
+    -- The PPSh-41 throws its cases up out of the port in the top of its receiver: GoM's Thompson's throw (straight
+    -- up, ejectAngle 90) from the gun's middle line.
+    ["GunsOfTien.PPSH41"] = {
+        forwardOffset = 0.34,
+        sideOffset    = 0.0,
+        heightOffset  = 0.50,
+        shellForce    = 0.75,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 90,
+        spinForce     = { 24, 34 },
+    },
+    -- The Skorpion vz. 82 throws its cases straight up out of the port in the top of its receiver (the PPSh-41's
+    -- throw, lighter) on the gun's middle line, held like a pistol as the Micro Uzi (its place ahead of the shooter).
+    ["GunsOfTien.SKORPION"] = {
+        forwardOffset = 0.543,
+        sideOffset    = 0.0,
+        heightOffset  = 0.53,
+        shellForce    = 0.55,
+        sideSpread    = 50,
+        heightSpread  = { 80, 100 },
+        ejectAngle    = 90,
+        spinForce     = { 20, 30 },
+    },
+    -- The Tokarev TT-33: the Glock 21's throw from a port further ahead of the hand (its centre 83 mm ahead of the
+    -- grip's web against the Glock 21's 70).
+    ["GunsOfTien.TT33"] = {
+        forwardOffset = 0.45,
+        sideOffset    = 0.0,
+        heightOffset  = 0.50,
+        shellForce    = 0.60,
+        sideSpread    = 45,
+        heightSpread  = 90,
+        spinForce     = { 14, 20 },
+    },
 })

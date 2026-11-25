@@ -1,0 +1,6 @@
+module Base {
+    fixing Fix SKORPION {
+        Require = GunsOfTien.SKORPION,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}
