@@ -65,5 +65,20 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
       and corpses do not burn.
 - [ ] Flechette part art shows pellets (the birdshot's in steel), not darts.
 
+## Open questions for the user (2026-11-25, left on the PC switch)
+
+- [ ] A-91M 54 Prototype: which see-through places should be solid? The handle, the finger opening, the frame's
+      opening, the sling ring, the 12 px gap under the tube's mouth (sheet docs/post93_a91m_proto_preview.png,
+      openings panel).
+- [ ] Pistol subsonics (9x19 147gr, 7.62x25, .22 LR, 4.6x30, 5.7x28 SB193) kept their numbers in the GoM
+      rebalance; GoM's subsonic is x0.4 (a rifle bullet slowed down). Keep, or rebalance too?
+- [ ] Shotgun loads (birdshot, flechette, Dragon's Breath) kept their numbers: GoM has only buck and slug.
+- [ ] +P (.38, .45) at x1.25, wear x0.75: an invented half step, GoM has no +P. Keep?
+- [ ] 7.62x25 / 9x18 loot: none until their guns exist (decided overnight, never confirmed).
+- [ ] A zombie lit by an incendiary round that despawns alive keeps fire spread 0 on its reused object (only
+      matters if a Molotov later lights that object). Fix by resetting on reuse?
+- [ ] The A-91M's left lever (left of the lower, ahead of the trigger guard): no source says what it is. Look for
+      a KBP manual or a Russian source if it matters.
+
 ## Smaller open items
 
