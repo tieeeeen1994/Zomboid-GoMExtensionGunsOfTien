@@ -13,6 +13,8 @@ GunsOfTienPost93_AmmoTypes.BULLET_46x30_Subsonic = AmmoType.register("gunsoftien
 GunsOfTienPost93_AmmoTypes.BULLET_57x28 = GunsOfTien_AmmoTypes and GunsOfTien_AmmoTypes.BULLET_57x28 or nil
 GunsOfTienPost93_AmmoTypes.BULLET_57x28_SB193 = AmmoType.register("gunsoftienpost93:bullet_57x28_sb193", "GunsOfTienPost93.57x28_Bullet_SB193")
 GunsOfTienPost93_AmmoTypes.BULLET_57x28_SS197SR = AmmoType.register("gunsoftienpost93:bullet_57x28_ss197sr", "GunsOfTienPost93.57x28_Bullet_SS197SR")
+-- a load for the main mod's 7.62x25mm Tokarev (its registries.lua registers the calibre)
+GunsOfTienPost93_AmmoTypes.BULLET_762x25_HollowPoint = AmmoType.register("gunsoftienpost93:bullet_762x25_hollow_point", "GunsOfTienPost93.762x25_Bullet_HollowPoint")
 
 GunsOfTienPost93_Tags = {}
 GunsOfTienPost93_Tags.AmmoBox50 = ItemTag.register("gunsoftienpost93:ammobox50")

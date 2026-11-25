@@ -172,5 +172,9 @@
   "GunsOfTienPost93.A91MPROTO": "A-91M 54 Prototype Battle Rifle",
   "GunsOfTienPost93.A91MPROTO_GL": "A-91M 54 Prototype Grenade Launcher",
   "GunsOfTienPost93.A91MPROTO_GL_Integrated": "A-91M 54 Prototype Integrated Grenade Launcher",
-  "GunsOfTienPost93.762x54Magazine20_SV98": "SV-98 20Rds 7.62x54mm Magazine"
+  "GunsOfTienPost93.762x54Magazine20_SV98": "SV-98 20Rds 7.62x54mm Magazine",
+  "GunsOfTienPost93.762x25_Bullet_HollowPoint": "7.62x25mm Tokarev Hollow Point Round",
+  "GunsOfTienPost93.762x25_Box_HollowPoint": "7.62x25mm Tokarev Hollow Point Box",
+  "GunsOfTienPost93.762x25_Carton_HollowPoint": "Carton of 7.62x25mm Tokarev Hollow Point Boxes",
+  "GunsOfTienPost93.762x25_Crate_HollowPoint": "Crate of 7.62x25mm Tokarev Hollow Point Boxes"
 }

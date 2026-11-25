@@ -2310,6 +2310,16 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   Makarov: the plain round only (the standard 57-N-181S); every special load that could be dated is later (PMM
   57-N-181SM 1994, RG028, SP-7, SP-8, 7N25), so Post-93 material, with the PP-9 Klin. Ammo Maker: `762x25TokAP`
   (its BulletHandgunSAP), `762x25TokSS` (8 grains of 12).
+- **Tokarev Hollow Point in Post-93** (user, 2026-11-25, on hearing none was built for want of a pre-1993 date:
+  "Then include them in post 1993. What stopped you?"; my answer: I read "no date" as "leave it out" instead of
+  "Post-93"): `GunsOfTienPost93.762x25_Bullet_HollowPoint / _Box_ / _Carton_ / _Crate_` "7.62x25mm Tokarev Hollow
+  Point Round" ..., ammo id `gunsoftienpost93:bullet_762x25_hollow_point`, added to the main mod's "7.62x25mm"
+  family by Post-93's Ammunition.lua with the 9x19 / .45 hollow points' numbers and no piercing; written by
+  gen_post93_ammo.py (calibre `762x25`, the main mod's weight and mesh scale); Ammo Maker `762x25TokHP` (its small
+  handgun hollow point bullet); Hot Brass the 5.7x28 casing; art from make_762x25_9x18_art.py (`POST93_TOKAREV`,
+  GoM's hollow point green on the same round and SAKER box, written into Post-93's textures). Never loot, as the
+  add-on's other special loads. Not played. The rule for later: a load with no date found before 1993 goes to
+  Post-93, it is not dropped.
 - **Loot: none yet** (decided overnight, to confirm): rounds for guns that do not exist would be clutter; they come
   with their guns' kits. Until then Ammo Maker makes them.
 - **Art** (`scripts/make_762x25_9x18_art.py`, sheet `docs/762x25_9x18_art_sheet.png`): rounds on GoM's meshes, the

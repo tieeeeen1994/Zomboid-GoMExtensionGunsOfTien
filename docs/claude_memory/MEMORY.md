@@ -1,11 +1,15 @@
 - [Gun sizes from the M16](gun-sizes-from-m16.md) — GoM gun scales are in docs/gom_gun_scale.md (branch models-resize), M16A2 = 0.603
 - [GoM animations only](generic-stances-not-per-gun.md) — GoT ships no anims; vanilla rifle/pistol hold + a GoM reload animId (bullpups: famas_rifle, ARs: ar15_rifle)
+- [GoT release previews](got-release-previews.md) — a release adding guns regenerates loot pages 33-37, and preview41 only if a new gun takes a suppressor
 - [Two or more guns per release](release-two-guns-minimum.md) — Guns of Tien updates always ship 2+ new guns; pair variants
 - [Follow GoM patterns](follow-gom-patterns.md) — GoT does things GoM's way through Gunworks' API; never wrap Gunworks, pass ... if forced
 - [Cartons/crates keep GoM art](carton-crate-art-stays-gom.md) — per-load stickers and calibre prints tried 2026-11-13, both rejected
 - [Original art for branding](no-game-art-as-branding.md) — GoT box logos/mascots are our own (fierce animal, made-up maker like GoM), never PZ UI/map symbols
 - [GoT: no option for gun rules](got-no-sandbox-options-for-gun-rules.md) — rules the gun decides (subsonic racking) ship without a sandbox option
 - [Build every real variant](build-every-real-variant.md) — two real versions of a gun = build both, don't ask which
-- [Gather many gun images first](gather-many-gun-references.md) — before modelling a gun, collect MANY reference photos from every angle; never model from one or two side views
+- [Gather many gun images first](gather-many-gun-references.md) — collect MANY photos from every angle, and cross-check any odd detail of the measuring photo against the others before modelling it
+- [Zomboid Fixes Java plan](zomboid-fixes-java-plan.md) — Java side built on pzopt's agent; pzopt layout, no server install yet
+- [Generated gun lines, no flavour](generated-gun-lines-no-flavour.md) — GoT gun/magazine tooltips only from GunLines.lua; never hand-write gun lines or add flavour
 - [Six remodel passes](three-remodel-passes.md) — a gun model's first pass is always ugly; do 6 part-by-part photo-vs-model passes (triggers first) before showing it; then check for holes, shine built as gaps, floating parts
 - [Variants must differ in play](variants-must-differ-in-play.md) — say what differs before building a second version; an invented "prototype" calibre is fine if named so
+- [Later loads go to Post-93](later-loads-go-to-post93.md) — GoT: a load with no pre-1993 date goes into Post-93, never dropped

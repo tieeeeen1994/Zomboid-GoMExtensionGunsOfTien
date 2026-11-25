@@ -47,4 +47,16 @@ module GunsOfTienPost93 {
         texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_57x28_Box_SS197SR,
         scale   = 0.4,
     }
+
+    model GunsOfTienPost93_762x25_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|57x28_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_762x25_Round_HP,
+        scale   = 0.0129,
+    }
+
+    model GunsOfTienPost93_762x25_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_762x25_Box_HP,
+        scale   = 0.4,
+    }
 }

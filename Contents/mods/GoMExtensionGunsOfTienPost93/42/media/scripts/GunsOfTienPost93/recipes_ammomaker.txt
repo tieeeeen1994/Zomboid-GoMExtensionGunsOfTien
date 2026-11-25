@@ -79,4 +79,30 @@ module Base {
 		inputs {}
 		outputs {}
 	}
+
+	craftRecipe Make762x25TokHP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x25TokHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x25TokHP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x25TokHP,
+		inputs {}
+		outputs {}
+	}
 }

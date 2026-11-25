@@ -5,5 +5,7 @@
   "Tooltip_Recipe_Produce57x28SS": "Assemble 5.7x28mm SB193 rounds with reloading press.",
   "Tooltip_Recipe_Make57x28SR": "Assemble 5.7x28mm SS197SR polymer tip round - 2000s.",
   "Tooltip_Recipe_Produce57x28SR": "Assemble 5.7x28mm SS197SR rounds with reloading press.",
-  "Tooltip_weapon_ForegripIntegrated": "Foregrip (Integrated)"
+  "Tooltip_weapon_ForegripIntegrated": "Foregrip (Integrated)",
+  "Tooltip_Recipe_Make762x25TokHP": "Assemble 7.62x25mm Tokarev hollow point round.",
+  "Tooltip_Recipe_Produce762x25TokHP": "Assemble 7.62x25mm Tokarev HP rounds with reloading press."
 }

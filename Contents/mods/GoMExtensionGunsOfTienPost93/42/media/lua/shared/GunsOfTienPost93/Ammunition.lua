@@ -62,6 +62,10 @@ Ammo.RegisterMultipleAmmoFamilies({
         { type = M .. "57x28_Bullet_SB193", enum = T.BULLET_57x28_SB193, profile = "GunsOfTienPost93_57x28SB193" },
         { type = M .. "57x28_Bullet_SS197SR", enum = T.BULLET_57x28_SS197SR, profile = "GunsOfTienPost93_57x28SS197SR" },
     },
+    -- the main mod's Tokarev family (its plain round, Steel Core and Subsonic); no hollow point dated before 1993
+    ["7.62x25mm"] = {
+        { type = M .. "762x25_Bullet_HollowPoint", enum = T.BULLET_762x25_HollowPoint, profile = "GunsOfTienPost93_762x25HollowPoint" },
+    },
 })
 
 local function pierce(targets)
@@ -95,6 +99,17 @@ Ammo.RegisterMultipleAmmoStats({
         return {
             SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
             SF.Multiply("CritDmgMultiplier", 1.1),
+            a, b,
+        }
+    end)(),
+    -- the main mod's 9x19 / .45 hollow points' numbers, and no piercing (the Tokarev's plain round is famous for it)
+    ["GunsOfTienPost93_762x25HollowPoint"] = (function()
+        local a, b = pierce(1)
+        return {
+            SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
+            SF.Multiply("CritDmgMultiplier", 1.15),
+            SF.Multiply("CriticalChance", 1.05),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.9),
             a, b,
         }
     end)(),

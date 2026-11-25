@@ -23,6 +23,8 @@ made-up maker and a fierce animal as GoM's own brand boxes (user, 2026-11-25, ap
   * 9x18 "TUSKER": a cream face with a tall panel down the left in the load's colour holding a boar's head with its
     tusks (draw_boar, original art) and the maker's name up it, a huge black "9x18", "MAKAROV", the load on a
     label; the long side in the panel's colour.
+Post-93 (user, 2026-11-25: "Then include them in post 1993"): the Tokarev hollow point, GunsOfTienPost93_762x25_*_HP
+in the add-on's textures, GoM's hollow point tip paint on the same round and SAKER box (POST93_TOKAREV).
 No real makers' names or marks (Brown Bear, Golden Tiger, Wolf, Barnaul, Tula are real brands, so neither a bear nor
 a tiger nor a wolf is used, and no maker's name).
 
@@ -45,6 +47,7 @@ import make_ammo_art as M  # noqa: E402
 
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
 OUT = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
+OUT_POST93 = os.path.join(ROOT, "Contents/mods/GoMExtensionGunsOfTienPost93/42/media/textures")
 SHEET = os.path.join(ROOT, "docs/762x25_9x18_art_sheet.png")
 
 TOMBAC = (176, 104, 62)             # copper-alloy clad steel case (Soviet 57-N-134)
@@ -219,6 +222,11 @@ TOKAREV = [("", None, "TOKAREV", "", "STANDARD", RED),
            ("_SC", "AP", "STEEL CORE", "STEEL CORE", "STEEL CORE", None),
            ("_SS", "SS", "SUBSONIC", "SUBSONIC", "SUBSONIC", None)]
 MAKAROV = [("", None, "MAKAROV", "", "STANDARD", RED)]
+# the Post-93 add-on's Tokarev load (gen_post93_ammo.py ROUNDS): no hollow point dated before 1993
+POST93_TOKAREV = [("_HP", "HP", "HOLLOW POINT", "HOLLOW POINT", "HOLLOW PT", None)]
+# (mod prefix, textures folder, calibre, loads)
+SETS = [("GunsOfTien", OUT, "762x25", TOKAREV), ("GunsOfTien", OUT, "9x18", MAKAROV),
+        ("GunsOfTienPost93", OUT_POST93, "762x25", POST93_TOKAREV)]
 GOM_RED = (161, 67, 59)
 
 
@@ -226,15 +234,16 @@ def build():
     written = []
     tok_cam = M.ROUND_CAMERA
     mak_cam = A.CAMERAS["item_9x19_Round_Base.png"]
-    for cal, geometry, texture, case, ref, cam, loads, layout in (
-            ("762x25", "57x28_Round", "Nato_Round_Base", TOMBAC, "556", tok_cam, TOKAREV, layout_762x25),
-            ("9x18", "9x19_Round", "Pistol_Standard_Round_Base", CLAD_STEEL, "9x19", mak_cam, MAKAROV, layout_9x18)):
+    looks = {"762x25": ("57x28_Round", "Nato_Round_Base", TOMBAC, "556", tok_cam, layout_762x25),
+             "9x18": ("9x19_Round", "Pistol_Standard_Round_Base", CLAD_STEEL, "9x19", mak_cam, layout_9x18)}
+    for prefix, out, cal, loads in SETS:
+        geometry, texture, case, ref, cam, layout = looks[cal]
         for art, scheme, label, side, sticker, colour in loads:
             tip = M.gom(scheme)["tip"] if scheme else None
-            rnd, box = "GunsOfTien_%s_Round%s" % (cal, art), "GunsOfTien_%s_Box%s" % (cal, art)
+            rnd, box = "%s_%s_Round%s" % (prefix, cal, art), "%s_%s_Box%s" % (prefix, cal, art)
             icon, world = make_round(geometry, texture, case, tip, ref, cam)
-            written += [(save(icon, os.path.join(OUT, "item_%s.png" % rnd)), "render of %s" % geometry),
-                        (save(world, os.path.join(OUT, "worlditems/GunsOfTien/Rounds", rnd + ".png")),
+            written += [(save(icon, os.path.join(out, "item_%s.png" % rnd)), "render of %s" % geometry),
+                        (save(world, os.path.join(out, "worlditems", prefix, "Rounds", rnd + ".png")),
                          "%s.png, case %s, tip %s" % (texture, case, tip))]
             sch = M.gom(scheme) if scheme else None
             outer = colour or A.set_hue(GOM_RED, A.hue_of(tip)[0])
@@ -243,8 +252,8 @@ def build():
                         load=label, sticker=sticker, side=side or "",
                         note="layout_%s in %s" % (cal, label.lower()))
             icon, world = M.make_box(spec, layout)
-            written += [(save(icon, os.path.join(OUT, "item_%s.png" % box)), M.BOX_ICON),
-                        (save(world, os.path.join(OUT, "worlditems/GunsOfTien/Boxes", box + ".png")),
+            written += [(save(icon, os.path.join(out, "item_%s.png" % box)), M.BOX_ICON),
+                        (save(world, os.path.join(out, "worlditems", prefix, "Boxes", box + ".png")),
                          "%s.png, %s" % (M.BOX_TEX, spec["note"]))]
     return written
 
@@ -259,14 +268,15 @@ def contact_sheet(path, scale=6):
     cell = 32 * scale
     pad, label_h = 12, 18
     font = ImageFont.truetype(A.FONT, 13)
-    names = [("762x25", a[0]) for a in TOKAREV] + [("9x18", a[0]) for a in MAKAROV]
-    rounds = ["GunsOfTien_%s_Round%s" % n for n in names]
-    boxes = ["GunsOfTien_%s_Box%s" % n for n in names]
-    ours = lambda n: Image.open(os.path.join(OUT, "item_%s.png" % n))
+    names = [(p, o, c, a[0]) for p, o, c, loads in SETS for a in loads]
+    rounds = [("%s_%s_Round%s" % (p, c, a), o, p) for p, o, c, a in names]
+    boxes = [("%s_%s_Box%s" % (p, c, a), o, p) for p, o, c, a in names]
+    ours = lambda n: Image.open(os.path.join(n[1], "item_%s.png" % n[0]))
+    short = lambda n: n[0].replace("GunsOfTienPost93_", "Post-93 ").replace("GunsOfTien_", "")
     icons = ([("GoM 9x19 Round", Image.open(os.path.join(A.GOM_TEX, "item_9x19_Round_Base.png")))]
-             + [(n.replace("GunsOfTien_", ""), ours(n)) for n in rounds]
+             + [(short(n), ours(n)) for n in rounds]
              + [("GoM 9x19 Box", Image.open(os.path.join(A.GOM_TEX, M.BOX_ICON)))]
-             + [(n.replace("GunsOfTien_", ""), ours(n)) for n in boxes])
+             + [(short(n), ours(n)) for n in boxes])
     per_row = 5
     rows = (len(icons) + per_row - 1) // per_row
     width = max(pad + per_row * (cell + pad), pad + len(boxes) * (128 + 160 + pad))
@@ -282,14 +292,14 @@ def contact_sheet(path, scale=6):
     y = pad + rows * (label_h + cell + pad)
     for i, n in enumerate(rounds):
         x = pad + i * (128 + pad)
-        d.text((x, y), n.replace("GunsOfTien_", "") + " texture", font=font, fill=(255, 255, 255, 255))
-        tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Rounds", n + ".png"))
+        d.text((x, y), short(n) + " texture", font=font, fill=(255, 255, 255, 255))
+        tex = Image.open(os.path.join(n[1], "worlditems", n[2], "Rounds", n[0] + ".png"))
         sheet.alpha_composite(tex.convert("RGBA").resize((128, 128), Image.NEAREST), (x, y + label_h))
     y += label_h + 128 + pad
     for i, n in enumerate(boxes):
         x = pad + i * (128 + 160 + pad)
-        d.text((x, y), n.replace("GunsOfTien_", "") + " texture / on the mesh", font=font, fill=(255, 255, 255, 255))
-        tex = Image.open(os.path.join(OUT, "worlditems/GunsOfTien/Boxes", n + ".png"))
+        d.text((x, y), short(n) + " texture / on the mesh", font=font, fill=(255, 255, 255, 255))
+        tex = Image.open(os.path.join(n[1], "worlditems", n[2], "Boxes", n[0] + ".png"))
         sheet.alpha_composite(tex.convert("RGBA").resize((128, 256), Image.NEAREST), (x, y + label_h))
         sheet.alpha_composite(M.box_preview(tex, 5), (x + 128, y + label_h + 40))
     y += label_h + 256 + pad
@@ -305,7 +315,7 @@ def contact_sheet(path, scale=6):
 if __name__ == "__main__":
     for path, source in build():
         img = Image.open(path)
-        print("%-64s %dx%d %s  <- %s" % (os.path.relpath(path, OUT), img.width, img.height, img.mode, source))
+        print("%-72s %dx%d %s  <- %s" % (os.path.relpath(path, ROOT), img.width, img.height, img.mode, source))
     if "--sheet" in sys.argv:
         i = sys.argv.index("--sheet")
         target = sys.argv[i + 1] if len(sys.argv) > i + 1 else SHEET

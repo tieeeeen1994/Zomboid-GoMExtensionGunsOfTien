@@ -197,6 +197,7 @@ Enable [i]GoM Extension: Guns of Tien - Post-93[/i] as well.
 [*]A-91M 54 Prototype, a battle rifle on the first A-91M's body with the 40mm grenade launcher over the barrel: 7.62x54mmR (a chambering the real gun never had) on the SV-98's magazines, its 10 and a 20-round one made for this rifle, a longer and heavier barrel, automatic or single shots at 600 rounds a minute, two grips joined by a frame, the launcher's own trigger under the muzzle and its sight leaf raised while the launcher is in use; Guns of Marz's rail on the carrying handle for optics, no muzzle parts
 [*]4.6x30mm DM11, Subsonic
 [*]5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
+[*]7.62x25mm Tokarev Hollow Point, a later load for the main mod's Tokarev round
 [/list]
 [b]Where Post-93's guns are found:[/b] each gun joins the Guns of Marz loot spawner for its kind of gun, packed the same way, so it turns up wherever Guns of Marz's guns of that kind do (scaled by Guns of Marz's loot multiplier):
 [list]

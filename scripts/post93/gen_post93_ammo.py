@@ -17,6 +17,9 @@ ART = 'GunsOfTienPost93_'
 CALIBRES = {
     '46x30': dict(name='4.6x30mm', weight='0.0046', mesh='46x30_Round'),
     '57x28': dict(name='5.7x28mm', weight='0.0042', mesh='57x28_Round'),
+    # the main mod's calibre (gen_scripts.py ammo_762x25_9x18: 10.6 g, GoM's 5.7x28 mesh at 0.0129); its hollow
+    # point is ours (user, 2026-11-25: "Then include them in post 1993", no date found for one before 1993)
+    '762x25': dict(name='7.62x25mm Tokarev', weight='0.0074', mesh='57x28_Round', scale='0.0129'),
 }
 ROUNDS_PER_BOX, BOXES_PER_CARTON, CARTONS_PER_CRATE = 50, 12, 4
 
@@ -42,6 +45,7 @@ ROUNDS = [
     ('46x30', '_Subsonic', 'SS', 'bullet_46x30_subsonic', 'Subsonic'),
     ('57x28', '_SB193', 'SB193', 'bullet_57x28_sb193', 'SB193'),
     ('57x28', '_SS197SR', 'SS197SR', 'bullet_57x28_ss197sr', 'SS197SR'),
+    ('762x25', '_HollowPoint', 'HP', 'bullet_762x25_hollow_point', 'Hollow Point'),
 ]
 
 # GoM's naming, a real load name followed by its use in parentheses (as GoM's 'MKI Suppressor (5.56mm Rifles)').
@@ -132,7 +136,7 @@ def models():
     model {n['round_art']} {{
         mesh    = Worlditems/Ammunition/Rounds|{c['mesh']},
         texture = worlditems/GunsOfTienPost93/Rounds/{n['round_art']},
-        scale   = 0.015,
+        scale   = {c.get('scale', '0.015')},
     }}
 
     model {n['box_art']} {{
@@ -250,6 +254,7 @@ AMMOMAKER_TYPES = [
     ('46x30SS', '4.6x30mm SS', '4.6x30mm SS sub sonic round - 2001'),
     ('57x28SS', '5.7x28mm SB193', '5.7x28mm SB193 sub sonic round - 1990s'),
     ('57x28SR', '5.7x28mm SS197SR', '5.7x28mm SS197SR polymer tip round - 2000s'),
+    ('762x25TokHP', '7.62x25mm Tokarev HP', '7.62x25mm Tokarev hollow point round'),
 ]
 
 

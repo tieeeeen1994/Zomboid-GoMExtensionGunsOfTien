@@ -17,6 +17,8 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     -- SS190 (GunsOfTienPost93.57x28_Bullet) is the main mod's since 2026-11-03 (its HotBrass.lua)
     ["GunsOfTienPost93.57x28_Bullet_SB193"] = "HBVCEF.57x28_Casing",
     ["GunsOfTienPost93.57x28_Bullet_SS197SR"] = "HBVCEF.57x28_Casing",
+    -- the Tokarev hollow point on the casing the main mod gives its Tokarev rounds (Hot Brass has none of its own)
+    ["GunsOfTienPost93.762x25_Bullet_HollowPoint"] = "HBVCEF.57x28_Casing",
 })
 
 -- Hot Brass launches a casing from a point in front of the shooter (forward / side / height, tiles and levels from

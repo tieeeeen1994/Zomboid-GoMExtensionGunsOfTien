@@ -215,3 +215,11 @@ lines[M .. "57x28_Bullet_SS197SR"] = {
     "Critical damage increased by 10%",
     "Does not pierce",
 }
+-- worded as the main mod's 9x19 hollow point (its RoundTooltips.lua)
+lines[M .. "762x25_Bullet_HollowPoint"] = {
+    "Damage to targets increased by 20%",
+    "Critical Damage increased by 15%",
+    "Critical Chance increased by 5%",
+    "Chance to degrade weapon condition increased by 11%",
+    "Does not pierce",
+}

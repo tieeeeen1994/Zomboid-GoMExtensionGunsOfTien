@@ -15,6 +15,8 @@ local NEW_TYPES = {
     ["46x30SS"] = { "46x30", { grainsAmount = 10 } },
     ["57x28SS"] = { "57x28", { grainsAmount = 8 } },
     ["57x28SR"] = { "57x28", { bulletType = "ammomaker.ammomaker_BulletRifleSHP" } },
+    -- the main mod's Tokarev (Ammo Maker's 762x25Tok) on Ammo Maker's small handgun hollow point, as its 9x19 HP
+    ["762x25TokHP"] = { "762x25Tok", { bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
 }
 
 if type(ammoMakerAmmoData) ~= "table" then
@@ -46,6 +48,7 @@ local MAP = {
     { modId = MOD, itemType = "GunsOfTienPost93.46x30_Bullet_Subsonic", ammoType = "46x30SS" },
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SB193", ammoType = "57x28SS" },
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SS197SR", ammoType = "57x28SR" },
+    { modId = MOD, itemType = "GunsOfTienPost93.762x25_Bullet_HollowPoint", ammoType = "762x25TokHP" },
 }
 MAP.gunsOfTienPost93 = true
 
