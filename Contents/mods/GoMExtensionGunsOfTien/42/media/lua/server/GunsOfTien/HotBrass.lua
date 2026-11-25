@@ -36,6 +36,17 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTien.762x25_Bullet_SteelCore"] = "HBVCEF.57x28_Casing",
     ["GunsOfTien.762x25_Bullet_Subsonic"] = "HBVCEF.57x28_Casing",
     ["GunsOfTien.9x18_Bullet"] = "HBVCEF.380_Casing",
+    ["GunsOfTien.762x51_Bullet_M61"] = "HBVCEF.762x51_Casing",
+    ["GunsOfTien.3006_Bullet_M2"] = "HBVCEF.3006_Casing",
+    ["GunsOfTien.545x39_Bullet_7U1"] = "HBVCEF.545x39_Casing",
+    ["GunsOfTien.545x39_Bullet_7N10"] = "HBVCEF.545x39_Casing",
+    ["GunsOfTien.38_Bullet_P"] = "HBVCEF.38_Casing",
+    ["GunsOfTien.38_Bullet_HollowPoint"] = "HBVCEF.38_Casing",
+    ["GunsOfTien.357_Bullet_HollowPoint"] = "HBVCEF.357_Casing",
+    ["GunsOfTien.44_Bullet_Special"] = "HBVCEF.44_Casing",
+    ["GunsOfTien.44_Bullet_HollowPoint"] = "HBVCEF.44_Casing",
+    ["GunsOfTien.12Gauge_Shell_Flechette"] = "HBVCEF.12Gauge_Hull_Green",
+    ["GunsOfTien.762x54_Bullet_B32"] = "HBVCEF.762x54_Casing",
 })
 
 SpentCasingPhysics.RegisterPressureProfiles({
@@ -45,6 +56,9 @@ SpentCasingPhysics.RegisterPressureProfiles({
     ["GunsOfTien_22LRSubsonic"] = 0.7,
     ["GunsOfTien_22LRHyperVelocity"] = 1.3,
     ["GunsOfTien_762x25Subsonic"] = 0.7,
+    ["GunsOfTien_545x39_7U1"] = 0.3,
+    ["GunsOfTien_38P"] = 1.3,
+    ["GunsOfTien_44Special"] = 0.6,
     ["GunsOfTien_45P"] = 1.3,
     ["GunsOfTien_12GaugeBirdshot"] = 0.9,
 })

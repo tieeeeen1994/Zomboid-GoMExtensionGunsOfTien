@@ -97,6 +97,32 @@ Ammo.RegisterMultipleAmmoFamilies({
     ["9x18mm"] = {
         { type = "GunsOfTien.9x18_Bullet", enum = T.BULLET_9x18 },
     },
+    -- Special rounds audit (2026-11-25): loads before 1993 in Guns of Marz's families (TODO.md)
+    ["7.62x51mm"] = {
+        { type = "GunsOfTien.762x51_Bullet_M61", enum = T.BULLET_762x51_M61, profile = "GunsOfTien_RifleAP" },
+    },
+    [".30-06"] = {
+        { type = "GunsOfTien.3006_Bullet_M2", enum = T.BULLET_3006_M2, profile = "GunsOfTien_RifleAP" },
+    },
+    ["5.45x39mm"] = {
+        { type = "GunsOfTien.545x39_Bullet_7U1", enum = T.BULLET_545x39_7U1, profile = "GunsOfTien_545x39_7U1" },
+        { type = "GunsOfTien.545x39_Bullet_7N10", enum = T.BULLET_545x39_7N10, profile = "GunsOfTien_545x39_7N10" },
+    },
+    [".38 .357"] = {
+        { type = "GunsOfTien.38_Bullet_P", enum = T.BULLET_38_P, profile = "GunsOfTien_38P" },
+        { type = "GunsOfTien.38_Bullet_HollowPoint", enum = T.BULLET_38_HollowPoint, profile = "GunsOfTien_HandgunHollowPoint" },
+        { type = "GunsOfTien.357_Bullet_HollowPoint", enum = T.BULLET_357_HollowPoint, profile = "GunsOfTien_HandgunHollowPoint" },
+    },
+    [".44 Magnum"] = {
+        { type = "GunsOfTien.44_Bullet_Special", enum = T.BULLET_44_Special, profile = "GunsOfTien_44Special" },
+        { type = "GunsOfTien.44_Bullet_HollowPoint", enum = T.BULLET_44_HollowPoint, profile = "GunsOfTien_HandgunHollowPoint" },
+    },
+    ["12Gauge"] = {
+        { type = "GunsOfTien.12Gauge_Shell_Flechette", enum = T.SHELL_12G_Flechette, profile = "GunsOfTien_12GaugeFlechette" },
+    },
+    ["7.62x54mm"] = {
+        { type = "GunsOfTien.762x54_Bullet_B32", enum = T.BULLET_762x54_B32, profile = "GunsOfTien_762x54B32" },
+    },
 })
 -- the P90's magazine (the P90, Post-93's P90 TR and PS90); Post-93 adds the Five-seveN's
 Ammo.RegisterMultipleItemsWithFamilies({ ["5.7x28mm"] = { "GunsOfTienPost93.57x28Magazine50_P90" } })
@@ -274,6 +300,69 @@ Ammo.RegisterMultipleAmmoStats({
         damage(0.85),
         sound(0.7)
     ),
+    -- Special rounds audit (2026-11-25). Armour piercing rifle rounds (7.62x51 M61, .30-06 M2): the 7.62x39 steel
+    -- core's numbers, one target more than the plain round's realistic piercing (2)
+    ["GunsOfTien_RifleAP"] = list(
+        damage(0.9),
+        SF.Multiply("CritDmgMultiplier", 0.95),
+        SF.Multiply("CriticalChance", 0.9),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+        pierce(3)
+    ),
+    -- 7U1 (1985): the AKS-74UB's subsonic round, made for its PBS-4 suppressor, so no racking rule; a light
+    -- round slowed below the speed of sound hits about as weakly as the 7.62x39 US
+    ["GunsOfTien_545x39_7U1"] = list(
+        damage(0.55),
+        SF.Multiply("CritDmgMultiplier", 0.8),
+        sound(0.5),
+        SF.Multiply("ConditionLowerChanceOneIn", 2.0),
+        pierce(1)
+    ),
+    -- 7N10 (1992): the 7N6 with a stronger steel core, one target more than the plain 7N6's 3, without its
+    -- tumbling (crit chance)
+    ["GunsOfTien_545x39_7N10"] = list(
+        damage(0.95),
+        pierce(4)
+    ),
+    -- .38 Special +P (1974): as the .45 +P
+    ["GunsOfTien_38P"] = list(
+        damage(1.15),
+        SF.Multiply("CritDmgMultiplier", 1.1),
+        sound(1.1),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.7)
+    ),
+    -- revolver hollow points (.38 Special, .357 Magnum 1963; .44 Magnum): the 9x19 / .45 hollow points' numbers
+    ["GunsOfTien_HandgunHollowPoint"] = list(
+        damage(1.2),
+        SF.Multiply("CritDmgMultiplier", 1.15),
+        SF.Multiply("CriticalChance", 1.05),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.9)
+    ),
+    -- .44 Special (1907) in a .44 Magnum gun: a much milder round, quieter, kinder to the gun
+    ["GunsOfTien_44Special"] = list(
+        damage(0.7),
+        SF.Multiply("CritDmgMultiplier", 0.9),
+        sound(0.75),
+        SF.Multiply("ConditionLowerChanceOneIn", 1.3)
+    ),
+    -- 12 gauge flechettes (1960s): darts keep their speed and fly straight, so further and tighter than buckshot,
+    -- each hitting lighter
+    ["GunsOfTien_12GaugeFlechette"] = list(
+        damage(0.6),
+        SF.Multiply("CritDmgMultiplier", 0.8),
+        SF.Multiply("MaxRange", 1.3),
+        function(weapon)
+            weapon:setProjectileSpread(weapon:getProjectileSpread() * 0.6)
+        end
+    ),
+    -- 7.62x54R B-32 (1932) armour piercing incendiary: the AP rifle numbers; the fire is Incendiary.lua's
+    ["GunsOfTien_762x54B32"] = list(
+        damage(0.9),
+        SF.Multiply("CritDmgMultiplier", 0.95),
+        SF.Multiply("CriticalChance", 0.9),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+        pierce(3)
+    ),
 })
 
 -------------------------------------------------
@@ -298,6 +387,8 @@ addPlain(AmmoType.BULLETS_308, fmj)
 addPlain(SW.BULLET_3030, list(pierce(1)))
 addPlain(AmmoType.BULLETS_3030, list(pierce(1)))
 addPlain(SW.BULLET_545x39, list(pierce(3), SF.Multiply("CriticalChance", 1.1)))
+-- the plain 7.62x54R is the rifle round it is (Soviet LPS steel-cored ball), as the 7.62x51 (2026-11-25)
+addPlain(SW.BULLET_762x54, fmj)
 
 local function plainModifiers(weapon)
     if not weapon or not weapon.getAmmoType then return nil end

@@ -59,4 +59,5 @@ GunsOfTien_AmmoPartCartons = {
     { "GunsOfTien.BoxBulletsRifleSSP", "GunsOfTien.BoxBulletsRifleSSP_Carton", "GunsOfTien.BoxBulletsRifleSSP_Crate" },
     { "GunsOfTien.BoxBulletsRifleMSP", "GunsOfTien.BoxBulletsRifleMSP_Carton", "GunsOfTien.BoxBulletsRifleMSP_Crate" },
     { "GunsOfTien.BoxBirdshot", "GunsOfTien.BoxBirdshot_Carton", "GunsOfTien.BoxBirdshot_Crate" },
+    { "GunsOfTien.BoxFlechettes", "GunsOfTien.BoxFlechettes_Carton", "GunsOfTien.BoxFlechettes_Crate" },
 }

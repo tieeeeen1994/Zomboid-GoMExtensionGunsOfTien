@@ -17,6 +17,19 @@ local NEW_TYPES = {
     ["57x28SR"] = { "57x28", { bulletType = "ammomaker.ammomaker_BulletRifleSHP" } },
     -- the main mod's Tokarev (Ammo Maker's 762x25Tok) on Ammo Maker's small handgun hollow point, as its 9x19 HP
     ["762x25TokHP"] = { "762x25Tok", { bulletType = "ammomaker.ammomaker_BulletHandgunSHP" } },
+    -- Special rounds audit (2026-11-25): AP rounds copy Ammo Maker's AP types (its own may carry another mod's
+    -- round), the soft point is the main mod's filed bullet, PMM x1.3 powder
+    ["46x30DM21"] = { "46x30", {} },
+    ["9x18MakPMM"] = { "9x18Mak", { grainsAmount = 8 } },
+    ["9x18MakRG028"] = { "9x18Mak", { bulletType = "ammomaker.ammomaker_BulletHandgunSAP" } },
+    ["762x54RSP"] = { "762x54R", { bulletType = "GunsOfTien.BulletRifleMSP" } },
+    ["762x54R7N13"] = { "762x54RAP", {} },
+    ["545x39_7N22"] = { "545x39AP", {} },
+    ["9x19Para7N21"] = { "9x19ParaAP", { grainsAmount = 12 } },
+    ["762x39HP"] = { "762x39", { bulletType = "ammomaker.ammomaker_BulletRifleSHP" } },
+    ["3030WinFTX"] = { "3030Win", { bulletType = "ammomaker.ammomaker_BulletRifleMHP" } },
+    ["50AEHP"] = { "50AE", { bulletType = "ammomaker.ammomaker_BulletHandgunLHP" } },
+    ["12DragonsBreath"] = { "12Dragon", {} },
 }
 
 if type(ammoMakerAmmoData) ~= "table" then
@@ -49,6 +62,17 @@ local MAP = {
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SB193", ammoType = "57x28SS" },
     { modId = MOD, itemType = "GunsOfTienPost93.57x28_Bullet_SS197SR", ammoType = "57x28SR" },
     { modId = MOD, itemType = "GunsOfTienPost93.762x25_Bullet_HollowPoint", ammoType = "762x25TokHP" },
+    { modId = MOD, itemType = "GunsOfTienPost93.46x30_Bullet_DM21", ammoType = "46x30DM21" },
+    { modId = MOD, itemType = "GunsOfTienPost93.9x18_Bullet_PMM", ammoType = "9x18MakPMM" },
+    { modId = MOD, itemType = "GunsOfTienPost93.9x18_Bullet_RG028", ammoType = "9x18MakRG028" },
+    { modId = MOD, itemType = "GunsOfTienPost93.762x54_Bullet_SP", ammoType = "762x54RSP" },
+    { modId = MOD, itemType = "GunsOfTienPost93.762x54_Bullet_7N13", ammoType = "762x54R7N13" },
+    { modId = MOD, itemType = "GunsOfTienPost93.545x39_Bullet_7N22", ammoType = "545x39_7N22" },
+    { modId = MOD, itemType = "GunsOfTienPost93.9x19_Bullet_7N21", ammoType = "9x19Para7N21" },
+    { modId = MOD, itemType = "GunsOfTienPost93.762x39_Bullet_HollowPoint", ammoType = "762x39HP" },
+    { modId = MOD, itemType = "GunsOfTienPost93.3030_Bullet_FTX", ammoType = "3030WinFTX" },
+    { modId = MOD, itemType = "GunsOfTienPost93.50_Bullet_HollowPoint", ammoType = "50AEHP" },
+    { modId = MOD, itemType = "GunsOfTienPost93.12Gauge_Shell_DragonsBreath", ammoType = "12DragonsBreath" },
 }
 MAP.gunsOfTienPost93 = true
 

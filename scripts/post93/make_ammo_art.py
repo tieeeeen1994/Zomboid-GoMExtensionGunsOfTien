@@ -284,6 +284,10 @@ def round_specs():
         dict(name="46x30_Round_SS", geometry="46x30_Round", texture="H&K_Round_Base",
              base=[(0.0, 1.0, copper(), 1.0)], paint=[(p, 1.0, ss, 1.0)],
              note="DM11 + GoM's subsonic blue on f >= 0.28 (Nato_Round_SS paint)"),
+        # special rounds audit (2026-11-25): DM21, the lead-cored ball in a tombac-plated jacket
+        dict(name="46x30_Round_DM21", geometry="46x30_Round", texture="H&K_Round_Base",
+             base=[(0.0, 1.0, (176, 104, 62), 1.0)], paint=[],
+             note="H&K_Round_Base with the bullet in tombac (the DM21's plated steel jacket)"),
         dict(name="57x28_Round_SS190", geometry="57x28_Round", texture="Nato_Round_Base",
              base=[], paint=[(p, 1.0, BLACK_TIP, 1.0)],
              note="Nato_Round_Base + black tip on f >= 0.28"),
@@ -525,6 +529,8 @@ def box_specs():
         dict(name="46x30_Box_SS", calibre="46x30", outer=A.set_hue(red, A.hue_of(ss["tip"])[0]),
              band=ss["band"], text=ss["text"], load="SUBSONIC", sticker="SUBSONIC", picture="box_ucp.png",
              note="GoM subsonic: red hue-swapped to the SS tip, sticker in Nato_Round_SS / 556x45_Box_SS colours"),
+        dict(name="46x30_Box_DM21", calibre="46x30", outer=(64, 80, 104), band=(200, 210, 226),
+             text=(28, 38, 60), load="DM21", sticker="SOFT CORE", note="navy (special rounds audit, 2026-11-25)"),
         dict(name="57x28_Box_SS190", calibre="57x28", outer=(52, 52, 56), band=(220, 220, 222),
              text=(20, 20, 22), load="SS190", sticker="STANDARD", note="black (the black tip)"),
         dict(name="57x28_Box_SB193", calibre="57x28", outer=A.set_hue(red, A.hue_of(VIOLET_TIP)[0]),
@@ -718,8 +724,8 @@ def contact_sheet(path, scale=4):
          + [("556x45 %s" % v, gom_icon("item_556x45_Round_%s.png" % v), True) for v in ("Base", "SS", "AP", "HP", "OP")]
          + [("9x19 Box", gom_icon("item_9x19_Box.png"), True), ("556x45 Box", gom_icon("item_556x45_Box.png"), True),
             ("556x45 Box SS", gom_icon("item_556x45_Box_SS.png"), True)]),
-        ("4.6x30", [(n, ours(n), False) for n in ("46x30_Round_DM11", "46x30_Round_SS")]
-         + [(n, ours(n), False) for n in ("46x30_Box_DM11", "46x30_Box_SS")]),
+        ("4.6x30", [(n, ours(n), False) for n in ("46x30_Round_DM11", "46x30_Round_SS", "46x30_Round_DM21")]
+         + [(n, ours(n), False) for n in ("46x30_Box_DM11", "46x30_Box_SS", "46x30_Box_DM21")]),
         ("5.7x28", [(n, ours(n), False) for n in ("57x28_Round_SS190", "57x28_Round_SB193", "57x28_Round_SS197SR")]
          + [(n, ours(n), False) for n in ("57x28_Box_SS190", "57x28_Box_SB193", "57x28_Box_SS197SR")]),
     ]

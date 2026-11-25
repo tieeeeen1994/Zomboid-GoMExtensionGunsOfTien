@@ -51,6 +51,22 @@ CALIBRES = {
     '12Gauge': dict(weight='0.031', per_box=25, mesh='12Gauge_Shell', scale='0.012',
                     box_mesh='WorldItems/BoxOfShotGunShells', box_scale='0.6', box_w='0.698', carton_w='6.701',
                     crate_w='21.443', military=True, name='12 Gauge', shell=True),
+    # Special rounds audit (2026-11-25): GoM's calibres that had no load of ours; weights from GoM's boxes (round =
+    # box / (per box x 0.9), its packing rule)
+    '762x51': dict(weight='0.0165', per_box=20, mesh='762x51_Round', scale='0.015', box_mesh='WorldItems/RifleAmmoBox',
+                   box_scale='0.6', box_w='0.297', carton_w='2.851', crate_w='9.123', military=True, name='7.62x51mm'),
+    '545x39': dict(weight='0.007', per_box=20, mesh='545x39_Round', scale='0.015', box_mesh='WorldItems/RifleAmmoBox',
+                   box_scale='0.6', box_w='0.126', carton_w='1.21', crate_w='3.872', military=True, name='5.45x39mm'),
+    '762x54': dict(weight='0.016', per_box=20, mesh='762x54_Round', scale='0.015', box_mesh='WorldItems/RifleAmmoBox',
+                   box_scale='0.6', box_w='0.288', carton_w='2.765', crate_w='8.848', military=True,
+                   name='7.62x54mmR'),
+    '38': dict(weight='0.01', per_box=50, mesh='38_Round', scale='0.015', box_mesh='WorldItems/HandGunAmmoBox',
+               box_scale='0.4', box_w='0.45', carton_w='4.32', crate_w='13.824', military=False, name='.38 Special'),
+    '357': dict(weight='0.0115', per_box=50, mesh='357_Round', scale='0.015', box_mesh='WorldItems/HandGunAmmoBox',
+                box_scale='0.4', box_w='0.518', carton_w='4.973', crate_w='15.914', military=False,
+                name='.357 Magnum'),
+    '44': dict(weight='0.016', per_box=25, mesh='44_Round', scale='0.015', box_mesh='WorldItems/HandGunAmmoBox',
+               box_scale='0.4', box_w='0.36', carton_w='3.456', crate_w='11.059', military=False, name='.44 Magnum'),
 }
 
 # Rounds: (calibre, variant item suffix, art suffix, English variant name)
@@ -67,12 +83,27 @@ ROUNDS = [
     ('3006', 'SP', 'SP', 'Soft Point'),
     ('308', 'SP', 'SP', 'Soft Point'),
     ('12Gauge', 'Birdshot', 'Birdshot', 'Birdshot'),
+    # Special rounds audit (2026-11-25; TODO.md "Special rounds audit"), each checked to exist before 1993
+    ('762x51', 'M61', 'M61', 'M61'),
+    ('3006', 'M2', 'M2', 'M2'),
+    ('545x39', '7U1', '7U1', '7U1'),
+    ('545x39', '7N10', '7N10', '7N10'),
+    ('38', 'P', 'P', '[+P]'),
+    ('38', 'HollowPoint', 'HP', 'Hollow Point'),
+    ('357', 'HollowPoint', 'HP', 'Hollow Point'),
+    ('44', 'Special', 'Special', 'Special'),
+    ('44', 'HollowPoint', 'HP', 'Hollow Point'),
+    ('12Gauge', 'Flechette', 'Flechette', 'Flechette'),
+    ('762x54', 'B32', 'B32', 'B-32'),
 ]
 
 # GoM's naming: '<calibre> <name> Round / Box', 'Carton of <calibre> <name> Boxes', +P in square brackets; a real
 # load name gets its use after it in parentheses, as GoM writes 'MKI Suppressor (5.56mm Rifles)'.
 USAGE = {('762x39', 'US'): 'Subsonic', ('762x39', 'SteelCore'): 'Armor Piercing', ('9x19', 'Subsonic'): 'Subsonic',
-         ('9x39', 'SP6'): 'Armor Piercing'}
+         ('9x39', 'SP6'): 'Armor Piercing', ('762x51', 'M61'): 'Armor Piercing', ('3006', 'M2'): 'Armor Piercing',
+         ('545x39', '7U1'): 'Subsonic', ('762x54', 'B32'): 'Incendiary'}
+# A round that is a cartridge of its own in another's guns: its whole name instead of '<calibre> <name>'.
+FULL_NAME = {('44', 'Special'): '.44 Special'}
 
 
 # The ids registered in media/registries.lua (gunsoftien:<id>).
@@ -83,6 +114,11 @@ AMMO_IDS = {
     ('45', 'HollowPoint'): 'bullet_45_hollow_point', ('45', 'P'): 'bullet_45_p', ('9x39', 'SP6'): 'bullet_9x39_sp6',
     ('3006', 'SP'): 'bullet_3006_sp', ('308', 'SP'): 'bullet_308_sp',
     ('12Gauge', 'Birdshot'): 'shell_12g_birdshot',
+    ('762x51', 'M61'): 'bullet_762x51_m61', ('3006', 'M2'): 'bullet_3006_m2', ('545x39', '7U1'): 'bullet_545x39_7u1',
+    ('545x39', '7N10'): 'bullet_545x39_7n10', ('38', 'P'): 'bullet_38_p', ('38', 'HollowPoint'): 'bullet_38_hollow_point',
+    ('357', 'HollowPoint'): 'bullet_357_hollow_point', ('44', 'Special'): 'bullet_44_special',
+    ('44', 'HollowPoint'): 'bullet_44_hollow_point', ('12Gauge', 'Flechette'): 'shell_12g_flechette',
+    ('762x54', 'B32'): 'bullet_762x54_b32',
 }
 
 
@@ -299,10 +335,11 @@ def translations():
         c = CALIBRES[cal]
         unit = 'Shell' if c.get('shell') else 'Round'
         use = f" ({USAGE[(cal, var)]})" if (cal, var) in USAGE else ""
-        names[f"{MODULE}.{round_item(cal, var)}"] = f"{c['name']} {label} {unit}{use}"
-        names[f"{MODULE}.{cal}_Box_{var}"] = f"{c['name']} {label} Box{use}"
-        names[f"{MODULE}.{cal}_Carton_{var}"] = f"Carton of {c['name']} {label} Boxes{use}"
-        names[f"{MODULE}.{cal}_Crate_{var}"] = f"Crate of {c['name']} {label} Boxes{use}"
+        full = FULL_NAME.get((cal, var), f"{c['name']} {label}")
+        names[f"{MODULE}.{round_item(cal, var)}"] = f"{full} {unit}{use}"
+        names[f"{MODULE}.{cal}_Box_{var}"] = f"{full} Box{use}"
+        names[f"{MODULE}.{cal}_Carton_{var}"] = f"Carton of {full} Boxes{use}"
+        names[f"{MODULE}.{cal}_Crate_{var}"] = f"Crate of {full} Boxes{use}"
     # GoM's plain rounds, named for what they are (translations merge by key, the later mod wins).
     names.update({
         'SWMG.9x39_Bullet': '9x39mm SP-5 Round',
@@ -345,6 +382,19 @@ AMMOMAKER_TYPES = [
     ('22LRHV', '.22 LR HV', '.22 long rifle HV hyper velocity round - 1976'),
     ('762x25TokAP', '7.62x25mm Tokarev Pst', '7.62x25mm Tokarev Pst steel core round - 1950s'),
     ('762x25TokSS', '7.62x25mm Tokarev SS', '7.62x25mm Tokarev SS heavy sub sonic round - 1960s'),
+    # Special rounds audit (2026-11-25). The M61, M2 and B-32 are on copies of Ammo Maker's AP types (its own may
+    # carry another mod's round: one recipe per type)
+    ('308WinM61', '7.62x51mm M61', '7.62x51mm M61 armour piercing round - 1950s'),
+    ('3006SpringM2', '.30-06 Springfield M2', '.30-06 Springfield M2 armour piercing round - 1939'),
+    ('545x39SS', '5.45x39mm 7U1', '5.45x39mm 7U1 sub sonic round - 1985'),
+    ('545x39PP', '5.45x39mm 7N10', '5.45x39mm 7N10 improved penetration round - 1992'),
+    ('38SPP', '.38 Special +P', '.38 Special +P high pressure round - 1974'),
+    ('38SPHP', '.38 Special HP', '.38 Special HP hollow point round - 1963'),
+    ('357MagHP', '.357 Magnum HP', '.357 Magnum HP hollow point round - 1963'),
+    ('44Spec', '.44 Special', '.44 Smith & Wesson Special round - 1907'),
+    ('44MagHP', '.44 Magnum HP', '.44 Magnum HP hollow point round - 1979'),
+    ('12Flech', '12 bore flechette', '12 bore flechette (aka. 12-gauge) - 18.5mm - 1960s'),
+    ('762x54RB32', '7.62x54mmR B-32', '7.62x54mmR B-32 armour piercing incendiary round - 1932'),
 ]
 
 
@@ -418,6 +468,7 @@ module Base {
         'GunsOfTien_MakeSoftPointBullet': 'Make Soft Point Bullet',
         'GunsOfTien_MakeBirdshot': 'Pour Birdshot Pellets',
         'GunsOfTien_ProduceBirdshot': 'Pour Birdshot Pellets (Furnace)',
+        'GunsOfTien_MakeFlechettes': 'Make Flechettes',
     })
     tooltips.update({
         'Tooltip_Recipe_GunsOfTien_MakeSoftPointBullet': 'File the jacket off the nose of a standard rifle bullet so the lead shows.',
@@ -429,6 +480,9 @@ module Base {
         'Tooltip_Item_GunsOfTien_BoxBulletsRifleSSP': 'Box of 25 Bullets Rifle S SP',
         'Tooltip_Item_GunsOfTien_BoxBulletsRifleMSP': 'Box of 25 Bullets Rifle M SP',
         'Tooltip_Item_GunsOfTien_BoxBirdshot': 'Box of 25 Birdshot Pellets',
+        'Tooltip_Recipe_GunsOfTien_MakeFlechettes': 'Cut nails short and file fins into them: small steel darts for shotgun shells.',
+        'Tooltip_Item_GunsOfTien_Flechettes': 'Small steel darts for flechette shotgun shells. Filed from nails.',
+        'Tooltip_Item_GunsOfTien_BoxFlechettes': 'Box of 25 Flechette Pouches',
     })
     # The gun tooltip names each fitted part's row "Tooltip_weapon_<PartType>" (HandWeapon.DoTooltip); GoM and
     # Gunworks translate most part types but not these, which showed as raw keys (user, 2026-10-18). Animated1-9 are
@@ -479,6 +533,8 @@ module Base {
         'GunsOfTien.BoxBulletsRifleSSP': 'Box Bullets Rifle S SP',
         'GunsOfTien.BoxBulletsRifleMSP': 'Box Bullets Rifle M SP',
         'GunsOfTien.BoxBirdshot': 'Box Birdshot Pellets',
+        'GunsOfTien.Flechettes': 'Flechettes',
+        'GunsOfTien.BoxFlechettes': 'Box Flechettes',
     })
     # GoM items without a name: the hidden weapon a fitted bayonet stabs with, and explosion fragments (debris models)
     names['MarzGuns.Attack_Bayonet'] = 'Bayonet'
@@ -546,6 +602,7 @@ AMMOMAKER_PART_BOXES = [(f"ammomaker.ammomaker_{t}", n, w) for t, n, w in (
     (f"{MODULE}.BoxBulletsRifleSSP", 'Box Bullets Rifle S SP', 0.075),
     (f"{MODULE}.BoxBulletsRifleMSP", 'Box Bullets Rifle M SP', 0.15),
     (f"{MODULE}.BoxBirdshot", 'Box Birdshot Pellets', 1.0),
+    (f"{MODULE}.BoxFlechettes", 'Box Flechettes', 1.0),
 ]
 PART_CARTON_RECIPES = (
     # name, timed action, time, tags

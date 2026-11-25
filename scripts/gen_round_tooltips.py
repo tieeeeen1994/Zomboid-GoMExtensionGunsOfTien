@@ -46,6 +46,10 @@ NOTES = {
     "SWMG.556x45_Bullet_Subsonic": {"after": [SUPPRESSED]},
     "SWMG.3030_Bullet": {"before": ["Does not pierce"]},
     "Base.3030Bullets": {"before": ["Does not pierce"]},
+    # special rounds audit (2026-11-25)
+    "GunsOfTien.545x39_Bullet_7U1": {"after": [SUPPRESSED]},
+    "GunsOfTien.44_Bullet_Special": {"before": ["Fires from any .44 Magnum gun"]},
+    "GunsOfTien.762x54_Bullet_B32": {"after": ["1 hit in 4 sets the target on fire", "Burns for 3 seconds, 4 burns kill", "The fire stays on the target"]},
 }
 # Lines that go with the realistic piercing lines (option on), before them.
 PIERCING_NOTES = {}
@@ -97,7 +101,7 @@ def stat_lines(mods):
         out.append(("range", "Range " + up_down(mul("MaxRange"), down="reduced")))
     if mul("ProjectileSpread"):
         f = mul("ProjectileSpread")
-        out.append(("spread", "Pellet spread doubled" if f == 2 else "Pellet spread " + up_down(f, "wider by", "narrower by")))
+        out.append(("spread", "Pellet spread doubled" if f == 2 else "Pellet spread " + up_down(f, "wider", "narrower")))
     if mods.get("AutoSpread"):
         f = mods["AutoSpread"][1]
         out.append(("autospread", "Automatic fire spread doubled" if f == 2 else "Automatic fire spread " + up_down(f)))

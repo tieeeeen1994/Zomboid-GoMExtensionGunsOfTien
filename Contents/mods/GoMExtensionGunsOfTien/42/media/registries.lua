@@ -38,6 +38,19 @@ GunsOfTien_AmmoTypes.BULLET_762x25_SteelCore = AmmoType.register("gunsoftien:bul
 GunsOfTien_AmmoTypes.BULLET_762x25_Subsonic = AmmoType.register("gunsoftien:bullet_762x25_subsonic", "GunsOfTien.762x25_Bullet_Subsonic")
 GunsOfTien_AmmoTypes.BULLET_9x18 = AmmoType.register("gunsoftien:bullet_9x18", "GunsOfTien.9x18_Bullet")
 
+-- Special rounds audit (2026-11-25): loads before 1993 for Guns of Marz's calibres
+GunsOfTien_AmmoTypes.BULLET_762x51_M61 = AmmoType.register("gunsoftien:bullet_762x51_m61", "GunsOfTien.762x51_Bullet_M61")
+GunsOfTien_AmmoTypes.BULLET_3006_M2 = AmmoType.register("gunsoftien:bullet_3006_m2", "GunsOfTien.3006_Bullet_M2")
+GunsOfTien_AmmoTypes.BULLET_545x39_7U1 = AmmoType.register("gunsoftien:bullet_545x39_7u1", "GunsOfTien.545x39_Bullet_7U1")
+GunsOfTien_AmmoTypes.BULLET_545x39_7N10 = AmmoType.register("gunsoftien:bullet_545x39_7n10", "GunsOfTien.545x39_Bullet_7N10")
+GunsOfTien_AmmoTypes.BULLET_38_P = AmmoType.register("gunsoftien:bullet_38_p", "GunsOfTien.38_Bullet_P")
+GunsOfTien_AmmoTypes.BULLET_38_HollowPoint = AmmoType.register("gunsoftien:bullet_38_hollow_point", "GunsOfTien.38_Bullet_HollowPoint")
+GunsOfTien_AmmoTypes.BULLET_357_HollowPoint = AmmoType.register("gunsoftien:bullet_357_hollow_point", "GunsOfTien.357_Bullet_HollowPoint")
+GunsOfTien_AmmoTypes.BULLET_44_Special = AmmoType.register("gunsoftien:bullet_44_special", "GunsOfTien.44_Bullet_Special")
+GunsOfTien_AmmoTypes.BULLET_44_HollowPoint = AmmoType.register("gunsoftien:bullet_44_hollow_point", "GunsOfTien.44_Bullet_HollowPoint")
+GunsOfTien_AmmoTypes.BULLET_762x54_B32 = AmmoType.register("gunsoftien:bullet_762x54_b32", "GunsOfTien.762x54_Bullet_B32")
+GunsOfTien_AmmoTypes.SHELL_12G_Flechette = AmmoType.register("gunsoftien:shell_12g_flechette", "GunsOfTien.12Gauge_Shell_Flechette")
+
 -- Box / carton / crate tags of this mod's own open and pack recipes (GoM's recipes use closed item mappers).
 GunsOfTien_Tags = {}
 GunsOfTien_Tags.AmmoBox20 = ItemTag.register("gunsoftien:ammobox20")

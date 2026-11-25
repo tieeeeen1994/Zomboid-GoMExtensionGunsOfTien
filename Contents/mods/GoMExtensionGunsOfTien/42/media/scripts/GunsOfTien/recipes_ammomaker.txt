@@ -391,4 +391,290 @@ module Base {
 		inputs {}
 		outputs {}
 	}
+
+	craftRecipe Make308WinM61
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make308WinM61,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce308WinM61
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce308WinM61,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make3006SpringM2
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make3006SpringM2,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce3006SpringM2
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce3006SpringM2,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make545x39SS
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make545x39SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce545x39SS
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce545x39SS,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make545x39PP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make545x39PP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce545x39PP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce545x39PP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make38SPP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make38SPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce38SPP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce38SPP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make38SPHP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make38SPHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce38SPHP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce38SPHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make357MagHP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make357MagHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce357MagHP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce357MagHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make44Spec
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make44Spec,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce44Spec
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce44Spec,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make44MagHP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make44MagHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce44MagHP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce44MagHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make12Flech
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make12Flech,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce12Flech
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce12Flech,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x54RB32
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x54RB32,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x54RB32
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x54RB32,
+		inputs {}
+		outputs {}
+	}
 }

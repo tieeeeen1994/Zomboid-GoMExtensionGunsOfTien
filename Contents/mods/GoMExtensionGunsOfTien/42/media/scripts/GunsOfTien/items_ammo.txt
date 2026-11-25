@@ -145,6 +145,138 @@ module GunsOfTien {
         AmmoType         = gunsoftien:shell_12g_birdshot,
     }
 
+    item 762x51_Bullet_M61 {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0165,
+        Icon             = 762x51_Round_M61,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.762x51_Round_M61,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_762x51_m61,
+    }
+
+    item 3006_Bullet_M2 {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.019,
+        Icon             = 3006_Round_M2,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.3006_Round_M2,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_3006_m2,
+    }
+
+    item 545x39_Bullet_7U1 {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.007,
+        Icon             = 545x39_Round_7U1,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.545x39_Round_7U1,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_545x39_7u1,
+    }
+
+    item 545x39_Bullet_7N10 {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.007,
+        Icon             = 545x39_Round_7N10,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.545x39_Round_7N10,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_545x39_7n10,
+    }
+
+    item 38_Bullet_P {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.01,
+        Icon             = 38_Round_P,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.38_Round_P,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_38_p,
+    }
+
+    item 38_Bullet_HollowPoint {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.01,
+        Icon             = 38_Round_HP,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.38_Round_HP,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_38_hollow_point,
+    }
+
+    item 357_Bullet_HollowPoint {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.0115,
+        Icon             = 357_Round_HP,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.357_Round_HP,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_357_hollow_point,
+    }
+
+    item 44_Bullet_Special {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.016,
+        Icon             = 44_Round_Special,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.44_Round_Special,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_44_special,
+    }
+
+    item 44_Bullet_HollowPoint {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.016,
+        Icon             = 44_Round_HP,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.44_Round_HP,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_44_hollow_point,
+    }
+
+    item 12Gauge_Shell_Flechette {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.031,
+        Icon             = 12Gauge_Shell_Flechette,
+        count            = 6,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.12Gauge_Shell_Flechette,
+        Tags             = base:ammo;base:shotgunshell,
+        AmmoType         = gunsoftien:shell_12g_flechette,
+    }
+
+    item 762x54_Bullet_B32 {
+        DisplayCategory  = Ammo,
+        ItemType         = base:normal,
+        Weight           = 0.016,
+        Icon             = 762x54_Round_B32,
+        count            = 5,
+        MetalValue       = 1.0,
+        WorldStaticModel = GunsOfTien.762x54_Round_B32,
+        Tags             = base:ammo,
+        AmmoType         = gunsoftien:bullet_762x54_b32,
+    }
+
     item 762x39_Box_US {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
@@ -645,6 +777,473 @@ module GunsOfTien {
         DisplayCategory    = Ammo,
         ItemType           = base:normal,
         Weight             = 21.443,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 762x51_Box_M61 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.297,
+        Icon               = 762x51_Box_M61,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 40.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.762x51_Box_M61,
+        WorldStaticModel   = GunsOfTien.762x51_Box_M61,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf20Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox20;gunsoftien:ammobox,
+    }
+
+    item 762x51_Carton_M61 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 2.851,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 762x51_Crate_M61 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 9.123,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 3006_Box_M2 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.342,
+        Icon               = 3006_Box_M2,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 40.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.3006_Box_M2,
+        WorldStaticModel   = GunsOfTien.3006_Box_M2,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf20Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox20;gunsoftien:ammobox,
+    }
+
+    item 3006_Carton_M2 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.283,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 3006_Crate_M2 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 10.506,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 545x39_Box_7U1 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.126,
+        Icon               = 545x39_Box_7U1,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 40.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.545x39_Box_7U1,
+        WorldStaticModel   = GunsOfTien.545x39_Box_7U1,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf20Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox20;gunsoftien:ammobox,
+    }
+
+    item 545x39_Carton_7U1 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 1.21,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 545x39_Crate_7U1 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.872,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 545x39_Box_7N10 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.126,
+        Icon               = 545x39_Box_7N10,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 40.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.545x39_Box_7N10,
+        WorldStaticModel   = GunsOfTien.545x39_Box_7N10,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf20Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox20;gunsoftien:ammobox,
+    }
+
+    item 545x39_Carton_7N10 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 1.21,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 545x39_Crate_7N10 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.872,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 38_Box_P {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.45,
+        Icon               = 38_Box_P,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.38_Box_P,
+        WorldStaticModel   = GunsOfTien.38_Box_P,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 38_Carton_P {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 4.32,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 38_Crate_P {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 13.824,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 38_Box_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.45,
+        Icon               = 38_Box_HP,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.38_Box_HP,
+        WorldStaticModel   = GunsOfTien.38_Box_HP,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 38_Carton_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 4.32,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 38_Crate_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 13.824,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 357_Box_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.518,
+        Icon               = 357_Box_HP,
+        MetalValue         = 30.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.357_Box_HP,
+        WorldStaticModel   = GunsOfTien.357_Box_HP,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf50Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox50;gunsoftien:ammobox,
+    }
+
+    item 357_Carton_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 4.973,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 357_Crate_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 15.914,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 44_Box_Special {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.36,
+        Icon               = 44_Box_Special,
+        MetalValue         = 24.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.44_Box_Special,
+        WorldStaticModel   = GunsOfTien.44_Box_Special,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf25Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox25;gunsoftien:ammobox,
+    }
+
+    item 44_Carton_Special {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.456,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 44_Crate_Special {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 11.059,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 44_Box_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.36,
+        Icon               = 44_Box_HP,
+        MetalValue         = 24.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.44_Box_HP,
+        WorldStaticModel   = GunsOfTien.44_Box_HP,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf25Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox25;gunsoftien:ammobox,
+    }
+
+    item 44_Carton_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 3.456,
+        Icon               = Parcel_Medium_Ammo,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Ammo_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 44_Crate_HollowPoint {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 11.059,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 12Gauge_Box_Flechette {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.698,
+        Icon               = 12Gauge_Box_Flechette,
+        MetalValue         = 24.0,
+        PlaceMultipleSound = BoxOfShellsPlaceAll,
+        PlaceOneSound      = BoxOfShellsPlaceOne,
+        StaticModel        = GunsOfTien.12Gauge_Box_Flechette,
+        WorldStaticModel   = GunsOfTien.12Gauge_Box_Flechette,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf25Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox25;gunsoftien:ammobox,
+    }
+
+    item 12Gauge_Carton_Flechette {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 6.701,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 12Gauge_Crate_Flechette {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 21.443,
+        Icon               = Ammo_Crate,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = MarzGuns.Ammo_Crate,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocrate,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfBoxesOfAmmo,
+    }
+
+    item 762x54_Box_B32 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 0.288,
+        Icon               = 762x54_Box_B32,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 40.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        StaticModel        = GunsOfTien.762x54_Box_B32,
+        WorldStaticModel   = GunsOfTien.762x54_Box_B32,
+        DoubleClickRecipe  = GunsOfTien_OpenBoxOf20Bullets,
+        Tags               = base:hasmetal;base:ignorezombiedensity;base:ammo;gunsoftien:ammobox20;gunsoftien:ammobox,
+    }
+
+    item 762x54_Carton_B32 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 2.765,
+        Icon               = Parcel_Medium_Military,
+        AlwaysWelcomeGift  = true,
+        MetalValue         = 400.0,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        WorldStaticModel   = Parcel_Military_Medium,
+        Tags               = base:hasmetal;base:ignorezombiedensity;gunsoftien:ammocarton,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfBoxesOfAmmo,
+    }
+
+    item 762x54_Crate_B32 {
+        DisplayCategory    = Ammo,
+        ItemType           = base:normal,
+        Weight             = 8.848,
         Icon               = Ammo_Crate,
         AlwaysWelcomeGift  = true,
         MetalValue         = 400.0,

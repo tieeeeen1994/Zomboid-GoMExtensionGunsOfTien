@@ -19,6 +19,18 @@ SpentCasingPhysics.RegisterCasingToAmmo({
     ["GunsOfTienPost93.57x28_Bullet_SS197SR"] = "HBVCEF.57x28_Casing",
     -- the Tokarev hollow point on the casing the main mod gives its Tokarev rounds (Hot Brass has none of its own)
     ["GunsOfTienPost93.762x25_Bullet_HollowPoint"] = "HBVCEF.57x28_Casing",
+    -- Special rounds audit (2026-11-25); the 9x18 on the .380's casing as the main mod's
+    ["GunsOfTienPost93.46x30_Bullet_DM21"] = "HBVCEF.46x30_Casing",
+    ["GunsOfTienPost93.9x18_Bullet_PMM"] = "HBVCEF.380_Casing",
+    ["GunsOfTienPost93.9x18_Bullet_RG028"] = "HBVCEF.380_Casing",
+    ["GunsOfTienPost93.762x54_Bullet_SP"] = "HBVCEF.762x54_Casing",
+    ["GunsOfTienPost93.762x54_Bullet_7N13"] = "HBVCEF.762x54_Casing",
+    ["GunsOfTienPost93.545x39_Bullet_7N22"] = "HBVCEF.545x39_Casing",
+    ["GunsOfTienPost93.9x19_Bullet_7N21"] = "HBVCEF.9x19_Casing",
+    ["GunsOfTienPost93.762x39_Bullet_HollowPoint"] = "HBVCEF.762x39_Casing",
+    ["GunsOfTienPost93.3030_Bullet_FTX"] = "HBVCEF.3030_Casing",
+    ["GunsOfTienPost93.50_Bullet_HollowPoint"] = "HBVCEF.50_Casing",
+    ["GunsOfTienPost93.12Gauge_Shell_DragonsBreath"] = "HBVCEF.12Gauge_Hull_Red",
 })
 
 -- Hot Brass launches a casing from a point in front of the shooter (forward / side / height, tiles and levels from

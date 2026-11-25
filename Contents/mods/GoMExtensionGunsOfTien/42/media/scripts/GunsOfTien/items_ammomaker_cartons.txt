@@ -1372,4 +1372,28 @@ module GunsOfTien {
         DoubleClickRecipe  = GunsOfTien_OpenCrateOfAmmoPartBoxes,
         ToolTip            = Tooltip_Item_GunsOfTien_BoxBirdshot_Crate,
     }
+
+    item BoxFlechettes_Carton {
+        DisplayCategory    = AmmoParts,
+        ItemType           = base:normal,
+        Weight             = 12,
+        Icon               = Parcel5,
+        WorldStaticModel   = Parcel4,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        DoubleClickRecipe  = GunsOfTien_OpenCartonOfAmmoPartBoxes,
+        ToolTip            = Tooltip_Item_GunsOfTien_BoxFlechettes_Carton,
+    }
+
+    item BoxFlechettes_Crate {
+        DisplayCategory    = AmmoParts,
+        ItemType           = base:normal,
+        Weight             = 48,
+        Icon               = Parcel1,
+        WorldStaticModel   = Parcel1,
+        PlaceMultipleSound = BoxOfRoundsPlaceAll,
+        PlaceOneSound      = BoxOfRoundsPlaceOne,
+        DoubleClickRecipe  = GunsOfTien_OpenCrateOfAmmoPartBoxes,
+        ToolTip            = Tooltip_Item_GunsOfTien_BoxFlechettes_Crate,
+    }
 }

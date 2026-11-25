@@ -62,6 +62,14 @@ SP-7, RG028) belong in Post-93, with the PP-9 Klin.
 - [ ] Play it: the launcher swap (Gunworks radial), GoM's FAMAS reload with the AK magazines in the off hand, the
       charging hook riding back, optics on the handle rail, muzzle parts, Hot Brass forward, loot.
 
+## Special rounds audit (2026-11-25: all built the same day; CLAUDE.md "Special rounds audit")
+
+- [ ] Play them: each load's box, icon and Ammo Maker recipe; the flechette part recipe; the B-32 and Dragon's
+      Breath fire in single player and on a server (a zombie run by another client), that no ground fire starts
+      and corpses do not burn.
+- [ ] Flechette part art shows pellets (the birdshot's in steel), not darts.
+- [ ] Skipped: 9x39 PAB-9 (would play as a weaker SP-6).
+
 ## Smaller open items
 
 - [ ] The SV-98 variant left out (the aluminium one), if wanted. The SV-99 stays one gun (user, 2026-11-20).

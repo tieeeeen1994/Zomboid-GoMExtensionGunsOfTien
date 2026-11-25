@@ -47,6 +47,7 @@ GAME = _first(os.path.expanduser("~/Library/Application Support/Steam/steamapps/
                                  "Project Zomboid.app/Contents/Java/media"),
               "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media")
 OUT = os.path.join(HERE, "..", "Contents/mods/GoMExtensionGunsOfTien/42/media/textures")
+OUT_POST93 = os.path.join(HERE, "..", "Contents/mods/GoMExtensionGunsOfTienPost93/42/media/textures")
 
 GOM_TEX = os.path.join(GOM, "textures")
 GOM_ROUNDS = os.path.join(GOM_TEX, "worlditems/Ammunition/Rounds")
@@ -449,6 +450,8 @@ LEAD = (100, 102, 110)            # exposed soft lead: dull dark grey
 STEEL = (206, 211, 217)         # bright bare steel
 BLACK = (30, 30, 32)
 US_GREEN = (48, 140, 62)        # Soviet "US" subsonic band
+INCENDIARY_RED = (196, 36, 30)  # Soviet B-32: black point over a red band
+FTX_RED = (214, 40, 40)         # red polymer tip
 
 
 def schemes():
@@ -466,6 +469,12 @@ def schemes():
         "SP": dict(paint=[(0.35, 1.0, LEAD)], band=(247, 172, 96), text=(150, 62, 10)),
         # Not in GoM: silver steel point in GoM's tip style; boxes steel blue-grey.
         "STEEL": dict(paint=[(GOM_PAINT_FROM, 1.0, STEEL)], band=(192, 202, 212), text=(46, 56, 72)),
+        # Special rounds audit (2026-11-25). Not in GoM: a whole lead bullet (.44 Special); boxes pale grey.
+        "LEAD": dict(paint=[(0.0, 1.0, LEAD)], band=(214, 216, 220), text=(52, 54, 60)),
+        # Soviet armour piercing incendiary (B-32): black point over a red band; boxes in incendiary orange.
+        "API": dict(paint=[(0.30, 0.56, INCENDIARY_RED), (0.56, 1.0, BLACK)], band=(250, 176, 120), text=(150, 40, 10)),
+        # Polymer tip (.30-30 FTX): a short red point; boxes pale red.
+        "FTX": dict(paint=[(0.72, 1.0, FTX_RED)], band=(244, 190, 184), text=(138, 24, 24)),
     }
 
 
@@ -489,6 +498,25 @@ CAMERAS = {
     "item_556x45_Box.png": dict(yaw=42.5, pitch=45.0, roll=2.0, bbox=(0, 2, 32, 30)),
     "item_9x19_Box.png": dict(yaw=237.0, pitch=34.0, roll=-0.5, bbox=(0, 3, 32, 30)),
     "item_45_Box.png": dict(yaw=236.5, pitch=33.5, roll=1.0, bbox=(0, 3, 32, 30)),
+    # special rounds audit (2026-11-25), fitted with --fit's fitter one icon a process
+    "item_545x39_Round_Base.png": dict(yaw=270.0, pitch=15.0, roll=45.0, bbox=(0, 0, 32, 32)),
+    "item_762x51_Round_Base.png": dict(yaw=269.0, pitch=12.0, roll=45.0, bbox=(0, 0, 32, 32)),
+    "item_762x54_Round_Base.png": dict(yaw=271.0, pitch=14.0, roll=45.0, bbox=(0, 0, 32, 32)),
+    "item_38_Round_Base.png": dict(yaw=266.5, pitch=-2.0, roll=45.0, bbox=(0, 0, 32, 31)),
+    "item_357_Round_Base.png": dict(yaw=272.5, pitch=-4.0, roll=45.0, bbox=(0, 1, 31, 32)),
+    "item_44_Round_Base.png": dict(yaw=270.0, pitch=-39.0, roll=45.0, bbox=(0, 0, 32, 32)),
+    "item_50_Round_Base.png": dict(yaw=270.0, pitch=-39.5, roll=45.0, bbox=(0, 1, 31, 32)),
+    "item_3030_Round_Base.png": dict(yaw=269.0, pitch=12.0, roll=45.0, bbox=(0, 0, 32, 32)),
+    # special rounds audit (2026-11-25): GoM renders every rifle box and every handgun box alike (above), so the
+    # other boxes reuse those cameras
+    "item_762x51_Box.png": dict(yaw=42.5, pitch=45.0, roll=2.0, bbox=(0, 2, 32, 30)),
+    "item_545x39_Box.png": dict(yaw=42.5, pitch=45.0, roll=2.0, bbox=(0, 2, 32, 30)),
+    "item_762x54_Box.png": dict(yaw=42.5, pitch=45.0, roll=2.0, bbox=(0, 2, 32, 30)),
+    "item_3030_Box.png": dict(yaw=42.5, pitch=45.0, roll=2.0, bbox=(0, 2, 32, 30)),
+    "item_38_Box.png": dict(yaw=237.0, pitch=34.0, roll=-0.5, bbox=(0, 3, 32, 30)),
+    "item_357_Box.png": dict(yaw=237.0, pitch=34.0, roll=-0.5, bbox=(0, 3, 32, 30)),
+    "item_44_Box.png": dict(yaw=237.0, pitch=34.0, roll=-0.5, bbox=(0, 3, 32, 30)),
+    "item_50_Box.png": dict(yaw=237.0, pitch=34.0, roll=-0.5, bbox=(0, 3, 32, 30)),
 }
 
 
@@ -510,6 +538,30 @@ ROUNDS = [
     ("9x39_Round_SP6", "9x39_Round", "Russian_Steel_Round_Base", "item_9x39_Round_Base.png", "SP6"),
     ("3006_Round_SP", "3006_Round", "Nato_Round_Base", "item_3006_Round_Base.png", "SP"),
     ("308_Round_SP", "762x51_Round", "Nato_Round_CIV", "item_308_Round.png", "SP"),
+    # Special rounds audit (2026-11-25): armour piercing black points (M61, M2), Soviet bands (7U1 black over green,
+    # 7N10 violet), revolver loads, the whole lead .44 Special, the B-32's black over red
+    ("762x51_Round_M61", "762x51_Round", "Nato_Round_Base", "item_762x51_Round_Base.png", "SP6"),
+    ("3006_Round_M2", "3006_Round", "Nato_Round_Base", "item_3006_Round_Base.png", "SP6"),
+    ("545x39_Round_7U1", "545x39_Round", "Russian_Brass_Round_Base", "item_545x39_Round_Base.png", "US"),
+    ("545x39_Round_7N10", "545x39_Round", "Russian_Brass_Round_Base", "item_545x39_Round_Base.png", "OP"),
+    ("38_Round_P", "38_Round", "Pistol_Standard_Round_Base", "item_38_Round_Base.png", "OP"),
+    ("38_Round_HP", "38_Round", "Pistol_Standard_Round_Base", "item_38_Round_Base.png", "HP"),
+    ("357_Round_HP", "357_Round", "Revolver_Round_Base", "item_357_Round_Base.png", "HP"),
+    ("44_Round_Special", "44_Round", "Pistol_Heavy_Round_Base", "item_44_Round_Base.png", "LEAD"),
+    ("44_Round_HP", "44_Round", "Pistol_Heavy_Round_Base", "item_44_Round_Base.png", "HP"),
+    ("762x54_Round_B32", "762x54_Round", "Russian_Steel_Round_Base", "item_762x54_Round_Base.png", "API"),
+]
+
+# Post-93's later loads on GoM's calibres (gen_post93_ammo.py ROUNDS), written into Post-93's textures
+P93 = "GunsOfTienPost93_"
+ROUNDS_POST93 = [
+    (P93 + "762x54_Round_SP", "762x54_Round", "Russian_Steel_Round_Base", "item_762x54_Round_Base.png", "SP"),
+    (P93 + "762x54_Round_7N13", "762x54_Round", "Russian_Steel_Round_Base", "item_762x54_Round_Base.png", "STEEL"),
+    (P93 + "545x39_Round_7N22", "545x39_Round", "Russian_Brass_Round_Base", "item_545x39_Round_Base.png", "AP"),
+    (P93 + "9x19_Round_7N21", "9x19_Round", "Pistol_Standard_Round_Base", "item_9x19_Round_Base.png", "AP"),
+    (P93 + "762x39_Round_HP", "762x39_Round", "Russian_Steel_Round_Base", "item_762x39_Round_Base.png", "HP"),
+    (P93 + "3030_Round_FTX", "3030_Round", "Pistol_Standard_Round_Base", "item_3030_Round_Base.png", "FTX"),
+    (P93 + "50_Round_HP", "50_Round", "Pistol_Heavy_Round_Base", "item_50_Round_Base.png", "HP"),
 ]
 
 # Rifle boxes share GoM's template (band, label panel, bullet drawing). bullet = (tip, mouth, across0, across1,
@@ -520,6 +572,11 @@ RIFLE_BOXES = {
     # The .30-06 band is shaded tan, close to its panel colour: a wider match takes all of it.
     "3006": dict(tex="3006_Box", icon="item_3006_Box.png", bullet=(2, 13, 113, 122, "x"), band_tolerance=125),
     "308": dict(tex="308_Box", icon="item_308_Box.png", bullet=(2, 12, 113, 122, "x")),
+    # GoM's other rifle boxes share the template and its drawn bullet
+    "762x51": dict(tex="762x51_Box", icon="item_762x51_Box.png", bullet=(2, 12, 113, 122, "x")),
+    "545x39": dict(tex="545x39_Box", icon="item_545x39_Box.png", bullet=(2, 12, 113, 122, "x")),
+    "762x54": dict(tex="762x54_Box", icon="item_762x54_Box.png", bullet=(2, 12, 113, 122, "x")),
+    "3030": dict(tex="3030_Box", icon="item_3030_Box.png", bullet=(2, 12, 113, 122, "x")),
 }
 
 BOXES = [
@@ -535,9 +592,36 @@ BOXES = [
     ("9x19_Box_PPP", "9x19", "OP", "[+P+]"),
     ("45_Box_HP", "45", "HP", "HOLLOW POINT"),
     ("45_Box_P", "45", "OP", "[+P]"),
+    # Special rounds audit (2026-11-25)
+    ("762x51_Box_M61", "762x51", "SP6", "M61 AP"),
+    ("3006_Box_M2", "3006", "SP6", "M2 AP"),
+    ("545x39_Box_7U1", "545x39", "US", "7U1 SUBSONIC"),
+    ("545x39_Box_7N10", "545x39", "OP", "7N10"),
+    ("38_Box_P", "38", "OP", "[+P]"),
+    ("38_Box_HP", "38", "HP", "HOLLOW PT"),
+    ("357_Box_HP", "357", "HP", "HOLLOW PT"),
+    ("44_Box_Special", "44", "LEAD", ".44 SPECIAL"),
+    ("44_Box_HP", "44", "HP", "HOLLOW PT"),
+    ("762x54_Box_B32", "762x54", "API", "B-32 API"),
+]
+
+BOXES_POST93 = [
+    (P93 + "762x54_Box_SP", "762x54", "SP", "SOFT POINT"),
+    (P93 + "762x54_Box_7N13", "762x54", "STEEL", "7N13 AP"),
+    (P93 + "545x39_Box_7N22", "545x39", "AP", "7N22 AP"),
+    (P93 + "9x19_Box_7N21", "9x19", "AP", "7N21 AP"),
+    (P93 + "762x39_Box_HP", "762x39", "HP", "HOLLOW POINT"),
+    (P93 + "3030_Box_FTX", "3030", "FTX", "FTX"),
+    (P93 + "50_Box_HP", "50", "HP", "HOLLOW PT"),
 ]
 
 BIRDSHOT_HUE = 222.0             # royal blue hull: GoM uses red (buckshot), green (slug), yellow (.410 model)
+# Shells: (out dir, shell name, box name, hue). Flechette steel-grey teal, dragon's breath orange.
+SHELLS = [
+    (OUT, "12Gauge_Shell_Birdshot", "12Gauge_Box_Birdshot", BIRDSHOT_HUE),
+    (OUT, "12Gauge_Shell_Flechette", "12Gauge_Box_Flechette", 186.0),
+    (OUT_POST93, P93 + "12Gauge_Shell_DragonsBreath", P93 + "12Gauge_Box_DragonsBreath", 26.0),
+]
 
 
 # ==================================================================================================
@@ -809,6 +893,12 @@ def make_rifle_box(calibre, scheme, label, sch):
 HANDGUN_BOXES = {
     "9x19": dict(tex="9x19_Box", icon="item_9x19_Box.png", label=((2, 3, 33, 17), False)),
     "45": dict(tex="45_Box", icon="item_45_Box.png", label=((47, 33, 62, 86), True)),
+    # the revolver and .50 AE boxes print in their own colours (blue, orange, dark red, green), so only the label
+    # marks the load, on the top strip of small print (the .38: its lid stamp)
+    "38": dict(tex="38_Box", icon="item_38_Box.png", label=((2, 3, 29, 14), False), recolour=False),
+    "357": dict(tex="357_Box", icon="item_357_Box.png", label=((1, 1, 28, 13), False), recolour=False),
+    "44": dict(tex="44_Box", icon="item_44_Box.png", label=((1, 1, 28, 13), False), recolour=False),
+    "50": dict(tex="50_Box", icon="item_50_Box.png", label=((1, 1, 28, 13), False), recolour=False),
 }
 
 
@@ -817,13 +907,15 @@ def make_handgun_box(calibre, scheme, label, sch):
     base = Image.open(os.path.join(GOM_BOXES, cfg["tex"] + ".png")).convert("RGBA")
     s = sch[scheme]
     hue = hue_of(s["paint"][-1][2])[0]
-    recoloured = recolour_hue(base, hue, is_red)
+    recolour = cfg.get("recolour", True)
+    recoloured = recolour_hue(base, hue, is_red) if recolour else base
     tex = recoloured.copy()
     rect, vertical = cfg["label"]
     draw_label(tex, rect, label, s["band"], s["text"], vertical)
     # The print colour is swapped on the icon directly (adding a red -> blue texel change to the icon's light
     # edge pixels turns them neon); only the label goes through the camera transfer.
-    icon = recolour_hue(Image.open(os.path.join(GOM_TEX, cfg["icon"])), hue, is_reddish)
+    icon = Image.open(os.path.join(GOM_TEX, cfg["icon"]))
+    icon = recolour_hue(icon, hue, is_reddish) if recolour else icon.convert("RGBA")
     out_icon = transfer_icon(icon, load_mesh(BOX_FBX % "HandGunAmmoBox"), CAMERAS[cfg["icon"]], recoloured, tex)
     return out_icon, tex
 
@@ -841,13 +933,23 @@ def save(img, path):
 def build():
     sch = schemes()
     written = []
-    rounds_dir = os.path.join(OUT, "worlditems/GunsOfTien/Rounds")
-    boxes_dir = os.path.join(OUT, "worlditems/GunsOfTien/Boxes")
-    for name, geometry, model_tex, icon_name, scheme in ROUNDS:
+    for out, sub, rounds, boxes in ((OUT, "GunsOfTien", ROUNDS, BOXES),
+                                    (OUT_POST93, "GunsOfTienPost93", ROUNDS_POST93, BOXES_POST93)):
+        written += build_set(sch, out, sub, rounds, boxes)
+    for out, shell_name, box_name, hue in SHELLS:
+        written += build_shell(out, shell_name, box_name, hue)
+    return written
+
+
+def build_set(sch, OUT, sub, rounds, boxes):
+    written = []
+    rounds_dir = os.path.join(OUT, "worlditems", sub, "Rounds")
+    boxes_dir = os.path.join(OUT, "worlditems", sub, "Boxes")
+    for name, geometry, model_tex, icon_name, scheme in rounds:
         icon, world = make_round(name, geometry, model_tex, icon_name, scheme, sch)
         written.append((save(icon, os.path.join(OUT, "item_%s.png" % name)), icon_name))
         written.append((save(world, os.path.join(rounds_dir, name + ".png")), model_tex + ".png"))
-    for name, calibre, scheme, label in BOXES:
+    for name, calibre, scheme, label in boxes:
         if calibre in RIFLE_BOXES:
             icon, world = make_rifle_box(calibre, scheme, label, sch)
             src = RIFLE_BOXES[calibre]
@@ -856,19 +958,27 @@ def build():
             src = HANDGUN_BOXES[calibre]
         written.append((save(icon, os.path.join(OUT, "item_%s.png" % name)), src["icon"]))
         written.append((save(world.convert("RGB"), os.path.join(boxes_dir, name + ".png")), src["tex"] + ".png"))
-    # 12 gauge birdshot: GoM tells buckshot and slug apart by hull / box colour only.
+    return written
+
+
+def build_shell(OUT, shell_name, box_name, hue):
+    """12 gauge loads: GoM tells buckshot and slug apart by hull / box colour only, so ours take a hue of their own."""
+    written = []
+    sub = "GunsOfTienPost93" if OUT == OUT_POST93 else "GunsOfTien"
+    rounds_dir = os.path.join(OUT, "worlditems", sub, "Rounds")
+    boxes_dir = os.path.join(OUT, "worlditems", sub, "Boxes")
     shell = Image.open(os.path.join(GOM_TEX, "item_12Gauge_Shell_Red.png"))
-    written.append((save(recolour_hue(shell, BIRDSHOT_HUE, is_red),
-                         os.path.join(OUT, "item_12Gauge_Shell_Birdshot.png")), "item_12Gauge_Shell_Red.png"))
+    written.append((save(recolour_hue(shell, hue, is_red),
+                         os.path.join(OUT, "item_%s.png" % shell_name)), "item_12Gauge_Shell_Red.png"))
     shell_tex = Image.open(os.path.join(GOM_ROUNDS, "Shotgun_Shell_Red.png"))
-    written.append((save(recolour_hue(shell_tex, BIRDSHOT_HUE, is_red),
-                         os.path.join(rounds_dir, "12Gauge_Shell_Birdshot.png")), "Shotgun_Shell_Red.png"))
+    written.append((save(recolour_hue(shell_tex, hue, is_red),
+                         os.path.join(rounds_dir, shell_name + ".png")), "Shotgun_Shell_Red.png"))
     box = Image.open(os.path.join(GOM_TEX, "item_12Gauge_Box_Buckshot.png"))
-    written.append((save(recolour_hue(box, BIRDSHOT_HUE, is_green, 1.35),
-                         os.path.join(OUT, "item_12Gauge_Box_Birdshot.png")), "item_12Gauge_Box_Buckshot.png"))
+    written.append((save(recolour_hue(box, hue, is_green, 1.35),
+                         os.path.join(OUT, "item_%s.png" % box_name)), "item_12Gauge_Box_Buckshot.png"))
     box_tex = Image.open(os.path.join(GOM_BOXES, "12Gauge_Box_Buckshot.png"))
-    written.append((save(recolour_hue(box_tex, BIRDSHOT_HUE, is_green, 1.35).convert("RGB"),
-                         os.path.join(boxes_dir, "12Gauge_Box_Birdshot.png")), "12Gauge_Box_Buckshot.png"))
+    written.append((save(recolour_hue(box_tex, hue, is_green, 1.35).convert("RGB"),
+                         os.path.join(boxes_dir, box_name + ".png")), "12Gauge_Box_Buckshot.png"))
     return written
 
 
@@ -929,11 +1039,11 @@ def contact_sheet(path, scale=4):
 
 def fit_all():
     jobs = [(icon, ROUNDS_FBX, geo, os.path.join(GOM_ROUNDS, tex + ".png"))
-            for _, geo, tex, icon, _ in ROUNDS]
+            for _, geo, tex, icon, _ in ROUNDS + ROUNDS_POST93 if icon not in CAMERAS]
     jobs += [(c["icon"], BOX_FBX % "RifleAmmoBox", None, os.path.join(GOM_BOXES, c["tex"] + ".png"))
-             for c in RIFLE_BOXES.values()]
+             for c in RIFLE_BOXES.values() if c["icon"] not in CAMERAS]
     jobs += [(c["icon"], BOX_FBX % "HandGunAmmoBox", None, os.path.join(GOM_BOXES, c["tex"] + ".png"))
-             for c in HANDGUN_BOXES.values()]
+             for c in HANDGUN_BOXES.values() if c["icon"] not in CAMERAS]
     done = set()
     for icon_name, fbx, geo, tex in jobs:
         if icon_name in done:

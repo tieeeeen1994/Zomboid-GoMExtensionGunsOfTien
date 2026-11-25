@@ -20,6 +20,11 @@ module Base {
             GunsOfTien.9x39_Bullet_SP6         = GunsOfTien.9x39_Box_SP6,
             GunsOfTien.3006_Bullet_SP          = GunsOfTien.3006_Box_SP,
             GunsOfTien.308_Bullet_SP           = GunsOfTien.308_Box_SP,
+            GunsOfTien.762x51_Bullet_M61       = GunsOfTien.762x51_Box_M61,
+            GunsOfTien.3006_Bullet_M2          = GunsOfTien.3006_Box_M2,
+            GunsOfTien.545x39_Bullet_7U1       = GunsOfTien.545x39_Box_7U1,
+            GunsOfTien.545x39_Bullet_7N10      = GunsOfTien.545x39_Box_7N10,
+            GunsOfTien.762x54_Bullet_B32       = GunsOfTien.762x54_Box_B32,
         }
     }
 
@@ -30,7 +35,7 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
-            item 20 [GunsOfTien.762x39_Bullet_US;GunsOfTien.762x39_Bullet_SP;GunsOfTien.762x39_Bullet_SteelCore;GunsOfTien.9x39_Bullet_SP6;GunsOfTien.3006_Bullet_SP;GunsOfTien.308_Bullet_SP] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 20 [GunsOfTien.762x39_Bullet_US;GunsOfTien.762x39_Bullet_SP;GunsOfTien.762x39_Bullet_SteelCore;GunsOfTien.9x39_Bullet_SP6;GunsOfTien.3006_Bullet_SP;GunsOfTien.308_Bullet_SP;GunsOfTien.762x51_Bullet_M61;GunsOfTien.3006_Bullet_M2;GunsOfTien.545x39_Bullet_7U1;GunsOfTien.545x39_Bullet_7N10;GunsOfTien.762x54_Bullet_B32] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
@@ -42,6 +47,11 @@ module Base {
             GunsOfTien.9x39_Box_SP6         = GunsOfTien.9x39_Bullet_SP6,
             GunsOfTien.3006_Box_SP          = GunsOfTien.3006_Bullet_SP,
             GunsOfTien.308_Box_SP           = GunsOfTien.308_Bullet_SP,
+            GunsOfTien.762x51_Box_M61       = GunsOfTien.762x51_Bullet_M61,
+            GunsOfTien.3006_Box_M2          = GunsOfTien.3006_Bullet_M2,
+            GunsOfTien.545x39_Box_7U1       = GunsOfTien.545x39_Bullet_7U1,
+            GunsOfTien.545x39_Box_7N10      = GunsOfTien.545x39_Bullet_7N10,
+            GunsOfTien.762x54_Box_B32       = GunsOfTien.762x54_Bullet_B32,
         }
     }
 
@@ -59,7 +69,10 @@ module Base {
             item 25 mapper:ammoType,
         }
         itemMapper ammoType {
-            GunsOfTien.12Gauge_Shell_Birdshot = GunsOfTien.12Gauge_Box_Birdshot,
+            GunsOfTien.12Gauge_Shell_Birdshot  = GunsOfTien.12Gauge_Box_Birdshot,
+            GunsOfTien.44_Bullet_Special       = GunsOfTien.44_Box_Special,
+            GunsOfTien.44_Bullet_HollowPoint   = GunsOfTien.44_Box_HollowPoint,
+            GunsOfTien.12Gauge_Shell_Flechette = GunsOfTien.12Gauge_Box_Flechette,
         }
     }
 
@@ -70,13 +83,16 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
-            item 25 [GunsOfTien.12Gauge_Shell_Birdshot] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 25 [GunsOfTien.12Gauge_Shell_Birdshot;GunsOfTien.44_Bullet_Special;GunsOfTien.44_Bullet_HollowPoint;GunsOfTien.12Gauge_Shell_Flechette] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
         }
         itemMapper ammoType {
-            GunsOfTien.12Gauge_Box_Birdshot = GunsOfTien.12Gauge_Shell_Birdshot,
+            GunsOfTien.12Gauge_Box_Birdshot  = GunsOfTien.12Gauge_Shell_Birdshot,
+            GunsOfTien.44_Box_Special        = GunsOfTien.44_Bullet_Special,
+            GunsOfTien.44_Box_HollowPoint    = GunsOfTien.44_Bullet_HollowPoint,
+            GunsOfTien.12Gauge_Box_Flechette = GunsOfTien.12Gauge_Shell_Flechette,
         }
     }
 
@@ -99,6 +115,9 @@ module Base {
             GunsOfTien.9x19_Bullet_PPP           = GunsOfTien.9x19_Box_PPP,
             GunsOfTien.45_Bullet_HollowPoint     = GunsOfTien.45_Box_HollowPoint,
             GunsOfTien.45_Bullet_P               = GunsOfTien.45_Box_P,
+            GunsOfTien.38_Bullet_P               = GunsOfTien.38_Box_P,
+            GunsOfTien.38_Bullet_HollowPoint     = GunsOfTien.38_Box_HollowPoint,
+            GunsOfTien.357_Bullet_HollowPoint    = GunsOfTien.357_Box_HollowPoint,
             GunsOfTienPost93.57x28_Bullet        = GunsOfTienPost93.57x28_Box,
             GunsOfTien.22LR_Bullet               = GunsOfTien.22LR_Box,
             GunsOfTien.22LR_Bullet_Subsonic      = GunsOfTien.22LR_Box_Subsonic,
@@ -118,7 +137,7 @@ module Base {
         canWalk     = true,
         Tags        = InHandCraft;CanBeDoneWhileWalking,
         inputs {
-            item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P;GunsOfTienPost93.57x28_Bullet;GunsOfTien.22LR_Bullet;GunsOfTien.22LR_Bullet_Subsonic;GunsOfTien.22LR_Bullet_HollowPoint;GunsOfTien.22LR_Bullet_HyperVelocity;GunsOfTien.762x25_Bullet;GunsOfTien.762x25_Bullet_SteelCore;GunsOfTien.762x25_Bullet_Subsonic;GunsOfTien.9x18_Bullet] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
+            item 50 [GunsOfTien.9x19_Bullet_Subsonic;GunsOfTien.9x19_Bullet_HollowPoint;GunsOfTien.9x19_Bullet_PPP;GunsOfTien.45_Bullet_HollowPoint;GunsOfTien.45_Bullet_P;GunsOfTien.38_Bullet_P;GunsOfTien.38_Bullet_HollowPoint;GunsOfTien.357_Bullet_HollowPoint;GunsOfTienPost93.57x28_Bullet;GunsOfTien.22LR_Bullet;GunsOfTien.22LR_Bullet_Subsonic;GunsOfTien.22LR_Bullet_HollowPoint;GunsOfTien.22LR_Bullet_HyperVelocity;GunsOfTien.762x25_Bullet;GunsOfTien.762x25_Bullet_SteelCore;GunsOfTien.762x25_Bullet_Subsonic;GunsOfTien.9x18_Bullet] mappers[ammoType] flags[AllowFavorite;InheritFavorite;IsExclusive],
         }
         outputs {
             item 1 mapper:ammoType,
@@ -129,6 +148,9 @@ module Base {
             GunsOfTien.9x19_Box_PPP           = GunsOfTien.9x19_Bullet_PPP,
             GunsOfTien.45_Box_HollowPoint     = GunsOfTien.45_Bullet_HollowPoint,
             GunsOfTien.45_Box_P               = GunsOfTien.45_Bullet_P,
+            GunsOfTien.38_Box_P               = GunsOfTien.38_Bullet_P,
+            GunsOfTien.38_Box_HollowPoint     = GunsOfTien.38_Bullet_HollowPoint,
+            GunsOfTien.357_Box_HollowPoint    = GunsOfTien.357_Bullet_HollowPoint,
             GunsOfTienPost93.57x28_Box        = GunsOfTienPost93.57x28_Bullet,
             GunsOfTien.22LR_Box               = GunsOfTien.22LR_Bullet,
             GunsOfTien.22LR_Box_Subsonic      = GunsOfTien.22LR_Bullet_Subsonic,
@@ -166,6 +188,17 @@ module Base {
             GunsOfTien.3006_Box_SP            = GunsOfTien.3006_Carton_SP,
             GunsOfTien.308_Box_SP             = GunsOfTien.308_Carton_SP,
             GunsOfTien.12Gauge_Box_Birdshot   = GunsOfTien.12Gauge_Carton_Birdshot,
+            GunsOfTien.762x51_Box_M61         = GunsOfTien.762x51_Carton_M61,
+            GunsOfTien.3006_Box_M2            = GunsOfTien.3006_Carton_M2,
+            GunsOfTien.545x39_Box_7U1         = GunsOfTien.545x39_Carton_7U1,
+            GunsOfTien.545x39_Box_7N10        = GunsOfTien.545x39_Carton_7N10,
+            GunsOfTien.38_Box_P               = GunsOfTien.38_Carton_P,
+            GunsOfTien.38_Box_HollowPoint     = GunsOfTien.38_Carton_HollowPoint,
+            GunsOfTien.357_Box_HollowPoint    = GunsOfTien.357_Carton_HollowPoint,
+            GunsOfTien.44_Box_Special         = GunsOfTien.44_Carton_Special,
+            GunsOfTien.44_Box_HollowPoint     = GunsOfTien.44_Carton_HollowPoint,
+            GunsOfTien.12Gauge_Box_Flechette  = GunsOfTien.12Gauge_Carton_Flechette,
+            GunsOfTien.762x54_Box_B32         = GunsOfTien.762x54_Carton_B32,
             GunsOfTienPost93.57x28_Box        = GunsOfTienPost93.57x28_Carton,
             GunsOfTien.22LR_Box               = GunsOfTien.22LR_Carton,
             GunsOfTien.22LR_Box_Subsonic      = GunsOfTien.22LR_Carton_Subsonic,
@@ -203,6 +236,17 @@ module Base {
             GunsOfTien.3006_Carton_SP            = GunsOfTien.3006_Box_SP,
             GunsOfTien.308_Carton_SP             = GunsOfTien.308_Box_SP,
             GunsOfTien.12Gauge_Carton_Birdshot   = GunsOfTien.12Gauge_Box_Birdshot,
+            GunsOfTien.762x51_Carton_M61         = GunsOfTien.762x51_Box_M61,
+            GunsOfTien.3006_Carton_M2            = GunsOfTien.3006_Box_M2,
+            GunsOfTien.545x39_Carton_7U1         = GunsOfTien.545x39_Box_7U1,
+            GunsOfTien.545x39_Carton_7N10        = GunsOfTien.545x39_Box_7N10,
+            GunsOfTien.38_Carton_P               = GunsOfTien.38_Box_P,
+            GunsOfTien.38_Carton_HollowPoint     = GunsOfTien.38_Box_HollowPoint,
+            GunsOfTien.357_Carton_HollowPoint    = GunsOfTien.357_Box_HollowPoint,
+            GunsOfTien.44_Carton_Special         = GunsOfTien.44_Box_Special,
+            GunsOfTien.44_Carton_HollowPoint     = GunsOfTien.44_Box_HollowPoint,
+            GunsOfTien.12Gauge_Carton_Flechette  = GunsOfTien.12Gauge_Box_Flechette,
+            GunsOfTien.762x54_Carton_B32         = GunsOfTien.762x54_Box_B32,
             GunsOfTienPost93.57x28_Carton        = GunsOfTienPost93.57x28_Box,
             GunsOfTien.22LR_Carton               = GunsOfTien.22LR_Box,
             GunsOfTien.22LR_Carton_Subsonic      = GunsOfTien.22LR_Box_Subsonic,
@@ -240,6 +284,17 @@ module Base {
             GunsOfTien.3006_Carton_SP            = GunsOfTien.3006_Crate_SP,
             GunsOfTien.308_Carton_SP             = GunsOfTien.308_Crate_SP,
             GunsOfTien.12Gauge_Carton_Birdshot   = GunsOfTien.12Gauge_Crate_Birdshot,
+            GunsOfTien.762x51_Carton_M61         = GunsOfTien.762x51_Crate_M61,
+            GunsOfTien.3006_Carton_M2            = GunsOfTien.3006_Crate_M2,
+            GunsOfTien.545x39_Carton_7U1         = GunsOfTien.545x39_Crate_7U1,
+            GunsOfTien.545x39_Carton_7N10        = GunsOfTien.545x39_Crate_7N10,
+            GunsOfTien.38_Carton_P               = GunsOfTien.38_Crate_P,
+            GunsOfTien.38_Carton_HollowPoint     = GunsOfTien.38_Crate_HollowPoint,
+            GunsOfTien.357_Carton_HollowPoint    = GunsOfTien.357_Crate_HollowPoint,
+            GunsOfTien.44_Carton_Special         = GunsOfTien.44_Crate_Special,
+            GunsOfTien.44_Carton_HollowPoint     = GunsOfTien.44_Crate_HollowPoint,
+            GunsOfTien.12Gauge_Carton_Flechette  = GunsOfTien.12Gauge_Crate_Flechette,
+            GunsOfTien.762x54_Carton_B32         = GunsOfTien.762x54_Crate_B32,
             GunsOfTienPost93.57x28_Carton        = GunsOfTienPost93.57x28_Crate,
             GunsOfTien.22LR_Carton               = GunsOfTien.22LR_Crate,
             GunsOfTien.22LR_Carton_Subsonic      = GunsOfTien.22LR_Crate_Subsonic,
@@ -277,6 +332,17 @@ module Base {
             GunsOfTien.3006_Crate_SP            = GunsOfTien.3006_Carton_SP,
             GunsOfTien.308_Crate_SP             = GunsOfTien.308_Carton_SP,
             GunsOfTien.12Gauge_Crate_Birdshot   = GunsOfTien.12Gauge_Carton_Birdshot,
+            GunsOfTien.762x51_Crate_M61         = GunsOfTien.762x51_Carton_M61,
+            GunsOfTien.3006_Crate_M2            = GunsOfTien.3006_Carton_M2,
+            GunsOfTien.545x39_Crate_7U1         = GunsOfTien.545x39_Carton_7U1,
+            GunsOfTien.545x39_Crate_7N10        = GunsOfTien.545x39_Carton_7N10,
+            GunsOfTien.38_Crate_P               = GunsOfTien.38_Carton_P,
+            GunsOfTien.38_Crate_HollowPoint     = GunsOfTien.38_Carton_HollowPoint,
+            GunsOfTien.357_Crate_HollowPoint    = GunsOfTien.357_Carton_HollowPoint,
+            GunsOfTien.44_Crate_Special         = GunsOfTien.44_Carton_Special,
+            GunsOfTien.44_Crate_HollowPoint     = GunsOfTien.44_Carton_HollowPoint,
+            GunsOfTien.12Gauge_Crate_Flechette  = GunsOfTien.12Gauge_Carton_Flechette,
+            GunsOfTien.762x54_Crate_B32         = GunsOfTien.762x54_Carton_B32,
             GunsOfTienPost93.57x28_Crate        = GunsOfTienPost93.57x28_Carton,
             GunsOfTien.22LR_Crate               = GunsOfTien.22LR_Carton,
             GunsOfTien.22LR_Crate_Subsonic      = GunsOfTien.22LR_Carton_Subsonic,

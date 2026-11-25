@@ -68,4 +68,27 @@ module Base {
 			item 3 GunsOfTien.Birdshot,
 		}
 	}
+
+	/* Flechettes (2026-11-25): nails cut short with pliers and finned with a file, a pouch from 20 nails (the steel
+	   of about a buckshot pouch's ten shells). */
+	craftRecipe GunsOfTien_MakeFlechettes
+	{
+		timedAction = Making,
+		Time = 150,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerParts,
+		xpAward = Blacksmith:5,
+		ToolTip = Tooltip_Recipe_GunsOfTien_MakeFlechettes,
+		inputs
+		{
+			item 20 [Base.Nails],
+			item 1 tags[base:pliers] mode:keep flags[MayDegradeLight],
+			item 1 tags[base:file] mode:keep flags[MayDegradeLight],
+		}
+		outputs
+		{
+			item 1 GunsOfTien.Flechettes,
+		}
+	}
 }

@@ -223,3 +223,82 @@ lines[M .. "762x25_Bullet_HollowPoint"] = {
     "Chance to degrade weapon condition increased by 11%",
     "Does not pierce",
 }
+-- Special rounds audit (2026-11-25): worded as the main mod's generated round lines (RoundTooltips.lua)
+lines[M .. "46x30_Bullet_DM21"] = {
+    "Soft core, stops in the first target",
+    "Damage to targets increased by 10%",
+    "Critical Damage increased by 10%",
+    "Does not pierce",
+}
+lines[M .. "9x18_Bullet_PMM"] = {
+    "Damage to targets increased by 20%",
+    "Critical Damage increased by 10%",
+    "Sound Radius and Volume increased by 10%",
+    "Chance to degrade weapon condition increased by 67%",
+}
+lines[M .. "9x18_Bullet_RG028"] = {
+    "Damage to targets decreased by 10%",
+    "Critical Damage decreased by 5%",
+    "Critical Chance decreased by 10%",
+    "Chance to degrade weapon condition increased by 18%",
+    "Piercing targets",
+    "Able to hit up to 2 targets",
+}
+lines[M .. "762x54_Bullet_SP"] = {
+    "Expands on impact",
+    "Damage to targets increased by 20%",
+    "Critical Damage increased by 15%",
+    "Critical Chance increased by 10%",
+    "Does not pierce",
+}
+lines[M .. "762x54_Bullet_7N13"] = {
+    "Damage to targets decreased by 10%",
+    "Critical Damage decreased by 5%",
+    "Critical Chance decreased by 10%",
+    "Chance to degrade weapon condition increased by 18%",
+    "Piercing targets",
+    "Able to hit up to 3 targets",
+}
+lines[M .. "545x39_Bullet_7N22"] = {
+    "Damage to targets decreased by 10%",
+    "Critical Damage decreased by 5%",
+    "Critical Chance decreased by 10%",
+    "Chance to degrade weapon condition increased by 18%",
+    "Piercing targets",
+    "Able to hit up to 5 targets",
+}
+lines[M .. "9x19_Bullet_7N21"] = {
+    "Sound Radius and Volume increased by 10%",
+    "Chance to degrade weapon condition increased by 43%",
+    "Piercing targets",
+    "Able to hit up to 2 targets",
+}
+lines[M .. "762x39_Bullet_HollowPoint"] = {
+    "Damage to targets increased by 15%",
+    "Critical Damage increased by 25%",
+    "Critical Chance increased by 10%",
+    "Does not pierce",
+}
+lines[M .. "3030_Bullet_FTX"] = {
+    "Polymer tip, safe in a tube magazine",
+    "Damage to targets increased by 15%",
+    "Critical Chance increased by 10%",
+    "Range increased by 15%",
+    "Does not pierce",
+}
+lines[M .. "50_Bullet_HollowPoint"] = {
+    "Damage to targets increased by 20%",
+    "Critical Damage increased by 15%",
+    "Critical Chance increased by 5%",
+    "Chance to degrade weapon condition increased by 11%",
+}
+lines[M .. "12Gauge_Shell_DragonsBreath"] = {
+    "Damage to targets decreased by 85%",
+    "Critical Damage decreased by 50%",
+    "Critical Chance decreased by 70%",
+    "Range reduced by 60%",
+    "Pellet spread wider by 150%",
+    "1 pellet hit in 5 sets the target on fire",
+    "Burns for 3 seconds, 4 burns kill",
+    "The fire stays on the target",
+}

@@ -2293,6 +2293,56 @@ Vector Arms' bayonet lug rails). Post-93's guns all have integral rails on every
   the load, the sticker in GoM's colours for it; the plain box and round are byte-identical to before. Regenerating
   RoundTooltips.lua also added the SS190's lines (piercing, up to 2), which it had lacked since the 11-03 move.
 
+## Special rounds audit (both mods, 2026-11-25; built the same day, not played)
+
+- **What** (user, 2026-11-25: "can we audit all calibres? Can we see if we all have missing special rounds for
+  each?", then "Why did you list them if you don't know it exists? Confirm pls." and "Can we implement all?"):
+  every calibre of GoM, the main mod and Post-93 checked for real loads that play differently (no tracers, match,
+  training, smoke or less-lethal); each load confirmed to exist on the web before building (sources in the
+  conversation; dates in TODO.md "Special rounds audit"). Dated before 1993 = main mod, later or undated = Post-93
+  (memory: later loads go to Post-93, never dropped). Complete before: 5.56x45, .45 ACP, .22 LR, 5.7x28, 40mm.
+  Skipped: 9x39 PAB-9 (a worse SP-6, would not play differently), a separate .30-30 soft point (user dropped it).
+- **Main mod** (gen_scripts.py ROUNDS; new CALIBRES 762x51, 545x39, 762x54, 38, 357, 44 with GoM's box weights):
+  7.62x51 M61 and .30-06 M2 (`GunsOfTien_RifleAP`: the 7.62x39 steel core's numbers, pierce 3), 5.45x39 7U1
+  (x0.55, sound x0.5, no racking rule: made for the PBS-4) and 7N10 (pierce 4, no tumbling), .38 +P (as the .45
+  +P), .38 / .357 / .44 hollow points (`GunsOfTien_HandgunHollowPoint`, the 9x19 HP's numbers), .44 Special
+  (`FULL_NAME`: ".44 Special Round", x0.7, quieter, kinder to the gun), 12 gauge flechette (x0.6 per pellet, range
+  x1.3, spread x0.6; Ammo Maker part `GunsOfTien.Flechettes` from 20 nails + pliers + file, its box and carton like
+  the birdshot's; art = the birdshot pellets in steel, so it reads as pellets, not darts), 7.62x54R B-32
+  (AP numbers + Incendiary.lua). The plain 7.62x54R joins the RealisticPiercing list (pierce 2, as 7.62x51).
+- **Post-93** (gen_post93_ammo.py ROUNDS, its CALIBRES now take GoM's calibres with per_box 20 / 25 / 50, box
+  meshes and GoM's weights, and open / pack recipes per box size `GunsOfTienPost93_OpenBoxOf<n>Bullets`):
+  4.6x30 DM21 (x1.1, no pierce), 9x18 PMM (as +P+) and RG028 (`GunsOfTienPost93_PistolAP`, pierce 2), 9x19 7N21
+  (pierce 2, full damage, +P+ wear), 5.45x39 7N22 (pierce 5), 7.62x39 hollow point (x1.15, crit x1.25 / x1.1),
+  7.62x54R soft point (the main mod's `GunsOfTien_RifleSoftPoint`) and 7N13 (pierce 3), .30-30 FTX (x1.15, range
+  x1.15), .50 AE hollow point, 12 gauge Dragon's Breath (x0.15, range x0.4, spread x2.5 + Incendiary.lua).
+  Post-93 lines are hand-written in its Tooltips.lua; the main mod's come from gen_round_tooltips.py (NOTES for the
+  7U1, .44 Special, B-32).
+- **Ammo Maker**: every load has its own type (copies; AP loads copy Ammo Maker's AP types, since its own type may
+  carry another mod's round and one recipe serves one type), mapped in each mod's AmmoMaker.lua.
+- **Incendiary** (`shared/GunsOfTien/Incendiary.lua`, user: "We can add incendiary rounds then"; traced in the 42.22
+  jar): a hit (OnHitZombie, the shooter's machine only) with a gun whose AmmoType is the B-32 (25 %) or Dragon's
+  Breath (20 % per pellet) lights the zombie. `SetOnFire` must run on the zombie's owner: the owner's ZombiePacket
+  flag IsOnFire lights or puts out every other copy (NetworkZombieVariables.setBooleanVariables), so a client
+  sends `GunsOfTien/ignite {id}`, the server checks the sender's gun and 80 tiles, marks the zombie and
+  broadcasts `burn {id, ms}`. The burns are the server's (user: "Can we not make the burns owned by the
+  server?"): every machine keeps the same id -> end-time table, and whichever runs the zombie now (client: not
+  `isRemoteZombie()`; server: `getOwnerPlayer()` nil; single player: always) lights it, sets the rate and puts it
+  out every 100 ms, so a change of owner mid-burn carries on. The damage cannot be the server's: the owner's
+  ZombiePacket overwrites the server copy's health. Single player keys the table by the zombie (no online IDs).
+  A burning zombie loses health until it dies (`ReduceHealthWhenBurning`, owner only, never goes out). No ground
+  fire: the server / single player copy gets `setFireSpreadProbability(0)` (SpreadFireMP / SpreadFire roll it),
+  and `OnZombieDead` (fired in `onKilled`, before `die()` makes the corpse, whose constructor starts a fire on
+  its square when `isOnFire`) puts it out and gives the spread (6) back. Burns 3 s from the last hit (user)
+  at fireKillRate 0.068 on the machine that lit it (user: "4 burns kill" a normal zombie, 1.8-2.1 health),
+  then `StopBurning` there and vanilla's 0.0038 back. Known gap: a lit zombie that despawns
+  alive leaves spread 0 on its reused object.
+- **Art**: make_art.py (GoM-template rifle and revolver boxes, labels only on the coloured revolver / .50 boxes,
+  new schemes LEAD, API, FTX, the shells by hue: flechette teal, dragon's breath orange; `ROUNDS_POST93` /
+  `BOXES_POST93` into Post-93's textures), make_762x25_9x18_art.py (PMM, RG028), post93/make_ammo_art.py (DM21),
+  make_ammomaker_art.py (flechette pouch and box; its Ammo Maker path now finds the Windows install).
+- **Not done**: playing any of it; the ignite relay under lag; flechette art as darts.
+
 ## 7.62x25mm Tokarev and 9x18mm Makarov (main mod, 2026-11-25; built overnight, not played)
 
 - **What** (user, 2026-11-25: "implement the Tokarev and Makarov ammunition. Be sure to design the ammo boxes and

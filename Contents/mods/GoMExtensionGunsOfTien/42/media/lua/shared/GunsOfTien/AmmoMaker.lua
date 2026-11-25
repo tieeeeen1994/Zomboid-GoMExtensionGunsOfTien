@@ -55,6 +55,19 @@ local NEW_TYPES = {
     -- core on Ammo Maker's own small handgun AP bullet, the subsonic x0.7
     ["762x25TokAP"] = { "762x25Tok", { bulletType = "ammomaker.ammomaker_BulletHandgunSAP" } },
     ["762x25TokSS"] = { "762x25Tok", { grainsAmount = 8 } },
+    -- Special rounds audit (2026-11-25): AP rounds copy Ammo Maker's AP types (its own type may already carry
+    -- another mod's round); +P x1.2, subsonic x0.7, the .44 Special about 0.55 of the .44 Magnum's charge
+    ["308WinM61"] = { "308WinAP", {} },
+    ["3006SpringM2"] = { "3006SpringAP", {} },
+    ["545x39SS"] = { "545x39", { grainsAmount = 39 } },
+    ["545x39PP"] = { "545x39", { bulletType = "ammomaker.ammomaker_BulletRifleSAP" } },
+    ["38SPP"] = { "38SP", { grainsAmount = 14 } },
+    ["38SPHP"] = { "38SP", { bulletType = "ammomaker.ammomaker_BulletHandgunMHP" } },
+    ["357MagHP"] = { "357Mag", { bulletType = "ammomaker.ammomaker_BulletHandgunMHP" } },
+    ["44Spec"] = { "44Mag", { grainsAmount = 17 } },
+    ["44MagHP"] = { "44Mag", { bulletType = "ammomaker.ammomaker_BulletHandgunMHP" } },
+    ["12Flech"] = { "12Buck00", { bulletType = "GunsOfTien.Flechettes" } },
+    ["762x54RB32"] = { "762x54RAP", {} },
 }
 
 local SOFT_POINT_RECIPE = "GunsOfTien_MakeSoftPointBullet"
@@ -113,7 +126,7 @@ function GunsOfTien_HideAmmoMakerRecipe(name)
 end
 
 local function hiddenRecipes()
-    local names = { SOFT_POINT_RECIPE, "GunsOfTien_MakeBirdshot", "GunsOfTien_ProduceBirdshot" }
+    local names = { SOFT_POINT_RECIPE, "GunsOfTien_MakeBirdshot", "GunsOfTien_ProduceBirdshot", "GunsOfTien_MakeFlechettes" }
     for newType in pairs(NEW_TYPES) do
         names[#names + 1] = "Make" .. newType
         names[#names + 1] = "Produce" .. newType
@@ -180,6 +193,16 @@ ammoMakerAmmoParts["GunsOfTien.Birdshot"] = {
     partCat = "Shotgun",
     boxType = "GunsOfTien.BoxBirdshot",
 }
+ammoMakerAmmoParts["GunsOfTien.Flechettes"] = {
+    partClass = "Projectile",
+    partExtraClass = "Standard",
+    makeRecipe = "GunsOfTien_MakeFlechettes",
+    recycleRecipe = "RecycleBulletsShots",
+    recycleMaterial = "Base.IronScrap",
+    bulkSize = 300,
+    partCat = "Shotgun",
+    boxType = "GunsOfTien.BoxFlechettes",
+}
 
 for newType, def in pairs(NEW_TYPES) do
     local base = ammoMakerAmmoData[def[1]]
@@ -205,6 +228,17 @@ local MAP = {
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.3006_Bullet_SP", ammoType = "3006SpringSP" },
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.308_Bullet_SP", ammoType = "308WinSP" },
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.12Gauge_Shell_Birdshot", ammoType = "12Bird" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.762x51_Bullet_M61", ammoType = "308WinM61" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.3006_Bullet_M2", ammoType = "3006SpringM2" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.545x39_Bullet_7U1", ammoType = "545x39SS" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.545x39_Bullet_7N10", ammoType = "545x39PP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.38_Bullet_P", ammoType = "38SPP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.38_Bullet_HollowPoint", ammoType = "38SPHP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.357_Bullet_HollowPoint", ammoType = "357MagHP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.44_Bullet_Special", ammoType = "44Spec" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.44_Bullet_HollowPoint", ammoType = "44MagHP" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.12Gauge_Shell_Flechette", ammoType = "12Flech" },
+    { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTien.762x54_Bullet_B32", ammoType = "762x54RB32" },
     -- the P90's SS190 (Post-93's id; moved here 2026-11-03): Ammo Maker's own 57x28 type
     { modId = "GoMExtensionGunsOfTien", itemType = "GunsOfTienPost93.57x28_Bullet", ammoType = "57x28" },
     -- .22 LR: Ammo Maker's own 22LR type (rimfire case, small handgun bullet)

@@ -59,4 +59,136 @@ module GunsOfTienPost93 {
         texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_762x25_Box_HP,
         scale   = 0.4,
     }
+
+    model GunsOfTienPost93_46x30_Round_DM21 {
+        mesh    = Worlditems/Ammunition/Rounds|46x30_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_46x30_Round_DM21,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_46x30_Box_DM21 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_46x30_Box_DM21,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_9x18_Round_PMM {
+        mesh    = Worlditems/Ammunition/Rounds|9x19_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_9x18_Round_PMM,
+        scale   = 0.0135,
+    }
+
+    model GunsOfTienPost93_9x18_Box_PMM {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_9x18_Box_PMM,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_9x18_Round_RG028 {
+        mesh    = Worlditems/Ammunition/Rounds|9x19_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_9x18_Round_RG028,
+        scale   = 0.0135,
+    }
+
+    model GunsOfTienPost93_9x18_Box_RG028 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_9x18_Box_RG028,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_762x54_Round_SP {
+        mesh    = Worlditems/Ammunition/Rounds|762x54_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_762x54_Round_SP,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_762x54_Box_SP {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_762x54_Box_SP,
+        scale   = 0.6,
+    }
+
+    model GunsOfTienPost93_762x54_Round_7N13 {
+        mesh    = Worlditems/Ammunition/Rounds|762x54_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_762x54_Round_7N13,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_762x54_Box_7N13 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_762x54_Box_7N13,
+        scale   = 0.6,
+    }
+
+    model GunsOfTienPost93_545x39_Round_7N22 {
+        mesh    = Worlditems/Ammunition/Rounds|545x39_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_545x39_Round_7N22,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_545x39_Box_7N22 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_545x39_Box_7N22,
+        scale   = 0.6,
+    }
+
+    model GunsOfTienPost93_9x19_Round_7N21 {
+        mesh    = Worlditems/Ammunition/Rounds|9x19_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_9x19_Round_7N21,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_9x19_Box_7N21 {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_9x19_Box_7N21,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_762x39_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|762x39_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_762x39_Round_HP,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_762x39_Box_HP {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_762x39_Box_HP,
+        scale   = 0.6,
+    }
+
+    model GunsOfTienPost93_3030_Round_FTX {
+        mesh    = Worlditems/Ammunition/Rounds|3030_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_3030_Round_FTX,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_3030_Box_FTX {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_3030_Box_FTX,
+        scale   = 0.6,
+    }
+
+    model GunsOfTienPost93_50_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|50_Round,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_50_Round_HP,
+        scale   = 0.015,
+    }
+
+    model GunsOfTienPost93_50_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_50_Box_HP,
+        scale   = 0.4,
+    }
+
+    model GunsOfTienPost93_12Gauge_Shell_DragonsBreath {
+        mesh    = Worlditems/Ammunition/Rounds|12Gauge_Shell,
+        texture = worlditems/GunsOfTienPost93/Rounds/GunsOfTienPost93_12Gauge_Shell_DragonsBreath,
+        scale   = 0.012,
+    }
+
+    model GunsOfTienPost93_12Gauge_Box_DragonsBreath {
+        mesh    = WorldItems/BoxOfShotGunShells,
+        texture = worlditems/GunsOfTienPost93/Boxes/GunsOfTienPost93_12Gauge_Box_DragonsBreath,
+        scale   = 0.6,
+    }
 }

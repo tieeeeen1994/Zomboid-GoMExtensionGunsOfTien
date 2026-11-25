@@ -224,9 +224,13 @@ TOKAREV = [("", None, "TOKAREV", "", "STANDARD", RED),
 MAKAROV = [("", None, "MAKAROV", "", "STANDARD", RED)]
 # the Post-93 add-on's Tokarev load (gen_post93_ammo.py ROUNDS): no hollow point dated before 1993
 POST93_TOKAREV = [("_HP", "HP", "HOLLOW POINT", "HOLLOW POINT", "HOLLOW PT", None)]
+# the Post-93 add-on's later Makarov loads (special rounds audit, 2026-11-25): PMM in GoM's overpressure violet,
+# RG028 in its armour piercing red
+POST93_MAKAROV = [("_PMM", "OP", "PMM", "PMM", "PMM", None), ("_RG028", "AP", "RG028", "RG028 AP", "RG028", None)]
 # (mod prefix, textures folder, calibre, loads)
 SETS = [("GunsOfTien", OUT, "762x25", TOKAREV), ("GunsOfTien", OUT, "9x18", MAKAROV),
-        ("GunsOfTienPost93", OUT_POST93, "762x25", POST93_TOKAREV)]
+        ("GunsOfTienPost93", OUT_POST93, "762x25", POST93_TOKAREV),
+        ("GunsOfTienPost93", OUT_POST93, "9x18", POST93_MAKAROV)]
 GOM_RED = (161, 67, 59)
 
 

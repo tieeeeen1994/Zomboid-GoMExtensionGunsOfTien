@@ -66,6 +66,36 @@ Ammo.RegisterMultipleAmmoFamilies({
     ["7.62x25mm"] = {
         { type = M .. "762x25_Bullet_HollowPoint", enum = T.BULLET_762x25_HollowPoint, profile = "GunsOfTienPost93_762x25HollowPoint" },
     },
+    -- Special rounds audit (2026-11-25, TODO.md): later or undated loads, into the main mod's and GoM's families
+    ["4.6x30mm"] = {
+        { type = M .. "46x30_Bullet_DM21", enum = T.BULLET_46x30_DM21, profile = "GunsOfTienPost93_46x30DM21" },
+    },
+    ["9x18mm"] = {
+        { type = M .. "9x18_Bullet_PMM", enum = T.BULLET_9x18_PMM, profile = "GunsOfTienPost93_9x18PMM" },
+        { type = M .. "9x18_Bullet_RG028", enum = T.BULLET_9x18_RG028, profile = "GunsOfTienPost93_PistolAP" },
+    },
+    ["7.62x54mm"] = {
+        { type = M .. "762x54_Bullet_SP", enum = T.BULLET_762x54_SP, profile = "GunsOfTien_RifleSoftPoint" },
+        { type = M .. "762x54_Bullet_7N13", enum = T.BULLET_762x54_7N13, profile = "GunsOfTienPost93_762x54_7N13" },
+    },
+    ["5.45x39mm"] = {
+        { type = M .. "545x39_Bullet_7N22", enum = T.BULLET_545x39_7N22, profile = "GunsOfTienPost93_545x39_7N22" },
+    },
+    ["9x19mm"] = {
+        { type = M .. "9x19_Bullet_7N21", enum = T.BULLET_9x19_7N21, profile = "GunsOfTienPost93_9x19_7N21" },
+    },
+    ["7.62x39mm"] = {
+        { type = M .. "762x39_Bullet_HollowPoint", enum = T.BULLET_762x39_HollowPoint, profile = "GunsOfTienPost93_762x39HollowPoint" },
+    },
+    [".30-30 Winchester"] = {
+        { type = M .. "3030_Bullet_FTX", enum = T.BULLET_3030_FTX, profile = "GunsOfTienPost93_3030FTX" },
+    },
+    [".50 AE"] = {
+        { type = M .. "50_Bullet_HollowPoint", enum = T.BULLET_50_HollowPoint, profile = "GunsOfTien_HandgunHollowPoint" },
+    },
+    ["12Gauge"] = {
+        { type = M .. "12Gauge_Shell_DragonsBreath", enum = T.SHELL_12G_DragonsBreath, profile = "GunsOfTienPost93_12GaugeDragonsBreath" },
+    },
 })
 
 local function pierce(targets)
@@ -103,6 +133,89 @@ Ammo.RegisterMultipleAmmoStats({
         }
     end)(),
     -- the main mod's 9x19 / .45 hollow points' numbers, and no piercing (the Tokarev's plain round is famous for it)
+    -- Special rounds audit (2026-11-25). DM21: the soft lead-cored ball beside the DM11's steel penetrator, so it
+    -- hits harder and stops in the first target
+    ["GunsOfTienPost93_46x30DM21"] = (function()
+        local a, b = pierce(1)
+        return { SF.Multiply("MaxDamage", 1.1), SF.Multiply("MinDamage", 1.1), SF.Multiply("CritDmgMultiplier", 1.1), a, b }
+    end)(),
+    -- PMM (early 1990s): the hot Makarov load, as the 9x19 +P+
+    ["GunsOfTienPost93_9x18PMM"] = {
+        SF.Multiply("MaxDamage", 1.2), SF.Multiply("MinDamage", 1.2),
+        SF.Multiply("CritDmgMultiplier", 1.1),
+        SF.Multiply("SoundRadius", 1.1), SF.Multiply("SoundVolume", 1.1),
+        SF.Multiply("ConditionLowerChanceOneIn", 0.6),
+    },
+    -- pistol armour piercing (RG028): the main mod's Tokarev steel core
+    ["GunsOfTienPost93_PistolAP"] = (function()
+        local a, b = pierce(2)
+        return {
+            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
+            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            a, b,
+        }
+    end)(),
+    -- 7N21: a hot 9x19 with a steel penetrator, so the pistol AP's piercing at full damage and the +P+'s wear
+    ["GunsOfTienPost93_9x19_7N21"] = (function()
+        local a, b = pierce(2)
+        return {
+            SF.Multiply("SoundRadius", 1.1), SF.Multiply("SoundVolume", 1.1),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.7),
+            a, b,
+        }
+    end)(),
+    -- 7N13: the steel core 7.62x54R, one target more than the plain round's realistic piercing (2)
+    ["GunsOfTienPost93_762x54_7N13"] = (function()
+        local a, b = pierce(3)
+        return {
+            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
+            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            a, b,
+        }
+    end)(),
+    -- 7N22 (1998): the AP 5.45, two targets more than the plain 7N6's 3 and one more than the 7N10
+    ["GunsOfTienPost93_545x39_7N22"] = (function()
+        local a, b = pierce(5)
+        return {
+            SF.Multiply("MaxDamage", 0.9), SF.Multiply("MinDamage", 0.9),
+            SF.Multiply("CritDmgMultiplier", 0.95), SF.Multiply("CriticalChance", 0.9),
+            SF.Multiply("ConditionLowerChanceOneIn", 0.85),
+            a, b,
+        }
+    end)(),
+    -- 7.62x39 hollow point: opens wider than the main mod's soft point, which reaches a little further in
+    ["GunsOfTienPost93_762x39HollowPoint"] = (function()
+        local a, b = pierce(1)
+        return {
+            SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
+            SF.Multiply("CritDmgMultiplier", 1.25), SF.Multiply("CriticalChance", 1.1),
+            a, b,
+        }
+    end)(),
+    -- .30-30 FTX (2005): a pointed polymer tip safe in a tube magazine, so it flies flatter and further and opens
+    -- on impact
+    ["GunsOfTienPost93_3030FTX"] = (function()
+        local a, b = pierce(1)
+        return {
+            SF.Multiply("MaxDamage", 1.15), SF.Multiply("MinDamage", 1.15),
+            SF.Multiply("CriticalChance", 1.1),
+            SF.Multiply("MaxRange", 1.15),
+            a, b,
+        }
+    end)(),
+    -- Dragon's breath: burning magnesium sparks, almost no hitting power and a short reach; the fire is the main
+    -- mod's Incendiary.lua
+    ["GunsOfTienPost93_12GaugeDragonsBreath"] = {
+        SF.Multiply("MaxDamage", 0.15), SF.Multiply("MinDamage", 0.15),
+        SF.Multiply("CriticalChance", 0.3),
+        SF.Multiply("CritDmgMultiplier", 0.5),
+        SF.Multiply("MaxRange", 0.4),
+        function(weapon)
+            weapon:setProjectileSpread(math.max(0.3, weapon:getProjectileSpread() * 2.5))
+        end,
+    },
     ["GunsOfTienPost93_762x25HollowPoint"] = (function()
         local a, b = pierce(1)
         return {

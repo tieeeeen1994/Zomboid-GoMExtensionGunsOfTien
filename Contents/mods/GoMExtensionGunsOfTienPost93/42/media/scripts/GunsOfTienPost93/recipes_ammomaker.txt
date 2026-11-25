@@ -105,4 +105,290 @@ module Base {
 		inputs {}
 		outputs {}
 	}
+
+	craftRecipe Make46x30DM21
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make46x30DM21,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce46x30DM21
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce46x30DM21,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x18MakPMM
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x18MakPMM,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x18MakPMM
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x18MakPMM,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x18MakRG028
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x18MakRG028,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x18MakRG028
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x18MakRG028,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x54RSP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x54RSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x54RSP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x54RSP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x54R7N13
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x54R7N13,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x54R7N13
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x54R7N13,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make545x39_7N22
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make545x39_7N22,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce545x39_7N22
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce545x39_7N22,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make9x19Para7N21
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make9x19Para7N21,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce9x19Para7N21
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce9x19Para7N21,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make762x39HP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make762x39HP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce762x39HP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce762x39HP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make3030WinFTX
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make3030WinFTX,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce3030WinFTX
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce3030WinFTX,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make50AEHP
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make50AEHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce50AEHP
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce50AEHP,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Make12DragonsBreath
+	{
+		timedAction = GunsOfTien_MakeAmmo,
+		Time = 30,
+		Tags = InHandCraft,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:3,
+		ToolTip = Tooltip_Recipe_Make12DragonsBreath,
+		inputs {}
+		outputs {}
+	}
+
+	craftRecipe Produce12DragonsBreath
+	{
+		timedAction = GunsOfTien_ProduceAmmo,
+		Time = 100,
+		Tags = AnySurfaceCraft;CanBeDoneFromFloor,
+		NeedToBeLearn = False,
+		category = AmmoMakerAmmo,
+		xpAward = Reloading:10,
+		ToolTip = Tooltip_Recipe_Produce12DragonsBreath,
+		inputs {}
+		outputs {}
+	}
 }

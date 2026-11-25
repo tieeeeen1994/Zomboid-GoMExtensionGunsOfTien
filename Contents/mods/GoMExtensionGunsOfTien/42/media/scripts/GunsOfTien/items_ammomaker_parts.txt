@@ -39,6 +39,19 @@ module GunsOfTien {
         ToolTip             =   Tooltip_Item_GunsOfTien_Birdshot,
     }
 
+    /* Flechettes (2026-11-25): a pouch like the birdshot's (100 uses, a shell takes 10). */
+    item Flechettes
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:drainable,
+        UseDelta            =   0.01,
+        Icon                =   GunsOfTien_Flechettes,
+        WorldStaticModel    =   GunsOfTien.Flechettes,
+        Weight              =   0.35,
+        Tags                =   base:hasmetal,
+        ToolTip             =   Tooltip_Item_GunsOfTien_Flechettes,
+    }
+
     item BoxBulletsRifleSSP
     {
         DisplayCategory     =   AmmoParts,
@@ -67,6 +80,30 @@ module GunsOfTien {
         WorldStaticModel    =   GunsOfTien.BoxBirdshot,
         Weight              =   1,
         ToolTip             =   Tooltip_Item_GunsOfTien_BoxBirdshot,
+    }
+
+    item BoxFlechettes
+    {
+        DisplayCategory     =   AmmoParts,
+        ItemType            =   base:normal,
+        Icon                =   GunsOfTien_BoxFlechettes,
+        WorldStaticModel    =   GunsOfTien.BoxFlechettes,
+        Weight              =   1,
+        ToolTip             =   Tooltip_Item_GunsOfTien_BoxFlechettes,
+    }
+
+    model Flechettes
+    {
+        mesh = WorldItems/ammomaker_Balls00,
+        texture = worlditems/GunsOfTien_Flechettes,
+        scale = 0.012,
+    }
+
+    model BoxFlechettes
+    {
+        mesh = WorldItems/ammomaker_BoxBalls00,
+        texture = worlditems/GunsOfTien_BoxFlechettes,
+        scale = 0.01,
     }
 
     model Birdshot

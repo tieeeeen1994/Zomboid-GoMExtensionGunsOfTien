@@ -20,7 +20,12 @@ Maker they can be made.
 - 9x39mm SP-6 (Armor Piercing)
 - .30-06 Springfield Soft Point
 - .308 Winchester Soft Point
-- 12 Gauge Birdshot
+- 12 Gauge Birdshot, Flechette (reaches further, tighter pattern)
+- 7.62x51mm M61 and .30-06 Springfield M2 (Armor Piercing)
+- 5.45x39mm 7U1 (Subsonic) and 7N10 (pierces a fourth target)
+- .38 Special [+P] and Hollow Point, .357 Magnum Hollow Point
+- .44 Special (a milder round any .44 Magnum gun fires) and .44 Magnum Hollow Point
+- 7.62x54mmR B-32 (Incendiary): pierces like armour piercing and 1 hit in 4 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
 
 ## .22 LR
 
@@ -262,6 +267,7 @@ Used when it is enabled, as in Guns of Marz. Without it the new rounds cannot be
 - Recipes for every new round
 - Soft point bullets: Make Soft Point Bullet
 - Birdshot pellets: Pour Birdshot Pellets
+- Flechettes: Make Flechettes (20 nails, pliers and a file)
 - Ammo part cartons and crates (sandbox option, on by default): 15 boxes or bags of one kind of Ammo Maker part
   (bullets, casings, fired casings and hulls, primers, hulls, slugs, pellets or filler) pack into a carton and 5
   cartons into a crate, and back (Place Ammo Part Boxes in Carton / Crate, Open Carton / Crate of Ammo Part Boxes).
@@ -304,7 +310,9 @@ Enable *GoM Extension: Guns of Tien - Post-93* as well.
 - A-91M 54 Prototype, a battle rifle on the first A-91M's body with the 40mm grenade launcher over the barrel: 7.62x54mmR (a chambering the real gun never had) on the SV-98's magazines, its 10 and a 20-round one made for this rifle, a longer and heavier barrel, automatic or single shots at 600 rounds a minute, two grips joined by a frame, the launcher's own trigger under the muzzle and its sight leaf raised while the launcher is in use; Guns of Marz's rail on the carrying handle for optics, no muzzle parts
 - 4.6x30mm DM11, Subsonic
 - 5.7x28mm SS190, SB193 (Subsonic), SS197SR (Hollow Point)
-- 7.62x25mm Tokarev Hollow Point, a later load for the main mod's Tokarev round
+- 4.6x30mm DM21 (a soft-cored ball beside the DM11)
+- Later loads for older calibres: 7.62x25mm Tokarev Hollow Point; 9x18mm Makarov PMM (hot) and RG028 (Armor Piercing); 9x19mm 7N21 (Armor Piercing); 5.45x39mm 7N22 (Armor Piercing); 7.62x39mm Hollow Point; 7.62x54mmR Soft Point and 7N13 (Armor Piercing); .30-30 FTX (Polymer Tip, reaches further); .50 AE Hollow Point
+- 12 Gauge Dragon's Breath (Incendiary): almost no hitting power, but 1 pellet hit in 5 sets a zombie on fire for 3 seconds (4 burns kill); the fire stays on the zombie, never on the ground
 
 ### Where Post-93's guns are found
 

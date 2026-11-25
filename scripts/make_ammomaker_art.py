@@ -42,8 +42,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import make_art  # noqa: E402  (FBX reader, camera fit, icon transfer; not changed by this script)
 
-AM = os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/2788256295/"
-                        "mods/AmmoMaker")
+AM = next((p for p in (os.path.expanduser("~/Library/Application Support/Steam/steamapps/workshop/content/108600/"
+                                         "2788256295/mods/AmmoMaker"),
+                       "C:/Program Files (x86)/Steam/steamapps/workshop/content/108600/2788256295/mods/AmmoMaker")
+           if os.path.isdir(p)), None)
 AM_MEDIA = [os.path.join(AM, d, "media") for d in ("common", "42.20", "42", "")]
 OUT = os.path.normpath(os.path.join(HERE, "..", "Contents/mods/GoMExtensionGunsOfTien/42/media/textures"))
 
@@ -655,7 +657,46 @@ def build():
     done.append((save(tex, world("GunsOfTien_BoxBirdshot")), "WorldItems/ammomaker_BoxBalls00.png"))
     done.append((save(box_icon("BoxBalls00", "BoxBalls00", am_world("BoxBalls00"), tex),
                       icon("GunsOfTien_BoxBirdshot")), "Item_ammomaker_BoxBalls00.png"))
+    # Flechettes (2026-11-25): the birdshot art in bright steel; the box's print teal, "FLECHETTE" on its labels
+    done.append((save(steel(make_birdshot_icon()), icon("GunsOfTien_Flechettes")), "birdshot icon"))
+    done.append((save(steel(make_birdshot_world()), world("GunsOfTien_Flechettes")), "birdshot world"))
+    tex = make_flechette_box_texture()
+    done.append((save(tex, world("GunsOfTien_BoxFlechettes")), "birdshot box"))
+    done.append((save(box_icon("BoxBalls00", "BoxBalls00", am_world("BoxBalls00"), tex),
+                      icon("GunsOfTien_BoxFlechettes")), "Item_ammomaker_BoxBalls00.png"))
     return done
+
+
+STEEL_TINT = (200, 208, 220)
+
+
+def steel(img):
+    """Lead grey pellets to bright steel: each pixel's lightness on a cool steel tint, a little brighter."""
+    out = img.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            c = px[x, y]
+            if len(c) == 4 and c[3] == 0:
+                continue
+            k = min(1.6, (0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2]) / 255.0 * 1.5)
+            px[x, y] = tuple(min(255, int(t * k)) for t in STEEL_TINT) + tuple(c[3:])
+    return out
+
+
+def make_flechette_box_texture():
+    cfg = BALLS_BOX
+    tex = make_birdshot_box_texture()
+    is_magenta = lambda c: 270 < make_art.hue_of(c)[0] < 345 and make_art.hue_of(c)[1] > 0.3
+    tex = make_art.recolour_hue(tex, 186.0, is_magenta).convert("RGB")
+    rgba = tex.convert("RGBA")
+    for rect, flip in ((cfg["front_label"], False), (cfg["back_label"], True)):
+        x0, y0, x1, y1 = rect
+        bg = rgba.getpixel((x0, y0))[:3]
+        label = Image.new("RGBA", (x1 - x0 + 1, y1 - y0 + 1), bg + (255,))
+        label.alpha_composite(make_art.render_text("FLECHETTE", label.width, label.height, WHITE, False))
+        rgba.paste(label.rotate(180) if flip else label, (x0, y0))
+    return rgba.convert("RGB")
 
 
 # ==================================================================================================

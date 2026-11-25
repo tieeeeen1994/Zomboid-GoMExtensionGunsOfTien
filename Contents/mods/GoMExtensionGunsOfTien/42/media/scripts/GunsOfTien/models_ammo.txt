@@ -143,4 +143,136 @@ module GunsOfTien {
         texture = worlditems/GunsOfTien/Boxes/12Gauge_Box_Birdshot,
         scale   = 0.6,
     }
+
+    model 762x51_Round_M61 {
+        mesh    = Worlditems/Ammunition/Rounds|762x51_Round,
+        texture = worlditems/GunsOfTien/Rounds/762x51_Round_M61,
+        scale   = 0.015,
+    }
+
+    model 762x51_Box_M61 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/762x51_Box_M61,
+        scale   = 0.6,
+    }
+
+    model 3006_Round_M2 {
+        mesh    = Worlditems/Ammunition/Rounds|3006_Round,
+        texture = worlditems/GunsOfTien/Rounds/3006_Round_M2,
+        scale   = 0.015,
+    }
+
+    model 3006_Box_M2 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/3006_Box_M2,
+        scale   = 0.6,
+    }
+
+    model 545x39_Round_7U1 {
+        mesh    = Worlditems/Ammunition/Rounds|545x39_Round,
+        texture = worlditems/GunsOfTien/Rounds/545x39_Round_7U1,
+        scale   = 0.015,
+    }
+
+    model 545x39_Box_7U1 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/545x39_Box_7U1,
+        scale   = 0.6,
+    }
+
+    model 545x39_Round_7N10 {
+        mesh    = Worlditems/Ammunition/Rounds|545x39_Round,
+        texture = worlditems/GunsOfTien/Rounds/545x39_Round_7N10,
+        scale   = 0.015,
+    }
+
+    model 545x39_Box_7N10 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/545x39_Box_7N10,
+        scale   = 0.6,
+    }
+
+    model 38_Round_P {
+        mesh    = Worlditems/Ammunition/Rounds|38_Round,
+        texture = worlditems/GunsOfTien/Rounds/38_Round_P,
+        scale   = 0.015,
+    }
+
+    model 38_Box_P {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/38_Box_P,
+        scale   = 0.4,
+    }
+
+    model 38_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|38_Round,
+        texture = worlditems/GunsOfTien/Rounds/38_Round_HP,
+        scale   = 0.015,
+    }
+
+    model 38_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/38_Box_HP,
+        scale   = 0.4,
+    }
+
+    model 357_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|357_Round,
+        texture = worlditems/GunsOfTien/Rounds/357_Round_HP,
+        scale   = 0.015,
+    }
+
+    model 357_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/357_Box_HP,
+        scale   = 0.4,
+    }
+
+    model 44_Round_Special {
+        mesh    = Worlditems/Ammunition/Rounds|44_Round,
+        texture = worlditems/GunsOfTien/Rounds/44_Round_Special,
+        scale   = 0.015,
+    }
+
+    model 44_Box_Special {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/44_Box_Special,
+        scale   = 0.4,
+    }
+
+    model 44_Round_HP {
+        mesh    = Worlditems/Ammunition/Rounds|44_Round,
+        texture = worlditems/GunsOfTien/Rounds/44_Round_HP,
+        scale   = 0.015,
+    }
+
+    model 44_Box_HP {
+        mesh    = WorldItems/HandGunAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/44_Box_HP,
+        scale   = 0.4,
+    }
+
+    model 12Gauge_Shell_Flechette {
+        mesh    = Worlditems/Ammunition/Rounds|12Gauge_Shell,
+        texture = worlditems/GunsOfTien/Rounds/12Gauge_Shell_Flechette,
+        scale   = 0.012,
+    }
+
+    model 12Gauge_Box_Flechette {
+        mesh    = WorldItems/BoxOfShotGunShells,
+        texture = worlditems/GunsOfTien/Boxes/12Gauge_Box_Flechette,
+        scale   = 0.6,
+    }
+
+    model 762x54_Round_B32 {
+        mesh    = Worlditems/Ammunition/Rounds|762x54_Round,
+        texture = worlditems/GunsOfTien/Rounds/762x54_Round_B32,
+        scale   = 0.015,
+    }
+
+    model 762x54_Box_B32 {
+        mesh    = WorldItems/RifleAmmoBox,
+        texture = worlditems/GunsOfTien/Boxes/762x54_Box_B32,
+        scale   = 0.6,
+    }
 }

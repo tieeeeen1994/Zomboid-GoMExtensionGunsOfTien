@@ -30,6 +30,12 @@ local ROUNDS = {
         "Range reduced by 50%",
         "Pellet spread doubled",
     },
+    ["GunsOfTien.12Gauge_Shell_Flechette"] = {
+        "Damage to targets decreased by 40%",
+        "Critical Damage decreased by 20%",
+        "Range increased by 30%",
+        "Pellet spread narrower by 40%",
+    },
     ["GunsOfTien.22LR_Bullet_HollowPoint"] = {
         "Damage to targets increased by 20%",
         "Critical Damage increased by 15%",
@@ -48,6 +54,14 @@ local ROUNDS = {
         "Self-loading guns need racking every shot",
         "Stacks with suppressors for maximum effectiveness",
     },
+    ["GunsOfTien.3006_Bullet_M2"] = {
+        "Damage to targets decreased by 10%",
+        "Critical Damage decreased by 5%",
+        "Critical Chance decreased by 10%",
+        "Chance to degrade weapon condition increased by 18%",
+        "Piercing targets",
+        "Able to hit up to 3 targets",
+    },
     ["GunsOfTien.3006_Bullet_SP"] = {
         "Damage to targets increased by 20%",
         "Critical Damage increased by 15%",
@@ -60,6 +74,37 @@ local ROUNDS = {
         "Critical Chance increased by 10%",
         "Does not pierce",
     },
+    ["GunsOfTien.357_Bullet_HollowPoint"] = {
+        "Damage to targets increased by 20%",
+        "Critical Damage increased by 15%",
+        "Critical Chance increased by 5%",
+        "Chance to degrade weapon condition increased by 11%",
+    },
+    ["GunsOfTien.38_Bullet_HollowPoint"] = {
+        "Damage to targets increased by 20%",
+        "Critical Damage increased by 15%",
+        "Critical Chance increased by 5%",
+        "Chance to degrade weapon condition increased by 11%",
+    },
+    ["GunsOfTien.38_Bullet_P"] = {
+        "Damage to targets increased by 15%",
+        "Critical Damage increased by 10%",
+        "Sound Radius and Volume increased by 10%",
+        "Chance to degrade weapon condition increased by 43%",
+    },
+    ["GunsOfTien.44_Bullet_HollowPoint"] = {
+        "Damage to targets increased by 20%",
+        "Critical Damage increased by 15%",
+        "Critical Chance increased by 5%",
+        "Chance to degrade weapon condition increased by 11%",
+    },
+    ["GunsOfTien.44_Bullet_Special"] = {
+        "Fires from any .44 Magnum gun",
+        "Damage to targets decreased by 30%",
+        "Critical Damage decreased by 10%",
+        "Sound Radius and Volume reduced by 25%",
+        "Chance to degrade weapon condition decreased by 23%",
+    },
     ["GunsOfTien.45_Bullet_HollowPoint"] = {
         "Damage to targets increased by 20%",
         "Critical Damage increased by 15%",
@@ -71,6 +116,19 @@ local ROUNDS = {
         "Critical Damage increased by 10%",
         "Sound Radius and Volume increased by 10%",
         "Chance to degrade weapon condition increased by 43%",
+    },
+    ["GunsOfTien.545x39_Bullet_7N10"] = {
+        "Damage to targets decreased by 5%",
+        "Piercing targets",
+        "Able to hit up to 4 targets",
+    },
+    ["GunsOfTien.545x39_Bullet_7U1"] = {
+        "Damage to targets decreased by 45%",
+        "Critical Damage decreased by 20%",
+        "Sound Radius and Volume reduced by 50%",
+        "Chance to degrade weapon condition halved",
+        "Does not pierce",
+        "Stacks with suppressors for maximum effectiveness",
     },
     ["GunsOfTien.762x25_Bullet_SteelCore"] = {
         "Damage to targets decreased by 10%",
@@ -107,6 +165,25 @@ local ROUNDS = {
         "Needs racking every shot",
         "Cycles normally with a PBS-1 suppressor",
         "Stacks with suppressors for maximum effectiveness",
+    },
+    ["GunsOfTien.762x51_Bullet_M61"] = {
+        "Damage to targets decreased by 10%",
+        "Critical Damage decreased by 5%",
+        "Critical Chance decreased by 10%",
+        "Chance to degrade weapon condition increased by 18%",
+        "Piercing targets",
+        "Able to hit up to 3 targets",
+    },
+    ["GunsOfTien.762x54_Bullet_B32"] = {
+        "Damage to targets decreased by 10%",
+        "Critical Damage decreased by 5%",
+        "Critical Chance decreased by 10%",
+        "Chance to degrade weapon condition increased by 18%",
+        "Piercing targets",
+        "Able to hit up to 3 targets",
+        "1 hit in 4 sets the target on fire",
+        "Burns for 3 seconds, 4 burns kill",
+        "The fire stays on the target",
     },
     ["GunsOfTien.9x19_Bullet_HollowPoint"] = {
         "Damage to targets increased by 20%",
@@ -213,6 +290,10 @@ local PIERCING = {
         "Able to hit up to 3 targets",
     },
     ["SWMG.762x51_Bullet"] = {
+        "Piercing targets",
+        "Able to hit up to 2 targets",
+    },
+    ["SWMG.762x54_Bullet"] = {
         "Piercing targets",
         "Able to hit up to 2 targets",
     },
