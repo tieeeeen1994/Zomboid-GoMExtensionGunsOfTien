@@ -2,7 +2,7 @@
 
 Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished features are not listed: they are taken as
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
-Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`; the PP-19 Bizon family, `docs/shelved_bizon.md`.
+Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
 
 ## Next guns (locked 2026-11-23, in this order)
 
@@ -45,6 +45,33 @@ share magazines (asked 2026-11-26): each gun its own, both the 9x18mm round.
       upload. preview44 (TT-33 and PPSh-41) is all main mod and stays one page. preview41 (suppressor support)
       regenerated too: none of the new guns takes a can, but its heading counts every gun (now 42 of 87, 79 of 123
       with Post-93), so it goes stale with any new gun; upload it again.
+
+### 2. Bizon / Vityaz release (Post-93; back from the shelf 2026-11-27, design: docs/post93_design.md "PP-19 Bizon family")
+
+Paused 2026-11-27 with three questions open. Line-up so far (one gun per calibre, no new rounds):
+
+| | Bizon Makarov | PP-19-01 Vityaz | Bizon Tokarev |
+|---|---|---|---|
+| Real | Bizon (1993), 9x18 | Vityaz (2004), 9x19 (user: "I kinda want the 9x19 to be vityaz") | Bizon-2-07 (1997), 7.62x25 |
+| Barrel | shortest, 195 mm | factory | longest, out past the handguard |
+| Stock | none, end cap (user: smallest round = stockless) | AK folding | AK folding |
+| Hold | one-handed, holstered, GoM's MP5K reload | rifle, GoM's AK reload | rifle, GoM's AK reload |
+| Magazine | own 64 helical | own 30 box | open (question 3) |
+| Optics | GoM's AK side mount | AK side mount (or top rail, SN) | top rail on an aftermarket rail handguard |
+| Lights, lasers, foregrips | none | SN's rails only | handguard rails |
+| Muzzle | own Bizon compensator, modelled | 9x19 family mount: AWC Mk9 and GoM's 9mm cans | 7.62x25 mount: its own muzzle brake |
+| Suppressor | none (no 9x18 can in the mod) | every 9mm suppressor | none, unless the user wants a new can |
+
+- [ ] **Q1**: plain PP-19-01 Vityaz (AK handguard, side rail) or Vityaz-SN (2008, railed handguard + top rail)?
+- [ ] **Q2**: add the Vityaz's clipped 2x30 pair as an extra magazine item (Gunworks' stacked packs, as GoM's jungle 2x30)?
+- [ ] **Q3**: Bizon Tokarev magazine: the real 35-round box (the -07 is box-fed, with a fore-end; 32 or 35 by source)
+      or a made-up helical so it still looks like a Bizon (proposed, since the Vityaz is box-fed already)?
+- [ ] Reference hunt: started (references/bizon/, 42 photos: Commons Bizon-2 set, STINC's stockless Bizon). Still
+      needed: Vityaz (and SN if chosen), a -07 or a railed AK-74U-type handguard, GoM's AKS-74U render to compare.
+- [ ] Models (Bizon receiver shared by the two Bizons; Vityaz its own on GoM's AKS-74U pattern) for the user's
+      review, then wiring: scripts, Gunworks registration, stats (Makarov vs Kedr / Skorpion, Vityaz vs GoM's MP5,
+      Tokarev vs PPSh-41), sounds, loot with the Russian guns (Makarov also with the short SMGs under Extend Loot
+      Areas), Hot Brass, tooltips, README / forum / changenotes, a Workshop preview page.
 
 ## Release 3.25.0 (built 2026-11-25, not uploaded)
 

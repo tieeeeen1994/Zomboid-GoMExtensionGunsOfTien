@@ -894,3 +894,52 @@ guns.
 | Repair | RepairPack, Aiming 3 |
 
 Model: scripts/post93/build_kedr.py (references/kedr, CLAUDE.md "PP-91 Kedr").
+
+## PP-19 Bizon family (user, 2026-11-27: designed, not built)
+
+Shelved 2026-11-26, back 2026-11-27 (user: "let's make it into a family. Like each bizon uses a different ammunition
+and uses a different barrel length or some aftermarket handguard"). One gun per calibre (user: "no need for 2 guns for
+1 calibre"), so no Bizon-2-03 (integral suppressor) or -04 / -06 carbines. Izhmash's Bizon of 1993, adopted 1996:
+Post-93. Mostly AKS-74 parts: GoM's AKS-74U is the pattern (receiver, top cover, AK charging handle on the right
+moving with the carrier: one Bolt part on GoM's swap, as the RPKs).
+
+| | Bizon Makarov | Bizon Parabellum | Bizon Tokarev |
+|---|---|---|---|
+| Real | Bizon / Bizon-2, 9x18 | Bizon-2-01, 9x19 | Bizon-2-07, 7.62x25 (1997) |
+| Round | the main mod's 9x18 Makarov (+ Post-93's PMM, RG028) | GoM's 9x19 (+ ours) | the main mod's 7.62x25 Tokarev |
+| Barrel, furniture | shortest (195 mm, the 1993 gun's), **no stock** (user, 2026-11-27: "the smallest round takes the stockless bizon"), end cap on the receiver, factory handguard | factory 225 mm, AK-type folding stock, factory handguard | longer than the -01's, out past an aftermarket rail handguard (Picatinny all round: GoM optics, foregrips, lights, lasers) |
+| Hold | one-handed, holstered, GoM's MP5K reload (as the Kedr) | rifle, GoM's AK reload | rifle, GoM's AK reload |
+| Magazine | own helical, 64 | own helical, 53 | own helical (capacity from the hunt) |
+
+**9x19 becomes the PP-19-01 Vityaz** (user, 2026-11-27: "I kinda want the 9x19 to be vityaz"), the Bizon's
+2004 successor on the AK-74, box-fed; the Bizon Parabellum column above is replaced. Which Vityaz, parts: asked.
+Magazines never cross between the three (each calibre its own barrel, bolt and helical magazine). Loot: with the
+Russian guns, as the Kedr (the Makarov with Extend Loot Areas also with the short SMGs). Stats, sounds, rpm, Tokarev
+barrel length and handguard pattern: from the reference hunt, set while building.
+
+Hunt so far (2026-11-27): references/bizon/ (41 Commons photos: Kuzmin's studio set of a Bizon-2 9x18, both sides,
+stock folded and open, muzzle, magazine and close-ups; `commons_039` a flat right side view, 950 px; `commons_000` a
+later gun with the ribbed polymer magazine and top-folding stock; `stinc_000` STINC USA's stockless US-made Bizon
+pistol with an end-cap adapter, the stockless gun's look). **The real Bizon-2-07 (Tokarev) has no helical
+magazine**: a box magazine, 32 rounds (armoury-online.ru, modernweapon.ru) or 35 (oruzhie.info, lemur59.ru), and it
+came with a fore-end (no magazine under the barrel); barrel 225 mm (one fan wiki only). No photo of a -07 found yet.
+
+### Research (2026-11-26, web; not checked against a Russian spec sheet)
+
+No Bizon has a rifle-length barrel; all are SMG length.
+
+| Version | Round | Barrel |
+|---|---|---|
+| Bizon (1993) | 9x18 | 195 mm |
+| Bizon-2 | 9x18 Makarov | 230 mm |
+| Bizon-2-01 | 9x19 | 225 mm |
+| Bizon-2-03 | 9x18, integral suppressor (expansion chamber over the barrel, longer front) | not found |
+| Bizon-2-04 | 9x18, semi-auto carbine | not found |
+| Bizon-2-06 (some list -02) | .380 ACP, semi-auto carbine | not found |
+| Bizon-2-07 | 7.62x25 Tokarev, developed 1997 | not found |
+
+The Tokarev Bizon was real. Sources disagree on the -02 / -06 / -07 numbering; one Russian page calls the -07 a
+semi-auto line in 9x17, 9x18 and 9x19. Whether the civilian carbines (-04, -06) had longer barrels was not found.
+
+Sources: en.wikipedia.org/wiki/PP-19_Bizon, gunrf.ru/rg_pistol-pulemet_bizon_eng.html,
+imfdb.org/wiki/PP-19_Bizon-2, en.valka.cz/topic/view/8991.
