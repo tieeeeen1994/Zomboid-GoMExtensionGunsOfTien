@@ -2,7 +2,7 @@
 
 Open work on GoM Extension: Guns of Tien and its Post-93 sub-mod. Finished features are not listed: they are taken as
 working once played. Design: `docs/design.md` (main mod), `docs/post93_design.md` (Post-93). Findings: `CLAUDE.md`.
-Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`.
+Shelved: resizing Guns of Marz's guns, `docs/gom_gun_scale.md`; the PP-19 Bizon family, `docs/shelved_bizon.md`.
 
 ## Next guns (locked 2026-11-23, in this order)
 
@@ -45,19 +45,6 @@ share magazines (asked 2026-11-26): each gun its own, both the 9x18mm round.
       upload. preview44 (TT-33 and PPSh-41) is all main mod and stays one page. preview41 (suppressor support)
       regenerated too: none of the new guns takes a can, but its heading counts every gun (now 42 of 87, 79 of 123
       with Post-93), so it goes stale with any new gun; upload it again.
-
-### 2. Bizon family (Post-93, later: waits for more rounds)
-
-The 9x18mm Makarov round exists since 2026-11-25 (main mod, plain only; boxes TUSKER). Its later loads (PMM 1994,
-SP-7, RG028) belong in Post-93, with the PP-9 Klin.
-
-- [ ] **PP-19 Bizon**, one gun per real version, named by its round: **Bizon Parabellum** (Bizon-2-01, 9x19, 53-round
-      helical magazine), **Bizon Makarov** (Bizon-2, 9x18, 64-round), **Bizon Tokarev** (Bizon-2-07, 7.62x25; confirm
-      it was real), and if their rounds come, the .380 Bizon-2-02 and the suppressed 9x18 Bizon-2-03. Each its own
-      helical magazine (the calibres differ in barrel and bolt too, so no magazine swap between them). Built on GoM's
-      AKS-74U (the real gun is mostly AKS-74 parts), held as a rifle, GoM's AK reload. The 9x18 Makarov round has
-      its first guns since 2026-11-26 (the Skorpion vz. 82 and the PP-91 Kedr, above); it would also serve the CZ-83
-      and the PP-9 Klin (a strengthened Kedr for the PMM load: the Kedr's model with other markings).
 
 ## Release 3.25.0 (built 2026-11-25, not uploaded)
 
