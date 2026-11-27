@@ -1,7 +1,0 @@
-In the Post-93 add-on, the PP-19 Bizon family (3.26.0): four submachine guns on the AKS-74's receiver, one per calibre. All are held as rifles with both hands (never holstered), fire automatic or single shots, reload with Guns of Marz's AK reload, and take Guns of Marz's AK side mount on the left rail for optics.
-- PP-19 Bizon: 9x18mm Makarov, no stock, its 64-round helical magazine under the barrel, 650 rounds a minute. Guns of Marz's left and right rails bolt on for lights and lasers.
-- Bizon-2-01: 9x19mm, a folding stock, a 53-round helical, 680 rounds a minute, the 9mm muzzle mount and suppressors. Left and right rails bolt on.
-- Bizon-2-07: 7.62x25mm Tokarev, a fixed stock, the barrel lengthened past a railed handguard (left and right rails built in, for lights and lasers), the real 35-round box and an invented 45-round helical, 700 rounds a minute.
-- Vityaz: 9x19mm, a folding stock, a 30-round box and a clipped dual magazine (taped and parted by hand, flipped on reload like Guns of Marz's MP5 dual magazine), 750 rounds a minute, the 9mm muzzle mount and suppressors. Bottom, left and right rails bolt on, foregrips included.
-- Found with the Russian guns (drug labs, police evidence, stashes, survivalists' and bandits' vehicles, late homes), with Undead Survivors' mercenaries, and with Extend Loot Areas on, with criminals too. The 45-round helical and the Vityaz's dual magazine turn up with Guns of Marz's high-capacity Russian magazines.
-- Hot Brass casings, tooltips and a Workshop picture.
