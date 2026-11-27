@@ -1,0 +1,465 @@
+{
+  "BIZON": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.274,
+        0.0148
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.274,
+        0.0148
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "BIZON201": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.2662,
+        0.0148
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.2662,
+        0.0148
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "BIZON207": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.3205,
+        0.0148
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.3205,
+        0.0148
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine_box": {
+      "offset": [
+        0.0,
+        0.107,
+        -0.0025
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_up": {
+      "offset": [
+        0.0,
+        0.1914,
+        0.0355
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_left": {
+      "offset": [
+        0.0109,
+        0.1896,
+        0.0216
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_right": {
+      "offset": [
+        -0.0109,
+        0.1896,
+        0.0216
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "VITYAZ": {
+    "muzzle": {
+      "offset": [
+        0.0,
+        0.2783,
+        0.0174
+      ],
+      "rotate": [
+        -90.0,
+        0.0,
+        -180.0
+      ]
+    },
+    "canon": {
+      "offset": [
+        0.0,
+        0.2783,
+        0.0174
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "magazine": {
+      "offset": [
+        0.0,
+        0.12,
+        -0.0025
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rail_down": {
+      "offset": [
+        0.0,
+        0.2017,
+        0.0035
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "magazine": {
+    "offset": [
+      0.0,
+      0.1064,
+      0.0074
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "bolt_fired": {
+    "offset": [
+      0.0,
+      -0.0422,
+      0.0
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world": {
+    "offset": [
+      0.0186,
+      0.1206,
+      0.0
+    ],
+    "rotate": [
+      180.0,
+      0.0,
+      180.0
+    ]
+  },
+  "rail_up_cover": {
+    "offset": [
+      0.0,
+      0.075,
+      0.0372
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handguard_side_left": {
+    "offset": [
+      0.009,
+      0.1896,
+      0.0216
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "handguard_side_right": {
+    "offset": [
+      -0.009,
+      0.1896,
+      0.0216
+    ],
+    "rotate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "_notes": {
+    "units": "game units (0.603 of real size); +Y muzzle, +Z top, +X the gun's left; origin as GoM's AKS-74U against trigger and bore (photo L 454.5, H 104.2)",
+    "magazine": "the helicals' rear face top (all three helicals); BIZON207 magazine_box the box's feed lips",
+    "bolt_fired": "BIZON_BOLT (the carrier's handle) back 70 mm real",
+    "stocks": "BIZON_STOCK_FOLDED / _DEPLOYED (the -2-01) are drawn in place",
+    "rails": "rail_up_cover / handguard_side_*: where GoM's optional rails sit on the PP-19 and -2-01 (wiring places them); BIZON207 rail_* are its integrated rails' faces"
+  },
+  "_extras": {
+    "photo_origin_mm": [
+      454.452736318408,
+      104.15605306799335
+    ],
+    "bore_mm": 128.7,
+    "k": 0.000603,
+    "long_mm": 115.0
+  },
+  "_bounds": {
+    "BIZON_BODY": {
+      "min": [
+        -0.009,
+        0.016,
+        -0.0628
+      ],
+      "max": [
+        0.0105,
+        0.274,
+        0.0445
+      ],
+      "tris": 2810
+    },
+    "BIZON201_BODY": {
+      "min": [
+        -0.009,
+        0.0093,
+        -0.0628
+      ],
+      "max": [
+        0.0124,
+        0.2662,
+        0.0445
+      ],
+      "tris": 2778
+    },
+    "BIZON207_BODY": {
+      "min": [
+        -0.0139,
+        -0.1345,
+        -0.0628
+      ],
+      "max": [
+        0.0139,
+        0.3205,
+        0.0445
+      ],
+      "tris": 7226
+    },
+    "VITYAZ_BODY": {
+      "min": [
+        -0.009,
+        0.0067,
+        -0.0688
+      ],
+      "max": [
+        0.0124,
+        0.2783,
+        0.0481
+      ],
+      "tris": 2422
+    },
+    "BIZON_BOLT": {
+      "min": [
+        -0.0133,
+        0.0823,
+        0.0198
+      ],
+      "max": [
+        -0.0069,
+        0.0983,
+        0.0252
+      ],
+      "tris": 184
+    },
+    "BIZON_STOCK_FOLDED": {
+      "min": [
+        0.0038,
+        0.0255,
+        -0.0229
+      ],
+      "max": [
+        0.0267,
+        0.1658,
+        0.0375
+      ],
+      "tris": 324
+    },
+    "BIZON_STOCK_DEPLOYED": {
+      "min": [
+        -0.0051,
+        -0.1243,
+        -0.0462
+      ],
+      "max": [
+        0.0051,
+        0.0123,
+        0.0166
+      ],
+      "tris": 324
+    },
+    "VITYAZ_STOCK_FOLDED": {
+      "min": [
+        0.0093,
+        0.0253,
+        -0.0204
+      ],
+      "max": [
+        0.0196,
+        0.167,
+        0.0397
+      ],
+      "tris": 324
+    },
+    "BIZON_BOLT_fired": {
+      "min": [
+        -0.0133,
+        0.0401,
+        0.0198
+      ],
+      "max": [
+        -0.0069,
+        0.0561,
+        0.0252
+      ],
+      "tris": 184
+    }
+  },
+  "_mags": {
+    "9x18Magazine64_BIZON": {
+      "min": [
+        -0.0161,
+        0.0,
+        -0.0371
+      ],
+      "max": [
+        0.0161,
+        0.1357,
+        0.003
+      ],
+      "tris": 436
+    },
+    "9x19Magazine53_BIZON": {
+      "min": [
+        -0.0161,
+        0.0,
+        -0.0371
+      ],
+      "max": [
+        0.0161,
+        0.1357,
+        0.003
+      ],
+      "tris": 436
+    },
+    "762x25Magazine45_BIZON": {
+      "min": [
+        -0.0161,
+        0.0,
+        -0.0371
+      ],
+      "max": [
+        0.0161,
+        0.1357,
+        0.003
+      ],
+      "tris": 436
+    },
+    "762x25Magazine35_BIZON": {
+      "min": [
+        -0.0075,
+        -0.0115,
+        -0.1073
+      ],
+      "max": [
+        0.0075,
+        0.0365,
+        0.0007
+      ],
+      "tris": 610
+    },
+    "9x19Magazine30_VITYAZ": {
+      "min": [
+        -0.0076,
+        -0.0105,
+        -0.1042
+      ],
+      "max": [
+        0.0076,
+        0.0424,
+        0.0009
+      ],
+      "tris": 1102
+    },
+    "9x19Magazine30_VITYAZ_PAIR": {
+      "min": [
+        -0.0084,
+        -0.0105,
+        -0.1132
+      ],
+      "max": [
+        0.0235,
+        0.0431,
+        0.0009
+      ],
+      "tris": 2292
+    }
+  }
+}

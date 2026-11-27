@@ -897,6 +897,9 @@ Model: scripts/post93/build_kedr.py (references/kedr, CLAUDE.md "PP-91 Kedr").
 
 ## PP-19 Bizon family (user, 2026-11-27: designed, not built)
 
+**Superseded the same day**: four guns (PP-19 Bizon 9x18, Bizon-2-01 9x19, Bizon-2-07 7.62x25, Vityaz 9x19), all
+two-handed; the agreed line-up and every answer is in TODO.md item 2. The table below is the first draft.
+
 Shelved 2026-11-26, back 2026-11-27 (user: "let's make it into a family. Like each bizon uses a different ammunition
 and uses a different barrel length or some aftermarket handguard"). One gun per calibre (user: "no need for 2 guns for
 1 calibre"), so no Bizon-2-03 (integral suppressor) or -04 / -06 carbines. Izhmash's Bizon of 1993, adopted 1996:
@@ -923,6 +926,38 @@ later gun with the ribbed polymer magazine and top-folding stock; `stinc_000` ST
 pistol with an end-cap adapter, the stockless gun's look). **The real Bizon-2-07 (Tokarev) has no helical
 magazine**: a box magazine, 32 rounds (armoury-online.ru, modernweapon.ru) or 35 (oruzhie.info, lemur59.ru), and it
 came with a fore-end (no magazine under the barrel); barrel 225 mm (one fan wiki only). No photo of a -07 found yet.
+
+Hunt, second pass (2026-11-27): **the -07 found**: `references/bizon/raw/vpk_000.jpg` (928 px, vpk.name's "7.62-mm
+PP-19-07 «Bizon-2-07» with the stock folded", a scanned print, left side): ribbed fore-end round the barrel (upper and
+lower halves), AK front sight, slotted muzzle device, curved steel 35 box ahead of the trigger guard, the stock folded
+along the left side. The same article (vpk.name/news/440723) also calls it PP-27, PP-19-03 or PP-19-07 by source.
+`vpk_001 / 002` vpk.name's Bizon-2 / -2-01 drawings (496 px), `gunrf_000` a -03 with its can, `gunrf_005` the parts
+laid out (handguard, top cover, bolt, helical). `gom_aks74u/` GoM's AKS-74U (scratch Blender render, both sides,
+stock folded / deployed, top; 822.5 mm long deployed at 0.603). references/vityaz/: Commons' Category:PP-19-01
+(45 of 71 files), Kuzmin's studio set of the plain Vityaz (`commons_005` left, `commons_014` right on white, flat,
+stock folded: the measuring photos; `commons_016-023` close-ups; `commons_024 / 025` the clipped 2x30 pair), the
+Zenitco-kitted guns (`commons_000-004`: B-12 "Klassika" rail handguard, PT-1 stock; the -07's railed handguard
+pattern), `vpk_000` a plain PP-19-01 SB-10 with its pair, `vpk_001` the SN kit, `gunrf_000`.
+
+Third pass (2026-11-27, user: "are you not going to look for more pictures? if we can't find anymore, we can make
+smart guesses based on the description and how the guns work"): references/bizon/ `cca_000-036` (Chester County
+Armory's NFA Bizon on Russian factory parts, studio white: both sides, stock open and folded, close-ups of top cover,
+rear sight, front sight block and muzzle, receiver markings, bolt, two helicals from every side: **the best Bizon
+set**), `hexagon_000-014` (Hexagon's tuned Bizon-2 on a dummy: honeycomb handguard, a **box magazine** ahead of the
+trigger guard, its own can; how a Bizon looks box-fed with a handguard), `bnb_*`, `misc_*` (assorted web: two Bizons
+side by side `misc_011` / `misc_014`, helical winding key `misc_008`, parts laid out `misc_013`; `misc_000` is
+IMFDB's game render, ignore). references/vityaz/ `ria_000-005` (RIA 2081/665, Kalashnikov USA KP-9, the US copy of
+the Vityaz: flat sides, 4800 px), `ria_006-011` (RIA 2037/431, KR-9 carbine: a long barrel out past an AK handguard,
+the look the -07's lengthened barrel takes), `mfn_*` (modernfirearms.net Vityaz / SN sides), `a4s_*` (Vityaz
+carbine). The -07: still the one photo (vpk_000); no second source shows one. ModDB's L.U.R.K. notes (not read,
+403) say the 7.62 version could take helicals at about 45 rounds, matching our invented helical; NamuWiki claims
+PPSh-41 magazines fit it, unconfirmed by any Russian source. So its box magazine, magazine well and fore-end are
+modelled from the photo plus how the Bizon works: the helical's latch at the front of the trigger guard and the
+box's well in the same place (Hexagon's conversion shows it). Commons (paced at 9 s a file; 2.5 s gets 429 after a
+burst): the whole of Category:PP-19 (its Vityaz subcategory's 71 copies removed from bizon/, they are in vityaz/),
+new Bizon files `commons_041-` (`commons_040` "PP-19 Bizon left view", flat on white, stock folded: the measuring
+photo; `commons_078` right view; `commons_041 / 042` magazine off and its front), the rest of Category:PP-19-01 and
+Category:Saiga-9 (`saiga_*`, Kuzmin's show photos, the long-barrel carbine).
 
 ### Research (2026-11-26, web; not checked against a Russian spec sheet)
 

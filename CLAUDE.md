@@ -448,7 +448,7 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
   not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre); both back
   on 2026-11-23 with the 7.62x25 round and a Bizon per calibre; the PPSh-41 was built, the Bizon shelved again on
-  2026-11-26 and back on 2026-11-27 as a family of three (docs/post93_design.md "PP-19 Bizon family").
+  2026-11-26 and back on 2026-11-27 as a family of four, three Bizons and the Vityaz (line-up agreed in TODO.md item 2).
 - **Steyr TMP** (user, 2026-11-11; built, not played): main mod, held like a pistol and holstered, its own 15 and
   30-round magazines only, the Mk9 on the SMG mount device; section "Steyr TMP". **SR-25** (main mod) and the **OTs-14 Groza
   family** (Post-93) are built (docs/design.md 4l, docs/post93_design.md; scripts and Lua below). SR-25: `scripts/build_sr25.py`
