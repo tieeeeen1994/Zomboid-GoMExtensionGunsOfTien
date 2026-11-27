@@ -1,6 +1,6 @@
 --[[
     Guns of Tien - Post-93 -- Hot Brass (spent casing ejection) for the MP7A1 / A2, P90 TR, Five-seveN, UCP, SCAR-L and SCAR-H,
-    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm, MDRx .223 and .308, the HK416 .22 pistol, the HK417s
+    UMP45 and UMP9, Steyr AUG A3, Para and HBAR, KRISS Vector .45 and 9mm, MDRx .223 and .308, the HK416 .22 pistol, the HK417s, the PP-19 Bizon family
 
     Casings by round item key, ejection by gun full type (falls back to a default per reload type), pressure by the
     Gunworks ammo profile name. Hot Brass ships the casings HBVCEF.46x30_Casing / 57x28_Casing. Only with Hot Brass (HBVCEFb42).
@@ -281,6 +281,24 @@ SpentCasingPhysics.RegisterWeaponParams({
         heightSpread  = 75,
         ejectAngle    = 45,
         spinForce     = { 64, 128 },
+    },
+    -- The PP-19 Bizon family ejects to the right from the AKS-74 receiver's port: the 9A-91's place (GoM's AKS-74U),
+    -- the throw of a pistol case as the Kedr's and GoM's MP5's (the Tokarev a little harder)
+    ["GunsOfTienPost93.BIZON"] = {
+        forwardOffset = 0.35, sideOffset = 0.10, heightOffset = 0.45, shellForce = 0.55,
+        sideSpread = 60, heightSpread = 75, ejectAngle = 45, spinForce = { 24, 34 },
+    },
+    ["GunsOfTienPost93.BIZON201"] = {
+        forwardOffset = 0.35, sideOffset = 0.10, heightOffset = 0.45, shellForce = 0.65,
+        sideSpread = 60, heightSpread = 75, ejectAngle = 45, spinForce = { 24, 34 },
+    },
+    ["GunsOfTienPost93.BIZON207"] = {
+        forwardOffset = 0.35, sideOffset = 0.10, heightOffset = 0.45, shellForce = 0.70,
+        sideSpread = 60, heightSpread = 75, ejectAngle = 45, spinForce = { 24, 34 },
+    },
+    ["GunsOfTienPost93.VITYAZ"] = {
+        forwardOffset = 0.35, sideOffset = 0.10, heightOffset = 0.45, shellForce = 0.65,
+        sideSpread = 60, heightSpread = 75, ejectAngle = 45, spinForce = { 24, 34 },
     },
     -- The UMPs eject to the right like GoM's MP5 (its values).
     ["GunsOfTienPost93.UMP45"] = {

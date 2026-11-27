@@ -42,7 +42,7 @@ P = "GunsOfTienPost93."
 # (title, cans, where, Post-93 line)
 FAMILIES = [
     ("9X19MM", ["MarzGuns.M&P_Suppressor", "MarzGuns.Shh9_Suppressor", "GunsOfTien.Mk9_Suppressor"],
-     "M&P, Shh9 or AWC Mk9 on the 9x19mm muzzle mount", "the AUG Para, UMP9 and 9mm Vectors"),
+     "M&P, Shh9 or AWC Mk9 on the 9x19mm muzzle mount", "the AUG Para, UMP9, 9mm Vectors, Bizon-2-01 and Vityaz"),
     ("5.56MM", ["MarzGuns.MKI_Suppressor", "MarzGuns.NDR_Suppressor"],
      "MKI or NDR on the AR muzzle mount", "the SCAR-L, HK416, AUG A3 and MDRx .223"),
     ("AK", ["MarzGuns.PBS-1_Suppressor"], "PBS-1 on the AK muzzle mount", "the Groza-1 and Groza-2"),

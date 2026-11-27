@@ -1,0 +1,32 @@
+module GunsOfTienPost93 {
+    imports { Base }
+
+    craftRecipe GunsOfTienPost93_MakeVityazDualMag {
+        timedAction = Making,
+        Time        = 50,
+        OnCreate    = MarzGuns_OnCreate.ReturnAmmoList,
+        category    = Weaponry,
+        Tags        = InHandCraft,
+        inputs {
+            item 1 [Base.DuctTape],
+            item 2 [GunsOfTienPost93.9x19Magazine30_VITYAZ] flags[Prop2],
+        }
+        outputs {
+            item 1 GunsOfTienPost93.9x19Magazine30_VITYAZ_PAIR,
+        }
+    }
+
+    craftRecipe GunsOfTienPost93_SeparateVityazDualMag {
+        timedAction = Making,
+        Time        = 50,
+        OnCreate    = MarzGuns_OnCreate.ReturnAmmoList,
+        category    = Weaponry,
+        Tags        = InHandCraft,
+        inputs {
+            item 1 [GunsOfTienPost93.9x19Magazine30_VITYAZ_PAIR;GunsOfTienPost93.9x19Magazine30_VITYAZ_PAIR_2] flags[Prop2],
+        }
+        outputs {
+            item 2 GunsOfTienPost93.9x19Magazine30_VITYAZ,
+        }
+    }
+}

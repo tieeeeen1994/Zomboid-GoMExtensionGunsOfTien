@@ -13,6 +13,7 @@ renames it "Five-SeveN", 2026-11-01) but ships nothing else, so its item block (
 Icons are item_GunsOfTienPost93_<name>.png (prefixed, so another mod's MP7 or P90 icon cannot replace them).
 """
 import json
+import math
 import os
 import sys
 
@@ -4540,6 +4541,368 @@ def kedr():
     write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
 
 
+# PP-19 Bizon family (user, 2026-11-27; CLAUDE.md and docs/post93_design.md "PP-19 Bizon family"; meshes and points:
+# scripts/post93/build_bizon.py, icons and the magazines' off-hand points: make_bizon_art.py; registries:
+# shared/GunsOfTienPost93/Bizon.lua). Four guns on one AK receiver at GoM's AKS-74U origin, all rifle-held and
+# two-handed, never holstered (the stockless PP-19 too), reloading with GoM's AK reload:
+# - PP-19 Bizon (1993, 9x18mm, 195 mm, no stock, its own 64 helical, its compensator modelled on the body);
+# - Bizon-2-01 (9x19mm, 225 mm, the AKS-74 folding stock, its own 53 helical, the 9x19mm muzzle family);
+# - Bizon-2-07 (1997, 7.62x25mm, the barrel lengthened game-style to 345 mm past a railed handguard, a fixed
+#   AK-74-style stock, the real 35 box and an invented 45 helical in one profile, the RPK's 40 + drum way; its
+#   handguard's integrated left and right rails for lights and lasers);
+# - Vityaz (PP-19-01, 2004, 9x19mm, the AKS-74 stock with a flatter fold, its own 30 box and the clipped pair as
+#   Gunworks' stacked pack, GoM's MP5 jungle pair way: two items, one per side, MaxAmmo 60, the side-2 item drawn as
+#   the pair moved one magazine over, at `magazine_2`).
+# Optics: GoM's AK side mount on the modelled dovetail on all four (the -2-07 too, user 2026-11-28: "bizon-2-07
+# should use AK mount for top rail instead"; its handguard's top rail then taken off the mesh), drawn with
+# GoM's own mesh at GoM's AKS-74U points (the same receiver at the same origin and scale). GoM's optional
+# Picatinny rails: PP-19 and -2-01 Left / Right on the handguard, Vityaz Down / Left / Right. No optional top rail
+# on the PP-19 and -2-01, though Q5 listed one: GoM's AK mount and Picatinny_Rail_Up are both PartType RailUp and an
+# optic has one `scope` point, which can sit on only one of them (12 mm apart in height). The AK mount was kept
+# (2026-11-28, the user away; see TODO.md). Rail and accessory points use GoM's offsets (its M249: scope 2.3 mm over
+# rail_up, lights 6.2 mm out, lasers 7.3 mm out and 0.8 down, foregrips 2.5 mm under rail_down).
+# Muzzles: the -2-01 and Vityaz the main mod's 9x19mm family (every 9mm can, as the UMP9); the -2-07 none: no
+# 7.62x25mm muzzle family exists (the PPSh-41 and TT-33 have none either); the PP-19's compensator is part of its body.
+# Stats against their peers (the user's list): the PP-19 a step over the Kedr (0.5-0.9 from 120 mm) and two-handed
+# but stockless; the -2-01 and Vityaz GoM's MP5 (1.0-1.6, Hit 50, Aimingtime 40) with their stock folded at GoM's
+# AKS-74U stock stats less (Hit -8, Aimingtime +4), so open they match or pass it; the -2-07 a step over the PPSh-41
+# (0.9-1.45 from 269 mm) for its 345 mm barrel and fixed stock. Sound by sound_model.py's formula: 9x18 3.9 gr from
+# 7.7" 57 / 16, 9x19 from 8.9" and 9.3" 93 / 27 and 92 / 26, 7.62x25 8 gr from 13.6" 90 / 26.
+BIZON_K = 0.000603
+GOM_AK_RAIL_UP = {'offset': [0.0, 0.0764, 0.0225], 'rotate': [0.0, 0.0, 0.0]}     # GoM's AKS-74U model
+GOM_AK_SCOPE = {'offset': [0.0, 0.0904, 0.0471], 'rotate': [0.0, 0.0, 0.0]}
+BIZON_MAGS = {   # item -> (rounds, weight, ammo, profile key, name)
+    '9x18Magazine64_BIZON': (64, 0.35, 'gunsoftien:bullet_9x18', 'Bizon 64Rds 9x18mm Helical Magazine'),
+    '9x19Magazine53_BIZON': (53, 0.35, 'swmg:bullet_9x19', 'Bizon 53Rds 9x19mm Helical Magazine'),
+    '762x25Magazine35_BIZON': (35, 0.2, 'gunsoftien:bullet_762x25', 'Bizon-2-07 35Rds 7.62x25mm Magazine'),
+    '762x25Magazine45_BIZON': (45, 0.35, 'gunsoftien:bullet_762x25',
+                               'Bizon-2-07 45Rds 7.62x25mm Helical Magazine (Invented)'),
+    '9x19Magazine30_VITYAZ': (30, 0.15, 'swmg:bullet_9x19', 'Vityaz 30Rds 9x19mm Magazine'),
+    # GoM's MP5 pair: both sides MaxAmmo 60, Gunworks' stacked pack takes 30 a side (StackedMagazines.GetSideCapacity)
+    '9x19Magazine30_VITYAZ_PAIR': (60, 0.3, 'swmg:bullet_9x19', 'Vityaz Dual 30Rds 9x19mm Magazine'),
+    '9x19Magazine30_VITYAZ_PAIR_2': (60, 0.3, 'swmg:bullet_9x19', 'Vityaz Dual 30Rds 9x19mm Magazine'),
+}
+BIZON_GUNS = {
+    'BIZON': dict(name='PP-19 Bizon Submachine Gun', body='BIZON_BODY', min=0.55, max=0.95, crit=25.0, hit=46, aim=30,
+                  recoil=11, range=25.0, weight=1.7, gain=1.7, radius=57, volume=16, sight='MP5K',
+                  ammo='gunsoftien:bullet_9x18', box='GunsOfTien.9x18_Box', mag='9x18Magazine64_BIZON',
+                  mags=['9x18Magazine64_BIZON'], ak_mount=True, rails=('Left', 'Right'), muzzle=False, stock=None),
+    'BIZON201': dict(name='Bizon-2-01 Submachine Gun', body='BIZON201_BODY', min=1.0, max=1.55, crit=20.0, hit=44,
+                     aim=42, recoil=14, range=30.0, weight=1.9, gain=2.0, radius=93, volume=27, sight='MP5',
+                     ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', mag='9x19Magazine53_BIZON',
+                     mags=['9x19Magazine53_BIZON'], ak_mount=True, rails=('Left', 'Right'), muzzle=True,
+                     stock=('BIZON_STOCK_FOLDED', 'BIZON_STOCK_DEPLOYED')),
+    'BIZON207': dict(name='Bizon-2-07 Submachine Gun', body='BIZON207_BODY', min=1.0, max=1.55, crit=18.0, hit=52,
+                     aim=40, recoil=14, range=35.0, weight=2.4, gain=2.0, radius=90, volume=26, sight='CAMP_CARBINE',
+                     ammo='gunsoftien:bullet_762x25', box='GunsOfTien.762x25_Box', mag='762x25Magazine35_BIZON',
+                     mags=['762x25Magazine35_BIZON', '762x25Magazine45_BIZON'], ak_mount=True,
+                     rails=('Left', 'Right'), integrated=True, muzzle=False, stock=None),
+    'VITYAZ': dict(name='Vityaz Submachine Gun', body='VITYAZ_BODY', min=1.0, max=1.6, crit=20.0, hit=44, aim=42,
+                   recoil=15, range=30.0, weight=2.3, gain=2.0, radius=92, volume=26, sight='MP5',
+                   ammo='swmg:bullet_9x19', box='MarzGuns.9x19_Box', mag='9x19Magazine30_VITYAZ',
+                   mags=['9x19Magazine30_VITYAZ', '9x19Magazine30_VITYAZ_PAIR', '9x19Magazine30_VITYAZ_PAIR_2'],
+                   ak_mount=True, rails=('Down', 'Left', 'Right'), muzzle=True,
+                   stock=('VITYAZ_STOCK_FOLDED', 'BIZON_STOCK_DEPLOYED')),
+}
+BIZON_NINE = ['GunsOfTien.SMG9_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT',
+              'GunsOfTien.Mk9_Suppressor GunsOfTien.Mk9_Suppressor_GoT',
+              'MarzGuns.M&P_Suppressor GunsOfTien.M&P_Suppressor_GoT',
+              'MarzGuns.Shh9_Suppressor GunsOfTien.Shh9_Suppressor_GoT',
+              'MarzGuns.Pistol_Muzzle_Mount_Device GunsOfTien.SMG9_Muzzle_Mount_Device_GoT']
+RAIL_POINT = {'Up': 'rail_up', 'Down': 'rail_down', 'Left': 'rail_left', 'Right': 'rail_right'}
+
+
+def moved(point, d):
+    return {'offset': [round(point['offset'][i] + d[i], 4) for i in range(3)], 'rotate': list(point['rotate'])}
+
+
+def bizon_points():
+    """Every point each gun's model needs, from bizon_points.json plus GoM's AK mount and rail offsets."""
+    allpts = load_points('bizon_points.json')
+    common = {k: allpts[k] for k in ('magazine', 'bolt_fired', 'world')}
+    side = {'rail_left': allpts['handguard_side_left'], 'rail_right': allpts['handguard_side_right']}
+    out = {}
+    for gun, g in BIZON_GUNS.items():
+        p = dict(common)
+        p.update(allpts[gun])
+        if g['ak_mount']:
+            p['rail_up'], p['scope'] = GOM_AK_RAIL_UP, GOM_AK_SCOPE
+        else:
+            p['scope'] = moved(p['rail_up'], (0.0, 0.0, 0.0023))
+        if gun == 'VITYAZ':
+            # its lower handguard's sides (build_bizon.py V_LOWER, W_HG): photo L 120, H 130
+            for s, x in (('rail_left', 1), ('rail_right', -1)):
+                p[s] = {'offset': [round(x * 15.0 * BIZON_K, 4), round((454.4527 - 120.0) * BIZON_K, 4),
+                                   round((130.0 - 104.156) * BIZON_K, 4)], 'rotate': [0.0, 0.0, 0.0]}
+            p['foregrip'] = moved(p['rail_down'], (0.0, 0.0, -0.0025))
+            # the pair's side 2: the second magazine (build_bizon.py build_vityaz_mag: V_MAG_W + 3 mm to the left,
+            # its lips 15 mm lower along the 5 degree rake) moved into the well
+            a = math.radians(5.0)
+            p['magazine_2'] = moved(p['magazine'], (-25.0 * BIZON_K, -15.0 * math.sin(a) * BIZON_K,
+                                                    15.0 * math.cos(a) * BIZON_K))
+        elif gun != 'BIZON207':
+            p.update(side)
+        p['light_left'] = moved(p['rail_left'], (0.0062, 0.0, 0.0))
+        p['laser_right'] = moved(p['rail_right'], (-0.0073, 0.0, -0.0008))
+        out[gun] = p
+    return out, allpts['_mag_prop2']
+
+
+def bizon():
+    pts, prop2 = bizon_points()
+    # every gun's points as its model script has them, for render_ad_guns.py (generated; do not edit)
+    with open(os.path.join(HERE, 'bizon_model_points.json'), 'w') as fh:
+        json.dump(pts, fh, indent=2)
+        fh.write('\n')
+    out = [f"module {M} {{\n"]
+    for gun, g in BIZON_GUNS.items():
+        out.append(f"""
+    model {gun} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|{g['body']},
+        texture  = {TEX}/BIZON,
+        cullFace = None,
+""")
+        for name in sorted(pts[gun]):
+            out.append(attachment(name, pts[gun][name]))
+        out.append("    }\n")
+    for node in ('BIZON_BOLT', 'BIZON_STOCK_FOLDED', 'BIZON_STOCK_DEPLOYED', 'VITYAZ_STOCK_FOLDED'):
+        out.append(f"""
+    model {node} {{
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|{node},
+        texture  = {TEX}/BIZON,
+        cullFace = None,
+    }}
+""")
+    for mag in BIZON_MAGS:
+        node = mag.replace('_PAIR_2', '_PAIR')
+        out.append(f"""
+    model {mag} {{
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|{node},
+        texture  = {TEX}/{node},
+        cullFace = None,
+        attachment world {{ offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }}
+{attachment('Bip01_Prop2', prop2[node])}    }}
+""")
+    out.append("}\n")
+    write(f'scripts/{M}/models_bizon.txt', ''.join(out))
+
+    w = "        ModelWeaponPart              = "
+    items = [f"module {M} {{\n"]
+    hidden = []
+    for gun, g in BIZON_GUNS.items():
+        lines = [f"{w}MarzGuns.Bolt_Lock {M}.BIZON_BOLT bolt_lock bolt_lock,",
+                 f"{w}MarzGuns.Bolt_Fired {M}.BIZON_BOLT bolt_fired bolt_fired,"]
+        if g['stock']:
+            folded, deployed = g['stock']
+            lines += [f"{w}{M}.{gun}_Integrated_Stock_Folded {M}.{folded} stock stock,",
+                      f"{w}{M}.{gun}_Integrated_Stock_Deployed {M}.{deployed} stock stock,"]
+            hidden += [(f'{gun}_Integrated_Stock_Folded', 'StockIntegrated', None),
+                       (f'{gun}_Integrated_Stock_Deployed', 'StockIntegrated', 0.2)]
+        for mag in g['mags']:
+            at = ('magazine_box' if mag == '762x25Magazine35_BIZON' else
+                  'magazine_2' if mag.endswith('_PAIR_2') else 'magazine')
+            lines.append(f"{w}{M}.{mag} {M}.{mag} {at} {at},")
+        if g['muzzle']:
+            lines += [f"{w}{pair} canon canon," for pair in BIZON_NINE]
+        if g['ak_mount']:
+            lines.append(f"{w}MarzGuns.AK_Mount MarzGuns.AK_Mount rail_up rail_up,")
+        if g.get('integrated'):
+            hidden += [(f'{gun}_Integrated_Rail_{s}', f'Rail{s}', None) for s in g['rails']]
+        else:
+            lines += [f"{w}MarzGuns.Picatinny_Rail_{s} MarzGuns.Picatinny_Rail_{s} {RAIL_POINT[s]} {RAIL_POINT[s]},"
+                      for s in g['rails']]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} scope scope," for o in OPTICS]
+        if 'Down' in g['rails']:
+            lines += [f"{w}MarzGuns.{f} MarzGuns.{f} foregrip foregrip," for f in FOREGRIPS]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} laser_right laser_right," for o in LASERS]
+        lines += [f"{w}GunsOfTien.LaserBeam_{o.replace('-', '')} GunsOfTien.LaserBeam_{o.replace('-', '')} "
+                  f"laser_right laser_right," for o in LASERS]
+        lines += [f"{w}MarzGuns.{o} MarzGuns.{o} light_left light_left," for o in LIGHTS]
+        sight = gom_data.sight(g['sight'])
+        items.append(f"""
+    item {gun} {{
+        MinDamage                    = {g['min']},
+        MaxDamage                    = {g['max']},
+        CriticalChance               = {g['crit']},
+        AimingPerkCritModifier       = 6,
+        CritDmgMultiplier            = 4.0,
+        HitChance                    = {g['hit']},
+        AimingPerkHitChanceModifier  = 4,
+        Aimingtime                   = {g['aim']},
+        RecoilDelay                  = {g['recoil']},
+        MaxRange                     = {g['range']},
+        AimingPerkRangeModifier      = 0,
+        MinSightRange                = {sight[0]},
+        MaxSightRange                = {sight[1]},
+        MinRange                     = 0.61,
+        MinAngle                     = 0.965,
+        AimingPerkMinAngleModifier   = 0.01,
+        JamGunChance                 = 1,
+        ConditionLowerChanceOneIn    = 200,
+        ConditionMax                 = 10,
+        PushBackMod                  = 0.3,
+        StopPower                    = 2.0,
+        DoorDamage                   = 5,
+        Projectilecount              = 1,
+        MaxHitcount                  = 1,
+        PiercingBullets              = false,
+        DisplayCategory              = Weapon,
+        ItemType                     = base:weapon,
+        SubCategory                  = Firearm,
+        AttachmentType               = Rifle,
+        Tags                         = base:hasmetal;base:firearm,
+        Weight                       = {g['weight']},
+        MetalValue                   = 30.0,
+        FireMode                     = Auto,
+        FireModePossibilities        = Auto/Single,
+        CyclicRateMultiplier         = 1.0,
+        IsAimedFirearm               = true,
+        Ranged                       = true,
+        AmmoType                     = {g['ammo']},
+        AmmoBox                      = {g['box']},
+        MagazineType                 = {M}.{g['mag']},
+        MaxAmmo                      = {BIZON_MAGS[g['mag']][0]},
+        Reloadtime                   = 25,
+        WeaponReloadType             = boltaction,
+        TwoHandWeapon                = true,
+        RequiresEquippedBothHands    = true,
+        UseEndurance                 = false,
+        MinimumSwingtime             = 0.5,
+        Swingtime                    = 0.5,
+        SwingAmountBeforeImpact      = 0.0,
+        Icon                         = GunsOfTienPost93_{gun},
+        IdleAnim                     = Idle_Weapon2,
+        RunAnim                      = Run_Weapon2,
+        SwingAnim                    = Rifle,
+        WeaponSprite                 = {M}.{gun},
+        AimReleaseSound              = M16AimRelease,
+        BreakSound                   = M16Break,
+        BringToBearSound             = M16BringToBear,
+        ClickSound                   = M16Jam,
+        DropSound                    = M16Drop,
+        EjectAmmoStartSound          = M16EjectAmmoStart,
+        EjectAmmoSound               = M16EjectAmmo,
+        EjectAmmoStopSound           = M16EjectAmmoStop,
+        EquipSound                   = M16Equip,
+        HitSound                     = BulletImpact,
+        ImpactSound                  = null,
+        InsertAmmoStartSound         = M16InsertAmmoStart,
+        InsertAmmoSound              = M16InsertAmmo,
+        InsertAmmoStopSound          = M16InsertAmmoStop,
+        RackSound                    = M16Rack,
+        ShellFallSound               = M16CartridgeFall,
+        SwingSound                   = M9Shoot,
+        UnequipSound                 = M16UnEquip,
+        SoundGain                    = {g['gain']},
+        SoundRadius                  = {g['radius']},
+        SoundVolume                  = {g['volume']},
+        NPCSoundBoost                = 1.5,
+        MuzzleFlashModelKey          = muzzle_flash_shotgun,
+        SplatBloodOnNoDeath          = true,
+        SplatNumber                  = 3,
+        SplatSize                    = 3,
+        OnCreate                     = MarzGuns_OnCreate.AttachParts,
+{chr(10).join(lines)}
+        KnockBackOnNoDeath           = true,
+    }}
+""")
+    for mag, (rounds, weight, ammo, _) in BIZON_MAGS.items():
+        guns = ';'.join(f'{M}.{gun}' for gun, g in BIZON_GUNS.items() if mag in g['mags'])
+        node = mag.replace('_PAIR_2', '_PAIR')
+        items.append(f"""
+    item {mag} {{
+        AmmoType         = {ammo},
+        CanStack         = false,
+        DisplayCategory  = WeaponMagazine,
+        Icon             = GunsOfTienPost93_{node},
+        ItemType         = base:weaponpart,
+        MaxAmmo          = {rounds},
+        MountOn          = {guns},
+        PartType         = Clip,
+        Tags             = base:hasmetal;base:riflemagazine,
+        Weight           = {weight},
+        WeightModifier   = {weight},
+        StaticModel      = {M}.{mag},
+        WorldStaticModel = {M}.{mag},
+        UseDelta         = 1,
+        CanAttach        = MarzGuns_AttachAndDetach.IsMagazine,
+        CanDetach        = MarzGuns_AttachAndDetach.IsMagazine,
+    }}
+""")
+    for part, ptype, weight in hidden:
+        wl = f"        Weight          = {weight},\n        WeightModifier  = {weight},\n" if weight else ""
+        items.append(f"""
+    item {part} {{
+        ItemType        = base:weaponpart,
+        DisplayCategory = WeaponPart,
+        MountOn         = MarzGuns.FakeItem,
+        PartType        = {ptype},
+{wl}        CanAttach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+        CanDetach       = MarzGuns_AttachAndDetach.CannotBeRemoved,
+    }}
+""")
+    items.append("}\n")
+    write(f'scripts/{M}/items_bizon.txt', ''.join(items))
+    # GoM repairs its AKs and SMGs with Aiming=3
+    write(f'scripts/{M}/fixing_bizon.txt', "module Base {\n" + "".join(f"""    fixing Fix {gun} {{
+        Require = {M}.{gun},
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }}
+""" for gun in BIZON_GUNS) + "}\n")
+    # the Vityaz pair taped and parted, GoM's MakeJungleMag_MP5 / SeparateJungleMag_MP5 word for word
+    write(f'scripts/{M}/recipes_bizon.txt', f"""module {M} {{
+    imports {{ Base }}
+
+    craftRecipe GunsOfTienPost93_MakeVityazDualMag {{
+        timedAction = Making,
+        Time        = 50,
+        OnCreate    = MarzGuns_OnCreate.ReturnAmmoList,
+        category    = Weaponry,
+        Tags        = InHandCraft,
+        inputs {{
+            item 1 [Base.DuctTape],
+            item 2 [{M}.9x19Magazine30_VITYAZ] flags[Prop2],
+        }}
+        outputs {{
+            item 1 {M}.9x19Magazine30_VITYAZ_PAIR,
+        }}
+    }}
+
+    craftRecipe GunsOfTienPost93_SeparateVityazDualMag {{
+        timedAction = Making,
+        Time        = 50,
+        OnCreate    = MarzGuns_OnCreate.ReturnAmmoList,
+        category    = Weaponry,
+        Tags        = InHandCraft,
+        inputs {{
+            item 1 [{M}.9x19Magazine30_VITYAZ_PAIR;{M}.9x19Magazine30_VITYAZ_PAIR_2] flags[Prop2],
+        }}
+        outputs {{
+            item 2 {M}.9x19Magazine30_VITYAZ,
+        }}
+    }}
+}}
+""")
+    path = os.path.join(ROOT, 'lua/shared/Translate/EN/ItemName.json')
+    names = json.load(open(path))
+    for gun, g in BIZON_GUNS.items():
+        names[f'{M}.{gun}'] = g['name']
+    for mag, (_, _, _, name) in BIZON_MAGS.items():
+        names[f'{M}.{mag}'] = name
+    for gun, label in (('BIZON201', 'Bizon-2-01'), ('VITYAZ', 'Vityaz')):
+        names[f'{M}.{gun}_Integrated_Stock_Folded'] = f'{label} Integrated Stock (Folded)'
+        names[f'{M}.{gun}_Integrated_Stock_Deployed'] = f'{label} Integrated Stock (Deployed)'
+    for s in BIZON_GUNS['BIZON207']['rails']:
+        names[f'{M}.BIZON207_Integrated_Rail_{s}'] = f'Bizon-2-07 Integrated Rail ({s})'
+    names.pop(f'{M}.BIZON207_Integrated_Rail_Up', None)      # dropped 2026-11-28: its optics go on the AK mount
+    write('lua/shared/Translate/EN/ItemName.json', json.dumps(names, indent=2, ensure_ascii=False) + '\n')
+    rec_path = os.path.join(ROOT, 'lua/shared/Translate/EN/Recipes.json')
+    recs = json.load(open(rec_path)) if os.path.exists(rec_path) else {}
+    recs['GunsOfTienPost93_MakeVityazDualMag'] = 'Make Vityaz Dual Magazine'
+    recs['GunsOfTienPost93_SeparateVityazDualMag'] = 'Separate Vityaz Dual Magazine'
+    write('lua/shared/Translate/EN/Recipes.json', json.dumps(recs, indent=2, ensure_ascii=False) + '\n')
+
+
 if __name__ == '__main__':
     mp7 = load_points('mp7_points.json')
     mp7a2 = load_points('mp7a2_points.json')
@@ -4566,6 +4929,7 @@ if __name__ == '__main__':
     a91()
     a91m()
     kedr()
+    bizon()
     muzzle_devices()
     translations()
     print('written under', os.path.normpath(ROOT))

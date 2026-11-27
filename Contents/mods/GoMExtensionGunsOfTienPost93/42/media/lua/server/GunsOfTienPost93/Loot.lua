@@ -164,6 +164,11 @@ local a91m = kit({ M .. "A91M" }, { "MarzGuns.762x39Magazine30" }, { "MarzGuns.7
 local a91mProto = kit({ M .. "A91MPROTO" }, { M .. "762x54Magazine20_SV98" }, { "MarzGuns.762x54_Box" })
 -- the Kedr with its magazines and the main mod's 9x18mm box (the round has no loot of its own)
 local kedr = kit({ M .. "KEDR" }, { M .. "9x18Magazine20_KEDR", M .. "9x18Magazine30_KEDR" }, { "GunsOfTien.9x18_Box" })
+-- the PP-19 Bizon family with their standard magazines and their rounds' boxes (the main mod's 9x18 and 7.62x25, GoM's 9x19)
+local bizon = kit({ M .. "BIZON" }, { M .. "9x18Magazine64_BIZON" }, { "GunsOfTien.9x18_Box" })
+local bizon201 = kit({ M .. "BIZON201" }, { M .. "9x19Magazine53_BIZON" }, { "MarzGuns.9x19_Box" })
+local bizon207 = kit({ M .. "BIZON207" }, { M .. "762x25Magazine35_BIZON" }, { "GunsOfTien.762x25_Box" })
+local vityaz = kit({ M .. "VITYAZ" }, { M .. "9x19Magazine30_VITYAZ" }, { "MarzGuns.9x19_Box" })
 
 -- High-capacity magazines on their own, as GoM's in its high-capacity magazine spawners (its M92FS 50, M93R 60, MP5
 -- 60 / 100 drums: the magazine and up to two boxes; only with GoM's sandbox SpawnHighCapMags on, which places them).
@@ -222,6 +227,12 @@ local GUNS = {
     { MERC_RIFLE, a91, { 2, 4 }, { 4, 8 } }, { MERC_SNIPER, vsk94, { 3, 6 }, { 6, 10 } },
     { RUSSIAN_RIFLE, a91m, 6, 6 }, { MERC_RIFLE, a91m, { 2, 4 }, { 4, 8 } },
     { RUSSIAN_RIFLE, a91mProto, 6, 6 }, { MERC_RIFLE, a91mProto, { 2, 4 }, { 4, 8 } },
+    -- the Bizon family, rifle-held and two-handed (user, 2026-11-27): with the Russian guns, as the 9A-91 (never with
+    -- the holstered short SMGs, where the one-handed Kedr goes with Extend Loot Areas)
+    { RUSSIAN_RIFLE, bizon, 6, 6 }, { RUSSIAN_RIFLE, bizon201, 6, 6 }, { RUSSIAN_RIFLE, bizon207, 6, 6 },
+    { RUSSIAN_RIFLE, vityaz, 6, 6 },
+    { MERC_RIFLE, bizon, { 2, 4 }, { 4, 8 } }, { MERC_RIFLE, bizon201, { 2, 4 }, { 4, 8 } },
+    { MERC_RIFLE, bizon207, { 2, 4 }, { 4, 8 } }, { MERC_RIFLE, vityaz, { 2, 4 }, { 4, 8 } },
     -- high-capacity magazines
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine40_MP7", M .. "46x30_Box"), nil, 2 },
     { G .. "World_HighCap_Tactical_Magazine_Spawner", highCap(M .. "46x30Magazine60_MP7", M .. "46x30_Box"), nil, 2 },
@@ -236,6 +247,9 @@ local GUNS = {
     { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x39Magazine50_AUG", "MarzGuns.762x39_Box"), nil, 2 },
     -- the 20-round 7.62x54R magazine (the SV-98's and the A-91M Prototype's) there too
     { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x54Magazine20_SV98", "MarzGuns.762x54_Box"), nil, 2 },
+    -- the Bizon-2-07's 45 helical and the Vityaz's dual magazine, as GoM's MP5 dual magazine is a high-capacity one
+    { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "762x25Magazine45_BIZON", "GunsOfTien.762x25_Box"), nil, 2 },
+    { G .. "World_HighCap_Russian_Magazine_Spawner", highCap(M .. "9x19Magazine30_VITYAZ_PAIR", "MarzGuns.9x19_Box"), nil, 2 },
 }
 
 -- GoM's spawners placed where GoM places no spawner of that kind and the guns belong: { spawner, distribution ("pd"
@@ -280,6 +294,9 @@ local EXTENDED_GUNS = {
     { CRIME_RIFLE, groza4, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, a91m, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, a91mProto, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, ump45, { 2, 4 }, { 2, 4 } },
+    -- criminals with the Bizon family, as with the 9A-91 and A-91M
+    { CRIME_RIFLE, bizon, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, bizon201, { 2, 4 }, { 2, 4 } },
+    { CRIME_RIFLE, bizon207, { 2, 4 }, { 2, 4 } }, { CRIME_RIFLE, vityaz, { 2, 4 }, { 2, 4 } },
     { CRIME_RIFLE, vector9, { 2, 4 }, { 2, 4 } },
     -- survivalists with military and Russian rifles
     { SURVIVALIST_RIFLE, scarl, 4, 4 }, { SURVIVALIST_RIFLE, hk416, 4, 4 }, { SURVIVALIST_RIFLE, groza1, 4, 4 },

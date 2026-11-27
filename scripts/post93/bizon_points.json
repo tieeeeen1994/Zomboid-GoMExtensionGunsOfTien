@@ -88,18 +88,6 @@
         0.0
       ]
     },
-    "rail_up": {
-      "offset": [
-        0.0,
-        0.1914,
-        0.0355
-      ],
-      "rotate": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
     "rail_left": {
       "offset": [
         0.0109,
@@ -252,7 +240,7 @@
     "magazine": "the helicals' rear face top (all three helicals); BIZON207 magazine_box the box's feed lips",
     "bolt_fired": "BIZON_BOLT (the carrier's handle) back 70 mm real",
     "stocks": "BIZON_STOCK_FOLDED / _DEPLOYED (the -2-01) are drawn in place",
-    "rails": "rail_up_cover / handguard_side_*: where GoM's optional rails sit on the PP-19 and -2-01 (wiring places them); BIZON207 rail_* are its integrated rails' faces"
+    "rails": "handguard_side_*: where GoM's optional side rails sit on the PP-19 and -2-01 (wiring places them); rail_up_cover: a top rail's spot on the cover, unused (no top rail while the AK mount holds the optics, TODO.md); BIZON207 rail_* are its integrated side rails' faces"
   },
   "_extras": {
     "photo_origin_mm": [
@@ -301,7 +289,7 @@
         0.3205,
         0.0445
       ],
-      "tris": 7226
+      "tris": 7014
     },
     "VITYAZ_BODY": {
       "min": [
@@ -460,6 +448,80 @@
         0.0009
       ],
       "tris": 2292
+    }
+  },
+  "_mag_prop2": {
+    "9x18Magazine64_BIZON": {
+      "offset": [
+        -0.0575,
+        0.1047,
+        -0.0061
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
+    },
+    "9x19Magazine53_BIZON": {
+      "offset": [
+        -0.0575,
+        0.1047,
+        -0.0061
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
+    },
+    "762x25Magazine45_BIZON": {
+      "offset": [
+        -0.0575,
+        0.1047,
+        -0.0061
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
+    },
+    "762x25Magazine35_BIZON": {
+      "offset": [
+        0.0246,
+        0.0941,
+        -0.0023
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
+    },
+    "9x19Magazine30_VITYAZ": {
+      "offset": [
+        0.0242,
+        0.1062,
+        -0.0019
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
+    },
+    "9x19Magazine30_VITYAZ_PAIR": {
+      "offset": [
+        0.0265,
+        0.1101,
+        -0.0092
+      ],
+      "rotate": [
+        -86.2737,
+        31.4012,
+        -93.4148
+      ]
     }
   }
 }

@@ -229,5 +229,22 @@
   "GunsOfTienPost93.9x18Magazine20_KEDR": "Kedr 20Rds 9x18mm Magazine",
   "GunsOfTienPost93.9x18Magazine30_KEDR": "Kedr 30Rds 9x18mm Magazine",
   "GunsOfTienPost93.KEDR_Integrated_Stock_Folded": "Kedr Integrated Stock (Folded)",
-  "GunsOfTienPost93.KEDR_Integrated_Stock_Deployed": "Kedr Integrated Stock (Deployed)"
+  "GunsOfTienPost93.KEDR_Integrated_Stock_Deployed": "Kedr Integrated Stock (Deployed)",
+  "GunsOfTienPost93.BIZON": "PP-19 Bizon Submachine Gun",
+  "GunsOfTienPost93.BIZON201": "Bizon-2-01 Submachine Gun",
+  "GunsOfTienPost93.BIZON207": "Bizon-2-07 Submachine Gun",
+  "GunsOfTienPost93.VITYAZ": "Vityaz Submachine Gun",
+  "GunsOfTienPost93.9x18Magazine64_BIZON": "Bizon 64Rds 9x18mm Helical Magazine",
+  "GunsOfTienPost93.9x19Magazine53_BIZON": "Bizon 53Rds 9x19mm Helical Magazine",
+  "GunsOfTienPost93.762x25Magazine35_BIZON": "Bizon-2-07 35Rds 7.62x25mm Magazine",
+  "GunsOfTienPost93.762x25Magazine45_BIZON": "Bizon-2-07 45Rds 7.62x25mm Helical Magazine (Invented)",
+  "GunsOfTienPost93.9x19Magazine30_VITYAZ": "Vityaz 30Rds 9x19mm Magazine",
+  "GunsOfTienPost93.9x19Magazine30_VITYAZ_PAIR": "Vityaz Dual 30Rds 9x19mm Magazine",
+  "GunsOfTienPost93.9x19Magazine30_VITYAZ_PAIR_2": "Vityaz Dual 30Rds 9x19mm Magazine",
+  "GunsOfTienPost93.BIZON201_Integrated_Stock_Folded": "Bizon-2-01 Integrated Stock (Folded)",
+  "GunsOfTienPost93.BIZON201_Integrated_Stock_Deployed": "Bizon-2-01 Integrated Stock (Deployed)",
+  "GunsOfTienPost93.VITYAZ_Integrated_Stock_Folded": "Vityaz Integrated Stock (Folded)",
+  "GunsOfTienPost93.VITYAZ_Integrated_Stock_Deployed": "Vityaz Integrated Stock (Deployed)",
+  "GunsOfTienPost93.BIZON207_Integrated_Rail_Left": "Bizon-2-07 Integrated Rail (Left)",
+  "GunsOfTienPost93.BIZON207_Integrated_Rail_Right": "Bizon-2-07 Integrated Rail (Right)"
 }

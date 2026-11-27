@@ -143,6 +143,22 @@ GunsOfTien_TooltipStates[M .. "KEDR_Integrated_Stock_Deployed"] = {
     "Aiming Time reduced by 3",
     "Hit Chance increased by 4%",
 }
+-- The PP-19 Bizon family (shared/GunsOfTienPost93/Bizon.lua): the -2-01's and Vityaz's AKS-74 stock with GoM's AKS-74U
+-- stock stats, as the 9A-91's
+for gun, uses in pairs({ BIZON = "Uses 9x18mm Makarov rounds", BIZON201 = "Uses 9x19mm rounds",
+    BIZON207 = "Uses 7.62x25mm Tokarev rounds", VITYAZ = "Uses 9x19mm rounds" }) do
+    lines[M .. gun] = { uses }
+end
+for mag, uses in pairs({ ["9x18Magazine64_BIZON"] = "Uses 9x18mm Makarov rounds.",
+    ["9x19Magazine53_BIZON"] = "Uses 9x19mm rounds.", ["762x25Magazine35_BIZON"] = "Uses 7.62x25mm Tokarev rounds.",
+    ["762x25Magazine45_BIZON"] = "Uses 7.62x25mm Tokarev rounds.", ["9x19Magazine30_VITYAZ"] = "Uses 9x19mm rounds.",
+    ["9x19Magazine30_VITYAZ_PAIR"] = "Uses 9x19mm rounds.", ["9x19Magazine30_VITYAZ_PAIR_2"] = "Uses 9x19mm rounds." }) do
+    lines[M .. mag] = { uses }
+end
+for _, gun in ipairs({ "BIZON201", "VITYAZ" }) do
+    GunsOfTien_TooltipStates[M .. gun .. "_Integrated_Stock_Deployed"] =
+        GunsOfTien_TooltipStates[M .. "UMP_Integrated_Stock_Deployed"]
+end
 
 for gun, uses in pairs({ MP7A1 = "Uses 4.6x30mm rounds", MP7A2 = "Uses 4.6x30mm rounds", P90TR = "Uses 5.7x28mm rounds",
     PS90 = "Uses 5.7x28mm rounds", MDR223 = "Uses .223/5.56x45mm NATO rounds",

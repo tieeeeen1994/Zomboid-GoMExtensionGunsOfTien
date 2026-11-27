@@ -1,0 +1,154 @@
+module GunsOfTienPost93 {
+
+    model BIZON {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON_BODY,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2740 0.0148, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0163 0.1896 0.0208, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0152 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1064 0.0074, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.2740 0.0148, rotate = -90.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = 0.0090 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0090 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0764 0.0225, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0904 0.0471, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model BIZON201 {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON201_BODY,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2662 0.0148, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0163 0.1896 0.0208, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0152 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1064 0.0074, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.2662 0.0148, rotate = -90.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = 0.0090 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0090 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0764 0.0225, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0904 0.0471, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model BIZON207 {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON207_BODY,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.3205 0.0148, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0182 0.1896 0.0208, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0171 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1064 0.0074, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine_box { offset = 0.0000 0.1070 -0.0025, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.3205 0.0148, rotate = -90.0000 0.0000 -180.0000, }
+        attachment rail_left { offset = 0.0109 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0109 0.1896 0.0216, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0764 0.0225, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0904 0.0471, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model VITYAZ {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|VITYAZ_BODY,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+        attachment bolt_fired { offset = 0.0000 -0.0422 0.0000, rotate = 0.0000 0.0000 0.0000, }
+        attachment canon { offset = 0.0000 0.2783 0.0174, rotate = 0.0000 0.0000 0.0000, }
+        attachment foregrip { offset = 0.0000 0.2017 0.0010, rotate = 0.0000 0.0000 0.0000, }
+        attachment laser_right { offset = -0.0163 0.2017 0.0148, rotate = 0.0000 0.0000 0.0000, }
+        attachment light_left { offset = 0.0152 0.2017 0.0156, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine { offset = 0.0000 0.1200 -0.0025, rotate = 0.0000 0.0000 0.0000, }
+        attachment magazine_2 { offset = -0.0151 0.1192 0.0065, rotate = 0.0000 0.0000 0.0000, }
+        attachment muzzle { offset = 0.0000 0.2783 0.0174, rotate = -90.0000 0.0000 -180.0000, }
+        attachment rail_down { offset = 0.0000 0.2017 0.0035, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_left { offset = 0.0090 0.2017 0.0156, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_right { offset = -0.0090 0.2017 0.0156, rotate = 0.0000 0.0000 0.0000, }
+        attachment rail_up { offset = 0.0000 0.0764 0.0225, rotate = 0.0000 0.0000 0.0000, }
+        attachment scope { offset = 0.0000 0.0904 0.0471, rotate = 0.0000 0.0000 0.0000, }
+        attachment world { offset = 0.0186 0.1206 0.0000, rotate = 180.0000 0.0000 180.0000, }
+    }
+
+    model BIZON_BOLT {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON_BOLT,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+    }
+
+    model BIZON_STOCK_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON_STOCK_FOLDED,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+    }
+
+    model BIZON_STOCK_DEPLOYED {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|BIZON_STOCK_DEPLOYED,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+    }
+
+    model VITYAZ_STOCK_FOLDED {
+        mesh     = weapons/firearms/GunsOfTienPost93_BIZON|VITYAZ_STOCK_FOLDED,
+        texture  = weapons/GunsOfTienPost93/BIZON,
+        cullFace = None,
+    }
+
+    model 9x18Magazine64_BIZON {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|9x18Magazine64_BIZON,
+        texture  = weapons/GunsOfTienPost93/9x18Magazine64_BIZON,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0575 0.1047 -0.0061, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x19Magazine53_BIZON {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|9x19Magazine53_BIZON,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine53_BIZON,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0575 0.1047 -0.0061, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x25Magazine35_BIZON {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|762x25Magazine35_BIZON,
+        texture  = weapons/GunsOfTienPost93/762x25Magazine35_BIZON,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0246 0.0941 -0.0023, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 762x25Magazine45_BIZON {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|762x25Magazine45_BIZON,
+        texture  = weapons/GunsOfTienPost93/762x25Magazine45_BIZON,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = -0.0575 0.1047 -0.0061, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x19Magazine30_VITYAZ {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|9x19Magazine30_VITYAZ,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine30_VITYAZ,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0242 0.1062 -0.0019, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x19Magazine30_VITYAZ_PAIR {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|9x19Magazine30_VITYAZ_PAIR,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine30_VITYAZ_PAIR,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0265 0.1101 -0.0092, rotate = -86.2737 31.4012 -93.4148, }
+    }
+
+    model 9x19Magazine30_VITYAZ_PAIR_2 {
+        mesh     = weapons/magazines/GunsOfTienPost93_BIZON_magazines|9x19Magazine30_VITYAZ_PAIR,
+        texture  = weapons/GunsOfTienPost93/9x19Magazine30_VITYAZ_PAIR,
+        cullFace = None,
+        attachment world { offset = 0.0000 0.0000 0.0000, rotate = 90.0000 0.0000 -90.0000, }
+        attachment Bip01_Prop2 { offset = 0.0265 0.1101 -0.0092, rotate = -86.2737 31.4012 -93.4148, }
+    }
+}

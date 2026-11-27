@@ -19,11 +19,11 @@ Writes (M = Contents/mods/GoMExtensionGunsOfTienPost93/42/media):
     M/textures/weapons/GunsOfTienPost93/<magazine>.png       128 each
     scripts/post93/bizon_points.json                         attachment points (game space)
 
-User, 2026-11-27 (TODO.md item 2): four guns, the three Bizons on one receiver here and the Vityaz on its own.
+User, 2026-11-27 (CLAUDE.md "PP-19 Bizon family"): four guns, the three Bizons on one receiver here and the Vityaz on its own.
 Agreed line-up: PP-19 Bizon (9x18, stockless with an end cap, its own compensator), Bizon-2-01 (9x19, AK folding
 stock, the 9x19 muzzle family), Bizon-2-07 (7.62x25, a fixed AK-74-style polymer stock, a barrel lengthened to
-345 mm "call of duty longer barrel" style out past an aftermarket railed handguard with integrated top and side
-rails and no bottom rail, the real 35-round box and an invented 45-round helical); all two-handed, none holstered.
+345 mm "call of duty longer barrel" style out past an aftermarket railed handguard with integrated side rails
+(no top rail since 2026-11-28: optics on GoM's AK mount) and no bottom rail, the real 35-round box and an invented 45-round helical); all two-handed, none holstered.
 
 Measuring photo: Chester County Armory's studio shot of a Bizon on Russian factory parts (references/bizon/raw/
 cca_007.jpg, 1674 px, the RIGHT side, muzzle right, stock folded out of sight on the left, a 64-round helical in),
@@ -320,17 +320,13 @@ def front(b, kind):
     slab(b, TOWER, [TOWER_HOLE], half=W_TOWER, bevel=0.8)
     b.lathe("z", (0, y(51.5), 0), [(153.0 - H0, 1.3), (171.0 - H0, 1.0), (171.0 - H0, 0)], seg=8, mat="steel")
     if kind == "long":
-        # the aftermarket railed handguard: a squared tube round the barrel with Picatinny rails on the top and
-        # both sides, none underneath (the helical's place)
+        # the aftermarket railed handguard: a squared tube round the barrel with Picatinny rails on both sides, none
+        # underneath (the helical's place) and none on top (user, 2026-11-28: "remove the rails on the top"; its
+        # optics go on GoM's AK side mount like the other three)
         hg = [(62.0, 159.0), (62.0, 123.0), (66.0, 119.0), (212.0, 119.0), (212.0, 159.0)]
         slab(b, hg, [rounded(a + 6.0, c - 6.0, 126.0, 134.0, 3.5) for a, c in ((75.0, 115.0), (125.0, 200.0))],
              half=W_HG - 1.0, bevel=2.0)
-        top_h, side_h = 159.0, 140.0
-
-        def frame_top(u, h, yy):
-            return Vector((u, yy, top_h - H0 + h))
-
-        kit.picatinny(b, y(208.0), y(66.0), frame_top, mat="rail")
+        side_h = 140.0
         for s in (1.0, -1.0):
             def frame_side(u, h, yy, s=s):
                 return Vector((s * (W_HG - 1.0 + h), yy, side_h - H0 + u))
@@ -792,7 +788,6 @@ def weighted_normals(objects):
 # Attachment points
 # ==================================================================================================
 
-RAIL_TOP_H = 159.0 + 4.0           # the -2-07's top rail's mounting face (base) H
 GOM_RAIL_UP_H = 165.8              # GoM's Picatinny_Rail_Up seat: the cover's top
 
 
@@ -805,7 +800,6 @@ def points(bounds):
         "BIZON207": {"muzzle": {"offset": gp(38.0 - LONG, BORE), "rotate": [-90.0, 0.0, -180.0]},
                      "canon": {"offset": gp(38.0 - LONG, BORE), "rotate": ZERO},
                      "magazine_box": {"offset": gp(*BOX_LIPS), "rotate": ZERO},
-                     "rail_up": {"offset": gp(137.0, RAIL_TOP_H), "rotate": ZERO},
                      "rail_left": {"offset": gp(140.0, 140.0, W_HG + 3.0), "rotate": ZERO},
                      "rail_right": {"offset": gp(140.0, 140.0, -(W_HG + 3.0)), "rotate": ZERO}},
         "VITYAZ": {"muzzle": {"offset": gp(-7.0, V_BORE), "rotate": [-90.0, 0.0, -180.0]},
@@ -826,8 +820,9 @@ def points(bounds):
         "magazine": "the helicals' rear face top (all three helicals); BIZON207 magazine_box the box's feed lips",
         "bolt_fired": "BIZON_BOLT (the carrier's handle) back %.0f mm real" % CARRIER_TRAVEL,
         "stocks": "BIZON_STOCK_FOLDED / _DEPLOYED (the -2-01) are drawn in place",
-        "rails": "rail_up_cover / handguard_side_*: where GoM's optional rails sit on the PP-19 and -2-01 (wiring "
-                 "places them); BIZON207 rail_* are its integrated rails' faces",
+        "rails": "handguard_side_*: where GoM's optional side rails sit on the PP-19 and -2-01 (wiring places "
+                 "them); rail_up_cover: a top rail's spot on the cover, unused (no top rail while the AK mount "
+                 "holds the optics, TODO.md); BIZON207 rail_* are its integrated side rails' faces",
     }
     pts["_extras"] = {"photo_origin_mm": [L0, H0], "bore_mm": BORE, "k": K, "long_mm": LONG}
     pts["_bounds"] = bounds

@@ -345,7 +345,45 @@ def a91m(gun, magazine, scope):
             (fbx, gun + "_RAIL_UP", tex, "rail_up"), gom_part("scopes", scope, "scope")]
 
 
+# 2026-11-28: the PP-19 Bizon family (Post-93's Bizon preview), as their item scripts draw them, at the points the
+# generator resolved (gen_post93_guns.py bizon() writes post93/bizon_model_points.json): body, bolt, the stock open,
+# the standard magazine, GoM's AK mount on `rail_up` with an optic on `scope` (the -2-07 with a laser on its right
+# rail, the side this view shows), the Vityaz with GoM's bottom rail and a foregrip
+BIZON_FBX = os.path.join(POST_FIRE, "GunsOfTienPost93_BIZON.fbx")
+BIZON_TEX = os.path.join(TEX, "BIZON.png")
+BIZON_MAGS_FBX = os.path.join(MEDIA, "models_X/weapons/magazines/GunsOfTienPost93_BIZON_magazines.fbx")
+GOM_RAILS = os.path.join(GOM, "models_X/weapons/parts/rails.fbx")
+
+
+def bizon(body, mag, at, scope, stock=None, ak_mount=True, extra=()):
+    parts = [(BIZON_FBX, body, BIZON_TEX, None), (BIZON_FBX, "BIZON_BOLT", BIZON_TEX, None),
+             (BIZON_MAGS_FBX, mag, os.path.join(TEX, mag + ".png"), at), gom_part("scopes", scope, "scope")]
+    if stock:
+        parts.append((BIZON_FBX, stock, BIZON_TEX, None))
+    if ak_mount:
+        parts.append((GOM_RAILS, "AK_Mount", os.path.join(GOM, "textures/weapons/parts/rails/AK_Mount.png"), "rail_up"))
+    return parts + list(extra)
+
+
 GUNS = {
+    "bizon": {"points": "post93/bizon_model_points.json", "points_key": "BIZON",
+              "assembled": bizon("BIZON_BODY", "9x18Magazine64_BIZON", "magazine", "Kobra_Sight"),
+              "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "bizon201": {"points": "post93/bizon_model_points.json", "points_key": "BIZON201",
+                 "assembled": bizon("BIZON201_BODY", "9x19Magazine53_BIZON", "magazine", "EXPS3_Sight",
+                                    stock="BIZON_STOCK_DEPLOYED"),
+                 "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "bizon207": {"points": "post93/bizon_model_points.json", "points_key": "BIZON207",
+                 "assembled": bizon("BIZON207_BODY", "762x25Magazine35_BIZON", "magazine_box", "ElcanX2_Scope",
+                                    extra=[gom_part("pointers", "AimRight_Laser", "laser_right")]),
+                 "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
+    "vityaz": {"points": "post93/bizon_model_points.json", "points_key": "VITYAZ",
+               "assembled": bizon("VITYAZ_BODY", "9x19Magazine30_VITYAZ", "magazine", "Aimpoint_Sight",
+                                  stock="BIZON_STOCK_DEPLOYED", extra=[
+                                      (GOM_RAILS, "Picatinny_Rail_Down",
+                                       os.path.join(GOM, "textures/weapons/parts/rails/Picatinny_Rail.png"), "rail_down"),
+                                      gom_part("foregrips", "MKC_Foregrip", "foregrip")]),
+               "view": RIFLE_VIEW, "scale": RIFLE_SCALE, "size": RIFLE_SIZE},
     "a91m": {"points": "post93/a91m_points.json", "points_key": "A91M",
              "assembled": a91m("A91M", (os.path.join(GOM, "models_X/weapons/magazines/assault_rifles.fbx"),
                                         "762x39Magazine30",

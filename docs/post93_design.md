@@ -895,10 +895,11 @@ guns.
 
 Model: scripts/post93/build_kedr.py (references/kedr, CLAUDE.md "PP-91 Kedr").
 
-## PP-19 Bizon family (user, 2026-11-27: designed, not built)
+## PP-19 Bizon family (user, 2026-11-27: designed; built 2026-11-28 for 3.26.0)
 
 **Superseded the same day**: four guns (PP-19 Bizon 9x18, Bizon-2-01 9x19, Bizon-2-07 7.62x25, Vityaz 9x19), all
-two-handed; the agreed line-up and every answer is in TODO.md item 2. The table below is the first draft.
+two-handed; the guns as built (and the later calls: the -2-07's optics on the AK mount, its top rail taken off)
+are in CLAUDE.md "PP-19 Bizon family". The table below is the first draft.
 
 Shelved 2026-11-26, back 2026-11-27 (user: "let's make it into a family. Like each bizon uses a different ammunition
 and uses a different barrel length or some aftermarket handguard"). One gun per calibre (user: "no need for 2 guns for
@@ -915,7 +916,7 @@ moving with the carrier: one Bolt part on GoM's swap, as the RPKs).
 | Magazine | own helical, 64 | own helical, 53 | own helical (capacity from the hunt) |
 
 **9x19 becomes the PP-19-01 Vityaz** (user, 2026-11-27: "I kinda want the 9x19 to be vityaz"), the Bizon's
-2004 successor on the AK-74, box-fed; the Bizon Parabellum column above is replaced. Which Vityaz, parts: asked.
+2004 successor on the AK-74, box-fed; the Bizon Parabellum column above is replaced.
 Magazines never cross between the three (each calibre its own barrel, bolt and helical magazine). Loot: with the
 Russian guns, as the Kedr (the Makarov with Extend Loot Areas also with the short SMGs). Stats, sounds, rpm, Tokarev
 barrel length and handguard pattern: from the reference hunt, set while building.

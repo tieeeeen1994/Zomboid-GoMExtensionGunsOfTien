@@ -448,7 +448,7 @@ in our mods. Adopt all changes from GoM." GoM's ChangeLog.txt (common/) November
   rule in `Ammunition.lua` already does it, since the PBS-1 never mounts on it; no regulator modelling. RPK-74 or
   not still open. Dropped by the user the same day: PPSh-41 and PP-19 Bizon (both would have needed a new calibre); both back
   on 2026-11-23 with the 7.62x25 round and a Bizon per calibre; the PPSh-41 was built, the Bizon shelved again on
-  2026-11-26 and back on 2026-11-27 as a family of four, three Bizons and the Vityaz (line-up agreed in TODO.md item 2).
+  2026-11-26 and back on 2026-11-27 as a family of four, three Bizons and the Vityaz (as built: "PP-19 Bizon family" below).
 - **Steyr TMP** (user, 2026-11-11; built, not played): main mod, held like a pistol and holstered, its own 15 and
   30-round magazines only, the Mk9 on the SMG mount device; section "Steyr TMP". **SR-25** (main mod) and the **OTs-14 Groza
   family** (Post-93) are built (docs/design.md 4l, docs/post93_design.md; scripts and Lua below). SR-25: `scripts/build_sr25.py`
@@ -3988,6 +3988,54 @@ the aluminium SV-98.
   the 3/4 ones. Both render scripts set `show_specular_highlight = False` (render_tmp.py always did).
 - **Not done**: playing it; the right side's markings (АВ / ОД / ПР) are three dabs; the cocking handle is a small
   block, the real one a hooked lever; the sling loops are left off.
+
+## PP-19 Bizon family (Post-93, 2026-11-27 models, 2026-11-28 wired; not played)
+
+- **What** (docs/post93_design.md "PP-19 Bizon family"): `GunsOfTienPost93.BIZON` "PP-19 Bizon
+  Submachine Gun" (9x18, 64 helical `9x18Magazine64_BIZON`, no stock), `BIZON201` (9x19, 53 helical, AKS-74 stock),
+  `BIZON207` (7.62x25, box `762x25Magazine35_BIZON` + invented helical `762x25Magazine45_BIZON`, fixed stock,
+  integrated left / right rails, optics on the AK mount like the others), `VITYAZ` (9x19, `9x19Magazine30_VITYAZ` and the clipped pair
+  `_PAIR` / `_PAIR_2`, AKS-74 stock with its own fold). Files: `scripts/post93/build_bizon.py` (Blender: one FBX for
+  the four bodies, BIZON_BOLT, the stocks; one for the magazines; `bizon_points.json`), `make_bizon_art.py` (icons
+  on the 9A-91's cameras with the stocks open (user, 2026-11-28), and `_mag_prop2` written into bizon_points.json: run it after every build, it is lost
+  when build_bizon.py rewrites the file), `render_bizon.py` / `make_bizon_preview.py` (review sheets),
+  `gen_post93_guns.py bizon()` (models_bizon.txt, items_bizon.txt, fixing_bizon.txt, recipes_bizon.txt, names; it
+  also writes `bizon_model_points.json`, every gun's resolved points, for render_ad_guns.py), registries
+  `shared/GunsOfTienPost93/Bizon.lua`, lines in Post-93's Tooltips.lua, HotBrass.lua, Loot.lua; Workshop page
+  preview49 (render_ad_guns.py `bizon` / `bizon201` / `bizon207` / `vityaz`, make_workshop_art.py preview49, a 2x2
+  grid: four guns stacked through gun_pair came out too small to read). Rebuild: build, make_bizon_art,
+  gen_post93_guns, check_refs, attachment_audit, fit_audit (all clean on 2026-11-28: 0 ISSUE, nothing flagged).
+- **Registered as the 9A-91**: rifle-held and two-handed, GoM's "ak_rifle" reload, the AK bolt swap with
+  GunsOfTien_RPK.CLOSES_ON_EMPTY, the stocks on Gunworks' FoldingStock with GoM's AKS-74U stats and spread. No
+  SMG grip stance (GoM gives its AKS-74U none; the stance list is the MP5 / FAMAS reload guns). One magazine profile
+  per gun ("9x18mm Bizon", "9x19mm Bizon", "7.62x25mm Bizon-2-07", "9x19mm Vityaz") in the rounds' families.
+- **The Vityaz pair is GoM's MP5 jungle pair**: two items (`_PAIR` side 1, `_PAIR_2` side 2, each MaxAmmo 60, one
+  name and icon), Gunworks' StackedMagazines group "9x19mm 2x30 Vityaz Dual Magazines" with GoM's `jungleMagReload`
+  numbers, both in the Vityaz profile. Our pair mesh has the second magazine 25 mm to the left and 15 mm lower
+  along the 5 degree rake, so side 2 is the same mesh drawn at a gun point `magazine_2` moved by that (no second
+  mesh). Taped and parted by `GunsOfTienPost93_MakeVityazDualMag` / `_SeparateVityazDualMag`, GoM's MP5 recipes.
+- **Optics**: GoM's AK_Mount on all four (the -2-07 too, user 2026-11-28: "bizon-2-07 should use AK mount for top
+  rail instead"; its handguard's top rail then removed from the mesh, side rails kept) is drawn with GoM's own mesh at GoM's AKS-74U
+  `rail_up` / `scope` (the same receiver at the same origin and scale; fit_audit puts every optic within GoM's
+  margins), not a bracket of ours as on the 9A-91 (whose receiver is lower). **AK mount and the optional top rail
+  exclude each other**: both are PartType RailUp, and one `scope` point serves every optic, 12 mm higher on the
+  mount than on a cover rail, so the PP-19 and -2-01 got no optional top rail (Q5 listed one; left to the user in
+  TODO.md). GoM's optional rails come through the main mod's Rails.lua (PP-19, -2-01 Left / Right on the
+  handguard's sides; Vityaz Down / Left / Right, its sides at the lower handguard, photo L 120, H 130, half width
+  W_HG); the -2-07's left / right are hidden integrated parts with RequiredAttachment, as the PS90's. Accessory points use
+  GoM's offsets from the rail point (its M249 / our SCARs): scope +2.3 mm up, light +6.2 mm out, laser +7.3 mm out
+  and 0.8 down, foregrip 2.5 mm under.
+- **Muzzles**: the -2-01 and Vityaz the 9x19mm family as the UMP9 (MountOn appended in Bizon.lua, `_GoT` models in
+  the scripts); the PP-19's compensator is part of its body; the -2-07 none, since no 7.62x25mm muzzle family
+  exists (the TODO's "7.62x25 mount" does not; left to the user).
+- **Numbers** (bizon() header): PP-19 0.55-0.95, Hit 46, Aimingtime 30, range 25 (a step over the Kedr,
+  stockless); -2-01 and Vityaz GoM's MP5 less the stock (Hit 44, Aimingtime 42; open +8 / -4); -2-07 1.0-1.55, Hit
+  52, range 35 (over the PPSh-41, 345 mm barrel). Sound by sound_model.py: 57 / 16, 93 / 27, 90 / 26, 92 / 26.
+  650 / 680 / 700 / 750 rpm. Sights: MP5K's window on the PP-19, CAMP_CARBINE's on the -2-07, MP5's on the others.
+- **Loot**: GoM's Russian rifle spawner and Undead Survivors' mercenary rifle spawner always (rifle-held, so never
+  the short SMG spawner the one-handed Kedr takes with Extend Loot Areas), the crime rifle spawner with Extend Loot
+  Areas; the 45 helical and the pair in GoM's Russian high-capacity magazine spawner. preview34-36 and preview41
+  regenerated.
 
 ## Fixed bayonets (2026-11-19; built, not played)
 

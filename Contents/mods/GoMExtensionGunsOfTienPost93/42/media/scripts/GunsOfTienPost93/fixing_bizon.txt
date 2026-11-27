@@ -1,0 +1,18 @@
+module Base {
+    fixing Fix BIZON {
+        Require = GunsOfTienPost93.BIZON,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix BIZON201 {
+        Require = GunsOfTienPost93.BIZON201,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix BIZON207 {
+        Require = GunsOfTienPost93.BIZON207,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+    fixing Fix VITYAZ {
+        Require = GunsOfTienPost93.VITYAZ,
+        Fixer   = MarzGuns.RepairPack; Aiming=3,
+    }
+}

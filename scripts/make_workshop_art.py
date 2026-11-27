@@ -1513,6 +1513,50 @@ def preview42(path, W=1024):
              gap=14)
 
 
+def preview49(path, W=1024):
+    """Post-93's PP-19 Bizon family: four guns two by two at one scale (render_ad_guns.py "bizon": a Kobra on GoM's AK
+    mount; "bizon201": stock open, an EXPS3; "bizon207": an Elcan on its rail and a laser; "vityaz": stock open, an
+    Aimpoint and a foregrip on GoM's bottom rail), each under its name and figures (gun_pair's look; four stacked
+    were too small to read); then the guns and their magazines in a slot row and what plays."""
+    size = (W, W)
+    k = W / 512
+
+    def u(v):
+        return round(v * k)
+
+    post = lambda n: os.path.join(POST, "item_GunsOfTienPost93_%s.png" % n)
+    guns = (("bizon", "PP-19 BIZON", "9X18MM  ·  650 RPM  ·  64-ROUND HELICAL"),
+            ("bizon201", "BIZON-2-01", "9X19MM  ·  680 RPM  ·  FOLDING STOCK"),
+            ("bizon207", "BIZON-2-07", "7.62X25MM  ·  700 RPM  ·  RAILED HANDGUARD"),
+            ("vityaz", "VITYAZ", "9X19MM  ·  750 RPM  ·  DUAL MAGAZINES"))
+    page = background(size).convert("RGBA")
+    page.alpha_composite(text_layer(size, (W // 2, u(34)), "OPTIONAL ADD-ON FOR GUNS OF MARZ EXTENSION",
+                                    font(BOLD, u(14), b"Bold"), (60, 64, 70, 255), anchor="mm", spacing=u(2)))
+    ims = {}
+    for name, _, _ in guns:
+        im = Image.open(os.path.join(RENDERS, "ad_%s.png" % name)).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        ims[name] = im.crop(im.getchannel("A").getbbox())
+    cell_w, label_h, top, rows_h = u(232), u(36), u(56), u(170)
+    s = min(cell_w / max(im.width for im in ims.values()),
+            (rows_h - label_h - u(8)) / max(im.height for im in ims.values()))
+    big, small = font(BOLD, u(16), b"Bold"), font(BOLD, u(9), b"Bold")
+    for n, (name, label, sub_) in enumerate(guns):
+        cx = u(132) if n % 2 == 0 else u(380)
+        y = top + (n // 2) * rows_h
+        page.alpha_composite(text_layer(size, (cx, y), label, big, (28, 30, 34, 255), anchor="ma"))
+        page.alpha_composite(text_layer(size, (cx, y + u(19)), sub_, small, (60, 64, 70, 255), anchor="ma",
+                                        spacing=u(1)))
+        im = ims[name].resize((round(ims[name].width * s), round(ims[name].height * s)), Image.LANCZOS)
+        y_im = y + label_h + (rows_h - label_h - u(8) - im.height) // 2
+        paste_with_shadow(page, placed(size, im, (cx - im.width // 2, y_im)), (0, u(6)), u(6), 160)
+    slot_row(page, [post(n) for n in ("BIZON", "BIZON201", "BIZON207", "VITYAZ", "9x18Magazine64_BIZON",
+                                      "9x19Magazine53_BIZON", "762x25Magazine35_BIZON", "762x25Magazine45_BIZON",
+                                      "9x19Magazine30_VITYAZ", "9x19Magazine30_VITYAZ_PAIR")],
+             256, 404, "ONE MAGAZINE FAMILY PER CALIBRE")
+    caption(page, 462, "OPTICS ON THE AK SIDE MOUNT  ·  TWO-HANDED, NEVER HOLSTERED")
+    save_under(page.convert("RGB"), path)
+
+
 def preview43(path, W=1024):
     """Post-93's A-91M 39 and A-91M 54 Prototype (3.25.0), as gun_pair: the 39 with GoM's AK-47 30 and an Aimpoint
     ("a91m"); the 54 Prototype with the 20-round magazine and an Elcan ("a91mproto"); then their slot row."""
@@ -2002,6 +2046,8 @@ if __name__ == "__main__":
         preview47(os.path.join(ROOT, "preview47.png"))   # the main mod's new calibres and special loads (3.25.0)
     if want("preview48"):
         preview48(os.path.join(ROOT, "preview48.png"))   # Post-93's later loads (3.25.0)
+    if want("preview49"):
+        preview49(os.path.join(ROOT, "preview49.png"))   # Post-93's PP-19 Bizon family
     if want("preview"):
         preview_small(os.path.join(ROOT, "preview.png"))
     if want("posters"):
